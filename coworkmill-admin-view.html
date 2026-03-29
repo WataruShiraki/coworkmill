@@ -510,6 +510,13 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
 
   <!-- PHOTO -->
   <div id="p-photo" style="display:none">
+    <!-- 写真管理コンテンツ（DB連携後に動的表示） -->
+    <div id="photo-empty" style="display:none;text-align:center;padding:48px 24px;color:var(--g400)">
+      <div style="font-size:40px;margin-bottom:12px">📷</div>
+      <div style="font-size:14px;font-weight:500;margin-bottom:6px">まだ写真がありません</div>
+      <div style="font-size:12px">下の「写真をアップロード」から追加してください。</div>
+    </div>
+    <div id="photo-content">
     <!-- ダウングレード時の警告バナー（Freeプランで6枚以上登録していた場合） -->
     <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
       <div style="font-size:12px;color:#92400e;line-height:1.7">
@@ -555,6 +562,7 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
         </div>
       </div>
     </div>
+    </div><!-- /photo-content -->
   </div>
 
   <!-- VOICE -->
@@ -762,12 +770,19 @@ async function loadSpacesFromDB() {
 
 // DBから施設詳細を取得してフォームに反映
 async function loadSpaceDetail(f) {
+  // 写真管理：DB未登録施設は空表示
+  const photoEmpty = document.getElementById('photo-empty');
+  const photoContent = document.getElementById('photo-content');
   if (!f.db_id) {
-    // DB未登録のダミー施設はフォームを空にする
+    if (photoEmpty) photoEmpty.style.display = 'block';
+    if (photoContent) photoContent.style.display = 'none';
+    // フォームを空にする
     const fields = ['fn','fc','fa','fad','fst','fline','fde','fu','fig'];
     fields.forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
     return;
   }
+  if (photoEmpty) photoEmpty.style.display = 'none';
+  if (photoContent) photoContent.style.display = 'block';
   try {
     const rows = await sbFetch('/rest/v1/spaces?id=eq.' + f.db_id + '&select=*');
     if (!rows || !rows[0]) return;
@@ -930,12 +945,12 @@ function swFac(id) {
   const bar = document.getElementById('info-bar');
   if(f.st==='live') bar.innerHTML = '<div class="sdot green"></div><div class="st"><strong>掲載中</strong> — 最終更新: 2026年3月20日</div>';
   else if(f.st==='locked') bar.innerHTML = '<div class="sdot" style="background:#a0a0a0"></div><div class="st"><strong>非公開</strong> — Standardプランにアップグレードすると再公開できます</div>';
-  else bar.innerHTML = '<div class="sdot amber"></div><div class="st"><strong>下書き</strong> — 情報を入力して掲載申請してください</div>';
+  else bar.innerHTML = '<div class="sdot amber"></div><div class="st"><strong>下書き</strong> — 情報を入力して内容を保存してください。<span style="color:#f97316;font-weight:600"> 次のアクション：写真の追加が必要です。</span><a href="#" onclick="go(\'photo\',document.querySelectorAll(\'.nl\')[2]);return false;" style="color:#f97316;text-decoration:underline;font-weight:600;margin-left:6px">写真管理へ進む →</a></div>';
   // DBから施設データを取得してフォームに反映
   loadSpaceDetail(f);
   const tbr = document.getElementById('tbr');
   if(f.st==='draft') {
-    tbr.innerHTML = '<button class="bol" onclick="cancelNew()">破棄</button><button class="bsv" onclick="doSave()">変更を保存</button><button class="bpb" onclick="pubFac()">掲載申請する →</button>';
+    tbr.innerHTML = '<button class="bol" onclick="cancelNew()">破棄</button><button class="bsv" onclick="doSave()">変更を保存</button><button class="bpb" style="background:linear-gradient(135deg,#f97316,#ea580c);border-color:#f97316;color:#fff;font-weight:700" onclick="pubFac()">🚀 公開する</button>';
   } else {
     tbr.innerHTML = '<button class="bol" onclick="window.open(\'coworkmill-detail.html\')">プレビュー →</button><button class="bsv" id="savebtn" onclick="doSave()">変更を保存</button>';
   }
@@ -1013,12 +1028,23 @@ function cancelNew() {
   cur=0; swFac(0);
 }
 
-function pubFac() {
-  facs[cur].st='live';
-  const item=document.getElementById('fi-'+cur);
-  if(item){const fs=item.querySelector('.fs');fs.className='fs live';fs.textContent='掲載中';}
-  swFac(cur);
-  alert('掲載申請を送信しました！審査後、掲載が開始されます。');
+async function pubFac() {
+  const dbId = facs[cur] ? facs[cur].db_id : null;
+  if (!dbId) { alert('先に施設情報を保存してください。'); return; }
+  if (!confirm('この施設を公開しますか？')) return;
+  try {
+    await sbFetch('/rest/v1/spaces?id=eq.' + dbId, {
+      method: 'PATCH',
+      body: JSON.stringify({ status: 'published' })
+    });
+    facs[cur].st = 'live';
+    const item = document.getElementById('fi-' + cur);
+    if (item) { const fs = item.querySelector('.fs'); fs.className = 'fs live'; fs.textContent = '● 掲載中'; }
+    swFac(cur);
+    alert('公開しました！');
+  } catch(e) {
+    alert('エラー: ' + toJapaneseError(e));
+  }
 }
 
 function renderDash(d) {
