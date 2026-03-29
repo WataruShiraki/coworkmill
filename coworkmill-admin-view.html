@@ -39,8 +39,8 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
 .pb{font-size:7px;padding:1px 6px;background:rgba(117,97,169,.4);color:rgba(255,255,255,.6);border-radius:8px}
 .fi{padding:8px 12px;display:flex;align-items:center;gap:8px;cursor:pointer;border-left:3px solid transparent;transition:all .15s}
 .fi:hover{background:rgba(255,255,255,.05)}
-.fi.on{background:rgba(117,97,169,.3);border-left-color:var(--purple)}
-.fi.on .fn{font-weight:600}
+.fi.on{background:rgba(249,115,22,.15);border-left-color:#f97316}
+.fi.on .fn{font-weight:600;color:#fff}
 .fi-ic{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;color:#fff;flex-shrink:0}
 .fn{font-size:10px;font-weight:500;color:#fff}
 .fs{font-size:8px;color:rgba(255,255,255,.4);display:flex;align-items:center;gap:3px;margin-top:2px}
@@ -274,11 +274,11 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
     <div class="sec">
       <div class="sec-h"><div><div class="sec-ht">基本情報</div></div></div>
       <div class="sec-b">
-        <div class="fr full"><div class="fg"><div class="fl">施設名<em>*</em></div><input class="fin" id="fn" value=""></div></div>
-        <div class="fr"><div class="fg"><div class="fl">都市<em>*</em></div><input class="fin" id="fc" value="東京"></div><div class="fg"><div class="fl">エリア</div><input class="fin" id="fa" value="表参道"></div></div>
-        <div class="fr full"><div class="fg"><div class="fl">住所<em>*</em></div><input class="fin" id="fad" value=""></div></div>
+        <div class="fr full"><div class="fg"><div class="fl">施設名<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><input class="fin" id="fn" value=""></div></div>
+        <div class="fr"><div class="fg"><div class="fl">都市<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><input class="fin" id="fc" value="東京"></div><div class="fg"><div class="fl">エリア</div><input class="fin" id="fa" value="表参道"></div></div>
+        <div class="fr full"><div class="fg"><div class="fl">住所<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><input class="fin" id="fad" value=""></div></div>
         <div class="fr"><div class="fg"><div class="fl">最寄駅</div><input class="fin" id="fst" placeholder="例：表参道駅 徒歩3分" value="表参道駅 徒歩3分"></div><div class="fg"><div class="fl">路線</div><input class="fin" id="fline" placeholder="例：東京メトロ銀座線・千代田線・半蔵門線" value="東京メトロ銀座線・千代田線・半蔵門線"></div></div>
-        <div class="fr full"><div class="fg"><div class="fl">施設説明文<em>*</em></div><textarea class="fta" id="fde"></textarea></div></div>
+        <div class="fr full"><div class="fg"><div class="fl">施設説明文<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><textarea class="fta" id="fde"></textarea></div></div>
         <div class="fr"><div class="fg"><div class="fl">公式サイトURL</div><input class="fin" id="fu" value=""></div><div class="fg"><div class="fl">Instagram（@から入力）</div><input class="fin" id="fig" value=""></div></div>
       </div>
     </div>
@@ -386,13 +386,32 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
 
   <!-- NEW FAC -->
   <div id="p-new" style="display:none">
+
+    <!-- ステップインジケーター -->
+    <div id="step-indicator" style="display:flex;align-items:center;padding:14px 0 18px;gap:0;">
+      <div class="step-item" id="step1" style="display:flex;align-items:center;gap:8px;">
+        <div style="width:24px;height:24px;border-radius:50%;background:#f97316;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0;">1</div>
+        <div style="font-size:11px;font-weight:600;color:#111827;">基本情報</div>
+      </div>
+      <div id="step-line1" style="flex:1;max-width:40px;height:1px;background:#374151;margin:0 10px;"></div>
+      <div class="step-item" id="step2" style="display:flex;align-items:center;gap:8px;">
+        <div style="width:24px;height:24px;border-radius:50%;background:#1e293b;border:1px solid #374151;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:#4b5563;flex-shrink:0;">2</div>
+        <div style="font-size:11px;color:#4b5563;">写真登録</div>
+      </div>
+      <div id="step-line2" style="flex:1;max-width:40px;height:1px;background:#374151;margin:0 10px;"></div>
+      <div class="step-item" id="step3" style="display:flex;align-items:center;gap:8px;">
+        <div style="width:24px;height:24px;border-radius:50%;background:#1e293b;border:1px solid #374151;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:#4b5563;flex-shrink:0;">3</div>
+        <div style="font-size:11px;color:#4b5563;">公開</div>
+      </div>
+    </div>
+
     <div class="dbanner"><span style="font-size:16px">🏢</span> 新しい施設を登録しています。情報を入力して保存してください。</div>
     <div class="sec">
       <div class="sec-h"><div><div class="sec-ht">基本情報（新規施設）</div></div></div>
       <div class="sec-b">
-        <div class="fr full"><div class="fg"><div class="fl">施設名<em>*</em></div><input class="fin" id="nfn" placeholder="例：THE WAREHOUSE OSAKA"></div></div>
-        <div class="fr"><div class="fg"><div class="fl">都市<em>*</em></div><input class="fin" id="nfc" placeholder="例：東京"></div><div class="fg"><div class="fl">エリア</div><input class="fin" id="nfa" placeholder="例：表参道"></div></div>
-        <div class="fr full"><div class="fg"><div class="fl">住所<em>*</em></div><input class="fin" id="nfad" placeholder="例：東京都港区南青山3-X-X"></div></div>
+        <div class="fr full"><div class="fg"><div class="fl">施設名<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><input class="fin" id="nfn" placeholder="例：THE WAREHOUSE OSAKA"></div></div>
+        <div class="fr"><div class="fg"><div class="fl">都市<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><input class="fin" id="nfc" placeholder="例：東京"></div><div class="fg"><div class="fl">エリア</div><input class="fin" id="nfa" placeholder="例：表参道"></div></div>
+        <div class="fr full"><div class="fg"><div class="fl">住所<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><input class="fin" id="nfad" placeholder="例：東京都港区南青山3-X-X"></div></div>
         <div class="fr"><div class="fg"><div class="fl">最寄駅</div><input class="fin" id="nfst" placeholder="例：表参道駅 徒歩3分"></div><div class="fg"><div class="fl">路線</div><input class="fin" id="nfline" placeholder="例：東京メトロ銀座線・千代田線"></div></div>
         <div class="fr full"><div class="fg"><div class="fl">施設説明文</div><textarea class="fta" id="nfde" placeholder="施設の雰囲気・こだわりをご記入ください"></textarea></div></div>
       </div>
@@ -511,10 +530,20 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
   <!-- PHOTO -->
   <div id="p-photo" style="display:none">
     <!-- 写真管理コンテンツ（DB連携後に動的表示） -->
-    <div id="photo-empty" style="display:none;text-align:center;padding:48px 24px;color:var(--g400)">
-      <div style="font-size:40px;margin-bottom:12px">📷</div>
-      <div style="font-size:14px;font-weight:500;margin-bottom:6px">まだ写真がありません</div>
-      <div style="font-size:12px">下の「写真をアップロード」から追加してください。</div>
+    <div id="photo-empty" style="display:none;">
+      <div style="border:2px dashed var(--g200);border-radius:12px;padding:48px 24px;text-align:center;cursor:pointer;transition:border-color .2s;" 
+           onmouseover="this.style.borderColor='#2BB5C8'" 
+           onmouseout="this.style.borderColor='var(--g200)'"
+           onclick="document.getElementById('photo-upload-input').click()">
+        <div style="font-size:36px;margin-bottom:14px;">📷</div>
+        <div style="font-size:14px;font-weight:500;color:var(--black);margin-bottom:6px;">写真をアップロード</div>
+        <div style="font-size:12px;color:var(--g400);margin-bottom:20px;">クリックまたはここにドラッグ＆ドロップ<br>JPG・PNG・WEBP対応 / 1枚10MBまで</div>
+        <button style="padding:10px 24px;font-size:12px;font-weight:600;color:#fff;background:linear-gradient(135deg,#79F1A4,#2BB5C8);border:none;border-radius:8px;cursor:pointer;">
+          写真を選択する
+        </button>
+        <input type="file" id="photo-upload-input" accept="image/*" multiple style="display:none;" onchange="handlePhotoUpload(this)">
+      </div>
+      <div style="font-size:11px;color:var(--g400);text-align:center;margin-top:12px;">Freeプランは5枚まで掲載可</div>
     </div>
     <div id="photo-content">
     <!-- ダウングレード時の警告バナー（Freeプランで6枚以上登録していた場合） -->
@@ -591,12 +620,12 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
     <div class="sec">
       <div class="sec-h"><div><div class="sec-ht">企業情報</div><div class="sec-hs">運営会社・請求先情報（非公開）</div></div></div>
       <div class="sec-b">
-        <div class="fr"><div class="fg"><div class="fl">運営会社名<em>*</em></div><input class="fin" value="株式会社アオヤマワークス"></div><div class="fg"><div class="fl">法人番号</div><input class="fin" placeholder="1234567890123"></div></div>
+        <div class="fr"><div class="fg"><div class="fl">運営会社名<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><input class="fin" value="株式会社アオヤマワークス"></div><div class="fg"><div class="fl">法人番号</div><input class="fin" placeholder="1234567890123"></div></div>
         <div class="fr full"><div class="fg"><div class="fl">請求先住所</div><input class="fin" value=""></div></div>
         <div style="margin-bottom:20px;padding:10px 12px;background:var(--g50);border-radius:5px;border:1px solid var(--g100);font-size:9px;color:var(--g400)">🏢 運営会社情報は請求・契約管理に使用します。掲載ページには表示されません。</div>
         <div style="font-size:12px;font-weight:500;margin-bottom:14px;padding-top:4px;border-top:1px solid var(--g100)">担当者情報</div>
-        <div class="fr"><div class="fg"><div class="fl">担当者名<em>*</em></div><input class="fin" value=""></div><div class="fg"><div class="fl">担当者役職</div><input class="fin" value=""></div></div>
-        <div class="fr"><div class="fg"><div class="fl">担当者メール<em>*</em></div><input class="fin" value=""></div><div class="fg"><div class="fl">担当者電話番号</div><input class="fin" value=""></div></div>
+        <div class="fr"><div class="fg"><div class="fl">担当者名<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><input class="fin" value=""></div><div class="fg"><div class="fl">担当者役職</div><input class="fin" value=""></div></div>
+        <div class="fr"><div class="fg"><div class="fl">担当者メール<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><input class="fin" value=""></div><div class="fg"><div class="fl">担当者電話番号</div><input class="fin" value=""></div></div>
         <div style="padding:10px 12px;background:var(--g50);border-radius:5px;border:1px solid var(--g100);font-size:9px;color:var(--g400)">🔒 担当者情報は問い合わせ対応・緊急連絡のみに使用します。</div>
       </div>
     </div>
@@ -656,10 +685,6 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
       </div>
       </div>
     </div>
-    <div class="stripe-row">
-      <div><div style="font-size:12px;font-weight:500;margin-bottom:3px">お支払い・解約の管理</div><div style="font-size:11px;color:var(--g400)">クレジットカードの変更・解約・請求履歴はこちら</div></div>
-      <button class="bol" onclick="stripePortal()">🔒 Stripeポータルへ →</button>
-    </div>
   </div>
 
   </div><!-- content -->
@@ -667,6 +692,56 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
 </div><!-- app -->
 
 <script>
+
+
+
+function updateAddBtn() {
+  const btn = document.querySelector('.add-btn');
+  if (!btn) return;
+  const plan = 'standard';
+  const limit = plan === 'free' ? 3 : plan === 'standard' ? 10 : 20;
+  const remaining = Math.max(0, limit - facs.length);
+  if (remaining <= 0) {
+    btn.textContent = '施設数の上限に達しました';
+    btn.style.opacity = '.4';
+    btn.onclick = null;
+  } else {
+    btn.textContent = '+ 施設を追加（残り' + remaining + '件）';
+    btn.style.opacity = '1';
+    btn.onclick = addFac;
+  }
+}
+
+function handlePhotoUpload(input) {
+  if (!input.files || input.files.length === 0) return;
+  const files = Array.from(input.files);
+  alert(files.length + '枚の写真を選択しました。\n\n※現在、写真のアップロード機能は準備中です。\nSupabase Storage連携後に利用できるようになります。');
+}
+
+function setStep(n) {
+  const steps = [
+    {circle: document.querySelector('#step1 div'), label: document.querySelector('#step1 div:last-child'), line: document.getElementById('step-line1')},
+    {circle: document.querySelector('#step2 div'), label: document.querySelector('#step2 div:last-child'), line: document.getElementById('step-line2')},
+    {circle: document.querySelector('#step3 div'), label: document.querySelector('#step3 div:last-child'), line: null},
+  ];
+  steps.forEach((s, i) => {
+    if (!s.circle) return;
+    if (i + 1 < n) {
+      s.circle.style.background = '#2BB5C8'; s.circle.style.border = 'none'; s.circle.style.color = '#fff';
+      s.label.style.color = '#2BB5C8';
+      if (s.line) s.line.style.background = '#2BB5C8';
+    } else if (i + 1 === n) {
+      s.circle.style.background = '#f97316'; s.circle.style.border = 'none'; s.circle.style.color = '#fff';
+      s.label.style.color = '#111827'; s.label.style.fontWeight = '600';
+      if (s.line) s.line.style.background = '#374151';
+    } else {
+      s.circle.style.background = '#1e293b'; s.circle.style.border = '1px solid #374151'; s.circle.style.color = '#4b5563';
+      s.label.style.color = '#4b5563'; s.label.style.fontWeight = '400';
+      if (s.line) s.line.style.background = '#374151';
+    }
+  });
+}
+
 // ===== Supabase設定 =====
 const SUPABASE_URL = 'https://jakwntemjkwqwaqujffh.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
@@ -752,7 +827,7 @@ async function loadSpacesFromDB() {
       facs.length = 0;
       data.forEach((row, i) => {
         const nm = row.name || '施設' + (i+1);
-        const ic = nm.split(/[\s　]/).filter(Boolean).map(w=>w[0]).join('').slice(0,2).toUpperCase() || nm.slice(0,2).toUpperCase();
+        const ic = (function(n){const words=n.split(/[\s　]/).filter(Boolean);if(words.length>=2){return words.map(w=>w[0]).join('').slice(0,2).toUpperCase();}return n[0]?n[0].toUpperCase():'?';})(nm);
         facs.push({
           id: i, db_id: row.id, nm, ic,
           bg: 'linear-gradient(135deg,#374151,#6b7280)',
@@ -763,6 +838,7 @@ async function loadSpacesFromDB() {
       });
       renderFacList();
       if (facs.length > 0) swFac(0);
+      updateAddBtn();
     }
   } catch(e) {
     console.warn('DB読み込みエラー:', e);
@@ -880,11 +956,11 @@ function renderArch() {
       </div>
       <div class="sec-b">
         <div style="display:flex;gap:10px;margin-bottom:12px">
-          <div class="fg" style="flex:1"><div class="fl">建築家名・事務所名<em>*</em></div><input class="fin" placeholder="例：妹島和世 / SANAA" id="arch-name"></div>
+          <div class="fg" style="flex:1"><div class="fl">建築家名・事務所名<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><input class="fin" placeholder="例：妹島和世 / SANAA" id="arch-name"></div>
           <div class="fg" style="flex:1"><div class="fl">対象施設</div><input class="fin" value="${f.nm}" readonly style="background:var(--g50);color:var(--g400)"></div>
         </div>
         <div class="fr full" style="margin-bottom:12px">
-          <div class="fg"><div class="fl">建築家・事務所のURL<em>*</em></div><input class="fin" placeholder="例：https://kkaa.co.jp" id="arch-url"></div>
+          <div class="fg"><div class="fl">建築家・事務所のURL<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><input class="fin" placeholder="例：https://kkaa.co.jp" id="arch-url"></div>
         </div>
         <div style="padding:12px 16px;background:var(--g50);border-radius:8px;border:1px solid var(--g100);font-size:11px;color:var(--g600);line-height:1.8;margin-bottom:16px">
           📋 登録後の流れ：<br>
@@ -981,10 +1057,12 @@ function addFac() {
   item.onclick = () => swFac(id);
   item.innerHTML = '<div class="fi-ic" style="background:rgba(255,255,255,.15)">新</div><div><div class="fn">新しい施設</div><div class="fs draft">下書き</div></div>';
   document.querySelector('.add-btn').before(item);
+  updateAddBtn();
   cur = id;
   document.querySelectorAll('.fi').forEach((el,i) => el.classList.toggle('on', i===id));
   panels.forEach(p => { const e=document.getElementById('p-'+p); if(e) e.style.display='none'; });
   document.getElementById('p-new').style.display='block';
+  setStep(1);
   document.querySelectorAll('.nl').forEach(l=>l.classList.remove('on'));
   document.getElementById('ttl').innerHTML = '新しい施設を登録';
   document.getElementById('tbs').textContent='下書き'; document.getElementById('tbs').className='tbs draft';
@@ -998,12 +1076,22 @@ async function saveNew() {
   const nfnEl = document.getElementById('nfn');
   const nm = nfnEl ? nfnEl.value.trim() : '';
 
-  if (!nm) {
-    alert('施設名を入力してください。');
-    return;
+  // 必須項目チェック
+  const requiredFields = [
+    {id: 'nfn', label: '施設名'},
+    {id: 'nfc', label: '都市'},
+    {id: 'nfad', label: '住所'},
+  ];
+  for (const field of requiredFields) {
+    const el = document.getElementById(field.id);
+    if (!el || !el.value.trim()) {
+      alert('「' + field.label + '」は必須項目ですのでご記入ください。');
+      if (el) el.focus();
+      return;
+    }
   }
 
-  const ic = nm.split(/[\s　]/).filter(Boolean).map(w=>w[0]).join('').slice(0,2).toUpperCase() || '新';
+  const ic = (function(n){const words=n.split(/[\s　]/).filter(Boolean);if(words.length>=2){return words.map(w=>w[0]).join('').slice(0,2).toUpperCase();}return n[0]?n[0].toUpperCase():'新';})(nm);
   if (b) { b.textContent = '登録中...'; b.disabled = true; }
 
   try {
@@ -1027,7 +1115,10 @@ async function saveNew() {
     if (b) { b.textContent = '登録しました ✓'; b.style.background = '#4ade80'; b.disabled = false; }
     setTimeout(() => {
       swFac(cur);
-      setTimeout(() => go('photo', document.querySelectorAll('.nl')[2]), 300);
+      setTimeout(() => {
+        setStep(2);
+        go('photo', document.querySelectorAll('.nl')[2]);
+      }, 300);
     }, 1200);
   } catch(e) {
     console.error(e);
@@ -1038,9 +1129,11 @@ async function saveNew() {
 }
 
 function cancelNew() {
+  if (!confirm('入力中の内容を破棄しますか？\nこの操作は取り消せません。')) return;
   const id=facs.length-1;
   facs.pop();
   const item=document.getElementById('fi-'+id);if(item)item.remove();
+  updateAddBtn();
   cur=0; swFac(0);
 }
 
