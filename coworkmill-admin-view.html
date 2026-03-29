@@ -503,7 +503,7 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
     </div>
 
     <div style="display:flex;gap:10px">
-      <button class="bsv" style="padding:10px 24px;font-size:12px" onclick="saveNew()">施設を登録する</button>
+      <button class="bsv" style="padding:10px 24px;font-size:12px;background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;border-color:#f97316;font-weight:600" onclick="saveNew()">登録して写真管理へ進む →</button>
       <button class="bol" style="padding:10px 16px" onclick="cancelNew()">キャンセル</button>
     </div>
   </div>
@@ -757,6 +757,7 @@ async function loadSpacesFromDB() {
           id: i, db_id: row.id, nm, ic,
           bg: 'linear-gradient(135deg,#374151,#6b7280)',
           st: row.status === 'published' ? 'live' : 'draft',
+          has_photos: !!(row.image_main || (row.images && row.images.length > 0)),
           dash: {v:'—',c:'—',vo:'0',t:'—',tc:'',bars:[]}
         });
       });
@@ -909,6 +910,17 @@ function go(id, el) {
   const f = facs[cur];
   document.getElementById('ttl').innerHTML = ttls[id] + ' <span style="font-size:11px;font-weight:400;color:var(--g400)">— ' + f.nm + '</span>';
   if(id === 'db') renderDash(f.dash);
+  if(id === 'photo') {
+    const photoEmpty = document.getElementById('photo-empty');
+    const photoContent = document.getElementById('photo-content');
+    if (!f || !f.db_id || f.has_photos === false) {
+      if(photoEmpty) photoEmpty.style.display = 'block';
+      if(photoContent) photoContent.style.display = 'none';
+    } else {
+      if(photoEmpty) photoEmpty.style.display = 'none';
+      if(photoContent) photoContent.style.display = 'block';
+    }
+  }
 }
 
 function swFac(id) {
@@ -1004,6 +1016,7 @@ async function saveNew() {
     const dbId = result && result[0] ? result[0].id : null;
     facs[cur].nm = nm; facs[cur].ic = ic;
     facs[cur].bg = 'linear-gradient(135deg,#374151,#6b7280)';
+    facs[cur].has_photos = false;
     if (dbId) facs[cur].db_id = dbId;
     const item = document.getElementById('fi-' + cur);
     if (item) {
@@ -1012,7 +1025,10 @@ async function saveNew() {
       item.querySelector('.fi-ic').style.background = 'linear-gradient(135deg,#374151,#6b7280)';
     }
     if (b) { b.textContent = '登録しました ✓'; b.style.background = '#4ade80'; b.disabled = false; }
-    setTimeout(() => swFac(cur), 1200);
+    setTimeout(() => {
+      swFac(cur);
+      setTimeout(() => go('photo', document.querySelectorAll('.nl')[2]), 300);
+    }, 1200);
   } catch(e) {
     console.error(e);
     const msg = toJapaneseError(e);
