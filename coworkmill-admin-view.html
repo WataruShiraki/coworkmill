@@ -578,6 +578,91 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
 </div><!-- app -->
 
 <script>
+// ===== Supabase設定 =====
+const SUPABASE_URL = 'https://jakwntemjkwqwaqujffh.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+
+async function sbFetch(path, options = {}) {
+  const res = await fetch(SUPABASE_URL + path, {
+    ...options,
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': 'Bearer ' + SUPABASE_KEY,
+      'Content-Type': 'application/json',
+      'Prefer': options.method === 'POST' ? 'return=representation' : '',
+      ...(options.headers || {})
+    }
+  });
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(err);
+  }
+  const text = await res.text();
+  return text ? JSON.parse(text) : null;
+}
+
+// フォームから施設データを収集する関数
+function collectFormData() {
+  const g = id => { const el = document.getElementById(id); return el ? el.value.trim() : ''; };
+  return {
+    name:            g('p-name') || g('nfn'),
+    area:            g('p-area'),
+    prefecture:      g('p-pref'),
+    address:         g('p-addr'),
+    nearest_station: g('p-station'),
+    nearest_line:    g('p-line'),
+    walk_minutes:    parseInt(g('p-walk')) || null,
+    price_dropin:    parseInt(g('p-drop')) || null,
+    price_monthly:   parseInt(g('p-monthly')) || null,
+    price_note:      g('p-pnote'),
+    description:     g('p-desc'),
+    capacity:        parseInt(g('p-cap')) || null,
+    open_hours:      g('p-hours'),
+    architect_name:  g('p-arch'),
+    vibe:            g('p-vibe'),
+    status:          'draft'
+  };
+}
+
+// Supabaseから施設一覧を取得してサイドバーを更新
+async function loadSpacesFromDB() {
+  try {
+    const data = await sbFetch('/rest/v1/spaces?select=id,name,status&order=created_at.asc');
+    if (data && data.length > 0) {
+      // DBのデータでfacsを上書き
+      facs.length = 0;
+      data.forEach((row, i) => {
+        const nm = row.name || '施設' + (i+1);
+        const ic = nm.split(/[\s　]/).filter(Boolean).map(w=>w[0]).join('').slice(0,2).toUpperCase() || nm.slice(0,2).toUpperCase();
+        facs.push({
+          id: i, db_id: row.id, nm, ic,
+          bg: 'linear-gradient(135deg,#374151,#6b7280)',
+          st: row.status === 'published' ? 'live' : 'draft',
+          dash: {v:'—',c:'—',vo:'0',t:'—',tc:'',bars:[]}
+        });
+      });
+      renderFacList();
+      if (facs.length > 0) swFac(0);
+    }
+  } catch(e) {
+    console.warn('DB読み込みエラー:', e);
+  }
+}
+
+function renderFacList() {
+  const ul = document.getElementById('fac-list');
+  if (!ul) return;
+  ul.innerHTML = '';
+  facs.forEach((f, i) => {
+    const li = document.createElement('div');
+    li.className = 'fi' + (i === cur ? ' active' : '');
+    li.id = 'fi-' + i;
+    li.onclick = () => swFac(i);
+    li.innerHTML = `<div class="fi-ic" style="background:${f.bg}">${f.ic}</div><div class="fi-info"><div class="fn">${f.nm}</div><div class="fs ${f.st === 'live' ? 'live' : ''}">${f.st === 'live' ? '● 掲載中' : '● 下書き'}</div></div>`;
+    ul.appendChild(li);
+  });
+}
+
 const facs = [
   {id:0,nm:'AOYAMA ATELIER',ic:'AA',bg:'linear-gradient(135deg,#79F1A4,#2BB5C8)',st:'live',
    dash:{v:'1,248',c:'86',vo:'41',t:'Deep Work',tc:'41人が使用',
@@ -756,14 +841,36 @@ function addFac() {
   ['nfn','nfd','nfc','nfa','nfad','nfde'].forEach(i=>{const e=document.getElementById(i);if(e)e.value='';});
 }
 
-function saveNew() {
-  const nm = document.getElementById('nfn').value||'新しい施設';
-  const ic = nm.split(/[\s　]/).filter(Boolean).map(w=>w[0]).join('').slice(0,2).toUpperCase()||'新';
-  facs[cur].nm=nm; facs[cur].ic=ic; facs[cur].bg='linear-gradient(135deg,#374151,#6b7280)';
-  const item=document.getElementById('fi-'+cur);
-  if(item){item.querySelector('.fn').textContent=nm;item.querySelector('.fi-ic').textContent=ic;item.querySelector('.fi-ic').style.background='linear-gradient(135deg,#374151,#6b7280)';}
-  const b=document.querySelector('.bsv');if(b){b.textContent='登録しました ✓';b.style.background='#4ade80';}
-  setTimeout(()=>swFac(cur),1200);
+async function saveNew() {
+  const b = document.querySelector('.bsv');
+  const nm = document.getElementById('nfn').value || '新しい施設';
+  const ic = nm.split(/[\s　]/).filter(Boolean).map(w=>w[0]).join('').slice(0,2).toUpperCase() || '新';
+
+  if (b) { b.textContent = '登録中...'; b.disabled = true; }
+
+  try {
+    const data = collectFormData();
+    data.name = nm;
+    const result = await sbFetch('/rest/v1/spaces', {
+      method: 'POST',
+      body: JSON.stringify(data)
+    });
+    const dbId = result && result[0] ? result[0].id : null;
+    facs[cur].nm = nm; facs[cur].ic = ic;
+    facs[cur].bg = 'linear-gradient(135deg,#374151,#6b7280)';
+    if (dbId) facs[cur].db_id = dbId;
+    const item = document.getElementById('fi-' + cur);
+    if (item) {
+      item.querySelector('.fn').textContent = nm;
+      item.querySelector('.fi-ic').textContent = ic;
+      item.querySelector('.fi-ic').style.background = 'linear-gradient(135deg,#374151,#6b7280)';
+    }
+    if (b) { b.textContent = '登録しました ✓'; b.style.background = '#4ade80'; b.disabled = false; }
+    setTimeout(() => swFac(cur), 1200);
+  } catch(e) {
+    console.error(e);
+    if (b) { b.textContent = 'エラー: ' + (e.message||'保存失敗'); b.style.background = '#ef4444'; b.disabled = false; }
+  }
 }
 
 function cancelNew() {
@@ -809,10 +916,35 @@ function setVibe(el,val){
   if(inp) inp.value = already ? '' : val;
 }
 
-function doSave(){
-  const b=document.getElementById('savebtn');if(!b)return;
-  b.textContent='保存しました ✓';b.style.background='#4ade80';
-  setTimeout(()=>{b.textContent='変更を保存';b.style.background='';},2000);
+async function doSave(){
+  const b = document.getElementById('savebtn'); if(!b) return;
+  b.textContent = '保存中...'; b.disabled = true;
+  try {
+    const data = collectFormData();
+    const dbId = facs[cur] ? facs[cur].db_id : null;
+    if (dbId) {
+      await sbFetch('/rest/v1/spaces?id=eq.' + dbId, {
+        method: 'PATCH',
+        body: JSON.stringify(data)
+      });
+    } else {
+      const result = await sbFetch('/rest/v1/spaces', {
+        method: 'POST',
+        body: JSON.stringify(data)
+      });
+      if (result && result[0]) facs[cur].db_id = result[0].id;
+    }
+    const nm = data.name || facs[cur].nm;
+    facs[cur].nm = nm;
+    const item = document.getElementById('fi-' + cur);
+    if (item) item.querySelector('.fn').textContent = nm;
+    b.textContent = '保存しました ✓'; b.style.background = '#4ade80'; b.disabled = false;
+    setTimeout(() => { b.textContent = '変更を保存'; b.style.background = ''; }, 2000);
+  } catch(e) {
+    console.error(e);
+    b.textContent = 'エラー: 保存失敗'; b.style.background = '#ef4444'; b.disabled = false;
+    setTimeout(() => { b.textContent = '変更を保存'; b.style.background = ''; b.disabled = false; }, 3000);
+  }
 }
 
 function submitArch(){
@@ -826,6 +958,11 @@ function submitArch(){
   alert('「' + nm.value + '」を登録しました。運営チームが確認後、建築家に連絡します。');
 }
 function stripePortal(){alert('Stripeカスタマーポータルへ接続します\n（Stripe登録後に有効になります）');}
+
+// ページ読み込み時にDBから施設を取得
+window.addEventListener('DOMContentLoaded', () => {
+  loadSpacesFromDB();
+});
 </script>
 </body>
 </html>
