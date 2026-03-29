@@ -274,12 +274,12 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
     <div class="sec">
       <div class="sec-h"><div><div class="sec-ht">基本情報</div></div></div>
       <div class="sec-b">
-        <div class="fr full"><div class="fg"><div class="fl">施設名<em>*</em></div><input class="fin" id="fn" value="AOYAMA ATELIER"></div></div>
+        <div class="fr full"><div class="fg"><div class="fl">施設名<em>*</em></div><input class="fin" id="fn" value=""></div></div>
         <div class="fr"><div class="fg"><div class="fl">都市<em>*</em></div><input class="fin" id="fc" value="東京"></div><div class="fg"><div class="fl">エリア</div><input class="fin" id="fa" value="表参道"></div></div>
-        <div class="fr full"><div class="fg"><div class="fl">住所<em>*</em></div><input class="fin" id="fad" value="東京都港区南青山3-X-X 〇〇ビル5F"></div></div>
+        <div class="fr full"><div class="fg"><div class="fl">住所<em>*</em></div><input class="fin" id="fad" value=""></div></div>
         <div class="fr"><div class="fg"><div class="fl">最寄駅</div><input class="fin" id="fst" placeholder="例：表参道駅 徒歩3分" value="表参道駅 徒歩3分"></div><div class="fg"><div class="fl">路線</div><input class="fin" id="fline" placeholder="例：東京メトロ銀座線・千代田線・半蔵門線" value="東京メトロ銀座線・千代田線・半蔵門線"></div></div>
-        <div class="fr full"><div class="fg"><div class="fl">施設説明文<em>*</em></div><textarea class="fta" id="fde">隈研吾建築都市設計事務所が手がけた、表参道の旗艦コワーキングスペース。全面ガラス張りの開放的な空間に、厳選されたデザイン家具を配置。</textarea></div></div>
-        <div class="fr"><div class="fg"><div class="fl">公式サイトURL</div><input class="fin" id="fu" value="https://aoyama-atelier.jp"></div><div class="fg"><div class="fl">Instagram（@から入力）</div><input class="fin" id="fig" value="@aoyama_atelier"></div></div>
+        <div class="fr full"><div class="fg"><div class="fl">施設説明文<em>*</em></div><textarea class="fta" id="fde"></textarea></div></div>
+        <div class="fr"><div class="fg"><div class="fl">公式サイトURL</div><input class="fin" id="fu" value=""></div><div class="fg"><div class="fl">Instagram（@から入力）</div><input class="fin" id="fig" value=""></div></div>
       </div>
     </div>
     <div class="sec">
@@ -391,9 +391,9 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
       <div class="sec-h"><div><div class="sec-ht">基本情報（新規施設）</div></div></div>
       <div class="sec-b">
         <div class="fr full"><div class="fg"><div class="fl">施設名<em>*</em></div><input class="fin" id="nfn" placeholder="例：THE WAREHOUSE OSAKA"></div></div>
-        <div class="fr"><div class="fg"><div class="fl">都市<em>*</em></div><input class="fin" id="nfc" placeholder="例：大阪"></div><div class="fg"><div class="fl">エリア</div><input class="fin" id="nfa" placeholder="例：南堀江"></div></div>
-        <div class="fr full"><div class="fg"><div class="fl">住所<em>*</em></div><input class="fin" id="nfad" placeholder="例：大阪府大阪市西区南堀江X-X-X"></div></div>
-        <div class="fr"><div class="fg"><div class="fl">最寄駅</div><input class="fin" id="nfst" placeholder="例：南堀江駅 徒歩2分"></div><div class="fg"><div class="fl">路線</div><input class="fin" id="nfline" placeholder="例：大阪メトロ千日前線"></div></div>
+        <div class="fr"><div class="fg"><div class="fl">都市<em>*</em></div><input class="fin" id="nfc" placeholder="例：東京"></div><div class="fg"><div class="fl">エリア</div><input class="fin" id="nfa" placeholder="例：表参道"></div></div>
+        <div class="fr full"><div class="fg"><div class="fl">住所<em>*</em></div><input class="fin" id="nfad" placeholder="例：東京都港区南青山3-X-X"></div></div>
+        <div class="fr"><div class="fg"><div class="fl">最寄駅</div><input class="fin" id="nfst" placeholder="例：表参道駅 徒歩3分"></div><div class="fg"><div class="fl">路線</div><input class="fin" id="nfline" placeholder="例：東京メトロ銀座線・千代田線"></div></div>
         <div class="fr full"><div class="fg"><div class="fl">施設説明文</div><textarea class="fta" id="nfde" placeholder="施設の雰囲気・こだわりをご記入ください"></textarea></div></div>
       </div>
     </div>
@@ -421,6 +421,87 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
         <input type="hidden" id="nfvibe" value="">
       </div>
     </div>
+
+    <!-- 公式URL・Instagram -->
+    <div class="sec">
+      <div class="sec-h"><div><div class="sec-ht">SNS・公式サイト</div></div></div>
+      <div class="sec-b">
+        <div class="fr">
+          <div class="fg"><div class="fl">公式サイトURL</div><input class="fin" id="nfurl" placeholder="例：https://example.com"></div>
+          <div class="fg"><div class="fl">Instagram（@から入力）</div><input class="fin" id="nfinsta" placeholder="例：@coworkmill_space"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 設備 -->
+    <div class="sec">
+      <div class="sec-h"><div><div class="sec-ht">設備</div></div></div>
+      <div class="sec-b">
+        <div class="fgg">
+          <div class="fo" onclick="tf(this)"><span>⚡</span><span style="font-size:11px;color:var(--g600)">全席電源完備</span><div class="ftg"></div></div>
+          <div class="fo" onclick="tf(this)"><span>📶</span><span style="font-size:11px;color:var(--g600)">高速Wi-Fi</span><div class="ftg"></div></div>
+          <div class="fo" onclick="tf(this)"><span>🚪</span><span style="font-size:11px;color:var(--g600)">完全個室</span><div class="ftg"></div></div>
+          <div class="fo" onclick="tf(this)"><span>🎥</span><span style="font-size:11px;color:var(--g600)">会議室</span><div class="ftg"></div></div>
+          <div class="fo" onclick="tf(this)"><span>☕</span><span style="font-size:11px;color:var(--g600)">カフェ併設</span><div class="ftg"></div></div>
+          <div class="fo" onclick="tf(this)"><span>💳</span><span style="font-size:11px;color:var(--g600)">クレジットカード可</span><div class="ftg"></div></div>
+          <div class="fo" onclick="tf(this)"><span>🌐</span><span style="font-size:11px;color:var(--g600)">英語スタッフ常駐</span><div class="ftg"></div></div>
+          <div class="fo" onclick="tf(this)"><span>🌙</span><span style="font-size:11px;color:var(--g600)">24時間利用可</span><div class="ftg"></div></div>
+          <div class="fo" onclick="tf(this)"><span>🔒</span><span style="font-size:11px;color:var(--g600)">ロッカー</span><div class="ftg"></div></div>
+          <div class="fo" onclick="tf(this)"><span>🚿</span><span style="font-size:11px;color:var(--g600)">シャワー室</span><div class="ftg"></div></div>
+          <div class="fo" onclick="tf(this)"><span>🖨</span><span style="font-size:11px;color:var(--g600)">複合機・プリンター</span><div class="ftg"></div></div>
+          <div class="fo" onclick="tf(this)"><span>🛎</span><span style="font-size:11px;color:var(--g600)">受付対応あり</span><div class="ftg"></div></div>
+          <div class="fo" onclick="tf(this)"><span>🏢</span><span style="font-size:11px;color:var(--g600)">シェアオフィス</span><div class="ftg"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 料金 -->
+    <div class="sec">
+      <div class="sec-h"><div><div class="sec-ht">料金</div><div class="sec-hs">空欄の場合は非表示になります</div></div></div>
+      <div class="sec-b">
+        <div class="fr">
+          <div class="fg"><div class="fl">都度利用（ドロップイン）- 時間利用</div><input class="fin" id="nf-price-hourly" placeholder="例：550円/30分"></div>
+          <div class="fg"><div class="fl">都度利用（ドロップイン）- 1日利用</div><input class="fin" id="nf-price-daily" placeholder="例：3,300円/1日"></div>
+        </div>
+        <div class="fr">
+          <div class="fg"><div class="fl">月額利用</div><input class="fin" id="nf-price-monthly" placeholder="例：9,900円〜/1ヶ月"></div>
+          <div class="fg"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 追加設備 -->
+    <div class="sec">
+      <div class="sec-h"><div><div class="sec-ht">追加設備・環境</div></div></div>
+      <div class="sec-b">
+        <div class="fr">
+          <div class="fg">
+            <div class="fl">禁煙・喫煙</div>
+            <select class="fin" id="nf-smoking">
+              <option value="">選択してください</option>
+              <option value="no-smoking">全面禁煙</option>
+              <option value="smoking-area">喫煙所あり</option>
+              <option value="smoking-ok">喫煙可</option>
+            </select>
+          </div>
+          <div class="fg"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 施設担当者 -->
+    <div class="sec">
+      <div class="sec-h"><div><div class="sec-ht">施設担当者（任意）</div><div class="sec-hs">施設ごとに担当者が異なる場合のみご記入ください</div></div></div>
+      <div class="sec-b">
+        <div style="padding:10px 14px;background:#f0edf8;border-radius:6px;border:1px solid rgba(117,97,169,.2);font-size:11px;color:var(--g600);line-height:1.8;margin-bottom:14px">未入力の場合は、企業情報に登録された担当者に問い合わせが届きます。</div>
+        <div class="fr">
+          <div class="fg"><div class="fl">担当者名</div><input class="fin" id="nf-contact-name" placeholder="例：鈴木 花子（任意）"></div>
+          <div class="fg"><div class="fl">担当者メール</div><input class="fin" id="nf-contact-email" placeholder="例：suzuki@example.com（任意）"></div>
+        </div>
+        <div style="padding:10px 12px;background:var(--g50);border-radius:5px;border:1px solid var(--g100);font-size:9px;color:var(--g400);line-height:1.7">🔒 この情報は運営チームのみが閲覧します。掲載ページには表示されません。</div>
+      </div>
+    </div>
+
     <div style="display:flex;gap:10px">
       <button class="bsv" style="padding:10px 24px;font-size:12px" onclick="saveNew()">施設を登録する</button>
       <button class="bol" style="padding:10px 16px" onclick="cancelNew()">キャンセル</button>
@@ -503,18 +584,18 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
       <div class="sec-h"><div><div class="sec-ht">企業情報</div><div class="sec-hs">運営会社・請求先情報（非公開）</div></div></div>
       <div class="sec-b">
         <div class="fr"><div class="fg"><div class="fl">運営会社名<em>*</em></div><input class="fin" value="株式会社アオヤマワークス"></div><div class="fg"><div class="fl">法人番号</div><input class="fin" placeholder="1234567890123"></div></div>
-        <div class="fr full"><div class="fg"><div class="fl">請求先住所</div><input class="fin" value="東京都港区南青山3-X-X"></div></div>
+        <div class="fr full"><div class="fg"><div class="fl">請求先住所</div><input class="fin" value=""></div></div>
         <div style="margin-bottom:20px;padding:10px 12px;background:var(--g50);border-radius:5px;border:1px solid var(--g100);font-size:9px;color:var(--g400)">🏢 運営会社情報は請求・契約管理に使用します。掲載ページには表示されません。</div>
         <div style="font-size:12px;font-weight:500;margin-bottom:14px;padding-top:4px;border-top:1px solid var(--g100)">担当者情報</div>
-        <div class="fr"><div class="fg"><div class="fl">担当者名<em>*</em></div><input class="fin" value="山田 太郎"></div><div class="fg"><div class="fl">担当者役職</div><input class="fin" value="施設運営責任者"></div></div>
-        <div class="fr"><div class="fg"><div class="fl">担当者メール<em>*</em></div><input class="fin" value="yamada@aoyama-works.jp"></div><div class="fg"><div class="fl">担当者電話番号</div><input class="fin" value="03-XXXX-XXXX"></div></div>
+        <div class="fr"><div class="fg"><div class="fl">担当者名<em>*</em></div><input class="fin" value=""></div><div class="fg"><div class="fl">担当者役職</div><input class="fin" value=""></div></div>
+        <div class="fr"><div class="fg"><div class="fl">担当者メール<em>*</em></div><input class="fin" value=""></div><div class="fg"><div class="fl">担当者電話番号</div><input class="fin" value=""></div></div>
         <div style="padding:10px 12px;background:var(--g50);border-radius:5px;border:1px solid var(--g100);font-size:9px;color:var(--g400)">🔒 担当者情報は問い合わせ対応・緊急連絡のみに使用します。</div>
       </div>
     </div>
     <div class="sec">
       <div class="sec-h"><div><div class="sec-ht">ログイン情報</div></div></div>
       <div class="sec-b">
-        <div class="fr"><div class="fg"><div class="fl">メールアドレス</div><input class="fin" value="yamada@aoyama-works.jp" readonly style="background:var(--g50);color:var(--g400)"></div><div class="fg"><div class="fl">パスワード</div><button class="bol" style="margin-top:5px">パスワードを変更</button></div></div>
+        <div class="fr"><div class="fg"><div class="fl">メールアドレス</div><input class="fin" value="" readonly style="background:var(--g50);color:var(--g400)"></div><div class="fg"><div class="fl">パスワード</div><button class="bol" style="margin-top:5px">パスワードを変更</button></div></div>
       </div>
     </div>
     <div class="stripe-row">
@@ -601,27 +682,57 @@ async function sbFetch(path, options = {}) {
   return text ? JSON.parse(text) : null;
 }
 
-// フォームから施設データを収集する関数
+// フォームから施設データを収集する関数（新規登録・編集両対応）
 function collectFormData() {
-  const g = id => { const el = document.getElementById(id); return el ? el.value.trim() : ''; };
+  const g = (...ids) => {
+    for (const id of ids) {
+      try {
+        const el = document.getElementById(id);
+        if (el && typeof el.value === 'string' && el.value.trim()) return el.value.trim();
+      } catch(e) {}
+    }
+    return null;
+  };
+  const ni = (...ids) => { const v = g(...ids); return v ? (parseInt(v) || null) : null; };
   return {
-    name:            g('p-name') || g('nfn'),
-    area:            g('p-area'),
-    prefecture:      g('p-pref'),
-    address:         g('p-addr'),
-    nearest_station: g('p-station'),
-    nearest_line:    g('p-line'),
-    walk_minutes:    parseInt(g('p-walk')) || null,
-    price_dropin:    parseInt(g('p-drop')) || null,
-    price_monthly:   parseInt(g('p-monthly')) || null,
-    price_note:      g('p-pnote'),
-    description:     g('p-desc'),
-    capacity:        parseInt(g('p-cap')) || null,
+    name:            g('nfn', 'p-name') || null,
+    area:            g('nfa', 'p-area'),
+    prefecture:      g('nfc', 'p-pref'),
+    address:         g('nfad', 'p-addr'),
+    nearest_station: g('nfst', 'p-station'),
+    nearest_line:    g('nfline', 'p-line'),
+    walk_minutes:    ni('p-walk'),
+    price_dropin:    ni('p-drop'),
+    price_monthly:   ni('p-monthly'),
+    price_note:      g('nf-price-hourly', 'p-pnote'),
+    description:     g('nfde', 'p-desc'),
+    capacity:        ni('p-cap'),
     open_hours:      g('p-hours'),
     architect_name:  g('p-arch'),
-    vibe:            g('p-vibe'),
+    vibe:            g('nfvibe', 'p-vibe'),
+    website_url:     g('nfurl', 'fu'),
+    instagram:       g('nfinsta', 'fig'),
+    smoking:         g('nf-smoking', 'smoking'),
+    contact_name:    g('nf-contact-name'),
+    contact_email:   g('nf-contact-email'),
     status:          'draft'
   };
+}
+
+// エラーメッセージを日本語で表示
+const DB_ERRORS = {
+  'Failed to fetch':        'ネットワークエラー。接続を確認してください。',
+  'not null violation':     '施設名は必須です。入力してください。',
+  'unique violation':       'このInstagramアカウントはすでに登録されています。',
+  'JWT':                    '認証エラー。ページを再読み込みしてください。',
+  'permission denied':      'アクセス権限がありません。',
+};
+function toJapaneseError(e) {
+  const msg = e.message || String(e);
+  for (const [key, val] of Object.entries(DB_ERRORS)) {
+    if (msg.includes(key)) return val;
+  }
+  return '保存に失敗しました。もう一度試してください。';
 }
 
 // Supabaseから施設一覧を取得してサイドバーを更新
@@ -649,6 +760,33 @@ async function loadSpacesFromDB() {
   }
 }
 
+// DBから施設詳細を取得してフォームに反映
+async function loadSpaceDetail(f) {
+  if (!f.db_id) {
+    // DB未登録のダミー施設はフォームを空にする
+    const fields = ['fn','fc','fa','fad','fst','fline','fde','fu','fig'];
+    fields.forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
+    return;
+  }
+  try {
+    const rows = await sbFetch('/rest/v1/spaces?id=eq.' + f.db_id + '&select=*');
+    if (!rows || !rows[0]) return;
+    const d = rows[0];
+    const sv = (id, val) => { const el = document.getElementById(id); if(el && val) el.value = val; };
+    sv('fn',   d.name);
+    sv('fc',   d.prefecture);
+    sv('fa',   d.area);
+    sv('fad',  d.address);
+    sv('fst',  d.nearest_station);
+    sv('fline',d.nearest_line);
+    sv('fde',  d.description);
+    sv('fu',   d.website_url);
+    sv('fig',  d.instagram);
+  } catch(e) {
+    console.warn('施設詳細の読み込みエラー:', e);
+  }
+}
+
 function renderFacList() {
   const ul = document.getElementById('fac-list');
   if (!ul) return;
@@ -664,13 +802,7 @@ function renderFacList() {
 }
 
 const facs = [
-  {id:0,nm:'AOYAMA ATELIER',ic:'AA',bg:'linear-gradient(135deg,#79F1A4,#2BB5C8)',st:'live',
-   dash:{v:'1,248',c:'86',vo:'41',t:'Deep Work',tc:'41人が使用',
-         bars:[{l:'Deep Work',p:82,c:'41人'},{l:'Strategy',p:65,c:'32人'},{l:'Client Meeting',p:48,c:'24人'},{l:'Creative Work',p:40,c:'20人'}]}},
-  {id:1,nm:'THE WAREHOUSE',ic:'TW',bg:'linear-gradient(135deg,#374151,#6b7280)',st:'draft',
-   dash:{v:'—',c:'—',vo:'0',t:'—',tc:'まだデータがありません',bars:[]}},
-  {id:2,nm:'OSAKA STUDIO',ic:'OS',bg:'rgba(255,255,255,.1)',st:'locked',
-   dash:{v:'—',c:'—',vo:'0',t:'—',tc:'',bars:[]}},
+  // DBから施設データを読み込みます
 ];
 
 const archData = [
@@ -799,15 +931,8 @@ function swFac(id) {
   if(f.st==='live') bar.innerHTML = '<div class="sdot green"></div><div class="st"><strong>掲載中</strong> — 最終更新: 2026年3月20日</div>';
   else if(f.st==='locked') bar.innerHTML = '<div class="sdot" style="background:#a0a0a0"></div><div class="st"><strong>非公開</strong> — Standardプランにアップグレードすると再公開できます</div>';
   else bar.innerHTML = '<div class="sdot amber"></div><div class="st"><strong>下書き</strong> — 情報を入力して掲載申請してください</div>';
-  if(id===0) {
-    document.getElementById('fn').value='AOYAMA ATELIER';
-
-    document.getElementById('fc').value='東京'; document.getElementById('fa').value='表参道';
-  } else {
-    document.getElementById('fn').value='THE WAREHOUSE';
-
-    document.getElementById('fc').value='大阪'; document.getElementById('fa').value='南堀江';
-  }
+  // DBから施設データを取得してフォームに反映
+  loadSpaceDetail(f);
   const tbr = document.getElementById('tbr');
   if(f.st==='draft') {
     tbr.innerHTML = '<button class="bol" onclick="cancelNew()">破棄</button><button class="bsv" onclick="doSave()">変更を保存</button><button class="bpb" onclick="pubFac()">掲載申請する →</button>';
@@ -843,9 +968,15 @@ function addFac() {
 
 async function saveNew() {
   const b = document.querySelector('.bsv');
-  const nm = document.getElementById('nfn').value || '新しい施設';
-  const ic = nm.split(/[\s　]/).filter(Boolean).map(w=>w[0]).join('').slice(0,2).toUpperCase() || '新';
+  const nfnEl = document.getElementById('nfn');
+  const nm = nfnEl ? nfnEl.value.trim() : '';
 
+  if (!nm) {
+    alert('施設名を入力してください。');
+    return;
+  }
+
+  const ic = nm.split(/[\s　]/).filter(Boolean).map(w=>w[0]).join('').slice(0,2).toUpperCase() || '新';
   if (b) { b.textContent = '登録中...'; b.disabled = true; }
 
   try {
@@ -869,7 +1000,9 @@ async function saveNew() {
     setTimeout(() => swFac(cur), 1200);
   } catch(e) {
     console.error(e);
-    if (b) { b.textContent = 'エラー: ' + (e.message||'保存失敗'); b.style.background = '#ef4444'; b.disabled = false; }
+    const msg = toJapaneseError(e);
+    if (b) { b.textContent = 'エラー: ' + msg; b.style.background = '#ef4444'; b.disabled = false; }
+    setTimeout(() => { if(b){ b.textContent = '施設を登録する'; b.style.background = ''; b.disabled = false; } }, 3000);
   }
 }
 
@@ -942,7 +1075,8 @@ async function doSave(){
     setTimeout(() => { b.textContent = '変更を保存'; b.style.background = ''; }, 2000);
   } catch(e) {
     console.error(e);
-    b.textContent = 'エラー: 保存失敗'; b.style.background = '#ef4444'; b.disabled = false;
+    const msg = toJapaneseError(e);
+    b.textContent = 'エラー: ' + msg; b.style.background = '#ef4444'; b.disabled = false;
     setTimeout(() => { b.textContent = '変更を保存'; b.style.background = ''; b.disabled = false; }, 3000);
   }
 }
