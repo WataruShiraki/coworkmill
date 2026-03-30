@@ -251,40 +251,7 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
 <div class="no-results" id="no-results">このエリアの写真はまだ準備中です</div>
 
 <script>
-const photos = [
-  { id:1,  area:'tokyo',    city:'表参道 / TOKYO',   name:'AOYAMA ATELIER',   design:'Kengo Kuma & Associates', tags:['Deep Work','Strategy'], href:'coworkmill-detail.html',
-    img:'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800&q=85' },
-  { id:2,  area:'kyoto',    city:'中京区 / KYOTO',   name:'MACHIYA WORK',     design:'Sou Fujimoto Architects', tags:['Deep Work','Creative Work'], href:'coworkmill-detail.html',
-    img:'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=85' },
-  { id:3,  area:'osaka',    city:'南堀江 / OSAKA',   name:'THE WAREHOUSE',    design:'DRAFT, INC.',             tags:['Ideation','Creative Work'], href:'coworkmill-detail.html',
-    img:'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&q=85' },
-  { id:4,  area:'fukuoka',  city:'天神 / FUKUOKA',   name:'TENJIN STUDIO',    design:'Gensler',                 tags:['Ideation','Remote Call'],   href:'coworkmill-detail.html',
-    img:'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800&q=85' },
-  { id:5,  area:'yokohama', city:'山手 / YOKOHAMA',  name:'HARBOR VIEW',      design:'SANAA',                   tags:['Strategy','Client Meeting'], href:'coworkmill-detail.html',
-    img:'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=85' },
-  { id:6,  area:'other',    city:'中央区 / SAPPORO', name:'SHIRO STUDIO',     design:'Tadao Ando Architect',    tags:['Deep Work','Learning'],     href:'coworkmill-detail.html',
-    img:'https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=800&q=85' },
-  { id:7,  area:'tokyo',    city:'渋谷 / TOKYO',     name:'SHIBUYA CRAFT',    design:'Kengo Kuma & Associates', tags:['Creative Work','Ideation'], href:'coworkmill-detail.html',
-    img:'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=85' },
-  { id:8,  area:'tokyo',    city:'丸の内 / TOKYO',   name:'MARUNOUCHI KK',    design:'Nikken Sekkei',           tags:['Strategy','Client Meeting'], href:'coworkmill-detail.html',
-    img:'https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800&q=85' },
-  { id:9,  area:'osaka',    city:'北浜 / OSAKA',     name:'KITAHAMA OFFICE',  design:'Tadao Ando Architect',    tags:['Deep Work','Strategy'],     href:'coworkmill-detail.html',
-    img:'https://images.unsplash.com/photo-1568992687947-868a62a9f521?w=800&q=85' },
-  { id:10, area:'kyoto',    city:'東山 / KYOTO',     name:'HIGASHIYAMA BASE', design:'Suppose Design Office',   tags:['Creative Work','Learning'], href:'coworkmill-detail.html',
-    img:'https://images.unsplash.com/photo-1556761175-4b46a572b786?w=800&q=85' },
-  { id:11, area:'tokyo',    city:'六本木 / TOKYO',   name:'ROPPONGI ATELIER', design:'SANAA',                   tags:['Client Meeting','Strategy'], href:'coworkmill-detail.html',
-    img:'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=85' },
-  { id:12, area:'fukuoka',  city:'博多 / FUKUOKA',   name:'HAKATA WORK',      design:'DRAFT, INC.',             tags:['Remote Call','Deep Work'],  href:'coworkmill-detail.html',
-    img:'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=85' },
-  { id:13, area:'other',    city:'金沢 / KANAZAWA',  name:'KANAZAWA CRAFT',   design:'Atelier Tsuyoshi Tane',   tags:['Creative Work','Ideation'], href:'coworkmill-detail.html',
-    img:'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=600&q=85' },
-  { id:14, area:'tokyo',    city:'青山 / TOKYO',     name:'AOYAMA LOUNGE',    design:'Gensler',                 tags:['Ideation','Deep Work'],     href:'coworkmill-detail.html',
-    img:'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&q=85' },
-  { id:15, area:'yokohama', city:'みなとみらい / YH', name:'MM21 STUDIO',      design:'Nikken Sekkei',           tags:['Remote Call','Strategy'],  href:'coworkmill-detail.html',
-    img:'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&q=85' },
-  { id:16, area:'osaka',    city:'梅田 / OSAKA',     name:'UMEDA TOWER WORK', design:'Gensler',                 tags:['Client Meeting','Strategy'], href:'coworkmill-detail.html',
-    img:'https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=85' },
-];
+const photos = [];
 
 let currentArea = 'all';
 

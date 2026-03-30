@@ -285,7 +285,7 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
   .section-label{color:#666}
   .sec-divider{background:#2a2a2a}
   .lang-toggle{background:#252525}
-  
+  .lang-btn.active{background:#333;color:#f0f0f0}
   .filter-bar,.filter-bar-inner,.alpha-bar{background:#1a1a1a;border-bottom-color:#2a2a2a}
   .chip{border-color:#333;color:#aaa}
   .chip:hover,.chip.on{background:#2BB5C8;border-color:#2BB5C8;color:#fff}
@@ -647,13 +647,13 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
     </button>
     <div class="sp-acc-body">
       <div class="sp-city-list">
-        <div class="sp-city-opt on" onclick="toggleSpCity(this,'tokyo')"><div class="sp-city-check"></div><span>東京</span><span class="sp-city-cnt">68</span></div>
-        <div class="sp-city-opt" onclick="toggleSpCity(this,'osaka')"><div class="sp-city-check"></div><span>大阪</span><span class="sp-city-cnt">24</span></div>
-        <div class="sp-city-opt" onclick="toggleSpCity(this,'kyoto')"><div class="sp-city-check"></div><span>京都</span><span class="sp-city-cnt">12</span></div>
-        <div class="sp-city-opt" onclick="toggleSpCity(this,'fukuoka')"><div class="sp-city-check"></div><span>福岡</span><span class="sp-city-cnt">15</span></div>
-        <div class="sp-city-opt" onclick="toggleSpCity(this,'yokohama')"><div class="sp-city-check"></div><span>横浜</span><span class="sp-city-cnt">10</span></div>
-        <div class="sp-city-opt" onclick="toggleSpCity(this,'sapporo')"><div class="sp-city-check"></div><span>札幌</span><span class="sp-city-cnt">8</span></div>
-        <div class="sp-city-opt" onclick="toggleSpCity(this,'other')"><div class="sp-city-check"></div><span>その他</span><span class="sp-city-cnt">7</span></div>
+        <div class="sp-city-opt on" onclick="toggleSpCity(this,'tokyo')"><div class="sp-city-check"></div><span>東京</span><span class="sp-city-cnt">0</span></div>
+        <div class="sp-city-opt" onclick="toggleSpCity(this,'osaka')"><div class="sp-city-check"></div><span>大阪</span><span class="sp-city-cnt">0</span></div>
+        <div class="sp-city-opt" onclick="toggleSpCity(this,'kyoto')"><div class="sp-city-check"></div><span>京都</span><span class="sp-city-cnt">0</span></div>
+        <div class="sp-city-opt" onclick="toggleSpCity(this,'fukuoka')"><div class="sp-city-check"></div><span>福岡</span><span class="sp-city-cnt">0</span></div>
+        <div class="sp-city-opt" onclick="toggleSpCity(this,'yokohama')"><div class="sp-city-check"></div><span>横浜</span><span class="sp-city-cnt">0</span></div>
+        <div class="sp-city-opt" onclick="toggleSpCity(this,'sapporo')"><div class="sp-city-check"></div><span>札幌</span><span class="sp-city-cnt">0</span></div>
+        <div class="sp-city-opt" onclick="toggleSpCity(this,'other')"><div class="sp-city-check"></div><span>その他</span><span class="sp-city-cnt">0</span></div>
       </div>
     </div>
   </div>
@@ -707,17 +707,17 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
     <div class="sf-block">
       <div class="sf-title">エリア <span class="sf-clear">クリア</span></div>
       <div class="sf-options">
-        <div class="sf-opt on" onclick="toggleCity(this,'tokyo')"><div class="sf-check"></div><span class="sf-name">東京</span><span class="sf-cnt">68</span></div>
+        <div class="sf-opt on" onclick="toggleCity(this,'tokyo')"><div class="sf-check"></div><span class="sf-name">東京</span><span class="sf-cnt">0</span></div>
         <div class="sf-ward-wrap" id="wards-tokyo" style="display:block"><div class="sf-ward-label">エリアで絞る</div><div class="sf-ward-grid"><div class="sf-ward" onclick="toggleWard(this)">渋谷区</div><div class="sf-ward" onclick="toggleWard(this)">港区</div><div class="sf-ward" onclick="toggleWard(this)">新宿区</div><div class="sf-ward" onclick="toggleWard(this)">中央区</div><div class="sf-ward" onclick="toggleWard(this)">千代田区</div><div class="sf-ward" onclick="toggleWard(this)">目黒区</div><div class="sf-ward" onclick="toggleWard(this)">世田谷区</div><div class="sf-ward" onclick="toggleWard(this)">品川区</div><div class="sf-ward" onclick="toggleWard(this)">豊島区</div><div class="sf-ward" onclick="toggleWard(this)">北区</div><div class="sf-ward" onclick="toggleWard(this)">墨田区</div><div class="sf-ward" onclick="toggleWard(this)">江東区</div></div></div>
-        <div class="sf-opt" onclick="toggleCity(this,'osaka')"><div class="sf-check"></div><span class="sf-name">大阪</span><span class="sf-cnt">24</span></div>
+        <div class="sf-opt" onclick="toggleCity(this,'osaka')"><div class="sf-check"></div><span class="sf-name">大阪</span><span class="sf-cnt">0</span></div>
         <div class="sf-ward-wrap" id="wards-osaka" style="display:none"><div class="sf-ward-label">エリアで絞る</div><div class="sf-ward-grid"><div class="sf-ward" onclick="toggleWard(this)">北区</div><div class="sf-ward" onclick="toggleWard(this)">中央区</div><div class="sf-ward" onclick="toggleWard(this)">西区</div><div class="sf-ward" onclick="toggleWard(this)">浪速区</div><div class="sf-ward" onclick="toggleWard(this)">南堀江</div><div class="sf-ward" onclick="toggleWard(this)">梅田</div></div></div>
-        <div class="sf-opt" onclick="toggleCity(this,'kyoto')"><div class="sf-check"></div><span class="sf-name">京都</span><span class="sf-cnt">12</span></div>
+        <div class="sf-opt" onclick="toggleCity(this,'kyoto')"><div class="sf-check"></div><span class="sf-name">京都</span><span class="sf-cnt">0</span></div>
         <div class="sf-ward-wrap" id="wards-kyoto" style="display:none"><div class="sf-ward-label">エリアで絞る</div><div class="sf-ward-grid"><div class="sf-ward" onclick="toggleWard(this)">中京区</div><div class="sf-ward" onclick="toggleWard(this)">東山区</div><div class="sf-ward" onclick="toggleWard(this)">左京区</div><div class="sf-ward" onclick="toggleWard(this)">下京区</div></div></div>
-        <div class="sf-opt" onclick="toggleCity(this,'fukuoka')"><div class="sf-check"></div><span class="sf-name">福岡</span><span class="sf-cnt">15</span></div>
+        <div class="sf-opt" onclick="toggleCity(this,'fukuoka')"><div class="sf-check"></div><span class="sf-name">福岡</span><span class="sf-cnt">0</span></div>
         <div class="sf-ward-wrap" id="wards-fukuoka" style="display:none"><div class="sf-ward-label">エリアで絞る</div><div class="sf-ward-grid"><div class="sf-ward" onclick="toggleWard(this)">天神</div><div class="sf-ward" onclick="toggleWard(this)">博多</div><div class="sf-ward" onclick="toggleWard(this)">大名</div><div class="sf-ward" onclick="toggleWard(this)">薬院</div></div></div>
-        <div class="sf-opt" onclick="toggleCity(this,'yokohama')"><div class="sf-check"></div><span class="sf-name">横浜</span><span class="sf-cnt">10</span></div>
-        <div class="sf-opt" onclick="toggleCity(this,'sapporo')"><div class="sf-check"></div><span class="sf-name">札幌</span><span class="sf-cnt">8</span></div>
-        <div class="sf-opt" onclick="toggleCity(this,'other')"><div class="sf-check"></div><span class="sf-name">その他</span><span class="sf-cnt">7</span></div>
+        <div class="sf-opt" onclick="toggleCity(this,'yokohama')"><div class="sf-check"></div><span class="sf-name">横浜</span><span class="sf-cnt">0</span></div>
+        <div class="sf-opt" onclick="toggleCity(this,'sapporo')"><div class="sf-check"></div><span class="sf-name">札幌</span><span class="sf-cnt">0</span></div>
+        <div class="sf-opt" onclick="toggleCity(this,'other')"><div class="sf-check"></div><span class="sf-name">その他</span><span class="sf-cnt">0</span></div>
       </div>
     </div>
 
@@ -767,152 +767,16 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
   <!-- RESULTS -->
   <div>
     <div class="results-header">
-      <div class="results-count"><strong>142</strong> スペース</div>
+      <div class="results-count"><strong id="results-count">0</strong> スペース</div>
 
     </div>
 
     <!-- GRID VIEW -->
     <div class="spaces-grid" id="view-grid-content">
-      <a class="scard" href="coworkmill-detail.html" style="animation-delay:.05s" data-area="tokyo" data-tags="deepwork strategy client" data-price="3300" data-new="1">
-        <div class="scard-img" style="background-image:url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=80')"><div class="scard-badges"><span class="scard-badge pick">PICK</span></div>
-        </div>
-        <div class="scard-body">
-          <div class="scard-city">表参道 / TOKYO</div>
-          <div class="scard-name">AOYAMA ATELIER</div>
-          <div class="scard-design">Design by <span>Kengo Kuma & Associates</span></div>
-          <div class="scard-wtags"><span class="scard-wtag">Deep Work</span><span class="scard-wtag">Strategy</span><span class="scard-wtag">Client Meeting</span></div>
-          <div class="scard-footer"><div class="scard-price">ドロップイン<strong>¥3,300〜</strong></div><span class="scard-arrow">→</span></div>
-        </div>
-      </a>
-      <a class="scard" href="coworkmill-detail.html" style="animation-delay:.1s" data-area="osaka" data-tags="ideation creative remote" data-price="2200" data-new="0">
-        <div class="scard-img" style="background-image:url('https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&q=80')">
-          
-        </div>
-        <div class="scard-body">
-          <div class="scard-city">南堀江 / OSAKA</div>
-          <div class="scard-name">THE WAREHOUSE</div>
-          <div class="scard-design">Design by <span>DRAFT, INC.</span></div>
-          <div class="scard-wtags"><span class="scard-wtag">Ideation</span><span class="scard-wtag">Creative Work</span><span class="scard-wtag">Remote Call</span></div>
-          <div class="scard-footer"><div class="scard-price">ドロップイン<strong>¥2,200〜</strong></div><span class="scard-arrow">→</span></div>
-        </div>
-      </a>
-      <a class="scard" href="coworkmill-detail.html" style="animation-delay:.15s" data-area="kyoto" data-tags="deepwork creative learning" data-price="1800" data-new="1">
-        <div class="scard-img" style="background-image:url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80')">
-          
-        </div>
-        <div class="scard-body">
-          <div class="scard-city">中京区 / KYOTO</div>
-          <div class="scard-name">MACHIYA WORK</div>
-          <div class="scard-design">Design by <span>Sou Fujimoto Architects</span></div>
-          <div class="scard-wtags"><span class="scard-wtag">Deep Work</span><span class="scard-wtag">Creative Work</span><span class="scard-wtag">Learning</span></div>
-          <div class="scard-footer"><div class="scard-price">ドロップイン<strong>¥1,800〜</strong></div><span class="scard-arrow">→</span></div>
-        </div>
-      </a>
-      <a class="scard" href="coworkmill-detail.html" style="animation-delay:.2s" data-area="fukuoka" data-tags="ideation remote" data-price="2800" data-new="0">
-        <div class="scard-img" style="background-image:url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=600&q=80')">
-          
-        </div>
-        <div class="scard-body">
-          <div class="scard-city">天神 / FUKUOKA</div>
-          <div class="scard-name">TENJIN STUDIO</div>
-          <div class="scard-design">Design by <span>Gensler</span></div>
-          <div class="scard-wtags"><span class="scard-wtag">Ideation</span><span class="scard-wtag">Remote Call</span><span class="scard-wtag">Strategy</span></div>
-          <div class="scard-footer"><div class="scard-price">ドロップイン<strong>¥2,500〜</strong></div><span class="scard-arrow">→</span></div>
-        </div>
-      </a>
-      <a class="scard" href="coworkmill-detail.html" style="animation-delay:.25s" data-area="tokyo" data-tags="strategy client" data-price="4200" data-new="0">
-        <div class="scard-img" style="background-image:url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&q=80')">
-          
-        </div>
-        <div class="scard-body">
-          <div class="scard-city">山手 / YOKOHAMA</div>
-          <div class="scard-name">HARBOR VIEW</div>
-          <div class="scard-design">Design by <span>SANAA</span></div>
-          <div class="scard-wtags"><span class="scard-wtag">Strategy</span><span class="scard-wtag">Client Meeting</span><span class="scard-wtag">Deep Work</span></div>
-          <div class="scard-footer"><div class="scard-price">ドロップイン<strong>¥3,800〜</strong></div><span class="scard-arrow">→</span></div>
-        </div>
-      </a>
-      <a class="scard" href="coworkmill-detail.html" style="animation-delay:.3s" data-area="tokyo" data-tags="deepwork learning" data-price="2000" data-new="0">
-        <div class="scard-img" style="background-image:url('https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=600&q=80')">
-          
-        </div>
-        <div class="scard-body">
-          <div class="scard-city">中央区 / SAPPORO</div>
-          <div class="scard-name">SHIRO STUDIO</div>
-          <div class="scard-design">Design by <span>Tadao Ando Architect</span></div>
-          <div class="scard-wtags"><span class="scard-wtag">Deep Work</span><span class="scard-wtag">Creative Work</span><span class="scard-wtag">Learning</span></div>
-          <div class="scard-footer"><div class="scard-price">ドロップイン<strong>¥1,500〜</strong></div><span class="scard-arrow">→</span></div>
-        </div>
-      </a>
     </div>
 
     <!-- LIST VIEW -->
     <div class="spaces-list" id="view-list-content" style="display:none">
-      <a class="lcard" href="coworkmill-detail.html" style="animation-delay:.05s">
-        <div class="lcard-img" style="background-image:url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=400&q=80')"></div>
-        <div class="lcard-body">
-          <div class="lcard-city">表参道 / TOKYO</div>
-          <div class="lcard-name">AOYAMA ATELIER</div>
-          <div class="lcard-design">Design by <span>Kengo Kuma & Associates</span></div>
-          <div class="lcard-wtags"><span class="lcard-wtag">Deep Work</span><span class="lcard-wtag">Strategy</span><span class="lcard-wtag">Client Meeting</span></div>
-        </div>
-        <div class="lcard-right">
-          
-          <div class="lcard-price">ドロップイン<strong>¥3,300〜</strong></div>
-        </div>
-      </a>
-      <a class="lcard" href="coworkmill-detail.html" style="animation-delay:.1s">
-        <div class="lcard-img" style="background-image:url('https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400&q=80')"></div>
-        <div class="lcard-body">
-          <div class="lcard-city">南堀江 / OSAKA</div>
-          <div class="lcard-name">THE WAREHOUSE</div>
-          <div class="lcard-design">Design by <span>DRAFT, INC.</span></div>
-          <div class="lcard-wtags"><span class="lcard-wtag">Ideation</span><span class="lcard-wtag">Creative Work</span><span class="lcard-wtag">Remote Call</span></div>
-        </div>
-        <div class="lcard-right">
-          
-          <div class="lcard-price">ドロップイン<strong>¥2,200〜</strong></div>
-        </div>
-      </a>
-      <a class="lcard" href="coworkmill-detail.html" style="animation-delay:.15s">
-        <div class="lcard-img" style="background-image:url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&q=80')"></div>
-        <div class="lcard-body">
-          <div class="lcard-city">中京区 / KYOTO</div>
-          <div class="lcard-name">MACHIYA WORK</div>
-          <div class="lcard-design">Design by <span>Sou Fujimoto Architects</span></div>
-          <div class="lcard-wtags"><span class="lcard-wtag">Deep Work</span><span class="lcard-wtag">Creative Work</span><span class="lcard-wtag">Learning</span></div>
-        </div>
-        <div class="lcard-right">
-          
-          <div class="lcard-price">ドロップイン<strong>¥1,800〜</strong></div>
-        </div>
-      </a>
-      <a class="lcard" href="coworkmill-detail.html" style="animation-delay:.2s">
-        <div class="lcard-img" style="background-image:url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=400&q=80')"></div>
-        <div class="lcard-body">
-          <div class="lcard-city">天神 / FUKUOKA</div>
-          <div class="lcard-name">TENJIN STUDIO</div>
-          <div class="lcard-design">Design by <span>Gensler</span></div>
-          <div class="lcard-wtags"><span class="lcard-wtag">Ideation</span><span class="lcard-wtag">Remote Call</span><span class="lcard-wtag">Strategy</span></div>
-        </div>
-        <div class="lcard-right">
-          
-          <div class="lcard-price">ドロップイン<strong>¥2,500〜</strong></div>
-        </div>
-      </a>
-      <a class="lcard" href="coworkmill-detail.html" style="animation-delay:.25s">
-        <div class="lcard-img" style="background-image:url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&q=80')"></div>
-        <div class="lcard-body">
-          <div class="lcard-city">山手 / YOKOHAMA</div>
-          <div class="lcard-name">HARBOR VIEW</div>
-          <div class="lcard-design">Design by <span>SANAA</span></div>
-          <div class="lcard-wtags"><span class="lcard-wtag">Strategy</span><span class="lcard-wtag">Client Meeting</span><span class="lcard-wtag">Deep Work</span></div>
-        </div>
-        <div class="lcard-right">
-          
-          <div class="lcard-price">ドロップイン<strong>¥3,800〜</strong></div>
-        </div>
-      </a>
     </div>
 
     <!-- PAGINATION -->
@@ -1142,39 +1006,6 @@ function toggleSpCity(el, city) {
   var pcOpt = document.querySelector('.sf-opt[onclick*="' + city + '"]');
   if (pcOpt) pcOpt.click();
 }
-
-// URLパラメータでvibeフィルター自動適用
-(function() {
-  const params = new URLSearchParams(window.location.search);
-  const vibe = params.get('vibe');
-  if (!vibe) return;
-  const vibeNames = {
-    urban: '都市の高層階', machiya: '古民家・町家', nature: '自然・山・海',
-    warehouse: '倉庫・工場跡', hotel: 'ホテル併設', gallery: 'ミュージアム・ギャラリー隣接',
-    station: '駅直結', minimal: 'ミニマル・無機質'
-  };
-  window.addEventListener('DOMContentLoaded', function() {
-    // バナー表示
-    const banner = document.getElementById('vibe-filter-banner');
-    const bannerText = document.getElementById('vibe-filter-text');
-    if (banner && bannerText) {
-      bannerText.textContent = '「' + (vibeNames[vibe] || vibe) + '」で絞り込み中';
-      banner.style.display = 'flex';
-    }
-    // ページタイトル更新（SEO）
-    const name = vibeNames[vibe] || vibe;
-    document.title = name + 'のコワーキングスペース — COWORKMILL';
-    setTimeout(function() {
-      const cards = document.querySelectorAll('.scard, .lcard');
-      cards.forEach(card => {
-        card.style.display = (card.dataset.tags || '').includes(vibe) ? '' : 'none';
-      });
-      const countEl = document.querySelector('.results-count strong');
-      const visible = document.querySelectorAll('.scard:not([style*="display: none"]), .lcard:not([style*="display: none"])').length;
-      if (countEl) countEl.textContent = visible;
-    }, 800);
-  });
-})();
 </script>
 </body>
 </html>
