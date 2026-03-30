@@ -729,6 +729,8 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
         <div class="sf-opt" onclick="toggleSf(this)"><div class="sf-check"></div><span class="sf-name">自然・山・海</span></div>
         <div class="sf-opt" onclick="toggleSf(this)"><div class="sf-check"></div><span class="sf-name">倉庫・工場跡</span></div>
         <div class="sf-opt" onclick="toggleSf(this)"><div class="sf-check"></div><span class="sf-name">ホテル併設</span></div>
+        <div class="sf-opt" onclick="toggleSf(this)"><div class="sf-check"></div><span class="sf-name">ミュージアム・ギャラリー隣接</span></div>
+        <div class="sf-opt" onclick="toggleSf(this)"><div class="sf-check"></div><span class="sf-name">駅直結</span></div>
         <div class="sf-opt" onclick="toggleSf(this)"><div class="sf-check"></div><span class="sf-name">ミニマル・無機質</span></div>
       </div>
     </div>
@@ -1153,17 +1155,17 @@ function toggleSpCity(el, city) {
     warehouse: '倉庫・工場跡', hotel: 'ホテル併設', gallery: 'ミュージアム・ギャラリー隣接',
     station: '駅直結', minimal: 'ミニマル・無機質'
   };
+  // バナーとタイトルを即時表示
+  const banner = document.getElementById('vibe-filter-banner');
+  const bannerText = document.getElementById('vibe-filter-text');
+  if (banner && bannerText) {
+    bannerText.textContent = '「' + (vibeNames[vibe] || vibe) + '」で絞り込み中';
+    banner.style.display = 'flex';
+  }
+  const name = vibeNames[vibe] || vibe;
+  document.title = name + 'のコワーキングスペース — COWORKMILL';
   window.addEventListener('DOMContentLoaded', function() {
-    // バナー表示
-    const banner = document.getElementById('vibe-filter-banner');
-    const bannerText = document.getElementById('vibe-filter-text');
-    if (banner && bannerText) {
-      bannerText.textContent = '「' + (vibeNames[vibe] || vibe) + '」で絞り込み中';
-      banner.style.display = 'flex';
-    }
-    // ページタイトル更新（SEO）
-    const name = vibeNames[vibe] || vibe;
-    document.title = name + 'のコワーキングスペース — COWORKMILL';
+    if (banner) banner.style.display = 'flex';
     setTimeout(function() {
       const cards = document.querySelectorAll('.scard, .lcard');
       cards.forEach(card => {
