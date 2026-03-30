@@ -865,6 +865,87 @@ function setStep(n) {
 const SUPABASE_URL = 'https://jakwntemjkwqwaqujffh.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
 
+// ===== ログイン認証 =====
+let currentSession = null;
+
+function showLoginScreen() {
+  document.getElementById('app').style.display = 'none';
+  const loginHtml = `
+  <div id="login-screen" style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:#0f0f0f;">
+    <div style="background:#1a1a1a;border:1px solid #2a2a2a;border-radius:16px;padding:48px 40px;width:100%;max-width:400px;">
+      <div style="text-align:center;margin-bottom:32px;">
+        <div style="font-family:'Montserrat',sans-serif;font-size:20px;font-weight:700;letter-spacing:.1em;background:linear-gradient(135deg,#79F1A4,#2BB5C8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px;">COWORKMILL</div>
+        <div style="font-size:12px;color:#6b7280;letter-spacing:.06em;">施設管理ポータル</div>
+      </div>
+      <div id="login-error" style="display:none;background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:10px 14px;margin-bottom:16px;font-size:12px;color:#dc2626;"></div>
+      <div style="margin-bottom:16px;">
+        <label style="display:block;font-size:11px;font-weight:600;color:#9ca3af;letter-spacing:.06em;margin-bottom:6px;">メールアドレス</label>
+        <input id="login-email" type="email" placeholder="your@email.com" style="width:100%;padding:12px 14px;background:#111;border:1px solid #333;border-radius:8px;color:#f0f0f0;font-size:13px;outline:none;box-sizing:border-box;" onkeydown="if(event.key==='Enter')doLogin()">
+      </div>
+      <div style="margin-bottom:24px;">
+        <label style="display:block;font-size:11px;font-weight:600;color:#9ca3af;letter-spacing:.06em;margin-bottom:6px;">パスワード</label>
+        <input id="login-password" type="password" placeholder="••••••••" style="width:100%;padding:12px 14px;background:#111;border:1px solid #333;border-radius:8px;color:#f0f0f0;font-size:13px;outline:none;box-sizing:border-box;" onkeydown="if(event.key==='Enter')doLogin()">
+      </div>
+      <button onclick="doLogin()" style="width:100%;padding:14px;background:linear-gradient(135deg,#79F1A4,#2BB5C8);border:none;border-radius:8px;color:#0a0a0a;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:.04em;">ログイン</button>
+    </div>
+  </div>`;
+  document.body.insertAdjacentHTML('beforeend', loginHtml);
+  setTimeout(() => document.getElementById('login-email').focus(), 100);
+}
+
+async function doLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-password').value;
+  const errEl = document.getElementById('login-error');
+  if (!email || !password) {
+    errEl.textContent = 'メールアドレスとパスワードを入力してください。';
+    errEl.style.display = 'block';
+    return;
+  }
+  try {
+    const res = await fetch(SUPABASE_URL + '/auth/v1/token?grant_type=password', {
+      method: 'POST',
+      headers: {'apikey': SUPABASE_KEY, 'Content-Type': 'application/json'},
+      body: JSON.stringify({email, password})
+    });
+    const data = await res.json();
+    if (data.access_token) {
+      currentSession = data;
+      sessionStorage.setItem('cwm_session', JSON.stringify(data));
+      document.getElementById('login-screen').remove();
+      document.getElementById('app').style.display = '';
+      init();
+    } else {
+      errEl.textContent = 'メールアドレスまたはパスワードが違います。';
+      errEl.style.display = 'block';
+    }
+  } catch(e) {
+    errEl.textContent = 'ログインに失敗しました。もう一度お試しください。';
+    errEl.style.display = 'block';
+  }
+}
+
+async function checkAuth() {
+  const saved = sessionStorage.getItem('cwm_session');
+  if (saved) {
+    const session = JSON.parse(saved);
+    // セッション有効期限チェック
+    const exp = session.expires_at || 0;
+    if (Date.now() / 1000 < exp) {
+      currentSession = session;
+      init();
+      return;
+    }
+  }
+  showLoginScreen();
+}
+
+function doLogout() {
+  sessionStorage.removeItem('cwm_session');
+  currentSession = null;
+  location.reload();
+}
+
 async function sbFetch(path, options = {}) {
   const res = await fetch(SUPABASE_URL + path, {
     ...options,
@@ -978,8 +1059,8 @@ async function loadSpaceDetail(f) {
     fields.forEach(id => { const el = document.getElementById(id); if(el) el.value = ''; });
     return;
   }
-  if (photoEmpty) photoEmpty.style.display = 'none';
-  if (photoContent) photoContent.style.display = 'block';
+  if (photoEmpty) photoEmpty.style.display = 'block';
+  if (photoContent) photoContent.style.display = 'none';
   try {
     const rows = await sbFetch('/rest/v1/spaces?id=eq.' + f.db_id + '&select=*');
     if (!rows || !rows[0]) return;
@@ -1006,9 +1087,78 @@ async function loadSpaceDetail(f) {
       const vibeInp = document.getElementById('fvibe');
       if (vibeInp) vibeInp.value = d.vibe;
     }
+    // 写真の読み込み
+    loadPhotos(f.db_id, d.image_main, d.images);
   } catch(e) {
     console.warn('施設詳細の読み込みエラー:', e);
   }
+}
+
+async function loadPhotos(dbId, imageMain, images) {
+  const photoEmpty = document.getElementById('photo-empty');
+  const photoContent = document.getElementById('photo-content');
+
+  // Storageから写真一覧を取得
+  let urls = [];
+  try {
+    const res = await fetch(SUPABASE_URL + '/storage/v1/object/list/space-images/' + dbId, {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_KEY,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({limit: 50, offset: 0})
+    });
+    const files = await res.json();
+    if (Array.isArray(files) && files.length > 0) {
+      urls = files.map(f => SUPABASE_URL + '/storage/v1/object/public/space-images/' + dbId + '/' + f.name);
+    }
+  } catch(e) { console.warn('photo list error:', e); }
+
+  if (urls.length === 0 && imageMain) urls = [imageMain];
+
+  if (urls.length === 0) {
+    if (photoEmpty) photoEmpty.style.display = 'block';
+    if (photoContent) photoContent.style.display = 'none';
+    return;
+  }
+
+  // 写真グリッドを表示
+  if (photoEmpty) photoEmpty.style.display = 'block';
+  if (photoContent) photoContent.style.display = 'none';
+
+  // 既存グリッドをリセット
+  photoEmpty.querySelectorAll('.upload-status, .upload-pg, .upload-note').forEach(el => el.remove());
+
+  const note = document.createElement('div');
+  note.className = 'upload-note';
+  note.style.cssText = 'background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:10px 14px;margin-bottom:10px;font-size:12px;color:#166534;font-weight:500;display:flex;align-items:center;gap:8px;';
+  note.innerHTML = '<span style="font-size:16px">📌</span><span>1枚目が<strong>メイン写真</strong>になります。一覧ページのサムネイルと詳細ページのトップに使用されます。</span>';
+
+  const pg = document.createElement('div');
+  pg.className = 'pg upload-pg';
+  pg.style.marginTop = '8px';
+
+  // imageMainを先頭に
+  const sorted = imageMain ? [imageMain, ...urls.filter(u => u !== imageMain)] : urls;
+  sorted.forEach((url, i) => {
+    const pw = document.createElement('div');
+    pw.className = 'pw';
+    const isMain = i === 0;
+    pw.innerHTML = '<img src="' + url + '" alt="">' +
+      (isMain ? '<div class="pmn">メイン</div>' : '') +
+      '<div class="pov">' +
+      (!isMain ? '<button class="pact" onclick="setMainPhoto(this, \'' + url + '\', \'' + dbId + '\')">メインに</button>' : '') +
+      '<button class="pact" onclick="this.closest(\'.pw\').remove()">削除</button></div>';
+    pg.appendChild(pw);
+  });
+
+  photoEmpty.appendChild(note);
+  photoEmpty.appendChild(pg);
+
+  const pb = document.getElementById('photo-publish-btn');
+  if (pb) pb.style.display = 'block';
 }
 
 function renderFacList() {
@@ -1500,8 +1650,12 @@ async function hideVoice(id) {
 }
 
 // ページ読み込み時にDBから施設を取得
-window.addEventListener('DOMContentLoaded', () => {
+function init() {
   loadSpacesFromDB();
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+  checkAuth();
 });
 </script>
 </body>
