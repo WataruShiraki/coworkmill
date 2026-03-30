@@ -201,7 +201,7 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
   <div class="sp-pc-notice-sub">管理画面はPC・タブレット<br>（横向き）からご利用ください。</div>
 </div>
 
-<div class="app">
+<div class="app" id="app" style="display:none">
 
 <aside class="sb">
   <div class="sb-logo">
@@ -869,7 +869,7 @@ const SUPABASE_KEY = 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
 let currentSession = null;
 
 function showLoginScreen() {
-  document.getElementById('app').style.display = 'none';
+  const appEl = document.querySelector('.app'); if(appEl) appEl.style.display = 'none';
   const loginHtml = `
   <div id="login-screen" style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:#0f0f0f;">
     <div style="background:#1a1a1a;border:1px solid #2a2a2a;border-radius:16px;padding:48px 40px;width:100%;max-width:400px;">
@@ -913,7 +913,7 @@ async function doLogin() {
       currentSession = data;
       sessionStorage.setItem('cwm_session', JSON.stringify(data));
       document.getElementById('login-screen').remove();
-      document.getElementById('app').style.display = '';
+      const appEl2 = document.querySelector('.app'); if(appEl2) appEl2.style.display = '';
       init();
     } else {
       errEl.textContent = 'メールアドレスまたはパスワードが違います。';
