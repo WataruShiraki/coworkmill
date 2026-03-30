@@ -1172,6 +1172,11 @@ function toggleSpCity(el, city) {
       const countEl = document.querySelector('.results-count strong');
       const visible = document.querySelectorAll('.scard:not([style*="display: none"]), .lcard:not([style*="display: none"])').length;
       if (countEl) countEl.textContent = visible;
+      // 0件のときメッセージ表示
+      if (visible === 0) {
+        const grid = document.getElementById('view-grid-content');
+        if (grid) grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:80px 0;color:var(--gray-400);font-size:13px">「' + (vibeNames[vibe]||vibe) + '」の施設はまだ登録されていません</div>';
+      }
     }, 800);
   });
 })();
