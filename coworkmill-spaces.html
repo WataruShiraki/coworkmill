@@ -285,7 +285,7 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
   .section-label{color:#666}
   .sec-divider{background:#2a2a2a}
   .lang-toggle{background:#252525}
-  .lang-btn.active{background:#333;color:#f0f0f0}
+  
   .filter-bar,.filter-bar-inner,.alpha-bar{background:#1a1a1a;border-bottom-color:#2a2a2a}
   .chip{border-color:#333;color:#aaa}
   .chip:hover,.chip.on{background:#2BB5C8;border-color:#2BB5C8;color:#fff}
@@ -729,8 +729,6 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
         <div class="sf-opt" onclick="toggleSf(this)"><div class="sf-check"></div><span class="sf-name">自然・山・海</span></div>
         <div class="sf-opt" onclick="toggleSf(this)"><div class="sf-check"></div><span class="sf-name">倉庫・工場跡</span></div>
         <div class="sf-opt" onclick="toggleSf(this)"><div class="sf-check"></div><span class="sf-name">ホテル併設</span></div>
-        <div class="sf-opt" onclick="toggleSf(this)"><div class="sf-check"></div><span class="sf-name">ミュージアム・ギャラリー隣接</span></div>
-        <div class="sf-opt" onclick="toggleSf(this)"><div class="sf-check"></div><span class="sf-name">駅直結</span></div>
         <div class="sf-opt" onclick="toggleSf(this)"><div class="sf-check"></div><span class="sf-name">ミニマル・無機質</span></div>
       </div>
     </div>
@@ -928,51 +926,6 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
     </div>
   </div>
 </div>
-
-<script>
-// ===== Supabase DB連携 =====
-const SUPABASE_URL = 'https://jakwntemjkwqwaqujffh.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
-
-const PREF_MAP = {'東京都':'TOKYO','神奈川県':'KANAGAWA','大阪府':'OSAKA','京都府':'KYOTO','福岡県':'FUKUOKA','愛知県':'NAGOYA','北海道':'SAPPORO','宮城県':'SENDAI','広島県':'HIROSHIMA','埼玉県':'SAITAMA','千葉県':'CHIBA','兵庫県':'KOBE'};
-const VIBE_LABELS = {'deep_work':'Deep Work','creative':'Creative Work','meeting':'Client Meeting','remote':'Remote Call','learning':'Learning','strategy':'Strategy','ideation':'Ideation'};
-
-function buildGridCard(sp, delay) {
-  const area = sp.area || '';
-  const pref = PREF_MAP[sp.prefecture] || (sp.prefecture||'').replace(/都|道|府|県/,'').toUpperCase();
-  const city = area ? area + ' / ' + pref : pref;
-  const img = sp.image_main ? "url('" + sp.image_main + "')" : "url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=80')";
-  const arch = sp.architect_name ? '<div class="scard-design">Design by <span>' + sp.architect_name + '</span></div>' : '';
-  const tags = sp.vibe ? '<div class="scard-wtags"><span class="scard-wtag">' + (VIBE_LABELS[sp.vibe]||sp.vibe) + '</span></div>' : '';
-  const price = sp.price_dropin ? '<div class="scard-price">ドロップイン<strong>¥' + sp.price_dropin.toLocaleString() + '〜</strong></div>' : '';
-  return '<a class="scard" href="coworkmill-detail.html?id=' + sp.id + '" style="animation-delay:' + delay + 's" data-area="' + pref.toLowerCase() + '" data-tags="' + (sp.vibe||'') + '">' +
-    '<div class="scard-img" style="background-image:' + img + '"></div>' +
-    '<div class="scard-body">' +
-    '<div class="scard-city">' + city + '</div>' +
-    '<div class="scard-name">' + (sp.name||'—') + '</div>' +
-    arch + tags +
-    '<div class="scard-footer">' + price + '<span class="scard-arrow">→</span></div>' +
-    '</div></a>';
-}
-
-async function loadSpaces() {
-  try {
-    const res = await fetch(SUPABASE_URL + '/rest/v1/spaces?status=eq.published&order=created_at.asc&select=id,name,area,prefecture,architect_name,vibe,price_dropin,image_main', {
-      headers: {'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY}
-    });
-    const data = await res.json();
-    if (!data || data.length === 0) return; // サンプルデータをそのまま表示
-    const grid = document.getElementById('view-grid-content');
-    const list = document.getElementById('view-list-content');
-    const countEl = document.querySelector('.results-count strong');
-    if (grid) grid.innerHTML = data.map((sp, i) => buildGridCard(sp, 0.05 + i * 0.05)).join('');
-    if (list) list.innerHTML = data.map((sp, i) => buildGridCard(sp, 0.05 + i * 0.05)).join('');
-    if (countEl) countEl.textContent = data.length;
-  } catch(e) { console.warn('spaces DB error:', e); }
-}
-window.addEventListener('DOMContentLoaded', loadSpaces);
-// ===== ここまで =====
-</script>
 
 <script>
 function toggleChip(el) {
@@ -1200,17 +1153,17 @@ function toggleSpCity(el, city) {
     warehouse: '倉庫・工場跡', hotel: 'ホテル併設', gallery: 'ミュージアム・ギャラリー隣接',
     station: '駅直結', minimal: 'ミニマル・無機質'
   };
-  // バナーとタイトルを即時表示
-  const banner = document.getElementById('vibe-filter-banner');
-  const bannerText = document.getElementById('vibe-filter-text');
-  if (banner && bannerText) {
-    bannerText.textContent = '「' + (vibeNames[vibe] || vibe) + '」で絞り込み中';
-    banner.style.display = 'flex';
-  }
-  const name = vibeNames[vibe] || vibe;
-  document.title = name + 'のコワーキングスペース — COWORKMILL';
   window.addEventListener('DOMContentLoaded', function() {
-    if (banner) banner.style.display = 'flex';
+    // バナー表示
+    const banner = document.getElementById('vibe-filter-banner');
+    const bannerText = document.getElementById('vibe-filter-text');
+    if (banner && bannerText) {
+      bannerText.textContent = '「' + (vibeNames[vibe] || vibe) + '」で絞り込み中';
+      banner.style.display = 'flex';
+    }
+    // ページタイトル更新（SEO）
+    const name = vibeNames[vibe] || vibe;
+    document.title = name + 'のコワーキングスペース — COWORKMILL';
     setTimeout(function() {
       const cards = document.querySelectorAll('.scard, .lcard');
       cards.forEach(card => {
@@ -1219,11 +1172,6 @@ function toggleSpCity(el, city) {
       const countEl = document.querySelector('.results-count strong');
       const visible = document.querySelectorAll('.scard:not([style*="display: none"]), .lcard:not([style*="display: none"])').length;
       if (countEl) countEl.textContent = visible;
-      // 0件のときメッセージ表示
-      if (visible === 0) {
-        const grid = document.getElementById('view-grid-content');
-        if (grid) grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:80px 0;color:var(--gray-400);font-size:13px">「' + (vibeNames[vibe]||vibe) + '」の施設はまだ登録されていません</div>';
-      }
     }, 800);
   });
 })();
