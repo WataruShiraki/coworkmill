@@ -1111,6 +1111,7 @@ async function saveNew() {
     {id: 'nfn', label: '施設名'},
     {id: 'nfc', label: '都市'},
     {id: 'nfad', label: '住所'},
+    {id: 'nfde', label: '施設説明文'},
   ];
   for (const field of requiredFields) {
     const el = document.getElementById(field.id);
@@ -1263,6 +1264,31 @@ function setVibe(el,val){
 
 async function doSave(){
   const b = document.getElementById('savebtn') || document.querySelector('#tbr .bsv'); if(!b) return;
+  // 必須チェック
+  const name = (document.getElementById('fn') || document.getElementById('nfn'));
+  const desc = (document.getElementById('fde') || document.getElementById('nfde'));
+  if (name && !name.value.trim()) {
+    alert('施設名は必須です。入力してください。');
+    name.focus();
+    return;
+  }
+  const city = (document.getElementById('fc') || document.getElementById('nfc'));
+  if (city && !city.value.trim()) {
+    alert('都市は必須です。入力してください。');
+    city.focus();
+    return;
+  }
+  const addr = (document.getElementById('fad') || document.getElementById('nfad'));
+  if (addr && !addr.value.trim()) {
+    alert('住所は必須です。入力してください。');
+    addr.focus();
+    return;
+  }
+  if (desc && !desc.value.trim()) {
+    alert('施設説明文は必須です。入力してください。');
+    desc.focus();
+    return;
+  }
   b.textContent = '保存中...'; b.disabled = true;
   try {
     const data = collectFormData();
