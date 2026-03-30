@@ -930,6 +930,51 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
 </div>
 
 <script>
+// ===== Supabase DB連携 =====
+const SUPABASE_URL = 'https://jakwntemjkwqwaqujffh.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+
+const PREF_MAP = {'東京都':'TOKYO','神奈川県':'KANAGAWA','大阪府':'OSAKA','京都府':'KYOTO','福岡県':'FUKUOKA','愛知県':'NAGOYA','北海道':'SAPPORO','宮城県':'SENDAI','広島県':'HIROSHIMA','埼玉県':'SAITAMA','千葉県':'CHIBA','兵庫県':'KOBE'};
+const VIBE_LABELS = {'deep_work':'Deep Work','creative':'Creative Work','meeting':'Client Meeting','remote':'Remote Call','learning':'Learning','strategy':'Strategy','ideation':'Ideation'};
+
+function buildGridCard(sp, delay) {
+  const area = sp.area || '';
+  const pref = PREF_MAP[sp.prefecture] || (sp.prefecture||'').replace(/都|道|府|県/,'').toUpperCase();
+  const city = area ? area + ' / ' + pref : pref;
+  const img = sp.image_main ? "url('" + sp.image_main + "')" : "url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=80')";
+  const arch = sp.architect_name ? '<div class="scard-design">Design by <span>' + sp.architect_name + '</span></div>' : '';
+  const tags = sp.vibe ? '<div class="scard-wtags"><span class="scard-wtag">' + (VIBE_LABELS[sp.vibe]||sp.vibe) + '</span></div>' : '';
+  const price = sp.price_dropin ? '<div class="scard-price">ドロップイン<strong>¥' + sp.price_dropin.toLocaleString() + '〜</strong></div>' : '';
+  return '<a class="scard" href="coworkmill-detail.html?id=' + sp.id + '" style="animation-delay:' + delay + 's" data-area="' + pref.toLowerCase() + '" data-tags="' + (sp.vibe||'') + '">' +
+    '<div class="scard-img" style="background-image:' + img + '"></div>' +
+    '<div class="scard-body">' +
+    '<div class="scard-city">' + city + '</div>' +
+    '<div class="scard-name">' + (sp.name||'—') + '</div>' +
+    arch + tags +
+    '<div class="scard-footer">' + price + '<span class="scard-arrow">→</span></div>' +
+    '</div></a>';
+}
+
+async function loadSpaces() {
+  try {
+    const res = await fetch(SUPABASE_URL + '/rest/v1/spaces?status=eq.published&order=created_at.asc&select=id,name,area,prefecture,architect_name,vibe,price_dropin,image_main', {
+      headers: {'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY}
+    });
+    const data = await res.json();
+    if (!data || data.length === 0) return; // サンプルデータをそのまま表示
+    const grid = document.getElementById('view-grid-content');
+    const list = document.getElementById('view-list-content');
+    const countEl = document.querySelector('.results-count strong');
+    if (grid) grid.innerHTML = data.map((sp, i) => buildGridCard(sp, 0.05 + i * 0.05)).join('');
+    if (list) list.innerHTML = data.map((sp, i) => buildGridCard(sp, 0.05 + i * 0.05)).join('');
+    if (countEl) countEl.textContent = data.length;
+  } catch(e) { console.warn('spaces DB error:', e); }
+}
+window.addEventListener('DOMContentLoaded', loadSpaces);
+// ===== ここまで =====
+</script>
+
+<script>
 function toggleChip(el) {
   document.querySelectorAll('.chip').forEach(c => c.classList.remove('on'));
   el.classList.add('on');
