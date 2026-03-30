@@ -39,8 +39,8 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
 .pb{font-size:7px;padding:1px 6px;background:rgba(117,97,169,.4);color:rgba(255,255,255,.6);border-radius:8px}
 .fi{padding:8px 12px;display:flex;align-items:center;gap:8px;cursor:pointer;border-left:3px solid transparent;transition:all .15s}
 .fi:hover{background:rgba(255,255,255,.05)}
-.fi.on{background:rgba(249,115,22,.15);border-left-color:#f97316}
-.fi.on .fn{font-weight:600;color:#fff}
+.fi.on{background:rgba(249,115,22,.2);border-left:3px solid #f97316;padding-left:9px}
+.fi.on .fn{font-weight:700;color:#f97316}
 .fi-ic{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;color:#fff;flex-shrink:0}
 .fn{font-size:10px;font-weight:500;color:#fff}
 .fs{font-size:8px;color:rgba(255,255,255,.4);display:flex;align-items:center;gap:3px;margin-top:2px}
@@ -131,7 +131,8 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
 .padd{aspect-ratio:4/3;border-radius:7px;border:1.5px dashed var(--g200);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;transition:all .2s;background:none}
 .padd:hover{border-color:var(--purple);background:var(--al)}
 .vl{display:flex;flex-direction:column;gap:8px}
-.vr{display:grid;grid-template-columns:auto auto 1fr auto auto;gap:10px;align-items:center;padding:10px 14px;background:var(--g50);border-radius:7px;border:1px solid var(--g100)}
+.vr{display:grid;grid-template-columns:auto auto auto 1fr auto auto;gap:10px;align-items:center;padding:10px 14px;background:var(--g50);border-radius:7px;border:1px solid var(--g100)}
+.vnk{font-size:10px;font-weight:600;color:var(--g700);white-space:nowrap}
 .vtg{font-size:8px;font-weight:600;padding:2px 7px;background:var(--al);color:var(--purple);border-radius:3px;white-space:nowrap}
 .vdt{font-size:9px;color:var(--g400);white-space:nowrap}
 .vbd{font-size:11px;color:var(--g600);line-height:1.5}
@@ -208,20 +209,8 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
     <div class="sb-sub">施設管理ポータル</div>
   </div>
   <div class="sb-fac-hd">掲載施設 <span class="pb">Standard</span></div>
-  <div class="fi on" id="fi-0" onclick="swFac(0)">
-    <div class="fi-ic" style="background:linear-gradient(135deg,#79F1A4,#2BB5C8)">AA</div>
-    <div><div class="fn">AOYAMA ATELIER</div><div class="fs live">掲載中</div></div>
-  </div>
-  <div class="fi" id="fi-1" onclick="swFac(1)">
-    <div class="fi-ic" style="background:linear-gradient(135deg,#374151,#6b7280)">TW</div>
-    <div><div class="fn">THE WAREHOUSE</div><div class="fs draft">下書き</div></div>
-  </div>
-  <div class="fi locked" id="fi-2" onclick="swFac(2)">
-    <div class="fi-ic" style="background:rgba(255,255,255,.1)">OS</div>
-    <div><div class="fn">OSAKA STUDIO</div><div class="fs" style="color:rgba(255,255,255,.3)">🔒 非公開</div></div>
-    <span class="lock-badge">🔒</span>
-  </div>
-  <button class="add-btn" onclick="addFac()">+ 施設を追加（残り3件）</button>
+  <div id="fac-list"></div>
+  <button class="add-btn" onclick="addFac()">+ 施設を読み込み中...</button>
   <nav class="sb-nav">
     <div class="nlbl">メニュー</div>
     <button class="nl" onclick="go('db',this)"><span class="ni">📊</span>ダッシュボード</button>
@@ -231,7 +220,6 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
     <button class="nl" onclick="go('arch',this)"><span class="ni">🏛</span>建築家情報</button>
     <div class="nlbl">設定</div>
     <button class="nl" onclick="go('co',this)"><span class="ni">🏢</span>企業情報</button>
-    <button class="nl" onclick="go('st',this)"><span class="ni">👁</span>掲載ステータス</button>
     <button class="nl" onclick="go('plan',this)"><span class="ni">⭐</span>プラン管理</button>
   </nav>
   <div class="sb-foot" onclick="location.href='coworkmill.html'">← COWORKMILLを見る</div>
@@ -248,7 +236,7 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
   </div>
   <div class="banner">
     <div class="ban-ic" id="ban-ic" style="background:linear-gradient(135deg,#79F1A4,#2BB5C8)">AA</div>
-    <span style="font-size:11px;color:var(--purple);font-weight:500" id="ban-nm">AOYAMA ATELIER を編集中</span>
+    <span style="font-size:11px;color:#f97316;font-weight:600" id="ban-nm">AOYAMA ATELIER を編集中</span>
     <span class="tbs live" id="ban-st" style="margin-left:4px">掲載中</span>
   </div>
   <div class="content">
@@ -310,20 +298,20 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
     <div class="sec">
       <div class="sec-h"><div><div class="sec-ht">設備</div></div></div>
       <div class="sec-b">
-        <div class="fgg">
-          <div class="fo on" onclick="tf(this)"><span>⚡</span><span style="font-size:11px;color:var(--g600)">全席電源完備</span><div class="ftg">✓</div></div>
-          <div class="fo on" onclick="tf(this)"><span>📶</span><span style="font-size:11px;color:var(--g600)">高速Wi-Fi</span><div class="ftg">✓</div></div>
-          <div class="fo on" onclick="tf(this)"><span>🚪</span><span style="font-size:11px;color:var(--g600)">完全個室</span><div class="ftg">✓</div></div>
-          <div class="fo on" onclick="tf(this)"><span>🎥</span><span style="font-size:11px;color:var(--g600)">会議室</span><div class="ftg">✓</div></div>
-          <div class="fo on" onclick="tf(this)"><span>☕</span><span style="font-size:11px;color:var(--g600)">カフェ併設</span><div class="ftg">✓</div></div>
-          <div class="fo on" onclick="tf(this)"><span>💳</span><span style="font-size:11px;color:var(--g600)">クレジットカード可</span><div class="ftg">✓</div></div>
-          <div class="fo on" onclick="tf(this)"><span>🌐</span><span style="font-size:11px;color:var(--g600)">英語スタッフ常駐</span><div class="ftg">✓</div></div>
-          <div class="fo on" onclick="tf(this)"><span>🌙</span><span style="font-size:11px;color:var(--g600)">24時間利用可</span><div class="ftg">✓</div></div>
-          <div class="fo" onclick="tf(this)"><span>🔒</span><span style="font-size:11px;color:var(--g600)">ロッカー</span><div class="ftg"></div></div>
-          <div class="fo" onclick="tf(this)"><span>🚿</span><span style="font-size:11px;color:var(--g600)">シャワー室</span><div class="ftg"></div></div>
-          <div class="fo" onclick="tf(this)"><span>🖨</span><span style="font-size:11px;color:var(--g600)">複合機・プリンター</span><div class="ftg"></div></div>
-          <div class="fo" onclick="tf(this)"><span>🛎</span><span style="font-size:11px;color:var(--g600)">受付対応あり</span><div class="ftg"></div></div>
-          <div class="fo" onclick="tf(this)"><span>🏢</span><span style="font-size:11px;color:var(--g600)">シェアオフィス</span><div class="ftg"></div></div>
+        <div class="fgg" id="fac-facilities">
+          <div class="fo on" data-key="power"        onclick="tf(this)"><span>⚡</span><span style="font-size:11px;color:var(--g600)">全席電源完備</span><div class="ftg">✓</div></div>
+          <div class="fo on" data-key="wifi"         onclick="tf(this)"><span>📶</span><span style="font-size:11px;color:var(--g600)">高速Wi-Fi</span><div class="ftg">✓</div></div>
+          <div class="fo on" data-key="private_room" onclick="tf(this)"><span>🚪</span><span style="font-size:11px;color:var(--g600)">完全個室</span><div class="ftg">✓</div></div>
+          <div class="fo on" data-key="meeting_room" onclick="tf(this)"><span>🎥</span><span style="font-size:11px;color:var(--g600)">会議室</span><div class="ftg">✓</div></div>
+          <div class="fo on" data-key="cafe"         onclick="tf(this)"><span>☕</span><span style="font-size:11px;color:var(--g600)">カフェ併設</span><div class="ftg">✓</div></div>
+          <div class="fo on" data-key="credit_card"  onclick="tf(this)"><span>💳</span><span style="font-size:11px;color:var(--g600)">クレジットカード可</span><div class="ftg">✓</div></div>
+          <div class="fo on" data-key="english"      onclick="tf(this)"><span>🌐</span><span style="font-size:11px;color:var(--g600)">英語スタッフ常駐</span><div class="ftg">✓</div></div>
+          <div class="fo on" data-key="open24h"      onclick="tf(this)"><span>🌙</span><span style="font-size:11px;color:var(--g600)">24時間利用可</span><div class="ftg">✓</div></div>
+          <div class="fo" data-key="locker"          onclick="tf(this)"><span>🔒</span><span style="font-size:11px;color:var(--g600)">ロッカー</span><div class="ftg"></div></div>
+          <div class="fo" data-key="shower"          onclick="tf(this)"><span>🚿</span><span style="font-size:11px;color:var(--g600)">シャワー室</span><div class="ftg"></div></div>
+          <div class="fo" data-key="printer"         onclick="tf(this)"><span>🖨</span><span style="font-size:11px;color:var(--g600)">複合機・プリンター</span><div class="ftg"></div></div>
+          <div class="fo" data-key="reception"       onclick="tf(this)"><span>🛎</span><span style="font-size:11px;color:var(--g600)">受付対応あり</span><div class="ftg"></div></div>
+          <div class="fo" data-key="share_office"    onclick="tf(this)"><span>🏢</span><span style="font-size:11px;color:var(--g600)">シェアオフィス</span><div class="ftg"></div></div>
         </div>
       </div>
     </div>
@@ -529,6 +517,25 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
 
   <!-- PHOTO -->
   <div id="p-photo" style="display:none">
+
+    <!-- ステップインジケーター（写真管理：STEP2） -->
+    <div id="step-indicator-photo" style="display:none;flex;align-items:center;padding:14px 0 18px;gap:0;">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div style="width:24px;height:24px;border-radius:50%;background:#2BB5C8;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0;">1</div>
+        <div style="font-size:11px;color:#2BB5C8;font-weight:500;">基本情報</div>
+      </div>
+      <div style="flex:1;max-width:40px;height:1px;background:#2BB5C8;margin:0 10px;"></div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div style="width:24px;height:24px;border-radius:50%;background:#f97316;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;flex-shrink:0;">2</div>
+        <div style="font-size:11px;font-weight:600;color:#111827;">写真登録</div>
+      </div>
+      <div style="flex:1;max-width:40px;height:1px;background:#374151;margin:0 10px;"></div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div style="width:24px;height:24px;border-radius:50%;background:#1e293b;border:1px solid #374151;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:#4b5563;flex-shrink:0;">3</div>
+        <div style="font-size:11px;color:#4b5563;">公開</div>
+      </div>
+    </div>
+
     <!-- 写真管理コンテンツ（DB連携後に動的表示） -->
     <div id="photo-empty" style="display:none;">
       <div style="border:2px dashed var(--g200);border-radius:12px;padding:48px 24px;text-align:center;cursor:pointer;transition:border-color .2s;" 
@@ -544,6 +551,17 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
         <input type="file" id="photo-upload-input" accept="image/*" multiple style="display:none;" onchange="handlePhotoUpload(this)">
       </div>
       <div style="font-size:11px;color:var(--g400);text-align:center;margin-top:12px;">Freeプランは5枚まで掲載可</div>
+      <div id="photo-publish-btn" style="display:none;margin-top:24px;text-align:center;">
+        <div style="display:flex;gap:10px;justify-content:center;">
+          <button style="padding:12px 24px;font-size:12px;font-weight:500;color:var(--g600);background:#fff;border:1px solid var(--g200);border-radius:8px;cursor:pointer;" onclick="window.open('coworkmill-detail.html')">
+            プレビュー →
+          </button>
+          <button style="padding:12px 32px;font-size:13px;font-weight:600;color:#fff;background:linear-gradient(135deg,#f97316,#ea580c);border:none;border-radius:8px;cursor:pointer;letter-spacing:.04em;" onclick="pubFac()">
+            🚀 公開する
+          </button>
+        </div>
+        <div style="font-size:11px;color:var(--g400);margin-top:8px;">公開後もいつでも写真の追加・変更ができます</div>
+      </div>
     </div>
     <div id="photo-content">
     <!-- ダウングレード時の警告バナー（Freeプランで6枚以上登録していた場合） -->
@@ -601,10 +619,10 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
       <div class="sec-h"><div><div class="sec-ht">利用者の声</div><div class="sec-hs">承認した声のみ掲載ページに表示されます</div></div></div>
       <div class="sec-b">
         <div class="vl">
-          <div class="vr"><span class="vtg">Deep Work</span><span class="vdt">2026.03.20</span><span class="vbd">完全に没頭できた。光の入り方が絶妙で、気づいたら5時間経っていた。また必ず来る。</span><span class="vnw">新着</span><div class="vbs"><button class="vb ap">承認</button><button class="vb hd">非表示</button></div></div>
-          <div class="vr"><span class="vtg">Client Meeting</span><span class="vdt">2026.03.18</span><span class="vbd">大事なクライアントとの初回ミーティングに使用。空間の上質さが良い印象を与えてくれた。</span><span class="vnw">新着</span><div class="vbs"><button class="vb ap">承認</button><button class="vb hd">非表示</button></div></div>
-          <div class="vr"><span class="vtg">Strategy</span><span class="vdt">2026.03.15</span><span class="vbd">四半期の戦略会議に使いました。防音がしっかりしていて集中して議論できた。</span><span class="vnw">新着</span><div class="vbs"><button class="vb ap">承認</button><button class="vb hd">非表示</button></div></div>
-          <div class="vr" style="opacity:.5"><span class="vtg">Remote Call</span><span class="vdt">2026.02.28</span><span class="vbd">防音ブースで快適にオンライン会議ができた。</span><span style="font-size:8px;color:var(--purple);font-weight:600;padding:2px 5px;border:1px solid var(--purple);border-radius:3px">掲載中</span><div class="vbs"><button class="vb hd">非表示</button></div></div>
+          <div class="vr"><span class="vtg">Deep Work</span><span class="vdt">2026.03.20</span><span class="vnk">Kenji</span><span class="vbd">完全に没頭できた。光の入り方が絶妙で、気づいたら5時間経っていた。また必ず来る。</span><span class="vnw">新着</span><div class="vbs"><button class="vb ap">承認</button><button class="vb hd">非表示</button></div></div>
+          <div class="vr"><span class="vtg">Client Meeting</span><span class="vdt">2026.03.18</span><span class="vnk">Sato M.</span><span class="vbd">大事なクライアントとの初回ミーティングに使用。空間の上質さが良い印象を与えてくれた。</span><span class="vnw">新着</span><div class="vbs"><button class="vb ap">承認</button><button class="vb hd">非表示</button></div></div>
+          <div class="vr"><span class="vtg">Strategy</span><span class="vdt">2026.03.15</span><span class="vnk">匿名</span><span class="vbd">四半期の戦略会議に使いました。防音がしっかりしていて集中して議論できた。</span><span class="vnw">新着</span><div class="vbs"><button class="vb ap">承認</button><button class="vb hd">非表示</button></div></div>
+          <div class="vr" style="opacity:.5"><span class="vtg">Remote Call</span><span class="vdt">2026.02.28</span><span class="vnk">Yuki T.</span><span class="vbd">防音ブースで快適にオンライン会議ができた。</span><span style="font-size:8px;color:var(--purple);font-weight:600;padding:2px 5px;border:1px solid var(--purple);border-radius:3px">掲載中</span><div class="vbs"><button class="vb hd">非表示</button></div></div>
         </div>
       </div>
     </div>
@@ -620,8 +638,7 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
     <div class="sec">
       <div class="sec-h"><div><div class="sec-ht">企業情報</div><div class="sec-hs">運営会社・請求先情報（非公開）</div></div></div>
       <div class="sec-b">
-        <div class="fr"><div class="fg"><div class="fl">運営会社名<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><input class="fin" value="株式会社アオヤマワークス"></div><div class="fg"><div class="fl">法人番号</div><input class="fin" placeholder="1234567890123"></div></div>
-        <div class="fr full"><div class="fg"><div class="fl">請求先住所</div><input class="fin" value=""></div></div>
+        <div class="fr full"><div class="fg"><div class="fl">運営会社名<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><input class="fin" value="株式会社アオヤマワークス"></div></div>
         <div style="margin-bottom:20px;padding:10px 12px;background:var(--g50);border-radius:5px;border:1px solid var(--g100);font-size:9px;color:var(--g400)">🏢 運営会社情報は請求・契約管理に使用します。掲載ページには表示されません。</div>
         <div style="font-size:12px;font-weight:500;margin-bottom:14px;padding-top:4px;border-top:1px solid var(--g100)">担当者情報</div>
         <div class="fr"><div class="fg"><div class="fl">担当者名<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><input class="fin" value=""></div><div class="fg"><div class="fl">担当者役職</div><input class="fin" value=""></div></div>
@@ -638,17 +655,6 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
     <div class="stripe-row">
       <div><div style="font-size:12px;font-weight:500;margin-bottom:3px">お支払い・解約の管理</div><div style="font-size:11px;color:var(--g400)">クレジットカードの変更・解約・請求履歴はこちら</div></div>
       <button class="bol" onclick="stripePortal()">🔒 Stripeポータルへ →</button>
-    </div>
-  </div>
-
-  <!-- STATUS -->
-  <div id="p-st" style="display:none">
-    <div class="sec">
-      <div class="sec-h"><div class="sec-ht">掲載ステータス</div></div>
-      <div class="sec-b" style="display:flex;flex-direction:column;gap:10px">
-        <div style="display:flex;align-items:center;gap:14px;padding:14px;border:1.5px solid #4ade80;border-radius:8px;background:#f0fdf4;cursor:pointer"><div style="width:10px;height:10px;border-radius:50%;background:#4ade80;flex-shrink:0"></div><div><div style="font-size:12px;font-weight:500">公開中</div><div style="font-size:10px;color:var(--g400);margin-top:2px">COWORKMILLに掲載されています</div></div></div>
-        <div style="display:flex;align-items:center;gap:14px;padding:14px;border:1px solid var(--g200);border-radius:8px;cursor:pointer"><div style="width:10px;height:10px;border-radius:50%;background:#f59e0b;flex-shrink:0"></div><div><div style="font-size:12px;font-weight:500">一時停止</div><div style="font-size:10px;color:var(--g400);margin-top:2px">掲載を一時的に非表示にします</div></div></div>
-      </div>
     </div>
   </div>
 
@@ -699,8 +705,9 @@ function updateAddBtn() {
   const btn = document.querySelector('.add-btn');
   if (!btn) return;
   const plan = 'standard';
-  const limit = plan === 'free' ? 3 : plan === 'standard' ? 10 : 20;
-  const remaining = Math.max(0, limit - facs.length);
+  const limit = plan === 'free' ? 3 : plan === 'standard' ? 5 : 20;
+  const registeredCount = facs.filter(f => f.db_id).length;
+  const remaining = Math.max(0, limit - registeredCount);
   if (remaining <= 0) {
     btn.textContent = '施設数の上限に達しました';
     btn.style.opacity = '.4';
@@ -716,6 +723,10 @@ function handlePhotoUpload(input) {
   if (!input.files || input.files.length === 0) return;
   const files = Array.from(input.files);
   alert(files.length + '枚の写真を選択しました。\n\n※現在、写真のアップロード機能は準備中です。\nSupabase Storage連携後に利用できるようになります。');
+  // 写真登録後：公開ボタンを表示・ステップインジケーターを非表示
+  if (facs[cur]) { facs[cur].from_new = false; facs[cur].has_photos = true; }
+  const si = document.getElementById('step-indicator-photo'); if(si) si.style.display='none';
+  const pb = document.getElementById('photo-publish-btn'); if(pb) pb.style.display='block';
 }
 
 function setStep(n) {
@@ -778,17 +789,17 @@ function collectFormData() {
   };
   const ni = (...ids) => { const v = g(...ids); return v ? (parseInt(v) || null) : null; };
   return {
-    name:            g('nfn', 'p-name') || null,
-    area:            g('nfa', 'p-area'),
-    prefecture:      g('nfc', 'p-pref'),
-    address:         g('nfad', 'p-addr'),
-    nearest_station: g('nfst', 'p-station'),
-    nearest_line:    g('nfline', 'p-line'),
+    name:            g('nfn', 'fn', 'p-name') || null,
+    area:            g('nfa', 'fa', 'p-area'),
+    prefecture:      g('nfc', 'fc', 'p-pref'),
+    address:         g('nfad', 'fad', 'p-addr'),
+    nearest_station: g('nfst', 'fst', 'p-station'),
+    nearest_line:    g('nfline', 'fline', 'p-line'),
     walk_minutes:    ni('p-walk'),
     price_dropin:    ni('p-drop'),
     price_monthly:   ni('p-monthly'),
     price_note:      g('nf-price-hourly', 'p-pnote'),
-    description:     g('nfde', 'p-desc'),
+    description:     g('nfde', 'fde', 'p-desc'),
     capacity:        ni('p-cap'),
     open_hours:      g('p-hours'),
     architect_name:  g('p-arch'),
@@ -798,6 +809,7 @@ function collectFormData() {
     smoking:         g('nf-smoking', 'smoking'),
     contact_name:    g('nf-contact-name'),
     contact_email:   g('nf-contact-email'),
+    facilities:      Array.from(document.querySelectorAll('#fac-facilities .fo.on')).map(el => el.dataset.key).filter(Boolean),
     status:          'draft'
   };
 }
@@ -874,6 +886,18 @@ async function loadSpaceDetail(f) {
     sv('fde',  d.description);
     sv('fu',   d.website_url);
     sv('fig',  d.instagram);
+    // 設備の復元
+    const facilities = d.facilities || [];
+    document.querySelectorAll('#fac-facilities .fo').forEach(el => {
+      const on = facilities.includes(el.dataset.key);
+      el.classList.toggle('on', on);
+      el.querySelector('.ftg').textContent = on ? '✓' : '';
+    });
+    // vibeの復元
+    if (d.vibe) {
+      const vibeInp = document.getElementById('fvibe');
+      if (vibeInp) vibeInp.value = d.vibe;
+    }
   } catch(e) {
     console.warn('施設詳細の読み込みエラー:', e);
   }
@@ -976,17 +1000,21 @@ function renderArch() {
   box.innerHTML = html;
 }
 let cur = 0;
-const panels = ['db','info','new','photo','voice','arch','co','st','plan'];
-const ttls = {db:'ダッシュボード',info:'施設情報の編集',new:'新しい施設を登録',photo:'写真管理',voice:'利用者の声',arch:'建築家情報',co:'企業情報',st:'掲載ステータス',plan:'プラン管理'};
+const panels = ['db','info','new','photo','voice','arch','co','plan'];
+const ttls = {db:'ダッシュボード',info:'施設情報の編集',new:'新しい施設を登録',photo:'写真管理',voice:'利用者の声',arch:'建築家情報',co:'企業情報',plan:'プラン管理'};
 
 function go(id, el) {
   panels.forEach(p => { const e = document.getElementById('p-'+p); if(e) e.style.display = (p===id)?'block':'none'; });
   document.querySelectorAll('.nl').forEach(l => l.classList.remove('on'));
   if(el) el.classList.add('on');
   const f = facs[cur];
-  document.getElementById('ttl').innerHTML = ttls[id] + ' <span style="font-size:11px;font-weight:400;color:var(--g400)">— ' + f.nm + '</span>';
-  if(id === 'db') renderDash(f.dash);
+  const nm = f ? f.nm : '';
+  document.getElementById('ttl').innerHTML = ttls[id] + (nm ? ' <span style="font-size:11px;font-weight:400;color:var(--g400)">— ' + nm + '</span>' : '');
+  if(id === 'db' && f) renderDash(f.dash);
+  if(id === 'voice') loadVoices(f ? f.db_id : null);
   if(id === 'photo') {
+    const stepPhoto = document.getElementById('step-indicator-photo');
+    if (stepPhoto) stepPhoto.style.display = (facs[cur] && facs[cur].from_new === true && facs[cur].has_photos === false) ? 'flex' : 'none';
     const photoEmpty = document.getElementById('photo-empty');
     const photoContent = document.getElementById('photo-content');
     if (!f || !f.db_id || f.has_photos === false) {
@@ -1002,7 +1030,7 @@ function go(id, el) {
 function swFac(id) {
   cur = id;
   const f = facs[id];
-  document.querySelectorAll('.fi').forEach((el,i) => el.classList.toggle('on', i===id));
+  document.querySelectorAll('.fi').forEach(el => el.classList.toggle('on', el.id==='fi-'+id));
   // Show locked banner if locked
   const existingBanner = document.getElementById('locked-banner');
   if(existingBanner) existingBanner.remove();
@@ -1033,14 +1061,16 @@ function swFac(id) {
   const bar = document.getElementById('info-bar');
   if(f.st==='live') bar.innerHTML = '<div class="sdot green"></div><div class="st"><strong>掲載中</strong> — 最終更新: 2026年3月20日</div>';
   else if(f.st==='locked') bar.innerHTML = '<div class="sdot" style="background:#a0a0a0"></div><div class="st"><strong>非公開</strong> — Standardプランにアップグレードすると再公開できます</div>';
-  else bar.innerHTML = '<div class="sdot amber"></div><div class="st"><strong>下書き</strong> — 情報を入力して内容を保存してください。<span style="color:#f97316;font-weight:600"> 次のアクション：写真の追加が必要です。</span><a href="#" onclick="go(\'photo\',document.querySelectorAll(\'.nl\')[2]);return false;" style="color:#f97316;text-decoration:underline;font-weight:600;margin-left:6px">写真管理へ進む →</a></div>';
+  else bar.innerHTML = '<div class="sdot amber"></div><div class="st"><strong>下書き</strong> — 情報を入力して内容を保存してください。</div>';
   // DBから施設データを取得してフォームに反映
   loadSpaceDetail(f);
   const tbr = document.getElementById('tbr');
   if(f.st==='draft') {
-    tbr.innerHTML = '<button class="bol" onclick="cancelNew()">破棄</button><button class="bsv" onclick="doSave()">変更を保存</button><button class="bpb" style="background:linear-gradient(135deg,#f97316,#ea580c);border-color:#f97316;color:#fff;font-weight:700" onclick="pubFac()">🚀 公開する</button>';
+    tbr.innerHTML = '<button class="bol" style="color:#ef4444;border-color:#ef4444;" onclick="deleteFac()">🗑 削除</button><button class="bsv" onclick="doSave()">変更を保存</button><button class="bpb" style="background:linear-gradient(135deg,#f97316,#ea580c);border-color:#f97316;color:#fff;font-weight:700" onclick="pubFac()">🚀 公開する</button>';
+  } else if(f.st==='live') {
+    tbr.innerHTML = '<button class="bol" style="color:#ef4444;border-color:#ef4444;" onclick="deleteFac()">🗑 削除</button><button class="bol" onclick="window.open(\'coworkmill-detail.html\')">プレビュー →</button><button class="bsv" id="savebtn" onclick="doSave()">変更を保存</button><button class="bol" style="color:#ef4444;border-color:#ef4444;" onclick="unpubFac()">⏸ 非公開にする</button>';
   } else {
-    tbr.innerHTML = '<button class="bol" onclick="window.open(\'coworkmill-detail.html\')">プレビュー →</button><button class="bsv" id="savebtn" onclick="doSave()">変更を保存</button>';
+    tbr.innerHTML = '<button class="bol" style="color:#ef4444;border-color:#ef4444;" onclick="deleteFac()">🗑 削除</button><button class="bol" onclick="window.open(\'coworkmill-detail.html\')">プレビュー →</button><button class="bsv" id="savebtn" onclick="doSave()">変更を保存</button>';
   }
   renderDash(f.dash);
   const curP = document.querySelector('[id^="p-"]:not([style*="none"])');
@@ -1059,7 +1089,7 @@ function addFac() {
   document.querySelector('.add-btn').before(item);
   updateAddBtn();
   cur = id;
-  document.querySelectorAll('.fi').forEach((el,i) => el.classList.toggle('on', i===id));
+  document.querySelectorAll('.fi').forEach(el => el.classList.toggle('on', el.id==='fi-'+id));
   panels.forEach(p => { const e=document.getElementById('p-'+p); if(e) e.style.display='none'; });
   document.getElementById('p-new').style.display='block';
   setStep(1);
@@ -1105,6 +1135,7 @@ async function saveNew() {
     facs[cur].nm = nm; facs[cur].ic = ic;
     facs[cur].bg = 'linear-gradient(135deg,#374151,#6b7280)';
     facs[cur].has_photos = false;
+    facs[cur].from_new = true;
     if (dbId) facs[cur].db_id = dbId;
     const item = document.getElementById('fi-' + cur);
     if (item) {
@@ -1135,6 +1166,52 @@ function cancelNew() {
   const item=document.getElementById('fi-'+id);if(item)item.remove();
   updateAddBtn();
   cur=0; swFac(0);
+}
+
+async function deleteFac() {
+  const nm = facs[cur] ? facs[cur].nm : '施設';
+  const confirmed = confirm(
+    '【注意】「' + nm + '」を削除しますか？\n\n' +
+    '・掲載中の場合はサイトから即座に非表示になります\n' +
+    '・登録情報・写真データは完全に削除されます\n' +
+    '・一度削除すると復元することはできません\n\n' +
+    '本当に削除してよろしいですか？'
+  );
+  if (!confirmed) return;
+  const dbId = facs[cur] ? facs[cur].db_id : null;
+  try {
+    if (dbId) {
+      await sbFetch('/rest/v1/spaces?id=eq.' + dbId, { method: 'DELETE' });
+    }
+    const item = document.getElementById('fi-' + cur);
+    if (item) item.remove();
+    facs.splice(cur, 1);
+    facs.forEach((f, i) => f.id = i);
+    updateAddBtn();
+    cur = 0;
+    if (facs.length > 0) swFac(0);
+  } catch(e) {
+    alert('エラー: ' + toJapaneseError(e));
+  }
+}
+
+async function unpubFac() {
+  if (!confirm('この施設を非公開にしますか？\nサイト上から非表示になります。')) return;
+  const dbId = facs[cur] ? facs[cur].db_id : null;
+  if (!dbId) { alert('施設情報が保存されていません。'); return; }
+  try {
+    await sbFetch('/rest/v1/spaces?id=eq.' + dbId, {
+      method: 'PATCH',
+      body: JSON.stringify({ status: 'draft' })
+    });
+    facs[cur].st = 'draft';
+    const item = document.getElementById('fi-' + cur);
+    if (item) { const fs = item.querySelector('.fs'); fs.className = 'fs draft'; fs.textContent = '● 下書き'; }
+    swFac(cur);
+    alert('非公開にしました。');
+  } catch(e) {
+    alert('エラー: ' + toJapaneseError(e));
+  }
 }
 
 async function pubFac() {
@@ -1185,7 +1262,7 @@ function setVibe(el,val){
 }
 
 async function doSave(){
-  const b = document.getElementById('savebtn'); if(!b) return;
+  const b = document.getElementById('savebtn') || document.querySelector('#tbr .bsv'); if(!b) return;
   b.textContent = '保存中...'; b.disabled = true;
   try {
     const data = collectFormData();
@@ -1227,6 +1304,66 @@ function submitArch(){
   alert('「' + nm.value + '」を登録しました。運営チームが確認後、建築家に連絡します。');
 }
 function stripePortal(){alert('Stripeカスタマーポータルへ接続します\n（Stripe登録後に有効になります）');}
+
+
+// 利用者の声をDBから取得
+async function loadVoices(spaceId) {
+  var vl = document.querySelector('#p-voice .vl');
+  if (!vl) return;
+  if (!spaceId) {
+    vl.innerHTML = '<div style="text-align:center;padding:32px;color:var(--g400);font-size:12px">施設を保存するとレビューが表示されます</div>';
+    return;
+  }
+  vl.innerHTML = '<div style="text-align:center;padding:24px;color:var(--g400);font-size:12px">読み込み中...</div>';
+  try {
+    var rows = await sbFetch('/rest/v1/reviews?space_id=eq.' + spaceId + '&order=created_at.desc&select=*');
+    if (!rows || rows.length === 0) {
+      vl.innerHTML = '<div style="text-align:center;padding:32px;color:var(--g400);font-size:12px">まだレビューはありません</div>';
+      var badge = document.querySelector('.nbadge');
+      if (badge) badge.style.display = 'none';
+      return;
+    }
+    var pending = rows.filter(function(r){ return r.status === 'pending'; });
+    var badge = document.querySelector('.nbadge');
+    if (badge) { badge.textContent = pending.length; badge.style.display = pending.length ? '' : 'none'; }
+    var sbar = document.querySelector('#p-voice .sbar .st');
+    if (sbar) sbar.innerHTML = pending.length > 0 ? '新着の声が <strong>' + pending.length + '件</strong> 届いています' : '新着のレビューはありません';
+    vl.innerHTML = rows.map(function(r) {
+      var nick = r.nickname || '匿名';
+      var date = r.created_at ? r.created_at.slice(0,10).replace(/-/g,'.') : '';
+      var tag = r.work_style_tag || '';
+      var body = r.body || '';
+      var rid = String(r.id);
+      var isPending = r.status === 'pending';
+      var isApproved = r.status === 'approved';
+      var btns;
+      if (isPending) {
+        btns = '<span class="vnw">新着</span><div class="vbs"><button class="vb ap" onclick="approveVoice(\'' + rid + '\')">承認</button><button class="vb hd" onclick="hideVoice(\'' + rid + '\')">非表示</button></div>';
+      } else if (isApproved) {
+        btns = '<span style="font-size:8px;color:var(--purple);font-weight:600;padding:2px 5px;border:1px solid var(--purple);border-radius:3px">掲載中</span><div class="vbs"><button class="vb hd" onclick="hideVoice(\'' + rid + '\')">非表示</button></div>';
+      } else {
+        btns = '<span style="font-size:8px;color:var(--g400);font-weight:600;padding:2px 5px;border:1px solid var(--g300);border-radius:3px">非表示</span><div class="vbs"><button class="vb ap" onclick="approveVoice(\'' + rid + '\')">再掲載</button></div>';
+      }
+      var opacity = isApproved ? '' : 'opacity:.6';
+      return '<div class="vr" style="' + opacity + '"><span class="vtg">' + tag + '</span><span class="vdt">' + date + '</span><span class="vnk">' + nick + '</span><span class="vbd">' + body + '</span>' + btns + '</div>';
+    }).join('');
+  } catch(e) {
+    vl.innerHTML = '<div style="text-align:center;padding:32px;color:var(--g400);font-size:12px">読み込みエラー</div>';
+    console.warn('loadVoices error:', e);
+  }
+}
+async function approveVoice(id) {
+  try {
+    await sbFetch('/rest/v1/reviews?id=eq.' + id, { method: 'PATCH', body: JSON.stringify({status:'approved'}) });
+    loadVoices(facs[cur] ? facs[cur].db_id : null);
+  } catch(e) { alert('承認に失敗しました'); }
+}
+async function hideVoice(id) {
+  try {
+    await sbFetch('/rest/v1/reviews?id=eq.' + id, { method: 'PATCH', body: JSON.stringify({status:'hidden'}) });
+    loadVoices(facs[cur] ? facs[cur].db_id : null);
+  } catch(e) { alert('非表示に失敗しました'); }
+}
 
 // ページ読み込み時にDBから施設を取得
 window.addEventListener('DOMContentLoaded', () => {
