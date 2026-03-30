@@ -928,115 +928,6 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
 </div>
 
 <script>
-// ===== Supabase DB連携 =====
-const SUPABASE_URL = 'https://jakwntemjkwqwaqujffh.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
-
-async function sbFetch(path) {
-  const res = await fetch(SUPABASE_URL + path, {
-    headers: {
-      'apikey': SUPABASE_KEY,
-      'Authorization': 'Bearer ' + SUPABASE_KEY,
-      'Content-Type': 'application/json'
-    }
-  });
-  if (!res.ok) throw new Error(await res.text());
-  const text = await res.text();
-  return text ? JSON.parse(text) : [];
-}
-
-// 都道府県→英語略称
-const PREF_MAP = {
-  '東京都':'TOKYO','神奈川県':'KANAGAWA','大阪府':'OSAKA','京都府':'KYOTO',
-  '福岡県':'FUKUOKA','愛知県':'NAGOYA','北海道':'SAPPORO','宮城県':'SENDAI',
-  '広島県':'HIROSHIMA','埼玉県':'SAITAMA','千葉県':'CHIBA','兵庫県':'KOBE'
-};
-
-// vibe→タグラベル
-const VIBE_LABELS = {
-  'deep_work':'Deep Work','creative':'Creative Work','meeting':'Client Meeting',
-  'remote':'Remote Call','learning':'Learning','strategy':'Strategy','ideation':'Ideation'
-};
-
-// 価格をフォーマット
-function fmtPrice(p) {
-  if (!p) return null;
-  return '¥' + p.toLocaleString() + '〜';
-}
-
-// グリッドカードのHTML生成
-function buildGridCard(sp, delay) {
-  const area = sp.area || '';
-  const pref = PREF_MAP[sp.prefecture] || sp.prefecture || '';
-  const city = area ? area + (pref ? ' / ' + pref : '') : pref;
-  const img = sp.image_main ? `url('${sp.image_main}')` : `url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=80')`;
-  const arch = sp.architect_name ? `<div class="scard-design">Design by <span>${sp.architect_name}</span></div>` : '';
-  const tags = sp.vibe ? `<div class="scard-wtags"><span class="scard-wtag">${VIBE_LABELS[sp.vibe] || sp.vibe}</span></div>` : '';
-  const price = fmtPrice(sp.price_dropin);
-  const priceHtml = price ? `<div class="scard-price">ドロップイン<strong>${price}</strong></div>` : '';
-  const dataArea = (pref || '').toLowerCase().replace('tokyo','tokyo').replace('osaka','osaka');
-  const dataVibe = sp.vibe || '';
-  return `<a class="scard" href="coworkmill-detail.html?id=${sp.id}" style="animation-delay:${delay}s" data-area="${dataArea}" data-tags="${dataVibe}" data-price="${sp.price_dropin||0}">
-    <div class="scard-img" style="background-image:${img}"></div>
-    <div class="scard-body">
-      <div class="scard-city">${city}</div>
-      <div class="scard-name">${sp.name || '—'}</div>
-      ${arch}
-      ${tags}
-      <div class="scard-footer">${priceHtml}<span class="scard-arrow">→</span></div>
-    </div>
-  </a>`;
-}
-
-// リストカードのHTML生成
-function buildListCard(sp, delay) {
-  const area = sp.area || '';
-  const pref = PREF_MAP[sp.prefecture] || sp.prefecture || '';
-  const city = area ? area + (pref ? ' / ' + pref : '') : pref;
-  const img = sp.image_main ? `url('${sp.image_main}')` : `url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=400&q=80')`;
-  const arch = sp.architect_name ? `<div class="lcard-design">Design by <span>${sp.architect_name}</span></div>` : '';
-  const tags = sp.vibe ? `<div class="lcard-wtags"><span class="lcard-wtag">${VIBE_LABELS[sp.vibe] || sp.vibe}</span></div>` : '';
-  const price = fmtPrice(sp.price_dropin);
-  const priceHtml = price ? `<div class="lcard-price">ドロップイン<strong>${price}</strong></div>` : '';
-  const dataArea = (pref || '').toLowerCase();
-  return `<a class="lcard" href="coworkmill-detail.html?id=${sp.id}" style="animation-delay:${delay}s" data-area="${dataArea}" data-tags="${sp.vibe||''}">
-    <div class="lcard-img" style="background-image:${img}"></div>
-    <div class="lcard-body">
-      <div class="lcard-city">${city}</div>
-      <div class="lcard-name">${sp.name || '—'}</div>
-      ${arch}
-      ${tags}
-    </div>
-    <div class="lcard-right">${priceHtml}</div>
-  </a>`;
-}
-
-async function loadSpaces() {
-  try {
-    const data = await sbFetch('/rest/v1/spaces?status=eq.published&order=created_at.asc&select=id,name,area,prefecture,architect_name,vibe,price_dropin,image_main');
-    const grid = document.getElementById('view-grid-content');
-    const list = document.getElementById('view-list-content');
-    const countEl = document.querySelector('.results-count strong');
-
-    if (!data || data.length === 0) {
-      // DB未登録 → 既存ハードコードを維持（何もしない）
-      return;
-    }
-
-    // グリッドを書き換え
-    grid.innerHTML = data.map((sp, i) => buildGridCard(sp, 0.05 + i * 0.05)).join('');
-    // リストを書き換え
-    list.innerHTML = data.map((sp, i) => buildListCard(sp, 0.05 + i * 0.05)).join('');
-    // 件数更新
-    if (countEl) countEl.textContent = data.length;
-  } catch(e) {
-    console.warn('施設データ読み込みエラー:', e);
-  }
-}
-
-window.addEventListener('DOMContentLoaded', loadSpaces);
-// ===== ここまで =====
-
 function toggleChip(el) {
   document.querySelectorAll('.chip').forEach(c => c.classList.remove('on'));
   el.classList.add('on');
@@ -1251,6 +1142,39 @@ function toggleSpCity(el, city) {
   var pcOpt = document.querySelector('.sf-opt[onclick*="' + city + '"]');
   if (pcOpt) pcOpt.click();
 }
+
+// URLパラメータでvibeフィルター自動適用
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const vibe = params.get('vibe');
+  if (!vibe) return;
+  const vibeNames = {
+    urban: '都市の高層階', machiya: '古民家・町家', nature: '自然・山・海',
+    warehouse: '倉庫・工場跡', hotel: 'ホテル併設', gallery: 'ミュージアム・ギャラリー隣接',
+    station: '駅直結', minimal: 'ミニマル・無機質'
+  };
+  window.addEventListener('DOMContentLoaded', function() {
+    // バナー表示
+    const banner = document.getElementById('vibe-filter-banner');
+    const bannerText = document.getElementById('vibe-filter-text');
+    if (banner && bannerText) {
+      bannerText.textContent = '「' + (vibeNames[vibe] || vibe) + '」で絞り込み中';
+      banner.style.display = 'flex';
+    }
+    // ページタイトル更新（SEO）
+    const name = vibeNames[vibe] || vibe;
+    document.title = name + 'のコワーキングスペース — COWORKMILL';
+    setTimeout(function() {
+      const cards = document.querySelectorAll('.scard, .lcard');
+      cards.forEach(card => {
+        card.style.display = (card.dataset.tags || '').includes(vibe) ? '' : 'none';
+      });
+      const countEl = document.querySelector('.results-count strong');
+      const visible = document.querySelectorAll('.scard:not([style*="display: none"]), .lcard:not([style*="display: none"])').length;
+      if (countEl) countEl.textContent = visible;
+    }, 800);
+  });
+})();
 </script>
 </body>
 </html>
