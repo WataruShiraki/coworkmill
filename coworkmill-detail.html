@@ -643,19 +643,19 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
     <!-- Header -->
     <div>
       <div class="space-eyebrow">
-        <span class="space-city">表参道 / Tokyo</span>
+        <span class="space-city" id="d-city">表参道 / Tokyo</span>
         <span class="space-badge">EN OK</span>
         <span class="space-badge" style="background:rgba(235,99,101,.1);color:var(--brand-pink)">クレカ可</span>
       </div>
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px">
-        <h1 class="space-name">AOYAMA ATELIER<span class="pick-badge">PICK</span></h1>
+        <h1 class="space-name" id="d-name">AOYAMA ATELIER<span class="pick-badge" id="d-pick" style="display:none">PICK</span></h1>
         <button id="detail-heart" type="button" onclick="toggleDetailFav()" style="flex-shrink:0;margin-top:8px;width:44px;height:44px;border-radius:50%;border:1.5px solid var(--gray-200);background:var(--white);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s" title="お気に入りに追加">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" id="detail-heart-svg"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
         </button>
       </div>
       <div class="design-by">Design by <a href="coworkmill-architect.html" style="color:#2BB5C8;font-weight:500;text-decoration:none;border-bottom:1px solid rgba(117,97,169,.3);transition:border-color .15s" onmouseover="this.style.borderColor='#2BB5C8'" onmouseout="this.style.borderColor='rgba(117,97,169,.3)'">Kengo Kuma & Associates</a></div>
       <p class="space-desc">
-        隈研吾建築都市設計事務所が手がけた、表参道の旗艦コワーキングスペース。全面ガラス張りの開放的な空間に、厳選されたデザイン家具を配置。自然光が差し込む明るい環境で、集中作業から重要な商談まで幅広く対応する。東京を代表するクリエイターや経営者が集う場として知られる。
+        <span id="d-desc">隈研吾建築都市設計事務所が手がけた、表参道の旗艦コワーキングスペース。全面ガラス張りの開放的な空間に、厳選されたデザイン家具を配置。自然光が差し込む明るい環境で、集中作業から重要な商談まで幅広く対応する。東京を代表するクリエイターや経営者が集う場として知られる。</span>
       </p>
     </div>
 
@@ -787,7 +787,7 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
     <!-- Facilities -->
     <div class="facilities-section">
       <div class="section-label">設備</div>
-      <div class="facilities-grid">
+      <div class="facilities-grid" id="d-facilities">
         <div class="fac-item"><span class="fac-icon">⚡</span><span class="fac-name">全席電源完備</span><span class="fac-ok">✓</span></div>
         <div class="fac-item"><span class="fac-icon">📶</span><span class="fac-name">高速Wi-Fi（1Gbps）</span><span class="fac-ok">✓</span></div>
         <div class="fac-item"><span class="fac-icon">🚪</span><span class="fac-name">完全個室</span><span class="fac-ok">✓</span></div>
@@ -887,11 +887,11 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
   <!-- RIGHT: ASIDE -->
   <div class="detail-aside">
     <div class="aside-card">
-      <div class="aside-space-name">AOYAMA ATELIER</div>
-      <div class="aside-city">表参道 / Tokyo</div>
+      <div class="aside-space-name" id="d-aside-name">AOYAMA ATELIER</div>
+      <div class="aside-city" id="d-aside-city">表参道 / Tokyo</div>
       <div class="aside-price">
         <div class="aside-price-label">ドロップイン</div>
-        <div><span class="aside-price-val">¥3,300</span><span class="aside-price-unit">〜 / 日</span></div>
+        <div><span class="aside-price-val" id="d-price">¥3,300</span><span class="aside-price-unit">〜 / 日</span></div>
         <div class="aside-price-note">月額プラン・会議室は要問い合わせ</div>
       </div>
       <div class="aside-flags">
@@ -900,11 +900,11 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
         <div class="aside-flag">24時間利用可</div>
         <div class="aside-flag">完全個室あり</div>
       </div>
-      <button class="btn-contact" onclick="window.open('#')">公式サイトで空き確認・予約</button>
+      <button class="btn-contact" id="d-website" onclick="window.open('#')">公式サイトで空き確認・予約</button>
       <a href="coworkmill-contact.html" class="btn-site">問い合わせる</a>
-      <a href="https://instagram.com/aoyama_atelier" target="_blank" rel="noopener" class="btn-instagram">
+      <a href="https://instagram.com/aoyama_atelier" target="_blank" rel="noopener" class="btn-instagram" id="d-instagram">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-        @aoyama_atelier
+        <span id="d-instagram-handle">@aoyama_atelier</span>
       </a>
       <div class="aside-note">空き状況・料金の詳細は<br>公式サイトまたはお問い合わせください</div>
     </div>
@@ -1575,6 +1575,120 @@ document.addEventListener('DOMContentLoaded', () => {
     if(e.key === 'ArrowRight') go(1);
     if(e.key === 'Escape')     close();
   });
+})();
+</script>
+
+<script>
+// ===== Supabase DB連携 =====
+(function() {
+  const SUPABASE_URL = 'https://jakwntemjkwqwaqujffh.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+
+  const params = new URLSearchParams(window.location.search);
+  const spaceId = params.get('id');
+  if (!spaceId) return;
+
+  const PREF_MAP = {
+    '東京都':'TOKYO','神奈川県':'KANAGAWA','大阪府':'OSAKA','京都府':'KYOTO',
+    '福岡県':'FUKUOKA','愛知県':'NAGOYA','北海道':'SAPPORO','宮城県':'SENDAI',
+    '広島県':'HIROSHIMA','埼玉県':'SAITAMA','千葉県':'CHIBA','兵庫県':'KOBE'
+  };
+
+  const FACILITIES_MAP = {
+    power:        {icon:'⚡', name:'全席電源完備'},
+    wifi:         {icon:'📶', name:'高速Wi-Fi'},
+    private_room: {icon:'🚪', name:'完全個室'},
+    meeting_room: {icon:'🎥', name:'会議室'},
+    cafe:         {icon:'☕', name:'カフェ併設'},
+    credit_card:  {icon:'💳', name:'クレジットカード可'},
+    english:      {icon:'🌐', name:'英語スタッフ常駐'},
+    open24h:      {icon:'🌙', name:'24時間利用可'},
+    locker:       {icon:'🔒', name:'ロッカー'},
+    shower:       {icon:'🚿', name:'シャワー室'},
+    printer:      {icon:'🖨', name:'複合機・プリンター'},
+    reception:    {icon:'🛎', name:'受付対応あり'},
+    share_office: {icon:'🏢', name:'シェアオフィス'},
+  };
+
+  async function loadSpace() {
+    try {
+      const res = await fetch(SUPABASE_URL + '/rest/v1/spaces?id=eq.' + spaceId + '&select=*', {
+        headers: {
+          'apikey': SUPABASE_KEY,
+          'Authorization': 'Bearer ' + SUPABASE_KEY
+        }
+      });
+      const rows = await res.json();
+      if (!rows || !rows[0]) return;
+      const d = rows[0];
+
+      const area = d.area || '';
+      const pref = PREF_MAP[d.prefecture] || (d.prefecture || '').replace(/都|道|府|県/, '').toUpperCase();
+      const city = area ? area + ' / ' + pref : pref;
+
+      // 施設名
+      const nameEl = document.getElementById('d-name');
+      if (nameEl) {
+        const pickBadge = document.getElementById('d-pick');
+        nameEl.childNodes[0].textContent = d.name || '';
+      }
+
+      // エリア
+      ['d-city','d-aside-city'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = city;
+      });
+
+      // サイドバー施設名
+      const asideName = document.getElementById('d-aside-name');
+      if (asideName) asideName.textContent = d.name || '';
+
+      // 説明文
+      const descEl = document.getElementById('d-desc');
+      if (descEl && d.description) descEl.textContent = d.description;
+
+      // 料金
+      const priceEl = document.getElementById('d-price');
+      if (priceEl && d.price_dropin) priceEl.textContent = '¥' + d.price_dropin.toLocaleString();
+
+      // 公式サイト
+      const siteBtn = document.getElementById('d-website');
+      if (siteBtn && d.website_url) {
+        siteBtn.onclick = function() { window.open(d.website_url, '_blank'); };
+      }
+
+      // Instagram
+      const igEl = document.getElementById('d-instagram');
+      const igHandle = document.getElementById('d-instagram-handle');
+      if (d.instagram) {
+        const handle = d.instagram.startsWith('@') ? d.instagram : '@' + d.instagram;
+        if (igEl) igEl.href = 'https://instagram.com/' + handle.replace('@','');
+        if (igHandle) igHandle.textContent = handle;
+      } else {
+        if (igEl) igEl.style.display = 'none';
+      }
+
+      // 設備
+      const facGrid = document.getElementById('d-facilities');
+      if (facGrid && d.facilities && d.facilities.length > 0) {
+        facGrid.innerHTML = d.facilities.map(key => {
+          const f = FACILITIES_MAP[key];
+          if (!f) return '';
+          return '<div class="fac-item"><span class="fac-icon">' + f.icon + '</span><span class="fac-name">' + f.name + '</span><span class="fac-ok">✓</span></div>';
+        }).filter(Boolean).join('');
+      }
+
+      // ページタイトル更新
+      if (d.name) {
+        document.title = d.name + ' — COWORKMILL';
+      }
+
+    } catch(e) {
+      console.warn('detail DB error:', e);
+    }
+  }
+
+  loadSpace();
 })();
 </script>
 </body>
