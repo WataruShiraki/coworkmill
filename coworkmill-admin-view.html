@@ -725,14 +725,92 @@ function updateAddBtn() {
   }
 }
 
-function handlePhotoUpload(input) {
+async function handlePhotoUpload(input) {
   if (!input.files || input.files.length === 0) return;
   const files = Array.from(input.files);
-  alert(files.length + '枚の写真を選択しました。\n\n※現在、写真のアップロード機能は準備中です。\nSupabase Storage連携後に利用できるようになります。');
-  // 写真登録後：公開ボタンを表示・ステップインジケーターを非表示
-  if (facs[cur]) { facs[cur].from_new = false; facs[cur].has_photos = true; }
+  const dbId = facs[cur] ? facs[cur].db_id : null;
+  if (!dbId) { alert('先に施設情報を保存してください。'); return; }
+
+  const uploadArea = document.getElementById('photo-empty');
+  const statusEl = document.createElement('div');
+  statusEl.style.cssText = 'text-align:center;padding:16px;font-size:12px;color:#2BB5C8;';
+  statusEl.textContent = 'アップロード中...';
+  if (uploadArea) uploadArea.appendChild(statusEl);
+
+  const STORAGE_URL = SUPABASE_URL + '/storage/v1/object/space-images/';
+  const uploadedUrls = [];
+
+  for (const file of files) {
+    const ext = file.name.split('.').pop();
+    const path = dbId + '/' + Date.now() + '_' + Math.random().toString(36).slice(2) + '.' + ext;
+    try {
+      const res = await fetch(STORAGE_URL + path, {
+        method: 'POST',
+        headers: {
+          'apikey': SUPABASE_KEY,
+          'Authorization': 'Bearer ' + SUPABASE_KEY,
+          'Content-Type': file.type,
+          'x-upsert': 'true'
+        },
+        body: file
+      });
+      if (res.ok) {
+        const publicUrl = SUPABASE_URL + '/storage/v1/object/public/space-images/' + path;
+        uploadedUrls.push(publicUrl);
+      }
+    } catch(e) { console.warn('upload error:', e); }
+  }
+
+  if (uploadedUrls.length === 0) {
+    if (statusEl) statusEl.textContent = 'アップロードに失敗しました。';
+    return;
+  }
+
+  // 1枚目をimage_mainとしてDBに保存
+  const imageMain = uploadedUrls[0];
+  await sbFetch('/rest/v1/spaces?id=eq.' + dbId, {
+    method: 'PATCH',
+    body: JSON.stringify({ image_main: imageMain })
+  });
+
+  // 写真グリッドを更新表示
+  if (uploadArea) {
+    const pg = document.createElement('div');
+    pg.className = 'pg';
+    pg.style.marginTop = '16px';
+    uploadedUrls.forEach((url, i) => {
+      const pw = document.createElement('div');
+      pw.className = 'pw';
+      pw.innerHTML = '<img src="' + url + '" alt="">' +
+        (i === 0 ? '<div class="pmn">メイン</div>' : '') +
+        '<div class="pov"><button class="pact" onclick="setMainPhoto(this, \'' + url + '\', \'' + dbId + '\')">メインに</button><button class="pact" onclick="this.closest(\'.pw\').remove()">削除</button></div>';
+      pg.appendChild(pw);
+    });
+    uploadArea.appendChild(pg);
+    if (statusEl) statusEl.textContent = uploadedUrls.length + '枚アップロード完了！';
+  }
+
+  if (facs[cur]) { facs[cur].has_photos = true; facs[cur].from_new = false; }
   const si = document.getElementById('step-indicator-photo'); if(si) si.style.display='none';
   const pb = document.getElementById('photo-publish-btn'); if(pb) pb.style.display='block';
+  input.value = '';
+}
+
+async function setMainPhoto(btn, url, dbId) {
+  await sbFetch('/rest/v1/spaces?id=eq.' + dbId, {
+    method: 'PATCH',
+    body: JSON.stringify({ image_main: url })
+  });
+  // メインバッジ更新
+  const pg = btn.closest('.pg');
+  if (pg) {
+    pg.querySelectorAll('.pmn').forEach(el => el.remove());
+    const pmn = document.createElement('div');
+    pmn.className = 'pmn';
+    pmn.textContent = 'メイン';
+    btn.closest('.pw').appendChild(pmn);
+  }
+  btn.closest('.pov').querySelector('button:first-child').style.display = 'none';
 }
 
 function setStep(n) {
