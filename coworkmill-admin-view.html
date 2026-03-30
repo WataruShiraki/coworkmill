@@ -544,10 +544,13 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
 
     <!-- 写真管理コンテンツ（DB連携後に動的表示） -->
     <div id="photo-empty" style="display:none;">
-      <div style="border:2px dashed var(--g200);border-radius:12px;padding:48px 24px;text-align:center;cursor:pointer;transition:border-color .2s;" 
+      <div id="photo-drop-area" style="border:2px dashed var(--g200);border-radius:12px;padding:48px 24px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;" 
            onmouseover="this.style.borderColor='#2BB5C8'" 
            onmouseout="this.style.borderColor='var(--g200)'"
-           onclick="document.getElementById('photo-upload-input').click()">
+           onclick="document.getElementById('photo-upload-input').click()"
+           ondragover="event.preventDefault();this.style.borderColor='#2BB5C8';this.style.background='rgba(43,181,200,.05)'"
+           ondragleave="this.style.borderColor='var(--g200)';this.style.background=''"
+           ondrop="event.preventDefault();this.style.borderColor='var(--g200)';this.style.background='';handleDropFiles(event.dataTransfer.files)">
         <div style="font-size:36px;margin-bottom:14px;">📷</div>
         <div style="font-size:14px;font-weight:500;color:var(--black);margin-bottom:6px;">写真をアップロード</div>
         <div style="font-size:12px;color:var(--g400);margin-bottom:20px;">クリックまたはここにドラッグ＆ドロップ<br>JPG・PNG・WEBP対応 / 1枚10MBまで</div>
@@ -725,6 +728,16 @@ function updateAddBtn() {
   }
 }
 
+function handleDropFiles(files) {
+  if (!files || files.length === 0) return;
+  const input = document.getElementById('photo-upload-input');
+  // FileListをinputに渡せないのでDataTransferを使う
+  const dt = new DataTransfer();
+  Array.from(files).forEach(f => dt.items.add(f));
+  Object.defineProperty(input, 'files', {value: dt.files, writable: true, configurable: true});
+  handlePhotoUpload(input);
+}
+
 async function handlePhotoUpload(input) {
   if (!input.files || input.files.length === 0) return;
   const files = Array.from(input.files);
@@ -732,7 +745,10 @@ async function handlePhotoUpload(input) {
   if (!dbId) { alert('先に施設情報を保存してください。'); return; }
 
   const uploadArea = document.getElementById('photo-empty');
+  // 既存のステータス・グリッドをリセット
+  uploadArea.querySelectorAll('.upload-status, .upload-pg').forEach(el => el.remove());
   const statusEl = document.createElement('div');
+  statusEl.className = 'upload-status';
   statusEl.style.cssText = 'text-align:center;padding:16px;font-size:12px;color:#2BB5C8;';
   statusEl.textContent = 'アップロード中...';
   if (uploadArea) uploadArea.appendChild(statusEl);
@@ -776,17 +792,25 @@ async function handlePhotoUpload(input) {
   // 写真グリッドを更新表示
   if (uploadArea) {
     const pg = document.createElement('div');
-    pg.className = 'pg';
+    pg.className = 'pg upload-pg';
     pg.style.marginTop = '16px';
     uploadedUrls.forEach((url, i) => {
       const pw = document.createElement('div');
       pw.className = 'pw';
+      const isMain = i === 0;
       pw.innerHTML = '<img src="' + url + '" alt="">' +
-        (i === 0 ? '<div class="pmn">メイン</div>' : '') +
-        '<div class="pov"><button class="pact" onclick="setMainPhoto(this, \'' + url + '\', \'' + dbId + '\')">メインに</button><button class="pact" onclick="this.closest(\'.pw\').remove()">削除</button></div>';
+        (isMain ? '<div class="pmn">メイン</div>' : '') +
+        '<div class="pov">' +
+        (!isMain ? '<button class="pact" onclick="setMainPhoto(this, \'' + url + '\', \'' + dbId + '\')">メインに</button>' : '') +
+        '<button class="pact" onclick="this.closest(\'.pw\').remove()">削除</button></div>';
       pg.appendChild(pw);
     });
+    // メイン説明文
+    const note = document.createElement('div');
+    note.style.cssText = 'font-size:10px;color:var(--g400);margin-top:8px;';
+    note.textContent = '★ メイン写真は一覧ページのサムネイルと、詳細ページのトップに使用されます';
     uploadArea.appendChild(pg);
+    uploadArea.appendChild(note);
     if (statusEl) statusEl.textContent = uploadedUrls.length + '枚アップロード完了！';
   }
 
