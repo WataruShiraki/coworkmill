@@ -714,11 +714,28 @@ async function handlePhotoUpload(input) {
   const dbId = facs[cur] && facs[cur].db_id;
   if (!dbId) { alert('先に施設情報を保存してください。'); if(input.value !== undefined) input.value=''; return; }
 
+  // プラン別上限チェック
+  const plan = (facs[cur] && facs[cur].plan) || 'free';
+  const photoLimit = plan === 'free' ? 5 : plan === 'standard' ? 20 : 50;
+  const currentImgs = await sbFetch('/rest/v1/space_images?space_id=eq.' + dbId + '&select=id');
+  const currentCount = currentImgs ? currentImgs.length : 0;
+  const remaining = photoLimit - currentCount;
+  if (remaining <= 0) {
+    alert('写真の上限（' + photoLimit + '枚）に達しています。
+プランをアップグレードすると追加できます。');
+    if(input.value !== undefined) input.value='';
+    return;
+  }
+  const filesToUpload = Array.from(files).slice(0, remaining);
+  if (filesToUpload.length < files.length) {
+    alert('上限まで残り' + remaining + '枚のため、' + filesToUpload.length + '枚のみアップロードします。');
+  }
+
   const STORAGE_URL = SUPABASE_URL + '/storage/v1/object/space-images/';
   let uploaded = 0;
   const isFirst = !(facs[cur] && facs[cur].has_photos);
 
-  for (const file of files) {
+  for (const file of filesToUpload) {
     const ext = file.name.split('.').pop().toLowerCase();
     const path = dbId + '/' + Date.now() + '_' + Math.random().toString(36).slice(2) + '.' + ext;
     try {
@@ -774,6 +791,15 @@ async function loadPhotos(dbId) {
     const spaceData = await sbFetch('/rest/v1/spaces?id=eq.' + dbId + '&select=image_main');
     const mainUrl = spaceData && spaceData[0] ? spaceData[0].image_main : null;
     grid.innerHTML = '';
+    // プラン上限表示を更新
+    const planNote = document.getElementById('photo-plan-note');
+    if (planNote) {
+      const pl = (facs[cur] && facs[cur].plan) || 'free';
+      const lim = pl === 'free' ? 5 : pl === 'standard' ? 20 : 50;
+      const cnt = imgs ? imgs.length : 0;
+      planNote.textContent = (pl === 'free' ? 'Free' : pl === 'standard' ? 'Standard' : 'Pro') + 'プラン：' + lim + '枚まで（現在' + cnt + '枚）';
+    }
+
     if (!imgs || imgs.length === 0) {
       if (emptyMsg) emptyMsg.style.display = 'block';
       if (photoEmpty) photoEmpty.style.display = 'block';
@@ -927,6 +953,7 @@ async function loadSpacesFromDB() {
           id: i, db_id: row.id, nm, ic,
           bg: 'linear-gradient(135deg,#374151,#6b7280)',
           st: row.status === 'published' ? 'live' : 'draft',
+          plan: row.plan || 'free',
           has_photos: !!(row.image_main || (row.images && row.images.length > 0)),
           dash: {v:'—',c:'—',vo:'0',t:'—',tc:'',bars:[]}
         });
