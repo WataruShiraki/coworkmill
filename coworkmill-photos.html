@@ -251,9 +251,45 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
 <div class="no-results" id="no-results">このエリアの写真はまだ準備中です</div>
 
 <script>
-const photos = [];
+const SUPABASE_URL = 'https://jakwntemjkwqwaqujffh.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+const PREF_MAP={'北海道':'HOKKAIDO','青森県':'AOMORI','岩手県':'IWATE','宮城県':'MIYAGI','秋田県':'AKITA','山形県':'YAMAGATA','福島県':'FUKUSHIMA','茨城県':'IBARAKI','栃木県':'TOCHIGI','群馬県':'GUNMA','埼玉県':'SAITAMA','千葉県':'CHIBA','東京都':'TOKYO','神奈川県':'KANAGAWA','新潟県':'NIIGATA','富山県':'TOYAMA','石川県':'ISHIKAWA','福井県':'FUKUI','山梨県':'YAMANASHI','長野県':'NAGANO','岐阜県':'GIFU','静岡県':'SHIZUOKA','愛知県':'AICHI','三重県':'MIE','滋賀県':'SHIGA','京都府':'KYOTO','大阪府':'OSAKA','兵庫県':'HYOGO','奈良県':'NARA','和歌山県':'WAKAYAMA','鳥取県':'TOTTORI','島根県':'SHIMANE','岡山県':'OKAYAMA','広島県':'HIROSHIMA','山口県':'YAMAGUCHI','徳島県':'TOKUSHIMA','香川県':'KAGAWA','愛媛県':'EHIME','高知県':'KOCHI','福岡県':'FUKUOKA','佐賀県':'SAGA','長崎県':'NAGASAKI','熊本県':'KUMAMOTO','大分県':'OITA','宮崎県':'MIYAZAKI','鹿児島県':'KAGOSHIMA','沖縄県':'OKINAWA'};
 
+let photos = []; // DBから取得後に格納
 let currentArea = 'all';
+
+async function loadPhotos() {
+  try {
+    // space_imagesとspacesをJOINして取得
+    const res = await fetch(SUPABASE_URL + '/rest/v1/space_images?select=url,spaces(id,name,area,prefecture,architect_name,vibe,status)&order=created_at.desc', {
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+    });
+    const data = await res.json();
+    if (!Array.isArray(data)) { console.warn('photos load error', data); return; }
+    // liveの施設の写真だけ
+    photos = data
+      .filter(d => d.spaces && d.spaces.status === 'live')
+      .map(d => {
+        const s = d.spaces;
+        const pref = PREF_MAP[s.prefecture] || (s.prefecture || '').replace(/都|道|府|県/, '').toUpperCase();
+        const area = (s.area || '').toLowerCase().replace(/[\s　]/g, '');
+        return {
+          id: s.id,
+          area: area || pref.toLowerCase(),
+          city: (s.area ? s.area + ' / ' : '') + pref,
+          name: s.name || '',
+          design: s.architect_name || '',
+          tags: Array.isArray(s.vibe) ? s.vibe : (s.vibe ? [s.vibe] : []),
+          href: 'coworkmill-detail.html?id=' + s.id,
+          img: d.url
+        };
+      });
+    renderGrid(photos);
+    buildAreaFilter();
+  } catch(e) { console.warn('loadPhotos error:', e); }
+}
+
+document.addEventListener('DOMContentLoaded', loadPhotos);
 
 function renderGrid(items) {
   const grid = document.getElementById('photo-grid');
