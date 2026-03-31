@@ -719,8 +719,7 @@ async function handlePhotoUpload(input) {
   const currentCount = currentImgs ? currentImgs.length : 0;
   const remaining = photoLimit - currentCount;
   if (remaining <= 0) {
-    alert('写真の上限（' + photoLimit + '枚）に達しています。
-プランをアップグレードすると追加できます。');
+    alert('写真の上限（' + photoLimit + '枚）に達しています。\nプランをアップグレードすると追加できます。');
     if(input.value !== undefined) input.value=''; return;
   }
   const filesToUpload = files.slice(0, remaining);
@@ -796,8 +795,8 @@ async function loadPhotos(dbId) {
       div.innerHTML = '<img src="' + img.url + '" alt="">' +
         (isMain ? '<div class="pmn">メイン</div>' : '') +
         '<div class="pov">' +
-        (!isMain ? '<button class="pact" onclick="setMainPhoto('' + img.url + '','' + dbId + '')">メインに</button>' : '') +
-        '<button class="pact" onclick="deletePhoto('' + img.id + '','' + img.url + '','' + dbId + '')">削除</button>' +
+        (!isMain ? '<button class="pact" onclick="setMainPhoto(\'' + img.url + '\',\'' + dbId + '\')">メインに</button>' : '') +
+        '<button class="pact" onclick="deletePhoto(\'' + img.id + '\',\'' + img.url + '\',\'' + dbId + '\')">削除</button>' +
         '</div>';
       grid.appendChild(div);
     });
