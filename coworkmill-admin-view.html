@@ -227,7 +227,7 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
 
 <div class="main">
   <div class="topbar">
-    <div class="tb-ttl" id="ttl">施設情報の編集 <span style="font-size:11px;font-weight:400;color:var(--g400)">— AOYAMA ATELIER</span></div>
+    <div class="tb-ttl" id="ttl">施設情報の編集</div>
     <span class="tbs live" id="tbs">掲載中</span>
     <div class="tb-r" id="tbr">
       <button class="bol" onclick="window.open('coworkmill-detail.html')">プレビュー →</button>
@@ -236,7 +236,7 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
   </div>
   <div class="banner">
     <div class="ban-ic" id="ban-ic" style="background:linear-gradient(135deg,#79F1A4,#2BB5C8)">AA</div>
-    <span style="font-size:11px;color:#f97316;font-weight:600" id="ban-nm">AOYAMA ATELIER を編集中</span>
+    <span style="font-size:11px;color:#f97316;font-weight:600" id="ban-nm"></span>
     <span class="tbs live" id="ban-st" style="margin-left:4px">掲載中</span>
   </div>
   <div class="content">
@@ -247,7 +247,7 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
       <div class="sc"><div class="slb">今月のページ閲覧</div><div class="sv" id="dv">1,248</div><div class="ss"><span class="sup">↑18%</span> 先月比</div></div>
       <div class="sc"><div class="slb">公式サイトへの遷移</div><div class="sv" id="dc">86</div><div class="ss"><span class="sup">↑12%</span> 先月比</div></div>
       <div class="sc"><div class="slb" style="display:flex;align-items:center;gap:5px"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>Instagram送客</div><div class="sv" id="dig">23</div><div class="ss"><span class="sup">↑9%</span> 先月比</div></div>
-      <div class="sc"><div class="slb">利用者の声（累計）</div><div class="sv" id="dvo">41</div><div class="ss">新着 3件</div></div>
+      <div class="sc"><div class="slb">利用者の声（累計）</div><div class="sv" id="dvo">0</div><div class="ss">新着 0件</div></div>
       <div class="sc"><div class="slb">最多仕事タイプ</div><div class="sv" style="font-size:14px;margin-top:4px" id="dt">Deep Work</div><div class="ss" id="dtc">41人が使用</div></div>
     </div>
     <div class="sec">
@@ -258,7 +258,7 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
 
   <!-- INFO -->
   <div id="p-info">
-    <div class="sbar" id="info-bar"><div class="sdot green"></div><div class="st"><strong>掲載中</strong> — 最終更新: 2026年3月20日</div></div>
+    <div class="sbar" id="info-bar"><div class="sdot gray"></div><div class="st">—</div></div>
     <div class="sec">
       <div class="sec-h"><div><div class="sec-ht">基本情報</div></div></div>
       <div class="sec-b">
@@ -326,7 +326,7 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
           </div>
           <div class="fg">
             <div class="fl">都度利用（ドロップイン）- 1日利用</div>
-            <input class="fin" id="price-daily" placeholder="例：3,300円/1日" value="3,300円/1日">
+            <input class="fin" id="price-daily" placeholder="例：3,300円/1日" value="">
           </div>
         </div>
         <div class="fr">
@@ -548,8 +548,6 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
         <button style="padding:10px 24px;font-size:12px;font-weight:600;color:#fff;background:linear-gradient(135deg,#79F1A4,#2BB5C8);border:none;border-radius:8px;cursor:pointer;">
           写真を選択する
         </button>
-        <input type="file" id="photo-upload-input" accept="image/*" multiple style="display:none;" onchange="handlePhotoUpload(this)">
-      </div>
       <div style="font-size:11px;color:var(--g400);text-align:center;margin-top:12px;">Freeプランは5枚まで掲載可</div>
       <div id="photo-publish-btn" style="display:none;margin-top:24px;text-align:center;">
         <div style="display:flex;gap:10px;justify-content:center;">
@@ -563,58 +561,31 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
         <div style="font-size:11px;color:var(--g400);margin-top:8px;">公開後もいつでも写真の追加・変更ができます</div>
       </div>
     </div>
-    <div id="photo-content">
-    <!-- ダウングレード時の警告バナー（Freeプランで6枚以上登録していた場合） -->
-    <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
-      <div style="font-size:12px;color:#92400e;line-height:1.7">
-        <strong>2枚の写真が非公開</strong>になっています。Freeプランの上限（5枚）を超えています。<br>
-        写真データは保持されています。Standardプランにアップグレードすると再公開されます。
-      </div>
-      <button class="locked-banner-btn" onclick="go('plan',document.querySelectorAll('.nl')[6])">プランを見る →</button>
-    </div>
+    <div id="photo-content" style="display:none;">
     <div class="sec">
       <div class="sec-h">
-        <div><div class="sec-ht">写真管理</div><div class="sec-hs">Freeプラン：5枚まで掲載可（現在7枚登録・2枚非公開）</div></div>
+        <div>
+          <div class="sec-ht">写真管理</div>
+          <div class="sec-hs" id="photo-plan-note">Freeプランは5枚まで掲載可</div>
+        </div>
+        <button onclick="document.getElementById('photo-upload-input').click()" style="padding:8px 16px;font-size:11px;font-weight:600;color:#fff;background:linear-gradient(135deg,#79F1A4,#2BB5C8);border:none;border-radius:6px;cursor:pointer;">+ 写真を追加</button>
       </div>
       <div class="sec-b">
-        <div style="font-size:10px;font-weight:600;color:var(--g600);margin-bottom:10px;letter-spacing:.04em">掲載中（5枚）</div>
-        <div class="pg" style="margin-bottom:16px">
-          <div class="pw"><img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=400&q=80" alt=""><div class="pmn">メイン</div><div class="pov"><button class="pact">削除</button></div></div>
-          <div class="pw"><img src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=400&q=80" alt=""><div class="pov"><button class="pact">メインに</button><button class="pact">削除</button></div></div>
-          <div class="pw"><img src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=400&q=80" alt=""><div class="pov"><button class="pact">メインに</button><button class="pact">削除</button></div></div>
-          <div class="pw"><img src="https://images.unsplash.com/photo-1556761175-4b46a572b786?w=400&q=80" alt=""><div class="pov"><button class="pact">メインに</button><button class="pact">削除</button></div></div>
-          <div class="pw"><img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&q=80" alt=""><div class="pov"><button class="pact">メインに</button><button class="pact">削除</button></div></div>
-        </div>
-        <div style="font-size:10px;font-weight:600;color:var(--g400);margin-bottom:10px;letter-spacing:.04em;display:flex;align-items:center;gap:6px">
-          <span>🔒 非公開（2枚）</span>
-          <span style="font-size:9px;font-weight:400">— アップグレードで再公開</span>
-        </div>
-        <div class="pg">
-          <div class="pw-locked">
-            <img src="https://images.unsplash.com/photo-1572025442646-866d16c84a54?w=400&q=80" alt="">
-            <div class="pw-locked-overlay">
-              <div class="lock-icon" style="font-size:16px">🔒</div>
-              <div class="lock-txt" style="font-size:9px;font-weight:600;color:#fff">非公開</div>
-              <button class="del-btn" onclick="this.closest('.pw-locked').remove()">削除</button>
-            </div>
-          </div>
-          <div class="pw-locked">
-            <img src="https://images.unsplash.com/photo-1524758870432-af57e54afa26?w=400&q=80" alt="">
-            <div class="pw-locked-overlay">
-              <div class="lock-icon" style="font-size:16px">🔒</div>
-              <div class="lock-txt" style="font-size:9px;font-weight:600;color:#fff">非公開</div>
-              <button class="del-btn" onclick="this.closest('.pw-locked').remove()">削除</button>
-            </div>
-          </div>
-        </div>
+        <div id="photo-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;"></div>
+        <div id="photo-empty-msg" style="display:none;text-align:center;padding:32px;color:var(--g400);font-size:13px;">まだ写真がありません</div>
       </div>
     </div>
-    </div><!-- /photo-content -->
+    <div style="margin-top:16px;text-align:center;">
+      <button onclick="window.open('coworkmill-detail.html?id=' + (facs[cur] && facs[cur].db_id || ''))" style="padding:10px 24px;font-size:12px;font-weight:500;color:var(--g600);background:#fff;border:1px solid var(--g200);border-radius:8px;cursor:pointer;margin-right:8px;">プレビュー →</button>
+      <button onclick="pubFac()" style="padding:10px 28px;font-size:12px;font-weight:600;color:#fff;background:linear-gradient(135deg,#f97316,#ea580c);border:none;border-radius:8px;cursor:pointer;">🚀 公開する</button>
+    </div>
+    <input type="file" id="photo-upload-input" accept="image/*" multiple style="display:none;" onchange="handlePhotoUpload(this)">
+  </div><!-- /photo-content -->
   </div>
 
   <!-- VOICE -->
   <div id="p-voice" style="display:none">
-    <div class="sbar"><div class="sdot amber"></div><div class="st">新着の声が <strong>3件</strong> 届いています</div></div>
+    <div class="sbar" id="voice-bar"><div class="sdot gray"></div><div class="st">新着の声はありません</div></div>
     <div class="sec">
       <div class="sec-h"><div><div class="sec-ht">利用者の声</div><div class="sec-hs">承認した声のみ掲載ページに表示されます</div></div></div>
       <div class="sec-b">
@@ -638,7 +609,7 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
     <div class="sec">
       <div class="sec-h"><div><div class="sec-ht">企業情報</div><div class="sec-hs">運営会社・請求先情報（非公開）</div></div></div>
       <div class="sec-b">
-        <div class="fr"><div class="fg"><div class="fl">運営会社名<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><input class="fin" value="株式会社アオヤマワークス"></div><div class="fg"><div class="fl">法人番号</div><input class="fin" placeholder="1234567890123"></div></div>
+        <div class="fr"><div class="fg"><div class="fl">運営会社名<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><input class="fin" value=""></div><div class="fg"><div class="fl">法人番号</div><input class="fin" placeholder="1234567890123"></div></div>
         <div class="fr full"><div class="fg"><div class="fl">請求先住所</div><input class="fin" value=""></div></div>
         <div style="margin-bottom:20px;padding:10px 12px;background:var(--g50);border-radius:5px;border:1px solid var(--g100);font-size:9px;color:var(--g400)">🏢 運営会社情報は請求・契約管理に使用します。掲載ページには表示されません。</div>
         <div style="font-size:12px;font-weight:500;margin-bottom:14px;padding-top:4px;border-top:1px solid var(--g100)">担当者情報</div>
@@ -677,7 +648,7 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
       <div class="sec-b">
         <div class="ug">
           <div class="uc"><div class="ulb">画像数</div><div class="uv">4 <span style="font-size:11px;color:var(--g400)">/ 20枚</span></div><div class="ubr"><div class="uf" style="width:20%"></div></div><div class="usb">あと16枚追加できます</div></div>
-          <div class="uc"><div class="ulb">掲載施設数</div><div class="uv">2 <span style="font-size:11px;color:var(--g400)">/ 5件</span></div><div class="ubr"><div class="uf" style="width:40%"></div></div><div class="usb">あと3件追加できます</div></div>
+          <div class="uc"><div class="ulb">掲載施設数</div><div class="uv">0 <span style="font-size:11px;color:var(--g400)">/ 5件</span></div><div class="ubr"><div class="uf" style="width:40%"></div></div><div class="usb">あと3件追加できます</div></div>
           <div class="uc"><div class="ulb">表示バッジ</div><div class="uv" style="font-size:14px;margin-top:4px">✓ 利用可</div><div style="font-size:9px;color:var(--g400);margin-top:8px">Standardバッジ表示中</div></div>
         </div>
       </div>
@@ -731,14 +702,121 @@ function updateAddBtn() {
   }
 }
 
-function handlePhotoUpload(input) {
+async function handlePhotoUpload(input) {
   if (!input.files || input.files.length === 0) return;
   const files = Array.from(input.files);
-  alert(files.length + '枚の写真を選択しました。\n\n※現在、写真のアップロード機能は準備中です。\nSupabase Storage連携後に利用できるようになります。');
-  // 写真登録後：公開ボタンを表示・ステップインジケーターを非表示
-  if (facs[cur]) { facs[cur].from_new = false; facs[cur].has_photos = true; }
-  const si = document.getElementById('step-indicator-photo'); if(si) si.style.display='none';
-  const pb = document.getElementById('photo-publish-btn'); if(pb) pb.style.display='block';
+  const dbId = facs[cur] && facs[cur].db_id;
+  if (!dbId) { alert('先に施設情報を保存してください。'); input.value=''; return; }
+
+  const STORAGE_URL = SUPABASE_URL + '/storage/v1/object/space-images/';
+  let uploaded = 0;
+
+  for (const file of files) {
+    const ext = file.name.split('.').pop().toLowerCase();
+    const path = dbId + '/' + Date.now() + '_' + Math.random().toString(36).slice(2) + '.' + ext;
+    try {
+      // Storageにアップロード
+      const upRes = await fetch(STORAGE_URL + path, {
+        method: 'POST',
+        headers: {
+          'apikey': SUPABASE_KEY,
+          'Authorization': 'Bearer ' + SUPABASE_KEY,
+          'Content-Type': file.type,
+          'x-upsert': 'true'
+        },
+        body: file
+      });
+      if (!upRes.ok) { console.warn('upload failed', await upRes.text()); continue; }
+
+      const publicUrl = SUPABASE_URL + '/storage/v1/object/public/space-images/' + path;
+
+      // space_imagesテーブルに登録
+      await sbFetch('/rest/v1/space_images', {
+        method: 'POST',
+        body: JSON.stringify({ space_id: dbId, url: publicUrl })
+      });
+
+      // 最初の1枚はimage_mainにも設定
+      if (uploaded === 0 && !(facs[cur] && facs[cur].has_photos)) {
+        await sbFetch('/rest/v1/spaces?id=eq.' + dbId, {
+          method: 'PATCH',
+          body: JSON.stringify({ image_main: publicUrl })
+        });
+      }
+      uploaded++;
+    } catch(e) { console.warn('upload error:', e); }
+  }
+
+  if (uploaded > 0) {
+    if (facs[cur]) { facs[cur].from_new = false; facs[cur].has_photos = true; }
+    const si = document.getElementById('step-indicator-photo'); if(si) si.style.display='none';
+    await loadPhotos(dbId);
+    alert(uploaded + '枚アップロードしました！');
+  } else {
+    alert('アップロードに失敗しました。Storage設定を確認してください。');
+  }
+  input.value = '';
+}
+
+async function loadPhotos(dbId) {
+  const grid = document.getElementById('photo-grid');
+  const emptyMsg = document.getElementById('photo-empty-msg');
+  const photoContent = document.getElementById('photo-content');
+  if (!grid) return;
+
+  try {
+    const imgs = await sbFetch('/rest/v1/space_images?space_id=eq.' + dbId + '&select=id,url&order=created_at.asc');
+    // メイン画像も取得
+    const spaceData = await sbFetch('/rest/v1/spaces?id=eq.' + dbId + '&select=image_main');
+    const mainUrl = spaceData && spaceData[0] ? spaceData[0].image_main : null;
+
+    grid.innerHTML = '';
+    if (!imgs || imgs.length === 0) {
+      if (emptyMsg) emptyMsg.style.display = 'block';
+      if (photoContent) photoContent.style.display = 'block';
+      return;
+    }
+    if (emptyMsg) emptyMsg.style.display = 'none';
+    if (photoContent) photoContent.style.display = 'block';
+
+    imgs.forEach(img => {
+      const isMain = img.url === mainUrl;
+      const div = document.createElement('div');
+      div.style.cssText = 'position:relative;border-radius:8px;overflow:hidden;aspect-ratio:4/3;background:#111;';
+      div.innerHTML = `
+        <img src="${img.url}" style="width:100%;height:100%;object-fit:cover;">
+        ${isMain ? '<div style="position:absolute;top:6px;left:6px;background:#2BB5C8;color:#fff;font-size:9px;font-weight:700;padding:2px 7px;border-radius:3px;letter-spacing:.04em;">メイン</div>' : ''}
+        <div style="position:absolute;inset:0;background:rgba(0,0,0,0);transition:background .2s;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px;gap:6px;opacity:0;" 
+             onmouseover="this.style.background='rgba(0,0,0,.5)';this.style.opacity='1';"
+             onmouseout="this.style.background='rgba(0,0,0,0)';this.style.opacity='0';">
+          ${!isMain ? `<button onclick="setMainPhoto('${img.url}','${dbId}')" style="padding:4px 10px;font-size:10px;background:#fff;border:none;border-radius:4px;cursor:pointer;">メインに</button>` : ''}
+          <button onclick="deletePhoto('${img.id}','${img.url}','${dbId}')" style="padding:4px 10px;font-size:10px;background:#ef4444;color:#fff;border:none;border-radius:4px;cursor:pointer;">削除</button>
+        </div>`;
+      grid.appendChild(div);
+    });
+  } catch(e) { console.warn('loadPhotos error:', e); }
+}
+
+async function setMainPhoto(url, dbId) {
+  await sbFetch('/rest/v1/spaces?id=eq.' + dbId, {
+    method: 'PATCH',
+    body: JSON.stringify({ image_main: url })
+  });
+  await loadPhotos(dbId);
+}
+
+async function deletePhoto(imgId, url, dbId) {
+  if (!confirm('この写真を削除しますか？')) return;
+  await sbFetch('/rest/v1/space_images?id=eq.' + imgId, { method: 'DELETE' });
+  // メイン画像だった場合はクリア
+  const spaceData = await sbFetch('/rest/v1/spaces?id=eq.' + dbId + '&select=image_main');
+  if (spaceData && spaceData[0] && spaceData[0].image_main === url) {
+    await sbFetch('/rest/v1/spaces?id=eq.' + dbId, {
+      method: 'PATCH',
+      body: JSON.stringify({ image_main: null })
+    });
+  }
+  await loadPhotos(dbId);
 }
 
 function setStep(n) {
@@ -921,7 +999,7 @@ const facs = [
 ];
 
 const archData = [
-  {st:'registered', nm:'Kengo Kuma',  org:'隈研吾建築都市設計事務所', updated:'2026年2月'},
+  
   {st:'pending',    nm:'DRAFT, INC.', org:'', updated:''},
   {st:'none',       nm:'', org:'', updated:''},
 ];
@@ -1010,6 +1088,16 @@ function go(id, el) {
   document.getElementById('ttl').innerHTML = ttls[id] + ' <span style="font-size:11px;font-weight:400;color:var(--g400)">— ' + f.nm + '</span>';
   if(id === 'db') renderDash(f.dash);
   if(id === 'photo') {
+    // 既存施設の写真を読み込む
+    const dbId = facs[cur] && facs[cur].db_id;
+    if (dbId) {
+      loadPhotos(dbId);
+    } else {
+      const photoContent = document.getElementById('photo-content');
+      const photoEmpty = document.getElementById('photo-empty');
+      if (photoContent) photoContent.style.display = 'none';
+      if (photoEmpty) photoEmpty.style.display = 'block';
+    }
     const stepPhoto = document.getElementById('step-indicator-photo');
     if (stepPhoto) stepPhoto.style.display = (facs[cur] && facs[cur].from_new === true && facs[cur].has_photos === false) ? 'flex' : 'none';
     const photoEmpty = document.getElementById('photo-empty');
@@ -1056,7 +1144,7 @@ function swFac(id) {
   bst.textContent = f.st==='live' ? '掲載中' : f.st==='locked' ? '非公開' : '下書き';
   bst.className = 'tbs ' + (f.st==='locked' ? 'draft' : f.st);
   const bar = document.getElementById('info-bar');
-  if(f.st==='live') bar.innerHTML = '<div class="sdot green"></div><div class="st"><strong>掲載中</strong> — 最終更新: 2026年3月20日</div>';
+  if(f.st==='live') bar.innerHTML = '<div class="sdot green"></div><div class="st"><strong>掲載中</strong></div>';
   else if(f.st==='locked') bar.innerHTML = '<div class="sdot" style="background:#a0a0a0"></div><div class="st"><strong>非公開</strong> — Standardプランにアップグレードすると再公開できます</div>';
   else bar.innerHTML = '<div class="sdot amber"></div><div class="st"><strong>下書き</strong> — 情報を入力して内容を保存してください。</div>';
   // DBから施設データを取得してフォームに反映
