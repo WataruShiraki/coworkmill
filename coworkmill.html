@@ -103,11 +103,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:56px;display:flex;ali
 .hero{min-height:100vh;padding-top:56px;background:var(--black);display:flex;flex-direction:column;position:relative;overflow:hidden}
 .hero-bg-tiles{position:absolute;inset:0;display:grid;grid-template-columns:repeat(5,1fr);gap:3px;opacity:.35;filter:brightness(.7)}
 .hero-tile{background-size:cover;background-position:center}
-.hero-tile:nth-child(1){background-image:url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=70')}
-.hero-tile:nth-child(2){background-image:url('https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&q=70')}
-.hero-tile:nth-child(3){background-image:url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=70')}
-.hero-tile:nth-child(4){background-image:url('https://images.unsplash.com/photo-1556761175-4b46a572b786?w=600&q=70')}
-.hero-tile:nth-child(5){background-image:url('https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=600&q=70')}
 .hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.5) 0%,rgba(0,0,0,.65) 60%,rgba(0,0,0,.9) 100%)}
 .hero-center{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;padding:60px 40px 48px;text-align:center}
 .hero-eyebrow{font-family:'Montserrat',sans-serif;font-size:9px;font-weight:300;letter-spacing:.4em;text-transform:uppercase;color:rgba(255,255,255,.7);margin-bottom:24px}
@@ -200,12 +195,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:56px;display:flex;ali
 .card{background:var(--white);border:1px solid var(--gray-100);border-radius:12px;overflow:hidden;cursor:pointer;transition:all .25s;display:flex;flex-direction:column}
 .card:hover{border-color:var(--black);transform:translateY(-4px)}
 .card-img{height:200px;position:relative;overflow:hidden}
-.card:nth-child(1) .card-img{background:url("https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800&q=80") center/cover no-repeat;}
-.card:nth-child(2) .card-img{background:url("https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&q=80") center/cover no-repeat;}
-.card:nth-child(3) .card-img{background:url("https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=80") center/cover no-repeat;}
-.card:nth-child(4) .card-img{background:url("https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800&q=80") center/cover no-repeat;}
-.card:nth-child(5) .card-img{background:url("https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800&q=80") center/cover no-repeat;}
-.card:nth-child(6) .card-img{background:url("https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=80") center/cover no-repeat;}
 .card-badge-wrap{position:absolute;top:12px;left:12px;display:flex;gap:6px}
 .cbadge{font-family:var(--font-display);font-size:11px;font-weight:700;letter-spacing:.06em;padding:5px 12px;border-radius:4px}
 .cbadge-pick{background:linear-gradient(135deg,#C47ED4,#8B3FA8);color:#fff;box-shadow:0 2px 8px rgba(139,63,168,.45)}
@@ -559,15 +548,13 @@ footer{background:#0a1628;padding:64px 80px 40px;color:#fff;position:relative;ov
 
   <!-- SCROLLING TILES -->
   <div class="hero-scroll-tiles">
-    <div class="hero-tiles-track">
-      <a href="coworkmill-detail.html" class="hero-tile-card" style="background-image:url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=400&q=80')"><div class="hero-tile-card-overlay"></div><div class="hero-tile-card-info"><div class="hero-tile-city">表参道 / TOKYO</div><div class="hero-tile-name">AOYAMA ATELIER</div></div></a><a href="coworkmill-detail.html" class="hero-tile-card" style="background-image:url('https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400&q=80')"><div class="hero-tile-card-overlay"></div><div class="hero-tile-card-info"><div class="hero-tile-city">南堀江 / OSAKA</div><div class="hero-tile-name">THE WAREHOUSE</div></div></a><a href="coworkmill-detail.html" class="hero-tile-card" style="background-image:url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&q=80')"><div class="hero-tile-card-overlay"></div><div class="hero-tile-card-info"><div class="hero-tile-city">中京区 / KYOTO</div><div class="hero-tile-name">MACHIYA WORK</div></div></a><a href="coworkmill-detail.html" class="hero-tile-card" style="background-image:url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=400&q=80')"><div class="hero-tile-card-overlay"></div><div class="hero-tile-card-info"><div class="hero-tile-city">天神 / FUKUOKA</div><div class="hero-tile-name">TENJIN STUDIO</div></div></a><a href="coworkmill-detail.html" class="hero-tile-card" style="background-image:url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&q=80')"><div class="hero-tile-card-overlay"></div><div class="hero-tile-card-info"><div class="hero-tile-city">山手 / YOKOHAMA</div><div class="hero-tile-name">HARBOR VIEW</div></div></a><a href="coworkmill-detail.html" class="hero-tile-card" style="background-image:url('https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=400&q=80')"><div class="hero-tile-card-overlay"></div><div class="hero-tile-card-info"><div class="hero-tile-city">中央区 / SAPPORO</div><div class="hero-tile-name">SHIRO STUDIO</div></div></a><a href="coworkmill-detail.html" class="hero-tile-card" style="background-image:url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&q=80')"><div class="hero-tile-card-overlay"></div><div class="hero-tile-card-info"><div class="hero-tile-city">丸の内 / TOKYO</div><div class="hero-tile-name">MARUNOUCHI KK</div></div></a><a href="coworkmill-detail.html" class="hero-tile-card" style="background-image:url('https://images.unsplash.com/photo-1556761175-4b46a572b786?w=400&q=80')"><div class="hero-tile-card-overlay"></div><div class="hero-tile-card-info"><div class="hero-tile-city">渋谷 / TOKYO</div><div class="hero-tile-name">SHIBUYA CRAFT</div></div></a><a href="coworkmill-detail.html" class="hero-tile-card" style="background-image:url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=400&q=80')"><div class="hero-tile-card-overlay"></div><div class="hero-tile-card-info"><div class="hero-tile-city">表参道 / TOKYO</div><div class="hero-tile-name">AOYAMA ATELIER</div></div></a><a href="coworkmill-detail.html" class="hero-tile-card" style="background-image:url('https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400&q=80')"><div class="hero-tile-card-overlay"></div><div class="hero-tile-card-info"><div class="hero-tile-city">南堀江 / OSAKA</div><div class="hero-tile-name">THE WAREHOUSE</div></div></a><a href="coworkmill-detail.html" class="hero-tile-card" style="background-image:url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&q=80')"><div class="hero-tile-card-overlay"></div><div class="hero-tile-card-info"><div class="hero-tile-city">中京区 / KYOTO</div><div class="hero-tile-name">MACHIYA WORK</div></div></a><a href="coworkmill-detail.html" class="hero-tile-card" style="background-image:url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=400&q=80')"><div class="hero-tile-card-overlay"></div><div class="hero-tile-card-info"><div class="hero-tile-city">天神 / FUKUOKA</div><div class="hero-tile-name">TENJIN STUDIO</div></div></a><a href="coworkmill-detail.html" class="hero-tile-card" style="background-image:url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&q=80')"><div class="hero-tile-card-overlay"></div><div class="hero-tile-card-info"><div class="hero-tile-city">山手 / YOKOHAMA</div><div class="hero-tile-name">HARBOR VIEW</div></div></a><a href="coworkmill-detail.html" class="hero-tile-card" style="background-image:url('https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=400&q=80')"><div class="hero-tile-card-overlay"></div><div class="hero-tile-card-info"><div class="hero-tile-city">中央区 / SAPPORO</div><div class="hero-tile-name">SHIRO STUDIO</div></div></a><a href="coworkmill-detail.html" class="hero-tile-card" style="background-image:url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&q=80')"><div class="hero-tile-card-overlay"></div><div class="hero-tile-card-info"><div class="hero-tile-city">丸の内 / TOKYO</div><div class="hero-tile-name">MARUNOUCHI KK</div></div></a><a href="coworkmill-detail.html" class="hero-tile-card" style="background-image:url('https://images.unsplash.com/photo-1556761175-4b46a572b786?w=400&q=80')"><div class="hero-tile-card-overlay"></div><div class="hero-tile-card-info"><div class="hero-tile-city">渋谷 / TOKYO</div><div class="hero-tile-name">SHIBUYA CRAFT</div></div></a>
+    <div class="hero-tiles-track"></div><div class="hero-tile-card-info"><div class="hero-tile-city">表参道 / TOKYO</div><div class="hero-tile-name">AOYAMA ATELIER</div></div></a><a href="coworkmill-detail.html" class="hero-tile-card" style="background-image:url('https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400&q=80')"><div class="hero-tile-card-overlay"></div><div class="hero-tile-card-info"><div class="hero-tile-city">南堀江 / OSAKA</div><div class="hero-tile-name">THE WAREHOUSE</div></div></a><a href="coworkmill-detail.html" class="hero-tile-card" style="background-image:url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&q=80')"><div class="hero-tile-card-overlay"></div><div class="hero-tile-card-info"><div class="hero-tile-city">中京区 / KYOTO</div><div class="hero-tile-name">MACHIYA WORK</div></div></a><a href="coworkmill-detail.html" class="hero-tile-card" style="background-image:url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=400&q=80')"><div class="hero-tile-card-overlay"></div><div class="hero-tile-card-info"><div class="hero-tile-city">天神 / FUKUOKA</div><div class="hero-tile-name">TENJIN STUDIO</div></div></a><a href="coworkmill-detail.html" class="hero-tile-card" style="background-image:url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&q=80')"><div class="hero-tile-card-overlay"></div><div class="hero-tile-card-info"><div class="hero-tile-city">山手 / YOKOHAMA</div><div class="hero-tile-name">HARBOR VIEW</div></div></a><a href="coworkmill-detail.html" class="hero-tile-card" style="background-image:url('https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=400&q=80')"><div class="hero-tile-card-overlay"></div><div class="hero-tile-card-info"><div class="hero-tile-city">中央区 / SAPPORO</div><div class="hero-tile-name">SHIRO STUDIO</div></div></a><a href="coworkmill-detail.html" class="hero-tile-card" style="background-image:url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&q=80')"><div class="hero-tile-card-overlay"></div><div class="hero-tile-card-info"><div class="hero-tile-city">丸の内 / TOKYO</div><div class="hero-tile-name">MARUNOUCHI KK</div></div></a><a href="coworkmill-detail.html" class="hero-tile-card" style="background-image:url('https://images.unsplash.com/photo-1556761175-4b46a572b786?w=400&q=80')"><div class="hero-tile-card-overlay"></div><div class="hero-tile-card-info"><div class="hero-tile-city">渋谷 / TOKYO</div><div class="hero-tile-name">SHIBUYA CRAFT</div></div></a><a href="coworkmill-detail.html" class="hero-tile-card" style="background-image:url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=400&q=80')"><div class="hero-tile-card-overlay"></div><div class="hero-tile-card-info"><div class="hero-tile-city">表参道 / TOKYO</div><div class="hero-tile-name">AOYAMA ATELIER</div></div></a><a href="coworkmill-detail.html" class="hero-tile-card" style="background-image:url('https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400&q=80')"><div class="hero-tile-card-overlay"></div><div class="hero-tile-card-info"><div class="hero-tile-city">南堀江 / OSAKA</div><div class="hero-tile-name">THE WAREHOUSE</div></div></a><a href="coworkmill-detail.html" class="hero-tile-card" style="background-image:url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&q=80')"><div class="hero-tile-card-overlay"></div><div class="hero-tile-card-info"><div class="hero-tile-city">中京区 / KYOTO</div><div class="hero-tile-name">MACHIYA WORK</div></div></a><a href="coworkmill-detail.html" class="hero-tile-card" style="background-image:url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=400&q=80')"><div class="hero-tile-card-overlay"></div><div class="hero-tile-card-info"><div class="hero-tile-city">天神 / FUKUOKA</div><div class="hero-tile-name">TENJIN STUDIO</div></div></a><a href="coworkmill-detail.html" class="hero-tile-card" style="background-image:url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&q=80')"><div class="hero-tile-card-overlay"></div><div class="hero-tile-card-info"><div class="hero-tile-city">山手 / YOKOHAMA</div><div class="hero-tile-name">HARBOR VIEW</div></div></a><a href="coworkmill-detail.html" class="hero-tile-card" style="background-image:url('https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=400&q=80')"><div class="hero-tile-card-overlay"></div><div class="hero-tile-card-info"><div class="hero-tile-city">中央区 / SAPPORO</div><div class="hero-tile-name">SHIRO STUDIO</div></div></a><a href="coworkmill-detail.html" class="hero-tile-card" style="background-image:url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&q=80')"><div class="hero-tile-card-overlay"></div><div class="hero-tile-card-info"><div class="hero-tile-city">丸の内 / TOKYO</div><div class="hero-tile-name">MARUNOUCHI KK</div></div></a><a href="coworkmill-detail.html" class="hero-tile-card" style="background-image:url('https://images.unsplash.com/photo-1556761175-4b46a572b786?w=400&q=80')"><div class="hero-tile-card-overlay"></div><div class="hero-tile-card-info"><div class="hero-tile-city">渋谷 / TOKYO</div><div class="hero-tile-name">SHIBUYA CRAFT</div></div></a>
     </div>
   </div>
 
   <!-- ARCHITECT TRACK -->
   <div style="width:100%;overflow:hidden;padding-bottom:48px;flex-shrink:0">
-    <div class="hero-arch-track">
-      <a href="coworkmill-architect.html" class="hero-arch-card"><div class="hero-arch-photo" style="background-image:url('https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=85');filter:grayscale(100%) contrast(1.1);"></div><div class="hero-arch-card-overlay"></div><div class="hero-arch-card-info"><div class="hero-arch-label">Architect</div><div class="hero-arch-name">Kengo Kuma</div><div class="hero-arch-cnt">3 spaces</div></div></a><a href="coworkmill-architect.html" class="hero-arch-card"><div class="hero-arch-photo" style="background-image:url('https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=85');filter:grayscale(100%) contrast(1.1);"></div><div class="hero-arch-card-overlay"></div><div class="hero-arch-card-info"><div class="hero-arch-label">Architect</div><div class="hero-arch-name">Sou Fujimoto</div><div class="hero-arch-cnt">2 spaces</div></div></a><a href="coworkmill-architect.html" class="hero-arch-card"><div class="hero-arch-photo" style="background-image:url('https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=85');filter:grayscale(100%) contrast(1.1);"></div><div class="hero-arch-card-overlay"></div><div class="hero-arch-card-info"><div class="hero-arch-label">Architect</div><div class="hero-arch-name">SANAA</div><div class="hero-arch-cnt">2 spaces</div></div></a><a href="coworkmill-architect.html" class="hero-arch-card"><div class="hero-arch-photo" style="background-image:url('https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&q=85');filter:grayscale(100%) contrast(1.1);"></div><div class="hero-arch-card-overlay"></div><div class="hero-arch-card-info"><div class="hero-arch-label">Architect</div><div class="hero-arch-name">Gensler</div><div class="hero-arch-cnt">4 spaces</div></div></a><a href="coworkmill-architect.html" class="hero-arch-card"><div class="hero-arch-photo" style="background-image:url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=85');filter:grayscale(100%) contrast(1.1);"></div><div class="hero-arch-card-overlay"></div><div class="hero-arch-card-info"><div class="hero-arch-label">Architect</div><div class="hero-arch-name">DRAFT, INC.</div><div class="hero-arch-cnt">3 spaces</div></div></a><a href="coworkmill-architect.html" class="hero-arch-card"><div class="hero-arch-photo" style="background-image:url('https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&q=85');filter:grayscale(100%) contrast(1.1);"></div><div class="hero-arch-card-overlay"></div><div class="hero-arch-card-info"><div class="hero-arch-label">Architect</div><div class="hero-arch-name">Tadao Ando</div><div class="hero-arch-cnt">1 space</div></div></a><a href="coworkmill-architect.html" class="hero-arch-card"><div class="hero-arch-photo" style="background-image:url('https://images.unsplash.com/photo-1463453091185-61582044d556?w=400&q=85');filter:grayscale(100%) contrast(1.1);"></div><div class="hero-arch-card-overlay"></div><div class="hero-arch-card-info"><div class="hero-arch-label">Architect</div><div class="hero-arch-name">Tsuyoshi Tane</div><div class="hero-arch-cnt">1 space</div></div></a><a href="coworkmill-architect.html" class="hero-arch-card"><div class="hero-arch-photo" style="background-image:url('https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=85');filter:grayscale(100%) contrast(1.1);"></div><div class="hero-arch-card-overlay"></div><div class="hero-arch-card-info"><div class="hero-arch-label">Architect</div><div class="hero-arch-name">Nikken Sekkei</div><div class="hero-arch-cnt">2 spaces</div></div></a><a href="coworkmill-architect.html" class="hero-arch-card"><div class="hero-arch-photo" style="background-image:url('https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=85');filter:grayscale(100%) contrast(1.1);"></div><div class="hero-arch-card-overlay"></div><div class="hero-arch-card-info"><div class="hero-arch-label">Architect</div><div class="hero-arch-name">Kengo Kuma</div><div class="hero-arch-cnt">3 spaces</div></div></a><a href="coworkmill-architect.html" class="hero-arch-card"><div class="hero-arch-photo" style="background-image:url('https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=85');filter:grayscale(100%) contrast(1.1);"></div><div class="hero-arch-card-overlay"></div><div class="hero-arch-card-info"><div class="hero-arch-label">Architect</div><div class="hero-arch-name">Sou Fujimoto</div><div class="hero-arch-cnt">2 spaces</div></div></a><a href="coworkmill-architect.html" class="hero-arch-card"><div class="hero-arch-photo" style="background-image:url('https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=85');filter:grayscale(100%) contrast(1.1);"></div><div class="hero-arch-card-overlay"></div><div class="hero-arch-card-info"><div class="hero-arch-label">Architect</div><div class="hero-arch-name">SANAA</div><div class="hero-arch-cnt">2 spaces</div></div></a><a href="coworkmill-architect.html" class="hero-arch-card"><div class="hero-arch-photo" style="background-image:url('https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&q=85');filter:grayscale(100%) contrast(1.1);"></div><div class="hero-arch-card-overlay"></div><div class="hero-arch-card-info"><div class="hero-arch-label">Architect</div><div class="hero-arch-name">Gensler</div><div class="hero-arch-cnt">4 spaces</div></div></a><a href="coworkmill-architect.html" class="hero-arch-card"><div class="hero-arch-photo" style="background-image:url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=85');filter:grayscale(100%) contrast(1.1);"></div><div class="hero-arch-card-overlay"></div><div class="hero-arch-card-info"><div class="hero-arch-label">Architect</div><div class="hero-arch-name">DRAFT, INC.</div><div class="hero-arch-cnt">3 spaces</div></div></a><a href="coworkmill-architect.html" class="hero-arch-card"><div class="hero-arch-photo" style="background-image:url('https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&q=85');filter:grayscale(100%) contrast(1.1);"></div><div class="hero-arch-card-overlay"></div><div class="hero-arch-card-info"><div class="hero-arch-label">Architect</div><div class="hero-arch-name">Tadao Ando</div><div class="hero-arch-cnt">1 space</div></div></a><a href="coworkmill-architect.html" class="hero-arch-card"><div class="hero-arch-photo" style="background-image:url('https://images.unsplash.com/photo-1463453091185-61582044d556?w=400&q=85');filter:grayscale(100%) contrast(1.1);"></div><div class="hero-arch-card-overlay"></div><div class="hero-arch-card-info"><div class="hero-arch-label">Architect</div><div class="hero-arch-name">Tsuyoshi Tane</div><div class="hero-arch-cnt">1 space</div></div></a><a href="coworkmill-architect.html" class="hero-arch-card"><div class="hero-arch-photo" style="background-image:url('https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=85');filter:grayscale(100%) contrast(1.1);"></div><div class="hero-arch-card-overlay"></div><div class="hero-arch-card-info"><div class="hero-arch-label">Architect</div><div class="hero-arch-name">Nikken Sekkei</div><div class="hero-arch-cnt">2 spaces</div></div></a>
+    <div class="hero-arch-track"></div><div class="hero-arch-card-overlay"></div><div class="hero-arch-card-info"><div class="hero-arch-label">Architect</div><div class="hero-arch-name">Kengo Kuma</div><div class="hero-arch-cnt">3 spaces</div></div></a><a href="coworkmill-architect.html" class="hero-arch-card"><div class="hero-arch-photo" style="background-image:url('https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=85');filter:grayscale(100%) contrast(1.1);"></div><div class="hero-arch-card-overlay"></div><div class="hero-arch-card-info"><div class="hero-arch-label">Architect</div><div class="hero-arch-name">Sou Fujimoto</div><div class="hero-arch-cnt">2 spaces</div></div></a><a href="coworkmill-architect.html" class="hero-arch-card"><div class="hero-arch-photo" style="background-image:url('https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=85');filter:grayscale(100%) contrast(1.1);"></div><div class="hero-arch-card-overlay"></div><div class="hero-arch-card-info"><div class="hero-arch-label">Architect</div><div class="hero-arch-name">SANAA</div><div class="hero-arch-cnt">2 spaces</div></div></a><a href="coworkmill-architect.html" class="hero-arch-card"><div class="hero-arch-photo" style="background-image:url('https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&q=85');filter:grayscale(100%) contrast(1.1);"></div><div class="hero-arch-card-overlay"></div><div class="hero-arch-card-info"><div class="hero-arch-label">Architect</div><div class="hero-arch-name">Gensler</div><div class="hero-arch-cnt">4 spaces</div></div></a><a href="coworkmill-architect.html" class="hero-arch-card"><div class="hero-arch-photo" style="background-image:url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=85');filter:grayscale(100%) contrast(1.1);"></div><div class="hero-arch-card-overlay"></div><div class="hero-arch-card-info"><div class="hero-arch-label">Architect</div><div class="hero-arch-name">DRAFT, INC.</div><div class="hero-arch-cnt">3 spaces</div></div></a><a href="coworkmill-architect.html" class="hero-arch-card"><div class="hero-arch-photo" style="background-image:url('https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&q=85');filter:grayscale(100%) contrast(1.1);"></div><div class="hero-arch-card-overlay"></div><div class="hero-arch-card-info"><div class="hero-arch-label">Architect</div><div class="hero-arch-name">Tadao Ando</div><div class="hero-arch-cnt">1 space</div></div></a><a href="coworkmill-architect.html" class="hero-arch-card"><div class="hero-arch-photo" style="background-image:url('https://images.unsplash.com/photo-1463453091185-61582044d556?w=400&q=85');filter:grayscale(100%) contrast(1.1);"></div><div class="hero-arch-card-overlay"></div><div class="hero-arch-card-info"><div class="hero-arch-label">Architect</div><div class="hero-arch-name">Tsuyoshi Tane</div><div class="hero-arch-cnt">1 space</div></div></a><a href="coworkmill-architect.html" class="hero-arch-card"><div class="hero-arch-photo" style="background-image:url('https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=85');filter:grayscale(100%) contrast(1.1);"></div><div class="hero-arch-card-overlay"></div><div class="hero-arch-card-info"><div class="hero-arch-label">Architect</div><div class="hero-arch-name">Nikken Sekkei</div><div class="hero-arch-cnt">2 spaces</div></div></a><a href="coworkmill-architect.html" class="hero-arch-card"><div class="hero-arch-photo" style="background-image:url('https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=85');filter:grayscale(100%) contrast(1.1);"></div><div class="hero-arch-card-overlay"></div><div class="hero-arch-card-info"><div class="hero-arch-label">Architect</div><div class="hero-arch-name">Kengo Kuma</div><div class="hero-arch-cnt">3 spaces</div></div></a><a href="coworkmill-architect.html" class="hero-arch-card"><div class="hero-arch-photo" style="background-image:url('https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=400&q=85');filter:grayscale(100%) contrast(1.1);"></div><div class="hero-arch-card-overlay"></div><div class="hero-arch-card-info"><div class="hero-arch-label">Architect</div><div class="hero-arch-name">Sou Fujimoto</div><div class="hero-arch-cnt">2 spaces</div></div></a><a href="coworkmill-architect.html" class="hero-arch-card"><div class="hero-arch-photo" style="background-image:url('https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=85');filter:grayscale(100%) contrast(1.1);"></div><div class="hero-arch-card-overlay"></div><div class="hero-arch-card-info"><div class="hero-arch-label">Architect</div><div class="hero-arch-name">SANAA</div><div class="hero-arch-cnt">2 spaces</div></div></a><a href="coworkmill-architect.html" class="hero-arch-card"><div class="hero-arch-photo" style="background-image:url('https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=400&q=85');filter:grayscale(100%) contrast(1.1);"></div><div class="hero-arch-card-overlay"></div><div class="hero-arch-card-info"><div class="hero-arch-label">Architect</div><div class="hero-arch-name">Gensler</div><div class="hero-arch-cnt">4 spaces</div></div></a><a href="coworkmill-architect.html" class="hero-arch-card"><div class="hero-arch-photo" style="background-image:url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=85');filter:grayscale(100%) contrast(1.1);"></div><div class="hero-arch-card-overlay"></div><div class="hero-arch-card-info"><div class="hero-arch-label">Architect</div><div class="hero-arch-name">DRAFT, INC.</div><div class="hero-arch-cnt">3 spaces</div></div></a><a href="coworkmill-architect.html" class="hero-arch-card"><div class="hero-arch-photo" style="background-image:url('https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&q=85');filter:grayscale(100%) contrast(1.1);"></div><div class="hero-arch-card-overlay"></div><div class="hero-arch-card-info"><div class="hero-arch-label">Architect</div><div class="hero-arch-name">Tadao Ando</div><div class="hero-arch-cnt">1 space</div></div></a><a href="coworkmill-architect.html" class="hero-arch-card"><div class="hero-arch-photo" style="background-image:url('https://images.unsplash.com/photo-1463453091185-61582044d556?w=400&q=85');filter:grayscale(100%) contrast(1.1);"></div><div class="hero-arch-card-overlay"></div><div class="hero-arch-card-info"><div class="hero-arch-label">Architect</div><div class="hero-arch-name">Tsuyoshi Tane</div><div class="hero-arch-cnt">1 space</div></div></a><a href="coworkmill-architect.html" class="hero-arch-card"><div class="hero-arch-photo" style="background-image:url('https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&q=85');filter:grayscale(100%) contrast(1.1);"></div><div class="hero-arch-card-overlay"></div><div class="hero-arch-card-info"><div class="hero-arch-label">Architect</div><div class="hero-arch-name">Nikken Sekkei</div><div class="hero-arch-cnt">2 spaces</div></div></a>
     </div>
   </div>
 
@@ -649,115 +636,7 @@ footer{background:#0a1628;padding:64px 80px 40px;color:#fff;position:relative;ov
     </div>
     <a href="coworkmill-spaces.html" class="sec-link">すべて見る →</a>
   </div>
-  <div class="cards">
-    <div class="card">
-      <div class="card-img">
-        <div class="card-badge-wrap"><span class="cbadge cbadge-pick">PICK</span></div>
-        <span class="cbadge-en">EN</span>
-        <svg class="card-geo" viewBox="0 0 300 200"><rect x="20" y="140" width="260" height="1" stroke="white" fill="none"/><rect x="40" y="40" width="220" height="100" stroke="white" fill="none" stroke-width=".5"/><line x1="100" y1="40" x2="100" y2="140" stroke="white" stroke-width=".3"/><line x1="160" y1="40" x2="160" y2="140" stroke="white" stroke-width=".3"/><line x1="220" y1="40" x2="220" y2="140" stroke="white" stroke-width=".3"/></svg>
-      </div>
-      <div class="card-body">
-        <div class="card-meta"><span class="card-city">表参道 / Tokyo</span></div>
-        <div class="card-name">AOYAMA ATELIER</div>
-          <div class="wtag-row"><span class="wtag">Deep Work</span><span class="wtag">Strategy</span><span class="wtag">Client Meeting</span></div>
-          <div class="card-design-by">Design by <span>Kengo Kuma & Associates</span></div>
-        <div class="card-desc">ガラス張りの開放的な空間に、デザイン家具を配した青山の旗艦スペース。クリエイター・経営者に人気。</div>
-        <div class="card-tags"><span class="ctag">ラウンジ</span><span class="ctag">個室</span><span class="ctag">24h</span><span class="ctag">クレカ可</span></div>
-        <div class="card-foot">
-          <div class="card-price">¥<strong>3,300</strong>/日〜</div>
-          <span class="card-arrow">→</span>
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-img">
-        <div class="card-badge-wrap"><span class="cbadge cbadge-new">NEW</span></div>
-        <svg class="card-geo" viewBox="0 0 300 200"><circle cx="150" cy="100" r="60" stroke="white" fill="none" stroke-width=".5"/><circle cx="150" cy="100" r="30" stroke="white" fill="none" stroke-width=".3"/><line x1="0" y1="100" x2="300" y2="100" stroke="white" stroke-width=".3"/><line x1="150" y1="0" x2="150" y2="200" stroke="white" stroke-width=".3"/></svg>
-      </div>
-      <div class="card-body">
-        <div class="card-meta"><span class="card-city">南堀江 / Osaka</span></div>
-        <div class="card-name">THE WAREHOUSE</div>
-          <div class="wtag-row"><span class="wtag">Ideation</span><span class="wtag">Creative Work</span><span class="wtag">Remote Call</span></div>
-          <div class="card-design-by">Design by <span>DRAFT, INC.</span></div>
-        <div class="card-desc">築50年の倉庫をフルリノベーション。むき出しのコンクリートとデザイン照明が生み出す大阪屈指の空間。</div>
-        <div class="card-tags"><span class="ctag">倉庫改装</span><span class="ctag">イベント可</span><span class="ctag">月額</span></div>
-        <div class="card-foot">
-          <div class="card-price">¥<strong>2,200</strong>/日〜</div>
-          <span class="card-arrow">→</span>
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-img">
-        <div class="card-badge-wrap"><span class="cbadge cbadge-pick">PICK</span></div>
-        <span class="cbadge-en">EN</span>
-        <svg class="card-geo" viewBox="0 0 300 200"><polygon points="150,20 260,160 40,160" stroke="white" fill="none" stroke-width=".5"/><line x1="150" y1="20" x2="150" y2="160" stroke="white" stroke-width=".3"/><line x1="95" y1="90" x2="205" y2="90" stroke="white" stroke-width=".3"/></svg>
-      </div>
-      <div class="card-body">
-        <div class="card-meta"><span class="card-city">中京区 / Kyoto</span></div>
-        <div class="card-name">MACHIYA WORK</div>
-          <div class="wtag-row"><span class="wtag">Deep Work</span><span class="wtag">Creative Work</span><span class="wtag">Learning</span></div>
-          <div class="card-design-by">Design by <span>Sou Fujimoto Architects</span></div>
-        <div class="card-desc">京町家をリノベートした静謐な作業空間。外国人利用者にも英語スタッフが対応。</div>
-        <div class="card-tags"><span class="ctag">町家</span><span class="ctag">EN対応</span><span class="ctag">クレカ可</span></div>
-        <div class="card-foot">
-          <div class="card-price">¥<strong>1,800</strong>/日〜</div>
-          <span class="card-arrow">→</span>
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-img">
-        <svg class="card-geo" viewBox="0 0 300 200"><rect x="30" y="40" width="100" height="120" stroke="white" fill="none" stroke-width=".5"/><rect x="150" y="20" width="120" height="160" stroke="white" fill="none" stroke-width=".4"/><line x1="130" y1="100" x2="150" y2="100" stroke="white" stroke-width=".3"/></svg>
-      </div>
-      <div class="card-body">
-        <div class="card-meta"><span class="card-city">天神 / Fukuoka</span></div>
-        <div class="card-name">TENJIN STUDIO</div>
-          <div class="wtag-row"><span class="wtag">Ideation</span><span class="wtag">Remote Call</span><span class="wtag">Strategy</span></div>
-          <div class="card-design-by">Design by <span>Gensler</span></div>
-        <div class="card-desc">福岡スタートアップの中心地、天神に誕生した開放的なスタジオ型コワーキング。</div>
-        <div class="card-tags"><span class="ctag">スタジオ</span><span class="ctag">ドロップイン</span><span class="ctag">WiFi6</span></div>
-        <div class="card-foot">
-          <div class="card-price">¥<strong>1,500</strong>/日〜</div>
-          <span class="card-arrow">→</span>
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-img">
-        <svg class="card-geo" viewBox="0 0 300 200"><path d="M20,160 Q80,40 150,100 Q220,160 280,60" stroke="white" fill="none" stroke-width=".5"/><circle cx="150" cy="100" r="8" stroke="white" fill="none" stroke-width=".4"/></svg>
-      </div>
-      <div class="card-body">
-        <div class="card-meta"><span class="card-city">山手 / Yokohama</span></div>
-        <div class="card-name">HARBOR VIEW</div>
-          <div class="wtag-row"><span class="wtag">Strategy</span><span class="wtag">Client Meeting</span><span class="wtag">Deep Work</span></div>
-          <div class="card-design-by">Design by <span>SANAA</span></div>
-        <div class="card-desc">横浜港を望む高層階のラグジュアリーコワーキング。全席で港の絶景を眺めながら作業できる。</div>
-        <div class="card-tags"><span class="ctag">眺望</span><span class="ctag">個室</span><span class="ctag">会議室</span></div>
-        <div class="card-foot">
-          <div class="card-price">¥<strong>4,400</strong>/日〜</div>
-          <span class="card-arrow">→</span>
-        </div>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-img">
-        <span class="cbadge-en">EN</span>
-        <svg class="card-geo" viewBox="0 0 300 200"><rect x="10" y="10" width="280" height="180" stroke="white" fill="none" stroke-width=".3"/><rect x="30" y="30" width="240" height="140" stroke="white" fill="none" stroke-width=".4"/><circle cx="150" cy="100" r="25" stroke="white" fill="none" stroke-width=".4"/></svg>
-      </div>
-      <div class="card-body">
-        <div class="card-meta"><span class="card-city">中島 / Sapporo</span></div>
-        <div class="card-name">SHIRO STUDIO</div>
-          <div class="wtag-row"><span class="wtag">Creative Work</span><span class="wtag">Learning</span><span class="wtag">Ideation</span></div>
-          <div class="card-design-by">Design by <span>Tadao Ando Architect & Associates</span></div>
-        <div class="card-desc">北海道の白と静けさをテーマにした、国内外のクリエイターが集まる雪国のコワーキング。</div>
-        <div class="card-tags"><span class="ctag">ギャラリー</span><span class="ctag">EN対応</span><span class="ctag">月額</span></div>
-        <div class="card-foot">
-          <div class="card-price">¥<strong>1,200</strong>/日〜</div>
-          <span class="card-arrow">→</span>
-        </div>
-      </div>
-    </div>
+  <div class="cards" id="pickup-list"></div>
   </div>
 </section>
 
@@ -804,257 +683,7 @@ footer{background:#0a1628;padding:64px 80px 40px;color:#fff;position:relative;ov
     <span class="gf-count">142件</span>
   </div>
 
-  <div class="gallery-grid">
-    <a href="coworkmill-detail.html" class="gcard gcard--tall">
-      <div class="gcard-img" style="background-image:url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=800&q=85')"></div>
-      <div class="gcard-name-static">AOYAMA ATELIER</div>
-      <div class="gcard-overlay">
-        <div class="gcard-vibe">Deep Work · Strategy</div>
-        <div class="gcard-name">AOYAMA ATELIER</div>
-        <div class="gcard-meta"><span class="gcard-area">表参道 / Tokyo</span><span class="gcard-arch">Kengo Kuma</span></div>
-      </div>
-    </a>
-    <a href="coworkmill-detail.html" class="gcard">
-      <div class="gcard-img" style="background-image:url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=800&q=85')"></div>
-      <div class="gcard-name-static">MACHIYA WORK</div>
-      <div class="gcard-overlay">
-        <div class="gcard-vibe">Deep Work · Creative</div>
-        <div class="gcard-name">MACHIYA WORK</div>
-        <div class="gcard-meta"><span class="gcard-area">中京区 / Kyoto</span><span class="gcard-arch">Sou Fujimoto</span></div>
-      </div>
-    </a>
-    <a href="coworkmill-detail.html" class="gcard">
-      <div class="gcard-img" style="background-image:url('https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=800&q=85')"></div>
-      <div class="gcard-name-static">THE WAREHOUSE</div>
-      <div class="gcard-overlay">
-        <div class="gcard-vibe">Ideation · Creative</div>
-        <div class="gcard-name">THE WAREHOUSE</div>
-        <div class="gcard-meta"><span class="gcard-area">南堀江 / Osaka</span><span class="gcard-arch">DRAFT, INC.</span></div>
-      </div>
-    </a>
-    <a href="coworkmill-detail.html" class="gcard gcard--wide">
-      <div class="gcard-img" style="background-image:url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1200&q=85')"></div>
-      <div class="gcard-name-static">TENJIN STUDIO</div>
-      <div class="gcard-overlay">
-        <div class="gcard-vibe">Ideation · Remote Call</div>
-        <div class="gcard-name">TENJIN STUDIO</div>
-        <div class="gcard-meta"><span class="gcard-area">天神 / Fukuoka</span><span class="gcard-arch">Gensler</span></div>
-      </div>
-    </a>
-    <a href="coworkmill-detail.html" class="gcard gcard--tall">
-      <div class="gcard-img" style="background-image:url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=800&q=85')"></div>
-      <div class="gcard-name-static">HARBOR VIEW</div>
-      <div class="gcard-overlay">
-        <div class="gcard-vibe">Strategy · Meeting</div>
-        <div class="gcard-name">HARBOR VIEW</div>
-        <div class="gcard-meta"><span class="gcard-area">山手 / Yokohama</span><span class="gcard-arch">SANAA</span></div>
-      </div>
-    </a>
-    <a href="coworkmill-detail.html" class="gcard">
-      <div class="gcard-img" style="background-image:url('https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=800&q=85')"></div>
-      <div class="gcard-name-static">SHIRO STUDIO</div>
-      <div class="gcard-overlay">
-        <div class="gcard-vibe">Deep Work · Learning</div>
-        <div class="gcard-name">SHIRO STUDIO</div>
-        <div class="gcard-meta"><span class="gcard-area">中央区 / Sapporo</span><span class="gcard-arch">Tadao Ando</span></div>
-      </div>
-    </a>
-    <a href="coworkmill-detail.html" class="gcard">
-      <div class="gcard-img" style="background-image:url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=85')"></div>
-      <div class="gcard-name-static">SHIBUYA CRAFT</div>
-      <div class="gcard-overlay">
-        <div class="gcard-vibe">Creative · Ideation</div>
-        <div class="gcard-name">SHIBUYA CRAFT</div>
-        <div class="gcard-meta"><span class="gcard-area">渋谷 / Tokyo</span><span class="gcard-arch">Kengo Kuma</span></div>
-      </div>
-    </a>
-    <a href="coworkmill-detail.html" class="gcard gcard--wide">
-      <div class="gcard-img" style="background-image:url('https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=1200&q=85')"></div>
-      <div class="gcard-name-static">MARUNOUCHI KK</div>
-      <div class="gcard-overlay">
-        <div class="gcard-vibe">Strategy · Meeting</div>
-        <div class="gcard-name">MARUNOUCHI KK</div>
-        <div class="gcard-meta"><span class="gcard-area">丸の内 / Tokyo</span><span class="gcard-arch">Nikken Sekkei</span></div>
-      </div>
-    </a>
-    <a href="coworkmill-detail.html" class="gcard">
-      <div class="gcard-img" style="background-image:url('https://images.unsplash.com/photo-1568992687947-868a62a9f521?w=800&q=85')"></div>
-      <div class="gcard-name-static">KITAHAMA OFFICE</div>
-      <div class="gcard-overlay">
-        <div class="gcard-vibe">Deep Work · Strategy</div>
-        <div class="gcard-name">KITAHAMA OFFICE</div>
-        <div class="gcard-meta"><span class="gcard-area">北浜 / Osaka</span><span class="gcard-arch">Tadao Ando</span></div>
-      </div>
-    </a>
-    <a href="coworkmill-detail.html" class="gcard gcard--tall">
-      <div class="gcard-img" style="background-image:url('https://images.unsplash.com/photo-1556761175-4b46a572b786?w=800&q=85')"></div>
-      <div class="gcard-name-static">ROPPONGI ATELIER</div>
-      <div class="gcard-overlay">
-        <div class="gcard-vibe">Meeting · Strategy</div>
-        <div class="gcard-name">ROPPONGI ATELIER</div>
-        <div class="gcard-meta"><span class="gcard-area">六本木 / Tokyo</span><span class="gcard-arch">SANAA</span></div>
-      </div>
-    </a>
-    <a href="coworkmill-detail.html" class="gcard">
-      <div class="gcard-img" style="background-image:url('https://images.unsplash.com/photo-1572025442646-866d16c84a54?w=800&q=85')"></div>
-      <div class="gcard-name-static">HAKATA WORK</div>
-      <div class="gcard-overlay">
-        <div class="gcard-vibe">Remote Call · Deep Work</div>
-        <div class="gcard-name">HAKATA WORK</div>
-        <div class="gcard-meta"><span class="gcard-area">博多 / Fukuoka</span><span class="gcard-arch">DRAFT, INC.</span></div>
-      </div>
-    </a>
-    <a href="coworkmill-detail.html" class="gcard">
-      <div class="gcard-img" style="background-image:url('https://images.unsplash.com/photo-1580618672591-eb180b1a973f?w=800&q=85')"></div>
-      <div class="gcard-name-static">KANAZAWA CRAFT</div>
-      <div class="gcard-overlay">
-        <div class="gcard-vibe">Creative · Ideation</div>
-        <div class="gcard-name">KANAZAWA CRAFT</div>
-        <div class="gcard-meta"><span class="gcard-area">金沢 / Ishikawa</span><span class="gcard-arch">Atelier Tsuyoshi Tane</span></div>
-      </div>
-    </a>
-  </div>
-
-  <div class="gallery-more">
-    <a href="coworkmill-spaces.html" class="gallery-more-btn">もっと見る — あと130件 →</a>
-  </div>
-
-  <style>
-  .gallery-sec{padding:80px 80px 0;background:var(--white)}
-  .gallery-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px}
-  .gallery-eyebrow{font-size:9px;font-weight:700;letter-spacing:.38em;text-transform:uppercase;color:#2BB5C8;margin-bottom:10px;display:flex;align-items:center;gap:10px}
-  .gallery-eyebrow::before{content:'';display:block;width:16px;height:1px;background:#2BB5C8}
-  .gallery-title{font-family:var(--font-d);font-size:clamp(24px,2.8vw,38px);font-weight:300;letter-spacing:-.03em;line-height:1.1;color:var(--black)}
-  .gallery-title span{color:var(--gray-400)}
-  .gallery-filter{display:flex;gap:6px;align-items:center;margin-bottom:20px;flex-wrap:wrap}
-  .gf-btn{font-family:var(--font-d);font-size:10px;font-weight:600;letter-spacing:.06em;padding:6px 14px;border:1px solid var(--gray-200);background:none;border-radius:20px;cursor:pointer;color:var(--gray-600);transition:all .15s}
-  .gf-btn:hover,.gf-btn.on{background:#0a0a0a;border-color:#0a0a0a;color:#fff}
-  .gf-count{margin-left:auto;font-size:11px;color:var(--gray-400);letter-spacing:.04em}
-  .gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:240px;gap:4px}
-  .gcard{position:relative;overflow:hidden;cursor:pointer;background:var(--black);display:block;text-decoration:none}
-  .gcard--tall{grid-row:span 2}
-  .gcard--wide{grid-column:span 2}
-  .gcard-img{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .7s cubic-bezier(.16,1,.3,1)}
-  .gcard:hover .gcard-img{transform:scale(1.07)}
-  .gcard-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,.85) 0%,rgba(10,10,10,.1) 45%,transparent 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:18px 16px 16px;opacity:0;transition:opacity .35s}
-  .gcard:hover .gcard-overlay{opacity:1}
-  .gcard::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,.55) 0%,transparent 40%);pointer-events:none;transition:opacity .35s}
-  .gcard:hover::after{opacity:0}
-  .gcard-name-static{position:absolute;bottom:14px;left:16px;right:16px;font-family:var(--font-d);font-size:12px;font-weight:500;color:#fff;letter-spacing:.02em;line-height:1.3;z-index:2;transition:opacity .3s;pointer-events:none}
-  .gcard:hover .gcard-name-static{opacity:0}
-  .gcard-vibe{font-size:8px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#2BB5C8;margin-bottom:5px}
-  .gcard-name{font-family:var(--font-d);font-size:13px;font-weight:600;color:#fff;letter-spacing:.02em;margin-bottom:6px;line-height:1.3}
-  .gcard-meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
-  .gcard-area{font-size:9px;color:rgba(255,255,255,.65);letter-spacing:.06em}
-  .gcard-arch{font-size:9px;color:rgba(255,255,255,.5);letter-spacing:.04em;font-style:italic}
-  .gallery-more{padding:32px 0 80px;text-align:center}
-  .gallery-more-btn{font-family:var(--font-d);font-size:12px;font-weight:600;letter-spacing:.08em;color:var(--gray-600);border:1.5px solid var(--gray-200);padding:13px 40px;border-radius:28px;text-decoration:none;display:inline-block;transition:all .2s}
-  .gallery-more-btn:hover{border-color:#2BB5C8;color:#2BB5C8}
-  @media(max-width:1100px){.gallery-sec{padding:48px 32px 0}.gallery-grid{grid-template-columns:repeat(3,1fr);grid-auto-rows:200px}}
-  @media(max-width:900px){.gallery-grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:180px}.gcard--wide{grid-column:span 2}}
-  @media(max-width:600px){.gallery-sec{padding:40px 20px 0}.gallery-grid{grid-template-columns:repeat(2,1fr);grid-auto-rows:150px;gap:3px}.gcard--wide{grid-column:span 2}.gcard--tall{grid-row:span 1}.gallery-filter{gap:4px}.gf-btn{font-size:9px;padding:5px 10px}}
-  @media(prefers-color-scheme:dark){
-    .gallery-sec{background:#121212}
-    .gallery-title{color:#f0f0f0}
-    .gf-btn{border-color:#333;color:#aaa;background:#1e1e1e}
-    .gf-btn:hover,.gf-btn.on{background:#2BB5C8;border-color:#2BB5C8;color:#fff}
-    .gallery-more-btn{border-color:#333;color:#888}
-    .gallery-more-btn:hover{border-color:#2BB5C8;color:#2BB5C8}
-  }
-  </style>
-
-  <script>
-  function setGF(btn) {
-    document.querySelectorAll('.gf-btn').forEach(b => b.classList.remove('on'));
-    btn.classList.add('on');
-  }
-  
-function toggleDrop(e, id) {
-  e.stopPropagation();
-  document.querySelectorAll('.s-dropdown.open').forEach(d => {
-    if (d.id !== id) d.classList.remove('open');
-  });
-  document.getElementById(id).classList.toggle('open');
-}
-function setField(e, valId, dropId, value) {
-  e.stopPropagation();
-  const el = document.getElementById(valId);
-  el.textContent = value;
-  el.classList.add('selected');
-  document.getElementById(dropId).classList.remove('open');
-}
-document.addEventListener('click', function() {
-  document.querySelectorAll('.s-dropdown.open').forEach(d => d.classList.remove('open'));
-});
-</script>
-</section>
-
-<!-- REGIONS -->
-<section class="region-sec" id="regions">
-  <div class="sec-head">
-    <div class="sec-title">エリアから <span>探す</span></div>
-  </div>
-
-  <!-- 都市から探す -->
-  <div class="region-subsec-title" style="margin-top:0">都市から探す</div>
-  <div id="tab-city">
-    <div class="region-grid" id="region-grid">
-      <div class="rcard" onclick="location.href='coworkmill-spaces.html'"><div class="rname">東京</div><div class="rcnt">68 spaces</div></div>
-      <div class="rcard" onclick="location.href='coworkmill-spaces.html'"><div class="rname">大阪</div><div class="rcnt">24 spaces</div></div>
-      <div class="rcard" onclick="location.href='coworkmill-spaces.html'"><div class="rname">京都</div><div class="rcnt">12 spaces</div></div>
-      <div class="rcard" onclick="location.href='coworkmill-spaces.html'"><div class="rname">福岡</div><div class="rcnt">15 spaces</div></div>
-      <div class="rcard" onclick="location.href='coworkmill-spaces.html'"><div class="rname">横浜</div><div class="rcnt">10 spaces</div></div>
-      <div class="rcard" onclick="location.href='coworkmill-spaces.html'"><div class="rname">札幌</div><div class="rcnt">8 spaces</div></div>
-      <div class="rcard region-more" style="display:none" onclick="location.href='coworkmill-spaces.html'"><div class="rname">名古屋</div><div class="rcnt">11 spaces</div></div>
-      <div class="rcard region-more" style="display:none" onclick="location.href='coworkmill-spaces.html'"><div class="rname">仙台</div><div class="rcnt">6 spaces</div></div>
-      <div class="rcard region-more" style="display:none" onclick="location.href='coworkmill-spaces.html'"><div class="rname">広島</div><div class="rcnt">5 spaces</div></div>
-      <div class="rcard region-more" style="display:none" onclick="location.href='coworkmill-spaces.html'"><div class="rname">那覇</div><div class="rcnt">4 spaces</div></div>
-      <div class="rcard region-more" style="display:none" onclick="location.href='coworkmill-spaces.html'"><div class="rname">金沢</div><div class="rcnt">4 spaces</div></div>
-      <div class="rcard region-more" style="display:none" onclick="location.href='coworkmill-spaces.html'"><div class="rname">高松</div><div class="rcnt">3 spaces</div></div>
-    </div>
-    <div style="text-align:center;margin-top:16px">
-      <button id="region-more-btn" onclick="toggleRegions()" style="font-family:var(--font-display);font-size:11px;font-weight:500;letter-spacing:.06em;padding:8px 24px;border:1px solid var(--gray-200);border-radius:20px;background:none;cursor:pointer;color:var(--gray-600);transition:all .2s" onmouseover="this.style.borderColor='#2BB5C8';this.style.color='#2BB5C8'" onmouseout="this.style.borderColor='var(--gray-200)';this.style.color='var(--gray-600)'">全国のエリアを見る（+6都市）</button>
-    </div>
-
-  </div>
-
-  <!-- こんな場所で -->
-  <div class="region-subsec-title">こんな場所で</div>
-  <div id="tab-vibe">
-    <div class="vibe-grid">
-      <div class="vcard" onclick="location.href='coworkmill-spaces.html'">
-        <div class="vcard-bg" style="background-image:url('https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?w=600&q=80')"></div>
-        <div class="vcard-body"><div class="vcard-name">都市の高層階</div><div class="vcard-sub">URBAN HIGH-RISE · 32 spaces</div></div>
-      </div>
-      <div class="vcard" onclick="location.href='coworkmill-spaces.html'">
-        <div class="vcard-bg" style="background-image:url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80')"></div>
-        <div class="vcard-body"><div class="vcard-name">古民家・町家</div><div class="vcard-sub">MACHIYA · 14 spaces</div></div>
-      </div>
-      <div class="vcard" onclick="location.href='coworkmill-spaces.html'">
-        <div class="vcard-bg" style="background-image:url('https://images.unsplash.com/photo-1470770903676-69b98201ea1c?w=600&q=80')"></div>
-        <div class="vcard-body"><div class="vcard-name">自然・山・海</div><div class="vcard-sub">NATURE · 18 spaces</div></div>
-      </div>
-      <div class="vcard" onclick="location.href='coworkmill-spaces.html'">
-        <div class="vcard-bg" style="background-image:url('https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&q=80')"></div>
-        <div class="vcard-body"><div class="vcard-name">倉庫・工場跡</div><div class="vcard-sub">WAREHOUSE · 11 spaces</div></div>
-      </div>
-      <div class="vcard" onclick="location.href='coworkmill-spaces.html'">
-        <div class="vcard-bg" style="background-image:url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&q=80')"></div>
-        <div class="vcard-body"><div class="vcard-name">ホテル併設</div><div class="vcard-sub">HOTEL · 9 spaces</div></div>
-      </div>
-      <div class="vcard" onclick="location.href='coworkmill-spaces.html'">
-        <div class="vcard-bg" style="background-image:url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80')"></div>
-        <div class="vcard-body"><div class="vcard-name">ミュージアム・ギャラリー隣接</div><div class="vcard-sub">GALLERY · 7 spaces</div></div>
-      </div>
-      <div class="vcard" onclick="location.href='coworkmill-spaces.html'">
-        <div class="vcard-bg" style="background-image:url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=600&q=80')"></div>
-        <div class="vcard-body"><div class="vcard-name">駅直結</div><div class="vcard-sub">STATION · 22 spaces</div></div>
-      </div>
-      <div class="vcard" onclick="location.href='coworkmill-spaces.html'">
-        <div class="vcard-bg" style="background-image:url('https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=600&q=80')"></div>
-        <div class="vcard-body"><div class="vcard-name">ミニマル・無機質</div><div class="vcard-sub">MINIMAL · 16 spaces</div></div>
-      </div>
-    </div>
+  <div class="gallery-grid"></div>
   </div>
 
 
@@ -1070,54 +699,6 @@ document.addEventListener('click', function() {
     </div>
     <a href="coworkmill-architects.html" class="sec-link" style="color:rgba(255,255,255,.6);border-color:rgba(255,255,255,.2)" onmouseover="this.style.color='#2BB5C8';this.style.borderColor='#2BB5C8'" onmouseout="this.style.color='rgba(255,255,255,.6)';this.style.borderColor='rgba(255,255,255,.2)'">建築家一覧を見る →</a>
   </div>
-
-  <!-- 01: Kengo Kuma -->
-  <a href="coworkmill-architect.html" class="arch-feature">
-    <div class="arch-feature-photo" style="background-image:url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=1200&q=90')">
-    </div>
-    <div class="arch-feature-info">
-      <div class="arch-feature-label">Architect 01</div>
-      <div class="arch-name-row">
-        <div class="arch-feature-name">Kengo Kuma</div>
-        <div class="arch-portrait-img" style="background-image:url('https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=300&q=85')"></div>
-      </div>
-      <div class="arch-feature-kana">隈 研吾</div>
-      <div class="arch-feature-office">隈研吾建築都市設計事務所</div>
-      <div class="arch-feature-spaces">
-        <div class="arch-feature-space-label">手がけたコワーキング</div>
-        <div class="arch-feature-space-list">
-          <div class="arch-feature-space-item"><span class="arch-fs-name">AOYAMA ATELIER</span><span class="arch-fs-area">表参道</span></div>
-          <div class="arch-feature-space-item"><span class="arch-fs-name">SHIBUYA CRAFT</span><span class="arch-fs-area">渋谷</span></div>
-          <div class="arch-feature-space-item"><span class="arch-fs-name">ROPPONGI ATELIER</span><span class="arch-fs-area">六本木</span></div>
-          <div class="arch-feature-space-item arch-fs-more">+ 1 space</div>
-        </div>
-      </div>
-      <div class="arch-feature-cta">このスペースを見る <span>→</span></div>
-    </div>
-  </a>
-
-  <!-- 02: Sou Fujimoto -->
-  <a href="coworkmill-architect.html" class="arch-feature arch-feature--reverse">
-    <div class="arch-feature-photo" style="background-image:url('https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=1200&q=90')">
-    </div>
-    <div class="arch-feature-info">
-      <div class="arch-feature-label">Architect 02</div>
-      <div class="arch-name-row">
-        <div class="arch-feature-name">Sou Fujimoto</div>
-        <div class="arch-portrait-img" style="background-image:url('https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=300&q=85')"></div>
-      </div>
-      <div class="arch-feature-kana">藤本 壮介</div>
-      <div class="arch-feature-office">藤本壮介建築設計事務所</div>
-      <div class="arch-feature-spaces">
-        <div class="arch-feature-space-label">手がけたコワーキング</div>
-        <div class="arch-feature-space-list">
-          <div class="arch-feature-space-item"><span class="arch-fs-name">MACHIYA WORK</span><span class="arch-fs-area">京都・中京区</span></div>
-          <div class="arch-feature-space-item"><span class="arch-fs-name">HIGASHIYAMA BASE</span><span class="arch-fs-area">京都・東山</span></div>
-        </div>
-      </div>
-      <div class="arch-feature-cta">このスペースを見る <span>→</span></div>
-    </div>
-  </a>
 
 
   <!-- 03: Tadao Ando -->
@@ -1303,7 +884,7 @@ async function loadTopData() {
       const doubled = [...archList, ...archList];
       heroArch.innerHTML = doubled.map(s => {
         const pref = TOP_PREF_MAP[s.prefecture] || '';
-        return '<div class="hero-arch-card" onclick="location.href='coworkmill-spaces.html'">' +
+        return '<div class="hero-arch-card" onclick="location.href=\'coworkmill-spaces.html\'">' +
           '<div class="hero-arch-initial-bg">' + (s.architect_name||'').charAt(0) + '</div>' +
           '<div class="hero-arch-card-overlay"></div>' +
           '<div class="hero-arch-card-info"><div class="hero-arch-label">ARCHITECT</div>' +
