@@ -541,13 +541,15 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
       <div style="border:2px dashed var(--g200);border-radius:12px;padding:48px 24px;text-align:center;cursor:pointer;transition:border-color .2s;" 
            onmouseover="this.style.borderColor='#2BB5C8'" 
            onmouseout="this.style.borderColor='var(--g200)'"
-           onclick="document.getElementById('photo-upload-input').click()">
+           onclick="document.getElementById('photo-upload-input-empty').click()">
         <div style="font-size:36px;margin-bottom:14px;">📷</div>
         <div style="font-size:14px;font-weight:500;color:var(--black);margin-bottom:6px;">写真をアップロード</div>
         <div style="font-size:12px;color:var(--g400);margin-bottom:20px;">クリックまたはここにドラッグ＆ドロップ<br>JPG・PNG・WEBP対応 / 1枚10MBまで</div>
         <button style="padding:10px 24px;font-size:12px;font-weight:600;color:#fff;background:linear-gradient(135deg,#79F1A4,#2BB5C8);border:none;border-radius:8px;cursor:pointer;">
           写真を選択する
         </button>
+        <input type="file" id="photo-upload-input-empty" accept="image/*" multiple style="display:none;" onchange="handlePhotoUpload(this)">
+      </div>
       <div style="font-size:11px;color:var(--g400);text-align:center;margin-top:12px;">Freeプランは5枚まで掲載可</div>
       <div id="photo-publish-btn" style="display:none;margin-top:24px;text-align:center;">
         <div style="display:flex;gap:10px;justify-content:center;">
@@ -1090,24 +1092,17 @@ function go(id, el) {
   if(id === 'photo') {
     // 既存施設の写真を読み込む
     const dbId = facs[cur] && facs[cur].db_id;
-    if (dbId) {
-      loadPhotos(dbId);
-    } else {
-      const photoContent = document.getElementById('photo-content');
-      const photoEmpty = document.getElementById('photo-empty');
-      if (photoContent) photoContent.style.display = 'none';
-      if (photoEmpty) photoEmpty.style.display = 'block';
-    }
-    const stepPhoto = document.getElementById('step-indicator-photo');
-    if (stepPhoto) stepPhoto.style.display = (facs[cur] && facs[cur].from_new === true && facs[cur].has_photos === false) ? 'flex' : 'none';
     const photoEmpty = document.getElementById('photo-empty');
     const photoContent = document.getElementById('photo-content');
-    if (!f || !f.db_id || f.has_photos === false) {
-      if(photoEmpty) photoEmpty.style.display = 'block';
-      if(photoContent) photoContent.style.display = 'none';
-    } else {
+    const stepPhoto = document.getElementById('step-indicator-photo');
+    if (stepPhoto) stepPhoto.style.display = (facs[cur] && facs[cur].from_new === true && facs[cur].has_photos === false) ? 'flex' : 'none';
+    if (dbId) {
       if(photoEmpty) photoEmpty.style.display = 'none';
       if(photoContent) photoContent.style.display = 'block';
+      loadPhotos(dbId);
+    } else {
+      if(photoEmpty) photoEmpty.style.display = 'block';
+      if(photoContent) photoContent.style.display = 'none';
     }
   }
 }
