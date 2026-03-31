@@ -541,14 +541,14 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
       <div style="border:2px dashed var(--g200);border-radius:12px;padding:48px 24px;text-align:center;cursor:pointer;transition:border-color .2s;" 
            onmouseover="this.style.borderColor='#2BB5C8'" 
            onmouseout="this.style.borderColor='var(--g200)'"
-           onclick="document.getElementById('photo-upload-input-empty').click()">
+           onclick="document.getElementById('photo-upload-input').click()">
         <div style="font-size:36px;margin-bottom:14px;">📷</div>
         <div style="font-size:14px;font-weight:500;color:var(--black);margin-bottom:6px;">写真をアップロード</div>
         <div style="font-size:12px;color:var(--g400);margin-bottom:20px;">クリックまたはここにドラッグ＆ドロップ<br>JPG・PNG・WEBP対応 / 1枚10MBまで</div>
         <button style="padding:10px 24px;font-size:12px;font-weight:600;color:#fff;background:linear-gradient(135deg,#79F1A4,#2BB5C8);border:none;border-radius:8px;cursor:pointer;">
           写真を選択する
         </button>
-        <input type="file" id="photo-upload-input-empty" accept="image/*" multiple style="display:none;" onchange="handlePhotoUpload(this)">
+        <input type="file" id="photo-upload-input" accept="image/*" multiple style="display:none;" onchange="handlePhotoUpload(this)">
       </div>
       <div style="font-size:11px;color:var(--g400);text-align:center;margin-top:12px;">Freeプランは5枚まで掲載可</div>
       <div id="photo-publish-btn" style="display:none;margin-top:24px;text-align:center;">
@@ -563,26 +563,18 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
         <div style="font-size:11px;color:var(--g400);margin-top:8px;">公開後もいつでも写真の追加・変更ができます</div>
       </div>
     </div>
-    <div id="photo-content" style="display:none;">
+    <div id="photo-content">
     <div class="sec">
       <div class="sec-h">
-        <div>
-          <div class="sec-ht">写真管理</div>
-          <div class="sec-hs" id="photo-plan-note">Freeプランは5枚まで掲載可</div>
-        </div>
+        <div><div class="sec-ht">写真管理</div><div class="sec-hs" id="photo-plan-note">Freeプランは5枚まで掲載可</div></div>
         <button onclick="document.getElementById('photo-upload-input').click()" style="padding:8px 16px;font-size:11px;font-weight:600;color:#fff;background:linear-gradient(135deg,#79F1A4,#2BB5C8);border:none;border-radius:6px;cursor:pointer;">+ 写真を追加</button>
       </div>
       <div class="sec-b">
-        <div id="photo-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;"></div>
-        <div id="photo-empty-msg" style="display:none;text-align:center;padding:32px;color:var(--g400);font-size:13px;">まだ写真がありません</div>
+        <div id="photo-grid" class="pg"></div>
+        <div id="photo-empty-msg" style="display:none;text-align:center;padding:32px;color:var(--g400);font-size:13px;">まだ写真がありません<br><span style="font-size:11px;">上のエリアから写真をアップロードしてください</span></div>
       </div>
     </div>
-    <div style="margin-top:16px;text-align:center;">
-      <button onclick="window.open('coworkmill-detail.html?id=' + (facs[cur] && facs[cur].db_id || ''))" style="padding:10px 24px;font-size:12px;font-weight:500;color:var(--g600);background:#fff;border:1px solid var(--g200);border-radius:8px;cursor:pointer;margin-right:8px;">プレビュー →</button>
-      <button onclick="pubFac()" style="padding:10px 28px;font-size:12px;font-weight:600;color:#fff;background:linear-gradient(135deg,#f97316,#ea580c);border:none;border-radius:8px;cursor:pointer;">🚀 公開する</button>
-    </div>
-    <input type="file" id="photo-upload-input" accept="image/*" multiple style="display:none;" onchange="handlePhotoUpload(this)">
-  </div><!-- /photo-content -->
+    </div><!-- /photo-content -->
   </div>
 
   <!-- VOICE -->
@@ -650,7 +642,7 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
       <div class="sec-b">
         <div class="ug">
           <div class="uc"><div class="ulb">画像数</div><div class="uv">4 <span style="font-size:11px;color:var(--g400)">/ 20枚</span></div><div class="ubr"><div class="uf" style="width:20%"></div></div><div class="usb">あと16枚追加できます</div></div>
-          <div class="uc"><div class="ulb">掲載施設数</div><div class="uv">0 <span style="font-size:11px;color:var(--g400)">/ 5件</span></div><div class="ubr"><div class="uf" style="width:40%"></div></div><div class="usb">あと3件追加できます</div></div>
+          <div class="uc"><div class="ulb">掲載施設数</div><div class="uv">2 <span style="font-size:11px;color:var(--g400)">/ 5件</span></div><div class="ubr"><div class="uf" style="width:40%"></div></div><div class="usb">あと3件追加できます</div></div>
           <div class="uc"><div class="ulb">表示バッジ</div><div class="uv" style="font-size:14px;margin-top:4px">✓ 利用可</div><div style="font-size:9px;color:var(--g400);margin-top:8px">Standardバッジ表示中</div></div>
         </div>
       </div>
@@ -708,16 +700,16 @@ async function handlePhotoUpload(input) {
   if (!input.files || input.files.length === 0) return;
   const files = Array.from(input.files);
   const dbId = facs[cur] && facs[cur].db_id;
-  if (!dbId) { alert('先に施設情報を保存してください。'); input.value=''; return; }
+  if (!dbId) { alert('先に施設情報を保存してください。'); if(input.value !== undefined) input.value=''; return; }
 
   const STORAGE_URL = SUPABASE_URL + '/storage/v1/object/space-images/';
   let uploaded = 0;
+  const isFirst = !(facs[cur] && facs[cur].has_photos);
 
   for (const file of files) {
     const ext = file.name.split('.').pop().toLowerCase();
     const path = dbId + '/' + Date.now() + '_' + Math.random().toString(36).slice(2) + '.' + ext;
     try {
-      // Storageにアップロード
       const upRes = await fetch(STORAGE_URL + path, {
         method: 'POST',
         headers: {
@@ -732,14 +724,12 @@ async function handlePhotoUpload(input) {
 
       const publicUrl = SUPABASE_URL + '/storage/v1/object/public/space-images/' + path;
 
-      // space_imagesテーブルに登録
       await sbFetch('/rest/v1/space_images', {
         method: 'POST',
         body: JSON.stringify({ space_id: dbId, url: publicUrl })
       });
 
-      // 最初の1枚はimage_mainにも設定
-      if (uploaded === 0 && !(facs[cur] && facs[cur].has_photos)) {
+      if (uploaded === 0 && isFirst) {
         await sbFetch('/rest/v1/spaces?id=eq.' + dbId, {
           method: 'PATCH',
           body: JSON.stringify({ image_main: publicUrl })
@@ -752,47 +742,44 @@ async function handlePhotoUpload(input) {
   if (uploaded > 0) {
     if (facs[cur]) { facs[cur].from_new = false; facs[cur].has_photos = true; }
     const si = document.getElementById('step-indicator-photo'); if(si) si.style.display='none';
+    const pb = document.getElementById('photo-publish-btn'); if(pb) pb.style.display='block';
     await loadPhotos(dbId);
     alert(uploaded + '枚アップロードしました！');
   } else {
-    alert('アップロードに失敗しました。Storage設定を確認してください。');
+    alert('アップロードに失敗しました。Storageの設定を確認してください。');
   }
-  input.value = '';
+  if(input.value !== undefined) input.value = '';
 }
 
 async function loadPhotos(dbId) {
   const grid = document.getElementById('photo-grid');
   const emptyMsg = document.getElementById('photo-empty-msg');
+  const photoEmpty = document.getElementById('photo-empty');
   const photoContent = document.getElementById('photo-content');
   if (!grid) return;
-
   try {
     const imgs = await sbFetch('/rest/v1/space_images?space_id=eq.' + dbId + '&select=id,url&order=created_at.asc');
-    // メイン画像も取得
     const spaceData = await sbFetch('/rest/v1/spaces?id=eq.' + dbId + '&select=image_main');
     const mainUrl = spaceData && spaceData[0] ? spaceData[0].image_main : null;
-
     grid.innerHTML = '';
     if (!imgs || imgs.length === 0) {
       if (emptyMsg) emptyMsg.style.display = 'block';
-      if (photoContent) photoContent.style.display = 'block';
+      if (photoEmpty) photoEmpty.style.display = 'block';
+      if (photoContent) photoContent.style.display = 'none';
       return;
     }
     if (emptyMsg) emptyMsg.style.display = 'none';
+    if (photoEmpty) photoEmpty.style.display = 'none';
     if (photoContent) photoContent.style.display = 'block';
-
     imgs.forEach(img => {
       const isMain = img.url === mainUrl;
       const div = document.createElement('div');
-      div.style.cssText = 'position:relative;border-radius:8px;overflow:hidden;aspect-ratio:4/3;background:#111;';
-      div.innerHTML = `
-        <img src="${img.url}" style="width:100%;height:100%;object-fit:cover;">
-        ${isMain ? '<div style="position:absolute;top:6px;left:6px;background:#2BB5C8;color:#fff;font-size:9px;font-weight:700;padding:2px 7px;border-radius:3px;letter-spacing:.04em;">メイン</div>' : ''}
-        <div style="position:absolute;inset:0;background:rgba(0,0,0,0);transition:background .2s;display:flex;align-items:flex-end;justify-content:center;padding-bottom:8px;gap:6px;opacity:0;" 
-             onmouseover="this.style.background='rgba(0,0,0,.5)';this.style.opacity='1';"
-             onmouseout="this.style.background='rgba(0,0,0,0)';this.style.opacity='0';">
-          ${!isMain ? `<button onclick="setMainPhoto('${img.url}','${dbId}')" style="padding:4px 10px;font-size:10px;background:#fff;border:none;border-radius:4px;cursor:pointer;">メインに</button>` : ''}
-          <button onclick="deletePhoto('${img.id}','${img.url}','${dbId}')" style="padding:4px 10px;font-size:10px;background:#ef4444;color:#fff;border:none;border-radius:4px;cursor:pointer;">削除</button>
+      div.className = 'pw';
+      div.innerHTML = `<img src="${img.url}" alt="">
+        ${isMain ? '<div class="pmn">メイン</div>' : ''}
+        <div class="pov">
+          ${!isMain ? `<button class="pact" onclick="setMainPhoto('${img.url}','${dbId}')">メインに</button>` : ''}
+          <button class="pact" onclick="deletePhoto('${img.id}','${img.url}','${dbId}')">削除</button>
         </div>`;
       grid.appendChild(div);
     });
@@ -800,23 +787,16 @@ async function loadPhotos(dbId) {
 }
 
 async function setMainPhoto(url, dbId) {
-  await sbFetch('/rest/v1/spaces?id=eq.' + dbId, {
-    method: 'PATCH',
-    body: JSON.stringify({ image_main: url })
-  });
+  await sbFetch('/rest/v1/spaces?id=eq.' + dbId, { method: 'PATCH', body: JSON.stringify({ image_main: url }) });
   await loadPhotos(dbId);
 }
 
 async function deletePhoto(imgId, url, dbId) {
   if (!confirm('この写真を削除しますか？')) return;
   await sbFetch('/rest/v1/space_images?id=eq.' + imgId, { method: 'DELETE' });
-  // メイン画像だった場合はクリア
   const spaceData = await sbFetch('/rest/v1/spaces?id=eq.' + dbId + '&select=image_main');
   if (spaceData && spaceData[0] && spaceData[0].image_main === url) {
-    await sbFetch('/rest/v1/spaces?id=eq.' + dbId, {
-      method: 'PATCH',
-      body: JSON.stringify({ image_main: null })
-    });
+    await sbFetch('/rest/v1/spaces?id=eq.' + dbId, { method: 'PATCH', body: JSON.stringify({ image_main: null }) });
   }
   await loadPhotos(dbId);
 }
@@ -1090,19 +1070,18 @@ function go(id, el) {
   document.getElementById('ttl').innerHTML = ttls[id] + ' <span style="font-size:11px;font-weight:400;color:var(--g400)">— ' + f.nm + '</span>';
   if(id === 'db') renderDash(f.dash);
   if(id === 'photo') {
-    // 既存施設の写真を読み込む
     const dbId = facs[cur] && facs[cur].db_id;
-    const photoEmpty = document.getElementById('photo-empty');
-    const photoContent = document.getElementById('photo-content');
+    if (dbId) { loadPhotos(dbId); }
     const stepPhoto = document.getElementById('step-indicator-photo');
     if (stepPhoto) stepPhoto.style.display = (facs[cur] && facs[cur].from_new === true && facs[cur].has_photos === false) ? 'flex' : 'none';
-    if (dbId) {
-      if(photoEmpty) photoEmpty.style.display = 'none';
-      if(photoContent) photoContent.style.display = 'block';
-      loadPhotos(dbId);
-    } else {
+    const photoEmpty = document.getElementById('photo-empty');
+    const photoContent = document.getElementById('photo-content');
+    if (!f || !f.db_id || f.has_photos === false) {
       if(photoEmpty) photoEmpty.style.display = 'block';
       if(photoContent) photoContent.style.display = 'none';
+    } else {
+      if(photoEmpty) photoEmpty.style.display = 'none';
+      if(photoContent) photoContent.style.display = 'block';
     }
   }
 }
