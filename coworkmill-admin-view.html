@@ -569,7 +569,7 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
     <div id="photo-content">
     <div class="sec">
       <div class="sec-h">
-        <div><div class="sec-ht">写真管理</div><div class="sec-hs" id="photo-plan-note">Freeプランは5枚まで掲載可</div></div>
+        <div><div class="sec-ht">写真管理</div><div id="photo-plan-note" style="font-size:12px;font-weight:600;color:var(--black);">Freeプランは5枚まで掲載可</div></div>
         <button onclick="document.getElementById('photo-upload-input').click()" style="padding:8px 16px;font-size:11px;font-weight:600;color:#fff;background:linear-gradient(135deg,#79F1A4,#2BB5C8);border:none;border-radius:6px;cursor:pointer;">+ 写真を追加</button>
       </div>
       <div class="sec-b">
@@ -777,7 +777,19 @@ async function loadPhotos(dbId) {
     const lim = pl === 'free' ? 5 : pl === 'standard' ? 20 : 50;
     const cnt = imgs ? imgs.length : 0;
     const planNote = document.getElementById('photo-plan-note');
-    if (planNote) planNote.textContent = (pl === 'free' ? 'Free' : pl === 'standard' ? 'Standard' : 'Pro') + 'プラン：' + lim + '枚まで（現在' + cnt + '枚）';
+    if (planNote) {
+      const planLabel = pl === 'free' ? 'Free' : pl === 'standard' ? 'Standard' : 'Pro';
+      if (cnt >= lim) {
+        planNote.innerHTML = planLabel + 'プラン：' + lim + '枚まで（現在' + cnt + '枚）　';
+        const aEl = document.createElement('a');
+        aEl.textContent = '+増やすにはアップグレード';
+        aEl.style.cssText = 'color:#2BB5C8;cursor:pointer;font-size:11px;text-decoration:underline;';
+        aEl.onclick = function(){ go('plan', document.querySelectorAll('.nl')[6]); };
+        planNote.appendChild(aEl);
+      } else {
+        planNote.textContent = planLabel + 'プラン：' + lim + '枚まで（現在' + cnt + '枚）';
+      }
+    }
     grid.innerHTML = '';
     if (!imgs || imgs.length === 0) {
       if (emptyMsg) emptyMsg.style.display = 'block';
