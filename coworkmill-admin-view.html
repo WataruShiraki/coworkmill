@@ -631,7 +631,6 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
         <div>
           <div class="fl" style="margin-bottom:6px">STEP 2 ｜ 建築家が未登録の場合</div>
           <div class="fr"><div class="fg"><div class="fl">建築家名</div><input class="fin" id="p-arch-name" placeholder="例：山田 太朗"></div><div class="fg"><div class="fl">建築事務所名</div><input class="fin" id="p-arch-firm" placeholder="例：〇〇建築設計事務所"></div></div>
-          <div class="fr"><div class="fg"><div class="fl">設計年</div><input class="fin" id="p-arch-year" placeholder="例：2022" type="number"></div><div class="fg"></div></div>
           <div style="padding:10px 12px;background:#fffbeb;border-radius:5px;border:1px solid #fde68a;font-size:11px;color:#854d0e;margin-top:8px">
             ⚠️ 未登録の建築家は、保存後にCOWORKMILL運営が建築家本人に連絡してプロフィールページへの掲載を依頼します。
           </div>
@@ -1114,7 +1113,6 @@ async function saveArchInfo() {
   if (!dbId) { alert('先に施設情報を保存してください。'); return; }
   const archName = document.getElementById('p-arch-name')?.value?.trim() || null;
   const archFirm = document.getElementById('p-arch-firm')?.value?.trim() || null;
-  const archYear = document.getElementById('p-arch-year')?.value?.trim() || null;
   try {
     await sbFetch('/rest/v1/spaces?id=eq.' + dbId, {
       method: 'PATCH',
@@ -1214,7 +1212,6 @@ function go(id, el) {
         if (data && data[0]) {
           const el = document.getElementById('p-arch-name'); if(el) el.value = data[0].architect_name || '';
           const ef = document.getElementById('p-arch-firm'); if(ef) ef.value = data[0].architect_firm || '';
-          const ey = document.getElementById('p-arch-year'); if(ey) ey.value = data[0].design_year || '';
         }
       }).catch(()=>{});
     }
