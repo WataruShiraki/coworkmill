@@ -189,11 +189,11 @@ a{text-decoration:none;color:inherit}
   <!-- DB -->
   <div id="p-db">
     <div class="sg">
-      <div class="sc urg"><div class="slb">審査待ち</div><div class="sv">4</div><div class="ss">新着 2件</div></div>
-      <div class="sc pnd"><div class="slb">建築家 連絡待ち</div><div class="sv">2</div><div class="ss">未連絡</div></div>
+      <div class="sc"><div class="slb">審査待ち</div><div class="sv" id="ops-review">0</div><div class="ss">新着 0件</div></div>
+      <div class="sc"><div class="slb">建築家 連絡待ち</div><div class="sv">0</div><div class="ss">未連絡</div></div>
       <div class="sc"><div class="slb">掲載施設数</div><div class="sv" id="ops-total">—</div><div class="ss" id="ops-status">読み込み中</div></div>
-      <div class="sc urg"><div class="slb">修正依頼</div><div class="sv">2</div><div class="ss">未対応 2件</div></div>
-      <div class="sc"><div class="slb">未対応お問い合わせ</div><div class="sv">3</div><div class="ss">本日 2件</div></div>
+      <div class="sc"><div class="slb">修正依頼</div><div class="sv">0</div><div class="ss">未対応 0件</div></div>
+      <div class="sc"><div class="slb">未対応お問い合わせ</div><div class="sv">3</div><div class="ss">本日 0件</div></div>
     </div>
     <div class="sec">
       <div class="sec-h"><div><div class="sec-ht">最新の掲載申請</div><div class="sec-hs">承認待ち</div></div><button class="bsm" onclick="go('rv',document.querySelectorAll('.nl')[1])">すべて見る →</button></div>
@@ -274,11 +274,9 @@ a{text-decoration:none;color:inherit}
   <!-- CONTACT -->
   <div id="p-ct" style="display:none">
     <div class="sec">
-      <div class="sec-h"><div><div class="sec-ht">お問い合わせ管理</div><div class="sec-hs">サイトから届いた問い合わせ一覧</div></div><span style="font-size:10px;font-weight:600;padding:4px 12px;background:var(--rbg);border-radius:4px;color:var(--rtx)">3件 未対応</span></div>
+      <div class="sec-h"><div><div class="sec-ht">お問い合わせ管理</div><div class="sec-hs">サイトから届いた問い合わせ一覧</div></div><span style="font-size:10px;font-weight:600;padding:4px 12px;background:var(--rbg);border-radius:4px;color:var(--rtx)">0件 未対応</span></div>
       <div class="sr"><input class="si" placeholder="内容・名前で検索..."><select class="fs"><option>すべて</option><option>未対応</option><option>対応済み</option></select></div>
       <table class="tbl"><thead><tr><th>種別</th><th>名前</th><th>メール</th><th>内容</th><th>受信日</th><th>ステータス</th><th></th></tr></thead><tbody>
-        <tr class="hov"><td style="font-size:10px;color:var(--g600)">掲載について</td><td style="font-size:11px;font-weight:500">小林 智子</td><td style="font-size:10px;color:var(--purple)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f79c9895968e96849f9eb7928f969a879b92d99d87">[email&#160;protected]</a></td><td style="font-size:11px;color:var(--g600);max-width:200px">掲載を検討しています。審査の基準について教えてください。</td><td style="font-size:10px;color:var(--g400)">今日 09:12</td><td><span class="bdg op">未対応</span></td><td><div class="br"><button class="bpu" onclick="showReplyModal('小林 智子','kobayashi@example.jp')">返信</button><button class="bsm" onclick="markDone(this)">対応済み</button></div></td></tr>
-        <tr class="hov"><td style="font-size:10px;color:var(--g600)">プランについて</td><td style="font-size:11px;font-weight:500">鈴木 一郎</td><td style="font-size:10px;color:var(--purple)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3e4d4b444b55577e495f4c5b56514b4d5b10544e">[email&#160;protected]</a></td><td style="font-size:11px;color:var(--g600);max-width:200px">StandardからProへのアップグレードについてご相談したいです。</td><td style="font-size:10px;color:var(--g400)">昨日 14:20</td><td><span class="bdg op">未対応</span></td><td><div class="br"><button class="bpu" onclick="showReplyModal('鈴木 一郎','suzuki@warehouse.jp')">返信</button><button class="bsm" onclick="markDone(this)">対応済み</button></div></td></tr>
         <tr class="hov" style="opacity:.5"><td style="font-size:10px;color:var(--g600)">その他</td><td style="font-size:11px;font-weight:500">佐藤 美咲</td><td style="font-size:10px;color:var(--g400)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="037062776c43646a6d6d6a6d662d6973">[email&#160;protected]</a></td><td style="font-size:11px;color:var(--g600);max-width:200px">建築家情報の更新をお願いしたいです。</td><td style="font-size:10px;color:var(--g400)">2026.03.22</td><td><span class="bdg dn">対応済み</span></td><td><button class="bsm">履歴</button></td></tr>
       </tbody></table>
     </div>
@@ -354,11 +352,9 @@ a{text-decoration:none;color:inherit}
   <!-- CONTACT -->
   <div id="p-ct" style="display:none">
     <div class="sec">
-      <div class="sec-h"><div><div class="sec-ht">お問い合わせ管理</div><div class="sec-hs">サイトから届いた問い合わせ一覧</div></div><span style="font-size:10px;font-weight:600;padding:4px 12px;background:var(--rbg);border-radius:4px;color:var(--rtx)">3件 未対応</span></div>
+      <div class="sec-h"><div><div class="sec-ht">お問い合わせ管理</div><div class="sec-hs">サイトから届いた問い合わせ一覧</div></div><span style="font-size:10px;font-weight:600;padding:4px 12px;background:var(--rbg);border-radius:4px;color:var(--rtx)">0件 未対応</span></div>
       <div class="sr"><input class="si" placeholder="内容・名前で検索..."><select class="fs"><option>すべて</option><option>未対応</option><option>対応済み</option></select></div>
       <table class="tbl"><thead><tr><th>種別</th><th>名前</th><th>メール</th><th>内容</th><th>受信日</th><th>ステータス</th><th></th></tr></thead><tbody>
-        <tr class="hov"><td style="font-size:10px;color:var(--g600)">掲載について</td><td style="font-size:11px;font-weight:500">小林 智子</td><td style="font-size:10px;color:var(--purple)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f79c9895968e96849f9eb7928f969a879b92d99d87">[email&#160;protected]</a></td><td style="font-size:11px;color:var(--g600);max-width:200px">掲載を検討しています。審査の基準について教えてください。</td><td style="font-size:10px;color:var(--g400)">今日 09:12</td><td><span class="bdg op">未対応</span></td><td><div class="br"><button class="bpu" onclick="showReplyModal('小林 智子','kobayashi@example.jp')">返信</button><button class="bsm" onclick="markDone(this)">対応済み</button></div></td></tr>
-        <tr class="hov"><td style="font-size:10px;color:var(--g600)">プランについて</td><td style="font-size:11px;font-weight:500">鈴木 一郎</td><td style="font-size:10px;color:var(--purple)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3e4d4b444b55577e495f4c5b56514b4d5b10544e">[email&#160;protected]</a></td><td style="font-size:11px;color:var(--g600);max-width:200px">StandardからProへのアップグレードについてご相談したいです。</td><td style="font-size:10px;color:var(--g400)">昨日 14:20</td><td><span class="bdg op">未対応</span></td><td><div class="br"><button class="bpu" onclick="showReplyModal('鈴木 一郎','suzuki@warehouse.jp')">返信</button><button class="bsm" onclick="markDone(this)">対応済み</button></div></td></tr>
         <tr class="hov" style="opacity:.5"><td style="font-size:10px;color:var(--g600)">その他</td><td style="font-size:11px;font-weight:500">佐藤 美咲</td><td style="font-size:10px;color:var(--g400)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="037062776c43646a6d6d6a6d662d6973">[email&#160;protected]</a></td><td style="font-size:11px;color:var(--g600);max-width:200px">建築家情報の更新をお願いしたいです。</td><td style="font-size:10px;color:var(--g400)">2026.03.22</td><td><span class="bdg dn">対応済み</span></td><td><button class="bsm">履歴</button></td></tr>
       </tbody></table>
     </div>
@@ -392,11 +388,9 @@ a{text-decoration:none;color:inherit}
   <!-- CONTACT -->
   <div id="p-ct" style="display:none">
     <div class="sec">
-      <div class="sec-h"><div><div class="sec-ht">お問い合わせ管理</div><div class="sec-hs">サイトから届いた問い合わせ一覧</div></div><span style="font-size:10px;font-weight:600;padding:4px 12px;background:var(--rbg);border-radius:4px;color:var(--rtx)">3件 未対応</span></div>
+      <div class="sec-h"><div><div class="sec-ht">お問い合わせ管理</div><div class="sec-hs">サイトから届いた問い合わせ一覧</div></div><span style="font-size:10px;font-weight:600;padding:4px 12px;background:var(--rbg);border-radius:4px;color:var(--rtx)">0件 未対応</span></div>
       <div class="sr"><input class="si" placeholder="内容・名前で検索..."><select class="fs"><option>すべて</option><option>未対応</option><option>対応済み</option></select></div>
       <table class="tbl"><thead><tr><th>種別</th><th>名前</th><th>メール</th><th>内容</th><th>受信日</th><th>ステータス</th><th></th></tr></thead><tbody>
-        <tr class="hov"><td style="font-size:10px;color:var(--g600)">掲載について</td><td style="font-size:11px;font-weight:500">小林 智子</td><td style="font-size:10px;color:var(--purple)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f79c9895968e96849f9eb7928f969a879b92d99d87">[email&#160;protected]</a></td><td style="font-size:11px;color:var(--g600);max-width:200px">掲載を検討しています。審査の基準について教えてください。</td><td style="font-size:10px;color:var(--g400)">今日 09:12</td><td><span class="bdg op">未対応</span></td><td><div class="br"><button class="bpu" onclick="showReplyModal('小林 智子','kobayashi@example.jp')">返信</button><button class="bsm" onclick="markDone(this)">対応済み</button></div></td></tr>
-        <tr class="hov"><td style="font-size:10px;color:var(--g600)">プランについて</td><td style="font-size:11px;font-weight:500">鈴木 一郎</td><td style="font-size:10px;color:var(--purple)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3e4d4b444b55577e495f4c5b56514b4d5b10544e">[email&#160;protected]</a></td><td style="font-size:11px;color:var(--g600);max-width:200px">StandardからProへのアップグレードについてご相談したいです。</td><td style="font-size:10px;color:var(--g400)">昨日 14:20</td><td><span class="bdg op">未対応</span></td><td><div class="br"><button class="bpu" onclick="showReplyModal('鈴木 一郎','suzuki@warehouse.jp')">返信</button><button class="bsm" onclick="markDone(this)">対応済み</button></div></td></tr>
         <tr class="hov" style="opacity:.5"><td style="font-size:10px;color:var(--g600)">その他</td><td style="font-size:11px;font-weight:500">佐藤 美咲</td><td style="font-size:10px;color:var(--g400)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="037062776c43646a6d6d6a6d662d6973">[email&#160;protected]</a></td><td style="font-size:11px;color:var(--g600);max-width:200px">建築家情報の更新をお願いしたいです。</td><td style="font-size:10px;color:var(--g400)">2026.03.22</td><td><span class="bdg dn">対応済み</span></td><td><button class="bsm">履歴</button></td></tr>
       </tbody></table>
     </div>
@@ -431,11 +425,9 @@ a{text-decoration:none;color:inherit}
   <!-- CONTACT -->
   <div id="p-ct" style="display:none">
     <div class="sec">
-      <div class="sec-h"><div><div class="sec-ht">お問い合わせ管理</div><div class="sec-hs">サイトから届いた問い合わせ一覧</div></div><span style="font-size:10px;font-weight:600;padding:4px 12px;background:var(--rbg);border-radius:4px;color:var(--rtx)">3件 未対応</span></div>
+      <div class="sec-h"><div><div class="sec-ht">お問い合わせ管理</div><div class="sec-hs">サイトから届いた問い合わせ一覧</div></div><span style="font-size:10px;font-weight:600;padding:4px 12px;background:var(--rbg);border-radius:4px;color:var(--rtx)">0件 未対応</span></div>
       <div class="sr"><input class="si" placeholder="内容・名前で検索..."><select class="fs"><option>すべて</option><option>未対応</option><option>対応済み</option></select></div>
       <table class="tbl"><thead><tr><th>種別</th><th>名前</th><th>メール</th><th>内容</th><th>受信日</th><th>ステータス</th><th></th></tr></thead><tbody>
-        <tr class="hov"><td style="font-size:10px;color:var(--g600)">掲載について</td><td style="font-size:11px;font-weight:500">小林 智子</td><td style="font-size:10px;color:var(--purple)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f79c9895968e96849f9eb7928f969a879b92d99d87">[email&#160;protected]</a></td><td style="font-size:11px;color:var(--g600);max-width:200px">掲載を検討しています。審査の基準について教えてください。</td><td style="font-size:10px;color:var(--g400)">今日 09:12</td><td><span class="bdg op">未対応</span></td><td><div class="br"><button class="bpu" onclick="showReplyModal('小林 智子','kobayashi@example.jp')">返信</button><button class="bsm" onclick="markDone(this)">対応済み</button></div></td></tr>
-        <tr class="hov"><td style="font-size:10px;color:var(--g600)">プランについて</td><td style="font-size:11px;font-weight:500">鈴木 一郎</td><td style="font-size:10px;color:var(--purple)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3e4d4b444b55577e495f4c5b56514b4d5b10544e">[email&#160;protected]</a></td><td style="font-size:11px;color:var(--g600);max-width:200px">StandardからProへのアップグレードについてご相談したいです。</td><td style="font-size:10px;color:var(--g400)">昨日 14:20</td><td><span class="bdg op">未対応</span></td><td><div class="br"><button class="bpu" onclick="showReplyModal('鈴木 一郎','suzuki@warehouse.jp')">返信</button><button class="bsm" onclick="markDone(this)">対応済み</button></div></td></tr>
         <tr class="hov" style="opacity:.5"><td style="font-size:10px;color:var(--g600)">その他</td><td style="font-size:11px;font-weight:500">佐藤 美咲</td><td style="font-size:10px;color:var(--g400)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="037062776c43646a6d6d6a6d662d6973">[email&#160;protected]</a></td><td style="font-size:11px;color:var(--g600);max-width:200px">建築家情報の更新をお願いしたいです。</td><td style="font-size:10px;color:var(--g400)">2026.03.22</td><td><span class="bdg dn">対応済み</span></td><td><button class="bsm">履歴</button></td></tr>
       </tbody></table>
     </div>
@@ -518,7 +510,7 @@ a{text-decoration:none;color:inherit}
     </div>
     <div class="fg"><div class="fl">修正内容</div>
       <div style="padding:12px;background:var(--g50);border-radius:6px;font-size:12px;line-height:1.8;color:var(--black)" id="m-rv-content">
-        写真を新しいものに差し替えてほしい。また、営業時間が間違っています。正しくは平日9:00〜21:00、土日10:00〜18:00です。
+        
       </div>
     </div>
     <div class="fg" style="margin-top:12px"><div class="fl">対応メモ</div>
