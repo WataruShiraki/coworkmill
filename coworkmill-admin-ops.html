@@ -1056,15 +1056,28 @@ async function loadOpsSpaces() {
         '<td><span class="bdg ' + planClass + '">' + planLabel + '</span></td>' +
         '<td><span class="bdg ' + stClass + '">' + stLabel + '</span></td>' +
         '<td style="font-size:10px;color:var(--g400)">' + date + '</td>' +
-        '<td><div class="br">' +
-          '<select onchange="opsChangePlan(\'' + d.id + '\',this)" style="font-size:10px;padding:4px 8px;border:1px solid var(--g200);border-radius:4px;cursor:pointer;background:#fff">' +
-            '<option value="">プラン変更</option>' +
-            '<option value="free"' + (d.plan==='free'?' selected':'') + '>Free</option>' +
-            '<option value="standard"' + (d.plan==='standard'?' selected':'') + '>Standard</option>' +
-            '<option value="pro"' + (d.plan==='pro'?' selected':'') + '>Pro</option>' +
-          '</select>' +
-          '<button class="bsm" onclick="window.open('coworkmill-detail.html?id=' + d.id + '')">掲載ページ ↗</button>' +
-        '</div></td>';
+        '<td><div class="br"></div></td>';
+
+      // selectをDOMで作成（クォートエスケープ問題を回避）
+      const sel = document.createElement('select');
+      sel.style.cssText = 'font-size:10px;padding:4px 8px;border:1px solid var(--g200);border-radius:4px;cursor:pointer;background:#fff';
+      [['', 'プラン変更'], ['free', 'Free'], ['standard', 'Standard'], ['pro', 'Pro']].forEach(([val, label]) => {
+        const opt = document.createElement('option');
+        opt.value = val;
+        opt.textContent = label;
+        if (val && val === d.plan) opt.selected = true;
+        sel.appendChild(opt);
+      });
+      sel.addEventListener('change', function() { opsChangePlan(d.id, this); });
+
+      const detailBtn = document.createElement('button');
+      detailBtn.className = 'bsm';
+      detailBtn.textContent = '掲載ページ ↗';
+      detailBtn.onclick = function() { window.open('coworkmill-detail.html?id=' + d.id); };
+
+      const brDiv = tr.querySelector('.br');
+      brDiv.appendChild(sel);
+      brDiv.appendChild(detailBtn);
       tbody.appendChild(tr);
     });
   } catch(e) { console.warn('loadOpsSpaces error:', e); }
