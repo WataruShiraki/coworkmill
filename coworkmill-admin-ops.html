@@ -191,18 +191,180 @@ a{text-decoration:none;color:inherit}
     <div class="sg">
       <div class="sc urg"><div class="slb">審査待ち</div><div class="sv">4</div><div class="ss">新着 2件</div></div>
       <div class="sc pnd"><div class="slb">建築家 連絡待ち</div><div class="sv">2</div><div class="ss">未連絡</div></div>
-      <div class="sc"><div class="slb">掲載施設数</div><div class="sv">24</div><div class="ss">掲載中 21 / 非公開 3</div></div>
+      <div class="sc"><div class="slb">掲載施設数</div><div class="sv" id="ops-total">—</div><div class="ss" id="ops-status">読み込み中</div></div>
       <div class="sc urg"><div class="slb">修正依頼</div><div class="sv">2</div><div class="ss">未対応 2件</div></div>
       <div class="sc"><div class="slb">未対応お問い合わせ</div><div class="sv">3</div><div class="ss">本日 2件</div></div>
     </div>
     <div class="sec">
       <div class="sec-h"><div><div class="sec-ht">最新の掲載申請</div><div class="sec-hs">承認待ち</div></div><button class="bsm" onclick="go('rv',document.querySelectorAll('.nl')[1])">すべて見る →</button></div>
-      <table class="tbl"><thead>
+      <table class="tbl"><thead><tr><th>施設名</th><th>エリア</th><th>申請日</th><th>ステータス</th><th></th></tr></thead><tbody>
+        <tr class="hov"><td><strong>SHIBUYA NODE</strong><div style="font-size:10px;color:var(--g400)">渋谷/東京</div></td><td>渋谷</td><td style="font-size:10px;color:var(--g400)">2026.03.25</td><td><span class="bdg new">新着</span></td><td><div class="br"><button class="bap" onclick="doApprove(this,'SHIBUYA NODE')">承認</button><button class="brj" onclick="doReject(this)">却下</button></div></td></tr>
+        <tr class="hov"><td><strong>NISHI-AZABU STUDIO</strong><div style="font-size:10px;color:var(--g400)">西麻布/東京</div></td><td>西麻布</td><td style="font-size:10px;color:var(--g400)">2026.03.24</td><td><span class="bdg new">新着</span></td><td><div class="br"><button class="bap" onclick="doApprove(this,'NISHI-AZABU STUDIO')">承認</button><button class="brj" onclick="doReject(this)">却下</button></div></td></tr>
+      </tbody></table>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+      <div class="sec">
+        <div class="sec-h"><div><div class="sec-ht">建築家 連絡待ち</div></div><button class="bsm" onclick="go('ar',document.querySelectorAll('.nl')[3])">すべて見る →</button></div>
+        <table class="tbl"><thead><tr><th>施設</th><th>建築家</th><th>状況</th></tr></thead><tbody>
+          <tr class="hov"><td>SHIBUYA NODE</td><td>Sou Fujimoto</td><td><span class="bdg pnd">未連絡</span></td></tr>
+          <tr class="hov"><td>GINZA STUDIO</td><td>Kengo Kuma</td><td><span class="bdg pnd">未連絡</span></td></tr>
         </tbody></table>
       </div>
       <div class="sec">
         <div class="sec-h"><div><div class="sec-ht">未対応お問い合わせ</div></div><button class="bsm" onclick="go('ct',document.querySelectorAll('.nl')[4])">すべて見る →</button></div>
-        <table class="tbl"><thead>
+        <table class="tbl"><thead><tr><th>種別</th><th>内容</th><th>日時</th></tr></thead><tbody>
+          <tr class="hov"><td><span class="bdg op">未対応</span></td><td style="font-size:11px;color:var(--g600)">掲載についての質問</td><td style="font-size:10px;color:var(--g400)">09:12</td></tr>
+          <tr class="hov"><td><span class="bdg op">未対応</span></td><td style="font-size:11px;color:var(--g600)">写真の差し替え依頼</td><td style="font-size:10px;color:var(--g400)">昨日</td></tr>
+          <tr class="hov"><td><span class="bdg op">未対応</span></td><td style="font-size:11px;color:var(--g600)">プランのご相談</td><td style="font-size:10px;color:var(--g400)">昨日</td></tr>
+        </tbody></table>
+      </div>
+    </div>
+  </div>
+
+  <!-- REVIEW -->
+  <div id="p-rv" style="display:none">
+    <div class="sec">
+      <div class="sec-h"><div><div class="sec-ht">掲載申請の審査</div><div class="sec-hs">行をクリックで詳細展開</div></div><span style="font-size:10px;font-weight:600;padding:4px 12px;background:var(--rbg);border-radius:4px;color:var(--rtx)">4件 審査待ち</span></div>
+      <div class="sr"><input class="si" placeholder="施設名・エリアで検索..."><select class="fs"><option>すべて</option><option>新着</option><option>審査中</option></select></div>
+      <table class="tbl"><thead><tr><th></th><th>施設名</th><th>エリア</th><th>担当者</th><th>申請日</th><th>ステータス</th><th></th></tr></thead><tbody>
+        <tr id="ops-loading"><td colspan="7" style="text-align:center;padding:20px;color:var(--g400);font-size:12px">読み込み中...</td></tr>
+        </tbody></table>
+    </div>
+  </div>
+
+  <!-- SPACES -->
+  <div id="p-sp" style="display:none">
+    <div class="sec">
+      <div class="sec-h"><div><div class="sec-ht">掲載者・施設管理</div><div class="sec-hs">登録済みの掲載者と施設一覧</div></div><div style="display:flex;align-items:center;gap:8px"><span style="font-size:10px;color:var(--g400)" id="ops-status2">—</span><button class="bpu" onclick="openModal('m-newac')">＋ 新規アカウント作成</button></div></div>
+      <div class="sr"><input class="si" placeholder="施設名・担当者名で検索..."><select class="fs"><option>すべてのプラン</option><option>Free</option><option>Standard</option><option>Pro</option></select><select class="fs"><option>すべてのステータス</option><option>掲載中</option><option>下書き</option><option>非公開</option></select></div>
+      <table class="tbl"><thead><tr><th>施設名</th><th>エリア</th><th>担当者</th><th>プラン</th><th>ステータス</th><th>登録日</th><th></th></tr></thead><tbody>
+        <tr class="hov"><td><strong>AOYAMA ATELIER</strong></td><td style="font-size:11px;color:var(--g600)">表参道/東京</td><td><div style="font-size:11px">山田 太郎</div><div style="font-size:10px;color:var(--g400)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="5029313d31343110313f29313d317e3a20">[email&#160;protected]</a></div></td><td><span class="bdg st">Standard</span></td><td><span class="bdg lv">掲載中</span></td><td style="font-size:10px;color:var(--g400)">2025.11.01</td><td><div class="br"><button class="bsm" onclick="location.href='coworkmill-admin-view.html'">管理画面 →</button><button class="bpv" onclick="window.open('coworkmill-detail.html')">掲載ページ ↗</button></div></td></tr>
+        <tr class="hov"><td><strong>THE WAREHOUSE</strong></td><td style="font-size:11px;color:var(--g600)">南堀江/大阪</td><td><div style="font-size:11px">鈴木 一郎</div><div style="font-size:10px;color:var(--g400)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="4536303f302e2c05322437202d2a3036206b2f35">[email&#160;protected]</a></div></td><td><span class="bdg st">Standard</span></td><td><span class="bdg dr">下書き</span></td><td style="font-size:10px;color:var(--g400)">2026.01.15</td><td><div class="br"><button class="bsm">管理画面 →</button><button class="bpv" onclick="window.open('coworkmill-detail.html')">掲載ページ ↗</button></div></td></tr>
+        <tr class="hov"><td><strong>GINZA NINE STUDIO</strong><div style="font-size:9px;color:var(--purple);margin-top:2px">3施設登録中</div></td><td style="font-size:11px;color:var(--g600)">銀座/東京</td><td><div style="font-size:11px">佐藤 美咲</div><div style="font-size:10px;color:var(--g400)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="621103160d22050b0c0c0b0c074c0812">[email&#160;protected]</a></div></td><td><span class="bdg pr">Pro</span></td><td><span class="bdg lv">掲載中</span></td><td style="font-size:10px;color:var(--g400)">2025.09.20</td><td><div class="br"><button class="bsm" onclick="location.href='coworkmill-admin-view.html'">管理画面 →</button><button class="bpv" onclick="window.open('coworkmill-detail.html')">掲載ページ ↗</button><button class="bsm" style="color:#3b6fd4;border-color:#c0d0f0" onclick="openModal('m-transfer');document.getElementById('m-tr-target').textContent='GINZA NINE STUDIO'">移譲 →</button></div></td></tr>
+        <tr class="hov"><td><strong>NAKAMEGURO WORKS</strong></td><td style="font-size:11px;color:var(--g600)">中目黒/東京</td><td><div style="font-size:11px">高橋 健</div><div style="font-size:10px;color:var(--g400)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2d594c464c454c5e45446d43405a425f465e03475d">[email&#160;protected]</a></div></td><td><span class="bdg fr">Free</span></td><td><span class="bdg lv">掲載中</span></td><td style="font-size:10px;color:var(--g400)">2026.02.10</td><td><div class="br"><button class="bsm">管理画面 →</button><button class="bpv" onclick="window.open('coworkmill-detail.html')">掲載ページ ↗</button></div></td></tr>
+        <tr class="hov"><td><strong>KYOTO KAMOGAWA</strong></td><td style="font-size:11px;color:var(--g600)">河原町/京都</td><td><div style="font-size:11px">伊藤 さくら</div><div style="font-size:10px;color:var(--g400)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="274e5348674c464a4840465046094d57">[email&#160;protected]</a></div></td><td><span class="bdg fr">Free</span></td><td><span class="bdg dn">非公開</span></td><td style="font-size:10px;color:var(--g400)">2026.03.01</td><td><div class="br"><button class="bsm">管理画面 →</button></div></td></tr>
+      </tbody></table>
+    </div>
+  </div>
+
+
+  <!-- ARCH -->
+  <div id="p-ar" style="display:none">
+    <div class="sec">
+      <div class="sec-h"><div><div class="sec-ht">建築家管理</div><div class="sec-hs">行をクリックして詳細・編集</div></div><span style="font-size:10px;font-weight:600;padding:4px 12px;background:var(--abg);border-radius:4px;color:var(--atx)">2件 未連絡</span></div>
+      <table class="tbl"><thead><tr><th></th><th>建築家・事務所</th><th>施設</th><th>URL</th><th>連絡状況</th><th></th></tr></thead><tbody>
+
+        <tr class="hov" onclick="tog('ae0',this)" style="cursor:pointer"><td id="ae0-a" style="color:var(--g200);font-size:10px">▶</td><td><strong>Kengo Kuma & Associates</strong><div style="font-size:10px;color:var(--g400)">隈研吾建築都市設計事務所</div></td><td style="font-size:11px">AOYAMA ATELIER</td><td><a href="#" style="font-size:10px;color:var(--purple)" onclick="event.stopPropagation()">kkaa.co.jp ↗</a></td><td><span class="bdg rg">登録済み</span></td><td onclick="event.stopPropagation()"></td></tr>
+        <tr class="aex" id="ae0"><td colspan="6"><div class="aein">
+          <div><div class="aett">基本情報</div>
+            <div class="ptog"><div class="sw on" onclick="this.classList.toggle('on');this.nextElementSibling.textContent=this.classList.contains('on')?'公開中':'非公開'"></div><div style="font-size:11px;font-weight:500">公開中</div></div>
+            <div class="fr2"><div class="fg"><div class="fl">姓名（日本語）</div><input class="fin" value="隈 研吾"></div><div class="fg"><div class="fl">Name（English）</div><input class="fin" value="Kengo Kuma"></div></div>
+            <div class="fg"><div class="fl">事務所名</div><input class="fin" value="隈研吾建築都市設計事務所"></div>
+            <div class="fr2"><div class="fg"><div class="fl">国籍・拠点</div><input class="fin" value="日本"></div><div class="fg"><div class="fl">公式URL</div><input class="fin" value="https://kkaa.co.jp"></div></div>
+          </div>
+          <div><div class="aett">プロフィール文</div><textarea class="fta" style="min-height:110px">東京大学建築学科卒業。コロンビア大学客員研究員を経て、隈研吾建築都市設計事務所を設立。「負ける建築」をキーワードに、周囲の環境に溶け込む建築を目指す。</textarea></div>
+          <div><div class="aett">代表作</div><textarea class="fta">根津美術館（2009）
+浅草文化観光センター（2012）
+国立競技場（2019）</textarea></div>
+          <div><div class="aett">受賞歴</div><textarea class="fta">日本建築学会賞（1997）
+Interbuild/Europe Award（2007）</textarea></div>
+          <div class="aefl"><div class="aett">プロフィール写真</div>
+            <div class="pha"><div class="php" id="ae0-ph">🏛</div><div><button class="bsm" style="margin-bottom:6px" onclick="this.nextElementSibling.click()">写真をアップロード</button><input type="file" accept="image/*" style="display:none" onchange="prevPhoto(this,'ae0-ph')"><div class="phhint">顔写真または事務所・ブランドを象徴する写真をアップロードしてください。<br>例：顔写真・ロゴ・事務所エントランスなど　推奨：正方形・JPG/PNG・1MB以内</div></div></div>
+          </div>
+          <div class="aefl"><div class="aett">紐づき施設</div>
+            <div id="ae0-fc"><div class="lf">🏢 AOYAMA ATELIER <span class="lfrm" onclick="this.closest('.lf').remove()">✕ 解除</span></div><div class="lf">🏢 GINZA NINE STUDIO <span class="lfrm" onclick="this.closest('.lf').remove()">✕ 解除</span></div></div>
+            <div class="afr"><select class="afsel"><option value="">＋ 施設を追加...</option><option>THE WAREHOUSE</option><option>NAKAMEGURO WORKS</option><option>SHIBUYA NODE</option></select><button class="bsm" onclick="addFac(this)">追加</button></div>
+          </div>
+          <div class="aefoot"><button class="bsm" onclick="tog('ae0',null)">閉じる</button><button class="bpu" style="font-size:10px;padding:6px 16px" onclick="saveRow(this)">変更を保存</button></div>
+        </div></td></tr>
+
+        <tr class="hov" onclick="tog('ae1',this)" style="cursor:pointer"><td id="ae1-a" style="color:var(--g200);font-size:10px">▶</td><td><strong>DRAFT, INC.</strong><div style="font-size:10px;color:var(--g400)">株式会社ドラフト</div></td><td style="font-size:11px">THE WAREHOUSE</td><td><a href="#" style="font-size:10px;color:var(--purple)" onclick="event.stopPropagation()">draft.co.jp ↗</a></td><td><span class="bdg ct">フォーム送付済み</span></td><td onclick="event.stopPropagation()"></td></tr>
+        <tr class="aex" id="ae1"><td colspan="6"><div class="aein">
+          <div><div class="aett">基本情報</div>
+            <div class="ptog"><div class="sw on" onclick="this.classList.toggle('on');this.nextElementSibling.textContent=this.classList.contains('on')?'公開中':'非公開'"></div><div style="font-size:11px;font-weight:500">公開中</div></div>
+            <div class="fr2"><div class="fg"><div class="fl">名称（日本語）</div><input class="fin" value="ドラフト"></div><div class="fg"><div class="fl">Name（English）</div><input class="fin" value="DRAFT, INC."></div></div>
+            <div class="fg"><div class="fl">事務所名</div><input class="fin" value="株式会社ドラフト"></div>
+            <div class="fr2"><div class="fg"><div class="fl">国籍・拠点</div><input class="fin" value="日本"></div><div class="fg"><div class="fl">公式URL</div><input class="fin" value="https://draft.co.jp"></div></div>
+          </div>
+          <div><div class="aett">プロフィール文</div><textarea class="fta" style="min-height:110px">空間デザインを中心に、ブランディングやグラフィックデザインまで手がける総合デザイン会社。</textarea></div>
+          <div><div class="aett">代表作</div><textarea class="fta">様々な商業施設のインテリアデザイン</textarea></div>
+          <div><div class="aett">受賞歴</div><textarea class="fta" placeholder="受賞歴を入力"></textarea></div>
+          <div class="aefl"><div class="aett">プロフィール写真</div>
+            <div class="pha"><div class="php" id="ae1-ph">🏛</div><div><button class="bsm" style="margin-bottom:6px" onclick="this.nextElementSibling.click()">写真をアップロード</button><input type="file" accept="image/*" style="display:none" onchange="prevPhoto(this,'ae1-ph')"><div class="phhint">顔写真または事務所・ブランドを象徴する写真をアップロードしてください。<br>例：顔写真・ロゴ・事務所エントランスなど　推奨：正方形・JPG/PNG・1MB以内</div></div></div>
+          </div>
+          <div class="aefl"><div class="aett">紐づき施設</div>
+            <div id="ae1-fc"><div class="lf">🏢 THE WAREHOUSE <span class="lfrm" onclick="this.closest('.lf').remove()">✕ 解除</span></div></div>
+            <div class="afr"><select class="afsel"><option value="">＋ 施設を追加...</option><option>AOYAMA ATELIER</option><option>GINZA NINE STUDIO</option><option>NAKAMEGURO WORKS</option></select><button class="bsm" onclick="addFac(this)">追加</button></div>
+          </div>
+          <div class="aefoot"><button class="bsm" onclick="tog('ae1',null)">閉じる</button><button class="bpu" style="font-size:10px;padding:6px 16px" onclick="saveRow(this)">変更を保存</button></div>
+        </div></td></tr>
+
+        <tr class="hov" onclick="tog('ae2',this)" style="cursor:pointer;background:var(--abg)"><td id="ae2-a" style="color:var(--g200);font-size:10px">▶</td><td><strong>Sou Fujimoto Architects</strong></td><td style="font-size:11px">SHIBUYA NODE</td><td><a href="#" style="font-size:10px;color:var(--purple)" onclick="event.stopPropagation()">sou-fujimoto.net ↗</a></td><td><span class="bdg pnd">未連絡</span></td><td onclick="event.stopPropagation()"><button class="bpu" onclick="showArchModal('Sou Fujimoto Architects','sou-fujimoto.net')">連絡する</button></td></tr>
+        <tr class="aex" id="ae2"><td colspan="6"><div class="aein">
+          <div><div class="aett">基本情報</div>
+            <div class="ptog"><div class="sw" onclick="this.classList.toggle('on');this.nextElementSibling.textContent=this.classList.contains('on')?'公開中':'非公開'"></div><div style="font-size:11px;font-weight:500">非公開</div></div>
+            <div class="fr2"><div class="fg"><div class="fl">姓名（日本語）</div><input class="fin" value="藤本 壮介"></div><div class="fg"><div class="fl">Name（English）</div><input class="fin" value="Sou Fujimoto"></div></div>
+            <div class="fg"><div class="fl">事務所名</div><input class="fin" value="藤本壮介建築設計事務所"></div>
+            <div class="fr2"><div class="fg"><div class="fl">国籍・拠点</div><input class="fin" value="日本"></div><div class="fg"><div class="fl">公式URL</div><input class="fin" value="https://sou-fujimoto.net"></div></div>
+          </div>
+          <div><div class="aett">プロフィール文</div><textarea class="fta" style="min-height:110px">北海道出身。東京大学工学部建築学科卒業。2000年に藤本壮介建築設計事務所設立。</textarea></div>
+          <div><div class="aett">代表作</div><textarea class="fta">House N（2008）
+武蔵野美術大学図書館（2010）
+Serpentine Gallery Pavilion（2013）</textarea></div>
+          <div><div class="aett">受賞歴</div><textarea class="fta">ヤング・アーキテクト・アワード（2006）</textarea></div>
+          <div class="aefl"><div class="aett">プロフィール写真</div>
+            <div class="pha"><div class="php" id="ae2-ph">🏛</div><div><button class="bsm" style="margin-bottom:6px" onclick="this.nextElementSibling.click()">写真をアップロード</button><input type="file" accept="image/*" style="display:none" onchange="prevPhoto(this,'ae2-ph')"><div class="phhint">顔写真または事務所・ブランドを象徴する写真をアップロードしてください。<br>例：顔写真・ロゴ・事務所エントランスなど　推奨：正方形・JPG/PNG・1MB以内</div></div></div>
+          </div>
+          <div class="aefl"><div class="aett">紐づき施設</div>
+            <div id="ae2-fc"><div class="lf">🏢 SHIBUYA NODE <span class="lfrm" onclick="this.closest('.lf').remove()">✕ 解除</span></div></div>
+            <div class="afr"><select class="afsel"><option value="">＋ 施設を追加...</option><option>AOYAMA ATELIER</option><option>THE WAREHOUSE</option><option>NAKAMEGURO WORKS</option></select><button class="bsm" onclick="addFac(this)">追加</button></div>
+          </div>
+          <div class="aefoot"><button class="bsm" onclick="tog('ae2',null)">閉じる</button><button class="bpu" style="font-size:10px;padding:6px 16px" onclick="saveRow(this)">変更を保存</button></div>
+        </div></td></tr>
+
+        <tr class="hov" onclick="tog('ae3',this)" style="cursor:pointer;background:var(--abg)"><td id="ae3-a" style="color:var(--g200);font-size:10px">▶</td><td><strong>Kengo Kuma & Associates</strong></td><td style="font-size:11px">GINZA NINE STUDIO</td><td><a href="#" style="font-size:10px;color:var(--purple)" onclick="event.stopPropagation()">kkaa.co.jp ↗</a></td><td><span class="bdg pnd">未連絡</span></td><td onclick="event.stopPropagation()"><button class="bpu" onclick="showArchModal('Kengo Kuma & Associates','kkaa.co.jp')">連絡する</button></td></tr>
+        <tr class="aex" id="ae3"><td colspan="6"><div class="aein">
+          <div><div class="aett">基本情報</div>
+            <div class="ptog"><div class="sw on" onclick="this.classList.toggle('on');this.nextElementSibling.textContent=this.classList.contains('on')?'公開中':'非公開'"></div><div style="font-size:11px;font-weight:500">公開中</div></div>
+            <div class="fr2"><div class="fg"><div class="fl">姓名（日本語）</div><input class="fin" value="隈 研吾"></div><div class="fg"><div class="fl">Name（English）</div><input class="fin" value="Kengo Kuma"></div></div>
+            <div class="fg"><div class="fl">事務所名</div><input class="fin" value="隈研吾建築都市設計事務所"></div>
+            <div class="fr2"><div class="fg"><div class="fl">国籍・拠点</div><input class="fin" value="日本"></div><div class="fg"><div class="fl">公式URL</div><input class="fin" value="https://kkaa.co.jp"></div></div>
+          </div>
+          <div><div class="aett">プロフィール文</div><textarea class="fta" style="min-height:110px">東京大学建築学科卒業。コロンビア大学客員研究員を経て、隈研吾建築都市設計事務所を設立。</textarea></div>
+          <div><div class="aett">代表作</div><textarea class="fta">根津美術館（2009）
+国立競技場（2019）</textarea></div>
+          <div><div class="aett">受賞歴</div><textarea class="fta">日本建築学会賞（1997）</textarea></div>
+          <div class="aefl"><div class="aett">プロフィール写真</div>
+            <div class="pha"><div class="php" id="ae3-ph">🏛</div><div><button class="bsm" style="margin-bottom:6px" onclick="this.nextElementSibling.click()">写真をアップロード</button><input type="file" accept="image/*" style="display:none" onchange="prevPhoto(this,'ae3-ph')"><div class="phhint">顔写真または事務所・ブランドを象徴する写真をアップロードしてください。<br>例：顔写真・ロゴ・事務所エントランスなど　推奨：正方形・JPG/PNG・1MB以内</div></div></div>
+          </div>
+          <div class="aefl"><div class="aett">紐づき施設</div>
+            <div id="ae3-fc"><div class="lf">🏢 GINZA NINE STUDIO <span class="lfrm" onclick="this.closest('.lf').remove()">✕ 解除</span></div></div>
+            <div class="afr"><select class="afsel"><option value="">＋ 施設を追加...</option><option>AOYAMA ATELIER</option><option>THE WAREHOUSE</option><option>SHIBUYA NODE</option></select><button class="bsm" onclick="addFac(this)">追加</button></div>
+          </div>
+          <div class="aefoot"><button class="bsm" onclick="tog('ae3',null)">閉じる</button><button class="bpu" style="font-size:10px;padding:6px 16px" onclick="saveRow(this)">変更を保存</button></div>
+        </div></td></tr>
+
+        <tr class="hov" onclick="tog('ae4',this)" style="cursor:pointer"><td id="ae4-a" style="color:var(--g200);font-size:10px">▶</td><td><strong>NENDO</strong></td><td style="font-size:11px">NAKAMEGURO WORKS</td><td><a href="#" style="font-size:10px;color:var(--purple)" onclick="event.stopPropagation()">nendo.jp ↗</a></td><td><span class="bdg ct">フォーム送付済み</span></td><td onclick="event.stopPropagation()"></td></tr>
+        <tr class="aex" id="ae4"><td colspan="6"><div class="aein">
+          <div><div class="aett">基本情報</div>
+            <div class="ptog"><div class="sw on" onclick="this.classList.toggle('on');this.nextElementSibling.textContent=this.classList.contains('on')?'公開中':'非公開'"></div><div style="font-size:11px;font-weight:500">公開中</div></div>
+            <div class="fr2"><div class="fg"><div class="fl">名称（日本語）</div><input class="fin" value="ネンド"></div><div class="fg"><div class="fl">Name（English）</div><input class="fin" value="nendo"></div></div>
+            <div class="fg"><div class="fl">事務所名</div><input class="fin" value="株式会社ネンド"></div>
+            <div class="fr2"><div class="fg"><div class="fl">国籍・拠点</div><input class="fin" value="日本"></div><div class="fg"><div class="fl">公式URL</div><input class="fin" value="https://nendo.jp"></div></div>
+          </div>
+          <div><div class="aett">プロフィール文</div><textarea class="fta" style="min-height:110px">佐藤オオキが2002年に設立。プロダクト・インテリア・建築・グラフィックなど多分野で活躍するデザイン会社。</textarea></div>
+          <div><div class="aett">代表作</div><textarea class="fta">蔦屋書店 代官山（2011）
+各種プロダクトデザイン</textarea></div>
+          <div><div class="aett">受賞歴</div><textarea class="fta">Elle Deco International Design Award など多数</textarea></div>
+          <div class="aefl"><div class="aett">プロフィール写真</div>
+            <div class="pha"><div class="php" id="ae4-ph">🏛</div><div><button class="bsm" style="margin-bottom:6px" onclick="this.nextElementSibling.click()">写真をアップロード</button><input type="file" accept="image/*" style="display:none" onchange="prevPhoto(this,'ae4-ph')"><div class="phhint">顔写真または事務所・ブランドを象徴する写真をアップロードしてください。<br>例：顔写真・ロゴ・事務所エントランスなど　推奨：正方形・JPG/PNG・1MB以内</div></div></div>
+          </div>
+          <div class="aefl"><div class="aett">紐づき施設</div>
+            <div id="ae4-fc"><div class="lf">🏢 NAKAMEGURO WORKS <span class="lfrm" onclick="this.closest('.lf').remove()">✕ 解除</span></div></div>
+            <div class="afr"><select class="afsel"><option value="">＋ 施設を追加...</option><option>AOYAMA ATELIER</option><option>THE WAREHOUSE</option><option>GINZA NINE STUDIO</option></select><button class="bsm" onclick="addFac(this)">追加</button></div>
+          </div>
+          <div class="aefoot"><button class="bsm" onclick="tog('ae4',null)">閉じる</button><button class="bpu" style="font-size:10px;padding:6px 16px" onclick="saveRow(this)">変更を保存</button></div>
+        </div></td></tr>
 
       </tbody></table>
     </div>
@@ -213,7 +375,212 @@ a{text-decoration:none;color:inherit}
     <div class="sec">
       <div class="sec-h"><div><div class="sec-ht">お問い合わせ管理</div><div class="sec-hs">サイトから届いた問い合わせ一覧</div></div><span style="font-size:10px;font-weight:600;padding:4px 12px;background:var(--rbg);border-radius:4px;color:var(--rtx)">3件 未対応</span></div>
       <div class="sr"><input class="si" placeholder="内容・名前で検索..."><select class="fs"><option>すべて</option><option>未対応</option><option>対応済み</option></select></div>
-      <table class="tbl"><thead>
+      <table class="tbl"><thead><tr><th>種別</th><th>名前</th><th>メール</th><th>内容</th><th>受信日</th><th>ステータス</th><th></th></tr></thead><tbody>
+        <tr class="hov"><td style="font-size:10px;color:var(--g600)">掲載について</td><td style="font-size:11px;font-weight:500">小林 智子</td><td style="font-size:10px;color:var(--purple)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f79c9895968e96849f9eb7928f969a879b92d99d87">[email&#160;protected]</a></td><td style="font-size:11px;color:var(--g600);max-width:200px">掲載を検討しています。審査の基準について教えてください。</td><td style="font-size:10px;color:var(--g400)">今日 09:12</td><td><span class="bdg op">未対応</span></td><td><div class="br"><button class="bpu" onclick="showReplyModal('小林 智子','kobayashi@example.jp')">返信</button><button class="bsm" onclick="markDone(this)">対応済み</button></div></td></tr>
+        <tr class="hov"><td style="font-size:10px;color:var(--g600)">掲載写真</td><td style="font-size:11px;font-weight:500">山田 太郎</td><td style="font-size:10px;color:var(--purple)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d8a1b9b5b9bcb998b9b7a1b9b5b9f6b2a8">[email&#160;protected]</a></td><td style="font-size:11px;color:var(--g600);max-width:200px">写真を差し替えたいのですが、管理画面から操作できますか？</td><td style="font-size:10px;color:var(--g400)">昨日 17:40</td><td><span class="bdg op">未対応</span></td><td><div class="br"><button class="bpu" onclick="showReplyModal('山田 太郎','yamada@aoyama.jp')">返信</button><button class="bsm" onclick="markDone(this)">対応済み</button></div></td></tr>
+        <tr class="hov"><td style="font-size:10px;color:var(--g600)">プランについて</td><td style="font-size:11px;font-weight:500">鈴木 一郎</td><td style="font-size:10px;color:var(--purple)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3e4d4b444b55577e495f4c5b56514b4d5b10544e">[email&#160;protected]</a></td><td style="font-size:11px;color:var(--g600);max-width:200px">StandardからProへのアップグレードについてご相談したいです。</td><td style="font-size:10px;color:var(--g400)">昨日 14:20</td><td><span class="bdg op">未対応</span></td><td><div class="br"><button class="bpu" onclick="showReplyModal('鈴木 一郎','suzuki@warehouse.jp')">返信</button><button class="bsm" onclick="markDone(this)">対応済み</button></div></td></tr>
+        <tr class="hov" style="opacity:.5"><td style="font-size:10px;color:var(--g600)">その他</td><td style="font-size:11px;font-weight:500">佐藤 美咲</td><td style="font-size:10px;color:var(--g400)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="037062776c43646a6d6d6a6d662d6973">[email&#160;protected]</a></td><td style="font-size:11px;color:var(--g600);max-width:200px">建築家情報の更新をお願いしたいです。</td><td style="font-size:10px;color:var(--g400)">2026.03.22</td><td><span class="bdg dn">対応済み</span></td><td><button class="bsm">履歴</button></td></tr>
+      </tbody></table>
+    </div>
+  </div>
+
+  <!-- ACCOUNT MANAGEMENT -->
+  <div id="p-ac" style="display:none">
+    <div class="sec">
+      <div class="sec-h">
+        <div><div class="sec-ht">アカウント管理</div><div class="sec-hs">運営代理でアカウントを作成・複数施設を紐付け・オーナーへ移譲</div></div>
+        <button class="bpu" onclick="openModal('m-newac')">＋ 新規アカウント作成</button>
+      </div>
+      <table class="tbl"><thead><tr>
+        <th>会社名</th><th>メールアドレス</th><th>プラン</th><th>登録施設数</th><th>無料期間終了日</th><th>ステータス</th><th>作成日</th><th></th>
+      </tr></thead><tbody>
+        <tr class="hov">
+          <td><strong>いいオフィス株式会社</strong><div style="font-size:9px;color:var(--g400);margin-top:2px">運営代理作成</div></td>
+          <td style="font-size:11px;color:var(--g400)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="10797e767f50753d7f76767973753e6360717375">[email&#160;protected]</a></td>
+          <td><span class="bdg pr">Pro</span></td>
+          <td><span style="font-size:13px;font-weight:600;color:var(--purple)">12</span><span style="font-size:10px;color:var(--g400)"> / 無制限</span></td>
+          <td style="font-size:11px"><div style="font-weight:600;color:var(--atx)">2027.03.20</div><div style="font-size:9px;color:var(--g400);margin-top:2px">残り357日</div></td>
+          <td><span class="bdg" style="background:#e6f9ef;color:#166534;border:1px solid #bbf7d0">移譲待ち</span><br><span class="bdg" style="background:var(--abg);color:var(--atx);border:1px solid var(--abd);margin-top:3px;cursor:pointer" onclick="openModal('m-revision')">🔔 修正依頼 1件</span></td>
+          <td style="font-size:10px;color:var(--g400)">2026.03.20</td>
+          <td><div class="br">
+            <button class="bsm" onclick="toggleFacPanel('いいオフィス株式会社')">施設管理</button>
+            <button class="bsm" style="color:#0369a1;border-color:#bae6fd" onclick="openPreviewModal('いいオフィス株式会社')">📤 プレビュー送付</button>
+            <button class="bsm" style="color:#3b6fd4;border-color:#c0d0f0" onclick="openModal('m-transfer');document.getElementById('m-tr-target').textContent='いいオフィス株式会社'">移譲 →</button>
+          </div></td>
+        </tr>
+        <tr class="hov">
+          <td><strong>BasisPoint株式会社</strong><div style="font-size:9px;color:var(--g400);margin-top:2px">運営代理作成</div></td>
+          <td style="font-size:11px;color:var(--g400)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="147d7a727b547675677d67647b7d7a603a607b7f6d7b">[email&#160;protected]</a></td>
+          <td><span class="bdg pr">Pro</span></td>
+          <td><span style="font-size:13px;font-weight:600;color:var(--purple)">5</span><span style="font-size:10px;color:var(--g400)"> / 無制限</span></td>
+          <td style="font-size:11px"><div style="font-weight:600;color:var(--g600)">2027.03.15</div><div style="font-size:9px;color:var(--g400);margin-top:2px">残り352日</div></td>
+          <td><span class="bdg lv">移譲完了</span></td>
+          <td style="font-size:10px;color:var(--g400)">2026.03.15</td>
+          <td><div class="br">
+            <button class="bsm" onclick="toggleFacPanel('BasisPoint株式会社')">施設管理</button>
+            <button class="bsm" style="color:#0369a1;border-color:#bae6fd" onclick="openPreviewModal('BasisPoint株式会社')">📤 プレビュー送付</button>
+            <button class="bsm" style="color:var(--g400);cursor:default" disabled>移譲済</button>
+          </div></td>
+        </tr>
+      </tbody></table>
+    </div>
+    <!-- 施設紐付けパネル -->
+    <div id="fac-panel" style="display:none">
+      <div class="sec">
+        <div class="sec-h">
+          <div><div class="sec-ht" id="fac-panel-ttl">施設管理</div><div class="sec-hs">このアカウントに施設を紐付けます</div></div>
+          <button class="bsm" onclick="document.getElementById('fac-panel').style.display='none'">✕ 閉じる</button>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0">
+          <div style="padding:16px;border-right:1px solid var(--g100)">
+            <div class="aett" style="margin-bottom:12px">紐付け済み施設</div>
+            <div id="linked-fac-list">
+              <div style="display:flex;align-items:center;padding:7px 10px;background:var(--white);border:1px solid var(--g200);border-radius:5px;font-size:12px;margin-bottom:4px">🏢 いいオフィス渋谷 <span class="lfrm" onclick="this.closest('div').remove()" style="margin-left:auto">✕</span></div>
+              <div style="display:flex;align-items:center;padding:7px 10px;background:var(--white);border:1px solid var(--g200);border-radius:5px;font-size:12px;margin-bottom:4px">🏢 いいオフィス新宿 <span class="lfrm" onclick="this.closest('div').remove()" style="margin-left:auto">✕</span></div>
+              <div style="display:flex;align-items:center;padding:7px 10px;background:var(--white);border:1px solid var(--g200);border-radius:5px;font-size:12px;margin-bottom:4px">🏢 いいオフィス池袋 <span class="lfrm" onclick="this.closest('div').remove()" style="margin-left:auto">✕</span></div>
+            </div>
+          </div>
+          <div style="padding:16px">
+            <div class="aett" style="margin-bottom:12px">施設を追加</div>
+            <select class="fs" id="fac-add-sel" style="width:100%;margin-bottom:8px">
+              <option value="">施設を選択...</option>
+              <option>いいオフィス秋葉原</option>
+              <option>いいオフィス上野</option>
+              <option>いいオフィス吉祥寺</option>
+              <option>いいオフィス立川</option>
+              <option>いいオフィス八王子</option>
+            </select>
+            <button class="bpu" style="width:100%" onclick="addFacToAccount()">＋ 紐付ける</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  </div>
+</div>
+</div>
+
+<!-- MODALS: display:none のみ。open クラスで display:flex -->
+
+  <!-- ARCH -->
+  <div id="p-ar" style="display:none">
+    <div class="sec">
+      <div class="sec-h"><div><div class="sec-ht">建築家管理</div><div class="sec-hs">行をクリックして詳細・編集</div></div><span style="font-size:10px;font-weight:600;padding:4px 12px;background:var(--abg);border-radius:4px;color:var(--atx)">2件 未連絡</span></div>
+      <table class="tbl"><thead><tr><th></th><th>建築家・事務所</th><th>施設</th><th>URL</th><th>連絡状況</th><th></th></tr></thead><tbody>
+
+        <tr class="hov" onclick="tog('ae0',this)" style="cursor:pointer"><td id="ae0-a" style="color:var(--g200);font-size:10px">▶</td><td><strong>Kengo Kuma & Associates</strong><div style="font-size:10px;color:var(--g400)">隈研吾建築都市設計事務所</div></td><td style="font-size:11px">AOYAMA ATELIER</td><td><a href="#" style="font-size:10px;color:var(--purple)" onclick="event.stopPropagation()">kkaa.co.jp ↗</a></td><td><span class="bdg rg">登録済み</span></td><td onclick="event.stopPropagation()"></td></tr>
+        <tr class="aex" id="ae0"><td colspan="6"><div class="aein">
+          <div><div class="aett">基本情報</div>
+            <div class="ptog"><div class="sw on" onclick="this.classList.toggle('on');this.nextElementSibling.textContent=this.classList.contains('on')?'公開中':'非公開'"></div><div style="font-size:11px;font-weight:500">公開中</div></div>
+            <div class="fr2"><div class="fg"><div class="fl">姓名（日本語）</div><input class="fin" value="隈 研吾"></div><div class="fg"><div class="fl">Name（English）</div><input class="fin" value="Kengo Kuma"></div></div>
+            <div class="fg"><div class="fl">事務所名</div><input class="fin" value="隈研吾建築都市設計事務所"></div>
+            <div class="fr2"><div class="fg"><div class="fl">国籍・拠点</div><input class="fin" value="日本"></div><div class="fg"><div class="fl">公式URL</div><input class="fin" value="https://kkaa.co.jp"></div></div>
+          </div>
+          <div><div class="aett">プロフィール文</div><textarea class="fta" style="min-height:110px">東京大学建築学科卒業。コロンビア大学客員研究員を経て、隈研吾建築都市設計事務所を設立。「負ける建築」をキーワードに、周囲の環境に溶け込む建築を目指す。</textarea></div>
+          <div><div class="aett">代表作</div><textarea class="fta">根津美術館（2009）
+浅草文化観光センター（2012）
+国立競技場（2019）</textarea></div>
+          <div><div class="aett">受賞歴</div><textarea class="fta">日本建築学会賞（1997）
+Interbuild/Europe Award（2007）</textarea></div>
+          <div class="aefl"><div class="aett">プロフィール写真</div>
+            <div class="pha"><div class="php" id="ae0-ph">🏛</div><div><button class="bsm" style="margin-bottom:6px" onclick="this.nextElementSibling.click()">写真をアップロード</button><input type="file" accept="image/*" style="display:none" onchange="prevPhoto(this,'ae0-ph')"><div class="phhint">顔写真または事務所・ブランドを象徴する写真をアップロードしてください。<br>例：顔写真・ロゴ・事務所エントランスなど　推奨：正方形・JPG/PNG・1MB以内</div></div></div>
+          </div>
+          <div class="aefl"><div class="aett">紐づき施設</div>
+            <div id="ae0-fc"><div class="lf">🏢 AOYAMA ATELIER <span class="lfrm" onclick="this.closest('.lf').remove()">✕ 解除</span></div><div class="lf">🏢 GINZA NINE STUDIO <span class="lfrm" onclick="this.closest('.lf').remove()">✕ 解除</span></div></div>
+            <div class="afr"><select class="afsel"><option value="">＋ 施設を追加...</option><option>THE WAREHOUSE</option><option>NAKAMEGURO WORKS</option><option>SHIBUYA NODE</option></select><button class="bsm" onclick="addFac(this)">追加</button></div>
+          </div>
+          <div class="aefoot"><button class="bsm" onclick="tog('ae0',null)">閉じる</button><button class="bpu" style="font-size:10px;padding:6px 16px" onclick="saveRow(this)">変更を保存</button></div>
+        </div></td></tr>
+
+        <tr class="hov" onclick="tog('ae1',this)" style="cursor:pointer"><td id="ae1-a" style="color:var(--g200);font-size:10px">▶</td><td><strong>DRAFT, INC.</strong><div style="font-size:10px;color:var(--g400)">株式会社ドラフト</div></td><td style="font-size:11px">THE WAREHOUSE</td><td><a href="#" style="font-size:10px;color:var(--purple)" onclick="event.stopPropagation()">draft.co.jp ↗</a></td><td><span class="bdg ct">フォーム送付済み</span></td><td onclick="event.stopPropagation()"></td></tr>
+        <tr class="aex" id="ae1"><td colspan="6"><div class="aein">
+          <div><div class="aett">基本情報</div>
+            <div class="ptog"><div class="sw on" onclick="this.classList.toggle('on');this.nextElementSibling.textContent=this.classList.contains('on')?'公開中':'非公開'"></div><div style="font-size:11px;font-weight:500">公開中</div></div>
+            <div class="fr2"><div class="fg"><div class="fl">名称（日本語）</div><input class="fin" value="ドラフト"></div><div class="fg"><div class="fl">Name（English）</div><input class="fin" value="DRAFT, INC."></div></div>
+            <div class="fg"><div class="fl">事務所名</div><input class="fin" value="株式会社ドラフト"></div>
+            <div class="fr2"><div class="fg"><div class="fl">国籍・拠点</div><input class="fin" value="日本"></div><div class="fg"><div class="fl">公式URL</div><input class="fin" value="https://draft.co.jp"></div></div>
+          </div>
+          <div><div class="aett">プロフィール文</div><textarea class="fta" style="min-height:110px">空間デザインを中心に、ブランディングやグラフィックデザインまで手がける総合デザイン会社。</textarea></div>
+          <div><div class="aett">代表作</div><textarea class="fta">様々な商業施設のインテリアデザイン</textarea></div>
+          <div><div class="aett">受賞歴</div><textarea class="fta" placeholder="受賞歴を入力"></textarea></div>
+          <div class="aefl"><div class="aett">プロフィール写真</div>
+            <div class="pha"><div class="php" id="ae1-ph">🏛</div><div><button class="bsm" style="margin-bottom:6px" onclick="this.nextElementSibling.click()">写真をアップロード</button><input type="file" accept="image/*" style="display:none" onchange="prevPhoto(this,'ae1-ph')"><div class="phhint">顔写真または事務所・ブランドを象徴する写真をアップロードしてください。<br>例：顔写真・ロゴ・事務所エントランスなど　推奨：正方形・JPG/PNG・1MB以内</div></div></div>
+          </div>
+          <div class="aefl"><div class="aett">紐づき施設</div>
+            <div id="ae1-fc"><div class="lf">🏢 THE WAREHOUSE <span class="lfrm" onclick="this.closest('.lf').remove()">✕ 解除</span></div></div>
+            <div class="afr"><select class="afsel"><option value="">＋ 施設を追加...</option><option>AOYAMA ATELIER</option><option>GINZA NINE STUDIO</option><option>NAKAMEGURO WORKS</option></select><button class="bsm" onclick="addFac(this)">追加</button></div>
+          </div>
+          <div class="aefoot"><button class="bsm" onclick="tog('ae1',null)">閉じる</button><button class="bpu" style="font-size:10px;padding:6px 16px" onclick="saveRow(this)">変更を保存</button></div>
+        </div></td></tr>
+
+        <tr class="hov" onclick="tog('ae2',this)" style="cursor:pointer;background:var(--abg)"><td id="ae2-a" style="color:var(--g200);font-size:10px">▶</td><td><strong>Sou Fujimoto Architects</strong></td><td style="font-size:11px">SHIBUYA NODE</td><td><a href="#" style="font-size:10px;color:var(--purple)" onclick="event.stopPropagation()">sou-fujimoto.net ↗</a></td><td><span class="bdg pnd">未連絡</span></td><td onclick="event.stopPropagation()"><button class="bpu" onclick="showArchModal('Sou Fujimoto Architects','sou-fujimoto.net')">連絡する</button></td></tr>
+        <tr class="aex" id="ae2"><td colspan="6"><div class="aein">
+          <div><div class="aett">基本情報</div>
+            <div class="ptog"><div class="sw" onclick="this.classList.toggle('on');this.nextElementSibling.textContent=this.classList.contains('on')?'公開中':'非公開'"></div><div style="font-size:11px;font-weight:500">非公開</div></div>
+            <div class="fr2"><div class="fg"><div class="fl">姓名（日本語）</div><input class="fin" value="藤本 壮介"></div><div class="fg"><div class="fl">Name（English）</div><input class="fin" value="Sou Fujimoto"></div></div>
+            <div class="fg"><div class="fl">事務所名</div><input class="fin" value="藤本壮介建築設計事務所"></div>
+            <div class="fr2"><div class="fg"><div class="fl">国籍・拠点</div><input class="fin" value="日本"></div><div class="fg"><div class="fl">公式URL</div><input class="fin" value="https://sou-fujimoto.net"></div></div>
+          </div>
+          <div><div class="aett">プロフィール文</div><textarea class="fta" style="min-height:110px">北海道出身。東京大学工学部建築学科卒業。2000年に藤本壮介建築設計事務所設立。</textarea></div>
+          <div><div class="aett">代表作</div><textarea class="fta">House N（2008）
+武蔵野美術大学図書館（2010）
+Serpentine Gallery Pavilion（2013）</textarea></div>
+          <div><div class="aett">受賞歴</div><textarea class="fta">ヤング・アーキテクト・アワード（2006）</textarea></div>
+          <div class="aefl"><div class="aett">プロフィール写真</div>
+            <div class="pha"><div class="php" id="ae2-ph">🏛</div><div><button class="bsm" style="margin-bottom:6px" onclick="this.nextElementSibling.click()">写真をアップロード</button><input type="file" accept="image/*" style="display:none" onchange="prevPhoto(this,'ae2-ph')"><div class="phhint">顔写真または事務所・ブランドを象徴する写真をアップロードしてください。<br>例：顔写真・ロゴ・事務所エントランスなど　推奨：正方形・JPG/PNG・1MB以内</div></div></div>
+          </div>
+          <div class="aefl"><div class="aett">紐づき施設</div>
+            <div id="ae2-fc"><div class="lf">🏢 SHIBUYA NODE <span class="lfrm" onclick="this.closest('.lf').remove()">✕ 解除</span></div></div>
+            <div class="afr"><select class="afsel"><option value="">＋ 施設を追加...</option><option>AOYAMA ATELIER</option><option>THE WAREHOUSE</option><option>NAKAMEGURO WORKS</option></select><button class="bsm" onclick="addFac(this)">追加</button></div>
+          </div>
+          <div class="aefoot"><button class="bsm" onclick="tog('ae2',null)">閉じる</button><button class="bpu" style="font-size:10px;padding:6px 16px" onclick="saveRow(this)">変更を保存</button></div>
+        </div></td></tr>
+
+        <tr class="hov" onclick="tog('ae3',this)" style="cursor:pointer;background:var(--abg)"><td id="ae3-a" style="color:var(--g200);font-size:10px">▶</td><td><strong>Kengo Kuma & Associates</strong></td><td style="font-size:11px">GINZA NINE STUDIO</td><td><a href="#" style="font-size:10px;color:var(--purple)" onclick="event.stopPropagation()">kkaa.co.jp ↗</a></td><td><span class="bdg pnd">未連絡</span></td><td onclick="event.stopPropagation()"><button class="bpu" onclick="showArchModal('Kengo Kuma & Associates','kkaa.co.jp')">連絡する</button></td></tr>
+        <tr class="aex" id="ae3"><td colspan="6"><div class="aein">
+          <div><div class="aett">基本情報</div>
+            <div class="ptog"><div class="sw on" onclick="this.classList.toggle('on');this.nextElementSibling.textContent=this.classList.contains('on')?'公開中':'非公開'"></div><div style="font-size:11px;font-weight:500">公開中</div></div>
+            <div class="fr2"><div class="fg"><div class="fl">姓名（日本語）</div><input class="fin" value="隈 研吾"></div><div class="fg"><div class="fl">Name（English）</div><input class="fin" value="Kengo Kuma"></div></div>
+            <div class="fg"><div class="fl">事務所名</div><input class="fin" value="隈研吾建築都市設計事務所"></div>
+            <div class="fr2"><div class="fg"><div class="fl">国籍・拠点</div><input class="fin" value="日本"></div><div class="fg"><div class="fl">公式URL</div><input class="fin" value="https://kkaa.co.jp"></div></div>
+          </div>
+          <div><div class="aett">プロフィール文</div><textarea class="fta" style="min-height:110px">東京大学建築学科卒業。コロンビア大学客員研究員を経て、隈研吾建築都市設計事務所を設立。</textarea></div>
+          <div><div class="aett">代表作</div><textarea class="fta">根津美術館（2009）
+国立競技場（2019）</textarea></div>
+          <div><div class="aett">受賞歴</div><textarea class="fta">日本建築学会賞（1997）</textarea></div>
+          <div class="aefl"><div class="aett">プロフィール写真</div>
+            <div class="pha"><div class="php" id="ae3-ph">🏛</div><div><button class="bsm" style="margin-bottom:6px" onclick="this.nextElementSibling.click()">写真をアップロード</button><input type="file" accept="image/*" style="display:none" onchange="prevPhoto(this,'ae3-ph')"><div class="phhint">顔写真または事務所・ブランドを象徴する写真をアップロードしてください。<br>例：顔写真・ロゴ・事務所エントランスなど　推奨：正方形・JPG/PNG・1MB以内</div></div></div>
+          </div>
+          <div class="aefl"><div class="aett">紐づき施設</div>
+            <div id="ae3-fc"><div class="lf">🏢 GINZA NINE STUDIO <span class="lfrm" onclick="this.closest('.lf').remove()">✕ 解除</span></div></div>
+            <div class="afr"><select class="afsel"><option value="">＋ 施設を追加...</option><option>AOYAMA ATELIER</option><option>THE WAREHOUSE</option><option>SHIBUYA NODE</option></select><button class="bsm" onclick="addFac(this)">追加</button></div>
+          </div>
+          <div class="aefoot"><button class="bsm" onclick="tog('ae3',null)">閉じる</button><button class="bpu" style="font-size:10px;padding:6px 16px" onclick="saveRow(this)">変更を保存</button></div>
+        </div></td></tr>
+
+        <tr class="hov" onclick="tog('ae4',this)" style="cursor:pointer"><td id="ae4-a" style="color:var(--g200);font-size:10px">▶</td><td><strong>NENDO</strong></td><td style="font-size:11px">NAKAMEGURO WORKS</td><td><a href="#" style="font-size:10px;color:var(--purple)" onclick="event.stopPropagation()">nendo.jp ↗</a></td><td><span class="bdg ct">フォーム送付済み</span></td><td onclick="event.stopPropagation()"></td></tr>
+        <tr class="aex" id="ae4"><td colspan="6"><div class="aein">
+          <div><div class="aett">基本情報</div>
+            <div class="ptog"><div class="sw on" onclick="this.classList.toggle('on');this.nextElementSibling.textContent=this.classList.contains('on')?'公開中':'非公開'"></div><div style="font-size:11px;font-weight:500">公開中</div></div>
+            <div class="fr2"><div class="fg"><div class="fl">名称（日本語）</div><input class="fin" value="ネンド"></div><div class="fg"><div class="fl">Name（English）</div><input class="fin" value="nendo"></div></div>
+            <div class="fg"><div class="fl">事務所名</div><input class="fin" value="株式会社ネンド"></div>
+            <div class="fr2"><div class="fg"><div class="fl">国籍・拠点</div><input class="fin" value="日本"></div><div class="fg"><div class="fl">公式URL</div><input class="fin" value="https://nendo.jp"></div></div>
+          </div>
+          <div><div class="aett">プロフィール文</div><textarea class="fta" style="min-height:110px">佐藤オオキが2002年に設立。プロダクト・インテリア・建築・グラフィックなど多分野で活躍するデザイン会社。</textarea></div>
+          <div><div class="aett">代表作</div><textarea class="fta">蔦屋書店 代官山（2011）
+各種プロダクトデザイン</textarea></div>
+          <div><div class="aett">受賞歴</div><textarea class="fta">Elle Deco International Design Award など多数</textarea></div>
+          <div class="aefl"><div class="aett">プロフィール写真</div>
+            <div class="pha"><div class="php" id="ae4-ph">🏛</div><div><button class="bsm" style="margin-bottom:6px" onclick="this.nextElementSibling.click()">写真をアップロード</button><input type="file" accept="image/*" style="display:none" onchange="prevPhoto(this,'ae4-ph')"><div class="phhint">顔写真または事務所・ブランドを象徴する写真をアップロードしてください。<br>例：顔写真・ロゴ・事務所エントランスなど　推奨：正方形・JPG/PNG・1MB以内</div></div></div>
+          </div>
+          <div class="aefl"><div class="aett">紐づき施設</div>
+            <div id="ae4-fc"><div class="lf">🏢 NAKAMEGURO WORKS <span class="lfrm" onclick="this.closest('.lf').remove()">✕ 解除</span></div></div>
+            <div class="afr"><select class="afsel"><option value="">＋ 施設を追加...</option><option>AOYAMA ATELIER</option><option>THE WAREHOUSE</option><option>GINZA NINE STUDIO</option></select><button class="bsm" onclick="addFac(this)">追加</button></div>
+          </div>
+          <div class="aefoot"><button class="bsm" onclick="tog('ae4',null)">閉じる</button><button class="bpu" style="font-size:10px;padding:6px 16px" onclick="saveRow(this)">変更を保存</button></div>
+        </div></td></tr>
 
       </tbody></table>
     </div>
@@ -224,7 +591,137 @@ a{text-decoration:none;color:inherit}
     <div class="sec">
       <div class="sec-h"><div><div class="sec-ht">お問い合わせ管理</div><div class="sec-hs">サイトから届いた問い合わせ一覧</div></div><span style="font-size:10px;font-weight:600;padding:4px 12px;background:var(--rbg);border-radius:4px;color:var(--rtx)">3件 未対応</span></div>
       <div class="sr"><input class="si" placeholder="内容・名前で検索..."><select class="fs"><option>すべて</option><option>未対応</option><option>対応済み</option></select></div>
-      <table class="tbl"><thead>
+      <table class="tbl"><thead><tr><th>種別</th><th>名前</th><th>メール</th><th>内容</th><th>受信日</th><th>ステータス</th><th></th></tr></thead><tbody>
+        <tr class="hov"><td style="font-size:10px;color:var(--g600)">掲載について</td><td style="font-size:11px;font-weight:500">小林 智子</td><td style="font-size:10px;color:var(--purple)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f79c9895968e96849f9eb7928f969a879b92d99d87">[email&#160;protected]</a></td><td style="font-size:11px;color:var(--g600);max-width:200px">掲載を検討しています。審査の基準について教えてください。</td><td style="font-size:10px;color:var(--g400)">今日 09:12</td><td><span class="bdg op">未対応</span></td><td><div class="br"><button class="bpu" onclick="showReplyModal('小林 智子','kobayashi@example.jp')">返信</button><button class="bsm" onclick="markDone(this)">対応済み</button></div></td></tr>
+        <tr class="hov"><td style="font-size:10px;color:var(--g600)">掲載写真</td><td style="font-size:11px;font-weight:500">山田 太郎</td><td style="font-size:10px;color:var(--purple)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d8a1b9b5b9bcb998b9b7a1b9b5b9f6b2a8">[email&#160;protected]</a></td><td style="font-size:11px;color:var(--g600);max-width:200px">写真を差し替えたいのですが、管理画面から操作できますか？</td><td style="font-size:10px;color:var(--g400)">昨日 17:40</td><td><span class="bdg op">未対応</span></td><td><div class="br"><button class="bpu" onclick="showReplyModal('山田 太郎','yamada@aoyama.jp')">返信</button><button class="bsm" onclick="markDone(this)">対応済み</button></div></td></tr>
+        <tr class="hov"><td style="font-size:10px;color:var(--g600)">プランについて</td><td style="font-size:11px;font-weight:500">鈴木 一郎</td><td style="font-size:10px;color:var(--purple)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3e4d4b444b55577e495f4c5b56514b4d5b10544e">[email&#160;protected]</a></td><td style="font-size:11px;color:var(--g600);max-width:200px">StandardからProへのアップグレードについてご相談したいです。</td><td style="font-size:10px;color:var(--g400)">昨日 14:20</td><td><span class="bdg op">未対応</span></td><td><div class="br"><button class="bpu" onclick="showReplyModal('鈴木 一郎','suzuki@warehouse.jp')">返信</button><button class="bsm" onclick="markDone(this)">対応済み</button></div></td></tr>
+        <tr class="hov" style="opacity:.5"><td style="font-size:10px;color:var(--g600)">その他</td><td style="font-size:11px;font-weight:500">佐藤 美咲</td><td style="font-size:10px;color:var(--g400)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="037062776c43646a6d6d6a6d662d6973">[email&#160;protected]</a></td><td style="font-size:11px;color:var(--g600);max-width:200px">建築家情報の更新をお願いしたいです。</td><td style="font-size:10px;color:var(--g400)">2026.03.22</td><td><span class="bdg dn">対応済み</span></td><td><button class="bsm">履歴</button></td></tr>
+      </tbody></table>
+    </div>
+  </div>
+
+  </div>
+</div>
+</div>
+
+<!-- MODALS: display:none のみ。open クラスで display:flex -->
+  <!-- ARCH -->
+  <div id="p-ar" style="display:none">
+    <div class="sec">
+      <div class="sec-h"><div><div class="sec-ht">建築家管理</div><div class="sec-hs">行をクリックして詳細・編集</div></div><span style="font-size:10px;font-weight:600;padding:4px 12px;background:var(--abg);border-radius:4px;color:var(--atx)">2件 未連絡</span></div>
+      <table class="tbl"><thead><tr><th></th><th>建築家・事務所</th><th>施設</th><th>URL</th><th>連絡状況</th><th></th></tr></thead><tbody>
+
+        <tr class="hov" onclick="tog('ae0',this)" style="cursor:pointer"><td id="ae0-a" style="color:var(--g200);font-size:10px">▶</td><td><strong>Kengo Kuma & Associates</strong><div style="font-size:10px;color:var(--g400)">隈研吾建築都市設計事務所</div></td><td style="font-size:11px">AOYAMA ATELIER</td><td><a href="#" style="font-size:10px;color:var(--purple)" onclick="event.stopPropagation()">kkaa.co.jp ↗</a></td><td><span class="bdg rg">登録済み</span></td><td onclick="event.stopPropagation()"></td></tr>
+        <tr class="aex" id="ae0"><td colspan="6"><div class="aein">
+          <div><div class="aett">基本情報</div>
+            <div class="ptog"><div class="sw on" onclick="this.classList.toggle('on');this.nextElementSibling.textContent=this.classList.contains('on')?'公開中':'非公開'"></div><div style="font-size:11px;font-weight:500">公開中</div></div>
+            <div class="fr2"><div class="fg"><div class="fl">姓名（日本語）</div><input class="fin" value="隈 研吾"></div><div class="fg"><div class="fl">Name（English）</div><input class="fin" value="Kengo Kuma"></div></div>
+            <div class="fg"><div class="fl">事務所名</div><input class="fin" value="隈研吾建築都市設計事務所"></div>
+            <div class="fr2"><div class="fg"><div class="fl">国籍・拠点</div><input class="fin" value="日本"></div><div class="fg"><div class="fl">公式URL</div><input class="fin" value="https://kkaa.co.jp"></div></div>
+          </div>
+          <div><div class="aett">プロフィール文</div><textarea class="fta" style="min-height:110px">東京大学建築学科卒業。コロンビア大学客員研究員を経て、隈研吾建築都市設計事務所を設立。「負ける建築」をキーワードに、周囲の環境に溶け込む建築を目指す。</textarea></div>
+          <div><div class="aett">代表作</div><textarea class="fta">根津美術館（2009）
+浅草文化観光センター（2012）
+国立競技場（2019）</textarea></div>
+          <div><div class="aett">受賞歴</div><textarea class="fta">日本建築学会賞（1997）
+Interbuild/Europe Award（2007）</textarea></div>
+          <div class="aefl"><div class="aett">プロフィール写真</div>
+            <div class="pha"><div class="php" id="ae0-ph">🏛</div><div><button class="bsm" style="margin-bottom:6px" onclick="this.nextElementSibling.click()">写真をアップロード</button><input type="file" accept="image/*" style="display:none" onchange="prevPhoto(this,'ae0-ph')"><div class="phhint">顔写真または事務所・ブランドを象徴する写真をアップロードしてください。<br>例：顔写真・ロゴ・事務所エントランスなど　推奨：正方形・JPG/PNG・1MB以内</div></div></div>
+          </div>
+          <div class="aefl"><div class="aett">紐づき施設</div>
+            <div id="ae0-fc"><div class="lf">🏢 AOYAMA ATELIER <span class="lfrm" onclick="this.closest('.lf').remove()">✕ 解除</span></div><div class="lf">🏢 GINZA NINE STUDIO <span class="lfrm" onclick="this.closest('.lf').remove()">✕ 解除</span></div></div>
+            <div class="afr"><select class="afsel"><option value="">＋ 施設を追加...</option><option>THE WAREHOUSE</option><option>NAKAMEGURO WORKS</option><option>SHIBUYA NODE</option></select><button class="bsm" onclick="addFac(this)">追加</button></div>
+          </div>
+          <div class="aefoot"><button class="bsm" onclick="tog('ae0',null)">閉じる</button><button class="bpu" style="font-size:10px;padding:6px 16px" onclick="saveRow(this)">変更を保存</button></div>
+        </div></td></tr>
+
+        <tr class="hov" onclick="tog('ae1',this)" style="cursor:pointer"><td id="ae1-a" style="color:var(--g200);font-size:10px">▶</td><td><strong>DRAFT, INC.</strong><div style="font-size:10px;color:var(--g400)">株式会社ドラフト</div></td><td style="font-size:11px">THE WAREHOUSE</td><td><a href="#" style="font-size:10px;color:var(--purple)" onclick="event.stopPropagation()">draft.co.jp ↗</a></td><td><span class="bdg ct">フォーム送付済み</span></td><td onclick="event.stopPropagation()"></td></tr>
+        <tr class="aex" id="ae1"><td colspan="6"><div class="aein">
+          <div><div class="aett">基本情報</div>
+            <div class="ptog"><div class="sw on" onclick="this.classList.toggle('on');this.nextElementSibling.textContent=this.classList.contains('on')?'公開中':'非公開'"></div><div style="font-size:11px;font-weight:500">公開中</div></div>
+            <div class="fr2"><div class="fg"><div class="fl">名称（日本語）</div><input class="fin" value="ドラフト"></div><div class="fg"><div class="fl">Name（English）</div><input class="fin" value="DRAFT, INC."></div></div>
+            <div class="fg"><div class="fl">事務所名</div><input class="fin" value="株式会社ドラフト"></div>
+            <div class="fr2"><div class="fg"><div class="fl">国籍・拠点</div><input class="fin" value="日本"></div><div class="fg"><div class="fl">公式URL</div><input class="fin" value="https://draft.co.jp"></div></div>
+          </div>
+          <div><div class="aett">プロフィール文</div><textarea class="fta" style="min-height:110px">空間デザインを中心に、ブランディングやグラフィックデザインまで手がける総合デザイン会社。</textarea></div>
+          <div><div class="aett">代表作</div><textarea class="fta">様々な商業施設のインテリアデザイン</textarea></div>
+          <div><div class="aett">受賞歴</div><textarea class="fta" placeholder="受賞歴を入力"></textarea></div>
+          <div class="aefl"><div class="aett">プロフィール写真</div>
+            <div class="pha"><div class="php" id="ae1-ph">🏛</div><div><button class="bsm" style="margin-bottom:6px" onclick="this.nextElementSibling.click()">写真をアップロード</button><input type="file" accept="image/*" style="display:none" onchange="prevPhoto(this,'ae1-ph')"><div class="phhint">顔写真または事務所・ブランドを象徴する写真をアップロードしてください。<br>例：顔写真・ロゴ・事務所エントランスなど　推奨：正方形・JPG/PNG・1MB以内</div></div></div>
+          </div>
+          <div class="aefl"><div class="aett">紐づき施設</div>
+            <div id="ae1-fc"><div class="lf">🏢 THE WAREHOUSE <span class="lfrm" onclick="this.closest('.lf').remove()">✕ 解除</span></div></div>
+            <div class="afr"><select class="afsel"><option value="">＋ 施設を追加...</option><option>AOYAMA ATELIER</option><option>GINZA NINE STUDIO</option><option>NAKAMEGURO WORKS</option></select><button class="bsm" onclick="addFac(this)">追加</button></div>
+          </div>
+          <div class="aefoot"><button class="bsm" onclick="tog('ae1',null)">閉じる</button><button class="bpu" style="font-size:10px;padding:6px 16px" onclick="saveRow(this)">変更を保存</button></div>
+        </div></td></tr>
+
+        <tr class="hov" onclick="tog('ae2',this)" style="cursor:pointer;background:var(--abg)"><td id="ae2-a" style="color:var(--g200);font-size:10px">▶</td><td><strong>Sou Fujimoto Architects</strong></td><td style="font-size:11px">SHIBUYA NODE</td><td><a href="#" style="font-size:10px;color:var(--purple)" onclick="event.stopPropagation()">sou-fujimoto.net ↗</a></td><td><span class="bdg pnd">未連絡</span></td><td onclick="event.stopPropagation()"><button class="bpu" onclick="showArchModal('Sou Fujimoto Architects','sou-fujimoto.net')">連絡する</button></td></tr>
+        <tr class="aex" id="ae2"><td colspan="6"><div class="aein">
+          <div><div class="aett">基本情報</div>
+            <div class="ptog"><div class="sw" onclick="this.classList.toggle('on');this.nextElementSibling.textContent=this.classList.contains('on')?'公開中':'非公開'"></div><div style="font-size:11px;font-weight:500">非公開</div></div>
+            <div class="fr2"><div class="fg"><div class="fl">姓名（日本語）</div><input class="fin" value="藤本 壮介"></div><div class="fg"><div class="fl">Name（English）</div><input class="fin" value="Sou Fujimoto"></div></div>
+            <div class="fg"><div class="fl">事務所名</div><input class="fin" value="藤本壮介建築設計事務所"></div>
+            <div class="fr2"><div class="fg"><div class="fl">国籍・拠点</div><input class="fin" value="日本"></div><div class="fg"><div class="fl">公式URL</div><input class="fin" value="https://sou-fujimoto.net"></div></div>
+          </div>
+          <div><div class="aett">プロフィール文</div><textarea class="fta" style="min-height:110px">北海道出身。東京大学工学部建築学科卒業。2000年に藤本壮介建築設計事務所設立。</textarea></div>
+          <div><div class="aett">代表作</div><textarea class="fta">House N（2008）
+武蔵野美術大学図書館（2010）
+Serpentine Gallery Pavilion（2013）</textarea></div>
+          <div><div class="aett">受賞歴</div><textarea class="fta">ヤング・アーキテクト・アワード（2006）</textarea></div>
+          <div class="aefl"><div class="aett">プロフィール写真</div>
+            <div class="pha"><div class="php" id="ae2-ph">🏛</div><div><button class="bsm" style="margin-bottom:6px" onclick="this.nextElementSibling.click()">写真をアップロード</button><input type="file" accept="image/*" style="display:none" onchange="prevPhoto(this,'ae2-ph')"><div class="phhint">顔写真または事務所・ブランドを象徴する写真をアップロードしてください。<br>例：顔写真・ロゴ・事務所エントランスなど　推奨：正方形・JPG/PNG・1MB以内</div></div></div>
+          </div>
+          <div class="aefl"><div class="aett">紐づき施設</div>
+            <div id="ae2-fc"><div class="lf">🏢 SHIBUYA NODE <span class="lfrm" onclick="this.closest('.lf').remove()">✕ 解除</span></div></div>
+            <div class="afr"><select class="afsel"><option value="">＋ 施設を追加...</option><option>AOYAMA ATELIER</option><option>THE WAREHOUSE</option><option>NAKAMEGURO WORKS</option></select><button class="bsm" onclick="addFac(this)">追加</button></div>
+          </div>
+          <div class="aefoot"><button class="bsm" onclick="tog('ae2',null)">閉じる</button><button class="bpu" style="font-size:10px;padding:6px 16px" onclick="saveRow(this)">変更を保存</button></div>
+        </div></td></tr>
+
+        <tr class="hov" onclick="tog('ae3',this)" style="cursor:pointer;background:var(--abg)"><td id="ae3-a" style="color:var(--g200);font-size:10px">▶</td><td><strong>Kengo Kuma & Associates</strong></td><td style="font-size:11px">GINZA NINE STUDIO</td><td><a href="#" style="font-size:10px;color:var(--purple)" onclick="event.stopPropagation()">kkaa.co.jp ↗</a></td><td><span class="bdg pnd">未連絡</span></td><td onclick="event.stopPropagation()"><button class="bpu" onclick="showArchModal('Kengo Kuma & Associates','kkaa.co.jp')">連絡する</button></td></tr>
+        <tr class="aex" id="ae3"><td colspan="6"><div class="aein">
+          <div><div class="aett">基本情報</div>
+            <div class="ptog"><div class="sw on" onclick="this.classList.toggle('on');this.nextElementSibling.textContent=this.classList.contains('on')?'公開中':'非公開'"></div><div style="font-size:11px;font-weight:500">公開中</div></div>
+            <div class="fr2"><div class="fg"><div class="fl">姓名（日本語）</div><input class="fin" value="隈 研吾"></div><div class="fg"><div class="fl">Name（English）</div><input class="fin" value="Kengo Kuma"></div></div>
+            <div class="fg"><div class="fl">事務所名</div><input class="fin" value="隈研吾建築都市設計事務所"></div>
+            <div class="fr2"><div class="fg"><div class="fl">国籍・拠点</div><input class="fin" value="日本"></div><div class="fg"><div class="fl">公式URL</div><input class="fin" value="https://kkaa.co.jp"></div></div>
+          </div>
+          <div><div class="aett">プロフィール文</div><textarea class="fta" style="min-height:110px">東京大学建築学科卒業。コロンビア大学客員研究員を経て、隈研吾建築都市設計事務所を設立。</textarea></div>
+          <div><div class="aett">代表作</div><textarea class="fta">根津美術館（2009）
+国立競技場（2019）</textarea></div>
+          <div><div class="aett">受賞歴</div><textarea class="fta">日本建築学会賞（1997）</textarea></div>
+          <div class="aefl"><div class="aett">プロフィール写真</div>
+            <div class="pha"><div class="php" id="ae3-ph">🏛</div><div><button class="bsm" style="margin-bottom:6px" onclick="this.nextElementSibling.click()">写真をアップロード</button><input type="file" accept="image/*" style="display:none" onchange="prevPhoto(this,'ae3-ph')"><div class="phhint">顔写真または事務所・ブランドを象徴する写真をアップロードしてください。<br>例：顔写真・ロゴ・事務所エントランスなど　推奨：正方形・JPG/PNG・1MB以内</div></div></div>
+          </div>
+          <div class="aefl"><div class="aett">紐づき施設</div>
+            <div id="ae3-fc"><div class="lf">🏢 GINZA NINE STUDIO <span class="lfrm" onclick="this.closest('.lf').remove()">✕ 解除</span></div></div>
+            <div class="afr"><select class="afsel"><option value="">＋ 施設を追加...</option><option>AOYAMA ATELIER</option><option>THE WAREHOUSE</option><option>SHIBUYA NODE</option></select><button class="bsm" onclick="addFac(this)">追加</button></div>
+          </div>
+          <div class="aefoot"><button class="bsm" onclick="tog('ae3',null)">閉じる</button><button class="bpu" style="font-size:10px;padding:6px 16px" onclick="saveRow(this)">変更を保存</button></div>
+        </div></td></tr>
+
+        <tr class="hov" onclick="tog('ae4',this)" style="cursor:pointer"><td id="ae4-a" style="color:var(--g200);font-size:10px">▶</td><td><strong>NENDO</strong></td><td style="font-size:11px">NAKAMEGURO WORKS</td><td><a href="#" style="font-size:10px;color:var(--purple)" onclick="event.stopPropagation()">nendo.jp ↗</a></td><td><span class="bdg ct">フォーム送付済み</span></td><td onclick="event.stopPropagation()"></td></tr>
+        <tr class="aex" id="ae4"><td colspan="6"><div class="aein">
+          <div><div class="aett">基本情報</div>
+            <div class="ptog"><div class="sw on" onclick="this.classList.toggle('on');this.nextElementSibling.textContent=this.classList.contains('on')?'公開中':'非公開'"></div><div style="font-size:11px;font-weight:500">公開中</div></div>
+            <div class="fr2"><div class="fg"><div class="fl">名称（日本語）</div><input class="fin" value="ネンド"></div><div class="fg"><div class="fl">Name（English）</div><input class="fin" value="nendo"></div></div>
+            <div class="fg"><div class="fl">事務所名</div><input class="fin" value="株式会社ネンド"></div>
+            <div class="fr2"><div class="fg"><div class="fl">国籍・拠点</div><input class="fin" value="日本"></div><div class="fg"><div class="fl">公式URL</div><input class="fin" value="https://nendo.jp"></div></div>
+          </div>
+          <div><div class="aett">プロフィール文</div><textarea class="fta" style="min-height:110px">佐藤オオキが2002年に設立。プロダクト・インテリア・建築・グラフィックなど多分野で活躍するデザイン会社。</textarea></div>
+          <div><div class="aett">代表作</div><textarea class="fta">蔦屋書店 代官山（2011）
+各種プロダクトデザイン</textarea></div>
+          <div><div class="aett">受賞歴</div><textarea class="fta">Elle Deco International Design Award など多数</textarea></div>
+          <div class="aefl"><div class="aett">プロフィール写真</div>
+            <div class="pha"><div class="php" id="ae4-ph">🏛</div><div><button class="bsm" style="margin-bottom:6px" onclick="this.nextElementSibling.click()">写真をアップロード</button><input type="file" accept="image/*" style="display:none" onchange="prevPhoto(this,'ae4-ph')"><div class="phhint">顔写真または事務所・ブランドを象徴する写真をアップロードしてください。<br>例：顔写真・ロゴ・事務所エントランスなど　推奨：正方形・JPG/PNG・1MB以内</div></div></div>
+          </div>
+          <div class="aefl"><div class="aett">紐づき施設</div>
+            <div id="ae4-fc"><div class="lf">🏢 NAKAMEGURO WORKS <span class="lfrm" onclick="this.closest('.lf').remove()">✕ 解除</span></div></div>
+            <div class="afr"><select class="afsel"><option value="">＋ 施設を追加...</option><option>AOYAMA ATELIER</option><option>THE WAREHOUSE</option><option>GINZA NINE STUDIO</option></select><button class="bsm" onclick="addFac(this)">追加</button></div>
+          </div>
+          <div class="aefoot"><button class="bsm" onclick="tog('ae4',null)">閉じる</button><button class="bpu" style="font-size:10px;padding:6px 16px" onclick="saveRow(this)">変更を保存</button></div>
+        </div></td></tr>
 
       </tbody></table>
     </div>
@@ -235,7 +732,138 @@ a{text-decoration:none;color:inherit}
     <div class="sec">
       <div class="sec-h"><div><div class="sec-ht">お問い合わせ管理</div><div class="sec-hs">サイトから届いた問い合わせ一覧</div></div><span style="font-size:10px;font-weight:600;padding:4px 12px;background:var(--rbg);border-radius:4px;color:var(--rtx)">3件 未対応</span></div>
       <div class="sr"><input class="si" placeholder="内容・名前で検索..."><select class="fs"><option>すべて</option><option>未対応</option><option>対応済み</option></select></div>
-      <table class="tbl"><thead>
+      <table class="tbl"><thead><tr><th>種別</th><th>名前</th><th>メール</th><th>内容</th><th>受信日</th><th>ステータス</th><th></th></tr></thead><tbody>
+        <tr class="hov"><td style="font-size:10px;color:var(--g600)">掲載について</td><td style="font-size:11px;font-weight:500">小林 智子</td><td style="font-size:10px;color:var(--purple)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f79c9895968e96849f9eb7928f969a879b92d99d87">[email&#160;protected]</a></td><td style="font-size:11px;color:var(--g600);max-width:200px">掲載を検討しています。審査の基準について教えてください。</td><td style="font-size:10px;color:var(--g400)">今日 09:12</td><td><span class="bdg op">未対応</span></td><td><div class="br"><button class="bpu" onclick="showReplyModal('小林 智子','kobayashi@example.jp')">返信</button><button class="bsm" onclick="markDone(this)">対応済み</button></div></td></tr>
+        <tr class="hov"><td style="font-size:10px;color:var(--g600)">掲載写真</td><td style="font-size:11px;font-weight:500">山田 太郎</td><td style="font-size:10px;color:var(--purple)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d8a1b9b5b9bcb998b9b7a1b9b5b9f6b2a8">[email&#160;protected]</a></td><td style="font-size:11px;color:var(--g600);max-width:200px">写真を差し替えたいのですが、管理画面から操作できますか？</td><td style="font-size:10px;color:var(--g400)">昨日 17:40</td><td><span class="bdg op">未対応</span></td><td><div class="br"><button class="bpu" onclick="showReplyModal('山田 太郎','yamada@aoyama.jp')">返信</button><button class="bsm" onclick="markDone(this)">対応済み</button></div></td></tr>
+        <tr class="hov"><td style="font-size:10px;color:var(--g600)">プランについて</td><td style="font-size:11px;font-weight:500">鈴木 一郎</td><td style="font-size:10px;color:var(--purple)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3e4d4b444b55577e495f4c5b56514b4d5b10544e">[email&#160;protected]</a></td><td style="font-size:11px;color:var(--g600);max-width:200px">StandardからProへのアップグレードについてご相談したいです。</td><td style="font-size:10px;color:var(--g400)">昨日 14:20</td><td><span class="bdg op">未対応</span></td><td><div class="br"><button class="bpu" onclick="showReplyModal('鈴木 一郎','suzuki@warehouse.jp')">返信</button><button class="bsm" onclick="markDone(this)">対応済み</button></div></td></tr>
+        <tr class="hov" style="opacity:.5"><td style="font-size:10px;color:var(--g600)">その他</td><td style="font-size:11px;font-weight:500">佐藤 美咲</td><td style="font-size:10px;color:var(--g400)"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="037062776c43646a6d6d6a6d662d6973">[email&#160;protected]</a></td><td style="font-size:11px;color:var(--g600);max-width:200px">建築家情報の更新をお願いしたいです。</td><td style="font-size:10px;color:var(--g400)">2026.03.22</td><td><span class="bdg dn">対応済み</span></td><td><button class="bsm">履歴</button></td></tr>
+      </tbody></table>
+    </div>
+  </div>
+
+  </div>
+</div>
+</div>
+
+<!-- MODALS: display:none のみ。open クラスで display:flex -->
+
+  <!-- ARCH -->
+  <div id="p-ar" style="display:none">
+    <div class="sec">
+      <div class="sec-h"><div><div class="sec-ht">建築家管理</div><div class="sec-hs">行をクリックして詳細・編集</div></div><span style="font-size:10px;font-weight:600;padding:4px 12px;background:var(--abg);border-radius:4px;color:var(--atx)">2件 未連絡</span></div>
+      <table class="tbl"><thead><tr><th></th><th>建築家・事務所</th><th>施設</th><th>URL</th><th>連絡状況</th><th></th></tr></thead><tbody>
+
+        <tr class="hov" onclick="tog('ae0',this)" style="cursor:pointer"><td id="ae0-a" style="color:var(--g200);font-size:10px">▶</td><td><strong>Kengo Kuma & Associates</strong><div style="font-size:10px;color:var(--g400)">隈研吾建築都市設計事務所</div></td><td style="font-size:11px">AOYAMA ATELIER</td><td><a href="#" style="font-size:10px;color:var(--purple)" onclick="event.stopPropagation()">kkaa.co.jp ↗</a></td><td><span class="bdg rg">登録済み</span></td><td onclick="event.stopPropagation()"></td></tr>
+        <tr class="aex" id="ae0"><td colspan="6"><div class="aein">
+          <div><div class="aett">基本情報</div>
+            <div class="ptog"><div class="sw on" onclick="this.classList.toggle('on');this.nextElementSibling.textContent=this.classList.contains('on')?'公開中':'非公開'"></div><div style="font-size:11px;font-weight:500">公開中</div></div>
+            <div class="fr2"><div class="fg"><div class="fl">姓名（日本語）</div><input class="fin" value="隈 研吾"></div><div class="fg"><div class="fl">Name（English）</div><input class="fin" value="Kengo Kuma"></div></div>
+            <div class="fg"><div class="fl">事務所名</div><input class="fin" value="隈研吾建築都市設計事務所"></div>
+            <div class="fr2"><div class="fg"><div class="fl">国籍・拠点</div><input class="fin" value="日本"></div><div class="fg"><div class="fl">公式URL</div><input class="fin" value="https://kkaa.co.jp"></div></div>
+          </div>
+          <div><div class="aett">プロフィール文</div><textarea class="fta" style="min-height:110px">東京大学建築学科卒業。コロンビア大学客員研究員を経て、隈研吾建築都市設計事務所を設立。「負ける建築」をキーワードに、周囲の環境に溶け込む建築を目指す。</textarea></div>
+          <div><div class="aett">代表作</div><textarea class="fta">根津美術館（2009）
+浅草文化観光センター（2012）
+国立競技場（2019）</textarea></div>
+          <div><div class="aett">受賞歴</div><textarea class="fta">日本建築学会賞（1997）
+Interbuild/Europe Award（2007）</textarea></div>
+          <div class="aefl"><div class="aett">プロフィール写真</div>
+            <div class="pha"><div class="php" id="ae0-ph">🏛</div><div><button class="bsm" style="margin-bottom:6px" onclick="this.nextElementSibling.click()">写真をアップロード</button><input type="file" accept="image/*" style="display:none" onchange="prevPhoto(this,'ae0-ph')"><div class="phhint">顔写真または事務所・ブランドを象徴する写真をアップロードしてください。<br>例：顔写真・ロゴ・事務所エントランスなど　推奨：正方形・JPG/PNG・1MB以内</div></div></div>
+          </div>
+          <div class="aefl"><div class="aett">紐づき施設</div>
+            <div id="ae0-fc"><div class="lf">🏢 AOYAMA ATELIER <span class="lfrm" onclick="this.closest('.lf').remove()">✕ 解除</span></div><div class="lf">🏢 GINZA NINE STUDIO <span class="lfrm" onclick="this.closest('.lf').remove()">✕ 解除</span></div></div>
+            <div class="afr"><select class="afsel"><option value="">＋ 施設を追加...</option><option>THE WAREHOUSE</option><option>NAKAMEGURO WORKS</option><option>SHIBUYA NODE</option></select><button class="bsm" onclick="addFac(this)">追加</button></div>
+          </div>
+          <div class="aefoot"><button class="bsm" onclick="tog('ae0',null)">閉じる</button><button class="bpu" style="font-size:10px;padding:6px 16px" onclick="saveRow(this)">変更を保存</button></div>
+        </div></td></tr>
+
+        <tr class="hov" onclick="tog('ae1',this)" style="cursor:pointer"><td id="ae1-a" style="color:var(--g200);font-size:10px">▶</td><td><strong>DRAFT, INC.</strong><div style="font-size:10px;color:var(--g400)">株式会社ドラフト</div></td><td style="font-size:11px">THE WAREHOUSE</td><td><a href="#" style="font-size:10px;color:var(--purple)" onclick="event.stopPropagation()">draft.co.jp ↗</a></td><td><span class="bdg ct">フォーム送付済み</span></td><td onclick="event.stopPropagation()"></td></tr>
+        <tr class="aex" id="ae1"><td colspan="6"><div class="aein">
+          <div><div class="aett">基本情報</div>
+            <div class="ptog"><div class="sw on" onclick="this.classList.toggle('on');this.nextElementSibling.textContent=this.classList.contains('on')?'公開中':'非公開'"></div><div style="font-size:11px;font-weight:500">公開中</div></div>
+            <div class="fr2"><div class="fg"><div class="fl">名称（日本語）</div><input class="fin" value="ドラフト"></div><div class="fg"><div class="fl">Name（English）</div><input class="fin" value="DRAFT, INC."></div></div>
+            <div class="fg"><div class="fl">事務所名</div><input class="fin" value="株式会社ドラフト"></div>
+            <div class="fr2"><div class="fg"><div class="fl">国籍・拠点</div><input class="fin" value="日本"></div><div class="fg"><div class="fl">公式URL</div><input class="fin" value="https://draft.co.jp"></div></div>
+          </div>
+          <div><div class="aett">プロフィール文</div><textarea class="fta" style="min-height:110px">空間デザインを中心に、ブランディングやグラフィックデザインまで手がける総合デザイン会社。</textarea></div>
+          <div><div class="aett">代表作</div><textarea class="fta">様々な商業施設のインテリアデザイン</textarea></div>
+          <div><div class="aett">受賞歴</div><textarea class="fta" placeholder="受賞歴を入力"></textarea></div>
+          <div class="aefl"><div class="aett">プロフィール写真</div>
+            <div class="pha"><div class="php" id="ae1-ph">🏛</div><div><button class="bsm" style="margin-bottom:6px" onclick="this.nextElementSibling.click()">写真をアップロード</button><input type="file" accept="image/*" style="display:none" onchange="prevPhoto(this,'ae1-ph')"><div class="phhint">顔写真または事務所・ブランドを象徴する写真をアップロードしてください。<br>例：顔写真・ロゴ・事務所エントランスなど　推奨：正方形・JPG/PNG・1MB以内</div></div></div>
+          </div>
+          <div class="aefl"><div class="aett">紐づき施設</div>
+            <div id="ae1-fc"><div class="lf">🏢 THE WAREHOUSE <span class="lfrm" onclick="this.closest('.lf').remove()">✕ 解除</span></div></div>
+            <div class="afr"><select class="afsel"><option value="">＋ 施設を追加...</option><option>AOYAMA ATELIER</option><option>GINZA NINE STUDIO</option><option>NAKAMEGURO WORKS</option></select><button class="bsm" onclick="addFac(this)">追加</button></div>
+          </div>
+          <div class="aefoot"><button class="bsm" onclick="tog('ae1',null)">閉じる</button><button class="bpu" style="font-size:10px;padding:6px 16px" onclick="saveRow(this)">変更を保存</button></div>
+        </div></td></tr>
+
+        <tr class="hov" onclick="tog('ae2',this)" style="cursor:pointer;background:var(--abg)"><td id="ae2-a" style="color:var(--g200);font-size:10px">▶</td><td><strong>Sou Fujimoto Architects</strong></td><td style="font-size:11px">SHIBUYA NODE</td><td><a href="#" style="font-size:10px;color:var(--purple)" onclick="event.stopPropagation()">sou-fujimoto.net ↗</a></td><td><span class="bdg pnd">未連絡</span></td><td onclick="event.stopPropagation()"><button class="bpu" onclick="showArchModal('Sou Fujimoto Architects','sou-fujimoto.net')">連絡する</button></td></tr>
+        <tr class="aex" id="ae2"><td colspan="6"><div class="aein">
+          <div><div class="aett">基本情報</div>
+            <div class="ptog"><div class="sw" onclick="this.classList.toggle('on');this.nextElementSibling.textContent=this.classList.contains('on')?'公開中':'非公開'"></div><div style="font-size:11px;font-weight:500">非公開</div></div>
+            <div class="fr2"><div class="fg"><div class="fl">姓名（日本語）</div><input class="fin" value="藤本 壮介"></div><div class="fg"><div class="fl">Name（English）</div><input class="fin" value="Sou Fujimoto"></div></div>
+            <div class="fg"><div class="fl">事務所名</div><input class="fin" value="藤本壮介建築設計事務所"></div>
+            <div class="fr2"><div class="fg"><div class="fl">国籍・拠点</div><input class="fin" value="日本"></div><div class="fg"><div class="fl">公式URL</div><input class="fin" value="https://sou-fujimoto.net"></div></div>
+          </div>
+          <div><div class="aett">プロフィール文</div><textarea class="fta" style="min-height:110px">北海道出身。東京大学工学部建築学科卒業。2000年に藤本壮介建築設計事務所設立。</textarea></div>
+          <div><div class="aett">代表作</div><textarea class="fta">House N（2008）
+武蔵野美術大学図書館（2010）
+Serpentine Gallery Pavilion（2013）</textarea></div>
+          <div><div class="aett">受賞歴</div><textarea class="fta">ヤング・アーキテクト・アワード（2006）</textarea></div>
+          <div class="aefl"><div class="aett">プロフィール写真</div>
+            <div class="pha"><div class="php" id="ae2-ph">🏛</div><div><button class="bsm" style="margin-bottom:6px" onclick="this.nextElementSibling.click()">写真をアップロード</button><input type="file" accept="image/*" style="display:none" onchange="prevPhoto(this,'ae2-ph')"><div class="phhint">顔写真または事務所・ブランドを象徴する写真をアップロードしてください。<br>例：顔写真・ロゴ・事務所エントランスなど　推奨：正方形・JPG/PNG・1MB以内</div></div></div>
+          </div>
+          <div class="aefl"><div class="aett">紐づき施設</div>
+            <div id="ae2-fc"><div class="lf">🏢 SHIBUYA NODE <span class="lfrm" onclick="this.closest('.lf').remove()">✕ 解除</span></div></div>
+            <div class="afr"><select class="afsel"><option value="">＋ 施設を追加...</option><option>AOYAMA ATELIER</option><option>THE WAREHOUSE</option><option>NAKAMEGURO WORKS</option></select><button class="bsm" onclick="addFac(this)">追加</button></div>
+          </div>
+          <div class="aefoot"><button class="bsm" onclick="tog('ae2',null)">閉じる</button><button class="bpu" style="font-size:10px;padding:6px 16px" onclick="saveRow(this)">変更を保存</button></div>
+        </div></td></tr>
+
+        <tr class="hov" onclick="tog('ae3',this)" style="cursor:pointer;background:var(--abg)"><td id="ae3-a" style="color:var(--g200);font-size:10px">▶</td><td><strong>Kengo Kuma & Associates</strong></td><td style="font-size:11px">GINZA NINE STUDIO</td><td><a href="#" style="font-size:10px;color:var(--purple)" onclick="event.stopPropagation()">kkaa.co.jp ↗</a></td><td><span class="bdg pnd">未連絡</span></td><td onclick="event.stopPropagation()"><button class="bpu" onclick="showArchModal('Kengo Kuma & Associates','kkaa.co.jp')">連絡する</button></td></tr>
+        <tr class="aex" id="ae3"><td colspan="6"><div class="aein">
+          <div><div class="aett">基本情報</div>
+            <div class="ptog"><div class="sw on" onclick="this.classList.toggle('on');this.nextElementSibling.textContent=this.classList.contains('on')?'公開中':'非公開'"></div><div style="font-size:11px;font-weight:500">公開中</div></div>
+            <div class="fr2"><div class="fg"><div class="fl">姓名（日本語）</div><input class="fin" value="隈 研吾"></div><div class="fg"><div class="fl">Name（English）</div><input class="fin" value="Kengo Kuma"></div></div>
+            <div class="fg"><div class="fl">事務所名</div><input class="fin" value="隈研吾建築都市設計事務所"></div>
+            <div class="fr2"><div class="fg"><div class="fl">国籍・拠点</div><input class="fin" value="日本"></div><div class="fg"><div class="fl">公式URL</div><input class="fin" value="https://kkaa.co.jp"></div></div>
+          </div>
+          <div><div class="aett">プロフィール文</div><textarea class="fta" style="min-height:110px">東京大学建築学科卒業。コロンビア大学客員研究員を経て、隈研吾建築都市設計事務所を設立。</textarea></div>
+          <div><div class="aett">代表作</div><textarea class="fta">根津美術館（2009）
+国立競技場（2019）</textarea></div>
+          <div><div class="aett">受賞歴</div><textarea class="fta">日本建築学会賞（1997）</textarea></div>
+          <div class="aefl"><div class="aett">プロフィール写真</div>
+            <div class="pha"><div class="php" id="ae3-ph">🏛</div><div><button class="bsm" style="margin-bottom:6px" onclick="this.nextElementSibling.click()">写真をアップロード</button><input type="file" accept="image/*" style="display:none" onchange="prevPhoto(this,'ae3-ph')"><div class="phhint">顔写真または事務所・ブランドを象徴する写真をアップロードしてください。<br>例：顔写真・ロゴ・事務所エントランスなど　推奨：正方形・JPG/PNG・1MB以内</div></div></div>
+          </div>
+          <div class="aefl"><div class="aett">紐づき施設</div>
+            <div id="ae3-fc"><div class="lf">🏢 GINZA NINE STUDIO <span class="lfrm" onclick="this.closest('.lf').remove()">✕ 解除</span></div></div>
+            <div class="afr"><select class="afsel"><option value="">＋ 施設を追加...</option><option>AOYAMA ATELIER</option><option>THE WAREHOUSE</option><option>SHIBUYA NODE</option></select><button class="bsm" onclick="addFac(this)">追加</button></div>
+          </div>
+          <div class="aefoot"><button class="bsm" onclick="tog('ae3',null)">閉じる</button><button class="bpu" style="font-size:10px;padding:6px 16px" onclick="saveRow(this)">変更を保存</button></div>
+        </div></td></tr>
+
+        <tr class="hov" onclick="tog('ae4',this)" style="cursor:pointer"><td id="ae4-a" style="color:var(--g200);font-size:10px">▶</td><td><strong>NENDO</strong></td><td style="font-size:11px">NAKAMEGURO WORKS</td><td><a href="#" style="font-size:10px;color:var(--purple)" onclick="event.stopPropagation()">nendo.jp ↗</a></td><td><span class="bdg ct">フォーム送付済み</span></td><td onclick="event.stopPropagation()"></td></tr>
+        <tr class="aex" id="ae4"><td colspan="6"><div class="aein">
+          <div><div class="aett">基本情報</div>
+            <div class="ptog"><div class="sw on" onclick="this.classList.toggle('on');this.nextElementSibling.textContent=this.classList.contains('on')?'公開中':'非公開'"></div><div style="font-size:11px;font-weight:500">公開中</div></div>
+            <div class="fr2"><div class="fg"><div class="fl">名称（日本語）</div><input class="fin" value="ネンド"></div><div class="fg"><div class="fl">Name（English）</div><input class="fin" value="nendo"></div></div>
+            <div class="fg"><div class="fl">事務所名</div><input class="fin" value="株式会社ネンド"></div>
+            <div class="fr2"><div class="fg"><div class="fl">国籍・拠点</div><input class="fin" value="日本"></div><div class="fg"><div class="fl">公式URL</div><input class="fin" value="https://nendo.jp"></div></div>
+          </div>
+          <div><div class="aett">プロフィール文</div><textarea class="fta" style="min-height:110px">佐藤オオキが2002年に設立。プロダクト・インテリア・建築・グラフィックなど多分野で活躍するデザイン会社。</textarea></div>
+          <div><div class="aett">代表作</div><textarea class="fta">蔦屋書店 代官山（2011）
+各種プロダクトデザイン</textarea></div>
+          <div><div class="aett">受賞歴</div><textarea class="fta">Elle Deco International Design Award など多数</textarea></div>
+          <div class="aefl"><div class="aett">プロフィール写真</div>
+            <div class="pha"><div class="php" id="ae4-ph">🏛</div><div><button class="bsm" style="margin-bottom:6px" onclick="this.nextElementSibling.click()">写真をアップロード</button><input type="file" accept="image/*" style="display:none" onchange="prevPhoto(this,'ae4-ph')"><div class="phhint">顔写真または事務所・ブランドを象徴する写真をアップロードしてください。<br>例：顔写真・ロゴ・事務所エントランスなど　推奨：正方形・JPG/PNG・1MB以内</div></div></div>
+          </div>
+          <div class="aefl"><div class="aett">紐づき施設</div>
+            <div id="ae4-fc"><div class="lf">🏢 NAKAMEGURO WORKS <span class="lfrm" onclick="this.closest('.lf').remove()">✕ 解除</span></div></div>
+            <div class="afr"><select class="afsel"><option value="">＋ 施設を追加...</option><option>AOYAMA ATELIER</option><option>THE WAREHOUSE</option><option>GINZA NINE STUDIO</option></select><button class="bsm" onclick="addFac(this)">追加</button></div>
+          </div>
+          <div class="aefoot"><button class="bsm" onclick="tog('ae4',null)">閉じる</button><button class="bpu" style="font-size:10px;padding:6px 16px" onclick="saveRow(this)">変更を保存</button></div>
+        </div></td></tr>
 
       </tbody></table>
     </div>
@@ -382,6 +1010,96 @@ a{text-decoration:none;color:inherit}
 
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+
+const SUPABASE_URL_OPS = 'https://jakwntemjkwqwaqujffh.supabase.co';
+const SUPABASE_KEY_OPS = 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+
+async function loadOpsSpaces() {
+  try {
+    const res = await fetch(SUPABASE_URL_OPS + '/rest/v1/spaces?select=id,name,area,prefecture,plan,status,contact_name,contact_email,created_at&order=created_at.desc', {
+      headers: { 'apikey': SUPABASE_KEY_OPS, 'Authorization': 'Bearer ' + SUPABASE_KEY_OPS }
+    });
+    const data = await res.json();
+    if (!Array.isArray(data)) return;
+
+    // カウンター更新
+    const live = data.filter(d => d.status === 'live').length;
+    const draft = data.length - live;
+    const total = document.getElementById('ops-total');
+    const status = document.getElementById('ops-status');
+    const status2 = document.getElementById('ops-status2');
+    if (total) total.textContent = data.length;
+    if (status) status.textContent = '掲載中 ' + live + ' / 非公開 ' + draft;
+    if (status2) status2.textContent = '掲載中 ' + live + ' / 非公開 ' + draft;
+
+    // 施設テーブル
+    const tbody = document.querySelector('#ops-loading')?.closest('tbody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    if (data.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--g400);font-size:12px">施設がありません</td></tr>';
+      return;
+    }
+    data.forEach(d => {
+      const planLabel = d.plan === 'pro' ? 'Pro' : d.plan === 'standard' ? 'Standard' : 'Free';
+      const planClass = d.plan === 'pro' ? 'pr' : d.plan === 'standard' ? 'st' : 'fr';
+      const stLabel = d.status === 'live' ? '掲載中' : '非公開';
+      const stClass = d.status === 'live' ? 'lv' : 'dr';
+      const area = (d.area || '') + (d.prefecture ? '/' + d.prefecture.replace(/都|道|府|県/, '') : '');
+      const date = d.created_at ? d.created_at.slice(0,10).replace(/-/g,'.') : '—';
+      const tr = document.createElement('tr');
+      tr.className = 'hov';
+      tr.innerHTML =
+        '<td><strong>' + (d.name || '—') + '</strong></td>' +
+        '<td style="font-size:11px;color:var(--g600)">' + area + '</td>' +
+        '<td><div style="font-size:11px">' + (d.contact_name || '—') + '</div><div style="font-size:10px;color:var(--g400)">' + (d.contact_email || '') + '</div></td>' +
+        '<td><span class="bdg ' + planClass + '">' + planLabel + '</span></td>' +
+        '<td><span class="bdg ' + stClass + '">' + stLabel + '</span></td>' +
+        '<td style="font-size:10px;color:var(--g400)">' + date + '</td>' +
+        '<td><div class="br">' +
+          '<select onchange="opsChangePlan(\'' + d.id + '\',this)" style="font-size:10px;padding:4px 8px;border:1px solid var(--g200);border-radius:4px;cursor:pointer;background:#fff">' +
+            '<option value="">プラン変更</option>' +
+            '<option value="free"' + (d.plan==='free'?' selected':'') + '>Free</option>' +
+            '<option value="standard"' + (d.plan==='standard'?' selected':'') + '>Standard</option>' +
+            '<option value="pro"' + (d.plan==='pro'?' selected':'') + '>Pro</option>' +
+          '</select>' +
+          '<button class="bsm" onclick="window.open('coworkmill-detail.html?id=' + d.id + '')">掲載ページ ↗</button>' +
+        '</div></td>';
+      tbody.appendChild(tr);
+    });
+  } catch(e) { console.warn('loadOpsSpaces error:', e); }
+}
+
+async function opsChangePlan(spaceId, sel) {
+  const newPlan = sel.value;
+  if (!newPlan) return;
+  try {
+    const res = await fetch(SUPABASE_URL_OPS + '/rest/v1/spaces?id=eq.' + spaceId, {
+      method: 'PATCH',
+      headers: {
+        'apikey': SUPABASE_KEY_OPS,
+        'Authorization': 'Bearer ' + SUPABASE_KEY_OPS,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({ plan: newPlan })
+    });
+    if (res.ok) {
+      const label = newPlan === 'free' ? 'Free' : newPlan === 'standard' ? 'Standard' : 'Pro';
+      alert('✅ ' + label + 'プランに変更しました。');
+      loadOpsSpaces();
+    } else {
+      alert('❌ 変更に失敗しました。');
+      sel.value = '';
+    }
+  } catch(e) {
+    alert('❌ エラーが発生しました。');
+    sel.value = '';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', loadOpsSpaces);
+
 const pnls = ['db','rv','sp','ac','ar','ct'];
 const ttlm = {db:'ダッシュボード',rv:'掲載申請の審査',sp:'掲載者・施設管理',ac:'アカウント管理',ar:'建築家管理',ct:'お問い合わせ管理'};
 

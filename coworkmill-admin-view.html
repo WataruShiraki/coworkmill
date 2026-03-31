@@ -244,11 +244,11 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
   <!-- DASHBOARD -->
   <div id="p-db" style="display:none">
     <div class="sg">
-      <div class="sc"><div class="slb">今月のページ閲覧</div><div class="sv" id="dv">1,248</div><div class="ss"><span class="sup">↑18%</span> 先月比</div></div>
-      <div class="sc"><div class="slb">公式サイトへの遷移</div><div class="sv" id="dc">86</div><div class="ss"><span class="sup">↑12%</span> 先月比</div></div>
-      <div class="sc"><div class="slb" style="display:flex;align-items:center;gap:5px"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>Instagram送客</div><div class="sv" id="dig">23</div><div class="ss"><span class="sup">↑9%</span> 先月比</div></div>
+      <div class="sc"><div class="slb">今月のページ閲覧</div><div class="sv" id="dv">—</div><div class="ss">データなし</div></div>
+      <div class="sc"><div class="slb">公式サイトへの遷移</div><div class="sv" id="dc">—</div><div class="ss">データなし</div></div>
+      <div class="sc"><div class="slb" style="display:flex;align-items:center;gap:5px"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>Instagram送客</div><div class="sv" id="dig">—</div><div class="ss">データなし</div></div>
       <div class="sc"><div class="slb">利用者の声（累計）</div><div class="sv" id="dvo">0</div><div class="ss">新着 0件</div></div>
-      <div class="sc"><div class="slb">最多仕事タイプ</div><div class="sv" style="font-size:14px;margin-top:4px" id="dt">Deep Work</div><div class="ss" id="dtc">41人が使用</div></div>
+      <div class="sc"><div class="slb">最多仕事タイプ</div><div class="sv" style="font-size:14px;margin-top:4px" id="dt">—</div><div class="ss" id="dtc">データなし</div></div>
     </div>
     <div class="sec">
       <div class="sec-h"><div class="sec-ht">仕事タグ別 利用者数</div></div>
@@ -594,9 +594,8 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
       <div class="sec-h"><div><div class="sec-ht">利用者の声</div><div class="sec-hs">承認した声のみ掲載ページに表示されます</div></div></div>
       <div class="sec-b">
         <div class="vl">
-          <div class="vr"><span class="vtg">Deep Work</span><span class="vdt">2026.03.20</span><span class="vbd">完全に没頭できた。光の入り方が絶妙で、気づいたら5時間経っていた。また必ず来る。</span><span class="vnw">新着</span><div class="vbs"><button class="vb ap">承認</button><button class="vb hd">非表示</button></div></div>
-          <div class="vr"><span class="vtg">Client Meeting</span><span class="vdt">2026.03.18</span><span class="vbd">大事なクライアントとの初回ミーティングに使用。空間の上質さが良い印象を与えてくれた。</span><span class="vnw">新着</span><div class="vbs"><button class="vb ap">承認</button><button class="vb hd">非表示</button></div></div>
-          <div class="vr"><span class="vtg">Strategy</span><span class="vdt">2026.03.15</span><span class="vbd">四半期の戦略会議に使いました。防音がしっかりしていて集中して議論できた。</span><span class="vnw">新着</span><div class="vbs"><button class="vb ap">承認</button><button class="vb hd">非表示</button></div></div>
+          <div id="voice-list" style="display:flex;flex-direction:column;gap:8px;"></div>
+          <div id="voice-empty" style="text-align:center;padding:32px;color:var(--g400);font-size:13px;">まだ利用者の声はありません</div>
           <div class="vr" style="opacity:.5"><span class="vtg">Remote Call</span><span class="vdt">2026.02.28</span><span class="vbd">防音ブースで快適にオンライン会議ができた。</span><span style="font-size:8px;color:var(--purple);font-weight:600;padding:2px 5px;border:1px solid var(--purple);border-radius:3px">掲載中</span><div class="vbs"><button class="vb hd">非表示</button></div></div>
         </div>
       </div>
@@ -605,7 +604,17 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
 
   <!-- ARCH -->
   <div id="p-arch" style="display:none">
-    <div id="arch-content"></div>
+    <div class="sec">
+      <div class="sec-h"><div><div class="sec-ht">建築家情報</div><div class="sec-hs">施設をデザインした建築家の情報を登録します</div></div></div>
+      <div class="sec-b">
+        <div class="fr"><div class="fg"><div class="fl">建築家名</div><input class="fin" id="p-arch-name" placeholder="例：Kengo Kuma"></div><div class="fg"><div class="fl">建築事務所名</div><input class="fin" id="p-arch-firm" placeholder="例：Kengo Kuma & Associates"></div></div>
+        <div class="fr"><div class="fg"><div class="fl">設計年</div><input class="fin" id="p-arch-year" placeholder="例：2019" type="number"></div><div class="fg"></div></div>
+        <div style="padding:10px 12px;background:var(--g50);border-radius:5px;border:1px solid var(--g100);font-size:9px;color:var(--g400);margin-top:8px">🏛 建築家情報は施設詳細ページに表示されます。未記入の場合は表示されません。</div>
+      </div>
+    </div>
+    <div class="tbr" style="margin-top:16px">
+      <button class="bsv" onclick="saveArchInfo()">保存する</button>
+    </div>
   </div>
 
   <!-- COMPANY -->
@@ -1018,6 +1027,23 @@ const archData = [
 
 function openArchPage(){ window.open('coworkmill-architect.html'); }
 
+async function saveArchInfo() {
+  const dbId = facs[cur] && facs[cur].db_id;
+  if (!dbId) { alert('先に施設情報を保存してください。'); return; }
+  const archName = document.getElementById('p-arch-name')?.value?.trim() || null;
+  const archFirm = document.getElementById('p-arch-firm')?.value?.trim() || null;
+  const archYear = document.getElementById('p-arch-year')?.value?.trim() || null;
+  try {
+    await sbFetch('/rest/v1/spaces?id=eq.' + dbId, {
+      method: 'PATCH',
+      body: JSON.stringify({ architect_name: archName, architect_firm: archFirm, design_year: archYear ? parseInt(archYear) : null })
+    });
+    alert('建築家情報を保存しました。');
+  } catch(e) {
+    alert('保存に失敗しました: ' + toJapaneseError(e));
+  }
+}
+
 function renderArch() {
   const f = facs[cur];
   const a = archData[cur] || archData[2];
@@ -1099,6 +1125,18 @@ function go(id, el) {
   const f = facs[cur];
   document.getElementById('ttl').innerHTML = ttls[id] + ' <span style="font-size:11px;font-weight:400;color:var(--g400)">— ' + f.nm + '</span>';
   if(id === 'db') renderDash(f.dash);
+  if(id === 'arch') {
+    const dbId3 = facs[cur] && facs[cur].db_id;
+    if (dbId3) {
+      sbFetch('/rest/v1/spaces?id=eq.' + dbId3 + '&select=architect_name,architect_firm,design_year').then(data => {
+        if (data && data[0]) {
+          const el = document.getElementById('p-arch-name'); if(el) el.value = data[0].architect_name || '';
+          const ef = document.getElementById('p-arch-firm'); if(ef) ef.value = data[0].architect_firm || '';
+          const ey = document.getElementById('p-arch-year'); if(ey) ey.value = data[0].design_year || '';
+        }
+      }).catch(()=>{});
+    }
+  }
   if(id === 'photo') {
     const dbId2 = facs[cur] && facs[cur].db_id;
     if (dbId2) loadPhotos(dbId2);
