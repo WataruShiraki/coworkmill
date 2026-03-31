@@ -538,7 +538,7 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
 
     <!-- 写真管理コンテンツ（DB連携後に動的表示） -->
     <div id="photo-empty" style="display:none;">
-      <div style="border:2px dashed var(--g200);border-radius:12px;padding:48px 24px;text-align:center;cursor:pointer;transition:all .2s;" 
+      <div style="border:2px dashed var(--g200);border-radius:12px;padding:48px 24px;text-align:center;cursor:pointer;transition:border-color .2s;" 
            onmouseover="this.style.borderColor='#2BB5C8'" 
            onmouseout="this.style.borderColor='var(--g200)'"
            onclick="document.getElementById('photo-upload-input').click()"
@@ -573,17 +573,15 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
         <button onclick="document.getElementById('photo-upload-input').click()" style="padding:8px 16px;font-size:11px;font-weight:600;color:#fff;background:linear-gradient(135deg,#79F1A4,#2BB5C8);border:none;border-radius:6px;cursor:pointer;">+ 写真を追加</button>
       </div>
       <div class="sec-b">
-        <div style="border:2px dashed var(--g200);border-radius:8px;padding:16px;text-align:center;font-size:11px;color:var(--g400);margin-bottom:12px;transition:all .2s;cursor:pointer;"
+        <div style="border:2px dashed var(--g200);border-radius:8px;padding:14px;text-align:center;font-size:11px;color:var(--g400);margin-bottom:12px;cursor:pointer;transition:all .2s;"
              onclick="document.getElementById('photo-upload-input').click()"
              ondragover="event.preventDefault();this.style.borderColor='#2BB5C8';this.style.background='rgba(43,181,200,.06)';"
              ondragleave="this.style.borderColor='var(--g200)';this.style.background='';"
              ondrop="event.preventDefault();this.style.borderColor='var(--g200)';this.style.background='';handlePhotoUpload({files:event.dataTransfer.files});">
           ここにドラッグ＆ドロップ、またはクリックして追加
         </div>
-      </div>
-      <div class="sec-b">
         <div id="photo-grid" class="pg"></div>
-        <div id="photo-empty-msg" style="display:none;text-align:center;padding:32px;color:var(--g400);font-size:13px;">まだ写真がありません<br><span style="font-size:11px;">上のエリアから写真をアップロードしてください</span></div>
+        <div id="photo-empty-msg" style="display:none;text-align:center;padding:24px;color:var(--g400);font-size:12px;">まだ写真がありません</div>
       </div>
     </div>
     </div><!-- /photo-content -->
@@ -723,17 +721,16 @@ async function handlePhotoUpload(input) {
   if (remaining <= 0) {
     alert('写真の上限（' + photoLimit + '枚）に達しています。
 プランをアップグレードすると追加できます。');
-    if(input.value !== undefined) input.value='';
-    return;
+    if(input.value !== undefined) input.value=''; return;
   }
-  const filesToUpload = Array.from(files).slice(0, remaining);
+  const filesToUpload = files.slice(0, remaining);
   if (filesToUpload.length < files.length) {
     alert('上限まで残り' + remaining + '枚のため、' + filesToUpload.length + '枚のみアップロードします。');
   }
 
   const STORAGE_URL = SUPABASE_URL + '/storage/v1/object/space-images/';
   let uploaded = 0;
-  const isFirst = !(facs[cur] && facs[cur].has_photos);
+  const isFirst = currentCount === 0;
 
   for (const file of filesToUpload) {
     const ext = file.name.split('.').pop().toLowerCase();
@@ -741,35 +738,21 @@ async function handlePhotoUpload(input) {
     try {
       const upRes = await fetch(STORAGE_URL + path, {
         method: 'POST',
-        headers: {
-          'apikey': SUPABASE_KEY,
-          'Authorization': 'Bearer ' + SUPABASE_KEY,
-          'Content-Type': file.type,
-          'x-upsert': 'true'
-        },
+        headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Content-Type': file.type, 'x-upsert': 'true' },
         body: file
       });
       if (!upRes.ok) { console.warn('upload failed', await upRes.text()); continue; }
-
       const publicUrl = SUPABASE_URL + '/storage/v1/object/public/space-images/' + path;
-
-      await sbFetch('/rest/v1/space_images', {
-        method: 'POST',
-        body: JSON.stringify({ space_id: dbId, url: publicUrl })
-      });
-
+      await sbFetch('/rest/v1/space_images', { method: 'POST', body: JSON.stringify({ space_id: dbId, url: publicUrl }) });
       if (uploaded === 0 && isFirst) {
-        await sbFetch('/rest/v1/spaces?id=eq.' + dbId, {
-          method: 'PATCH',
-          body: JSON.stringify({ image_main: publicUrl })
-        });
+        await sbFetch('/rest/v1/spaces?id=eq.' + dbId, { method: 'PATCH', body: JSON.stringify({ image_main: publicUrl }) });
       }
       uploaded++;
     } catch(e) { console.warn('upload error:', e); }
   }
 
   if (uploaded > 0) {
-    if (facs[cur]) { facs[cur].from_new = false; facs[cur].has_photos = true; }
+    if (facs[cur]) { facs[cur].has_photos = true; facs[cur].from_new = false; }
     const si = document.getElementById('step-indicator-photo'); if(si) si.style.display='none';
     const pb = document.getElementById('photo-publish-btn'); if(pb) pb.style.display='block';
     await loadPhotos(dbId);
@@ -777,7 +760,7 @@ async function handlePhotoUpload(input) {
   } else {
     alert('アップロードに失敗しました。Storageの設定を確認してください。');
   }
-  if(input.value !== undefined) input.value = '';
+  if(input.value !== undefined) input.value='';
 }
 
 async function loadPhotos(dbId) {
@@ -788,21 +771,18 @@ async function loadPhotos(dbId) {
   if (!grid) return;
   try {
     const imgs = await sbFetch('/rest/v1/space_images?space_id=eq.' + dbId + '&select=id,url&order=created_at.asc');
-    const spaceData = await sbFetch('/rest/v1/spaces?id=eq.' + dbId + '&select=image_main');
+    const spaceData = await sbFetch('/rest/v1/spaces?id=eq.' + dbId + '&select=image_main,plan');
     const mainUrl = spaceData && spaceData[0] ? spaceData[0].image_main : null;
-    grid.innerHTML = '';
-    // プラン上限表示を更新
+    const pl = (spaceData && spaceData[0] && spaceData[0].plan) || 'free';
+    if (facs[cur]) facs[cur].plan = pl;
+    const lim = pl === 'free' ? 5 : pl === 'standard' ? 20 : 50;
+    const cnt = imgs ? imgs.length : 0;
     const planNote = document.getElementById('photo-plan-note');
-    if (planNote) {
-      const pl = (facs[cur] && facs[cur].plan) || 'free';
-      const lim = pl === 'free' ? 5 : pl === 'standard' ? 20 : 50;
-      const cnt = imgs ? imgs.length : 0;
-      planNote.textContent = (pl === 'free' ? 'Free' : pl === 'standard' ? 'Standard' : 'Pro') + 'プラン：' + lim + '枚まで（現在' + cnt + '枚）';
-    }
-
+    if (planNote) planNote.textContent = (pl === 'free' ? 'Free' : pl === 'standard' ? 'Standard' : 'Pro') + 'プラン：' + lim + '枚まで（現在' + cnt + '枚）';
+    grid.innerHTML = '';
     if (!imgs || imgs.length === 0) {
       if (emptyMsg) emptyMsg.style.display = 'block';
-      if (photoEmpty) photoEmpty.style.display = 'block';
+      if (photoEmpty) { photoEmpty.style.display = 'block'; }
       if (photoContent) photoContent.style.display = 'none';
       return;
     }
@@ -813,12 +793,12 @@ async function loadPhotos(dbId) {
       const isMain = img.url === mainUrl;
       const div = document.createElement('div');
       div.className = 'pw';
-      div.innerHTML = `<img src="${img.url}" alt="">
-        ${isMain ? '<div class="pmn">メイン</div>' : ''}
-        <div class="pov">
-          ${!isMain ? `<button class="pact" onclick="setMainPhoto('${img.url}','${dbId}')">メインに</button>` : ''}
-          <button class="pact" onclick="deletePhoto('${img.id}','${img.url}','${dbId}')">削除</button>
-        </div>`;
+      div.innerHTML = '<img src="' + img.url + '" alt="">' +
+        (isMain ? '<div class="pmn">メイン</div>' : '') +
+        '<div class="pov">' +
+        (!isMain ? '<button class="pact" onclick="setMainPhoto('' + img.url + '','' + dbId + '')">メインに</button>' : '') +
+        '<button class="pact" onclick="deletePhoto('' + img.id + '','' + img.url + '','' + dbId + '')">削除</button>' +
+        '</div>';
       grid.appendChild(div);
     });
   } catch(e) { console.warn('loadPhotos error:', e); }
@@ -1109,8 +1089,8 @@ function go(id, el) {
   document.getElementById('ttl').innerHTML = ttls[id] + ' <span style="font-size:11px;font-weight:400;color:var(--g400)">— ' + f.nm + '</span>';
   if(id === 'db') renderDash(f.dash);
   if(id === 'photo') {
-    const dbId = facs[cur] && facs[cur].db_id;
-    if (dbId) { loadPhotos(dbId); }
+    const dbId2 = facs[cur] && facs[cur].db_id;
+    if (dbId2) loadPhotos(dbId2);
     const stepPhoto = document.getElementById('step-indicator-photo');
     if (stepPhoto) stepPhoto.style.display = (facs[cur] && facs[cur].from_new === true && facs[cur].has_photos === false) ? 'flex' : 'none';
     const photoEmpty = document.getElementById('photo-empty');
