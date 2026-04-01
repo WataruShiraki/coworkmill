@@ -836,6 +836,79 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
 <script src="coworkmill-features.js"></script>
 <script>
 
+const SUPABASE_URL_SP = 'https://jakwntemjkwqwaqujffh.supabase.co';
+const SUPABASE_KEY_SP = 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+const PREF_MAP_SP = {'北海道':'HOKKAIDO','青森県':'AOMORI','岩手県':'IWATE','宮城県':'MIYAGI','秋田県':'AKITA','山形県':'YAMAGATA','福島県':'FUKUSHIMA','茨城県':'IBARAKI','栃木県':'TOCHIGI','群馬県':'GUNMA','埼玉県':'SAITAMA','千葉県':'CHIBA','東京都':'TOKYO','神奈川県':'KANAGAWA','新潟県':'NIIGATA','富山県':'TOYAMA','石川県':'ISHIKAWA','福井県':'FUKUI','山梨県':'YAMANASHI','長野県':'NAGANO','岐阜県':'GIFU','静岡県':'SHIZUOKA','愛知県':'AICHI','三重県':'MIE','滋賀県':'SHIGA','京都府':'KYOTO','大阪府':'OSAKA','兵庫県':'HYOGO','奈良県':'NARA','和歌山県':'WAKAYAMA','鳥取県':'TOTTORI','島根県':'SHIMANE','岡山県':'OKAYAMA','広島県':'HIROSHIMA','山口県':'YAMAGUCHI','徳島県':'TOKUSHIMA','香川県':'KAGAWA','愛媛県':'EHIME','高知県':'KOCHI','福岡県':'FUKUOKA','佐賀県':'SAGA','長崎県':'NAGASAKI','熊本県':'KUMAMOTO','大分県':'OITA','宮崎県':'MIYAZAKI','鹿児島県':'KAGOSHIMA','沖縄県':'OKINAWA'};
+
+let allSpaces = [];
+
+async function loadSpaces() {
+  try {
+    const res = await fetch(SUPABASE_URL_SP + '/rest/v1/spaces?select=id,name,area,prefecture,plan,status,image_main,architect_name,architect_firm,vibe,price_dropin,created_at&status=eq.live&order=created_at.desc', {
+      headers: { 'apikey': SUPABASE_KEY_SP, 'Authorization': 'Bearer ' + SUPABASE_KEY_SP }
+    });
+    const data = await res.json();
+    if (!Array.isArray(data)) return;
+    allSpaces = data;
+    renderSpaces(allSpaces);
+    // 件数更新
+    const countEl = document.getElementById('results-count-num');
+    if (countEl) countEl.textContent = allSpaces.length;
+  } catch(e) { console.warn('loadSpaces error:', e); }
+}
+
+function makeCard(d, i, type) {
+  const pref = PREF_MAP_SP[d.prefecture] || (d.prefecture||'').replace(/[都道府県]/,'').toUpperCase();
+  const city = (d.area ? d.area + ' / ' : '') + pref;
+  const img = d.image_main || '';
+  const isPick = d.plan === 'pro';
+  const href = 'coworkmill-detail.html?id=' + d.id;
+  const price = d.price_dropin ? 'ドロップイン<strong>¥' + Number(d.price_dropin).toLocaleString() + '〜</strong>' : '料金はお問い合わせ';
+  const vibes = Array.isArray(d.vibe) ? d.vibe : (d.vibe ? [d.vibe] : []);
+  const delay = 'animation-delay:' + (i * 0.05) + 's';
+
+  if (type === 'grid') {
+    return '<a class="scard" href="' + href + '" style="' + delay + '">' +
+      '<div class="scard-img" style="' + (img ? 'background-image:url(' + img + ')' : 'background:#1a1a2e') + '">' +
+        (isPick ? '<div class="scard-badges"><span class="scard-badge pick">PICK</span></div>' : '') +
+      '</div>' +
+      '<div class="scard-body">' +
+        '<div class="scard-city">' + city + '</div>' +
+        '<div class="scard-name">' + (d.name||'') + '</div>' +
+        (d.architect_name ? '<div class="scard-design">Design by <span>' + d.architect_name + '</span></div>' : '') +
+        (vibes.length ? '<div class="scard-wtags">' + vibes.map(v=>'<span class="scard-wtag">'+v+'</span>').join('') + '</div>' : '') +
+        '<div class="scard-footer"><div class="scard-price">' + price + '</div><span class="scard-arrow">→</span></div>' +
+      '</div></a>';
+  } else {
+    return '<a class="lcard" href="' + href + '" style="' + delay + '">' +
+      '<div class="lcard-img" style="' + (img ? 'background-image:url(' + img + ')' : 'background:#1a1a2e') + '"></div>' +
+      '<div class="lcard-body">' +
+        '<div class="lcard-city">' + city + '</div>' +
+        '<div class="lcard-name">' + (d.name||'') + '</div>' +
+        (d.architect_name ? '<div class="lcard-design">Design by <span>' + d.architect_name + '</span></div>' : '') +
+        (vibes.length ? '<div class="lcard-wtags">' + vibes.map(v=>'<span class="lcard-wtag">'+v+'</span>').join('') + '</div>' : '') +
+      '</div>' +
+      '<div class="lcard-right"><div class="lcard-price">' + price + '</div></div></a>';
+  }
+}
+
+function renderSpaces(spaces) {
+  const grid = document.getElementById('view-grid-content');
+  const list = document.getElementById('view-list-content');
+  const countEl = document.getElementById('results-count-num');
+  if (countEl) countEl.textContent = spaces.length;
+  if (!grid) return;
+  if (spaces.length === 0) {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--gray-400)">条件に合う施設が見つかりませんでした</div>';
+    if (list) list.innerHTML = '';
+    return;
+  }
+  grid.innerHTML = spaces.map((d,i) => makeCard(d,i,'grid')).join('');
+  if (list) list.innerHTML = spaces.map((d,i) => makeCard(d,i,'list')).join('');
+}
+
+document.addEventListener('DOMContentLoaded', loadSpaces);
+
 // SP フィルター適用（件数表示 → 閉じる）
 function applySpFilters() {
   filterCards();
