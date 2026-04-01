@@ -979,7 +979,7 @@ async function loadSpacesFromDB() {
         facs.push({
           id: i, db_id: row.id, nm, ic,
           bg: 'linear-gradient(135deg,#374151,#6b7280)',
-          st: row.status === 'published' ? 'live' : 'draft',
+          st: row.status === 'live' ? 'live' : 'draft',
           plan: row.plan || 'free',
           has_photos: !!(row.image_main || (row.images && row.images.length > 0)),
           dash: {v:'—',c:'—',vo:'0',t:'—',tc:'',bars:[]}
@@ -1427,7 +1427,7 @@ async function pubFac() {
   try {
     await sbFetch('/rest/v1/spaces?id=eq.' + dbId, {
       method: 'PATCH',
-      body: JSON.stringify({ status: 'published' })
+      body: JSON.stringify({ status: 'live' })
     });
     facs[cur].st = 'live';
     const item = document.getElementById('fi-' + cur);
