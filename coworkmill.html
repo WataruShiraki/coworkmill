@@ -93,9 +93,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:56px;display:flex;ali
 .nav-center a{font-size:12px;font-weight:400;color:var(--gray-600);text-decoration:none;letter-spacing:.02em;transition:color .15s}
 .nav-center a:hover{color:var(--black)}
 .nav-right{display:flex;align-items:center;gap:12px}
-.lang-toggle{display:flex;background:var(--gray-100);border-radius:20px;padding:2px;gap:1px}
-.lang-btn{font-family:var(--font-display);font-size:10px;font-weight:600;padding:4px 10px;border-radius:16px;border:none;background:none;cursor:pointer;color:var(--gray-600);transition:all .15s;letter-spacing:.05em}
-.lang-btn.active{background:var(--white);color:var(--black);box-shadow:0 1px 3px rgba(0,0,0,.1)}
 .nav-cta{font-family:var(--font-display);font-size:11px;font-weight:600;padding:8px 16px;background:#2BB5C8;color:#fff;border:none;cursor:pointer;border-radius:6px;letter-spacing:.02em;transition:background .15s;text-decoration:none;display:inline-block}
 .nav-cta:hover{background:#22a3b5}
 
@@ -371,8 +368,7 @@ footer{background:#0a1628;padding:64px 80px 40px;color:#fff;position:relative;ov
   /* nav-right: overflow:visible でハートバッジが切れない */
   .nav-right{overflow:visible;gap:8px;margin-left:auto}
   /* lang-toggle: SPで非表示 */
-  .lang-toggle{display:none}
-  /* nav-cta */
+    /* nav-cta */
   .nav-cta{font-size:10px;padding:7px 12px;white-space:nowrap}
   .hero-ttl{font-size:32px}
   .hero-search{padding:4px 4px 4px 14px;margin:0 0 16px}
@@ -462,9 +458,7 @@ footer{background:#0a1628;padding:64px 80px 40px;color:#fff;position:relative;ov
   .vcard-name{color:#f0f0f0}
   .section-label{color:#666}
   .sec-divider{background:#2a2a2a}
-  .lang-toggle{background:#252525}
-  .lang-btn.active{background:#333;color:#f0f0f0}
-  .filter-bar,.filter-bar-inner,.alpha-bar{background:#1a1a1a;border-bottom-color:#2a2a2a}
+      .filter-bar,.filter-bar-inner,.alpha-bar{background:#1a1a1a;border-bottom-color:#2a2a2a}
   .chip{border-color:#333;color:#aaa}
   .chip:hover,.chip.on{background:#2BB5C8;border-color:#2BB5C8;color:#fff}
   .voice-item{background:#1e1e1e}
@@ -492,10 +486,6 @@ footer{background:#0a1628;padding:64px 80px 40px;color:#fff;position:relative;ov
     <a href="coworkmill-photos.html">写真から探す</a>
   </div>
   <div class="nav-right">
-    <div class="lang-toggle">
-      <button class="lang-btn active">JP</button>
-      <button class="lang-btn" onclick="this.classList.add('active');this.previousElementSibling.classList.remove('active')">EN</button>
-    </div>
     <a href="#for-spaces" class="nav-cta">コワーキング登録</a>
   </div>
 </nav>
@@ -686,7 +676,7 @@ footer{background:#0a1628;padding:64px 80px 40px;color:#fff;position:relative;ov
     <span class="gf-count">—件</span>
   </div>
 
-  <div class="gallery-grid"></div>
+  <div class="gallery-grid" id="gallery-grid"></div>
   </div>
 
 
@@ -710,74 +700,6 @@ footer{background:#0a1628;padding:64px 80px 40px;color:#fff;position:relative;ov
   </div>
 </section>
 
-<style>
-.arch-editorial{background:#0a0a0a;padding:80px 80px 0}
-.arch-ed-head{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:64px}
-.arch-ed-eyebrow{font-family:var(--font-d);font-size:9px;font-weight:700;letter-spacing:.4em;text-transform:uppercase;color:#2BB5C8;margin-bottom:16px;display:flex;align-items:center;gap:12px}
-.arch-ed-eyebrow::before{content:'';display:block;width:20px;height:1px;background:#2BB5C8}
-.arch-ed-title{font-family:var(--font-d);font-size:clamp(28px,3vw,44px);font-weight:200;color:#fff;line-height:1.2;letter-spacing:-.03em;margin-bottom:10px}
-.arch-ed-title em{font-style:italic;color:#2BB5C8}
-.arch-ed-title--accent{color:#2BB5C8;font-style:italic}
-.arch-ed-desc{font-size:12px;color:rgba(255,255,255,.45);letter-spacing:.06em}
-.arch-feature{display:grid;grid-template-columns:1fr 400px;min-height:480px;margin-bottom:3px;text-decoration:none;cursor:pointer;overflow:hidden;transition:opacity .2s}
-.arch-feature:hover{opacity:.95}
-.arch-feature--reverse{grid-template-columns:400px 1fr}
-.arch-feature--reverse .arch-feature-photo{order:2}
-.arch-feature--reverse .arch-feature-info{order:1}
-.arch-feature-photo{position:relative;overflow:hidden;background:#111;background-size:cover;background-position:center;transition:transform .8s cubic-bezier(.16,1,.3,1)}
-.arch-feature:hover .arch-feature-photo{transform:scale(1.02)}
-.arch-feature-info{background:#111;padding:48px 44px;display:flex;flex-direction:column;justify-content:center;position:relative}
-.arch-feature-info::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:linear-gradient(to bottom,#2BB5C8,#79F1A4)}
-.arch-feature-label{font-family:var(--font-d);font-size:8px;font-weight:700;letter-spacing:.3em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:12px}
-.arch-name-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
-.arch-feature-name{font-family:var(--font-d);font-size:clamp(24px,2.8vw,40px);font-weight:200;color:#fff;line-height:1.1;letter-spacing:-.02em}
-.arch-portrait-img{width:60px;height:80px;border-radius:4px;background-size:cover;background-position:center top;flex-shrink:0;filter:grayscale(100%) contrast(1.05)}
-.arch-logo-img{width:80px;height:40px;border-radius:4px;background:#1e1e1e;border:1px solid rgba(255,255,255,.1);flex-shrink:0;display:flex;align-items:center;justify-content:center;padding:0 10px}
-.arch-logo-img span{font-family:var(--font-d);font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.7);text-align:center;line-height:1.3}
-.arch-feature-kana{font-size:11px;color:rgba(255,255,255,.35);letter-spacing:.12em;margin-bottom:4px}
-.arch-feature-office{font-size:10px;color:rgba(255,255,255,.25);letter-spacing:.06em;margin-bottom:20px}
-.arch-feature-spaces{margin-bottom:28px}
-.arch-feature-space-label{font-size:8px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:10px}
-.arch-feature-space-list{display:flex;flex-direction:column;gap:0}
-.arch-feature-space-item{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06)}
-.arch-fs-name{font-family:var(--font-d);font-size:12px;font-weight:500;color:#fff;letter-spacing:.02em}
-.arch-fs-area{font-size:9px;color:rgba(255,255,255,.3);letter-spacing:.08em}
-.arch-fs-more{font-size:10px;color:#2BB5C8;padding:8px 0 0;border:none;font-family:var(--font-d);letter-spacing:.06em}
-.arch-feature-cta{font-family:var(--font-d);font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#2BB5C8;display:flex;align-items:center;gap:8px;transition:gap .2s}
-.arch-feature:hover .arch-feature-cta{gap:14px}
-.arch-feature-cta span{font-size:14px}
-.arch-ed-footer{padding:48px 0;text-align:center;border-top:1px solid rgba(255,255,255,.06);margin-top:3px}
-.arch-ed-all-btn{font-family:var(--font-d);font-size:12px;font-weight:600;letter-spacing:.08em;color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.15);padding:12px 36px;border-radius:24px;text-decoration:none;transition:all .2s}
-.arch-ed-all-btn:hover{border-color:#2BB5C8;color:#2BB5C8}
-@media(max-width:900px){
-  .arch-editorial{padding:48px 32px 0}
-  .arch-feature{grid-template-columns:1fr!important;min-height:auto}
-  .arch-feature--reverse .arch-feature-photo{order:1}
-  .arch-feature--reverse .arch-feature-info{order:2}
-  .arch-feature-photo{height:56vw;min-height:240px}
-  .arch-feature-info{padding:28px 24px}
-  .arch-ed-head{flex-direction:column;align-items:flex-start;gap:16px;margin-bottom:40px}
-}
-@media(max-width:600px){
-  .arch-editorial{padding:40px 20px 0}
-  .arch-feature-name{font-size:24px}
-  .arch-feature-info{padding:24px 20px}
-}
-</style>
-
-
-/* Gallery Grid */
-.gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:0}
-.gcard{display:block;text-decoration:none;border-radius:10px;overflow:hidden;background:#111;position:relative;cursor:pointer;transition:transform .25s}
-.gcard:hover{transform:translateY(-3px)}
-.gcard-img{height:180px;background-size:cover;background-position:center 50%;position:relative}
-.gcard-img::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.7) 0%,transparent 55%)}
-.gcard-body{padding:12px 14px}
-.gcard-city{font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#2BB5C8;margin-bottom:3px}
-.gcard-name{font-family:'Montserrat',sans-serif;font-size:13px;font-weight:500;color:var(--black);line-height:1.3}
-.gcard-arch{font-size:10px;color:var(--gray-400);margin-top:3px}
-@media(max-width:900px){.gallery-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:600px){.gallery-grid{grid-template-columns:repeat(2,1fr);gap:8px}.gcard-img{height:140px}}
 
 <!-- PHOTO DISCOVERY -->
 <section style="padding:80px;background:var(--gray-50);border-top:1px solid var(--gray-100)" class="photo-disc-sec">
