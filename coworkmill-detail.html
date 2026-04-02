@@ -668,6 +668,137 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
 #cwm-lb-p{left:20px}#cwm-lb-n{right:20px}
 #cwm-lb-p:hover,#cwm-lb-n:hover{background:rgba(255,255,255,.28)}
 #cwm-lb-c{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.55);font-size:12px;font-family:sans-serif;letter-spacing:.1em}
+    </style><style>
+/* ==========================================
+   スマートギャラリー（枚数別レイアウト）
+   ========================================== */
+
+/* 1枚：全幅1列 */
+.gallery-pc[data-count="1"] {
+  grid-template-columns: 1fr;
+}
+
+/* 2枚：横2分割 */
+.gallery-pc[data-count="2"] {
+  grid-template-columns: 1fr 1fr;
+}
+.gallery-pc[data-count="2"] .gpc-item {
+  aspect-ratio: 16/9;
+}
+
+/* 3枚：左大＋右2枚縦 */
+.gallery-pc[data-count="3"] {
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+.gallery-pc[data-count="3"] .gpc-item:first-child {
+  grid-row: span 2;
+  aspect-ratio: unset;
+}
+
+/* 4枚：2×2 */
+.gallery-pc[data-count="4"] {
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+.gallery-pc[data-count="4"] .gpc-item {
+  aspect-ratio: unset;
+  height: 240px;
+}
+
+/* 5枚：Airbnbスタイル（左大＋右2×2） */
+.gallery-pc[data-count="5"] {
+  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  height: 480px;
+}
+.gallery-pc[data-count="5"] .gpc-item:first-child {
+  grid-column: 1;
+  grid-row: 1 / 3;
+  aspect-ratio: unset;
+}
+.gallery-pc[data-count="5"] .gpc-item:not(:first-child) {
+  aspect-ratio: unset;
+}
+
+/* 6枚：3×2 */
+.gallery-pc[data-count="6"] {
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 1fr 1fr;
+  height: 480px;
+}
+.gallery-pc[data-count="6"] .gpc-item {
+  aspect-ratio: unset;
+}
+
+/* 7枚：左大＋右3×2 */
+.gallery-pc[data-count="7"] {
+  grid-template-columns: 2fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  height: 480px;
+}
+.gallery-pc[data-count="7"] .gpc-item:first-child {
+  grid-row: span 2;
+  aspect-ratio: unset;
+}
+.gallery-pc[data-count="7"] .gpc-item:nth-child(7) {
+  grid-column: span 2;
+  aspect-ratio: unset;
+}
+.gallery-pc[data-count="7"] .gpc-item {
+  aspect-ratio: unset;
+}
+
+/* 8枚：4×2（元のレイアウト） */
+.gallery-pc[data-count="8"],
+.gallery-pc:not([data-count]) {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+/* 全アイテム共通 */
+.gpc-item {
+  overflow: hidden;
+  cursor: pointer;
+  background: #111;
+}
+.gpc-item img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+  transition: transform .4s;
+}
+.gpc-item:hover img { transform: scale(1.04); }
+
+/* ライトボックス */
+#cwm-lb {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,.95); z-index: 9999;
+  align-items: center; justify-content: center;
+}
+#cwm-lb.open { display: flex; }
+#cwm-lb img {
+  max-width: 90vw; max-height: 90vh;
+  object-fit: contain; border-radius: 4px;
+}
+#cwm-lb-x {
+  position: fixed; top: 20px; right: 24px;
+  color: #fff; font-size: 36px; cursor: pointer;
+  opacity: .7; z-index: 10000; line-height: 1;
+}
+#cwm-lb-x:hover { opacity: 1; }
+#cwm-lb-p, #cwm-lb-n {
+  position: fixed; top: 50%; transform: translateY(-50%);
+  background: rgba(255,255,255,.12); color: #fff; font-size: 32px;
+  border: none; width: 56px; height: 56px; border-radius: 50%;
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  transition: background .2s; z-index: 10000;
+}
+#cwm-lb-p { left: 20px; } #cwm-lb-n { right: 20px; }
+#cwm-lb-p:hover, #cwm-lb-n:hover { background: rgba(255,255,255,.28); }
+#cwm-lb-c {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+  color: rgba(255,255,255,.55); font-size: 12px;
+  font-family: sans-serif; letter-spacing: .1em;
+}
     </style></head>
 <body>
 
@@ -1736,6 +1867,41 @@ document.addEventListener('DOMContentLoaded', () => {
       if(!items.length)return;
       pc.setAttribute('data-count',Math.min(items.length,8));
       var photos=items.map(function(el){return el.querySelector('img')&&el.querySelector('img').src;}).filter(Boolean);
+      items.forEach(function(item,i){item.onclick=function(){openLb(photos,i);};});
+    }
+    var obs=new MutationObserver(initGallery);
+    var pc=document.querySelector('.gallery-pc');
+    if(pc)obs.observe(pc,{childList:true});
+    initGallery();
+  });
+})();
+    </script><script>
+(function(){
+  var lbImgs=[],lbIdx=0;
+  function openLb(imgs,i){lbImgs=imgs;lbIdx=i;updLb();document.getElementById('cwm-lb').classList.add('open');document.body.style.overflow='hidden';}
+  function closeLb(){document.getElementById('cwm-lb').classList.remove('open');document.body.style.overflow='';}
+  function updLb(){document.getElementById('cwm-lb-img').src=lbImgs[lbIdx];document.getElementById('cwm-lb-c').textContent=(lbIdx+1)+' / '+lbImgs.length;}
+  document.addEventListener('DOMContentLoaded',function(){
+    var lb=document.createElement('div');lb.id='cwm-lb';
+    lb.innerHTML='<span id="cwm-lb-x">&#215;</span><button id="cwm-lb-p">&#8249;</button><img id="cwm-lb-img" src="" alt=""><button id="cwm-lb-n">&#8250;</button><div id="cwm-lb-c"></div>';
+    document.body.appendChild(lb);
+    document.getElementById('cwm-lb-x').onclick=closeLb;
+    document.getElementById('cwm-lb').onclick=function(e){if(e.target.id==='cwm-lb')closeLb();};
+    document.getElementById('cwm-lb-p').onclick=function(e){e.stopPropagation();lbIdx=(lbIdx-1+lbImgs.length)%lbImgs.length;updLb();};
+    document.getElementById('cwm-lb-n').onclick=function(e){e.stopPropagation();lbIdx=(lbIdx+1)%lbImgs.length;updLb();};
+    document.addEventListener('keydown',function(e){
+      if(!document.getElementById('cwm-lb').classList.contains('open'))return;
+      if(e.key==='ArrowRight'){lbIdx=(lbIdx+1)%lbImgs.length;updLb();}
+      if(e.key==='ArrowLeft'){lbIdx=(lbIdx-1+lbImgs.length)%lbImgs.length;updLb();}
+      if(e.key==='Escape')closeLb();
+    });
+    function initGallery(){
+      var pc=document.querySelector('.gallery-pc');
+      if(!pc)return;
+      var items=Array.from(pc.querySelectorAll('.gpc-item'));
+      if(!items.length)return;
+      pc.setAttribute('data-count',Math.min(items.length,8));
+      var photos=items.map(function(el){var img=el.querySelector('img');return img&&img.src;}).filter(Boolean);
       items.forEach(function(item,i){item.onclick=function(){openLb(photos,i);};});
     }
     var obs=new MutationObserver(initGallery);
