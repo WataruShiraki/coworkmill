@@ -240,8 +240,7 @@ a{text-decoration:none;color:inherit}
     <div class="sec">
       <div class="sec-h"><div><div class="sec-ht">掲載者・施設管理</div><div class="sec-hs">登録済みの掲載者と施設一覧</div></div><div style="display:flex;align-items:center;gap:8px"><span style="font-size:10px;color:var(--g400)" id="ops-status2">—</span><button class="bpu" onclick="openModal('m-newac')">＋ 新規アカウント作成</button></div></div>
       <div class="sr"><input class="si" placeholder="施設名・担当者名で検索..."><select class="fs"><option>すべてのプラン</option><option>Free</option><option>Standard</option><option>Pro</option></select><select class="fs"><option>すべてのステータス</option><option>掲載中</option><option>下書き</option><option>非公開</option></select></div>
-      <table class="tbl"><thead><tr><th>施設名</th><th>エリア</th><th>担当者</th><th>プラン</th><th>ステータス</th><th>登録日</th><th></th></tr></thead><tbody>
-      </tbody></table>
+      <table class="tbl"><thead><tr><th>施設名</th><th>エリア</th><th>担当者</th><th>プラン</th><th>ステータス</th><th>登録日</th><th></th></tr></thead><tbody id="sp-tbody"><tr><td colspan="7" style="text-align:center;padding:16px;color:var(--g400);font-size:12px">読み込み中...</td></tr></tbody></table>
     </div>
   </div>
 
@@ -286,6 +285,7 @@ a{text-decoration:none;color:inherit}
       <table class="tbl"><thead><tr>
         <th>会社名</th><th>メールアドレス</th><th>プラン</th><th>登録施設数</th><th>無料期間終了日</th><th>ステータス</th><th>作成日</th><th></th>
       </tr></thead><tbody>
+        <tr><td colspan="8" style="text-align:center;padding:20px;color:var(--g400);font-size:12px">アカウントはまだありません。「＋ 新規アカウント作成」から追加できます。</td></tr>
       </tbody></table>
     </div>
     <!-- 施設紐付けパネル -->
@@ -573,10 +573,12 @@ async function loadOpsSpaces() {
     if (el2) el2.textContent = '掲載中 ' + live + ' / 非公開 ' + (data.length - live);
     if (el3) el3.textContent = '掲載中 ' + live + ' / 非公開 ' + (data.length - live);
     const tbody = document.getElementById('ops-tbody');
-    if (!tbody) return;
+    const spTbody = document.getElementById('sp-tbody');
+    if (!tbody && !spTbody) return;
     tbody.innerHTML = '';
     if (data.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--g400);font-size:12px">施設がありません</td></tr>';
+      if (tbody) tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--g400);font-size:12px">施設がありません</td></tr>';
+      if (spTbody) spTbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--g400);font-size:12px">施設がありません</td></tr>';
       return;
     }
     data.forEach(function(d) {
@@ -613,14 +615,23 @@ async function loadOpsSpaces() {
         if (p[0] && p[0] === d.plan) o.selected = true;
         sel.appendChild(o);
       });
+      sel.dataset.id = d.id;
       sel.addEventListener('change', (function(id){ return function(){ opsChangePlan(id, this); }; })(d.id));
       const btn = document.createElement('button');
       btn.className = 'bsm'; btn.textContent = '掲載ページ ↗';
       btn.addEventListener('click', (function(id){ return function(){ window.open('coworkmill-detail.html?id='+id); }; })(d.id));
       br.appendChild(sel); br.appendChild(btn);
       tdBtn.appendChild(br); tr.appendChild(tdBtn);
-      tbody.appendChild(tr);
+      if (tbody) tbody.appendChild(tr);
+      if (spTbody) spTbody.appendChild(tr.cloneNode(true));
     });
+    // spTbodyのselectにイベント再設定
+    if (spTbody) {
+      spTbody.querySelectorAll('select').forEach(function(sel) {
+        const id = sel.getAttribute('data-id');
+        if (id) sel.addEventListener('change', function() { opsChangePlan(id, this); });
+      });
+    }
   } catch(e) { console.warn('loadOpsSpaces error:', e); }
 }
 
