@@ -1,25 +1,65 @@
 (function() {
+  // ① CSSを注入（選択中カードのスタイル）
+  const css = document.createElement('style');
+  css.textContent = `
+    #plan-free.plan-selected,
+    #plan-standard.plan-selected,
+    #plan-pro.plan-selected {
+      border: 2px solid #2BB5C8 !important;
+      background: rgba(43,181,200,0.06) !important;
+    }
+  `;
+  document.head.appendChild(css);
+
+  // ② 初期状態をリセット（HTMLに埋め込まれた選択中バッジと青枠を除去）
+  function resetAll() {
+    ['free','standard','pro'].forEach(function(p) {
+      const el = document.getElementById('plan-' + p);
+      if (!el) return;
+      el.classList.remove('plan-selected');
+      // 既存の「選択中」バッジを全部削除
+      el.querySelectorAll('div').forEach(function(d) {
+        if (d.textContent.trim() === '選択中') d.remove();
+      });
+      // ボーダーをリセット
+      let s = (el.getAttribute('style') || '').replace(/border\s*:[^;]+;?\s*/gi, '');
+      el.setAttribute('style', 'border:1px solid #2a2a2a;' + s);
+    });
+    window.selectedPlan = 'free';
+  }
+
+  // ③ selectPlan関数を上書き
   window.selectPlan = function(plan) {
     ['free','standard','pro'].forEach(function(p) {
       const el = document.getElementById('plan-' + p);
       if (!el) return;
-      el.querySelectorAll('.sel-badge').forEach(function(b){ b.remove(); });
+      el.querySelectorAll('div').forEach(function(d) {
+        if (d.textContent.trim() === '選択中') d.remove();
+      });
+      el.classList.remove('plan-selected');
+      let s = (el.getAttribute('style') || '').replace(/border\s*:[^;]+;?\s*/gi, '');
       if (p === plan) {
-        el.style.setProperty('border', '2px solid #2BB5C8', 'important');
-        el.style.setProperty('background', 'rgba(43,181,200,0.06)', 'important');
+        el.classList.add('plan-selected');
+        el.setAttribute('style', 'border:2px solid #2BB5C8;' + s);
         const b = document.createElement('div');
-        b.className = 'sel-badge';
         b.textContent = '選択中';
         b.style.cssText = 'position:absolute;top:10px;right:10px;font-size:8px;font-weight:600;padding:3px 8px;background:#2BB5C8;color:#000;border-radius:4px;z-index:10;';
         el.appendChild(b);
       } else {
-        el.style.setProperty('border', '1px solid #2a2a2a', 'important');
-        el.style.setProperty('background', '', 'important');
+        el.setAttribute('style', 'border:1px solid #2a2a2a;' + s);
       }
     });
     window.selectedPlan = plan;
   };
 
+  // ④ DOMが読み込まれたらリセット実行
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', resetAll);
+  } else {
+    resetAll();
+  }
+
+  // ⑤ Supabase読み込みと送信処理
   const s = document.createElement('script');
   s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
   s.onload = function() {
