@@ -1,4 +1,26 @@
 (function() {
+  // ① selectPlan関数を正しいものに上書き
+  window.selectPlan = function(plan) {
+    ['free','standard','pro'].forEach(function(p) {
+      const el = document.getElementById('plan-' + p);
+      if (!el) return;
+      // 既存の選択中バッジを全部消す
+      el.querySelectorAll('.sel-badge').forEach(function(b){ b.remove(); });
+      if (p === plan) {
+        el.style.border = '2px solid #2BB5C8';
+        const b = document.createElement('div');
+        b.className = 'sel-badge';
+        b.textContent = '選択中';
+        b.style.cssText = 'position:absolute;top:10px;right:10px;font-size:8px;font-weight:600;padding:2px 8px;background:#2BB5C8;color:#000;border-radius:4px;z-index:10;';
+        el.appendChild(b);
+      } else {
+        el.style.border = '1px solid #2a2a2a';
+      }
+    });
+    window.selectedPlan = plan;
+  };
+
+  // ② Supabaseをロードして送信処理を追加
   const s = document.createElement('script');
   s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
   s.onload = function() {
@@ -6,6 +28,7 @@
       'https://jakwntemjkwqwaqujffh.supabase.co',
       'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ'
     );
+
     const btn = document.querySelector('button.submit-btn');
     if (!btn) return;
 
