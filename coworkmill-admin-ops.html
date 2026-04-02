@@ -418,7 +418,22 @@ a{text-decoration:none;color:inherit}
 
 <!-- ===== SCRIPT ===== -->
 <script>
-// ─────────────────────────────
+const SERVICE_ROLE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impha3dudGVtamt3cXdhcXVqZmZoIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NDc2OTA2NCwiZXhwIjoyMDkwMzQ1MDY0fQ.ZlnHeVlyCCJ4WjX6BMgQZIxCrQVGz1L-Rnpj-ghbKek';
+
+async function inviteOwner(email) {
+  const res = await fetch('https://jakwntemjkwqwaqujffh.supabase.co/auth/v1/admin/invite', {
+    method: 'POST',
+    headers: {
+      'apikey': SERVICE_ROLE_KEY,
+      'Authorization': 'Bearer ' + SERVICE_ROLE_KEY,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ email })
+  });
+  const data = await res.json();
+  if (!res.ok) return { ok: false, message: data.msg || '招待に失敗しました' };
+  return { ok: true, message: email + ' に招待メールを送信しました！' };
+}// ─────────────────────────────
 // Supabase config
 // ─────────────────────────────
 const SB_URL = 'https://jakwntemjkwqwaqujffh.supabase.co';
