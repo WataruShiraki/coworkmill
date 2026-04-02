@@ -246,15 +246,16 @@ a{text-decoration:none;color:inherit}
 
 
   <!-- ARCH -->
+
+  <!-- ARCH -->
   <div id="p-ar" style="display:none">
-    <!-- 建築家一覧 -->
     <div class="sec">
       <div class="sec-h">
         <div><div class="sec-ht">建築家管理</div><div class="sec-hs">登録済みの建築家一覧</div></div>
         <button class="bpu" onclick="openModal('m-arch-new')">＋ 建築家を登録</button>
       </div>
-      <table class="tbl"><thead><tr><th>建築家名</th><th>事務所</th><th>公式URL</th><th>登録日</th><th></th></tr></thead>
-      <tbody id="arch-tbody"><tr><td colspan="5" style="text-align:center;padding:20px;color:var(--g400);font-size:12px">読み込み中...</td></tr></tbody>
+      <table class="tbl"><thead><tr><th>建築家名</th><th>事務所</th><th>公式URL</th><th>連絡状況</th><th>登録日</th><th></th></tr></thead>
+      <tbody id="arch-tbody"><tr><td colspan="6" style="text-align:center;padding:20px;color:var(--g400);font-size:12px">読み込み中...</td></tr></tbody>
       </table>
     </div>
   </div>
@@ -343,43 +344,6 @@ a{text-decoration:none;color:inherit}
 <!-- MODALS: display:none のみ。open クラスで display:flex -->
 
   <!-- ARCH -->
-  <div id="p-ar" style="display:none">
-    <!-- 建築家一覧 -->
-    <div class="sec">
-      <div class="sec-h">
-        <div><div class="sec-ht">建築家管理</div><div class="sec-hs">登録済みの建築家一覧</div></div>
-        <button class="bpu" onclick="openModal('m-arch-new')">＋ 建築家を登録</button>
-      </div>
-      <table class="tbl"><thead><tr><th>建築家名</th><th>事務所</th><th>公式URL</th><th>登録日</th><th></th></tr></thead>
-      <tbody id="arch-tbody"><tr><td colspan="5" style="text-align:center;padding:20px;color:var(--g400);font-size:12px">読み込み中...</td></tr></tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- 建築家登録モーダル -->
-  <div class="modal-wrap" id="m-arch-new">
-    <div class="modal" style="max-width:520px">
-      <div class="modal-ttl">建築家を登録</div>
-      <div class="modal-body">
-        <div class="fg" style="margin-bottom:12px"><div class="fl">建築家名 <span style="color:#ef4444">*</span></div><input class="fin" id="an-name" placeholder="例：山田 太朗"></div>
-        <div class="fg" style="margin-bottom:12px"><div class="fl">建築家名（ローマ字）</div><input class="fin" id="an-name-en" placeholder="例：Taro Yamada"></div>
-        <div class="fg" style="margin-bottom:12px"><div class="fl">建築事務所名 <span style="color:#ef4444">*</span></div><input class="fin" id="an-firm" placeholder="例：山田建築設計事務所"></div>
-        <div class="fg" style="margin-bottom:12px"><div class="fl">公式サイトURL</div><input class="fin" id="an-url" placeholder="例：https://yamada-arch.jp"></div>
-        <div class="fg" style="margin-bottom:12px"><div class="fl">プロフィール文</div><textarea class="fta" id="an-bio" placeholder="建築家の紹介文（任意）" rows="3"></textarea></div>
-        <div class="fg" style="margin-bottom:0"><div class="fl">連絡状況</div>
-          <select class="fin" id="an-contact">
-            <option value="未連絡">未連絡</option>
-            <option value="連絡済み">連絡済み</option>
-            <option value="掲載同意">掲載同意</option>
-          </select>
-        </div>
-      </div>
-      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:20px">
-        <button class="bsm" onclick="closeModal('m-arch-new')">キャンセル</button>
-        <button class="bpu" onclick="saveArchitect()">登録する</button>
-      </div>
-    </div>
-  </div>
 
   <!-- CONTACT -->
   <div id="p-ct" style="display:none">
@@ -397,43 +361,6 @@ a{text-decoration:none;color:inherit}
 
 <!-- MODALS: display:none のみ。open クラスで display:flex -->
   <!-- ARCH -->
-  <div id="p-ar" style="display:none">
-    <!-- 建築家一覧 -->
-    <div class="sec">
-      <div class="sec-h">
-        <div><div class="sec-ht">建築家管理</div><div class="sec-hs">登録済みの建築家一覧</div></div>
-        <button class="bpu" onclick="openModal('m-arch-new')">＋ 建築家を登録</button>
-      </div>
-      <table class="tbl"><thead><tr><th>建築家名</th><th>事務所</th><th>公式URL</th><th>登録日</th><th></th></tr></thead>
-      <tbody id="arch-tbody"><tr><td colspan="5" style="text-align:center;padding:20px;color:var(--g400);font-size:12px">読み込み中...</td></tr></tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- 建築家登録モーダル -->
-  <div class="modal-wrap" id="m-arch-new">
-    <div class="modal" style="max-width:520px">
-      <div class="modal-ttl">建築家を登録</div>
-      <div class="modal-body">
-        <div class="fg" style="margin-bottom:12px"><div class="fl">建築家名 <span style="color:#ef4444">*</span></div><input class="fin" id="an-name" placeholder="例：山田 太朗"></div>
-        <div class="fg" style="margin-bottom:12px"><div class="fl">建築家名（ローマ字）</div><input class="fin" id="an-name-en" placeholder="例：Taro Yamada"></div>
-        <div class="fg" style="margin-bottom:12px"><div class="fl">建築事務所名 <span style="color:#ef4444">*</span></div><input class="fin" id="an-firm" placeholder="例：山田建築設計事務所"></div>
-        <div class="fg" style="margin-bottom:12px"><div class="fl">公式サイトURL</div><input class="fin" id="an-url" placeholder="例：https://yamada-arch.jp"></div>
-        <div class="fg" style="margin-bottom:12px"><div class="fl">プロフィール文</div><textarea class="fta" id="an-bio" placeholder="建築家の紹介文（任意）" rows="3"></textarea></div>
-        <div class="fg" style="margin-bottom:0"><div class="fl">連絡状況</div>
-          <select class="fin" id="an-contact">
-            <option value="未連絡">未連絡</option>
-            <option value="連絡済み">連絡済み</option>
-            <option value="掲載同意">掲載同意</option>
-          </select>
-        </div>
-      </div>
-      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:20px">
-        <button class="bsm" onclick="closeModal('m-arch-new')">キャンセル</button>
-        <button class="bpu" onclick="saveArchitect()">登録する</button>
-      </div>
-    </div>
-  </div>
 
   <!-- CONTACT -->
   <div id="p-ct" style="display:none">
@@ -452,43 +379,6 @@ a{text-decoration:none;color:inherit}
 <!-- MODALS: display:none のみ。open クラスで display:flex -->
 
   <!-- ARCH -->
-  <div id="p-ar" style="display:none">
-    <!-- 建築家一覧 -->
-    <div class="sec">
-      <div class="sec-h">
-        <div><div class="sec-ht">建築家管理</div><div class="sec-hs">登録済みの建築家一覧</div></div>
-        <button class="bpu" onclick="openModal('m-arch-new')">＋ 建築家を登録</button>
-      </div>
-      <table class="tbl"><thead><tr><th>建築家名</th><th>事務所</th><th>公式URL</th><th>登録日</th><th></th></tr></thead>
-      <tbody id="arch-tbody"><tr><td colspan="5" style="text-align:center;padding:20px;color:var(--g400);font-size:12px">読み込み中...</td></tr></tbody>
-      </table>
-    </div>
-  </div>
-
-  <!-- 建築家登録モーダル -->
-  <div class="modal-wrap" id="m-arch-new">
-    <div class="modal" style="max-width:520px">
-      <div class="modal-ttl">建築家を登録</div>
-      <div class="modal-body">
-        <div class="fg" style="margin-bottom:12px"><div class="fl">建築家名 <span style="color:#ef4444">*</span></div><input class="fin" id="an-name" placeholder="例：山田 太朗"></div>
-        <div class="fg" style="margin-bottom:12px"><div class="fl">建築家名（ローマ字）</div><input class="fin" id="an-name-en" placeholder="例：Taro Yamada"></div>
-        <div class="fg" style="margin-bottom:12px"><div class="fl">建築事務所名 <span style="color:#ef4444">*</span></div><input class="fin" id="an-firm" placeholder="例：山田建築設計事務所"></div>
-        <div class="fg" style="margin-bottom:12px"><div class="fl">公式サイトURL</div><input class="fin" id="an-url" placeholder="例：https://yamada-arch.jp"></div>
-        <div class="fg" style="margin-bottom:12px"><div class="fl">プロフィール文</div><textarea class="fta" id="an-bio" placeholder="建築家の紹介文（任意）" rows="3"></textarea></div>
-        <div class="fg" style="margin-bottom:0"><div class="fl">連絡状況</div>
-          <select class="fin" id="an-contact">
-            <option value="未連絡">未連絡</option>
-            <option value="連絡済み">連絡済み</option>
-            <option value="掲載同意">掲載同意</option>
-          </select>
-        </div>
-      </div>
-      <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:20px">
-        <button class="bsm" onclick="closeModal('m-arch-new')">キャンセル</button>
-        <button class="bpu" onclick="saveArchitect()">登録する</button>
-      </div>
-    </div>
-  </div>
 
   <!-- CONTACT -->
   <div id="p-ct" style="display:none">
