@@ -1,7 +1,7 @@
 (function() {
-  // ① CSSを注入（選択中カードのスタイル）
   const css = document.createElement('style');
   css.textContent = `
+    #plan-free, #plan-standard, #plan-pro { position: relative !important; cursor: default !important; }
     #plan-free.plan-selected,
     #plan-standard.plan-selected,
     #plan-pro.plan-selected {
@@ -11,24 +11,20 @@
   `;
   document.head.appendChild(css);
 
-  // ② 初期状態をリセット（HTMLに埋め込まれた選択中バッジと青枠を除去）
   function resetAll() {
     ['free','standard','pro'].forEach(function(p) {
       const el = document.getElementById('plan-' + p);
       if (!el) return;
       el.classList.remove('plan-selected');
-      // 既存の「選択中」バッジを全部削除
       el.querySelectorAll('div').forEach(function(d) {
         if (d.textContent.trim() === '選択中') d.remove();
       });
-      // ボーダーをリセット
       let s = (el.getAttribute('style') || '').replace(/border\s*:[^;]+;?\s*/gi, '');
       el.setAttribute('style', 'border:1px solid #2a2a2a;' + s);
     });
     window.selectedPlan = 'free';
   }
 
-  // ③ selectPlan関数を上書き
   window.selectPlan = function(plan) {
     ['free','standard','pro'].forEach(function(p) {
       const el = document.getElementById('plan-' + p);
@@ -52,14 +48,12 @@
     window.selectedPlan = plan;
   };
 
-  // ④ DOMが読み込まれたらリセット実行
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', resetAll);
   } else {
     resetAll();
   }
 
-  // ⑤ Supabase読み込みと送信処理
   const s = document.createElement('script');
   s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
   s.onload = function() {
@@ -74,17 +68,18 @@
     newBtn.addEventListener('click', async function(e) {
       e.preventDefault();
       const inputs = document.querySelectorAll('input');
+      // エリア削除後の順番：施設名, 施設URL, 担当者名, 担当者メール
       const spaceName = inputs[0]?.value || '';
-      const area      = inputs[1]?.value || '';
-      const website   = inputs[2]?.value || '';
-      const ownerName = inputs[3]?.value || '';
-      const email     = inputs[4]?.value || '';
+      const website   = inputs[1]?.value || '';
+      const ownerName = inputs[2]?.value || '';
+      const email     = inputs[3]?.value || '';
       const plan      = window.selectedPlan || 'free';
+
       if (!spaceName || !email) { alert('施設名とメールアドレスは必須です。'); return; }
       newBtn.disabled = true;
       newBtn.textContent = '送信中...';
       const { error } = await sb.from('registrations').insert([{
-        space_name: spaceName, area: area||null, website: website||null,
+        space_name: spaceName, website: website||null,
         owner_name: ownerName||null, contact_email: email,
         plan, status: 'pending', submitted_at: new Date().toISOString()
       }]);
