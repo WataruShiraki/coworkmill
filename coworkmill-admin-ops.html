@@ -565,74 +565,132 @@ async function loadOpsSpaces() {
     });
     const data = await res.json();
     if (!Array.isArray(data)) return;
-    const live = data.filter(function(d) { return d.status === 'live'; }).length;
+
+    const liveSpaces  = data.filter(function(d) { return d.status === 'live'; });
+    const draftSpaces = data.filter(function(d) { return d.status !== 'live'; });
+
+    // カウンター更新
     const el1 = document.getElementById('ops-total');
     const el2 = document.getElementById('ops-status');
     const el3 = document.getElementById('ops-status2');
-    if (el1) el1.textContent = data.length;
-    if (el2) el2.textContent = '掲載中 ' + live + ' / 非公開 ' + (data.length - live);
-    if (el3) el3.textContent = '掲載中 ' + live + ' / 非公開 ' + (data.length - live);
+    if (el1) el1.textContent = liveSpaces.length;
+    if (el2) el2.textContent = '掲載中 ' + liveSpaces.length + ' / 審査待ち ' + draftSpaces.length;
+    if (el3) el3.textContent = '掲載中 ' + liveSpaces.length;
+
+    // 審査待ちバッジ更新
+    const rvBadge = document.querySelector('#p-rv .sec-h span');
+    if (rvBadge) rvBadge.textContent = draftSpaces.length + '件 審査待ち';
+
+    // 審査テーブル（draftのみ）
     const tbody = document.getElementById('ops-tbody');
-    const spTbody = document.getElementById('sp-tbody');
-    if (!tbody && !spTbody) return;
-    tbody.innerHTML = '';
-    if (data.length === 0) {
-      if (tbody) tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--g400);font-size:12px">施設がありません</td></tr>';
-      if (spTbody) spTbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--g400);font-size:12px">施設がありません</td></tr>';
-      return;
+    if (tbody) {
+      tbody.innerHTML = '';
+      if (draftSpaces.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--g400);font-size:12px">審査待ちの施設はありません</td></tr>';
+      } else {
+        draftSpaces.forEach(function(d) { tbody.appendChild(makeOpsRow(d, 'review')); });
+      }
     }
-    data.forEach(function(d) {
-      const planLabel = d.plan === 'pro' ? 'Pro' : d.plan === 'standard' ? 'Standard' : 'Free';
-      const planClass = d.plan === 'pro' ? 'pr' : d.plan === 'standard' ? 'st' : 'fr';
-      const stLabel = d.status === 'live' ? '掲載中' : '非公開';
-      const stClass = d.status === 'live' ? 'lv' : 'dr';
-      const area = (d.area || '') + (d.prefecture ? '/' + (d.prefecture || '').replace(/[都道府県]/, '') : '');
-      const date = d.created_at ? d.created_at.slice(0,10).replace(/-/g,'.') : '—';
-      const tr = document.createElement('tr');
-      tr.className = 'hov';
-      const cells = [
-        '<strong>' + (d.name||'—') + '</strong>',
-        area,
-        '<div style="font-size:11px">' + (d.contact_name||'—') + '</div><div style="font-size:10px;color:var(--g400)">' + (d.contact_email||'') + '</div>',
-        '<span class="bdg ' + planClass + '">' + planLabel + '</span>',
-        '<span class="bdg ' + stClass + '">' + stLabel + '</span>',
-        date
-      ];
-      cells.forEach(function(html, i) {
-        const td = document.createElement('td');
-        td.innerHTML = html;
-        if (i === 1 || i === 5) td.style.cssText = 'font-size:11px;color:var(--g600)';
-        tr.appendChild(td);
-      });
-      const tdBtn = document.createElement('td');
-      const br = document.createElement('div');
-      br.className = 'br';
-      const sel = document.createElement('select');
-      sel.style.cssText = 'font-size:10px;padding:4px 6px;border:1px solid var(--g200);border-radius:4px;cursor:pointer;background:#fff;margin-right:4px';
-      [['','プラン変更'],['free','Free'],['standard','Standard'],['pro','Pro']].forEach(function(p) {
-        const o = document.createElement('option');
-        o.value = p[0]; o.textContent = p[1];
-        if (p[0] && p[0] === d.plan) o.selected = true;
-        sel.appendChild(o);
-      });
-      sel.dataset.id = d.id;
-      sel.addEventListener('change', (function(id){ return function(){ opsChangePlan(id, this); }; })(d.id));
-      const btn = document.createElement('button');
-      btn.className = 'bsm'; btn.textContent = '掲載ページ ↗';
-      btn.addEventListener('click', (function(id){ return function(){ window.open('coworkmill-detail.html?id='+id); }; })(d.id));
-      br.appendChild(sel); br.appendChild(btn);
-      tdBtn.appendChild(br); tr.appendChild(tdBtn);
-      if (tbody) tbody.appendChild(tr);
-      if (spTbody) spTbody.appendChild(tr.cloneNode(true));
-    });
-    // spTbodyのselectにイベント再設定
+
+    // 掲載者・施設管理テーブル（liveのみ）
+    const spTbody = document.getElementById('sp-tbody');
     if (spTbody) {
-      spTbody.querySelectorAll('select').forEach(function(sel) {
-        const id = sel.getAttribute('data-id');
-        if (id) sel.addEventListener('change', function() { opsChangePlan(id, this); });
-      });
+      spTbody.innerHTML = '';
+      if (liveSpaces.length === 0) {
+        spTbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--g400);font-size:12px">掲載中の施設はありません</td></tr>';
+      } else {
+        liveSpaces.forEach(function(d) { spTbody.appendChild(makeOpsRow(d, 'manage')); });
+      }
     }
   } catch(e) { console.warn('loadOpsSpaces error:', e); }
+}
+
+function makeOpsRow(d, mode) {
+  const planLabel = d.plan === 'pro' ? 'Pro' : d.plan === 'standard' ? 'Standard' : 'Free';
+  const planClass = d.plan === 'pro' ? 'pr' : d.plan === 'standard' ? 'st' : 'fr';
+  const area = (d.area || '') + (d.prefecture ? '/' + (d.prefecture || '').replace(/[都道府県]/, '') : '');
+  const date = d.created_at ? d.created_at.slice(0,10).replace(/-/g,'.') : '—';
+  const tr = document.createElement('tr');
+  tr.className = 'hov';
+
+  const cells = [
+    '<strong>' + (d.name||'—') + '</strong>',
+    area,
+    '<div style="font-size:11px">' + (d.contact_name||'—') + '</div><div style="font-size:10px;color:var(--g400)">' + (d.contact_email||'') + '</div>',
+    '<span class="bdg ' + planClass + '">' + planLabel + '</span>',
+    mode === 'review' ? '<span class="bdg new">審査待ち</span>' : '<span class="bdg lv">掲載中</span>',
+    date
+  ];
+  cells.forEach(function(html, i) {
+    const td = document.createElement('td');
+    td.innerHTML = html;
+    if (i === 1 || i === 5) td.style.cssText = 'font-size:11px;color:var(--g600)';
+    tr.appendChild(td);
+  });
+
+  const tdBtn = document.createElement('td');
+  const br = document.createElement('div');
+  br.className = 'br';
+
+  if (mode === 'review') {
+    // 承認・却下ボタン
+    const approveBtn = document.createElement('button');
+    approveBtn.className = 'bap';
+    approveBtn.textContent = '承認';
+    approveBtn.addEventListener('click', (function(id){ return function(){ approveSpace(id); }; })(d.id));
+    const rejectBtn = document.createElement('button');
+    rejectBtn.className = 'brj';
+    rejectBtn.textContent = '却下';
+    rejectBtn.addEventListener('click', (function(id){ return function(){ rejectSpace(id); }; })(d.id));
+    br.appendChild(approveBtn);
+    br.appendChild(rejectBtn);
+  } else {
+    // プラン変更・掲載ページボタン
+    const sel = document.createElement('select');
+    sel.style.cssText = 'font-size:10px;padding:4px 6px;border:1px solid var(--g200);border-radius:4px;cursor:pointer;background:#fff;margin-right:4px';
+    [['','プラン変更'],['free','Free'],['standard','Standard'],['pro','Pro']].forEach(function(p) {
+      const o = document.createElement('option');
+      o.value = p[0]; o.textContent = p[1];
+      if (p[0] && p[0] === d.plan) o.selected = true;
+      sel.appendChild(o);
+    });
+    sel.addEventListener('change', (function(id){ return function(){ opsChangePlan(id, this); }; })(d.id));
+    const btn = document.createElement('button');
+    btn.className = 'bsm'; btn.textContent = '掲載ページ ↗';
+    btn.addEventListener('click', (function(id){ return function(){ window.open('coworkmill-detail.html?id='+id); }; })(d.id));
+    br.appendChild(sel);
+    br.appendChild(btn);
+  }
+
+  tdBtn.appendChild(br);
+  tr.appendChild(tdBtn);
+  return tr;
+}
+
+async function approveSpace(spaceId) {
+  if (!confirm('この施設を承認して掲載中にしますか？')) return;
+  try {
+    const res = await fetch(SUPABASE_URL_OPS + '/rest/v1/spaces?id=eq.' + spaceId, {
+      method: 'PATCH',
+      headers: { 'apikey': SUPABASE_KEY_OPS, 'Authorization': 'Bearer ' + SUPABASE_KEY_OPS, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+      body: JSON.stringify({ status: 'live' })
+    });
+    if (res.ok) { showToast('✅ 承認しました。掲載者・施設管理に移動しました。'); loadOpsSpaces(); }
+    else { alert('承認に失敗しました。'); }
+  } catch(e) { alert('エラーが発生しました。'); }
+}
+
+async function rejectSpace(spaceId) {
+  if (!confirm('この施設を却下しますか？\n却下後も施設データは残ります。')) return;
+  try {
+    const res = await fetch(SUPABASE_URL_OPS + '/rest/v1/spaces?id=eq.' + spaceId, {
+      method: 'PATCH',
+      headers: { 'apikey': SUPABASE_KEY_OPS, 'Authorization': 'Bearer ' + SUPABASE_KEY_OPS, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+      body: JSON.stringify({ status: 'rejected' })
+    });
+    if (res.ok) { showToast('却下しました。'); loadOpsSpaces(); }
+    else { alert('却下に失敗しました。'); }
+  } catch(e) { alert('エラーが発生しました。'); }
 }
 
 async function opsChangePlan(spaceId, sel) {
