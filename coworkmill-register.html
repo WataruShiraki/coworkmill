@@ -427,21 +427,22 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
 function selectPlan(plan) {
   ['free','standard','pro'].forEach(p => {
     const el = document.getElementById('plan-'+p);
+    if (!el) return;
     const badge = el.querySelector('[style*="選択中"]');
     if (p === plan) {
       el.style.border = '2px solid #2BB5C8';
       if (!badge) {
         const b = document.createElement('div');
         b.textContent = '選択中';
-        b.setAttribute('style','position:absolute;top:10px;right:10px;font-size:8px;font-weight:600;padding:2px 8px;background:#2BB5C8;color:#fff;border-radius:10px');
-        el.style.position = 'relative';
+        b.setAttribute('style','position:absolute;top:10px;right:10px;font-size:8px;font-weight:600;padding:2px 8px;background:#2BB5C8;color:#000;border-radius:4px;');
         el.appendChild(b);
       }
     } else {
-      el.style.border = '1px solid var(--gray-200)';
+      el.style.border = '1px solid #2a2a2a';
       if (badge) badge.remove();
     }
   });
+  window.selectedPlan = plan;
 }
 </script>
 <script src="coworkmill-features.js"></script>
