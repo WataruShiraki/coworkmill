@@ -43,7 +43,7 @@ a{text-decoration:none;color:inherit}
 <div class="wrap">
   <div style="text-align:center;margin-bottom:32px">
     <a href="coworkmill.html">
-<img src="coworkmill_logo2.svg" alt="COWORKMILL" style="height:28px;width:auto">
+      <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNDAiPjx0ZXh0IHk9IjMwIiBmb250LWZhbWlseT0iTW9udHNlcnJhdCxzYW5zLXNlcmlmIiBmb250LXNpemU9IjIwIiBmb250LXdlaWdodD0iNTAwIiBmaWxsPSIjZmZmIiBsZXR0ZXItc3BhY2luZz0iMiI+Q09XT1JLTUlMTDwvdGV4dD48L3N2Zz4=" alt="COWORKMILL" style="height:28px;width:auto">
     </a>
   </div>
 
@@ -73,11 +73,11 @@ a{text-decoration:none;color:inherit}
 <script>
 const SUPABASE_URL = 'https://jakwntemjkwqwaqujffh.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // すでにログイン済みなら管理画面へ
 (async () => {
-  const { data: { session } } = await supabase.auth.getSession();
+  const { data: { session } } = await supabaseClient.auth.getSession();
   if (session) location.href = 'coworkmill-admin-view.html';
 })();
 
@@ -98,7 +98,7 @@ async function login() {
   btn.textContent = 'ログイン中...';
   btn.disabled = true;
 
-  const { data, error } = await supabase.auth.signInWithPassword({
+  const { data, error } = await supabaseClient.auth.signInWithPassword({
     email,
     password: pass
   });
@@ -132,7 +132,7 @@ async function resetPassword() {
     return;
   }
 
-  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+  const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
     redirectTo: location.origin + '/coworkmill-admin-view.html'
   });
 
