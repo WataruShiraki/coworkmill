@@ -589,16 +589,7 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
 #cwm-lb-p{left:16px}#cwm-lb-n{right:16px}
 #cwm-lb-p:hover,#cwm-lb-n:hover{background:rgba(255,255,255,.3)}
 #cwm-lb-c{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.5);font-size:12px;font-family:sans-serif}
-#cwm-main-title{
-  font-size:28px!important;
-  font-weight:600!important;
-  letter-spacing:-0.02em!important;
-  line-height:1.2!important;
-  color:#f0f0f0!important;
-  margin-bottom:16px!important;
-  display:block!important;
-  font-family:var(--font-d,'Montserrat',sans-serif)!important;
-}
+#cwm-main-title{font-size:28px!important;font-weight:600!important;letter-spacing:-0.02em!important;line-height:1.2!important;color:#f0f0f0!important;margin-bottom:16px!important;display:block!important;font-family:var(--font-d,'Montserrat',sans-serif)!important}
   </style></head>
 <body>
 
@@ -1631,6 +1622,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 <script>(function(){
+/* ===== ライトボックス ===== */
 var lbImgs=[],lbIdx=0;
 function openLb(imgs,i){lbImgs=imgs;lbIdx=i;updLb();document.getElementById('cwm-lb').classList.add('open');document.body.style.overflow='hidden';}
 function closeLb(){document.getElementById('cwm-lb').classList.remove('open');document.body.style.overflow='';}
@@ -1651,6 +1643,8 @@ function initLb(){
     if(e.key==='Escape')closeLb();
   });
 }
+
+/* ===== ギャラリー ===== */
 function initGallery(){
   var pc=document.querySelector('.gallery-pc');
   if(!pc)return;
@@ -1671,6 +1665,7 @@ function initGallery(){
   btn.onclick=function(e){e.stopPropagation();initLb();openLb(photos,0);};
 }
 
+/* ===== 施設名を説明文の上に表示 ===== */
 function insertTitle(){
   if(document.getElementById('cwm-main-title'))return;
   var asideName=document.querySelector('.aside-space-name');
@@ -1684,19 +1679,55 @@ function insertTitle(){
   descEl.parentNode.insertBefore(titleEl,descEl);
 }
 
+/* ===== 設備・プラン概要を「向いている仕事」の直下に移動 ===== */
+function reorderSections(){
+  var detailMain=document.querySelector('.detail-main');
+  if(!detailMain||detailMain.dataset.reordered)return;
+
+  // 各セクションを特定
+  var workSection=Array.from(detailMain.children).find(function(el){
+    return el.textContent.includes('このスペースに向いている仕事');
+  });
+  var facSection=detailMain.querySelector('.facilities-section');
+  var planSection=detailMain.querySelector('.plans-section');
+
+  if(!workSection||!facSection||!planSection)return;
+
+  // 「向いている仕事」の直後のdivider
+  var workDivider=workSection.nextElementSibling;
+
+  // 設備セクションの前のdividerも取得して一緒に移動
+  var facDivider=facSection.previousElementSibling&&facSection.previousElementSibling.classList.contains('sec-divider')?facSection.previousElementSibling:null;
+  var planDivider=planSection.previousElementSibling&&planSection.previousElementSibling.classList.contains('sec-divider')?planSection.previousElementSibling:null;
+
+  // workDividerの直後に挿入（設備→プラン概要の順で）
+  var insertAfter=workDivider||workSection;
+  var next=insertAfter.nextSibling;
+
+  // facDivider + facSection を挿入
+  if(facDivider){detailMain.insertBefore(facDivider,next);next=facDivider.nextSibling;}
+  detailMain.insertBefore(facSection,next);next=facSection.nextSibling;
+
+  // planDivider + planSection を挿入
+  if(planDivider){detailMain.insertBefore(planDivider,next);next=planDivider.nextSibling;}
+  detailMain.insertBefore(planSection,next);
+
+  detailMain.dataset.reordered='1';
+}
+
+/* ===== MutationObserver + 起動 ===== */
 var obs=new MutationObserver(function(){
-  initGallery();
-  insertTitle();
+  initGallery();insertTitle();reorderSections();
 });
 function start(){
   var pc=document.querySelector('.gallery-pc');
   if(pc)obs.observe(pc,{childList:true});
+  var main=document.querySelector('.detail-main');
+  if(main)obs.observe(main,{childList:true,subtree:false});
   var aside=document.querySelector('.detail-aside');
   if(aside)obs.observe(aside,{childList:true,subtree:true});
-  initGallery();
-  insertTitle();
+  initGallery();insertTitle();reorderSections();
 }
 if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',start);}else{start();}
-setTimeout(function(){insertTitle();},1000);
-setTimeout(function(){insertTitle();},2000);
+[500,1000,2000].forEach(function(t){setTimeout(function(){insertTitle();reorderSections();},t);});
 })();</script></body></html>
