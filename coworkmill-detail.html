@@ -590,6 +590,10 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
 #cwm-lb-p:hover,#cwm-lb-n:hover{background:rgba(255,255,255,.3)}
 #cwm-lb-c{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.5);font-size:12px;font-family:sans-serif}
 #cwm-main-title{font-size:28px!important;font-weight:600!important;letter-spacing:-0.02em!important;line-height:1.2!important;color:#f0f0f0!important;margin-bottom:16px!important;display:block!important;font-family:var(--font-d,'Montserrat',sans-serif)!important}
+.cwm-voice-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:14px 16px;margin-bottom:10px}
+.cwm-voice-tag{display:inline-block;font-size:10px;font-weight:600;color:#2BB5C8;border:1px solid rgba(43,181,200,.4);border-radius:12px;padding:2px 10px;margin-bottom:8px;letter-spacing:.04em}
+.cwm-voice-msg{font-size:13px;color:rgba(255,255,255,.8);line-height:1.6;margin-bottom:6px}
+.cwm-voice-nick{font-size:11px;color:rgba(255,255,255,.35);text-align:right}
   </style></head>
 <body>
 
@@ -1607,6 +1611,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 <script>(function(){
+var SB_URL='https://jakwntemjkwqwaqujffh.supabase.co';
+var SB_KEY='sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+
+/* ===== ライトボックス ===== */
 var lbImgs=[],lbIdx=0;
 function openLb(imgs,i){lbImgs=imgs;lbIdx=i;updLb();document.getElementById('cwm-lb').classList.add('open');document.body.style.overflow='hidden';}
 function closeLb(){document.getElementById('cwm-lb').classList.remove('open');document.body.style.overflow='';}
@@ -1627,6 +1635,8 @@ function initLb(){
     if(e.key==='Escape')closeLb();
   });
 }
+
+/* ===== ギャラリー ===== */
 function initGallery(){
   var pc=document.querySelector('.gallery-pc');
   if(!pc)return;
@@ -1646,6 +1656,8 @@ function initGallery(){
   btn.textContent='写真を見る（'+total+'枚）';
   btn.onclick=function(e){e.stopPropagation();initLb();openLb(photos,0);};
 }
+
+/* ===== 施設名 ===== */
 function insertTitle(){
   if(document.getElementById('cwm-main-title'))return;
   var asideName=document.querySelector('.aside-space-name');
@@ -1656,6 +1668,8 @@ function insertTitle(){
   var t=document.createElement('div');t.id='cwm-main-title';t.textContent=nameText;
   descEl.parentNode.insertBefore(t,descEl);
 }
+
+/* ===== セクション並び替え ===== */
 function reorderSections(){
   var dm=document.querySelector('.detail-main');
   if(!dm||dm.dataset.reordered)return;
@@ -1673,12 +1687,91 @@ function reorderSections(){
   dm.insertBefore(planSection,next);
   dm.dataset.reordered='1';
 }
+
+/* ===== 利用者の声 ===== */
+function getSpaceId(){
+  var params=new URLSearchParams(window.location.search);
+  return params.get('id');
+}
+
+function renderVoices(voices){
+  var list=document.querySelector('.voices-list');
+  if(!list)return;
+  list.innerHTML='';
+  if(!voices||!voices.length){
+    list.innerHTML='<p style="font-size:12px;color:rgba(255,255,255,.3);padding:8px 0">まだ応援メッセージがありません</p>';
+    return;
+  }
+  voices.forEach(function(v){
+    var card=document.createElement('div');
+    card.className='cwm-voice-card';
+    var tag=v.workstyle?'<span class="cwm-voice-tag">'+v.workstyle+'</span><br>':'';
+    var nick=v.nickname||'匿名';
+    card.innerHTML=tag+
+      '<div class="cwm-voice-msg">'+escHtml(v.message)+'</div>'+
+      '<div class="cwm-voice-nick">'+escHtml(nick)+'</div>';
+    list.appendChild(card);
+  });
+}
+
+function escHtml(s){
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function loadVoices(){
+  var spaceId=getSpaceId();
+  if(!spaceId)return;
+  fetch(SB_URL+'/rest/v1/voices?space_id=eq.'+spaceId+'&status=eq.approved&order=submitted_at.desc',{
+    headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}
+  }).then(function(r){return r.json();}).then(function(data){
+    renderVoices(data);
+  }).catch(function(){});
+}
+
+/* ===== submitVoice の上書き ===== */
+function initVoices(){
+  loadVoices();
+  window.submitVoice=function(){
+    var spaceId=getSpaceId();
+    if(!spaceId)return;
+    var nick=document.getElementById('vp-nick')?.value.trim()||'';
+    var msg=document.getElementById('vp-text')?.value.trim()||'';
+    if(!msg){alert('メッセージを入力してください');return;}
+    var selectedTag=document.querySelector('.vp-tag.selected,.vp-tag.on,.vp-tag[aria-selected="true"]');
+    var workstyle=selectedTag?selectedTag.textContent.trim():'';
+    var btn=document.querySelector('.vp-submit');
+    if(btn){btn.disabled=true;btn.textContent='送信中...';}
+    fetch(SB_URL+'/rest/v1/voices',{
+      method:'POST',
+      headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
+      body:JSON.stringify({space_id:spaceId,nickname:nick||null,message:msg,workstyle:workstyle||null,status:'approved',submitted_at:new Date().toISOString()})
+    }).then(function(r){
+      if(r.ok){
+        if(btn){btn.disabled=false;btn.textContent='応援する →';}
+        document.getElementById('vp-nick').value='';
+        document.getElementById('vp-text').value='';
+        document.querySelectorAll('.vp-tag').forEach(function(t){t.classList.remove('selected','on');});
+        loadVoices();
+        var thanks=document.querySelector('.vp-thanks,.voice-thanks');
+        if(thanks)thanks.style.display='block';
+      }else{
+        alert('送信に失敗しました');
+        if(btn){btn.disabled=false;btn.textContent='応援する →';}
+      }
+    }).catch(function(){
+      alert('通信エラーが発生しました');
+      if(btn){btn.disabled=false;btn.textContent='応援する →';}
+    });
+  };
+}
+
+/* ===== 起動 ===== */
 var obs=new MutationObserver(function(){initGallery();insertTitle();reorderSections();});
 function start(){
   var pc=document.querySelector('.gallery-pc');if(pc)obs.observe(pc,{childList:true});
   var aside=document.querySelector('.detail-aside');if(aside)obs.observe(aside,{childList:true,subtree:true});
   var dm=document.querySelector('.detail-main');if(dm)obs.observe(dm,{childList:true});
-  initGallery();insertTitle();reorderSections();
+  initGallery();insertTitle();reorderSections();initVoices();
 }
 if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',start);}else{start();}
 [500,1000,2000].forEach(function(t){setTimeout(function(){insertTitle();reorderSections();},t);});
