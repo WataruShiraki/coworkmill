@@ -589,7 +589,16 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
 #cwm-lb-p{left:16px}#cwm-lb-n{right:16px}
 #cwm-lb-p:hover,#cwm-lb-n:hover{background:rgba(255,255,255,.3)}
 #cwm-lb-c{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.5);font-size:12px;font-family:sans-serif}
-.detail-space-title{font-size:28px!important;font-weight:600!important;letter-spacing:-0.02em!important;line-height:1.2!important;margin-bottom:16px!important;color:var(--white,#fff)!important;display:block!important}
+#cwm-main-title{
+  font-size:28px!important;
+  font-weight:600!important;
+  letter-spacing:-0.02em!important;
+  line-height:1.2!important;
+  color:#f0f0f0!important;
+  margin-bottom:16px!important;
+  display:block!important;
+  font-family:var(--font-d,'Montserrat',sans-serif)!important;
+}
   </style></head>
 <body>
 
@@ -1661,21 +1670,33 @@ function initGallery(){
   btn.textContent='写真を見る（'+total+'枚）';
   btn.onclick=function(e){e.stopPropagation();initLb();openLb(photos,0);};
 }
-function moveName(){
-  var mainTop=document.querySelector('.detail-main > div:first-child');
-  if(!mainTop)return;
-  var eyebrow=mainTop.querySelector('.space-eyebrow');
-  var nameEl=eyebrow?eyebrow.nextElementSibling:null;
-  var descEl=mainTop.querySelector('p.space-desc,.space-desc');
-  if(!nameEl||!descEl||nameEl.classList.contains('detail-space-title'))return;
-  nameEl.classList.add('detail-space-title');
-  descEl.parentNode.insertBefore(nameEl,descEl);
+
+function insertTitle(){
+  if(document.getElementById('cwm-main-title'))return;
+  var asideName=document.querySelector('.aside-space-name');
+  var descEl=document.querySelector('p.space-desc,.space-desc');
+  if(!asideName||!descEl)return;
+  var nameText=asideName.textContent.trim();
+  if(!nameText)return;
+  var titleEl=document.createElement('div');
+  titleEl.id='cwm-main-title';
+  titleEl.textContent=nameText;
+  descEl.parentNode.insertBefore(titleEl,descEl);
 }
-var obs=new MutationObserver(function(){initGallery();moveName();});
+
+var obs=new MutationObserver(function(){
+  initGallery();
+  insertTitle();
+});
 function start(){
   var pc=document.querySelector('.gallery-pc');
-  if(pc){obs.observe(pc,{childList:true});}
-  initGallery();moveName();
+  if(pc)obs.observe(pc,{childList:true});
+  var aside=document.querySelector('.detail-aside');
+  if(aside)obs.observe(aside,{childList:true,subtree:true});
+  initGallery();
+  insertTitle();
 }
 if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',start);}else{start();}
+setTimeout(function(){insertTitle();},1000);
+setTimeout(function(){insertTitle();},2000);
 })();</script></body></html>
