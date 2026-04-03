@@ -1526,13 +1526,13 @@ window.addEventListener('DOMContentLoaded', () => {
     var sec=document.getElementById('db-voice-section');var list=document.getElementById('db-voice-list');if(!sec||!list)return;
     if(!pending||!pending.length){sec.style.display='none';return;}sec.style.display='block';list.innerHTML='';
     pending.slice(0,5).forEach(function(v){
-      var row=document.createElement('div');row.style.cssText='padding:10px 0;border-bottom:1px solid #f0f0f0;display:flex;align-items:flex-start;gap:10px';
+      var row=document.createElement('div');row.style.cssText='padding:10px 0;border-bottom:1px solid #f0f0f0';
       var left=document.createElement('div');left.style.cssText='flex:1;min-width:0';
       if(v.workstyle){var t=document.createElement('span');t.style.cssText='display:inline-block;font-size:10px;font-weight:600;color:var(--accent);border:1px solid rgba(43,181,200,.4);border-radius:10px;padding:1px 7px;margin-bottom:4px';t.textContent=v.workstyle;left.appendChild(t);left.appendChild(document.createElement('br'));}
       var txt=document.createElement('div');txt.style.cssText='font-size:12px;color:#333;line-height:1.5;overflow:hidden;text-overflow:ellipsis;white-space:nowrap';txt.textContent=v.message||'';left.appendChild(txt);
       var meta=document.createElement('div');meta.style.cssText='font-size:10px;color:#999;margin-top:2px';meta.textContent=(v.nickname||'匿名')+' ・ '+fmt(v.submitted_at);left.appendChild(meta);
-      var ap=document.createElement('button');ap.style.cssText='flex-shrink:0;padding:5px 12px;background:#f97316;color:#fff;border:none;border-radius:5px;font-size:11px;font-weight:600;cursor:pointer';ap.textContent='承認';(function(vid){ap.onclick=function(){approveVoice(vid);};})(v.id);
-      row.appendChild(left);row.appendChild(ap);list.appendChild(row);
+      var ap=document.createElement('button');ap.style.cssText='display:inline-block;margin-top:8px;padding:6px 14px;background:#f97316;color:#fff;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer';ap.textContent='承認';(function(vid){ap.onclick=function(){approveVoice(vid);};})(v.id);
+      left.appendChild(ap);row.appendChild(left);list.appendChild(row);
     });
     if(pending.length>5){var more=document.createElement('div');more.style.cssText='font-size:11px;color:#999;text-align:center;padding-top:8px';more.textContent='他 '+(pending.length-5)+'件の承認待ち';list.appendChild(more);}
   }
