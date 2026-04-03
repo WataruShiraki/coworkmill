@@ -201,7 +201,7 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
 .vc-btn-approve{flex:1;padding:8px;background:var(--accent);color:#000;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer}
 .vc-btn-delete{padding:8px 14px;background:transparent;color:#ff6b6b;border:1px solid #ff6b6b;border-radius:6px;font-size:12px;cursor:pointer}
 .vc-empty{font-size:12px;color:var(--g400);padding:8px 0}
-  </style><style id="cwm-voice-css">.vc-card{background:var(--bg2);border:1px solid var(--g700);border-radius:8px;padding:14px 16px;margin-bottom:10px}.vc-tag{display:inline-block;font-size:10px;font-weight:600;color:var(--accent);border:1px solid rgba(43,181,200,.4);border-radius:12px;padding:2px 8px;margin-bottom:6px}.vc-msg{font-size:13px;color:var(--g100);line-height:1.6;margin-bottom:4px}.vc-nick{font-size:11px;color:var(--g400);margin-bottom:6px}.vc-date{font-size:10px;color:var(--g500)}.vc-actions{display:flex;gap:8px;margin-top:10px}.vc-btn-approve{flex:1;padding:8px;background:var(--accent);color:#000;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer}.vc-btn-delete{padding:8px 14px;background:transparent;color:#ff6b6b;border:1px solid #ff6b6b;border-radius:6px;font-size:12px;cursor:pointer}</style></head>
+  </style><style id="cwm-voice-css">.vc-card{background:var(--bg2);border:1px solid var(--g700);border-radius:8px;padding:14px 16px;margin-bottom:10px}.vc-tag{display:inline-block;font-size:10px;font-weight:600;color:var(--accent);border:1px solid rgba(43,181,200,.4);border-radius:12px;padding:2px 8px;margin-bottom:6px}.vc-msg{font-size:13px;color:var(--g100);line-height:1.6;margin-bottom:4px}.vc-nick{font-size:11px;color:var(--g400);margin-bottom:6px}.vc-date{font-size:10px;color:var(--g500)}.vc-actions{display:flex;gap:8px;margin-top:10px}.vc-btn-approve{flex:1;padding:8px;background:var(--accent);color:#000;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer}.vc-btn-delete{padding:8px 14px;background:transparent;color:#ff6b6b;border:1px solid #ff6b6b;border-radius:6px;font-size:12px;cursor:pointer}</style><style>.vc-card{background:var(--bg2);border:1px solid var(--g700);border-radius:8px;padding:14px 16px;margin-bottom:10px}.vc-tag{display:inline-block;font-size:10px;font-weight:600;color:var(--accent);border:1px solid rgba(43,181,200,.4);border-radius:12px;padding:2px 8px;margin-bottom:6px}.vc-msg{font-size:13px;color:var(--g100);line-height:1.6;margin-bottom:4px}.vc-nick{font-size:11px;color:var(--g400);margin-bottom:4px}.vc-date{font-size:10px;color:var(--g500)}.vc-actions{display:flex;gap:8px;margin-top:10px}.vc-btn-approve{flex:1;padding:8px;background:var(--accent);color:#000;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer}.vc-btn-delete{padding:8px 14px;background:transparent;color:#ff6b6b;border:1px solid rgba(255,107,107,.5);border-radius:6px;font-size:12px;cursor:pointer}</style></head>
 <body><!-- SP: PCアクセス案内 -->
 <div class="sp-pc-notice">
   <div class="sp-pc-notice-icon">🖥️</div>
@@ -588,33 +588,15 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
 
   <!-- VOICE -->
   <div id="p-voice" style="display:none">
-    <div class="sbar" id="voice-bar">
-      <div class="sdot gray"></div>
-      <div class="st" id="voice-bar-txt">新着の声はありません</div>
-    </div>
-    <div class="sec">
-      <div class="sec-h">
-        <div>
-          <div class="sec-ht">承認待ち</div>
-          <div class="sec-hs">承認すると施設詳細ページに表示されます</div>
-        </div>
-      </div>
-      <div id="voice-pending-list" style="margin-top:12px">
-        <p style="font-size:12px;color:var(--g400)">読み込み中...</p>
-      </div>
-    </div>
-    <div class="sec" style="margin-top:24px">
-      <div class="sec-h">
-        <div>
-          <div class="sec-ht">承認済み</div>
-          <div class="sec-hs">展示中の利用者の声</div>
-        </div>
-      </div>
-      <div id="voice-approved-list" style="margin-top:12px">
-        <p style="font-size:12px;color:var(--g400)">読み込み中...</p>
-      </div>
-    </div>
-  </div>
+<div class="sbar" id="voice-bar"><div class="sdot gray"></div><div class="st" id="voice-bar-txt">新着の声はありません</div></div>
+<div class="sec">
+  <div class="sec-h"><div><div class="sec-ht">承認待ち</div><div class="sec-hs">承認すると施設詳細ページに表示されます</div></div></div>
+  <div id="voice-pending-list" style="margin-top:12px"><p style="font-size:12px;color:var(--g400)">読み込み中...</p></div>
+</div>
+<div class="sec" style="margin-top:24px">
+  <div class="sec-h"><div><div class="sec-ht">承認済み</div><div class="sec-hs">展示中の利用者の声</div></div></div>
+  <div id="voice-approved-list" style="margin-top:12px"><p style="font-size:12px;color:var(--g400)">読み込み中...</p></div>
+</div></div>
 
   <!-- ARCH -->
   <div id="p-arch" style="display:none">
@@ -1532,48 +1514,69 @@ window.addEventListener('DOMContentLoaded', () => {
 </script>
 
 <script>
-function _cwmEscHtml(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function _cwmFmtDate(d){try{return new Date(d).toLocaleDateString('ja-JP');}catch(e){return '';}}
-function _cwmRenderCard(v,isPending){
-  var tag=v.workstyle?'<span class="vc-tag">'+_cwmEscHtml(v.workstyle)+'</span><br>':'';
-  var actions=isPending
-    ?'<div class="vc-actions"><button class="vc-btn-approve" onclick="approveVoice(\''+v.id+'\')">\u627f\u8a8d\u3059\u308b</button><button class="vc-btn-delete" onclick="deleteVoice(\''+v.id+'\')">\u524a\u9664</button></div>'
-    :'<div class="vc-actions"><button class="vc-btn-delete" onclick="deleteVoice(\''+v.id+'\')">\u524a\u9664\u3059\u308b</button></div>';
-  return '<div class="vc-card">'+tag+'<div class="vc-msg">'+_cwmEscHtml(v.message)+'</div><div class="vc-nick">'+_cwmEscHtml(v.nickname||'\u533f\u540d')+'</div><div class="vc-date">'+_cwmFmtDate(v.submitted_at)+'</div>'+actions+'</div>';
-}
-window.loadAdminVoices=function(){
-  var spaceId=window.facs&&window.facs[window.cur]&&window.facs[window.cur].db_id;
-  var pendingEl=document.getElementById('voice-pending-list');
-  var approvedEl=document.getElementById('voice-approved-list');
-  var barTxt=document.getElementById('voice-bar-txt');
-  var barDot=document.querySelector('#voice-bar .sdot');
-  if(!spaceId){if(pendingEl)pendingEl.innerHTML='<p style="font-size:12px;color:var(--g400)">\u65bd\u8a2d\u3092\u9078\u629e\u3057\u3066\u304f\u3060\u3055\u3044</p>';return;}
-  if(pendingEl)pendingEl.innerHTML='<p style="font-size:12px;color:var(--g400)">\u8aad\u307f\u8fbc\u307f\u4e2d...</p>';
-  if(approvedEl)approvedEl.innerHTML='<p style="font-size:12px;color:var(--g400)">\u8aad\u307f\u8fbc\u307f\u4e2d...</p>';
-  window.sbFetch('/rest/v1/voices?space_id=eq.'+spaceId+'&order=submitted_at.desc').then(function(data){
-    var pending=(data||[]).filter(function(v){return v.status==='pending';});
-    var approved=(data||[]).filter(function(v){return v.status==='approved';});
-    if(barTxt)barTxt.textContent=pending.length>0?'\u627f\u8a8d\u5f85\u3061 '+pending.length+'\u4ef6':'\u65b0\u7740\u306e\u58f0\u306f\u3042\u308a\u307e\u305b\u3093';
-    if(barDot)barDot.className='sdot '+(pending.length>0?'':'gray');
-    if(pendingEl)pendingEl.innerHTML=pending.length===0?'<p style="font-size:12px;color:var(--g400)">\u627f\u8a8d\u5f85\u3061\u306e\u58f0\u306f\u3042\u308a\u307e\u305b\u3093</p>':pending.map(function(v){return _cwmRenderCard(v,true);}).join('');
-    if(approvedEl)approvedEl.innerHTML=approved.length===0?'<p style="font-size:12px;color:var(--g400)">\u627f\u8a8d\u6e08\u307f\u306e\u58f0\u306f\u3042\u308a\u307e\u305b\u3093</p>':approved.map(function(v){return _cwmRenderCard(v,false);}).join('');
-  }).catch(function(){if(pendingEl)pendingEl.innerHTML='<p style="font-size:12px;color:red">\u30a8\u30e9\u30fc</p>';});
-};
-window.approveVoice=function(id){
-  window.sbFetch('/rest/v1/voices?id=eq.'+id,{method:'PATCH',body:JSON.stringify({status:'approved'})}).then(function(){window.loadAdminVoices();});
-};
-window.deleteVoice=function(id){
-  if(!confirm('\u524a\u9664\u3057\u307e\u3059\u304b\uff1f'))return;
-  window.sbFetch('/rest/v1/voices?id=eq.'+id,{method:'DELETE'}).then(function(){window.loadAdminVoices();});
-};
-function _cwmWrapGo(){
-  if(typeof window.go!=='function')return;
-  if(window.go._cwmWrapped)return;
-  var _orig=window.go;
-  window.go=function(id,el){_orig(id,el);if(id==='voice')window.loadAdminVoices();};
-  window.go._cwmWrapped=true;
-}
-document.addEventListener('DOMContentLoaded',function(){setTimeout(_cwmWrapGo,100);});
-setTimeout(_cwmWrapGo,500);
-setTimeout(_cwmWrapGo,1500);
+document.addEventListener('DOMContentLoaded', function(){
+  /* sbFetchをインターセプトしてspacesテーブル呼び出しからspaceIdを取得 */
+  var _origSbFetch = window.sbFetch;
+  if(!_origSbFetch) return;
+  window._cwmSpaceId = null;
+  window.sbFetch = function(path, opts){
+    var m = String(path).match(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/);
+    if(m && String(path).indexOf('voices') === -1) window._cwmSpaceId = m[0];
+    return _origSbFetch(path, opts);
+  };
+  window.sbFetch._cwmWrapped = true;
+
+  function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function fmt(d){ try{ return new Date(d).toLocaleDateString('ja-JP'); }catch(e){ return ''; } }
+  function card(v, isPending){
+    var tag = v.workstyle ? '<span class="vc-tag">'+esc(v.workstyle)+'</span><br>' : '';
+    var ap = isPending ? '<button class="vc-btn-approve" onclick="approveVoice(''+v.id+'')">承認する</button>' : '';
+    var dl = '<button class="vc-btn-delete" onclick="deleteVoice(''+v.id+'')">削除'+(isPending?'':'する')+'</button>';
+    return '<div class="vc-card">'+tag+'<div class="vc-msg">'+esc(v.message)+'</div><div class="vc-nick">'+esc(v.nickname||'匿名')+'</div><div class="vc-date">'+fmt(v.submitted_at)+'</div><div class="vc-actions">'+ap+dl+'</div></div>';
+  }
+
+  window.loadAdminVoices = function(){
+    var spaceId = window._cwmSpaceId;
+    var pel = document.getElementById('voice-pending-list');
+    var ael = document.getElementById('voice-approved-list');
+    var btxt = document.getElementById('voice-bar-txt');
+    var bdot = document.querySelector('#voice-bar .sdot');
+    if(!spaceId){
+      if(pel) pel.innerHTML = '<p style="font-size:12px;color:var(--g400)">施設を選択してからこのタブを開いてください</p>';
+      return;
+    }
+    if(pel) pel.innerHTML = '<p style="font-size:12px;color:var(--g400)">読み込み中...</p>';
+    if(ael) ael.innerHTML = '<p style="font-size:12px;color:var(--g400)">読み込み中...</p>';
+    _origSbFetch('/rest/v1/voices?space_id=eq.'+spaceId+'&order=submitted_at.desc')
+      .then(function(data){
+        var pending = (data||[]).filter(function(v){ return v.status==='pending'; });
+        var approved = (data||[]).filter(function(v){ return v.status==='approved'; });
+        if(btxt) btxt.textContent = pending.length > 0 ? '承認待ち '+pending.length+'件' : '新着の声はありません';
+        if(bdot) bdot.className = 'sdot'+(pending.length > 0 ? '' : ' gray');
+        if(pel) pel.innerHTML = pending.length === 0 ? '<p style="font-size:12px;color:var(--g400)">承認待ちの声はありません</p>' : pending.map(function(v){ return card(v,true); }).join('');
+        if(ael) ael.innerHTML = approved.length === 0 ? '<p style="font-size:12px;color:var(--g400)">承認済みの声はありません</p>' : approved.map(function(v){ return card(v,false); }).join('');
+      }).catch(function(){ if(pel) pel.innerHTML='<p style="font-size:12px;color:red">読み込みエラー</p>'; });
+  };
+
+  window.approveVoice = function(id){
+    _origSbFetch('/rest/v1/voices?id=eq.'+id, {method:'PATCH', body:JSON.stringify({status:'approved'})})
+      .then(function(){ window.loadAdminVoices(); });
+  };
+
+  window.deleteVoice = function(id){
+    if(!confirm('この声を削除しますか？')) return;
+    _origSbFetch('/rest/v1/voices?id=eq.'+id, {method:'DELETE'})
+      .then(function(){ window.loadAdminVoices(); });
+  };
+
+  /* go()をラップ */
+  var _origGo = window.go;
+  if(_origGo && !_origGo._cwmWrapped) {
+    window.go = function(id, el){
+      _origGo(id, el);
+      if(id === 'voice') setTimeout(window.loadAdminVoices, 200);
+    };
+    window.go._cwmWrapped = true;
+  }
+});
   </script></body></html>
