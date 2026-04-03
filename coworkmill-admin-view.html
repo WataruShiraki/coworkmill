@@ -211,6 +211,19 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
 .vc-btns button{margin-right:8px;margin-bottom:4px;padding:6px 14px;border-radius:6px;font-size:12px;cursor:pointer;border:none}
 .vc-approve{background:var(--accent);color:#000;font-weight:600}
 .vc-delete{background:transparent;color:#ff6b6b;border:1px solid rgba(255,107,107,.5)!important}
+  </style><style>
+#voice-pending-list .vc-wrap,#voice-approved-list .vc-wrap{
+  display:block!important;width:100%!important;
+  background:var(--bg2)!important;border:1px solid var(--g700)!important;
+  border-radius:8px!important;padding:14px 16px!important;
+  margin-bottom:10px!important;box-sizing:border-box!important;
+}
+.vc-tag{display:inline-block;font-size:10px;font-weight:600;color:var(--accent);border:1px solid rgba(43,181,200,.4);border-radius:12px;padding:2px 8px;margin-bottom:8px}
+.vc-body{display:block;font-size:13px;color:var(--g100);line-height:1.6;margin-bottom:4px}
+.vc-meta{display:block;font-size:11px;color:var(--g400);margin-bottom:8px}
+.vc-btns{display:block}
+.vc-approve-btn{display:inline-block;padding:7px 16px;background:var(--accent);color:#000;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;margin-right:8px}
+.vc-delete-btn{display:inline-block;padding:7px 14px;background:transparent;color:#ff6b6b;border:1px solid rgba(255,107,107,.5);border-radius:6px;font-size:12px;cursor:pointer}
   </style></head>
 <body><!-- SP: PCアクセス案内 -->
 <div class="sp-pc-notice">
@@ -1524,20 +1537,17 @@ window.addEventListener('DOMContentLoaded', () => {
 </script>
 
 <script>
-document.addEventListener('DOMContentLoaded',function(){
+(function(){
   function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
   function fmt(d){try{return new Date(d).toLocaleDateString('ja-JP');}catch(e){return '';}}
-
   function makeCard(v,isPending){
     var tag=v.workstyle?'<span class="vc-tag">'+esc(v.workstyle)+'</span><br>':'';
-    var msg=v.message?'<span class="vc-msg">'+esc(v.message)+'</span>':'';
-    var meta='<span class="vc-meta">'+(v.nickname?esc(v.nickname):'匿名')+' ・ '+fmt(v.submitted_at)+'</span>';
-    var btns='<div class="vc-btns">';
-    if(isPending) btns+='<button class="vc-approve" onclick="approveVoice(''+v.id+'')">承認する</button>';
-    btns+='<button class="vc-delete" onclick="deleteVoice(''+v.id+'')">削除する</button></div>';
-    return '<div class="vc-wrap">'+tag+msg+meta+btns+'</div>';
+    var body='<span class="vc-body">'+esc(v.message||'')+'</span>';
+    var meta='<span class="vc-meta">'+(v.nickname?esc(v.nickname):'匿名')+'　'+fmt(v.submitted_at)+'</span>';
+    var ap=isPending?'<button class="vc-approve-btn" onclick="approveVoice(''+v.id+'')">承認する</button>':'';
+    var dl='<button class="vc-delete-btn" onclick="deleteVoice(''+v.id+'')">削除する</button>';
+    return '<div class="vc-wrap">'+tag+body+meta+'<div class="vc-btns">'+ap+dl+'</div></div>';
   }
-
   window.loadAdminVoices=function(){
     var allFis=Array.from(document.querySelectorAll('#fac-list .fi'));
     var activeFi=document.querySelector('#fac-list .fi.on')||document.querySelector('#fac-list .fi.active');
@@ -1546,14 +1556,11 @@ document.addEventListener('DOMContentLoaded',function(){
     var ael=document.getElementById('voice-approved-list');
     var btxt=document.getElementById('voice-bar-txt');
     var bdot=document.querySelector('#voice-bar .sdot');
-    if(idx<0||!window.sbFetch){
-      if(pel)pel.innerHTML='<p style="font-size:12px;color:var(--g400)">施設を選択してください</p>';
-      return;
-    }
+    if(idx<0||!window.sbFetch){if(pel)pel.innerHTML='<p style="font-size:12px;color:var(--g400)">施設を選択してください</p>';return;}
     if(pel)pel.innerHTML='<p style="font-size:12px;color:var(--g400)">読み込み中...</p>';
     if(ael)ael.innerHTML='';
     window.sbFetch('/rest/v1/spaces?select=id&order=created_at').then(function(spaces){
-      if(!spaces||!spaces[idx])return Promise.reject('no space');
+      if(!spaces||!spaces[idx])return Promise.reject('no space at '+idx);
       return window.sbFetch('/rest/v1/voices?space_id=eq.'+spaces[idx].id+'&order=submitted_at.desc');
     }).then(function(data){
       var pending=(data||[]).filter(function(v){return v.status==='pending';});
@@ -1562,24 +1569,27 @@ document.addEventListener('DOMContentLoaded',function(){
       if(bdot)bdot.className='sdot'+(pending.length>0?'':' gray');
       if(pel)pel.innerHTML=pending.length===0?'<p style="font-size:12px;color:var(--g400)">承認待ちの声はありません</p>':pending.map(function(v){return makeCard(v,true);}).join('');
       if(ael)ael.innerHTML=approved.length===0?'<p style="font-size:12px;color:var(--g400)">まだありません</p>':approved.map(function(v){return makeCard(v,false);}).join('');
-    }).catch(function(e){if(pel)pel.innerHTML='<p style="font-size:12px;color:red">エラー: '+e+'</p>';});
+    }).catch(function(e){if(pel)pel.innerHTML='<p style="font-size:12px;color:red">ERR: '+e+'</p>';});
   };
-
   window.approveVoice=function(id){
     window.sbFetch('/rest/v1/voices?id=eq.'+id,{method:'PATCH',body:JSON.stringify({status:'approved'})}).then(function(){window.loadAdminVoices();});
   };
   window.deleteVoice=function(id){
-    if(!confirm('削除しますか？'))return;
+    if(!confirm('この声を削除しますか？'))return;
     window.sbFetch('/rest/v1/voices?id=eq.'+id,{method:'DELETE'}).then(function(){window.loadAdminVoices();});
   };
-
-  var _poll=setInterval(function(){
+  /* go()ラップ：setIntervalで確実に捕捉 */
+  var _p=setInterval(function(){
     if(typeof window.go==='function'&&!window.go._cwmW){
-      clearInterval(_poll);
+      clearInterval(_p);
       var orig=window.go;
       window.go=function(id,el){orig(id,el);if(id==='voice')setTimeout(window.loadAdminVoices,300);};
       window.go._cwmW=true;
     }
-  },100);
-});
+  },50);
+  /* 安全のためdocument.readyState確認後も実行 */
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',function(){clearInterval(_p);var p2=setInterval(function(){if(typeof window.go==='function'&&!window.go._cwmW){clearInterval(p2);var orig=window.go;window.go=function(id,el){orig(id,el);if(id==='voice')setTimeout(window.loadAdminVoices,300);};window.go._cwmW=true;}},50);});
+  }
+})();
   </script></body></html>
