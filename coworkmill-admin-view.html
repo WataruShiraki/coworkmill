@@ -1600,10 +1600,11 @@ function adminMapInit(lat,lon){
   document.getElementById('admin-lon-disp').textContent=parseFloat(lon).toFixed(5);
   [200,500,1000].forEach(function(t){setTimeout(function(){if(_adminMap)_adminMap.invalidateSize();},t);});
 }
+function extractJpAddr(addr){var m=addr.match(/^(.+?[\u90fd\u9053\u5e9c\u770c])(.+?[\u5e02\u533a\u753a\u6751\u90e1])(.+?)[\d\uff10-\uff19]/);if(m){return m[3].replace(/\s.*/,"").trim()+" "+m[2].replace(/\s.*/,"")+" "+m[1];}return addr.split(/[\s\u3000]/)[0];}
 function adminMapSearchAddr(){
   var addr=(document.getElementById('nfad')?.value||document.getElementById('fad')?.value||'').trim();
   if(!addr)return;
-  var base=addr.split(/[\s\u3000]/)[0];
+  var base=extractJpAddr(addr);
   fetch('https://nominatim.openstreetmap.org/search?q='+encodeURIComponent(base)+'&format=json&limit=1&countrycodes=jp',{headers:{'Accept-Language':'ja','User-Agent':'COWORKMILL/1.0'}})
   .then(function(r){return r.json();}).then(function(res){
     if(res&&res[0])adminMapInit(parseFloat(res[0].lat),parseFloat(res[0].lon));
