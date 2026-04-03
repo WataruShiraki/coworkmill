@@ -195,7 +195,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:56px;display:flex;ali
 /* ── LAYOUT ── */
 .detail-wrap{max-width:1200px;margin:0 auto;padding:0 40px;display:grid;grid-template-columns:1fr 340px;gap:64px;padding-top:48px;padding-bottom:80px}
 .detail-main{}
-.detail-aside{position:sticky;top:24px;align-self:start}
+.detail-aside{position:sticky;top:64px;align-self:start}
 
 /* ── HEADER ── */
 .space-eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:12px}
@@ -573,7 +573,7 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-<style id="cwm-css">
+<style>
 .gallery-pc{height:480px!important;overflow:hidden!important;border-radius:8px!important;position:relative!important}
 .gallery-pc[data-layout="1"]{grid-template-columns:1fr!important;grid-template-rows:1fr!important}
 .gallery-pc[data-layout="2"]{grid-template-columns:1fr 1fr!important;grid-template-rows:1fr!important}
@@ -599,7 +599,7 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
 .cwm-voice-nick{font-size:11px;font-weight:500;color:rgba(255,255,255,.5)}
 .cwm-voice-date{font-size:10px;color:rgba(255,255,255,.25)}
 .vp-tag.on{border-color:#2BB5C8!important;color:#2BB5C8!important;background:rgba(43,181,200,.12)!important}
-#cwm-lmap .leaflet-control-attribution{font-size:8px!important}
+.leaflet-control-attribution{font-size:8px!important}
 </style>
 </head>
 <body>
@@ -819,7 +819,7 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
           <span class="access-val" id="d-phone">詳細は公式サイトにて</span>
         </div>
       </div>
-      <div id="cwm-map-wrap" style="border-radius:10px;overflow:hidden;height:200px;background:#e8e8e8"><div style="height:200px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#aaa">読み込み中...</div></div>
+      <div id="cwm-map-wrap" style="border-radius:10px;overflow:hidden;height:220px;background:#eee"><div id="cwm-lmap" style="height:220px;width:100%"></div></div>
         <a id="cwm-map-link" href="#" target="_blank" rel="noopener" style="display:block;text-align:center;font-size:12px;color:rgba(255,255,255,.45);margin-top:8px;text-decoration:none">Google Mapで開く →</a>
     </div>
 
@@ -1622,6 +1622,63 @@ document.addEventListener('DOMContentLoaded', () => {
   loadSpace();
 })();
 </script>
-<script>var CWM_SB_URL='https://jakwntemjkwqwaqujffh.supabase.co';var CWM_SB_KEY='sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';(function(){var lbImgs=[],lbIdx=0;function openLb(imgs,i){lbImgs=imgs;lbIdx=i;updLb();document.getElementById('cwm-lb').classList.add('open');document.body.style.overflow='hidden';}function closeLb(){document.getElementById('cwm-lb').classList.remove('open');document.body.style.overflow='';}function updLb(){document.getElementById('cwm-lb-img').src=lbImgs[lbIdx];document.getElementById('cwm-lb-c').textContent=(lbIdx+1)+'/'+lbImgs.length;}function initLb(){if(document.getElementById('cwm-lb'))return;var lb=document.createElement('div');lb.id='cwm-lb';lb.innerHTML='<button id="cwm-lb-x">&#215;<\/button><button id="cwm-lb-p">&#8249;<\/button><img id="cwm-lb-img" src="" alt=""><button id="cwm-lb-n">&#8250;<\/button><div id="cwm-lb-c"><\/div>';document.body.appendChild(lb);document.getElementById('cwm-lb-x').onclick=closeLb;lb.onclick=function(e){if(e.target===lb)closeLb();};document.getElementById('cwm-lb-p').onclick=function(e){e.stopPropagation();lbIdx=(lbIdx-1+lbImgs.length)%lbImgs.length;updLb();};document.getElementById('cwm-lb-n').onclick=function(e){e.stopPropagation();lbIdx=(lbIdx+1)%lbImgs.length;updLb();};document.addEventListener('keydown',function(e){if(!document.getElementById('cwm-lb').classList.contains('open'))return;if(e.key==='ArrowRight'){lbIdx=(lbIdx+1)%lbImgs.length;updLb();}if(e.key==='ArrowLeft'){lbIdx=(lbIdx-1+lbImgs.length)%lbImgs.length;updLb();}if(e.key==='Escape')closeLb();});}function initGallery(){var pc=document.querySelector('.gallery-pc');if(!pc)return;var items=Array.from(pc.querySelectorAll('.gpc-item')),tot=items.length;if(!tot)return;var ph=items.map(function(el){var img=el.querySelector('img');return img&&img.src;}).filter(Boolean),show=Math.min(tot,5),lay=show<=1?1:show<=2?2:show<=3?3:5;pc.setAttribute('data-layout',lay);items.forEach(function(it,i){it.style.display=i<show?'':'none';if(i<show){it.onclick=function(){initLb();openLb(ph,i);};}});var btn=document.getElementById('cwm-all-btn');if(!btn){btn=document.createElement('button');btn.id='cwm-all-btn';pc.appendChild(btn);}btn.textContent='写真を見る（'+tot+'枚）';btn.onclick=function(e){e.stopPropagation();initLb();openLb(ph,0);};}function insertTitle(){if(document.getElementById('cwm-main-title'))return;var an=document.querySelector('.aside-space-name'),de=document.querySelector('p.space-desc,.space-desc');if(!an||!de)return;var txt=an.textContent.trim();if(!txt)return;var t=document.createElement('div');t.id='cwm-main-title';t.textContent=txt;de.parentNode.insertBefore(t,de);}function reorderSections(){var dm=document.querySelector('.detail-main');if(!dm||dm.dataset.reordered)return;var ws=Array.from(dm.children).find(function(el){return el.textContent.includes('このスペースに向いている仕事');});var fs=dm.querySelector('.facilities-section'),ps=dm.querySelector('.plans-section');if(!ws||!fs||!ps)return;var ref=ws.nextElementSibling||ws,next=ref.nextSibling;var fd=fs.previousElementSibling&&fs.previousElementSibling.classList.contains('sec-divider')?fs.previousElementSibling:null,pd=ps.previousElementSibling&&ps.previousElementSibling.classList.contains('sec-divider')?ps.previousElementSibling:null;if(fd){dm.insertBefore(fd,next);next=fd.nextSibling;}dm.insertBefore(fs,next);next=fs.nextSibling;if(pd){dm.insertBefore(pd,next);next=pd.nextSibling;}dm.insertBefore(ps,next);dm.dataset.reordered='1';}function initMap(addr){var w=document.getElementById('cwm-map-wrap'),lk=document.getElementById('cwm-map-link');if(!addr||!w||w.dataset.done)return;w.dataset.done='1';var base=addr.split(/[\s\u3000]/)[0];if(lk){lk.href='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(addr);}var t=0,ti=setInterval(function(){t++;if(typeof L!=='undefined'){clearInterval(ti);w.innerHTML='<div id="cwm-lmap" style="height:200px;width:100%;z-index:0"><\/div>';fetch('https://nominatim.openstreetmap.org/search?q='+encodeURIComponent(base)+'&format=json&limit=1',{headers:{'Accept-Language':'ja'}}).then(function(r){return r.json();}).then(function(res){if(!res||!res.length)return;var lat=parseFloat(res[0].lat),lon=parseFloat(res[0].lon);var map=L.map('cwm-lmap',{zoomControl:true,scrollWheelZoom:false}).setView([lat,lon],16);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',maxZoom:19}).addTo(map);var ic=L.divIcon({className:'',html:'<div style="width:14px;height:14px;background:#2BB5C8;border:2px solid #fff;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,.4)"><\/div>',iconSize:[14,14],iconAnchor:[7,7]});L.marker([lat,lon],{icon:ic}).addTo(map);}).catch(function(){});}else if(t>40){clearInterval(ti);}},200);}function tryMap(){var el=Array.from(document.querySelectorAll('.access-val')).find(function(e){var t=e.textContent.trim();return t&&t!=='—'&&t!=='—';});if(el&&!document.getElementById('cwm-map-wrap')?.dataset.done){initMap(el.textContent.trim());return true;}return false;}function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}function fmt(d){try{return new Date(d).toLocaleDateString('ja-JP');}catch(e){return '';}}function loadVoices(){var sid=new URLSearchParams(window.location.search).get('id');if(!sid)return;fetch(CWM_SB_URL+'/rest/v1/voices?space_id=eq.'+sid+'&status=eq.approved&order=submitted_at.desc',{headers:{'apikey':CWM_SB_KEY,'Authorization':'Bearer '+CWM_SB_KEY}}).then(function(r){return r.json();}).then(function(data){var list=document.querySelector('.voices-list');if(!list)return;list.innerHTML='';if(!data||!data.length){list.innerHTML='<p style="font-size:12px;color:rgba(255,255,255,.3);padding:8px 0">まだ応援メッセージがありません<\/p>';return;}data.forEach(function(v){var c=document.createElement('div');c.className='cwm-voice-card';var tag=v.workstyle?'<span class="cwm-voice-tag">'+esc(v.workstyle)+'<\/span><br>':'';;var msg='<div class="cwm-voice-msg">'+esc(v.message)+'<\/div>';var footer='<div class="cwm-voice-footer"><span class="cwm-voice-nick">'+esc(v.nickname||'匿名')+'<\/span><span class="cwm-voice-date">'+fmt(v.submitted_at)+'<\/span><\/div>';c.innerHTML=tag+msg+footer;list.appendChild(c);});}).catch(function(){});}window.submitVoice=function(){var sid=new URLSearchParams(window.location.search).get('id');if(!sid)return;var nick=(document.getElementById('vp-nick')?.value||'').trim();var msg=(document.getElementById('vp-text')?.value||'').trim();var ws=(document.getElementById('vp-selected-tag')?.textContent||'').trim();if(!ws){alert('「どの仕事で使いましたか？」を選んでください');return;}if(!msg){alert('メッセージを入力してください');return;}var btn=document.querySelector('.vp-submit');if(btn){btn.disabled=true;btn.textContent='送信中...';}fetch(CWM_SB_URL+'/rest/v1/voices',{method:'POST',headers:{'apikey':CWM_SB_KEY,'Authorization':'Bearer '+CWM_SB_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({space_id:sid,nickname:nick||null,message:msg,workstyle:ws,status:'pending',submitted_at:new Date().toISOString()})}).then(function(r){if(btn){btn.disabled=false;btn.textContent='応援する →';}if(r.ok){document.getElementById('vp-nick').value='';document.getElementById('vp-text').value='';document.getElementById('vp-selected-tag').textContent='';document.querySelectorAll('.vp-tag').forEach(function(t){t.classList.remove('on');});var s1=document.getElementById('vp-step1'),s3=document.getElementById('vp-step3');if(s1)s1.style.display='none';if(s3)s3.style.display='block';}else{r.text().then(function(t){alert('エラー:'+t);});}}).catch(function(){alert('通信エラー');if(btn){btn.disabled=false;btn.textContent='応援する →';}});};var obs=new MutationObserver(function(){initGallery();insertTitle();reorderSections();tryMap();});function start(){var pc=document.querySelector('.gallery-pc');if(pc)obs.observe(pc,{childList:true});var as=document.querySelector('.detail-aside');if(as)obs.observe(as,{childList:true,subtree:true});var dm=document.querySelector('.detail-main');if(dm)obs.observe(dm,{childList:true,subtree:true});initGallery();insertTitle();reorderSections();loadVoices();[300,800,1500,2500].forEach(function(t){setTimeout(tryMap,t);});}if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',start);}else{start();}[500,1000,2000].forEach(function(t){setTimeout(function(){insertTitle();reorderSections();},t);});})();</script>
+<script>var CWM_SB_URL='https://jakwntemjkwqwaqujffh.supabase.co',CWM_SB_KEY='sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+(function(){
+var lbImgs=[],lbIdx=0;
+function openLb(imgs,i){lbImgs=imgs;lbIdx=i;updLb();document.getElementById('cwm-lb').classList.add('open');document.body.style.overflow='hidden';}
+function closeLb(){document.getElementById('cwm-lb').classList.remove('open');document.body.style.overflow='';}
+function updLb(){document.getElementById('cwm-lb-img').src=lbImgs[lbIdx];document.getElementById('cwm-lb-c').textContent=(lbIdx+1)+'/'+lbImgs.length;}
+function initLb(){if(document.getElementById('cwm-lb'))return;var lb=document.createElement('div');lb.id='cwm-lb';lb.innerHTML='<button id="cwm-lb-x">&#215;<\/button><button id="cwm-lb-p">&#8249;<\/button><img id="cwm-lb-img" src="" alt=""><button id="cwm-lb-n">&#8250;<\/button><div id="cwm-lb-c"><\/div>';document.body.appendChild(lb);document.getElementById('cwm-lb-x').onclick=closeLb;lb.onclick=function(e){if(e.target===lb)closeLb();};document.getElementById('cwm-lb-p').onclick=function(e){e.stopPropagation();lbIdx=(lbIdx-1+lbImgs.length)%lbImgs.length;updLb();};document.getElementById('cwm-lb-n').onclick=function(e){e.stopPropagation();lbIdx=(lbIdx+1)%lbImgs.length;updLb();};document.addEventListener('keydown',function(e){if(!document.getElementById('cwm-lb').classList.contains('open'))return;if(e.key==='ArrowRight'){lbIdx=(lbIdx+1)%lbImgs.length;updLb();}if(e.key==='ArrowLeft'){lbIdx=(lbIdx-1+lbImgs.length)%lbImgs.length;updLb();}if(e.key==='Escape')closeLb();});}
+function initGallery(){var pc=document.querySelector('.gallery-pc');if(!pc)return;var items=Array.from(pc.querySelectorAll('.gpc-item')),tot=items.length;if(!tot)return;var ph=items.map(function(el){var img=el.querySelector('img');return img&&img.src;}).filter(Boolean),show=Math.min(tot,5),lay=show<=1?1:show<=2?2:show<=3?3:5;pc.setAttribute('data-layout',lay);items.forEach(function(it,i){it.style.display=i<show?'':'none';if(i<show){it.onclick=function(){initLb();openLb(ph,i);};}});var btn=document.getElementById('cwm-all-btn');if(!btn){btn=document.createElement('button');btn.id='cwm-all-btn';pc.appendChild(btn);}btn.textContent='写真を見る（'+tot+'枚）';btn.onclick=function(e){e.stopPropagation();initLb();openLb(ph,0);};}
+function insertTitle(){if(document.getElementById('cwm-main-title'))return;var an=document.querySelector('.aside-space-name'),de=document.querySelector('p.space-desc,.space-desc');if(!an||!de)return;var txt=an.textContent.trim();if(!txt)return;var t=document.createElement('div');t.id='cwm-main-title';t.textContent=txt;de.parentNode.insertBefore(t,de);}
+function reorderSections(){var dm=document.querySelector('.detail-main');if(!dm||dm.dataset.reordered)return;var ws=Array.from(dm.children).find(function(el){return el.textContent.includes('このスペースに向いている仕事');});var fs=dm.querySelector('.facilities-section'),ps=dm.querySelector('.plans-section');if(!ws||!fs||!ps)return;var ref=ws.nextElementSibling||ws,next=ref.nextSibling;var fd=fs.previousElementSibling&&fs.previousElementSibling.classList.contains('sec-divider')?fs.previousElementSibling:null,pd=ps.previousElementSibling&&ps.previousElementSibling.classList.contains('sec-divider')?ps.previousElementSibling:null;if(fd){dm.insertBefore(fd,next);next=fd.nextSibling;}dm.insertBefore(fs,next);next=fs.nextSibling;if(pd){dm.insertBefore(pd,next);next=pd.nextSibling;}dm.insertBefore(ps,next);dm.dataset.reordered='1';}
+/* Leaflet地図初期化：cwm-lmapは最初からHTMLに存在 */
+var _mapDone=false;
+function initLeafletMap(addr){
+  if(_mapDone||typeof L==='undefined')return;
+  _mapDone=true;
+  var base=addr.split(/[\s\u3000]/)[0];
+  var lk=document.getElementById('cwm-map-link');
+  if(lk)lk.href='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(addr);
+  /* まずデフォルト座標（南青山）でマップを表示し、後でNominatimで更新 */
+  var defaultLat=35.6689,defaultLon=139.7208;
+  var map=L.map('cwm-lmap',{zoomControl:true,scrollWheelZoom:false}).setView([defaultLat,defaultLon],15);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap',maxZoom:19}).addTo(map);
+  var ic=L.divIcon({className:'',html:'<div style="width:14px;height:14px;background:#2BB5C8;border:2px solid #fff;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,.4)"><\/div>',iconSize:[14,14],iconAnchor:[7,7]});
+  var marker=L.marker([defaultLat,defaultLon],{icon:ic}).addTo(map);
+  setTimeout(function(){map.invalidateSize();},200);
+  /* Nominatimで正確な座標を取得 */
+  fetch('https://nominatim.openstreetmap.org/search?q='+encodeURIComponent(base)+'&format=json&limit=1',{headers:{'Accept-Language':'ja','User-Agent':'COWORKMILL/1.0'}})
+  .then(function(r){return r.json();})
+  .then(function(res){
+    if(!res||!res.length)return;
+    var lat=parseFloat(res[0].lat),lon=parseFloat(res[0].lon);
+    map.setView([lat,lon],16);
+    marker.setLatLng([lat,lon]);
+    setTimeout(function(){map.invalidateSize();},100);
+  }).catch(function(){});
+}
+function tryInitMap(){
+  if(_mapDone)return true;
+  var el=Array.from(document.querySelectorAll('.access-val')).find(function(e){var t=e.textContent.trim();return t&&t!=='—'&&t!=='—'&&t.length>5;});
+  if(el){initLeafletMap(el.textContent.trim());return true;}
+  return false;
+}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function fmt(d){try{return new Date(d).toLocaleDateString('ja-JP');}catch(e){return '';} }
+function loadVoices(){var sid=new URLSearchParams(window.location.search).get('id');if(!sid)return;fetch(CWM_SB_URL+'/rest/v1/voices?space_id=eq.'+sid+'&status=eq.approved&order=submitted_at.desc',{headers:{'apikey':CWM_SB_KEY,'Authorization':'Bearer '+CWM_SB_KEY}}).then(function(r){return r.json();}).then(function(data){var list=document.querySelector('.voices-list');if(!list)return;list.innerHTML='';if(!data||!data.length){list.innerHTML='<p style="font-size:12px;color:rgba(255,255,255,.3);padding:8px 0">まだ応援メッセージがありません<\/p>';return;}data.forEach(function(v){var c=document.createElement('div');c.className='cwm-voice-card';var tag=v.workstyle?'<span class="cwm-voice-tag">'+esc(v.workstyle)+'<\/span><br>':'';;var msg='<div class="cwm-voice-msg">'+esc(v.message)+'<\/div>';var footer='<div class="cwm-voice-footer"><span class="cwm-voice-nick">'+esc(v.nickname||'匿名')+'<\/span><span class="cwm-voice-date">'+fmt(v.submitted_at)+'<\/span><\/div>';c.innerHTML=tag+msg+footer;list.appendChild(c);});}).catch(function(){});}
+window.submitVoice=function(){var sid=new URLSearchParams(window.location.search).get('id');if(!sid)return;var nick=(document.getElementById('vp-nick')?.value||'').trim();var msg=(document.getElementById('vp-text')?.value||'').trim();var ws=(document.getElementById('vp-selected-tag')?.textContent||'').trim();if(!ws){alert('「どの仕事で使いましたか？」を選んでください');return;}if(!msg){alert('メッセージを入力してください');return;}var btn=document.querySelector('.vp-submit');if(btn){btn.disabled=true;btn.textContent='送信中...';}fetch(CWM_SB_URL+'/rest/v1/voices',{method:'POST',headers:{'apikey':CWM_SB_KEY,'Authorization':'Bearer '+CWM_SB_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({space_id:sid,nickname:nick||null,message:msg,workstyle:ws,status:'pending',submitted_at:new Date().toISOString()})}).then(function(r){if(btn){btn.disabled=false;btn.textContent='応援する →';}if(r.ok){document.getElementById('vp-nick').value='';document.getElementById('vp-text').value='';document.getElementById('vp-selected-tag').textContent='';document.querySelectorAll('.vp-tag').forEach(function(t){t.classList.remove('on');});var s1=document.getElementById('vp-step1'),s3=document.getElementById('vp-step3');if(s1)s1.style.display='none';if(s3)s3.style.display='block';}else{r.text().then(function(t){alert('エラー:'+t);});}}).catch(function(){alert('通信エラー');if(btn){btn.disabled=false;btn.textContent='応援する →';}});};
+var obs=new MutationObserver(function(){initGallery();insertTitle();reorderSections();tryInitMap();});
+function start(){
+  var pc=document.querySelector('.gallery-pc');if(pc)obs.observe(pc,{childList:true});
+  var as=document.querySelector('.detail-aside');if(as)obs.observe(as,{childList:true,subtree:true});
+  var dm=document.querySelector('.detail-main');if(dm)obs.observe(dm,{childList:true,subtree:true});
+  initGallery();insertTitle();reorderSections();loadVoices();
+  /* Leaflet初期化を繰り返し試行 */
+  [500,1000,1500,2000,3000].forEach(function(t){setTimeout(tryInitMap,t);});
+}
+if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',start);}else{start();}
+[600,1200,2000].forEach(function(t){setTimeout(function(){insertTitle();reorderSections();},t);});
+})();</script>
 </body>
 </html>
