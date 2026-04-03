@@ -1523,11 +1523,11 @@ window.addEventListener('DOMContentLoaded', () => {
   function fmt(d){try{return new Date(d).toLocaleDateString('ja-JP');}catch(e){return '';}}
   function makeCard(v,isPending){
     var tag=v.workstyle?'<span style="display:inline-block;font-size:10px;font-weight:600;color:var(--accent);border:1px solid rgba(43,181,200,.4);border-radius:12px;padding:2px 8px;margin-bottom:8px">'+esc(v.workstyle)+'</span><br>':'';
-    var body='<div style="font-size:13px;color:var(--g100);line-height:1.6;margin-bottom:4px">'+esc(v.message||'')+'</div>';
-    var meta='<div style="font-size:11px;color:var(--g400);margin-bottom:8px">'+(v.nickname?esc(v.nickname):'匿名')+'　'+fmt(v.submitted_at)+'</div>';
-    var ap=isPending?'<button onclick="approveVoice(\'' + v.id + '\')" style="padding:7px 16px;background:var(--accent);color:#000;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;margin-right:8px">承認する</button>':'';
-    var dl='<button onclick="deleteVoice(\'' + v.id + '\')" style="padding:7px 14px;background:transparent;color:#ff6b6b;border:1px solid rgba(255,107,107,.5);border-radius:6px;font-size:12px;cursor:pointer">削除する</button>';
-    return '<div style="background:var(--bg2);border:1px solid var(--g700);border-radius:8px;padding:14px 16px;margin-bottom:10px">'+tag+body+meta+'<div>'+ap+dl+'</div></div>';
+    var body='<div style="font-size:13px;color:#1a1a1a;line-height:1.6;margin-bottom:4px">'+esc(v.message||'')+'</div>';
+    var meta='<div style="font-size:11px;color:#666;margin-bottom:8px">'+(v.nickname?esc(v.nickname):'匿名')+'　'+fmt(v.submitted_at)+'</div>';
+    var ap=isPending?'<button onclick="approveVoice(''+v.id+'')" style="padding:7px 16px;background:var(--accent);color:#000;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;margin-right:8px">承認する</button>':'';
+    var dl='<button onclick="deleteVoice(''+v.id+'')" style="padding:7px 14px;background:transparent;color:#e53e3e;border:1px solid rgba(229,62,62,.4);border-radius:6px;font-size:12px;cursor:pointer">削除する</button>';
+    return '<div style="background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:14px 16px;margin-bottom:10px">'+tag+body+meta+'<div>'+ap+dl+'</div></div>';
   }
   window.loadAdminVoices=function(){
     var allFis=Array.from(document.querySelectorAll('#fac-list .fi'));
@@ -1537,8 +1537,8 @@ window.addEventListener('DOMContentLoaded', () => {
     var ael=document.getElementById('voice-approved-list');
     var btxt=document.getElementById('voice-bar-txt');
     var bdot=document.querySelector('#voice-bar .sdot');
-    if(idx<0||!window.sbFetch){if(pel)pel.innerHTML='<p style="font-size:12px;color:var(--g400)">施設を選択してください</p>';return;}
-    if(pel)pel.innerHTML='<p style="font-size:12px;color:var(--g400)">読み込み中...</p>';if(ael)ael.innerHTML='';
+    if(idx<0||!window.sbFetch){if(pel)pel.innerHTML='<p style="font-size:12px;color:#666">施設を選択してください</p>';return;}
+    if(pel)pel.innerHTML='<p style="font-size:12px;color:#666">読み込み中...</p>';if(ael)ael.innerHTML='';
     window.sbFetch('/rest/v1/spaces?select=id&order=created_at').then(function(spaces){
       if(!spaces||!spaces[idx])return Promise.reject('no space');
       return window.sbFetch('/rest/v1/voices?space_id=eq.'+spaces[idx].id+'&order=submitted_at.desc');
@@ -1547,9 +1547,9 @@ window.addEventListener('DOMContentLoaded', () => {
       var approved=(data||[]).filter(function(v){return v.status==='approved';});
       if(btxt)btxt.textContent=pending.length>0?'承認待ち '+pending.length+'件':'新着の声はありません';
       if(bdot)bdot.className='sdot'+(pending.length>0?'':' gray');
-      if(pel)pel.innerHTML=pending.length===0?'<p style="font-size:12px;color:var(--g400)">承認待ちの声はありません</p>':pending.map(function(v){return makeCard(v,true);}).join('');
-      if(ael)ael.innerHTML=approved.length===0?'<p style="font-size:12px;color:var(--g400)">まだありません</p>':approved.map(function(v){return makeCard(v,false);}).join('');
-    }).catch(function(e){if(pel)pel.innerHTML='<p style="font-size:12px;color:red">ERR:'+e+'</p>';});
+      if(pel)pel.innerHTML=pending.length===0?'<p style="font-size:12px;color:#666">承認待ちの声はありません</p>':pending.map(function(v){return makeCard(v,true);}).join('');
+      if(ael)ael.innerHTML=approved.length===0?'<p style="font-size:12px;color:#666">まだありません</p>':approved.map(function(v){return makeCard(v,false);}).join('');
+    }).catch(function(e){if(pel)pel.innerHTML='<p style="color:red">ERR:'+e+'</p>';});
   };
   window.approveVoice=function(id){
     window.sbFetch('/rest/v1/voices?id=eq.'+id,{method:'PATCH',body:JSON.stringify({status:'approved'})}).then(function(){window.loadAdminVoices();});
