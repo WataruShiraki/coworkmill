@@ -201,7 +201,7 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
 .vc-btn-approve{flex:1;padding:8px;background:var(--accent);color:#000;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer}
 .vc-btn-delete{padding:8px 14px;background:transparent;color:#ff6b6b;border:1px solid #ff6b6b;border-radius:6px;font-size:12px;cursor:pointer}
 .vc-empty{font-size:12px;color:var(--g400);padding:8px 0}
-  </style></head>
+  </style><style id="cwm-voice-css">.vc-card{background:var(--bg2);border:1px solid var(--g700);border-radius:8px;padding:14px 16px;margin-bottom:10px}.vc-tag{display:inline-block;font-size:10px;font-weight:600;color:var(--accent);border:1px solid rgba(43,181,200,.4);border-radius:12px;padding:2px 8px;margin-bottom:6px}.vc-msg{font-size:13px;color:var(--g100);line-height:1.6;margin-bottom:4px}.vc-nick{font-size:11px;color:var(--g400);margin-bottom:6px}.vc-date{font-size:10px;color:var(--g500)}.vc-actions{display:flex;gap:8px;margin-top:10px}.vc-btn-approve{flex:1;padding:8px;background:var(--accent);color:#000;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer}.vc-btn-delete{padding:8px 14px;background:transparent;color:#ff6b6b;border:1px solid #ff6b6b;border-radius:6px;font-size:12px;cursor:pointer}</style></head>
 <body><!-- SP: PCアクセス案内 -->
 <div class="sp-pc-notice">
   <div class="sp-pc-notice-icon">🖥️</div>
@@ -1532,81 +1532,48 @@ window.addEventListener('DOMContentLoaded', () => {
 </script>
 
 <script>
-(function(){
-  var _origGo = window.go;
-  window.go = function(id, el){
-    _origGo(id, el);
-    if(id === 'voice') loadAdminVoices();
-  };
-
-  function escHtml(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-
-  function fmtDate(d){ try{ return new Date(d).toLocaleDateString('ja-JP'); }catch(e){ return ''; } }
-
-  function renderVoiceCard(v, isPending){
-    var tag = v.workstyle ? '<span class="vc-tag">'+escHtml(v.workstyle)+'</span><br>' : '';
-    var nick = escHtml(v.nickname || '匿名');
-    var msg = escHtml(v.message);
-    var date = fmtDate(v.submitted_at);
-    var actions = isPending
-      ? '<div class="vc-actions"><button class="vc-btn-approve" onclick="approveVoice(''+v.id+'')">承認する</button><button class="vc-btn-delete" onclick="deleteVoice(''+v.id+'')">削除</button></div>'
-      : '<div class="vc-actions"><button class="vc-btn-delete" onclick="deleteVoice(''+v.id+'')">削除する</button></div>';
-    return '<div class="vc-card">'+tag+'<div class="vc-msg">'+msg+'</div><div class="vc-nick">'+nick+'</div><div class="vc-date">'+date+'</div>'+actions+'</div>';
-  }
-
-  window.loadAdminVoices = function(){
-    var spaceId = facs && facs[cur] && facs[cur].db_id;
-    if(!spaceId) return;
-
-    var pendingEl = document.getElementById('voice-pending-list');
-    var approvedEl = document.getElementById('voice-approved-list');
-    var barTxt = document.getElementById('voice-bar-txt');
-    var barDot = document.querySelector('#voice-bar .sdot');
-    if(pendingEl) pendingEl.innerHTML = '<p class="vc-empty">読み込み中...</p>';
-    if(approvedEl) approvedEl.innerHTML = '<p class="vc-empty">読み込み中...</p>';
-
-    sbFetch('/rest/v1/voices?space_id=eq.'+spaceId+'&order=submitted_at.desc')
-      .then(function(data){
-        var pending = (data||[]).filter(function(v){ return v.status === 'pending'; });
-        var approved = (data||[]).filter(function(v){ return v.status === 'approved'; });
-
-        // バッジ更新
-        if(barTxt) barTxt.textContent = pending.length > 0 ? '承認待ち ' + pending.length + '件' : '新着の声はありません';
-        if(barDot) barDot.className = 'sdot ' + (pending.length > 0 ? '' : 'gray');
-
-        // pending
-        if(pendingEl){
-          if(pending.length === 0){
-            pendingEl.innerHTML = '<p class="vc-empty">承認待ちの声はありません</p>';
-          } else {
-            pendingEl.innerHTML = pending.map(function(v){ return renderVoiceCard(v, true); }).join('');
-          }
-        }
-
-        // approved
-        if(approvedEl){
-          if(approved.length === 0){
-            approvedEl.innerHTML = '<p class="vc-empty">承認済みの声はありません</p>';
-          } else {
-            approvedEl.innerHTML = approved.map(function(v){ return renderVoiceCard(v, false); }).join('');
-          }
-        }
-      }).catch(function(){ if(pendingEl) pendingEl.innerHTML = '<p class="vc-empty">読み込みに失敗しました</p>'; });
-  };
-
-  window.approveVoice = function(id){
-    sbFetch('/rest/v1/voices?id=eq.'+id, {
-      method: 'PATCH',
-      body: JSON.stringify({status: 'approved'})
-    }).then(function(){ loadAdminVoices(); })
-    .catch(function(){ alert('失敗しました'); });
-  };
-
-  window.deleteVoice = function(id){
-    if(!confirm('この声を削除しますか？')) return;
-    sbFetch('/rest/v1/voices?id=eq.'+id, { method: 'DELETE' })
-      .then(function(){ loadAdminVoices(); })
-      .catch(function(){ alert('削除に失敗しました'); });
-  };
-})();
+function _cwmEscHtml(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function _cwmFmtDate(d){try{return new Date(d).toLocaleDateString('ja-JP');}catch(e){return '';}}
+function _cwmRenderCard(v,isPending){
+  var tag=v.workstyle?'<span class="vc-tag">'+_cwmEscHtml(v.workstyle)+'</span><br>':'';
+  var actions=isPending
+    ?'<div class="vc-actions"><button class="vc-btn-approve" onclick="approveVoice(\''+v.id+'\')">\u627f\u8a8d\u3059\u308b</button><button class="vc-btn-delete" onclick="deleteVoice(\''+v.id+'\')">\u524a\u9664</button></div>'
+    :'<div class="vc-actions"><button class="vc-btn-delete" onclick="deleteVoice(\''+v.id+'\')">\u524a\u9664\u3059\u308b</button></div>';
+  return '<div class="vc-card">'+tag+'<div class="vc-msg">'+_cwmEscHtml(v.message)+'</div><div class="vc-nick">'+_cwmEscHtml(v.nickname||'\u533f\u540d')+'</div><div class="vc-date">'+_cwmFmtDate(v.submitted_at)+'</div>'+actions+'</div>';
+}
+window.loadAdminVoices=function(){
+  var spaceId=window.facs&&window.facs[window.cur]&&window.facs[window.cur].db_id;
+  var pendingEl=document.getElementById('voice-pending-list');
+  var approvedEl=document.getElementById('voice-approved-list');
+  var barTxt=document.getElementById('voice-bar-txt');
+  var barDot=document.querySelector('#voice-bar .sdot');
+  if(!spaceId){if(pendingEl)pendingEl.innerHTML='<p style="font-size:12px;color:var(--g400)">\u65bd\u8a2d\u3092\u9078\u629e\u3057\u3066\u304f\u3060\u3055\u3044</p>';return;}
+  if(pendingEl)pendingEl.innerHTML='<p style="font-size:12px;color:var(--g400)">\u8aad\u307f\u8fbc\u307f\u4e2d...</p>';
+  if(approvedEl)approvedEl.innerHTML='<p style="font-size:12px;color:var(--g400)">\u8aad\u307f\u8fbc\u307f\u4e2d...</p>';
+  window.sbFetch('/rest/v1/voices?space_id=eq.'+spaceId+'&order=submitted_at.desc').then(function(data){
+    var pending=(data||[]).filter(function(v){return v.status==='pending';});
+    var approved=(data||[]).filter(function(v){return v.status==='approved';});
+    if(barTxt)barTxt.textContent=pending.length>0?'\u627f\u8a8d\u5f85\u3061 '+pending.length+'\u4ef6':'\u65b0\u7740\u306e\u58f0\u306f\u3042\u308a\u307e\u305b\u3093';
+    if(barDot)barDot.className='sdot '+(pending.length>0?'':'gray');
+    if(pendingEl)pendingEl.innerHTML=pending.length===0?'<p style="font-size:12px;color:var(--g400)">\u627f\u8a8d\u5f85\u3061\u306e\u58f0\u306f\u3042\u308a\u307e\u305b\u3093</p>':pending.map(function(v){return _cwmRenderCard(v,true);}).join('');
+    if(approvedEl)approvedEl.innerHTML=approved.length===0?'<p style="font-size:12px;color:var(--g400)">\u627f\u8a8d\u6e08\u307f\u306e\u58f0\u306f\u3042\u308a\u307e\u305b\u3093</p>':approved.map(function(v){return _cwmRenderCard(v,false);}).join('');
+  }).catch(function(){if(pendingEl)pendingEl.innerHTML='<p style="font-size:12px;color:red">\u30a8\u30e9\u30fc</p>';});
+};
+window.approveVoice=function(id){
+  window.sbFetch('/rest/v1/voices?id=eq.'+id,{method:'PATCH',body:JSON.stringify({status:'approved'})}).then(function(){window.loadAdminVoices();});
+};
+window.deleteVoice=function(id){
+  if(!confirm('\u524a\u9664\u3057\u307e\u3059\u304b\uff1f'))return;
+  window.sbFetch('/rest/v1/voices?id=eq.'+id,{method:'DELETE'}).then(function(){window.loadAdminVoices();});
+};
+function _cwmWrapGo(){
+  if(typeof window.go!=='function')return;
+  if(window.go._cwmWrapped)return;
+  var _orig=window.go;
+  window.go=function(id,el){_orig(id,el);if(id==='voice')window.loadAdminVoices();};
+  window.go._cwmWrapped=true;
+}
+document.addEventListener('DOMContentLoaded',function(){setTimeout(_cwmWrapGo,100);});
+setTimeout(_cwmWrapGo,500);
+setTimeout(_cwmWrapGo,1500);
   </script></body></html>
