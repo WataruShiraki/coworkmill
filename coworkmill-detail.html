@@ -623,6 +623,7 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
     <a href="coworkmill-photos.html" style="font-size:11px;font-weight:500;color:var(--gray-600);text-decoration:none;letter-spacing:.02em;transition:color .15s" onmouseover="this.style.color='#2BB5C8'" onmouseout="this.style.color='var(--gray-600)'">写真から探す</a>
   </div>
     <div class="nav-right">
+    <a href="coworkmill-register.html" class="nav-cta">コワーキング登録</a>
     <div class="lang-toggle">
     </div>
   </div>
@@ -1513,7 +1514,7 @@ document.addEventListener('DOMContentLoaded', () => {
         var dayVal=document.getElementById('d-price-day');
         var noneEl=document.getElementById('d-price-none');
         if(hourRow&&hourVal){if(hr){hourRow.style.display='flex';hourVal.textContent=fmt(hr)+' / 1時間';}else hourRow.style.display='none';}
-        if(dayRow&&dayVal){if(dy){dayRow.style.display='flex';dayVal.textContent=fmt(dy)+' / 日';}else dayRow.style.display='none';}
+        if(dayRow&&dayVal){if(dy){dayRow.style.display='flex';dayVal.textContent=fmt(dy)+' / 1日';}else dayRow.style.display='none';}
         if(noneEl)noneEl.style.display=(hr||dy)?'none':'block';
         var monthSec=document.getElementById('d-monthly-section');
         var monthVal=document.getElementById('d-price-monthly');
