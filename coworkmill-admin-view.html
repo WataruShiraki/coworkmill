@@ -1564,7 +1564,25 @@ window.addEventListener('DOMContentLoaded', () => {
   };
   window.approveVoice=function(id){window.sbFetch('/rest/v1/voices?id=eq.'+id,{method:'PATCH',body:JSON.stringify({status:'approved'})}).then(function(){window.loadAdminVoices();});};
   window.deleteVoice=function(id){if(!confirm('削除しますか？'))return;window.sbFetch('/rest/v1/voices?id=eq.'+id,{method:'DELETE'}).then(function(){window.loadAdminVoices();});};
-  var _p=setInterval(function(){if(typeof window.go==='function'&&!window.go._cwmW){clearInterval(_p);var orig=window.go;window.go=function(id,el){orig(id,el);if(id==='voice')setTimeout(window.loadAdminVoices,200);if(id==='db')setTimeout(window.loadAdminVoices,300);if(id==='edit'){setTimeout(function(){if(typeof window.adminMapInit==='function'){var lat=parseFloat(document.getElementById('flat')?.value||0);var lon=parseFloat(document.getElementById('flon')?.value||0);window.adminMapInit(lat&&lon?lat:35.6689,lon&&lon?lon:139.7208);}},400);}};window.go._cwmW=true;}},50);
+  var _p=setInterval(function(){if(typeof window.go==='function'&&!window.go._cwmW){clearInterval(_p);var orig=window.go;window.go=function(id,el){orig(id,el);if(id==='voice')setTimeout(window.loadAdminVoices,200);if(id==='db')setTimeout(window.loadAdminVoices,300);if(id==='edit'){setTimeout(function(){
+    if(typeof window.adminMapInit!=='function')return;
+    /* 施設ごとのlat/lonをfacs[cur]から取得 */
+    var fac=window.facs&&window.facs[window.cur];
+    var lat=fac&&fac.latitude?parseFloat(fac.latitude):0;
+    var lon=fac&&fac.longitude?parseFloat(fac.longitude):0;
+    /* admin-lat/lonフィールドをリセット */
+    var latEl=document.getElementById('admin-lat');
+    var lonEl=document.getElementById('admin-lon');
+    if(latEl)latEl.value=lat||'';
+    if(lonEl)lonEl.value=lon||'';
+    /* マップをリセット */
+    window._adminMap=null;window._adminMarker=null;
+    var lmapEl=document.getElementById('admin-lmap');
+    if(lmapEl)lmapEl.innerHTML='';
+    window.adminMapInit(lat||35.6689,lon||139.7208);
+    /* lat/lonが0の場合は住所から検索 */
+    if(!lat||!lon){setTimeout(window.adminMapSearchAddr,800);}
+  },500);}};window.go._cwmW=true;}},50);
 })();</script>
 <script>
 /* Admin Map Picker */
