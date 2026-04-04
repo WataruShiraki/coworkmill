@@ -130,6 +130,13 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:56px;display:flex;ali
 .view-btn.on{background:var(--black);border-color:var(--black);color:#fff}
 
 /* CARD GRID */
+
+/* list view */
+.sp-list-view{display:flex!important;flex-direction:column;gap:12px}
+.sp-list-view .scard{display:flex;flex-direction:row;min-height:100px;max-height:120px}
+.sp-list-view .scard-img{width:160px!important;min-width:160px;height:100%!important;border-radius:10px 0 0 10px}
+.sp-list-view .scard-body{flex:1;padding:12px 16px;display:flex;flex-direction:column;justify-content:center}
+
 .spaces-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 .scard{background:var(--white);border:1px solid var(--gray-100);border-radius:12px;overflow:hidden;cursor:pointer;transition:all .25s;text-decoration:none;display:flex;flex-direction:column;animation:fadeUp .5s ease both}
 .scard:hover{border-color:#2BB5C8;transform:translateY(-4px);box-shadow:0 12px 40px rgba(117,97,169,.1)}
@@ -849,7 +856,7 @@ let allSpaces = [];
 
 async function loadSpaces() {
   try {
-    const res = await fetch(SUPABASE_URL_SP + '/rest/v1/spaces?select=id,name,area,prefecture,plan,status,image_main,architect_name,architect_firm,vibe,price_dropin,facilities,created_at&status=eq.live&order=created_at.desc', {
+    const res = await fetch(SUPABASE_URL_SP + '/rest/v1/spaces?select=id,name,area,prefecture,plan,status,image_main,architect_name,architect_firm,vibe,price_dropin,price_dropin_hour,price_dropin_day,facilities,created_at&status=eq.live&order=created_at.desc', {
       headers: { 'apikey': SUPABASE_KEY_SP, 'Authorization': 'Bearer ' + SUPABASE_KEY_SP }
     });
     const data = await res.json();
@@ -868,7 +875,8 @@ function makeCard(d, i, type) {
   const img = d.image_main || '';
   const isPick = d.plan === 'pro';
   const href = 'coworkmill-detail.html?id=' + d.id;
-  const price = d.price_dropin ? 'ドロップイン<strong>¥' + Number(d.price_dropin).toLocaleString() + '〜</strong>' : '料金はお問い合わせ';
+  var _ph=d.price_dropin_hour,_pd=d.price_dropin_day;
+const price = (_ph||_pd) ? 'ドロップイン <strong>' + (_ph?(_ph.toLocaleString('ja-JP')+'円/時間'):(_pd.toLocaleString('ja-JP')+'円/日')) + '</strong>' : '料金はお問い合わせ';
   const vibes = Array.isArray(d.vibe) ? d.vibe : (d.vibe ? [d.vibe] : []);
   const delay = 'animation-delay:' + (i * 0.05) + 's';
 
@@ -1061,7 +1069,7 @@ function filterSidebar() {
   cards.forEach(function(card) {
     var name = (card.dataset.name || '').toLowerCase();
     var pref = card.dataset.pref || '';
-    var facs = (card.dataset.facilities || '').split(',').filter(Boolean);
+    var facs = ((card.dataset&&card.dataset.facilities)||''  ).split(',').filter(Boolean);
 
     var matchText = !q || name.includes(q);
     var matchCity = allCities;
