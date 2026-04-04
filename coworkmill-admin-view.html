@@ -1641,9 +1641,9 @@ document.addEventListener('DOMContentLoaded', function(){
 });
 </script>
 <script>
-/* ========== Map Override v2 ========== */
-/* adminMapInit */
-window.adminMapInit = function(lat,lon){
+/* ========== Map Override v3 ========== */
+/* adminMapInit: マップ生成（常に再生成） */
+window.adminMapInit=function(lat,lon){
   if(typeof L==='undefined'){setTimeout(function(){window.adminMapInit(lat,lon);},200);return;}
   lat=lat||35.6689;lon=lon||139.7208;
   if(window._adminMap){try{window._adminMap.remove();}catch(e){}}
@@ -1659,83 +1659,62 @@ window.adminMapInit = function(lat,lon){
   _u(lat,lon);
   [100,300,700,1200].forEach(function(t){setTimeout(function(){if(window._adminMap)window._adminMap.invalidateSize();},t);});
 };
-/* adminMapSearchAddr */
-window.adminMapSearchAddr = function(){
+/* adminMapSearchAddr: 市区町村+都道府県で検索 */
+window.adminMapSearchAddr=function(){
   var pref=document.querySelector('#nfc option:checked,#nfc')?.value||document.getElementById('fc')?.value||'';
   var city=(document.getElementById('f-city')?.value||'').trim();
   var street=(document.getElementById('nfad')?.value||document.getElementById('fad')?.value||'').trim();
   if(!city&&!street){alert('市区町村または町名・番地を入力してください');return;}
-  /* 市区町村 + 都道府県 で検索（番地不要で確実） */
   var base=(city+' '+pref).trim();
   function doSearch(){
     fetch('https://nominatim.openstreetmap.org/search?q='+encodeURIComponent(base)+'&format=json&limit=1',{headers:{'Accept-Language':'ja','User-Agent':'COWORKMILL/1.0'}})
     .then(function(r){return r.json();}).then(function(res){
-      if(!res||!res.length){alert('住所が見つかりませんでした(入力例: 港区)');return;}
+      if(!res||!res.length){alert('住所が見つかりませんでした');return;}
       var lat=parseFloat(res[0].lat),lon=parseFloat(res[0].lon);
-      if(window._adminMap){window._adminMap.setView([lat,lon],16);window._adminMarker.setLatLng([lat,lon]);}
-      else{window.adminMapInit(lat,lon);}
-      document.getElementById('admin-lat').value=lat.toFixed(6);
-      document.getElementById('admin-lon').value=lon.toFixed(6);
-      document.getElementById('admin-lat-disp').textContent=lat.toFixed(5);
-      document.getElementById('admin-lon-disp').textContent=lon.toFixed(5);
+      if(window._adminMap){window._adminMap.setView([lat,lon],16);window._adminMarker.setLatLng([lat,lon]);}else{window.adminMapInit(lat,lon);}
+      document.getElementById('admin-lat').value=lat.toFixed(6);document.getElementById('admin-lon').value=lon.toFixed(6);
+      document.getElementById('admin-lat-disp').textContent=lat.toFixed(5);document.getElementById('admin-lon-disp').textContent=lon.toFixed(5);
     }).catch(function(){alert('検索エラー');});
   }
-  if(!window._adminMap){
-    var lv=parseFloat(document.getElementById('admin-lat')?.value||0)||35.6689;
-    var ov=parseFloat(document.getElementById('admin-lon')?.value||0)||139.7208;
-    window.adminMapInit(lv,ov);setTimeout(doSearch,800);
-  }else{doSearch();}
+  if(!window._adminMap){var lv=parseFloat(document.getElementById('admin-lat')?.value||0)||35.6689;var ov=parseFloat(document.getElementById('admin-lon')?.value||0)||139.7208;window.adminMapInit(lv,ov);setTimeout(doSearch,800);}else{doSearch();}
 };
-/* go()ラップをDOMContentLoaded完了後に即インストール */
-function _installMapGoHook(){
-  if(!window.go||window.go._mapOverride2)return;
-  var _orig=window.go;
-  window.go=function(id,el){
-    _orig(id,el);
-    if(id!=='edit')return;
-    /* edit開始：マップリセット */
-    if(window._adminMap){try{window._adminMap.remove();}catch(e){}}
+/* fiクリックでその施設のlat/lonをSupabaseから取得してマップ更新 */
+function _attachFiHandler(){
+  var fl=document.getElementById('fac-list');
+  if(!fl||fl._mh)return;fl._mh=true;
+  fl.addEventListener('click',function(e){
+    var fi=e.target.closest('.fi');if(!fi)return;
+    var allFis=Array.from(fl.querySelectorAll('.fi'));
+    var idx=allFis.indexOf(fi);if(idx<0)return;
+    /* マップリセット */
+    if(window._adminMap){try{window._adminMap.remove();}catch(err){}}
     window._adminMap=null;window._adminMarker=null;
-    var lmEl=document.getElementById('admin-lmap');if(lmEl)lmEl.innerHTML='';
-    var latEl=document.getElementById('admin-lat'),lonEl=document.getElementById('admin-lon');
-    if(latEl)latEl.value='';if(lonEl)lonEl.value='';
-    /* 施設のlat/lonをSupabaseから取得 */
-    var allFis=Array.from(document.querySelectorAll('#fac-list .fi'));
-    var actFi=document.querySelector('#fac-list .fi.on')||document.querySelector('#fac-list .fi.active');
-    var idx=allFis.indexOf(actFi);
-    if(idx<0||!window.sbFetch)return;
+    var lm=document.getElementById('admin-lmap');if(lm)lm.innerHTML='';
+    var le=document.getElementById('admin-lat'),lo=document.getElementById('admin-lon');
+    if(le)le.value='';if(lo)lo.value='';
+    /* この施設のlat/lonをSupabaseから取得 */
+    if(!window.sbFetch)return;
     window.sbFetch('/rest/v1/spaces?select=id,latitude,longitude&order=created_at')
     .then(function(sps){
       var sp=sps&&sps[idx];
       var lat=sp&&sp.latitude?parseFloat(sp.latitude):0;
       var lon=sp&&sp.longitude?parseFloat(sp.longitude):0;
-      if(latEl)latEl.value=lat?lat.toFixed(6):'';
-      if(lonEl)lonEl.value=lon?lon.toFixed(6):'';
-      /* パネル表示を50msポーリングで確認 */
+      if(le)le.value=lat?lat.toFixed(6):'';
+      if(lo)lo.value=lon?lon.toFixed(6):'';
+      /* edit パネルが表示されるまでポーリング */
       var n=0,iv=setInterval(function(){
-        n++;
-        var w=document.getElementById('admin-map-wrap');
-        if(w&&w.offsetHeight>0){
-          clearInterval(iv);
-          window.adminMapInit(lat||35.6689,lon||139.7208);
-          if(!lat||!lon)setTimeout(window.adminMapSearchAddr,800);
-        }else if(n>80){clearInterval(iv);}
+        n++;var w=document.getElementById('admin-map-wrap');
+        if(w&&w.offsetHeight>0){clearInterval(iv);window.adminMapInit(lat||35.6689,lon||139.7208);if(!lat||!lon)setTimeout(window.adminMapSearchAddr,800);}
+        else if(n>80){clearInterval(iv);}
       },50);
     }).catch(function(){});
-    /* go()に付いていたプロパティを引き継ぐ */
-    if(_orig._cwmW)window.go._cwmW=true;
-  };
-  window.go._mapOverride2=true;
-  if(_orig._cwmW)window.go._cwmW=true;
-}
-/* DOMContentLoaded完了後 かつ go()が定義された後に即インストール */
-if(document.readyState==='loading'){
-  document.addEventListener('DOMContentLoaded',function(){
-    var t=0,iv=setInterval(function(){t++;if(window.go&&!window.go._mapOverride2){clearInterval(iv);_installMapGoHook();}else if(t>50){clearInterval(iv);}},20);
   });
-}else{
-  var t2=0,iv2=setInterval(function(){t2++;if(window.go&&!window.go._mapOverride2){clearInterval(iv2);_installMapGoHook();}else if(t2>50){clearInterval(iv2);}},20);
 }
+/* DOMContentLoaded後にfiハンドラを設置 */
+if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',_attachFiHandler);}else{_attachFiHandler();}
+/* fac-listが後から生成される場合も対応 */
+var _fio=new MutationObserver(function(){_attachFiHandler();});
+_fio.observe(document.body,{childList:true,subtree:true});
 </script>
 </body>
 </html>
