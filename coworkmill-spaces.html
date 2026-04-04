@@ -894,7 +894,7 @@ function makeCard(d, i, type) {
   const delay = 'animation-delay:' + (i * 0.05) + 's';
 
   if (type === 'grid') {
-    return '<a class="scard" href="' + href + '" style="' + delay + '" data-pref="' + (d.prefecture||'') + '" data-name="' + (d.name||'').toLowerCase() + '" data-facilities="' + (d.facilities ? d.facilities.join(',') : '') + '">' +
+    return '<a class="scard" href="' + href + '" style="' + delay + '" data-pref="' + (d.prefecture||'') + '" data-area="' + (d.area||'') + '" data-name="' + (d.name||'').toLowerCase() + '" data-facilities="' + (d.facilities ? d.facilities.join(',') : '') + '">' +
       '<div class="scard-img" style="' + (img ? 'background-image:url(' + img + ')' : 'background:#1a1a2e') + '">' +
         (isPick ? '<div class="scard-badges"><span class="scard-badge pick">PICK</span></div>' : '') +
       '</div>' +
@@ -1057,18 +1057,20 @@ function toggleSf(el) {
 }
 
 function filterSidebar() {
-  /* アクティブな都市を収集 */
   var CITY_MAP = {tokyo:'東京都',osaka:'大阪府',kyoto:'京都府',fukuoka:'福岡県',yokohama:'神奈川県',sapporo:'北海道',other:null};
+
+  /* アクティブな都市 */
   var activeCities = Array.from(document.querySelectorAll('.sf-opt.on[onclick*="toggleCity"]')).map(function(el){
     var m = el.getAttribute('onclick').match(/'([^']+)'/g);
     return m ? m[0].replace(/'/g,'') : '';
   }).filter(Boolean);
   var allCities = activeCities.length === 0;
 
-  /* アクティブな設備を収集 */
-  var activeFacs = Array.from(document.querySelectorAll('.sf-opt.on[onclick*="toggleSf"]')).map(function(el){
-    return el.dataset.fac || el.querySelector('[data-fac]')?.dataset.fac || '';
+  /* アクティブな区 */
+  var activeWards = Array.from(document.querySelectorAll('.sf-ward.on')).map(function(el){
+    return el.textContent?.trim() || '';
   }).filter(Boolean);
+  var allWards = activeWards.length === 0;
 
   /* テキスト検索 */
   var q = (document.querySelector('.sp-search-input')?.value || '').toLowerCase().trim();
@@ -1082,9 +1084,13 @@ function filterSidebar() {
   cards.forEach(function(card) {
     var name = (card.dataset.name || '').toLowerCase();
     var pref = card.dataset.pref || '';
-    var facs = ((card.dataset&&card.dataset.facilities)||''  ).split(',').filter(Boolean);
+    var area = card.dataset.area || '';
+    var facs = ((card.dataset&&card.dataset.facilities)||'').split(',').filter(Boolean);
 
+    /* テキスト検索 */
     var matchText = !q || name.includes(q);
+
+    /* 都市フィルター */
     var matchCity = allCities;
     if(!allCities) {
       matchCity = activeCities.some(function(city) {
@@ -1092,11 +1098,21 @@ function filterSidebar() {
         var p = CITY_MAP[city]; return p ? pref.includes(p) : false;
       });
     }
-    var matchWork = allWork;
-    var show = matchText && matchCity && matchWork;
+
+    /* 区フィルター（都市が東京のときのみ有効） */
+    var matchWard = allWards;
+    if(!allWards && matchCity) {
+      matchWard = activeWards.some(function(ward){ return area === ward; });
+    }
+
+    var show = matchText && matchCity && matchWard && allWork;
+    if(!allWork) {
+      show = matchText && matchCity && matchWard;
+    }
     card.style.display = show ? '' : 'none';
     if(show) visible++;
   });
+
   var countEl = document.querySelector('.sp-result-count');
   if(countEl) countEl.textContent = visible + '件';
 }
