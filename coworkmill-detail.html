@@ -941,7 +941,7 @@ document.querySelectorAll('.voice-item,.plan-item,.fac-item').forEach(el => {
       <div class="foot-links">
         <a href="coworkmill-register.html">コワーキング登録</a>
         <a href="coworkmill-contact.html">お問い合わせ</a>
-        <a href="coworkmill-company.html">運営会社</a>
+        <a href="https://lily-p.com/" target="_blank" rel="noopener">運営会社</a>
       </div>
     </div>
     <div>
@@ -1512,7 +1512,7 @@ document.addEventListener('DOMContentLoaded', () => {
         var dayRow=document.getElementById('d-price-day-row');
         var dayVal=document.getElementById('d-price-day');
         var noneEl=document.getElementById('d-price-none');
-        if(hourRow&&hourVal){if(hr){hourRow.style.display='flex';hourVal.textContent=fmt(hr)+' / 時間';}else hourRow.style.display='none';}
+        if(hourRow&&hourVal){if(hr){hourRow.style.display='flex';hourVal.textContent=fmt(hr)+' / 1時間';}else hourRow.style.display='none';}
         if(dayRow&&dayVal){if(dy){dayRow.style.display='flex';dayVal.textContent=fmt(dy)+' / 日';}else dayRow.style.display='none';}
         if(noneEl)noneEl.style.display=(hr||dy)?'none':'block';
         var monthSec=document.getElementById('d-monthly-section');

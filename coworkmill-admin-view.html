@@ -303,19 +303,19 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
       <div class="sec-h"><div><div class="sec-ht">設備</div></div></div>
       <div class="sec-b">
         <div class="fgg">
-          <div class="fo on" onclick="tf(this)"><span>⚡</span><span style="font-size:11px;color:var(--g600)">全席電源完備</span><div class="ftg">✓</div></div>
-          <div class="fo on" onclick="tf(this)"><span>📶</span><span style="font-size:11px;color:var(--g600)">高速Wi-Fi</span><div class="ftg">✓</div></div>
-          <div class="fo on" onclick="tf(this)"><span>🚪</span><span style="font-size:11px;color:var(--g600)">完全個室</span><div class="ftg">✓</div></div>
-          <div class="fo on" onclick="tf(this)"><span>🎥</span><span style="font-size:11px;color:var(--g600)">会議室</span><div class="ftg">✓</div></div>
-          <div class="fo on" onclick="tf(this)"><span>☕</span><span style="font-size:11px;color:var(--g600)">カフェ併設</span><div class="ftg">✓</div></div>
-          <div class="fo on" onclick="tf(this)"><span>💳</span><span style="font-size:11px;color:var(--g600)">クレジットカード可</span><div class="ftg">✓</div></div>
-          <div class="fo on" onclick="tf(this)"><span>🌐</span><span style="font-size:11px;color:var(--g600)">英語スタッフ常駐</span><div class="ftg">✓</div></div>
-          <div class="fo on" onclick="tf(this)"><span>🌙</span><span style="font-size:11px;color:var(--g600)">24時間利用可</span><div class="ftg">✓</div></div>
-          <div class="fo" onclick="tf(this)"><span>🔒</span><span style="font-size:11px;color:var(--g600)">ロッカー</span><div class="ftg"></div></div>
-          <div class="fo" onclick="tf(this)"><span>🚿</span><span style="font-size:11px;color:var(--g600)">シャワー室</span><div class="ftg"></div></div>
-          <div class="fo" onclick="tf(this)"><span>🖨</span><span style="font-size:11px;color:var(--g600)">複合機・プリンター</span><div class="ftg"></div></div>
-          <div class="fo" onclick="tf(this)"><span>🛎</span><span style="font-size:11px;color:var(--g600)">受付対応あり</span><div class="ftg"></div></div>
-          <div class="fo" onclick="tf(this)"><span>🏢</span><span style="font-size:11px;color:var(--g600)">シェアオフィス</span><div class="ftg"></div></div>
+          <div class="fo on" onclick="tf(this)" data-key="power"><span>⚡</span><span style="font-size:11px;color:var(--g600)">全席電源完備</span><div class="ftg">✓</div></div>
+          <div class="fo on" onclick="tf(this)" data-key="wifi"><span>📶</span><span style="font-size:11px;color:var(--g600)">高速Wi-Fi</span><div class="ftg">✓</div></div>
+          <div class="fo on" onclick="tf(this)" data-key="private_room"><span>🚪</span><span style="font-size:11px;color:var(--g600)">完全個室</span><div class="ftg">✓</div></div>
+          <div class="fo on" onclick="tf(this)" data-key="meeting_room"><span>🎥</span><span style="font-size:11px;color:var(--g600)">会議室</span><div class="ftg">✓</div></div>
+          <div class="fo on" onclick="tf(this)" data-key="cafe"><span>☕</span><span style="font-size:11px;color:var(--g600)">カフェ併設</span><div class="ftg">✓</div></div>
+          <div class="fo on" onclick="tf(this)" data-key="credit_card"><span>💳</span><span style="font-size:11px;color:var(--g600)">クレジットカード可</span><div class="ftg">✓</div></div>
+          <div class="fo on" onclick="tf(this)" data-key="english"><span>🌐</span><span style="font-size:11px;color:var(--g600)">英語スタッフ常駐</span><div class="ftg">✓</div></div>
+          <div class="fo on" onclick="tf(this)" data-key="open24h"><span>🌙</span><span style="font-size:11px;color:var(--g600)">24時間利用可</span><div class="ftg">✓</div></div>
+          <div class="fo" onclick="tf(this)" data-key="locker"><span>🔒</span><span style="font-size:11px;color:var(--g600)">ロッカー</span><div class="ftg"></div></div>
+          <div class="fo" onclick="tf(this)" data-key="shower"><span>🚿</span><span style="font-size:11px;color:var(--g600)">シャワー室</span><div class="ftg"></div></div>
+          <div class="fo" onclick="tf(this)" data-key="printer"><span>🖨</span><span style="font-size:11px;color:var(--g600)">複合機・プリンター</span><div class="ftg"></div></div>
+          <div class="fo" onclick="tf(this)" data-key="reception"><span>🛎</span><span style="font-size:11px;color:var(--g600)">受付対応あり</span><div class="ftg"></div></div>
+          <div class="fo" onclick="tf(this)" data-key="share_office"><span>🏢</span><span style="font-size:11px;color:var(--g600)">シェアオフィス</span><div class="ftg"></div></div>
         </div>
       </div>
     </div>
@@ -944,6 +944,7 @@ function collectFormData() {
     latitude:        parseFloat(document.getElementById('admin-lat')?.value)||null,
     longitude:       parseFloat(document.getElementById('admin-lon')?.value)||null,
     official_url:    (document.getElementById('f-official-url')?.value?.trim()||null),
+    facilities: (function(){var fos=document.querySelectorAll('.fgg .fo.on[data-key]');return Array.from(fos).map(function(el){return el.dataset.key;});})(),
     nearest_station: g('nfst', 'fst', 'p-station'),
     nearest_line:    g('nfline', 'fline', 'p-line'),
     walk_minutes:    ni('p-walk'),
@@ -1037,6 +1038,8 @@ async function loadSpaceDetail(f) {
     sv('fst',  d.nearest_station);
     sv('fline',d.nearest_line);
     sv('fde',  d.description);
+    /* facilities の on/off を設定 */
+    document.querySelectorAll('.fgg .fo[data-key]').forEach(function(el){var key=el.dataset.key;if(d.facilities&&d.facilities.includes(key)){el.classList.add('on');}else{el.classList.remove('on');}});
     /* 料金フィールドを読み込む */
     if(document.getElementById('price-daily'))document.getElementById('price-daily').value=d.price_dropin_day?d.price_dropin_day.toLocaleString('ja-JP'):'';
     if(document.getElementById('nf-price-daily'))document.getElementById('nf-price-daily').value=d.price_dropin_day?d.price_dropin_day.toLocaleString('ja-JP'):'';
