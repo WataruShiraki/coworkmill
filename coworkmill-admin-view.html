@@ -274,7 +274,7 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
         <div class="fr"><div class="fg"><div class="fl">最寄駅</div><input class="fin" id="fst" placeholder="例：表参道駅 徒歩3分" value="表参道駅 徒歩3分"></div><div class="fg"><div class="fl">路線</div><input class="fin" id="fline" placeholder="例：東京メトロ銀座線・千代田線・半蔵門線" value="東京メトロ銀座線・千代田線・半蔵門線"></div></div>
         <div class="fr full"><div class="fg"><div class="fl">公式サイトURL<span style="font-size:9px;font-weight:600;color:#2BB5C8;background:rgba(43,181,200,.12);padding:2px 5px;border-radius:3px;margin-left:4px;">予約ボタンのリンク</span></div><input class="fin" id="f-official-url" placeholder="https://example.com/reserve" value="" style="font-size:12px"></div></div>
         <div class="fr full"><div class="fg"><div class="fl">施設説明文<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><textarea class="fta" id="fde"></textarea></div></div>
-        <div <div class="fg"><div class="fl">Instagram（@から入力）</div><input class="fin" id="fig" value=""></div></div>
+        <div class="fr"><div class="fg"><div class="fl">公式サイトURL</div><input class="fin" id="fu" value=""></div><div class="fg"><div class="fl">Instagram（@から入力）</div><input class="fin" id="fig" value=""></div></div>
       </div>
     </div>
     <div class="sec">
@@ -365,14 +365,7 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
       </div>
     </div>
 
-    <div class="sec">
-      <div class="sec-h"><div><div class="sec-ht">施設担当者（任意）</div><div class="sec-hs">施設ごとに担当者が異なる場合のみご記入ください</div></div></div>
-      <div class="sec-b">
-        <div style="padding:10px 14px;background:#f0edf8;border-radius:6px;border:1px solid rgba(117,97,169,.2);font-size:11px;color:var(--g600);line-height:1.8;margin-bottom:14px">未入力の場合は、企業情報に登録された担当者に問い合わせが届きます。</div>
-        <div class="fr"><div class="fg"><div class="fl">担当者名</div><input class="fin" placeholder="例：鈴木 花子（任意）"></div><div class="fg"><div class="fl">担当者メール</div><input class="fin" placeholder="例：suzuki@example.com（任意）"></div></div>
-        <div style="padding:10px 12px;background:var(--g50);border-radius:5px;border:1px solid var(--g100);font-size:9px;color:var(--g400);line-height:1.7">🔒 この情報は運営チームのみが閲覧します。掲載ページには表示されません。</div>
-      </div>
-    </div>
+    
     <div style="display:flex;justify-content:center;gap:8px;padding:4px 0 8px">
       <button class="bol" onclick="window.open('coworkmill-detail.html')">プレビュー →</button>
       <button class="bsv" id="savebtn-bottom" onclick="doSave()">変更を保存</button>
@@ -440,7 +433,8 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
     <div class="sec">
       <div class="sec-h"><div><div class="sec-ht">SNS・公式サイト</div></div></div>
       <div class="sec-b">
-        <div 
+        <div class="fr">
+          <div class="fg"><div class="fl">公式サイトURL</div><input class="fin" id="nfurl" placeholder="例：https://example.com"></div>
           <div class="fg"><div class="fl">Instagram（@から入力）</div><input class="fin" id="nfinsta" placeholder="例：@coworkmill_space"></div>
         </div>
       </div>
@@ -942,6 +936,7 @@ function collectFormData() {
     open_hours:      g('p-hours'),
     architect_name:  g('p-arch'),
     vibe:            g('nfvibe', 'p-vibe'),
+    website_url:     g('nfurl', 'fu'),
     instagram:       g('nfinsta', 'fig'),
     smoking:         g('nf-smoking', 'smoking'),
     contact_name:    g('nf-contact-name'),
@@ -1022,6 +1017,7 @@ async function loadSpaceDetail(f) {
     sv('fline',d.nearest_line);
     sv('fde',  d.description);
     if(document.getElementById('f-official-url'))document.getElementById('f-official-url').value=d.official_url||'';
+    sv('fu',   d.website_url);
     sv('fig',  d.instagram);
   } catch(e) {
     console.warn('施設詳細の読み込みエラー:', e);
