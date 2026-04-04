@@ -848,7 +848,7 @@ let allSpaces = [];
 
 async function loadSpaces() {
   try {
-    const res = await fetch(SUPABASE_URL_SP + '/rest/v1/spaces?select=id,name,area,prefecture,plan,status,image_main,architect_name,architect_firm,vibe,price_dropin,created_at&status=eq.live&order=created_at.desc', {
+    const res = await fetch(SUPABASE_URL_SP + '/rest/v1/spaces?select=id,name,area,prefecture,plan,status,image_main,architect_name,architect_firm,vibe,price_dropin,facilities,created_at&status=eq.live&order=created_at.desc', {
       headers: { 'apikey': SUPABASE_KEY_SP, 'Authorization': 'Bearer ' + SUPABASE_KEY_SP }
     });
     const data = await res.json();
@@ -872,7 +872,7 @@ function makeCard(d, i, type) {
   const delay = 'animation-delay:' + (i * 0.05) + 's';
 
   if (type === 'grid') {
-    return '<a class="scard" href="' + href + '" style="' + delay + '">' +
+    return '<a class="scard" href="' + href + '" style="' + delay + '" data-pref="' + (d.prefecture||'') + '" data-name="' + (d.name||'').toLowerCase() + '" data-facilities="' + (d.facilities ? d.facilities.join(',') : '') + '">' +
       '<div class="scard-img" style="' + (img ? 'background-image:url(' + img + ')' : 'background:#1a1a2e') + '">' +
         (isPick ? '<div class="scard-badges"><span class="scard-badge pick">PICK</span></div>' : '') +
       '</div>' +
@@ -963,6 +963,7 @@ function toggleSpCity(el, city) {
   // PCサイドバーも連動
   var pcOpt = document.querySelector('.sf-opt[onclick*="' + city + '"]');
   if (pcOpt) pcOpt.click();
+  filterCards();
 }
 
 
@@ -1012,6 +1013,7 @@ function toggleChip(el) {
     if (!anyOn) document.querySelector('.chip[data-work="all"]')?.classList.add('on');
   }
   applySpFilters();
+  filterCards();
 }
 
 // ============================================================
@@ -1032,6 +1034,56 @@ function toggleChip(el) {
     }
   }
 })();
+
+function filterCards() {
+  var q = (document.querySelector('.sp-search-input')?.value || '').toLowerCase().trim();
+  // アクティブな都市
+  var cities = Array.from(document.querySelectorAll('.sp-city-opt.on')).map(el=>el.dataset.city||el.getAttribute('onclick')?.match(/'([^']+)'/)?.[1]||'');
+  var allCities = cities.includes('all') || cities.length === 0;
+  // アクティブなworkチップ
+  var activeChips = Array.from(document.querySelectorAll('.chip.on')).map(el=>el.dataset.work||'');
+  var allWork = activeChips.includes('all') || activeChips.length === 0;
+
+  // 都道府県マッピング
+  var CITY_TO_PREF = {tokyo:'東京都',osaka:'大阪府',nagoya:'愛知県',fukuoka:'福岡県',sapporo:'北海道',other:null};
+  // workタグ→facilitiesマッピング
+  var WORK_TO_FAC = {deepwork:['power','wifi'],creative:['power','wifi'],ideation:[],meeting:['meeting_room'],remote:['wifi'],learning:['wifi']};
+
+  var cards = document.querySelectorAll('.scard');
+  var visible = 0;
+  cards.forEach(function(card) {
+    var name = card.dataset.name || '';
+    var pref = card.dataset.pref || '';
+    var facs = (card.dataset.facilities || '').split(',');
+
+    // テキスト検索
+    var matchText = !q || name.includes(q);
+
+    // 都市フィルター
+    var matchCity = allCities;
+    if(!allCities) {
+      matchCity = cities.some(function(city) {
+        if(city === 'other') {
+          var knownPrefs = ['東京都','大阪府','愛知県','福岡県','北海道'];
+          return !knownPrefs.includes(pref);
+        }
+        var p = CITY_TO_PREF[city];
+        return p && pref === p;
+      });
+    }
+
+    // workフィルター（今は全部通す）
+    var matchWork = allWork;
+
+    var show = matchText && matchCity && matchWork;
+    card.style.display = show ? '' : 'none';
+    if(show) visible++;
+  });
+
+  // 件数表示更新
+  var countEl = document.querySelector('.sp-result-count, .result-count, [class*="count"]');
+  if(countEl) countEl.textContent = visible + '件';
+}
 </script>
 </body>
 </html>
