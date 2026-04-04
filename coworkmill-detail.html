@@ -1483,24 +1483,8 @@ document.addEventListener('DOMContentLoaded', () => {
       if (phoneEl) phoneEl.textContent = d.phone || '詳細は公式サイトにて';
 
       // 料金
-      (function(){
-        var hr=d.price_dropin_hour, dy=d.price_dropin_day, mo=d.price_monthly_amount, mx=d.price_monthly_max;
-        var fmt=function(n){return n?n.toLocaleString('ja-JP')+'円':null;};
-        var parts=[];
-        if(hr)parts.push(fmt(hr)+' / 時間');
-        if(dy)parts.push(fmt(dy)+' / 日');
-        var priceEl=document.getElementById('d-price');
-        var unitEl=document.querySelector('.aside-price-unit');
-        if(priceEl)priceEl.textContent=parts.length?parts.join('　/　'):'—';
-        if(unitEl)unitEl.textContent='';
-        var noteEl=document.querySelector('.aside-price-note');
-        if(noteEl){
-          if(mo&&mx)noteEl.textContent='月額 '+mo.toLocaleString('ja-JP')+'円～'+mx.toLocaleString('ja-JP')+'円';
-          else if(mo)noteEl.textContent='月額 '+mo.toLocaleString('ja-JP')+'円～';
-          else if(d.price_note)noteEl.textContent=d.price_note;
-          else noteEl.textContent='月額プラン・会議室は要問い合わせ';
-        }
-      })();
+      const priceEl = document.getElementById('d-price');
+      if (priceEl && d.price_dropin) priceEl.textContent = '¥' + d.price_dropin.toLocaleString();
 
       // 公式サイト
       const siteBtn = document.getElementById('d-website');
