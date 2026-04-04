@@ -1665,7 +1665,9 @@ window.adminMapSearchAddr=function(){
   var city=(document.getElementById('f-city')?.value||'').trim();
   var street=(document.getElementById('nfad')?.value||document.getElementById('fad')?.value||'').trim();
   if(!city&&!street){alert('市区町村または町名・番地を入力してください');return;}
-  var base=(city+' '+pref).trim();
+  /* 町名部分（番地・ビル名を除く）を抽出してクエリ精度向上 */
+  var town=street.split(/[\d\uff10-\uff19]/)[0].trim().replace(/\s+.*$/,'');
+  var base=([town,city,pref].filter(Boolean).join(' ')).trim();
   function doSearch(){
     fetch('https://nominatim.openstreetmap.org/search?q='+encodeURIComponent(base)+'&format=json&limit=1',{headers:{'Accept-Language':'ja','User-Agent':'COWORKMILL/1.0'}})
     .then(function(r){return r.json();}).then(function(res){
