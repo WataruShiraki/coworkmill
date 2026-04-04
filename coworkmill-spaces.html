@@ -965,6 +965,37 @@ function toggleSpCity(el, city) {
   if (pcOpt) pcOpt.click();
 }
 
+
+// ============================================================
+// URLパラメータからフィルターを自動適用（TOPページから遷移時）
+// ============================================================
+(function() {
+  var params = new URLSearchParams(window.location.search);
+  var pref = params.get('pref');
+  var feature = params.get('feature');
+  var plan = params.get('plan');
+  // pref: 都道府県フィルター
+  if(pref) {
+    var prefSel = document.getElementById('sp-pref');
+    if(prefSel) {
+      prefSel.value = pref;
+      // changeイベントを発火
+      prefSel.dispatchEvent(new Event('change'));
+    }
+  }
+  // feature: 設備フィルター
+  if(feature) {
+    var featCb = document.querySelector('[data-feature="'+feature+'"], input[value="'+feature+'"]');
+    if(featCb) featCb.click();
+  }
+  // パラメータがあればフィルターを適用
+  if(pref || feature || plan) {
+    setTimeout(function() {
+      if(typeof applySpFilters === 'function') applySpFilters();
+    }, 300);
+  }
+})();
+
 // ============================================================
 // toggleChip: chipボタンのON/OFF切り替え
 // ============================================================

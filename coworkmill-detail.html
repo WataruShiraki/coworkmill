@@ -777,38 +777,33 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
     <!-- Plans -->
     <div class="plans-section">
       <div class="section-label">プラン概要</div>
-      <div class="plans-grid">
-        <div class="plan-item">
-          <div>
-            <div class="plan-name">ドロップイン</div>
-            <div class="plan-desc">1日単位・予約不要</div>
+      <div class="plans-grid" id="d-plans-grid">
+        <div class="plan-card" id="plan-dropin" style="display:none">
+          <div class="plan-card-header">
+            <span class="plan-card-name">ドロップイン</span>
+            <span class="plan-card-tag">予約不要</span>
           </div>
-          <div class="plan-price">
-            <span id="d-price-drop">—</span>
-            <div class="plan-note">詳細は公式サイトにて</div>
-          </div>
+          <div class="plan-card-desc">1時間から利用可能</div>
+          <div class="plan-card-price" id="plan-dropin-price"></div>
         </div>
-        <div class="plan-item">
-          <div>
-            <div class="plan-name">月額プラン</div>
-            <div class="plan-desc">固定席・フレキシブル席</div>
+        <div class="plan-card" id="plan-monthly" style="display:none">
+          <div class="plan-card-header">
+            <span class="plan-card-name">月額プラン</span>
+            <span class="plan-card-tag">定期利用</span>
           </div>
-          <div class="plan-price">
-            要問い合わせ
-            <div class="plan-note">詳細は公式サイトにて</div>
-          </div>
+          <div class="plan-card-desc">固定席・フレキシブル席</div>
+          <div class="plan-card-price" id="plan-monthly-price"></div>
         </div>
-        <div class="plan-item">
-          <div>
-            <div class="plan-name">会議室</div>
-            <div class="plan-desc">1〜8名・時間単位</div>
+        <div class="plan-card plan-card-inquiry" id="plan-mtgroom">
+          <div class="plan-card-header">
+            <span class="plan-card-name">会議室</span>
+            <span class="plan-card-tag">時間単位</span>
           </div>
-          <div class="plan-price">
-            要問い合わせ
-            <div class="plan-note">詳細は公式サイトにて</div>
-          </div>
+          <div class="plan-card-desc">最大10名まで対応</div>
+          <div class="plan-card-price">要問い合わせ</div>
         </div>
       </div>
+      <div class="plan-note-link">空き状況・料金の詳細は<a id="plan-official-link" href="#" target="_blank" rel="noopener">公式サイト</a>でご確認ください</div>
     </div>
 
     <div class="sec-divider"></div>
@@ -1699,6 +1694,7 @@ function tryMap(){
     }
     /* facilitiesフラグを更新 */
     if(sp.facilities&&window.renderFacilityFlags){window.renderFacilityFlags(sp.facilities);}
+      if(window.renderPlanCards)window.renderPlanCards(sp);
     }).catch(function(){});
 }
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
@@ -1785,6 +1781,35 @@ window.renderFacilityFlags=function(facs){
   if(bEn&&facs.includes('english'))bEn.style.display='';
   if(bCard&&facs.includes('credit_card'))bCard.style.display='';
 };
+</script>
+<script>
+/* プラン価格をDBから設定 */
+function renderPlanCards(sp) {
+  var hasDropin = sp.price_dropin_hour || sp.price_dropin_day;
+  var hasMonthly = sp.price_monthly_amount;
+  // ドロップイン
+  var dropinCard = document.getElementById('plan-dropin');
+  var dropinPrice = document.getElementById('plan-dropin-price');
+  if(hasDropin && dropinCard) {
+    dropinCard.style.display = '';
+    var parts = [];
+    if(sp.price_dropin_hour) parts.push(sp.price_dropin_hour.toLocaleString('ja-JP') + '円 / 1時間');
+    if(sp.price_dropin_day) parts.push(sp.price_dropin_day.toLocaleString('ja-JP') + '円 / 1日');
+    if(dropinPrice) dropinPrice.innerHTML = parts.join('<br>');
+  }
+  // 月額
+  var monthlyCard = document.getElementById('plan-monthly');
+  var monthlyPrice = document.getElementById('plan-monthly-price');
+  if(hasMonthly && monthlyCard) {
+    monthlyCard.style.display = '';
+    var mo = sp.price_monthly_amount.toLocaleString('ja-JP') + '円';
+    var mx = sp.price_monthly_max ? '～' + sp.price_monthly_max.toLocaleString('ja-JP') + '円' : '～';
+    if(monthlyPrice) monthlyPrice.textContent = mo + mx + ' / 月';
+  }
+  // 公式サイトリンク
+  var planLink = document.getElementById('plan-official-link');
+  if(planLink && sp.official_url) planLink.href = sp.official_url;
+}
 </script>
 </body>
 </html>
