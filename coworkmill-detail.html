@@ -272,6 +272,19 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:56px;display:flex;ali
 /* ── PLANS ── */
 .plans-section{margin-bottom:48px}
 .plans-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px}
+
+.plan-card{background:var(--white);border:1px solid var(--gray-100);border-radius:12px;padding:20px;transition:border-color .2s}
+.plan-card:hover{border-color:#2BB5C8}
+.plan-card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;gap:8px;flex-wrap:wrap}
+.plan-card-name{font-family:var(--font-display);font-size:14px;font-weight:600;color:var(--black)}
+.plan-card-tag{font-size:9px;font-weight:600;letter-spacing:.06em;padding:2px 7px;border-radius:4px;background:var(--accent-light);color:#2BB5C8;white-space:nowrap}
+.plan-card-desc{font-size:11px;color:var(--gray-400);margin-bottom:10px;line-height:1.5}
+.plan-card-price{font-family:var(--font-display);font-size:14px;font-weight:500;color:var(--black);line-height:1.4}
+.plan-card-inquiry .plan-card-price{font-size:12px;color:var(--gray-400)}
+.plan-note-link{margin-top:12px;font-size:10px;color:var(--gray-400);line-height:1.5}
+.plan-note-link a{color:#2BB5C8;text-decoration:none}
+@media(max-width:600px){.plans-grid{grid-template-columns:1fr!important}}
+
 .plan-item{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border:1px solid var(--gray-100);border-radius:8px}
 .plan-name{font-family:var(--font-display);font-size:13px;font-weight:500}
 .plan-desc{font-size:11px;color:var(--gray-400);margin-top:2px}
@@ -511,6 +524,9 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
   .btn-site:hover{border-color:#2BB5C8}
   .btn-instagram{background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);border:none;color:#fff;opacity:.9}
   .btn-instagram:hover{opacity:1;transform:translateY(-1px)}
+  .plan-card{background:#1e1e1e;border-color:#333}
+  .plan-card-name,.plan-card-price{color:#f0f0f0}
+  .plan-card-desc{color:#888}
   .aside-price-amount{color:#f0f0f0}
   .aside-price-monthly-val{color:#f0f0f0}
   .aside-price-none{color:#f0f0f0}

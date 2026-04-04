@@ -416,6 +416,17 @@ footer{background:#0a1628;padding:64px 80px 40px;color:#fff;position:relative;ov
   .steps{grid-template-columns:1fr;gap:28px}
   .step-line{display:none}
   .om-banner{margin:0 16px 32px;padding:24px 20px}
+  /* search form dark */
+  .search-section{background:#111}
+  .search-wrap{border-color:#333}
+  .s-field-label{color:#aaa!important}
+  .s-field-val{color:#ddd!important}
+  .s-field:hover{background:#222}
+  .s-field{border-right-color:#333!important}
+  .s-dropdown{background:#1a1a1a!important;border-color:#333}
+  .s-drop-item{color:#ccc}
+  .s-drop-item:hover{background:#2a2a2a}
+  .hero-search-btn{background:#2BB5C8;color:#fff}
 }
 
 /* ── DARK MODE ── */
@@ -610,10 +621,15 @@ footer{background:#0a1628;padding:64px 80px 40px;color:#fff;position:relative;ov
   <div class="search-wrap" style="position:relative;overflow:visible">
     <!-- エリア -->
     <div class="s-field" onclick="toggleDrop(event,'drop-area')" id="sf-area">
-      <div class="s-field-label">エリア</div>
-      <div class="s-field-val" id="sf-area-val">東京</div>
+      <div class="s-field-label">都道府県</div>
+      <div class="s-field-val" id="sf-area-val">指定なし</div>
       <div class="s-dropdown" id="drop-area">
-        <div class="s-drop-item" onclick="setField(event,'sf-area-val','drop-area','東京')">東京</div>
+        <div class="s-drop-item" onclick="setField(event,'sf-area-val','drop-area','指定なし')">指定なし</div>
+        <div class="s-drop-item" onclick="setField(event,'sf-area-val','drop-area','東京都')">東京都</div>
+        <div class="s-drop-item" onclick="setField(event,'sf-area-val','drop-area','大阪府')">大阪府</div>
+        <div class="s-drop-item" onclick="setField(event,'sf-area-val','drop-area','愛知県')">愛知県</div>
+        <div class="s-drop-item" onclick="setField(event,'sf-area-val','drop-area','福岡県')">福岡県</div>
+        <div class="s-drop-item" onclick="setField(event,'sf-area-val','drop-area','沖縄県')">沖縄県</div>
         <div class="s-drop-item" onclick="setField(event,'sf-area-val','drop-area','渋谷')">渋谷</div>
         <div class="s-drop-item" onclick="setField(event,'sf-area-val','drop-area','新宿')">新宿</div>
         <div class="s-drop-item" onclick="setField(event,'sf-area-val','drop-area','大阪')">大阪</div>
@@ -624,10 +640,16 @@ footer{background:#0a1628;padding:64px 80px 40px;color:#fff;position:relative;ov
     </div>
     <!-- 目的 -->
     <div class="s-field" onclick="toggleDrop(event,'drop-purpose')" id="sf-purpose">
-      <div class="s-field-label">目的</div>
+      <div class="s-field-label">仕事のタイプ</div>
       <div class="s-field-val" id="sf-purpose-val">すべて</div>
       <div class="s-dropdown" id="drop-purpose">
-        <div class="s-drop-item" onclick="setField(event,'sf-purpose-val','drop-purpose','すべて')">すべて</div>
+        <div class="s-drop-item" onclick="setField(event,'sf-purpose-val','drop-purpose','すべて'); window._purpKey=''">すべて</div>
+        <div class="s-drop-item" onclick="setField(event,'sf-purpose-val','drop-purpose','集中・執筆・戦略');window._purpKey='deepwork'">集中・執筆・戦略</div>
+        <div class="s-drop-item" onclick="setField(event,'sf-purpose-val','drop-purpose','制作・クリエイティブ');window._purpKey='creative'">制作・クリエイティブ</div>
+        <div class="s-drop-item" onclick="setField(event,'sf-purpose-val','drop-purpose','アイデア・ブレスト');window._purpKey='ideation'">アイデア・ブレスト</div>
+        <div class="s-drop-item" onclick="setField(event,'sf-purpose-val','drop-purpose','商談・ミーティング');window._purpKey='meeting'">商談・ミーティング</div>
+        <div class="s-drop-item" onclick="setField(event,'sf-purpose-val','drop-purpose','オンライン会議');window._purpKey='remote'">オンライン会議</div>
+        <div class="s-drop-item" onclick="setField(event,'sf-purpose-val','drop-purpose','学習・リサーチ');window._purpKey='learning'">学習・リサーチ</div>
         <div class="s-drop-item" onclick="setField(event,'sf-purpose-val','drop-purpose','Deep Work')">Deep Work</div>
         <div class="s-drop-item" onclick="setField(event,'sf-purpose-val','drop-purpose','Ideation')">Ideation</div>
         <div class="s-drop-item" onclick="setField(event,'sf-purpose-val','drop-purpose','Client Meeting')">Client Meeting</div>
@@ -642,7 +664,11 @@ footer{background:#0a1628;padding:64px 80px 40px;color:#fff;position:relative;ov
       <div class="s-field-label">こだわり</div>
       <div class="s-field-val" id="sf-feature-val">指定なし</div>
       <div class="s-dropdown" id="drop-feature" style="right:0;left:auto">
-        <div class="s-drop-item" onclick="setField(event,'sf-feature-val','drop-feature','指定なし')">指定なし</div>
+        <div class="s-drop-item" onclick="setField(event,'sf-feature-val','drop-feature','指定なし');window._featKey=''">指定なし</div>
+        <div class="s-drop-item" onclick="setField(event,'sf-feature-val','drop-feature','24時間利用可');window._featKey='open24h'">24時間利用可</div>
+        <div class="s-drop-item" onclick="setField(event,'sf-feature-val','drop-feature','完全個室あり');window._featKey='private_room'">完全個室あり</div>
+        <div class="s-drop-item" onclick="setField(event,'sf-feature-val','drop-feature','英語対応');window._featKey='english'">英語対応</div>
+        <div class="s-drop-item" onclick="setField(event,'sf-feature-val','drop-feature','カフェ併設');window._featKey='cafe'">カフェ併設</div>
         <div class="s-drop-item" onclick="setField(event,'sf-feature-val','drop-feature','ドロップイン可')">ドロップイン可</div>
         <div class="s-drop-item" onclick="setField(event,'sf-feature-val','drop-feature','完全個室あり')">完全個室あり</div>
         <div class="s-drop-item" onclick="setField(event,'sf-feature-val','drop-feature','会議室あり')">会議室あり</div>
@@ -961,18 +987,16 @@ document.addEventListener('DOMContentLoaded', loadTopData);
 // ============================================================
 function toggleDrop(e, dropId) {
   e.stopPropagation();
-  document.querySelectorAll('.s-dropdown').forEach(d => {
-    if(d.id !== dropId) d.style.display = 'none';
-  });
-  var drop = document.getElementById(dropId);
-  if(drop) drop.style.display = drop.style.display === 'block' ? 'none' : 'block';
+  document.querySelectorAll('.s-dropdown').forEach(function(d){ if(d.id!==dropId)d.classList.remove('open'); });
+  var drop=document.getElementById(dropId);
+  if(drop)drop.classList.toggle('open');
 }
 function setField(e, valId, dropId, val) {
   e.stopPropagation();
-  var valEl = document.getElementById(valId);
-  if(valEl) valEl.textContent = val;
-  var drop = document.getElementById(dropId);
-  if(drop) drop.style.display = 'none';
+  var el=document.getElementById(valId);
+  if(el)el.textContent=val;
+  var drop=document.getElementById(dropId);
+  if(drop)drop.classList.remove('open');
 }
 function doSearch() {
   var area = document.getElementById('sf-area-val')?.textContent?.trim() || '';
@@ -1012,6 +1036,17 @@ function doSearch() {
 }
 // クリック外でドロップダウンを閉じる
 document.addEventListener('click', function() {
-  document.querySelectorAll('.s-dropdown').forEach(d => d.style.display = 'none');
+  document.querySelectorAll('.s-dropdown').forEach(function(d){d.classList.remove('open');});
 });
+
+function setGF(el, key) {
+  document.querySelectorAll('.gf-btn').forEach(function(b){ b.classList.remove('on'); });
+  el.classList.add('on');
+  var cards = document.querySelectorAll('#pickup-list .card, #pickup-list .scard');
+  cards.forEach(function(card) {
+    if(key === 'all') { card.style.display = ''; return; }
+    var works = (card.dataset.work || card.dataset.worktags || '').toLowerCase();
+    card.style.display = (works && works.includes(key)) ? '' : 'none';
+  });
+}
 </script></body></html>

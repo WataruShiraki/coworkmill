@@ -669,12 +669,12 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
     </button>
     <div class="sp-acc-body">
       <div class="sp-vibe-grid">
-        <button class="sp-vibe-btn" onclick="this.classList.toggle('on')">都市の高層階</button>
-        <button class="sp-vibe-btn" onclick="this.classList.toggle('on')">古民家・町家</button>
-        <button class="sp-vibe-btn" onclick="this.classList.toggle('on')">自然・山・海</button>
-        <button class="sp-vibe-btn" onclick="this.classList.toggle('on')">倉庫・工場跡</button>
-        <button class="sp-vibe-btn" onclick="this.classList.toggle('on')">ホテル併設</button>
-        <button class="sp-vibe-btn" onclick="this.classList.toggle('on')">ミニマル</button>
+        <button class="sp-vibe-btn" onclick="this.classList.toggle('on');filterCards()">都市の高層階</button>
+        <button class="sp-vibe-btn" onclick="this.classList.toggle('on');filterCards()">古民家・町家</button>
+        <button class="sp-vibe-btn" onclick="this.classList.toggle('on');filterCards()">自然・山・海</button>
+        <button class="sp-vibe-btn" onclick="this.classList.toggle('on');filterCards()">倉庫・工場跡</button>
+        <button class="sp-vibe-btn" onclick="this.classList.toggle('on');filterCards()">ホテル併設</button>
+        <button class="sp-vibe-btn" onclick="this.classList.toggle('on');filterCards()">ミニマル</button>
       </div>
     </div>
   </div>
@@ -686,12 +686,12 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
     </button>
     <div class="sp-acc-body">
       <div class="sp-vibe-grid">
-        <button class="sp-vibe-btn" onclick="this.classList.toggle('on')">EN OK</button>
-        <button class="sp-vibe-btn" onclick="this.classList.toggle('on')">24時間</button>
-        <button class="sp-vibe-btn" onclick="this.classList.toggle('on')">完全個室</button>
-        <button class="sp-vibe-btn" onclick="this.classList.toggle('on')">会議室</button>
-        <button class="sp-vibe-btn" onclick="this.classList.toggle('on')">クレカ可</button>
-        <button class="sp-vibe-btn" onclick="this.classList.toggle('on')">ドロップイン</button>
+        <button class="sp-vibe-btn" onclick="this.classList.toggle('on');filterCards()">EN OK</button>
+        <button class="sp-vibe-btn" onclick="this.classList.toggle('on');filterCards()">24時間</button>
+        <button class="sp-vibe-btn" onclick="this.classList.toggle('on');filterCards()">完全個室</button>
+        <button class="sp-vibe-btn" onclick="this.classList.toggle('on');filterCards()">会議室</button>
+        <button class="sp-vibe-btn" onclick="this.classList.toggle('on');filterCards()">クレカ可</button>
+        <button class="sp-vibe-btn" onclick="this.classList.toggle('on');filterCards()">ドロップイン</button>
       </div>
     </div>
   </div>
@@ -947,6 +947,7 @@ function resetSpFilters() {
   // 絞り込みボタンリセット
   var btn = document.querySelector('.sp-filter-open-btn');
   if (btn) btn.style.background = '', btn.style.color = '';
+  filterCards();
 }
 
 // SP アコーディオン
@@ -956,6 +957,7 @@ function toggleAcc(headBtn) {
   // 他を閉じる
   document.querySelectorAll('.sp-acc-block.open').forEach(function(b){ b.classList.remove('open'); });
   if (!isOpen) block.classList.add('open');
+  filterCards();
 }
 // SP エリアチェック（PCサイドバーと連動）
 function toggleSpCity(el, city) {
@@ -1038,50 +1040,41 @@ function toggleChip(el) {
 function filterCards() {
   var q = (document.querySelector('.sp-search-input')?.value || '').toLowerCase().trim();
   // アクティブな都市
-  var cities = Array.from(document.querySelectorAll('.sp-city-opt.on')).map(el=>el.dataset.city||el.getAttribute('onclick')?.match(/'([^']+)'/)?.[1]||'');
-  var allCities = cities.includes('all') || cities.length === 0;
+  var activeCities = Array.from(document.querySelectorAll('.sp-city-opt.on')).map(function(el){
+    // data-cityまたはonclickから取得
+    return el.dataset.city || (el.getAttribute('onclick')?.match(/'([^']+)'/)||[])[1] || '';
+  }).filter(Boolean);
+  var allCities = activeCities.length === 0 || activeCities.includes('all');
   // アクティブなworkチップ
-  var activeChips = Array.from(document.querySelectorAll('.chip.on')).map(el=>el.dataset.work||'');
-  var allWork = activeChips.includes('all') || activeChips.length === 0;
-
+  var activeWork = Array.from(document.querySelectorAll('.chip.on')).map(function(el){ return el.dataset.work||''; });
+  var allWork = activeWork.length === 0 || activeWork.includes('all');
   // 都道府県マッピング
-  var CITY_TO_PREF = {tokyo:'東京都',osaka:'大阪府',nagoya:'愛知県',fukuoka:'福岡県',sapporo:'北海道',other:null};
-  // workタグ→facilitiesマッピング
-  var WORK_TO_FAC = {deepwork:['power','wifi'],creative:['power','wifi'],ideation:[],meeting:['meeting_room'],remote:['wifi'],learning:['wifi']};
+  var CITY_PREF = {tokyo:'東京都',osaka:'大阪府',nagoya:'愛知県',fukuoka:'福岡県',sapporo:'北海道',other:null};
 
   var cards = document.querySelectorAll('.scard');
   var visible = 0;
   cards.forEach(function(card) {
-    var name = card.dataset.name || '';
+    var name = (card.dataset.name || '').toLowerCase();
     var pref = card.dataset.pref || '';
-    var facs = (card.dataset.facilities || '').split(',');
-
+    var facs = (card.dataset.facilities || '').split(',').filter(Boolean);
     // テキスト検索
     var matchText = !q || name.includes(q);
-
     // 都市フィルター
     var matchCity = allCities;
     if(!allCities) {
-      matchCity = cities.some(function(city) {
-        if(city === 'other') {
-          var knownPrefs = ['東京都','大阪府','愛知県','福岡県','北海道'];
-          return !knownPrefs.includes(pref);
-        }
-        var p = CITY_TO_PREF[city];
-        return p && pref === p;
+      matchCity = activeCities.some(function(city) {
+        if(city === 'other') { var known=['東京都','大阪府','愛知県','福岡県','北海道']; return !known.includes(pref); }
+        return CITY_PREF[city] && pref.includes(CITY_PREF[city]) || pref.startsWith(CITY_PREF[city]||'__');
       });
     }
-
-    // workフィルター（今は全部通す）
+    // workフィルター（今はwork=allのみ対応、将来的にdata-worktags追加）
     var matchWork = allWork;
-
     var show = matchText && matchCity && matchWork;
     card.style.display = show ? '' : 'none';
     if(show) visible++;
   });
-
-  // 件数表示更新
-  var countEl = document.querySelector('.sp-result-count, .result-count, [class*="count"]');
+  // 件数更新
+  var countEl = document.querySelector('.sp-result-count');
   if(countEl) countEl.textContent = visible + '件';
 }
 </script>
