@@ -213,8 +213,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:56px;display:flex;ali
 .work-tags-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:48px}
 .wtag-card{border:1px solid var(--gray-100);border-radius:10px;padding:16px;cursor:pointer;transition:all .2s}
 .wtag-card:hover,.wtag-card.active{border-color:#2BB5C8;background:var(--accent-light)}
-.wtag-card-en{font-family:var(--font-display);font-size:12px;font-weight:500;color:var(--black);margin-bottom:3px}
-.wtag-card-ja{font-size:10px;color:var(--gray-400);margin-bottom:8px}
+.wtag-card-ja{font-size:14px;font-weight:700;color:var(--black);margin-bottom:2px;line-height:1.3}
+.wtag-card-en{font-family:var(--font-display);font-size:10px;font-weight:400;color:var(--gray-400);margin-bottom:4px}
+
 .wtag-card-bar{height:3px;background:var(--gray-100);border-radius:2px;overflow:hidden}
 .wtag-card-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--brand-pink),#2BB5C8)}
 .wtag-card-cnt{font-size:10px;color:var(--gray-400);margin-top:5px}
@@ -680,41 +681,41 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
     <div>
       <div class="section-label">このスペースに向いている仕事</div>
       <div class="work-tags-grid">
-        <div class="wtag-card active">
+        <div class="wtag-card" data-work="deepwork">
+          <div class="wtag-card-ja">集中・執筆・戦略</div>
           <div class="wtag-card-en">Deep Work</div>
-          <div class="wtag-card-ja">没頭・集中</div>
-          <div class="wtag-card-bar"><div class="wtag-card-fill" style="width:82%"></div></div>
-          <div class="wtag-card-cnt" style="display:none">0人が使用</div>
+          <div class="wtag-card-bar"><div class="wtag-card-fill" style="width:0%"></div></div>
+          <div class="wtag-card-cnt" style="display:none">0件</div>
         </div>
-        <div class="wtag-card">
-          <div class="wtag-card-en">Strategy</div>
-          <div class="wtag-card-ja">戦略・意思決定</div>
-          <div class="wtag-card-bar"><div class="wtag-card-fill" style="width:65%"></div></div>
-          <div class="wtag-card-cnt" style="display:none">0人が使用</div>
-        </div>
-        <div class="wtag-card">
-          <div class="wtag-card-en">Client Meeting</div>
-          <div class="wtag-card-ja">商談・接客</div>
-          <div class="wtag-card-bar"><div class="wtag-card-fill" style="width:48%"></div></div>
-          <div class="wtag-card-cnt" style="display:none">0人が使用</div>
-        </div>
-        <div class="wtag-card">
-          <div class="wtag-card-en">Creative Work</div>
+        <div class="wtag-card" data-work="creative">
           <div class="wtag-card-ja">制作・クリエイティブ</div>
-          <div class="wtag-card-bar"><div class="wtag-card-fill" style="width:40%"></div></div>
-          <div class="wtag-card-cnt" style="display:none">0人が使用</div>
+          <div class="wtag-card-en">Creative</div>
+          <div class="wtag-card-bar"><div class="wtag-card-fill" style="width:0%"></div></div>
+          <div class="wtag-card-cnt" style="display:none">0件</div>
         </div>
-        <div class="wtag-card">
-          <div class="wtag-card-en">Remote Call</div>
-          <div class="wtag-card-ja">オンライン会議</div>
-          <div class="wtag-card-bar"><div class="wtag-card-fill" style="width:30%"></div></div>
-          <div class="wtag-card-cnt" style="display:none">0人が使用</div>
-        </div>
-        <div class="wtag-card">
+        <div class="wtag-card" data-work="ideation">
+          <div class="wtag-card-ja">アイデア・ブレスト</div>
           <div class="wtag-card-en">Ideation</div>
-          <div class="wtag-card-ja">企画・発想</div>
-          <div class="wtag-card-bar"><div class="wtag-card-fill" style="width:24%"></div></div>
-          <div class="wtag-card-cnt" style="display:none">0人が使用</div>
+          <div class="wtag-card-bar"><div class="wtag-card-fill" style="width:0%"></div></div>
+          <div class="wtag-card-cnt" style="display:none">0件</div>
+        </div>
+        <div class="wtag-card" data-work="meeting">
+          <div class="wtag-card-ja">商談・ミーティング</div>
+          <div class="wtag-card-en">Meeting</div>
+          <div class="wtag-card-bar"><div class="wtag-card-fill" style="width:0%"></div></div>
+          <div class="wtag-card-cnt" style="display:none">0件</div>
+        </div>
+        <div class="wtag-card" data-work="remote">
+          <div class="wtag-card-ja">オンライン会議</div>
+          <div class="wtag-card-en">Remote Call</div>
+          <div class="wtag-card-bar"><div class="wtag-card-fill" style="width:0%"></div></div>
+          <div class="wtag-card-cnt" style="display:none">0件</div>
+        </div>
+        <div class="wtag-card" data-work="learning">
+          <div class="wtag-card-ja">学習・リサーチ</div>
+          <div class="wtag-card-en">Learning</div>
+          <div class="wtag-card-bar"><div class="wtag-card-fill" style="width:0%"></div></div>
+          <div class="wtag-card-cnt" style="display:none">0件</div>
         </div>
       </div>
     </div>

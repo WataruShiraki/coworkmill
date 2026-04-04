@@ -122,7 +122,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:56px;display:flex;ali
 .hero-chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:40px;max-width:700px}
 .hero-chip{font-family:'Montserrat',sans-serif;font-size:10px;font-weight:500;padding:6px 14px;border-radius:20px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.1);cursor:pointer;color:rgba(255,255,255,.85);transition:all .2s;display:flex;flex-direction:column;align-items:center;gap:1px;backdrop-filter:blur(4px)}
 .hero-chip:hover,.hero-chip.on{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.4);color:#fff}
-.hero-chip-ja{font-size:8px;color:rgba(255,255,255,.55);line-height:1}
+.hero-chip-en{font-size:9px;color:rgba(255,255,255,.65);display:block;margin-top:1px}
+.hero-chip-ja{font-size:13px;font-weight:700;display:block;line-height:1.3}
 .hero-chip.on .hero-chip-ja{color:rgba(255,255,255,.6)}
 
 /* SCROLL TILES */
@@ -571,13 +572,12 @@ footer{background:#0a1628;padding:64px 80px 40px;color:#fff;position:relative;ov
 
     <!-- WORK TYPE CHIPS -->
     <div class="hero-chips">
-      <button class="hero-chip" onclick="location.href='coworkmill-spaces.html'"><span>Deep Work</span><span class="hero-chip-ja">没頭・集中</span></button>
-      <button class="hero-chip" onclick="location.href='coworkmill-spaces.html'"><span>Ideation</span><span class="hero-chip-ja">企画・発想</span></button>
-      <button class="hero-chip" onclick="location.href='coworkmill-spaces.html'"><span>Client Meeting</span><span class="hero-chip-ja">商談・接客</span></button>
-      <button class="hero-chip" onclick="location.href='coworkmill-spaces.html'"><span>Remote Call</span><span class="hero-chip-ja">オンライン会議</span></button>
-      <button class="hero-chip" onclick="location.href='coworkmill-spaces.html'"><span>Creative Work</span><span class="hero-chip-ja">制作</span></button>
-      <button class="hero-chip" onclick="location.href='coworkmill-spaces.html'"><span>Strategy</span><span class="hero-chip-ja">戦略</span></button>
-      <button class="hero-chip" onclick="location.href='coworkmill-spaces.html'"><span>Learning</span><span class="hero-chip-ja">学習</span></button>
+      <button class="hero-chip" onclick="location.href='coworkmill-spaces.html'"><span class="hero-chip-ja">集中・執筆・戦略</span><span class="hero-chip-en">Deep Work</span></button>
+      <button class="hero-chip" onclick="location.href='coworkmill-spaces.html'"><span class="hero-chip-ja">制作・クリエイティブ</span><span class="hero-chip-en">Creative</span></button>
+      <button class="hero-chip" onclick="location.href='coworkmill-spaces.html'"><span class="hero-chip-ja">アイデア・ブレスト</span><span class="hero-chip-en">Ideation</span></button>
+      <button class="hero-chip" onclick="location.href='coworkmill-spaces.html'"><span class="hero-chip-ja">商談・ミーティング</span><span class="hero-chip-en">Meeting</span></button>
+      <button class="hero-chip" onclick="location.href='coworkmill-spaces.html'"><span class="hero-chip-ja">オンライン会議</span><span class="hero-chip-en">Remote Call</span></button>
+      <button class="hero-chip" onclick="location.href='coworkmill-spaces.html'"><span class="hero-chip-ja">学習・リサーチ</span><span class="hero-chip-en">Learning</span></button>
     </div>
 
     <!-- STATS -->
