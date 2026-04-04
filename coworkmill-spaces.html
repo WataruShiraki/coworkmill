@@ -964,6 +964,43 @@ function toggleSpCity(el, city) {
   var pcOpt = document.querySelector('.sf-opt[onclick*="' + city + '"]');
   if (pcOpt) pcOpt.click();
 }
+
+// ============================================================
+// toggleChip: chipボタンのON/OFF切り替え
+// ============================================================
+function toggleChip(el) {
+  const work = el.dataset.work;
+  if (work === 'all') {
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('on'));
+    el.classList.add('on');
+  } else {
+    document.querySelector('.chip[data-work="all"]')?.classList.remove('on');
+    el.classList.toggle('on');
+    // 全チップがOFFになったらallをONに
+    const anyOn = Array.from(document.querySelectorAll('.chip:not([data-work="all"])')).some(c => c.classList.contains('on'));
+    if (!anyOn) document.querySelector('.chip[data-work="all"]')?.classList.add('on');
+  }
+  applySpFilters();
+}
+
+// ============================================================
+// URLパラメータからwork=xxxを読み込んでチップを自動選択
+// ============================================================
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const work = params.get('work');
+  if (work && work !== 'all') {
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('on'));
+    const target = document.querySelector('.chip[data-work="' + work + '"]');
+    if (target) {
+      target.classList.add('on');
+      // applySpFiltersが定義されるまで待つ
+      setTimeout(function() { applySpFilters(); }, 100);
+    } else {
+      document.querySelector('.chip[data-work="all"]')?.classList.add('on');
+    }
+  }
+})();
 </script>
 </body>
 </html>
