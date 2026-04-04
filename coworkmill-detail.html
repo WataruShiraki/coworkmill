@@ -843,9 +843,8 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
         <div class="aside-flag">24時間利用可</div>
         <div class="aside-flag">完全個室あり</div>
       </div>
-      <button class="btn-contact" id="d-website" id="btn-reserve" onclick="var u=document.getElementById('cwm-official-url')?.value;if(u&&u!=='#')window.open(u,'_blank');else alert('予約ページが未設定です。ご問い合わせください');">公式サイトで空き確認・予約</button>
-      <a id="link-contact" href="coworkmill-contact.html" class="btn-site">問い合わせる</a>
-      <a href="https://instagram.com/aoyama_atelier" target="_blank" rel="noopener" class="btn-instagram" id="d-instagram">
+      <button class="btn-contact" id="d-website" id="btn-reserve" onclick="(function(){var u=document.getElementById('cwm-official-url')?.value;var sid=new URLSearchParams(window.location.search).get('id');if(sid){fetch(CWM_SB_URL+'/rest/v1/click_logs',{method:'POST',headers:{'apikey':CWM_SB_KEY,'Authorization':'Bearer '+CWM_SB_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({space_id:sid,event:'reserve_click'})}).catch(function(){});}if(u&&u!=='#')window.open(u,'_blank');else alert('公式サイトが未設定です。オペレーターにお問い合わせください');})();">公式サイトで空き確認・予約</button>
+          <a href="https://instagram.com/aoyama_atelier" target="_blank" rel="noopener" class="btn-instagram" id="d-instagram">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
         <span id="d-instagram-handle">@aoyama_atelier</span>
       </a>
