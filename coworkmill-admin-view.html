@@ -1564,82 +1564,51 @@ window.addEventListener('DOMContentLoaded', () => {
   };
   window.approveVoice=function(id){window.sbFetch('/rest/v1/voices?id=eq.'+id,{method:'PATCH',body:JSON.stringify({status:'approved'})}).then(function(){window.loadAdminVoices();});};
   window.deleteVoice=function(id){if(!confirm('削除しますか？'))return;window.sbFetch('/rest/v1/voices?id=eq.'+id,{method:'DELETE'}).then(function(){window.loadAdminVoices();});};
-  var _p=setInterval(function(){if(typeof window.go==='function'&&!window.go._cwmW){clearInterval(_p);var orig=window.go;window.go=function(id,el){orig(id,el);if(id==='voice')setTimeout(window.loadAdminVoices,200);if(id==='db')setTimeout(window.loadAdminVoices,300);if(id==='edit'){
-    /* p-editが表示されるのをMutationObserverで待ってからマップ初期化 */
-    var _mapSpaces = null;
-    /* 施設のlat/lonを先にフェッチ */
-    var allFis=Array.from(document.querySelectorAll('#fac-list .fi'));
-    var activeFi=document.querySelector('#fac-list .fi.on')||document.querySelector('#fac-list .fi.active');
-    var _facIdx=allFis.indexOf(activeFi);
-    window.sbFetch('/rest/v1/spaces?select=id,latitude,longitude&order=created_at').then(function(spaces){
-      _mapSpaces=spaces;
-    }).catch(function(){});
-    /* p-editが実際に表示されたら（offsetHeight>0）マップを初期化 */
-    function _tryInitAdminMap(){
-      var wrap=document.getElementById('admin-map-wrap');
-      if(!wrap||wrap.offsetHeight===0||!window.adminMapInit)return false;
-      var sp=_mapSpaces&&_mapSpaces[_facIdx>=0?_facIdx:0];
-      var lat=sp&&sp.latitude?parseFloat(sp.latitude):35.6689;
-      var lon=sp&&sp.longitude?parseFloat(sp.longitude):139.7208;
-      var latEl=document.getElementById('admin-lat'),lonEl=document.getElementById('admin-lon');
-      if(latEl)latEl.value=lat||'';
-      if(lonEl)lonEl.value=lon||'';
-      window.adminMapInit(lat,lon);
-      if(!lat||!lon)setTimeout(window.adminMapSearchAddr,800);
-      return true;
-    }
-    /* 50msポーリングで確認（最大4秒） */
-    var _n=0,_iv=setInterval(function(){
-      _n++;
-      if(_tryInitAdminMap()||_n>80)clearInterval(_iv);
-    },50);
-  }};window.go._cwmW=true;}},50);
+  var _p=setInterval(function(){if(typeof window.go==='function'&&!window.go._cwmW){clearInterval(_p);var orig=window.go;window.go=function(id,el){orig(id,el);if(id==='voice')setTimeout(window.loadAdminVoices,200);if(id==='db')setTimeout(window.loadAdminVoices,300);if(id==='edit'){}}window.go._cwmW=true;}},50);
 })();</script>
 <script>
 /* Admin Map Picker */
 var _adminMap=null, _adminMarker=null;
 function adminMapInit(lat,lon){
-  if(typeof L==='undefined')return;
-  lat=lat||35.6689; lon=lon||139.7208;
-  /* 既存マップを破棄 */
-  if(_adminMap){try{_adminMap.remove();}catch(e){} _adminMap=null; _adminMarker=null;}
-  var el=document.getElementById('admin-lmap');
-  if(!el)return;
+  if(typeof L==='undefined'){setTimeout(function(){adminMapInit(lat,lon);},200);return;}
+  lat=lat||35.6689;lon=lon||139.7208;
+  if(_adminMap){try{_adminMap.remove();}catch(e){}}_adminMap=null;_adminMarker=null;
+  var el=document.getElementById('admin-lmap');if(!el)return;
   el.innerHTML='';
   _adminMap=L.map('admin-lmap',{zoomControl:true,scrollWheelZoom:true}).setView([lat,lon],16);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'\u00a9 OpenStreetMap',maxZoom:19}).addTo(_adminMap);
   _adminMarker=L.marker([lat,lon],{draggable:true}).addTo(_adminMap);
-  _adminMarker.on('dragend',function(){
-    var pos=_adminMarker.getLatLng();
-    document.getElementById('admin-lat').value=pos.lat.toFixed(6);
-    document.getElementById('admin-lon').value=pos.lng.toFixed(6);
-    document.getElementById('admin-lat-disp').textContent=pos.lat.toFixed(5);
-    document.getElementById('admin-lon-disp').textContent=pos.lng.toFixed(5);
-  });
-  _adminMap.on('click',function(e){
-    _adminMarker.setLatLng(e.latlng);
-    document.getElementById('admin-lat').value=e.latlng.lat.toFixed(6);
-    document.getElementById('admin-lon').value=e.latlng.lng.toFixed(6);
-    document.getElementById('admin-lat-disp').textContent=e.latlng.lat.toFixed(5);
-    document.getElementById('admin-lon-disp').textContent=e.latlng.lng.toFixed(5);
-  });
-  var latEl=document.getElementById('admin-lat'),lonEl=document.getElementById('admin-lon');
-  if(latEl)latEl.value=lat.toFixed?lat.toFixed(6):lat;
-  if(lonEl)lonEl.value=lon.toFixed?lon.toFixed(6):lon;
-  document.getElementById('admin-lat-disp').textContent=parseFloat(lat).toFixed(5);
-  document.getElementById('admin-lon-disp').textContent=parseFloat(lon).toFixed(5);
-  [200,500,1000].forEach(function(t){setTimeout(function(){if(_adminMap)_adminMap.invalidateSize();},t);});
+  _adminMarker.on('dragend',function(){var p=_adminMarker.getLatLng();document.getElementById('admin-lat').value=p.lat.toFixed(6);document.getElementById('admin-lon').value=p.lng.toFixed(6);document.getElementById('admin-lat-disp').textContent=p.lat.toFixed(5);document.getElementById('admin-lon-disp').textContent=p.lng.toFixed(5);});
+  _adminMap.on('click',function(e){_adminMarker.setLatLng(e.latlng);document.getElementById('admin-lat').value=e.latlng.lat.toFixed(6);document.getElementById('admin-lon').value=e.latlng.lng.toFixed(6);document.getElementById('admin-lat-disp').textContent=e.latlng.lat.toFixed(5);document.getElementById('admin-lon-disp').textContent=e.latlng.lng.toFixed(5);});
+  document.getElementById('admin-lat').value=lat.toFixed(6);document.getElementById('admin-lon').value=lon.toFixed(6);
+  document.getElementById('admin-lat-disp').textContent=parseFloat(lat).toFixed(5);document.getElementById('admin-lon-disp').textContent=parseFloat(lon).toFixed(5);
+  [100,300,700,1200].forEach(function(t){setTimeout(function(){if(_adminMap)_adminMap.invalidateSize();},t);});
 }
 
 function adminMapSearchAddr(){
   var addr=(document.getElementById('nfad')?.value||document.getElementById('fad')?.value||'').trim();
-  if(!addr)return;
-  var base=extractJpAddr(addr);
-  fetch('https://nominatim.openstreetmap.org/search?q='+encodeURIComponent(base)+'&format=json&limit=1&countrycodes=jp',{headers:{'Accept-Language':'ja','User-Agent':'COWORKMILL/1.0'}})
-  .then(function(r){return r.json();}).then(function(res){
-    if(res&&res[0])adminMapInit(parseFloat(res[0].lat),parseFloat(res[0].lon));
-    else alert('住所が見つかりませんでした');
-  }).catch(function(){alert('検索エラー');});
+  if(!addr){alert('住所を入力してください');return;}
+  var m=addr.match(/^(.+?[都道府県])(.+?[市区町村郡])(.+?)[d０-９]/);
+  var base=m?(m[3].replace(/s.*/,'').trim()+' '+m[2].replace(/s.*/,'')+' '+m[1]):addr.split(/[s　]/)[0];
+  function doSearch(){
+    fetch('https://nominatim.openstreetmap.org/search?q='+encodeURIComponent(base)+'&format=json&limit=1',{headers:{'Accept-Language':'ja','User-Agent':'COWORKMILL/1.0'}})
+    .then(function(r){return r.json();}).then(function(res){
+      if(!res||!res.length){alert('住所が見つかりませんでした');return;}
+      var lat=parseFloat(res[0].lat),lon=parseFloat(res[0].lon);
+      if(_adminMap){_adminMap.setView([lat,lon],16);_adminMarker.setLatLng([lat,lon]);}
+      else{adminMapInit(lat,lon);}
+      document.getElementById('admin-lat').value=lat.toFixed(6);
+      document.getElementById('admin-lon').value=lon.toFixed(6);
+      document.getElementById('admin-lat-disp').textContent=lat.toFixed(5);
+      document.getElementById('admin-lon-disp').textContent=lon.toFixed(5);
+    }).catch(function(){alert('検索エラー');});
+  }
+  if(!_adminMap){
+    var latV=parseFloat(document.getElementById('admin-lat')?.value||0)||35.6689;
+    var lonV=parseFloat(document.getElementById('admin-lon')?.value||0)||139.7208;
+    adminMapInit(latV,lonV);
+    setTimeout(doSearch,800);
+  } else { doSearch(); }
 }
 /* 施設編集画面を開いた時にマップを初期化 */
 var _origSv=window.sv;
