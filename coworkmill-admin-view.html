@@ -1564,25 +1564,7 @@ window.addEventListener('DOMContentLoaded', () => {
   };
   window.approveVoice=function(id){window.sbFetch('/rest/v1/voices?id=eq.'+id,{method:'PATCH',body:JSON.stringify({status:'approved'})}).then(function(){window.loadAdminVoices();});};
   window.deleteVoice=function(id){if(!confirm('削除しますか？'))return;window.sbFetch('/rest/v1/voices?id=eq.'+id,{method:'DELETE'}).then(function(){window.loadAdminVoices();});};
-  var _p=setInterval(function(){if(typeof window.go==='function'&&!window.go._cwmW){clearInterval(_p);var orig=window.go;window.go=function(id,el){orig(id,el);if(id==='voice')setTimeout(window.loadAdminVoices,200);if(id==='db')setTimeout(window.loadAdminVoices,300);if(id==='edit'){setTimeout(function(){
-    if(typeof window.adminMapInit!=='function')return;
-    /* 施設ごとのlat/lonをfacs[cur]から取得 */
-    var fac=window.facs&&window.facs[window.cur];
-    var lat=fac&&fac.latitude?parseFloat(fac.latitude):0;
-    var lon=fac&&fac.longitude?parseFloat(fac.longitude):0;
-    /* admin-lat/lonフィールドをリセット */
-    var latEl=document.getElementById('admin-lat');
-    var lonEl=document.getElementById('admin-lon');
-    if(latEl)latEl.value=lat||'';
-    if(lonEl)lonEl.value=lon||'';
-    /* マップをリセット */
-    window._adminMap=null;window._adminMarker=null;
-    var lmapEl=document.getElementById('admin-lmap');
-    if(lmapEl)lmapEl.innerHTML='';
-    window.adminMapInit(lat||35.6689,lon||139.7208);
-    /* lat/lonが0の場合は住所から検索 */
-    if(!lat||!lon){setTimeout(window.adminMapSearchAddr,800);}
-  },500);}};window.go._cwmW=true;}},50);
+  var _p=setInterval(function(){if(typeof window.go==='function'&&!window.go._cwmW){clearInterval(_p);var orig=window.go;window.go=function(id,el){orig(id,el);if(id==='voice')setTimeout(window.loadAdminVoices,200);if(id==='db')setTimeout(window.loadAdminVoices,300);if(id==='edit'){setTimeout(function(){if(typeof window.adminMapInit!=='function')return;var allFis=Array.from(document.querySelectorAll('#fac-list .fi'));var activeFi=document.querySelector('#fac-list .fi.on')||document.querySelector('#fac-list .fi.active');var idx=allFis.indexOf(activeFi);window.sbFetch('/rest/v1/spaces?select=id,latitude,longitude&order=created_at').then(function(spaces){var sp=spaces&&spaces[idx];var lat=sp&&sp.latitude?parseFloat(sp.latitude):0;var lon=sp&&sp.longitude?parseFloat(sp.longitude):0;var latEl=document.getElementById('admin-lat');var lonEl=document.getElementById('admin-lon');if(latEl)latEl.value=lat||'';if(lonEl)lonEl.value=lon||'';window._adminMap=null;window._adminMarker=null;var lmapEl=document.getElementById('admin-lmap');if(lmapEl)lmapEl.innerHTML='';window.adminMapInit(lat||35.6689,lon||139.7208);if(!lat||!lon)setTimeout(window.adminMapSearchAddr,800);}).catch(function(){window.adminMapInit(35.6689,139.7208);});},500);}};window.go._cwmW=true;}},50);
 })();</script>
 <script>
 /* Admin Map Picker */
