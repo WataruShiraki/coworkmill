@@ -1664,7 +1664,7 @@ function tryMap(){
   if(_mapDone)return;
   var sid=new URLSearchParams(window.location.search).get('id');
   if(!sid)return;
-  fetch(CWM_SB_URL+'/rest/v1/spaces?id=eq.'+sid+'&select=name,latitude,longitude,address,official_url',
+  fetch(CWM_SB_URL+'/rest/v1/spaces?id=eq.'+sid+'&select=name,latitude,longitude,address,official_url,facilities,price_dropin_day,price_dropin_hour,price_monthly_amount,price_monthly_max,price_note',
     {headers:{'apikey':CWM_SB_KEY,'Authorization':'Bearer '+CWM_SB_KEY}})
   .then(function(r){return r.json();})
   .then(function(data){
@@ -1693,7 +1693,9 @@ function tryMap(){
       .then(function(res){if(res&&res[0])showMap(parseFloat(res[0].lat),parseFloat(res[0].lon),sp.address);})
       .catch(function(){});
     }
-  }).catch(function(){});
+    /* facilitiesフラグを更新 */
+    if(sp.facilities&&window.renderFacilityFlags){window.renderFacilityFlags(sp.facilities);}
+    }).catch(function(){});
 }
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function fmt(d){try{return new Date(d).toLocaleDateString('ja-JP');}catch(e){return '';}}
@@ -1748,6 +1750,37 @@ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded'
       });
   };
 })();
+</script>
+<script>
+window.renderFacilityFlags=function(facs){
+  if(!facs||!facs.length)return;
+  var FAC_MAP={
+    power:'全席電源完備',wifi:'高速Wi-Fi',
+    private_room:'完全個室あり',meeting_room:'会議室あり',
+    cafe:'カフェ併設',credit_card:'クレジットカード可',
+    english:'英語スタッフ常駐',open24h:'24時間利用可',
+    smoking:'喫煙スペースあり'
+  };
+  var PRIORITY=['open24h','private_room','english','credit_card','cafe','meeting_room','power','wifi'];
+  /* aside-flags */
+  var container=document.getElementById('d-aside-flags');
+  if(container){
+    container.innerHTML='';
+    PRIORITY.filter(function(k){return facs.includes(k);}).slice(0,5).forEach(function(k){
+      var el=document.createElement('div');el.className='aside-flag';
+      el.textContent=FAC_MAP[k]||k;container.appendChild(el);
+    });
+  }
+  /* eyebrowバッジ */
+  var b24=document.getElementById('d-badge-24h');
+  var bPr=document.getElementById('d-badge-private');
+  var bEn=document.getElementById('d-badge-en');
+  var bCard=document.getElementById('d-card-badge');
+  if(b24&&facs.includes('open24h'))b24.style.display='';
+  if(bPr&&facs.includes('private_room'))bPr.style.display='';
+  if(bEn&&facs.includes('english'))bEn.style.display='';
+  if(bCard&&facs.includes('credit_card'))bCard.style.display='';
+};
 </script>
 </body>
 </html>
