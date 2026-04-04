@@ -113,7 +113,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:56px;display:flex;ali
 .sf-opt.on .sf-check::after{content:'✓';font-size:9px;font-weight:700;color:#fff}
 .sf-name{font-size:12px;color:var(--gray-600);transition:color .15s}
 .sf-opt.on .sf-name{color:var(--black);font-weight:500}
-.sf-cnt{font-size:10px;color:var(--gray-400);margin-left:auto}
+.sf-cnt{display:none!important;font-size:10px;color:var(--gray-400);margin-left:auto}
 .sf-ward-wrap{margin:6px 0 10px 24px;animation:fadeUp .2s ease}
 .sf-ward-label{font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--gray-400);margin-bottom:6px}
 .sf-ward-grid{display:flex;flex-wrap:wrap;gap:4px}
@@ -133,8 +133,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:56px;display:flex;ali
 
 /* list view */
 .sp-list-view{display:flex!important;flex-direction:column;gap:12px}
-.sp-list-view .scard{display:flex;flex-direction:row;min-height:100px;max-height:120px}
-.sp-list-view .scard-img{width:160px!important;min-width:160px;height:100%!important;border-radius:10px 0 0 10px}
+.sp-list-view .scard{display:flex;flex-direction:row;height:120px}
+.sp-list-view .scard-img{width:160px!important;min-width:160px;height:120px!important;border-radius:10px 0 0 10px;flex-shrink:0}
 .sp-list-view .scard-body{flex:1;padding:12px 16px;display:flex;flex-direction:column;justify-content:center}
 
 .spaces-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
@@ -156,7 +156,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:56px;display:flex;ali
 .scard-wtags{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:12px;flex:1}
 .scard-wtag{font-size:8px;padding:2px 7px;background:var(--accent-light);color:#2BB5C8;border-radius:3px;font-weight:500}
 .scard-footer{display:flex;align-items:center;justify-content:space-between;padding-top:10px;border-top:1px solid var(--gray-100)}
-.scard-price{font-size:10px;color:var(--gray-400)}
+.scard-price{line-height:1.6;font-size:10px;color:var(--gray-400)}
 .scard-price strong{font-family:var(--font-d);font-size:13px;font-weight:300;color:var(--black);display:block}
 .scard-arrow{font-size:11px;color:var(--gray-400);transition:all .2s}
 .scard:hover .scard-arrow{color:var(--brand-pink);transform:translateX(3px)}
@@ -378,7 +378,7 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
 .sp-city-opt.on .sp-city-check::after{content:'✓';font-size:10px;font-weight:700;color:#fff}
 .sp-city-opt span:nth-child(2){font-size:13px;color:var(--gray-800);flex:1}
 .sp-city-opt.on span:nth-child(2){font-weight:600;color:var(--black)}
-.sp-city-cnt{font-size:11px;color:var(--gray-400);margin-left:auto}
+.sp-city-cnt{display:none!important;font-size:11px;color:var(--gray-400);margin-left:auto}
 /* 雰囲気・設備ボタン */
 .sp-vibe-grid{
   padding:4px 20px 16px;
@@ -538,7 +538,7 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
   cursor:pointer;
   transition:opacity .15s;
 }
-.sp-filter-apply:hover{opacity:.9}
+.sp-filter-apply:hover{opacity:1;transform:translateY(-1px);box-shadow:0 4px 12px rgba(43,181,200,.4)}
 /* リセットボタン */
 .sp-filter-reset{
   font-family:var(--font-b);
@@ -856,7 +856,7 @@ let allSpaces = [];
 
 async function loadSpaces() {
   try {
-    const res = await fetch(SUPABASE_URL_SP + '/rest/v1/spaces?select=id,name,area,prefecture,plan,status,image_main,architect_name,architect_firm,vibe,price_dropin,price_dropin_hour,price_dropin_day,facilities,created_at&status=eq.live&order=created_at.desc', {
+    const res = await fetch(SUPABASE_URL_SP + '/rest/v1/spaces?select=id,name,area,prefecture,plan,status,image_main,architect_name,architect_firm,vibe,price_dropin,price_dropin_hour,price_dropin_day,price_monthly_amount,price_monthly_max,facilities,created_at&status=eq.live&order=created_at.desc', {
       headers: { 'apikey': SUPABASE_KEY_SP, 'Authorization': 'Bearer ' + SUPABASE_KEY_SP }
     });
     const data = await res.json();
@@ -875,8 +875,21 @@ function makeCard(d, i, type) {
   const img = d.image_main || '';
   const isPick = d.plan === 'pro';
   const href = 'coworkmill-detail.html?id=' + d.id;
-  var _ph=d.price_dropin_hour,_pd=d.price_dropin_day;
-const price = (_ph||_pd) ? 'ドロップイン <strong>' + (_ph?(_ph.toLocaleString('ja-JP')+'円/時間'):(_pd.toLocaleString('ja-JP')+'円/日')) + '</strong>' : '料金はお問い合わせ';
+  var _ph=d.price_dropin_hour,_pd=d.price_dropin_day,_pm=d.price_monthly_amount,_pmx=d.price_monthly_max;
+  var priceLines=[];
+  if(_ph||_pd){
+    var dp='ドロップイン: ';
+    if(_ph)dp+=_ph.toLocaleString('ja-JP')+'円/1時間';
+    if(_ph&&_pd)dp+' &nbsp; ';
+    if(_pd)dp+=_pd.toLocaleString('ja-JP')+'円/1日';
+    priceLines.push(dp);
+  }
+  if(_pm){
+    var mp='月額: '+_pm.toLocaleString('ja-JP')+'円';
+    if(_pmx)mp+='～'+_pmx.toLocaleString('ja-JP')+'円';
+    priceLines.push(mp);
+  }
+  const price = priceLines.length?priceLines.join('<br>'):'料金はお問い合わせ';
   const vibes = Array.isArray(d.vibe) ? d.vibe : (d.vibe ? [d.vibe] : []);
   const delay = 'animation-delay:' + (i * 0.05) + 's';
 
@@ -1048,7 +1061,7 @@ function filterSidebar() {
   var CITY_MAP = {tokyo:'東京都',osaka:'大阪府',kyoto:'京都府',fukuoka:'福岡県',yokohama:'神奈川県',sapporo:'北海道',other:null};
   var activeCities = Array.from(document.querySelectorAll('.sf-opt.on[onclick*="toggleCity"]')).map(function(el){
     var m = el.getAttribute('onclick').match(/'([^']+)'/g);
-    return m ? m[1].replace(/'/g,'') : '';
+    return m ? m[0].replace(/'/g,'') : '';
   }).filter(Boolean);
   var allCities = activeCities.length === 0;
 
