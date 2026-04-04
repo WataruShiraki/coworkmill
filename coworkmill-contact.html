@@ -161,6 +161,32 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
 
 }
 </style>
+<script>
+/* 施設詳細ページからのURLパラメータ自動入力 */
+(function(){
+  var space = new URLSearchParams(window.location.search).get('space');
+  if(!space) return;
+  function fill(){
+    var inputs = document.querySelectorAll('input[type="text"], input[type="email"], select, textarea');
+    /* 2番目のinput = 会社名・施設名 */
+    if(inputs[1] && inputs[1].tagName==='INPUT') inputs[1].value = space;
+    /* textareaにプリセット */
+    var ta = document.querySelector('textarea');
+    if(ta && !ta.value) ta.value = '【お問い合わせの施設: '+space+'】\n\n';
+    /* バナー表示 */
+    var form = document.querySelector('form, .contact-form, .form-wrap, main');
+    if(form){
+      var banner = document.createElement('div');
+      banner.style.cssText = 'background:rgba(43,181,200,.12);border:1px solid rgba(43,181,200,.3);border-radius:8px;padding:12px 16px;margin-bottom:20px;font-size:13px;color:#2BB5C8;';
+      banner.innerHTML = '<strong style="margin-right:6px">📍</strong>「'+space+'」についてのお問い合わせ';
+      form.insertBefore(banner, form.firstChild);
+    }
+  }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded', fill);
+  } else { fill(); }
+})();
+</script>
 </head>
 <body>
 <nav>
