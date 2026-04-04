@@ -947,10 +947,10 @@ function collectFormData() {
     nearest_station: g('nfst', 'fst', 'p-station'),
     nearest_line:    g('nfline', 'fline', 'p-line'),
     walk_minutes:    ni('p-walk'),
-    price_dropin_day:  parseInt(document.getElementById('nf-price-daily')?.value||document.getElementById('price-daily')?.value||'')||null,
-    price_dropin_hour: parseInt(document.getElementById('nf-price-hourly')?.value||document.getElementById('price-hourly')?.value||'')||null,
-    price_monthly_amount: parseInt(document.getElementById('nf-price-monthly')?.value||document.getElementById('price-monthly')?.value||'')||null,
-    price_monthly_max: parseInt(document.getElementById('nf-price-monthly-max')?.value||document.getElementById('price-monthly-max')?.value||'')||null,
+    price_dropin_day:  (function(){var v=(document.getElementById('nf-price-daily')?.value||document.getElementById('price-daily')?.value||'').replace(/,/g,'');return parseInt(v)||null;})(),
+    price_dropin_hour: (function(){var v=(document.getElementById('nf-price-hourly')?.value||document.getElementById('price-hourly')?.value||'').replace(/,/g,'');return parseInt(v)||null;})(),
+    price_monthly_amount: (function(){var v=(document.getElementById('nf-price-monthly')?.value||document.getElementById('price-monthly')?.value||'').replace(/,/g,'');return parseInt(v)||null;})(),
+    price_monthly_max: (function(){var v=(document.getElementById('nf-price-monthly-max')?.value||document.getElementById('price-monthly-max')?.value||'').replace(/,/g,'');return parseInt(v)||null;})(),
     price_note:      g('nf-price-hourly', 'p-pnote'),
     description:     g('nfde', 'fde', 'p-desc'),
     capacity:        ni('p-cap'),
@@ -1038,13 +1038,13 @@ async function loadSpaceDetail(f) {
     sv('fline',d.nearest_line);
     sv('fde',  d.description);
     /* 料金フィールドを読み込む */
-    if(document.getElementById('price-daily'))document.getElementById('price-daily').value=d.price_dropin_day||'';
-    if(document.getElementById('nf-price-daily'))document.getElementById('nf-price-daily').value=d.price_dropin_day||'';
-    if(document.getElementById('price-monthly'))document.getElementById('price-monthly').value=d.price_monthly_amount||'';
-    if(document.getElementById('price-monthly-max'))document.getElementById('price-monthly-max').value=d.price_monthly_max||'';
+    if(document.getElementById('price-daily'))document.getElementById('price-daily').value=d.price_dropin_day?d.price_dropin_day.toLocaleString('ja-JP'):'';
+    if(document.getElementById('nf-price-daily'))document.getElementById('nf-price-daily').value=d.price_dropin_day?d.price_dropin_day.toLocaleString('ja-JP'):'';
+    if(document.getElementById('price-monthly'))document.getElementById('price-monthly').value=d.price_monthly_amount?d.price_monthly_amount.toLocaleString('ja-JP'):'';
+    if(document.getElementById('price-monthly-max'))document.getElementById('price-monthly-max').value=d.price_monthly_max?d.price_monthly_max.toLocaleString('ja-JP'):'';
     if(document.getElementById('nf-price-monthly'))document.getElementById('nf-price-monthly').value=d.price_monthly_amount||'';
-    if(document.getElementById('price-hourly'))document.getElementById('price-hourly').value=d.price_dropin_hour||'';
-    if(document.getElementById('nf-price-hourly'))document.getElementById('nf-price-hourly').value=d.price_dropin_hour||'';
+    if(document.getElementById('price-hourly'))document.getElementById('price-hourly').value=d.price_dropin_hour?d.price_dropin_hour.toLocaleString('ja-JP'):'';
+    if(document.getElementById('nf-price-hourly'))document.getElementById('nf-price-hourly').value=d.price_dropin_hour?d.price_dropin_hour.toLocaleString('ja-JP'):'';
     if(document.getElementById('f-official-url'))document.getElementById('f-official-url').value=d.official_url||'';
     sv('fu',   d.website_url);
     sv('fig',  d.instagram);
@@ -1770,6 +1770,40 @@ window.loadClickStats=function(){
     if(el)el.textContent=total+'座';
   }).catch(function(){});
 };
+</script>
+<script>
+/* 料金フィールドのカンマ区切り自動フォーマット */
+(function(){
+  function formatPriceInput(el){
+    if(!el) return;
+    el.addEventListener('input', function(){
+      var raw = this.value.replace(/[^0-9]/g, '');
+      if(raw === '') { this.value = ''; return; }
+      this.value = parseInt(raw,10).toLocaleString('ja-JP');
+    });
+    el.addEventListener('blur', function(){
+      var raw = this.value.replace(/[^0-9]/g, '');
+      if(raw) this.value = parseInt(raw,10).toLocaleString('ja-JP');
+    });
+    el.placeholder = el.placeholder.replace(/例：(\d+)/,'例：$1').replace('例：','例：') || el.placeholder;
+  }
+  function initPriceInputs(){
+    ['price-hourly','price-daily','price-monthly','price-monthly-max',
+     'nf-price-hourly','nf-price-daily','nf-price-monthly','nf-price-monthly-max'].forEach(function(id){
+      formatPriceInput(document.getElementById(id));
+    });
+  }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded', initPriceInputs);
+  } else { initPriceInputs(); }
+  /* 施設切り替え後も再適用 */
+  var origGo = window.go;
+  window.go = function(id, el){
+    var r = origGo ? origGo.apply(this, arguments) : undefined;
+    setTimeout(initPriceInputs, 300);
+    return r;
+  };
+})();
 </script>
 </body>
 </html>
