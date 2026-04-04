@@ -254,10 +254,7 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
       <div class="sc"><div class="slb">利用者の声（累計）</div><div class="sv" id="dvo">0</div><div class="ss">新着 0件</div></div>
       
     </div>
-    <div class="sec">
-      <div class="sec-h"><div class="sec-ht">仕事タグ別 利用者数</div></div>
-      <div class="sec-b" id="dbars" style="display:flex;flex-direction:column;gap:10px"></div>
-    </div>
+    
   </div>
 
   <!-- INFO -->
@@ -1435,14 +1432,26 @@ async function pubFac() {
   }
 }
 
-function renderDash(d) {
-  document.getElementById('dv').textContent=d.v;
-  document.getElementById('dc').textContent=d.c;
-  document.getElementById('dvo').textContent=d.vo;
-  document.getElementById('dt').textContent=d.t;
-  document.getElementById('dtc').textContent=d.tc;
-  const el=document.getElementById('dbars');
-  el.innerHTML=d.bars.length?d.bars.map(b=>'<div style="display:flex;align-items:center;gap:10px"><div style="font-family:var(--fd);font-size:10px;width:110px">'+b.l+'</div><div style="flex:1;height:7px;background:var(--g100);border-radius:3px;overflow:hidden"><div style="height:100%;width:'+b.p+'%;background:linear-gradient(90deg,#79F1A4,#2BB5C8);border-radius:3px"></div></div><div style="font-size:10px;color:var(--g400);min-width:32px;text-align:right">'+b.c+'</div></div>').join(''):'<div style="text-align:center;padding:24px;color:var(--g400);font-size:12px">まだデータがありません</div>';
+function renderDash(d){
+  function st(id,v){var e=document.getElementById(id);if(e)e.textContent=v;}
+  st('dv',d.v);st('dc',d.c);st('dvo',d.vo);st('dt',d.t);st('dtc',d.tc);st('dig',d.ig);
+  var bars=document.getElementById('dbars');
+  if(bars&&d.bars){bars.innerHTML='';d.bars.forEach(function(b){
+    var row=document.createElement('div');
+    row.style.cssText='display:flex;align-items:center;gap:8px;font-size:11px;margin-bottom:5px';
+    var lbl=document.createElement('span');
+    lbl.style.cssText='width:90px;color:var(--g400);text-align:right;flex-shrink:0';
+    lbl.textContent=b.label;
+    var track=document.createElement('div');
+    track.style.cssText='flex:1;background:var(--g100);border-radius:4px;height:6px;overflow:hidden';
+    var fill=document.createElement('div');
+    fill.style.cssText='height:100%;background:var(--accent);border-radius:4px;width:'+Math.min(b.pct,100)+'%';
+    track.appendChild(fill);
+    var cnt=document.createElement('span');
+    cnt.style.cssText='color:var(--g500);font-weight:600;flex-shrink:0;min-width:20px;text-align:right';
+    cnt.textContent=b.cnt;
+    row.appendChild(lbl);row.appendChild(track);row.appendChild(cnt);bars.appendChild(row);
+  });}
 }
 
 function tw(el) {
