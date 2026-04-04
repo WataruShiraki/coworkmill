@@ -713,8 +713,8 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
       <div class="voice-post" id="voice-post">
         <div id="vp-step1">
           <div class="vp-intro">
-            <div class="vp-intro-badge">利用したことのある方はこちら</div>
-            <div class="vp-intro-title">このスペースを応援しよう！</div>
+            <div class="vp-intro-badge">利用済みの方はこちら</div>
+            <div class="vp-intro-title">実際に利用した方の声</div>
             <div class="vp-intro-sub">どの仕事で使いましたか？ タグを選ぶだけでOK。一言添えてもらえると次の利用者の参考になります。</div>
           </div>
           <div class="vp-label" style="margin-top:14px">どの仕事で使いましたか？</div>
@@ -734,7 +734,7 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
             <textarea class="vp-textarea" id="vp-text" placeholder="例）完全に集中できました。また来ます！" maxlength="100"></textarea>
             <div class="vp-actions">
               <span></span>
-              <button class="vp-submit" onclick="submitVoice()">応援する →</button>
+              <button class="vp-submit" onclick="submitVoice()">投稿する →</button>
             </div>
           </div>
         </div>
@@ -1628,7 +1628,7 @@ function tryMap(){
   if(_mapDone)return;
   var sid=new URLSearchParams(window.location.search).get('id');
   if(!sid)return;
-  fetch(CWM_SB_URL+'/rest/v1/spaces?id=eq.'+sid+'&select=name,latitude,longitude,address,official_url',
+  fetch(CWM_SB_URL+'/rest/v1/spaces?id=eq.'+sid+'&select=name,latitude,longitude,address,official_url,price_dropin,price_monthly,price_note,price_hourly',
     {headers:{'apikey':CWM_SB_KEY,'Authorization':'Bearer '+CWM_SB_KEY}})
   .then(function(r){return r.json();})
   .then(function(data){

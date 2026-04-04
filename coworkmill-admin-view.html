@@ -925,8 +925,8 @@ function collectFormData() {
     nearest_station: g('nfst', 'fst', 'p-station'),
     nearest_line:    g('nfline', 'fline', 'p-line'),
     walk_minutes:    ni('p-walk'),
-    price_dropin:    ni('p-drop'),
-    price_monthly:   ni('p-monthly'),
+    price_dropin:    (document.getElementById('nf-price-daily')?.value||document.getElementById('price-daily')?.value||'').trim()||null,
+    price_monthly:   (document.getElementById('nf-price-monthly')?.value||document.getElementById('price-monthly')?.value||'').trim()||null,
     price_note:      g('nf-price-hourly', 'p-pnote'),
     description:     g('nfde', 'fde', 'p-desc'),
     capacity:        ni('p-cap'),
@@ -1013,6 +1013,13 @@ async function loadSpaceDetail(f) {
     sv('fst',  d.nearest_station);
     sv('fline',d.nearest_line);
     sv('fde',  d.description);
+    /* 料金フィールドを読み込む */
+    if(document.getElementById('price-daily'))document.getElementById('price-daily').value=d.price_dropin||'';
+    if(document.getElementById('nf-price-daily'))document.getElementById('nf-price-daily').value=d.price_dropin||'';
+    if(document.getElementById('price-monthly'))document.getElementById('price-monthly').value=d.price_monthly||'';
+    if(document.getElementById('nf-price-monthly'))document.getElementById('nf-price-monthly').value=d.price_monthly||'';
+    if(document.getElementById('price-hourly'))document.getElementById('price-hourly').value=d.price_hourly||'';
+    if(document.getElementById('nf-price-hourly'))document.getElementById('nf-price-hourly').value=d.price_hourly||'';
     if(document.getElementById('f-official-url'))document.getElementById('f-official-url').value=d.official_url||'';
     sv('fu',   d.website_url);
     sv('fig',  d.instagram);
