@@ -372,7 +372,7 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
     </div>
     <div style="display:flex;justify-content:center;gap:8px;padding:4px 0 8px">
       <button class="bol" onclick="window.open('coworkmill-detail.html')">プレビュー →</button>
-      <button class="bsv" onclick="doSave()">変更を保存</button>
+      <button class="bsv" id="savebtn-bottom" onclick="doSave()">変更を保存</button>
     </div>
   </div>
 
@@ -1624,6 +1624,21 @@ window.sv=function(id,val){
     },300);
   }
 };
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  var _orig = window.doSave;
+  window.doSave = async function(){
+    var bb = document.getElementById('savebtn-bottom');
+    if(bb){bb.textContent='保存中...';bb.disabled=true;}
+    try{
+      await _orig();
+      if(bb){bb.textContent='✓ 保存しました';bb.disabled=false;setTimeout(function(){bb.textContent='変更を保存';},3000);}
+    }catch(e){
+      if(bb){bb.textContent='失敗しました';bb.disabled=false;}
+    }
+  };
+});
 </script>
 </body>
 </html>
