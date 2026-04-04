@@ -292,11 +292,16 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:56px;display:flex;ali
 .aside-card{background:var(--white);border:1px solid var(--gray-100);border-radius:14px;padding:28px;position:sticky;top:72px}
 .aside-space-name{font-family:var(--font-display);font-size:16px;font-weight:500;letter-spacing:-.02em;margin-bottom:4px}
 .aside-city{font-size:10px;color:#2BB5C8;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:20px}
+
 .aside-price{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--gray-100)}
-.aside-price-label{font-size:10px;color:var(--gray-400);margin-bottom:4px}
-.aside-price-val{font-family:var(--font-display);font-size:24px;font-weight:300;color:var(--black)}
-.aside-price-unit{font-size:11px;color:var(--gray-400);margin-left:4px}
-.aside-price-note{font-size:10px;color:var(--gray-400);margin-top:4px}
+.aside-price-type{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gray-400);margin-bottom:8px}
+.aside-price-row{display:flex;align-items:baseline;gap:8px;margin-bottom:6px}
+.aside-price-tag{font-size:10px;color:var(--gray-400);min-width:26px;flex-shrink:0;padding-top:4px}
+.aside-price-amount{font-family:var(--font-display);font-size:22px;font-weight:300;color:var(--black);line-height:1.2}
+.aside-price-none{font-family:var(--font-display);font-size:22px;font-weight:300;color:var(--black)}
+.aside-price-divider{height:1px;background:var(--gray-100);margin:12px 0 10px}
+.aside-price-monthly-lbl{font-size:9px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gray-400);margin-bottom:6px}
+.aside-price-monthly-val{font-family:var(--font-display);font-size:18px;font-weight:300;color:var(--black)}
 .aside-flags{display:flex;flex-direction:column;gap:6px;margin-bottom:24px}
 .aside-flag{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--gray-600)}
 .aside-flag::before{content:'';width:6px;height:6px;border-radius:50%;background:linear-gradient(135deg,#79F1A4,#2BB5C8);flex-shrink:0}
@@ -502,8 +507,12 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
   .btn-site:hover{border-color:#2BB5C8}
   .btn-instagram{background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);border:none;color:#fff;opacity:.9}
   .btn-instagram:hover{opacity:1;transform:translateY(-1px)}
-  .aside-price-val{color:#f0f0f0}
-  .aside-price-note{color:#888}
+  .aside-price-amount{color:#f0f0f0}
+  .aside-price-monthly-val{color:#f0f0f0}
+  .aside-price-none{color:#f0f0f0}
+  .aside-price-type{color:#666}
+  .aside-price-tag{color:#666}
+  .aside-price-monthly-lbl{color:#666}
   .aside-feature{color:#aaa}
   .arch-card{background:#1e1e1e;border-color:#333}
   .arch-name{color:#f0f0f0}
@@ -833,7 +842,22 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
       <div class="aside-space-name" id="d-aside-name"></div>
       <div class="aside-city" id="d-aside-city"></div>
       <div class="aside-price">
-        <div class="aside-price-label">ドロップイン</div>
+        <div class="aside-price-type">ドロップイン</div>
+        <div id="d-price-hour-row" style="display:none" class="aside-price-row">
+          <span class="aside-price-tag">時間</span>
+          <span class="aside-price-amount" id="d-price-hour">-</span>
+        </div>
+        <div id="d-price-day-row" style="display:none" class="aside-price-row">
+          <span class="aside-price-tag">1日</span>
+          <span class="aside-price-amount" id="d-price-day">-</span>
+        </div>
+        <div id="d-price-none" class="aside-price-none">—</div>
+        <div id="d-monthly-section" style="display:none">
+          <div class="aside-price-divider"></div>
+          <div class="aside-price-monthly-lbl">月額プラン</div>
+          <div class="aside-price-monthly-val" id="d-price-monthly">—</div>
+        </div>
+      </div>
         <div><span class="aside-price-val" id="d-price">—</span><span class="aside-price-unit">〜 / 日</span></div>
         <div class="aside-price-note">月額プラン・会議室は要問い合わせ</div>
       </div>
@@ -1490,19 +1514,22 @@ document.addEventListener('DOMContentLoaded', () => {
       (function(){
         var hr=d.price_dropin_hour,dy=d.price_dropin_day,mo=d.price_monthly_amount,mx=d.price_monthly_max;
         var fmt=function(n){return n?n.toLocaleString('ja-JP')+'円':null;};
-        var parts=[];
-        if(hr)parts.push(fmt(hr)+' / 時間');
-        if(dy)parts.push(fmt(dy)+' / 日');
-        var priceEl=document.getElementById('d-price');
-        var unitEl=document.querySelector('.aside-price-unit');
-        if(priceEl)priceEl.textContent=parts.length?parts.join('　/　'):'—';
-        if(unitEl)unitEl.textContent='';
-        var noteEl=document.querySelector('.aside-price-note');
-        if(noteEl){
-          if(mo&&mx)noteEl.textContent='月額 '+mo.toLocaleString('ja-JP')+'円～'+mx.toLocaleString('ja-JP')+'円';
-          else if(mo)noteEl.textContent='月額 '+mo.toLocaleString('ja-JP')+'円～';
-          else if(d.price_note)noteEl.textContent=d.price_note;
-          else noteEl.textContent='月額プラン・会議室は要問い合わせ';
+        var hourRow=document.getElementById('d-price-hour-row');
+        var hourVal=document.getElementById('d-price-hour');
+        var dayRow=document.getElementById('d-price-day-row');
+        var dayVal=document.getElementById('d-price-day');
+        var noneEl=document.getElementById('d-price-none');
+        if(hourRow&&hourVal){if(hr){hourRow.style.display='flex';hourVal.textContent=fmt(hr)+' / 時間';}else hourRow.style.display='none';}
+        if(dayRow&&dayVal){if(dy){dayRow.style.display='flex';dayVal.textContent=fmt(dy)+' / 日';}else dayRow.style.display='none';}
+        if(noneEl)noneEl.style.display=(hr||dy)?'none':'block';
+        var monthSec=document.getElementById('d-monthly-section');
+        var monthVal=document.getElementById('d-price-monthly');
+        if(monthSec&&monthVal){
+          if(mo){
+            monthSec.style.display='block';
+            if(mx)monthVal.textContent=mo.toLocaleString('ja-JP')+'円～'+mx.toLocaleString('ja-JP')+'円';
+            else monthVal.textContent=mo.toLocaleString('ja-JP')+'円～';
+          }else monthSec.style.display='none';
         }
       })();
 
