@@ -1628,7 +1628,7 @@ function tryMap(){
   if(_mapDone)return;
   var sid=new URLSearchParams(window.location.search).get('id');
   if(!sid)return;
-  fetch(CWM_SB_URL+'/rest/v1/spaces?id=eq.'+sid+'&select=name,latitude,longitude,address,official_url,price_dropin,price_monthly,price_note,price_hourly',
+  fetch(CWM_SB_URL+'/rest/v1/spaces?id=eq.'+sid+'&select=name,latitude,longitude,address,official_url,price_dropin_day,price_dropin_hour,price_monthly_amount,price_note',
     {headers:{'apikey':CWM_SB_KEY,'Authorization':'Bearer '+CWM_SB_KEY}})
   .then(function(r){return r.json();})
   .then(function(data){

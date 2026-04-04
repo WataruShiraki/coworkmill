@@ -325,18 +325,18 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
       <div class="sec-b">
         <div class="fr">
           <div class="fg">
-            <div class="fl">都度利用（ドロップイン）- 時間利用</div>
-            <input class="fin" id="price-hourly" placeholder="例：550円/30分" value="550円/30分">
+            <div class="fl">時間料金（円）</div>
+            <input class="fin" id="price-hourly" placeholder="例：550" value="550円/30分">
           </div>
           <div class="fg">
-            <div class="fl">都度利用（ドロップイン）- 1日利用</div>
-            <input class="fin" id="price-daily" placeholder="例：3,300円/1日" value="">
+            <div class="fl">1日料金（円）</div>
+            <input class="fin" id="price-daily" placeholder="例：3300" value="">
           </div>
         </div>
         <div class="fr">
           <div class="fg">
-            <div class="fl">月額利用</div>
-            <input class="fin" id="price-monthly" placeholder="例：9,900円〜/1ヶ月">
+            <div class="fl">月額（円）</div>
+            <input class="fin" id="price-monthly" placeholder="例：9900">
           </div>
           <div class="fg"></div>
         </div>
@@ -464,11 +464,11 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
       <div class="sec-h"><div><div class="sec-ht">料金</div><div class="sec-hs">空欄の場合は非表示になります</div></div></div>
       <div class="sec-b">
         <div class="fr">
-          <div class="fg"><div class="fl">都度利用（ドロップイン）- 時間利用</div><input class="fin" id="nf-price-hourly" placeholder="例：550円/30分"></div>
-          <div class="fg"><div class="fl">都度利用（ドロップイン）- 1日利用</div><input class="fin" id="nf-price-daily" placeholder="例：3,300円/1日"></div>
+          <div class="fg"><div class="fl">都度利用（ドロップイン）- 時間利用</div><input class="fin" id="nf-price-hourly" placeholder="例：550"></div>
+          <div class="fg"><div class="fl">都度利用（ドロップイン）- 1日利用</div><input class="fin" id="nf-price-daily" placeholder="例：3300"></div>
         </div>
         <div class="fr">
-          <div class="fg"><div class="fl">月額利用</div><input class="fin" id="nf-price-monthly" placeholder="例：9,900円〜/1ヶ月"></div>
+          <div class="fg"><div class="fl">月額利用</div><input class="fin" id="nf-price-monthly" placeholder="例：9900"></div>
           <div class="fg"></div>
         </div>
       </div>
@@ -925,8 +925,9 @@ function collectFormData() {
     nearest_station: g('nfst', 'fst', 'p-station'),
     nearest_line:    g('nfline', 'fline', 'p-line'),
     walk_minutes:    ni('p-walk'),
-    price_dropin:    (document.getElementById('nf-price-daily')?.value||document.getElementById('price-daily')?.value||'').trim()||null,
-    price_monthly:   (document.getElementById('nf-price-monthly')?.value||document.getElementById('price-monthly')?.value||'').trim()||null,
+    price_dropin_day:  parseInt(document.getElementById('nf-price-daily')?.value||document.getElementById('price-daily')?.value||'')||null,
+    price_dropin_hour: parseInt(document.getElementById('nf-price-hourly')?.value||document.getElementById('price-hourly')?.value||'')||null,
+    price_monthly_amount: parseInt(document.getElementById('nf-price-monthly')?.value||document.getElementById('price-monthly')?.value||'')||null,
     price_note:      g('nf-price-hourly', 'p-pnote'),
     description:     g('nfde', 'fde', 'p-desc'),
     capacity:        ni('p-cap'),
@@ -1014,12 +1015,12 @@ async function loadSpaceDetail(f) {
     sv('fline',d.nearest_line);
     sv('fde',  d.description);
     /* 料金フィールドを読み込む */
-    if(document.getElementById('price-daily'))document.getElementById('price-daily').value=d.price_dropin||'';
-    if(document.getElementById('nf-price-daily'))document.getElementById('nf-price-daily').value=d.price_dropin||'';
-    if(document.getElementById('price-monthly'))document.getElementById('price-monthly').value=d.price_monthly||'';
-    if(document.getElementById('nf-price-monthly'))document.getElementById('nf-price-monthly').value=d.price_monthly||'';
-    if(document.getElementById('price-hourly'))document.getElementById('price-hourly').value=d.price_hourly||'';
-    if(document.getElementById('nf-price-hourly'))document.getElementById('nf-price-hourly').value=d.price_hourly||'';
+    if(document.getElementById('price-daily'))document.getElementById('price-daily').value=d.price_dropin_day||'';
+    if(document.getElementById('nf-price-daily'))document.getElementById('nf-price-daily').value=d.price_dropin_day||'';
+    if(document.getElementById('price-monthly'))document.getElementById('price-monthly').value=d.price_monthly_amount||'';
+    if(document.getElementById('nf-price-monthly'))document.getElementById('nf-price-monthly').value=d.price_monthly_amount||'';
+    if(document.getElementById('price-hourly'))document.getElementById('price-hourly').value=d.price_dropin_hour||'';
+    if(document.getElementById('nf-price-hourly'))document.getElementById('nf-price-hourly').value=d.price_dropin_hour||'';
     if(document.getElementById('f-official-url'))document.getElementById('f-official-url').value=d.official_url||'';
     sv('fu',   d.website_url);
     sv('fig',  d.instagram);
