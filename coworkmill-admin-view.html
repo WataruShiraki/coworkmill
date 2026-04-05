@@ -1035,6 +1035,7 @@ async function loadSpacesFromDB() {
 
 // DBから施設詳細を取得してフォームに反映
 async function loadSpaceDetail(f) {
+  resetVibeUI(); // vibeのリセット
   // 写真管理：DB未登録施設は空表示
   const photoEmpty = document.getElementById('photo-empty');
   const photoContent = document.getElementById('photo-content');
