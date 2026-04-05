@@ -991,7 +991,6 @@ function collectFormData() {
     smoking:         g('nf-smoking', 'smoking'),
     contact_name:    g('nf-contact-name'),
     contact_email:   g('nf-contact-email'),
-    status:          'draft'
   };
 }
 
@@ -1414,7 +1413,7 @@ async function saveNew() {
     data.name = nm;
     const result = await sbFetch('/rest/v1/spaces', {
       method: 'POST',
-      body: JSON.stringify(data)
+      body: JSON.stringify((function(d){delete d.status;return d;})(Object.assign({},data)))
     });
     const dbId = result && result[0] ? result[0].id : null;
     facs[cur].nm = nm; facs[cur].ic = ic;
