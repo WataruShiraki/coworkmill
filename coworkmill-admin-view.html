@@ -1983,6 +1983,7 @@ function showVibeToast() {
   var KEY='sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
 
   var WS_COLOR={'Deep Work':'#4F46E5','Creative Work':'#7C3AED','Ideation':'#DB2777','Meeting':'#EA580C','Remote Call':'#0EA5E9','Learning':'#059669','Client Meeting':'#D97706'};
+  var WS_JA={'Deep Work':'集中・執筆・戦略','Creative Work':'制作・クリエイティブ','Creative':'制作・クリエイティブ','Ideation':'アイデア・ブレスト','Meeting':'商談・ミーティング','Client Meeting':'商談・ミーティング','Remote Call':'オンライン会議','Learning':'学習・リサーチ'};
   function wsColor(ws){if(!ws)return '#888';for(var k in WS_COLOR){if(ws.indexOf(k)>-1)return WS_COLOR[k];}return '#2BB5C8';}
 
   function getActiveDbId(){
@@ -2023,7 +2024,7 @@ function showVibeToast() {
         var en=v.workstyle.replace(/[\u3000-\u9FFF\uFF00-\uFFEF]+.*/g,'').trim();
         var ja=v.workstyle.replace(/^[\x00-\x7F]+/,'').trim();
         if(en&&ja){tag.innerHTML=en+'<br><span style="font-size:10px;font-weight:400;opacity:.85">'+ja+'</span>';}
-        else{tag.textContent=v.workstyle;}
+        else{var _en=v.workstyle.replace(/[　-鿿＀-￯]+.*/g,'').trim();var _jaDb=v.workstyle.replace(/^[ -]+/,'').trim();var _ja=_jaDb||(WS_JA[_en]||'');if(_en&&_ja){tag.innerHTML=_en+'<br><span style="font-size:10px;font-weight:400;opacity:.85">'+_ja+'</span>';}else{tag.textContent=v.workstyle;}}
       })();
       wsRow.appendChild(tag);
     }
