@@ -695,12 +695,12 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
     </button>
     <div class="sp-acc-body">
       <div class="sp-vibe-grid">
-        <button class="sp-vibe-btn" onclick="this.classList.toggle('on');filterCards()">EN OK</button>
-        <button class="sp-vibe-btn" onclick="this.classList.toggle('on');filterCards()">24時間</button>
-        <button class="sp-vibe-btn" onclick="this.classList.toggle('on');filterCards()">完全個室</button>
-        <button class="sp-vibe-btn" onclick="this.classList.toggle('on');filterCards()">会議室</button>
-        <button class="sp-vibe-btn" onclick="this.classList.toggle('on');filterCards()">クレカ可</button>
-        <button class="sp-vibe-btn" onclick="this.classList.toggle('on');filterCards()">ドロップイン</button>
+        <button class="sp-vibe-btn" onclick="this.classList.toggle('on');filterCards()" data-fac="english">EN OK</button>
+        <button class="sp-vibe-btn" onclick="this.classList.toggle('on');filterCards()" data-fac="open24h">24時間</button>
+        <button class="sp-vibe-btn" onclick="this.classList.toggle('on');filterCards()" data-fac="private_room">完全個室</button>
+        <button class="sp-vibe-btn" onclick="this.classList.toggle('on');filterCards()" data-fac="meeting_room">会議室</button>
+        <button class="sp-vibe-btn" onclick="this.classList.toggle('on');filterCards()" data-fac="credit_card">クレカ可</button>
+        <button class="sp-vibe-btn" onclick="this.classList.toggle('on');filterCards()" data-fac="dropin">ドロップイン</button>
       </div>
     </div>
   </div>
@@ -717,7 +717,7 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
 
   <!-- SIDEBAR -->
   <aside class="sidebar-filters">
-    <div class="sf-block">
+    <div class="sf-block" style="display:none">
       <div class="sf-title">エリア <span class="sf-clear">クリア</span></div>
       <div class="sf-options">
         <div class="sf-opt on" onclick="toggleCity(this,'tokyo')"><div class="sf-check"></div><span class="sf-name">東京</span><span class="sf-cnt">68</span></div>
@@ -1073,6 +1073,12 @@ function filterSidebar() {
   }).filter(Boolean);
   var allWards = activeWards.length === 0;
 
+  /* アクティブな設備（data-facありのsp-vibe-btn） */
+  var activeFacs = Array.from(document.querySelectorAll('.sp-vibe-btn.on[data-fac]')).map(function(el){
+    return el.dataset.fac || '';
+  }).filter(Boolean);
+  var allFacs = activeFacs.length === 0;
+
   /* テキスト検索 */
   var q = (document.querySelector('.sp-search-input')?.value || '').toLowerCase().trim();
 
@@ -1088,10 +1094,9 @@ function filterSidebar() {
     var area = card.dataset.area || '';
     var facs = ((card.dataset&&card.dataset.facilities)||'').split(',').filter(Boolean);
 
-    /* テキスト検索 */
     var matchText = !q || name.includes(q);
 
-    /* 都市フィルター */
+    /* 都市 */
     var matchCity = allCities;
     if(!allCities) {
       matchCity = activeCities.some(function(city) {
@@ -1100,16 +1105,19 @@ function filterSidebar() {
       });
     }
 
-    /* 区フィルター（都市が東京のときのみ有効） */
+    /* 区 */
     var matchWard = allWards;
     if(!allWards && matchCity) {
       matchWard = activeWards.some(function(ward){ return area === ward; });
     }
 
-    var show = matchText && matchCity && matchWard && allWork;
-    if(!allWork) {
-      show = matchText && matchCity && matchWard;
+    /* 設備（全て満たすこと） */
+    var matchFac = allFacs;
+    if(!allFacs) {
+      matchFac = activeFacs.every(function(fac){ return facs.includes(fac); });
     }
+
+    var show = matchText && matchCity && matchWard && matchFac;
     card.style.display = show ? '' : 'none';
     if(show) visible++;
   });
