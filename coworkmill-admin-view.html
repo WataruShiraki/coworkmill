@@ -1099,7 +1099,13 @@ async function loadSpaceDetail(f) {
     if(document.getElementById('f-official-url'))document.getElementById('f-official-url').value=d.official_url||'';
     sv('fu',   d.website_url);
     sv('fig',  d.instagram);
-  } catch(e) {
+  
+    // 設備ボタンのftg補完（DB読み込み後にチェックマークを表示）
+    document.querySelectorAll('.fgg .fo.on').forEach(function(fo){
+      var ftg=fo.querySelector('.ftg');
+      if(ftg && !ftg.textContent) ftg.textContent='✓';
+    });
+} catch(e) {
     console.warn('施設詳細の読み込みエラー:', e);
   }
 }
