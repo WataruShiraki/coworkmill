@@ -945,6 +945,12 @@ async function sbFetch(path, options = {}) {
 }
 
 // フォームから施設データを収集する関数（新規登録・編集両対応）
+
+// 価格フィールドの読み取り順を修正（ユーザーが編集する visible フィールドを優先）
+function getPriceVal(primaryId, fallbackId) {
+  var v = (document.getElementById(primaryId)?.value || document.getElementById(fallbackId)?.value || '').replace(/,/g,'').trim();
+  return parseInt(v) || null;
+}
 function collectFormData() {
   const g = (...ids) => {
     for (const id of ids) {
@@ -970,10 +976,10 @@ function collectFormData() {
     nearest_station: g('nfst', 'fst', 'p-station'),
     nearest_line:    g('nfline', 'fline', 'p-line'),
     walk_minutes:    ni('p-walk'),
-    price_dropin_day:  (function(){var v=(document.getElementById('nf-price-daily')?.value||document.getElementById('price-daily')?.value||'').replace(/,/g,'');return parseInt(v)||null;})(),
-    price_dropin_hour: (function(){var v=(document.getElementById('nf-price-hourly')?.value||document.getElementById('price-hourly')?.value||'').replace(/,/g,'');return parseInt(v)||null;})(),
-    price_monthly_amount: (function(){var v=(document.getElementById('nf-price-monthly')?.value||document.getElementById('price-monthly')?.value||'').replace(/,/g,'');return parseInt(v)||null;})(),
-    price_monthly_max: (function(){var v=(document.getElementById('nf-price-monthly-max')?.value||document.getElementById('price-monthly-max')?.value||'').replace(/,/g,'');return parseInt(v)||null;})(),
+    price_dropin_day: getPriceVal('price-daily','nf-price-daily'),
+    price_dropin_hour: getPriceVal('price-hourly','nf-price-hourly'),
+    price_monthly_amount: getPriceVal('price-monthly','nf-price-monthly'),
+    price_monthly_max: getPriceVal('price-monthly-max','nf-price-monthly-max'),
     price_note:      g('nf-price-hourly', 'p-pnote'),
     description:     g('nfde', 'fde', 'p-desc'),
     capacity:        ni('p-cap'),
