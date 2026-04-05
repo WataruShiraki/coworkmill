@@ -1867,4 +1867,10 @@ window.loadClickStats=function(){
 })();
 </script>
 
-</body></html>
+<script>
+document.addEventListener('click', function(e){
+  if(e.target.closest('.fi')) {
+    if(typeof resetVibeUI === 'function') resetVibeUI();
+  }
+});
+</script></body></html>
