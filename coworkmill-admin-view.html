@@ -1755,58 +1755,7 @@ window.addEventListener('DOMContentLoaded', () => {
   loadSpacesFromDB();
 });
 </script>
-<script>(function(){
-  function fmt(d){try{return new Date(d).toLocaleDateString('ja-JP');}catch(e){return '';}}
-  function makeCard(v,isPending){
-    var d=document.createElement('div');d.style.cssText='background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:14px 16px;margin-bottom:10px';
-    if(v.workstyle){var t=document.createElement('span');t.style.cssText='display:inline-block;font-size:10px;font-weight:600;color:var(--accent);border:1px solid rgba(43,181,200,.4);border-radius:12px;padding:2px 8px;margin-bottom:8px';t.textContent=v.workstyle;d.appendChild(t);d.appendChild(document.createElement('br'));}
-    var b=document.createElement('div');b.style.cssText='font-size:13px;color:#1a1a1a;line-height:1.6;margin-bottom:4px';b.textContent=v.message||'';d.appendChild(b);
-    var m=document.createElement('div');m.style.cssText='font-size:11px;color:#666;margin-bottom:8px';m.textContent=(v.nickname||'匿名')+'　'+fmt(v.submitted_at);d.appendChild(m);
-    var btns=document.createElement('div');
-    if(isPending){var ap=document.createElement('button');ap.style.cssText='padding:7px 16px;background:#f97316;color:#fff;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;margin-right:8px';ap.textContent='承認する';(function(vid){ap.onclick=function(){approveVoice(vid);};})(v.id);btns.appendChild(ap);}
-    var dl=document.createElement('button');dl.style.cssText='padding:7px 14px;background:transparent;color:#e53e3e;border:1px solid rgba(229,62,62,.4);border-radius:6px;font-size:12px;cursor:pointer';dl.textContent='削除する';(function(vid){dl.onclick=function(){deleteVoice(vid);};})(v.id);btns.appendChild(dl);
-    d.appendChild(btns);return d;
-  }
-  function updateBadge(count){var badge=document.getElementById('voice-badge');if(!badge)return;if(count>0){badge.textContent=count>99?'99+':String(count);badge.style.display='inline-block';}else{badge.style.display='none';}}
-  function updateDashVoices(pending){
-    var sec=document.getElementById('db-voice-section');var list=document.getElementById('db-voice-list');if(!sec||!list)return;
-    if(!pending||!pending.length){sec.style.display='none';return;}sec.style.display='block';list.innerHTML='';
-    pending.slice(0,5).forEach(function(v){
-      var row=document.createElement('div');row.style.cssText='padding:10px 0;border-bottom:1px solid #f0f0f0';
-      var left=document.createElement('div');left.style.cssText='flex:1;min-width:0';
-      if(v.workstyle){var t=document.createElement('span');t.style.cssText='display:inline-block;font-size:10px;font-weight:600;color:var(--accent);border:1px solid rgba(43,181,200,.4);border-radius:10px;padding:1px 7px;margin-bottom:4px';t.textContent=v.workstyle;left.appendChild(t);left.appendChild(document.createElement('br'));}
-      var txt=document.createElement('div');txt.style.cssText='font-size:12px;color:#333;line-height:1.5;overflow:hidden;text-overflow:ellipsis;white-space:nowrap';txt.textContent=v.message||'';left.appendChild(txt);
-      var meta=document.createElement('div');meta.style.cssText='font-size:10px;color:#999;margin-top:2px';meta.textContent=(v.nickname||'匿名')+' ・ '+fmt(v.submitted_at);left.appendChild(meta);
-      var ap=document.createElement('button');ap.style.cssText='display:inline-block;margin-top:8px;padding:6px 14px;background:#f97316;color:#fff;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer';ap.textContent='承認';(function(vid){ap.onclick=function(){approveVoice(vid);};})(v.id);
-      left.appendChild(ap);row.appendChild(left);list.appendChild(row);
-    });
-    if(pending.length>5){var more=document.createElement('div');more.style.cssText='font-size:11px;color:#999;text-align:center;padding-top:8px';more.textContent='他 '+(pending.length-5)+'件の承認待ち';list.appendChild(more);}
-  }
-  window.loadAdminVoices=function(){
-    var allFis=Array.from(document.querySelectorAll('#fac-list .fi'));
-    var activeFi=document.querySelector('#fac-list .fi.on')||document.querySelector('#fac-list .fi.active');
-    var idx=allFis.indexOf(activeFi);
-    var pel=document.getElementById('voice-pending-list');var ael=document.getElementById('voice-approved-list');
-    var btxt=document.getElementById('voice-bar-txt');var bdot=document.querySelector('#voice-bar .sdot');
-    if(idx<0||!window.sbFetch){if(pel)pel.innerHTML='<p style="font-size:12px;color:#666">施設を選択してください</p>';return;}
-    if(pel)pel.innerHTML='<p style="font-size:12px;color:#666">読み込み中...</p>';if(ael)ael.innerHTML='';
-    window.sbFetch('/rest/v1/spaces?select=id&order=created_at').then(function(spaces){
-      if(!spaces||!spaces[idx])return Promise.reject('no space');
-      return window.sbFetch('/rest/v1/voices?space_id=eq.'+spaces[idx].id+'&order=submitted_at.desc');
-    }).then(function(data){
-      var pending=(data||[]).filter(function(v){return v.status==='pending';});
-      var approved=(data||[]).filter(function(v){return v.status==='approved';});
-      if(btxt)btxt.textContent=pending.length>0?'承認待ち '+pending.length+'件':'新着の声はありません';
-      if(bdot)bdot.className='sdot'+(pending.length>0?'':' gray');
-      updateBadge(pending.length);updateDashVoices(pending);
-      if(pel){pel.innerHTML='';if(!pending.length){pel.innerHTML='<p style="font-size:12px;color:#666">承認待ちの声はありません</p>';}else{pending.forEach(function(v){pel.appendChild(makeCard(v,true));});}}
-      if(ael){ael.innerHTML='';if(!approved.length){ael.innerHTML='<p style="font-size:12px;color:#666">まだありません</p>';}else{approved.forEach(function(v){ael.appendChild(makeCard(v,false));});}}
-    }).catch(function(e){if(pel)pel.innerHTML='<p style="color:red">ERR:'+e+'</p>';});
-  };
-  window.approveVoice=function(id){window.sbFetch('/rest/v1/voices?id=eq.'+id,{method:'PATCH',body:JSON.stringify({status:'approved'})}).then(function(){window.loadAdminVoices();});};
-  window.deleteVoice=function(id){if(!confirm('削除しますか？'))return;window.sbFetch('/rest/v1/voices?id=eq.'+id,{method:'DELETE'}).then(function(){window.loadAdminVoices();});};
-  var _p=setInterval(function(){if(typeof window.go==='function'&&!window.go._cwmW){clearInterval(_p);var orig=window.go;window.go=function(id,el){orig(id,el);if(id==='voice')setTimeout(window.loadAdminVoices,200);if(id==='db'){setTimeout(window.loadAdminVoices,300);setTimeout(window.loadClickStats,400);}if(id==='edit'){}}window.go._cwmW=true;}},50);
-})();</script>
+<script>/* disabled */</script>
 <script>
 /* Admin Map Picker */
 var _adminMap=null, _adminMarker=null;
@@ -2027,4 +1976,149 @@ function showVibeToast() {
     setTimeout(function(){ toast.remove(); }, 200);
   }, 2000);
 }
-</script></body></html>
+</script>
+<script>
+(function(){
+  var SB='https://jakwntemjkwqwaqujffh.supabase.co';
+  var KEY='sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+
+  // fac-list から現在アクティブな施設のindexを取得してdbIdを解決
+  function getActiveDbId(){
+    return new Promise(function(resolve,reject){
+      var allFis=Array.from(document.querySelectorAll('#fac-list .fi'));
+      var activeFi=document.querySelector('#fac-list .fi.on')||document.querySelector('#fac-list .fi.active');
+      var idx=allFis.indexOf(activeFi);
+      if(idx<0){reject('no active fi');return;}
+      fetch(SB+'/rest/v1/spaces?select=id&order=created_at.asc',
+        {headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}})
+        .then(function(r){return r.json();})
+        .then(function(spaces){
+          if(!spaces||!spaces[idx]){reject('no space');return;}
+          resolve(spaces[idx].id);
+        }).catch(reject);
+    });
+  }
+
+  window.loadAdminVoices=function(){
+    var pel=document.getElementById('voice-pending-list');
+    var ael=document.getElementById('voice-approved-list');
+    var btxt=document.getElementById('voice-bar-txt');
+    var bdot=document.querySelector('.sdot');
+    if(pel) pel.innerHTML='<p style="font-size:12px;color:#999">\u8aad\u307f\u8fbc\u307f\u4e2d...</p>';
+    if(ael) ael.innerHTML='';
+
+    getActiveDbId()
+      .then(function(dbId){
+        return fetch(SB+'/rest/v1/voices?space_id=eq.'+dbId+'&order=submitted_at.desc',
+          {headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}})
+          .then(function(r){return r.json();})
+          .then(function(data){
+            var pending=(data||[]).filter(function(v){return v.status==='pending';});
+            var approved=(data||[]).filter(function(v){return v.status==='approved';});
+            // pending count badge
+            if(btxt) btxt.textContent=pending.length>0?'\u65b0\u7740 '+pending.length+'\u4ef6':'\u65b0\u7740\u306a\u3057';
+            if(bdot){bdot.className='sdot'+(pending.length>0?'':' gray');}
+            // pending list
+            if(pel){
+              pel.innerHTML='';
+              if(!pending.length){
+                pel.innerHTML='<p style="font-size:12px;color:#999">\u627f\u8a8d\u5f85\u3061\u306e\u58f0\u306f\u3042\u308a\u307e\u305b\u3093</p>';
+              } else {
+                pending.forEach(function(v){
+                  var row=document.createElement('div');
+                  row.style.cssText='padding:12px;border:1px solid #e2e8f0;border-radius:8px;margin-bottom:8px;background:#fff';
+                  var top=document.createElement('div');
+                  top.style.cssText='display:flex;justify-content:space-between;align-items:center;margin-bottom:4px';
+                  var nm=document.createElement('span');
+                  nm.style.cssText='font-size:13px;font-weight:600;color:#333';
+                  nm.textContent=v.nickname||'\u533f\u540d';
+                  var dt=document.createElement('span');
+                  dt.style.cssText='font-size:11px;color:#aaa';
+                  dt.textContent=(v.submitted_at||'').substring(0,10);
+                  top.appendChild(nm);top.appendChild(dt);
+                  var msg=document.createElement('div');
+                  msg.style.cssText='font-size:12px;color:#555;margin:4px 0 8px';
+                  msg.textContent=v.message||'';
+                  var btns=document.createElement('div');
+                  btns.style.cssText='display:flex;gap:8px';
+                  var ap=document.createElement('button');
+                  ap.style.cssText='padding:4px 12px;background:#2BB5C8;color:#fff;border:none;border-radius:4px;font-size:11px;cursor:pointer';
+                  ap.textContent='\u627f\u8a8d\u3059\u308b';
+                  ap.onclick=function(){window.approveVoice&&window.approveVoice(v.id);};
+                  var dl=document.createElement('button');
+                  dl.style.cssText='padding:4px 12px;background:#fff;color:#e53e3e;border:1px solid #e53e3e;border-radius:4px;font-size:11px;cursor:pointer';
+                  dl.textContent='\u524a\u9664';
+                  dl.onclick=function(){window.deleteVoice&&window.deleteVoice(v.id);};
+                  btns.appendChild(ap);btns.appendChild(dl);
+                  row.appendChild(top);row.appendChild(msg);row.appendChild(btns);
+                  pel.appendChild(row);
+                });
+              }
+            }
+            // approved list
+            if(ael){
+              ael.innerHTML='';
+              if(!approved.length){
+                ael.innerHTML='<p style="font-size:12px;color:#999">\u627f\u8a8d\u6e08\u307f\u306e\u58f0\u306f\u307e\u3060\u3042\u308a\u307e\u305b\u3093</p>';
+              } else {
+                approved.forEach(function(v){
+                  var row=document.createElement('div');
+                  row.style.cssText='padding:12px;border:1px solid #e2e8f0;border-radius:8px;margin-bottom:8px;background:#fff';
+                  var top=document.createElement('div');
+                  top.style.cssText='display:flex;justify-content:space-between;align-items:center;margin-bottom:4px';
+                  var nm=document.createElement('span');
+                  nm.style.cssText='font-size:13px;font-weight:600;color:#333';
+                  nm.textContent=v.nickname||'\u533f\u540d';
+                  var dt=document.createElement('span');
+                  dt.style.cssText='font-size:11px;color:#aaa';
+                  dt.textContent=(v.submitted_at||'').substring(0,10);
+                  top.appendChild(nm);top.appendChild(dt);
+                  var msg=document.createElement('div');
+                  msg.style.cssText='font-size:12px;color:#555;margin:4px 0 8px';
+                  msg.textContent=v.message||'';
+                  var dl=document.createElement('button');
+                  dl.style.cssText='padding:4px 12px;background:#fff;color:#e53e3e;border:1px solid #e53e3e;border-radius:4px;font-size:11px;cursor:pointer';
+                  dl.textContent='\u524a\u9664';
+                  dl.onclick=function(){window.deleteVoice&&window.deleteVoice(v.id);};
+                  row.appendChild(top);row.appendChild(msg);row.appendChild(dl);
+                  ael.appendChild(row);
+                });
+              }
+            }
+          });
+      })
+      .catch(function(e){
+        if(pel) pel.innerHTML='<p style="font-size:12px;color:#999">\u65bd\u8a2d\u3092\u9078\u629e\u3057\u3066\u304f\u3060\u3055\u3044</p>';
+      });
+  };
+
+  window.approveVoice=function(id){
+    fetch(SB+'/rest/v1/voices?id=eq.'+id,
+      {method:'PATCH',headers:{'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json'},
+       body:JSON.stringify({status:'approved'})})
+      .then(function(){window.loadAdminVoices&&window.loadAdminVoices();});
+  };
+
+  window.deleteVoice=function(id){
+    if(!confirm('\u524a\u9664\u3057\u307e\u3059\u304b\uff1f'))return;
+    fetch(SB+'/rest/v1/voices?id=eq.'+id,
+      {method:'DELETE',headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}})
+      .then(function(){window.loadAdminVoices&&window.loadAdminVoices();});
+  };
+
+  // go('voice') のたびに loadAdminVoices を呼ぶ
+  var _voiceTimer=setInterval(function(){
+    if(typeof window.go==='function'&&!window.go._v2patched){
+      var orig=window.go;
+      window.go=function(id,el){
+        var r=orig.apply(this,arguments);
+        if(id==='voice') setTimeout(function(){window.loadAdminVoices&&window.loadAdminVoices();},100);
+        return r;
+      };
+      window.go._v2patched=true;
+      clearInterval(_voiceTimer);
+    }
+  },100);
+})();
+</script>
+</body></html>
