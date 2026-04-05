@@ -1568,6 +1568,7 @@ async function pubFac() {
     var tbr = document.getElementById('tbr');
     if(id === 'db'){
       if(tbr) tbr.style.display = 'none';
+      setTimeout(function(){var ttl=document.getElementById('ttl');if(ttl&&ttl.textContent.includes('ダッシュボード'))ttl.textContent=ttl.textContent.replace('ダッシュボード','アナリティクス');},50);
     } else {
       if(tbr) tbr.style.display = '';
     }
@@ -1576,70 +1577,53 @@ async function pubFac() {
 })();
 
 // アナリティクスデータ読み込み
-window.loadAnalytics = function(){
+window.loadAnalytics = async function(){
   var SB='https://jakwntemjkwqwaqujffh.supabase.co';
   var KEY='sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
-  var facs = window.facs || [];
-  var cur = window.cur;
-  var dbId = facs[cur] ? facs[cur].db_id : null;
-  if(!dbId) return;
-
-  // クリック数取得
-  fetch(SB+'/rest/v1/click_logs?space_id=eq.'+dbId+'&select=id',
-    {headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}})
-    .then(function(r){return r.ok?r.json():[];})
-    .then(function(d){
-      var el=document.getElementById('an-click-num');
-      if(el) el.textContent=(d&&d.length)||0;
-    }).catch(function(){
-      var el=document.getElementById('an-click-num');
-      if(el) el.textContent='0';
-    });
-
-  // PV取得（email_logsをPV代替として使用、なければ0）
-  fetch(SB+'/rest/v1/email_logs?space_id=eq.'+dbId+'&select=id',
-    {headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}})
-    .then(function(r){return r.ok?r.json():[];})
-    .then(function(d){
-      var el=document.getElementById('an-pv-num');
-      if(el) el.textContent='計測準備中';
-    }).catch(function(){});
-
-  // Instagram送客はclick_logsのsource=instagramを想定（なければ0）
-  document.getElementById('an-insta-num').textContent = '0';
-
-  // 利用者の声
-  fetch(SB+'/rest/v1/voices?space_id=eq.'+dbId+'&select=*&order=created_at.desc',
-    {headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}})
-    .then(function(r){return r.ok?r.json():[];})
-    .then(function(voices){
-      var total = voices ? voices.length : 0;
-      var newCount = voices ? voices.filter(function(v){return !v.approved}).length : 0;
-      var numEl = document.getElementById('an-voice-num');
-      if(numEl) numEl.textContent = total;
-      var newEl = document.getElementById('an-voice-new');
-      if(newEl) newEl.textContent = newCount;
-
-      // 利用者の声セクション
-      var sec = document.getElementById('db-voice-section');
-      var list = document.getElementById('db-voice-list');
-      var moreBtn = document.getElementById('db-voice-more');
-      if(sec && total > 0){
-        sec.style.display = 'block';
-        // 最大5件表示
-        var show = voices.slice(0,5);
-        list.innerHTML = show.map(function(v){
-          return '<div style="border-bottom:1px solid #f0f0f0;padding:10px 0;last-child{border:none}">'+
-            '<div style="font-size:12px;font-weight:600;color:#333">'+escHtml(v.author_name||'匿名')+'</div>'+
-            '<div style="font-size:12px;color:#555;margin-top:4px">'+escHtml(v.content||'')+'</div>'+
-            '</div>';
-        }).join('');
-        // 5件超ならもっと見るボタン
-        if(total > 5 && moreBtn) moreBtn.style.display = 'block';
-        // モーダル用に全データ保存
-        window._allVoices = voices;
-      }
-    }).catch(function(){});
+  // タイトルから施設名取得
+  var ttlEl=document.getElementById('ttl');
+  var parts=ttlEl?ttlEl.textContent.split('—'):[];
+  var facName=parts.length>1?parts[1].trim():'';
+  if(!facName)return;
+  // spacesからdbId取得
+  var sr=await fetch(SB+'/rest/v1/spaces?name=eq.'+encodeURIComponent(facName)+'&select=id',{headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}});
+  var spaces=sr.ok?await sr.json():[];
+  var dbId=spaces&&spaces[0]?spaces[0].id:null;
+  if(!dbId)return;
+  // ① クリック送客数
+  try{
+    var cr=await fetch(SB+'/rest/v1/click_logs?space_id=eq.'+dbId+'&select=id',{headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}});
+    var clicks=cr.ok?await cr.json():[];
+    var cel=document.getElementById('an-click-num');
+    if(cel)cel.textContent=clicks.length||0;
+  }catch(e){var cel2=document.getElementById('an-click-num');if(cel2)cel2.textContent='0';}
+  // ② ページユーザー（計測準備中）
+  var pvel=document.getElementById('an-pv-num');if(pvel)pvel.textContent='―';
+  // ③ Instagram送客数
+  var iel=document.getElementById('an-insta-num');if(iel)iel.textContent='0';
+  // ④ 利用者の声
+  try{
+    var vr=await fetch(SB+'/rest/v1/voices?space_id=eq.'+dbId+'&select=*&order=submitted_at.desc',{headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}});
+    var voices=vr.ok?await vr.json():[];
+    var total=voices?voices.length:0;
+    var vnel=document.getElementById('an-voice-num');if(vnel)vnel.textContent=total;
+    var nwel=document.getElementById('an-voice-new');if(nwel)nwel.textContent=0;
+    var sec=document.getElementById('db-voice-section');
+    var list=document.getElementById('db-voice-list');
+    var moreBtn=document.getElementById('db-voice-more');
+    if(sec&&total>0){
+      sec.style.display='block';
+      var show=voices.slice(0,5);
+      list.innerHTML=show.map(function(v){
+        return '<div style="border-bottom:1px solid #f0f0f0;padding:10px 0">'+
+          '<div style="font-size:12px;font-weight:600;color:#333">'+(v.nickname||'匿名')+'</div>'+
+          '<div style="font-size:12px;color:#555;margin-top:4px">'+(v.message||'')+'</div>'+
+          '</div>';
+      }).join('');
+      if(total>5&&moreBtn)moreBtn.style.display='block';
+      window._allVoices=voices;
+    }
+  }catch(e){console.warn(e);}
 };
 
 function escHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
