@@ -1982,7 +1982,6 @@ function showVibeToast() {
   var SB='https://jakwntemjkwqwaqujffh.supabase.co';
   var KEY='sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
 
-  // fac-list から現在アクティブな施設のindexを取得してdbIdを解決
   function getActiveDbId(){
     return new Promise(function(resolve,reject){
       var allFis=Array.from(document.querySelectorAll('#fac-list .fi'));
@@ -1999,13 +1998,61 @@ function showVibeToast() {
     });
   }
 
+  function makeVoiceCard(v, isPending){
+    var card=document.createElement('div');
+    card.style.cssText='background:#fff;border:1px solid #e8ecf0;border-radius:10px;padding:16px;margin-bottom:10px';
+
+    // ヘッダー行（ユーザー名 + 日付）
+    var hdr=document.createElement('div');
+    hdr.style.cssText='display:flex;align-items:center;justify-content:space-between;margin-bottom:6px';
+    var nm=document.createElement('span');
+    nm.style.cssText='font-size:13px;font-weight:600;color:#1a1a1a';
+    nm.textContent=v.nickname||'\u533f\u540d';
+    var dt=document.createElement('span');
+    dt.style.cssText='font-size:11px;color:#aaa;background:#f5f5f5;padding:2px 8px;border-radius:10px';
+    dt.textContent=(v.submitted_at||'').substring(0,10);
+    hdr.appendChild(nm); hdr.appendChild(dt);
+
+    // ワークスタイルタグ（あれば）
+    var msg=document.createElement('div');
+    msg.style.cssText='font-size:13px;color:#444;line-height:1.6;margin-bottom:10px';
+    msg.textContent=v.message||'';
+
+    // アクションエリア
+    var actions=document.createElement('div');
+    actions.style.cssText='display:flex;gap:8px;justify-content:flex-end';
+
+    if(isPending){
+      var apBtn=document.createElement('button');
+      apBtn.style.cssText='padding:5px 14px;background:#2BB5C8;color:#fff;border:none;border-radius:6px;font-size:11px;font-weight:600;cursor:pointer';
+      apBtn.textContent='\u627f\u8a8d\u3057\u3066\u516c\u958b';
+      apBtn.onclick=function(){window.approveVoice&&window.approveVoice(v.id);};
+      actions.appendChild(apBtn);
+    }
+    var dlBtn=document.createElement('button');
+    dlBtn.style.cssText='padding:5px 12px;background:#fff;color:#999;border:1px solid #ddd;border-radius:6px;font-size:11px;cursor:pointer';
+    dlBtn.textContent='\u524a\u9664';
+    dlBtn.onclick=function(){window.deleteVoice&&window.deleteVoice(v.id);};
+    actions.appendChild(dlBtn);
+
+    card.appendChild(hdr);
+    card.appendChild(msg);
+    card.appendChild(actions);
+    return card;
+  }
+
+  function makeEmptyState(text){
+    var p=document.createElement('div');
+    p.style.cssText='text-align:center;padding:32px 0;color:#bbb;font-size:13px';
+    p.textContent=text;
+    return p;
+  }
+
   window.loadAdminVoices=function(){
     var pel=document.getElementById('voice-pending-list');
     var ael=document.getElementById('voice-approved-list');
     var btxt=document.getElementById('voice-bar-txt');
     var bdot=document.querySelector('.sdot');
-    if(pel) pel.innerHTML='<p style="font-size:12px;color:#999">\u8aad\u307f\u8fbc\u307f\u4e2d...</p>';
-    if(ael) ael.innerHTML='';
 
     getActiveDbId()
       .then(function(dbId){
@@ -2015,87 +2062,37 @@ function showVibeToast() {
           .then(function(data){
             var pending=(data||[]).filter(function(v){return v.status==='pending';});
             var approved=(data||[]).filter(function(v){return v.status==='approved';});
-            // pending count badge
+
             if(btxt) btxt.textContent=pending.length>0?'\u65b0\u7740 '+pending.length+'\u4ef6':'\u65b0\u7740\u306a\u3057';
-            if(bdot){bdot.className='sdot'+(pending.length>0?'':' gray');}
-            // pending list
+            if(bdot) bdot.className='sdot'+(pending.length>0?'':' gray');
+
             if(pel){
               pel.innerHTML='';
               if(!pending.length){
-                pel.innerHTML='<p style="font-size:12px;color:#999">\u627f\u8a8d\u5f85\u3061\u306e\u58f0\u306f\u3042\u308a\u307e\u305b\u3093</p>';
+                pel.appendChild(makeEmptyState('\u627f\u8a8d\u5f85\u3061\u306e\u58f0\u306f\u3042\u308a\u307e\u305b\u3093'));
               } else {
-                pending.forEach(function(v){
-                  var row=document.createElement('div');
-                  row.style.cssText='padding:12px;border:1px solid #e2e8f0;border-radius:8px;margin-bottom:8px;background:#fff';
-                  var top=document.createElement('div');
-                  top.style.cssText='display:flex;justify-content:space-between;align-items:center;margin-bottom:4px';
-                  var nm=document.createElement('span');
-                  nm.style.cssText='font-size:13px;font-weight:600;color:#333';
-                  nm.textContent=v.nickname||'\u533f\u540d';
-                  var dt=document.createElement('span');
-                  dt.style.cssText='font-size:11px;color:#aaa';
-                  dt.textContent=(v.submitted_at||'').substring(0,10);
-                  top.appendChild(nm);top.appendChild(dt);
-                  var msg=document.createElement('div');
-                  msg.style.cssText='font-size:12px;color:#555;margin:4px 0 8px';
-                  msg.textContent=v.message||'';
-                  var btns=document.createElement('div');
-                  btns.style.cssText='display:flex;gap:8px';
-                  var ap=document.createElement('button');
-                  ap.style.cssText='padding:4px 12px;background:#2BB5C8;color:#fff;border:none;border-radius:4px;font-size:11px;cursor:pointer';
-                  ap.textContent='\u627f\u8a8d\u3059\u308b';
-                  ap.onclick=function(){window.approveVoice&&window.approveVoice(v.id);};
-                  var dl=document.createElement('button');
-                  dl.style.cssText='padding:4px 12px;background:#fff;color:#e53e3e;border:1px solid #e53e3e;border-radius:4px;font-size:11px;cursor:pointer';
-                  dl.textContent='\u524a\u9664';
-                  dl.onclick=function(){window.deleteVoice&&window.deleteVoice(v.id);};
-                  btns.appendChild(ap);btns.appendChild(dl);
-                  row.appendChild(top);row.appendChild(msg);row.appendChild(btns);
-                  pel.appendChild(row);
-                });
+                pending.forEach(function(v){ pel.appendChild(makeVoiceCard(v,true)); });
               }
             }
-            // approved list
             if(ael){
               ael.innerHTML='';
               if(!approved.length){
-                ael.innerHTML='<p style="font-size:12px;color:#999">\u627f\u8a8d\u6e08\u307f\u306e\u58f0\u306f\u307e\u3060\u3042\u308a\u307e\u305b\u3093</p>';
+                ael.appendChild(makeEmptyState('\u307e\u3060\u516c\u958b\u4e2d\u306e\u58f0\u304c\u3042\u308a\u307e\u305b\u3093'));
               } else {
-                approved.forEach(function(v){
-                  var row=document.createElement('div');
-                  row.style.cssText='padding:12px;border:1px solid #e2e8f0;border-radius:8px;margin-bottom:8px;background:#fff';
-                  var top=document.createElement('div');
-                  top.style.cssText='display:flex;justify-content:space-between;align-items:center;margin-bottom:4px';
-                  var nm=document.createElement('span');
-                  nm.style.cssText='font-size:13px;font-weight:600;color:#333';
-                  nm.textContent=v.nickname||'\u533f\u540d';
-                  var dt=document.createElement('span');
-                  dt.style.cssText='font-size:11px;color:#aaa';
-                  dt.textContent=(v.submitted_at||'').substring(0,10);
-                  top.appendChild(nm);top.appendChild(dt);
-                  var msg=document.createElement('div');
-                  msg.style.cssText='font-size:12px;color:#555;margin:4px 0 8px';
-                  msg.textContent=v.message||'';
-                  var dl=document.createElement('button');
-                  dl.style.cssText='padding:4px 12px;background:#fff;color:#e53e3e;border:1px solid #e53e3e;border-radius:4px;font-size:11px;cursor:pointer';
-                  dl.textContent='\u524a\u9664';
-                  dl.onclick=function(){window.deleteVoice&&window.deleteVoice(v.id);};
-                  row.appendChild(top);row.appendChild(msg);row.appendChild(dl);
-                  ael.appendChild(row);
-                });
+                approved.forEach(function(v){ ael.appendChild(makeVoiceCard(v,false)); });
               }
             }
           });
       })
-      .catch(function(e){
-        if(pel) pel.innerHTML='<p style="font-size:12px;color:#999">\u65bd\u8a2d\u3092\u9078\u629e\u3057\u3066\u304f\u3060\u3055\u3044</p>';
+      .catch(function(){
+        if(pel) pel.innerHTML='<div style="text-align:center;padding:32px;color:#bbb;font-size:13px">\u65bd\u8a2d\u3092\u9078\u629e\u3057\u3066\u304f\u3060\u3055\u3044</div>';
       });
   };
 
   window.approveVoice=function(id){
     fetch(SB+'/rest/v1/voices?id=eq.'+id,
       {method:'PATCH',headers:{'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json'},
-       body:JSON.stringify({status:'approved'})})
+       body:'{"status":"approved"}'})
       .then(function(){window.loadAdminVoices&&window.loadAdminVoices();});
   };
 
@@ -2106,8 +2103,7 @@ function showVibeToast() {
       .then(function(){window.loadAdminVoices&&window.loadAdminVoices();});
   };
 
-  // go('voice') のたびに loadAdminVoices を呼ぶ
-  var _voiceTimer=setInterval(function(){
+  var _vt=setInterval(function(){
     if(typeof window.go==='function'&&!window.go._v2patched){
       var orig=window.go;
       window.go=function(id,el){
@@ -2116,7 +2112,7 @@ function showVibeToast() {
         return r;
       };
       window.go._v2patched=true;
-      clearInterval(_voiceTimer);
+      clearInterval(_vt);
     }
   },100);
 })();
