@@ -706,7 +706,7 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
   </div>
 
   <!-- 固定CTA：この条件で検索 -->
-  <div class="sp-filter-cta">
+  <div class="sp-filter-cta" style="display:none">
     <button class="sp-filter-apply" onclick="applySpFilters()">
       <span id="sp-filter-count">この条件で検索</span>
     </button>
@@ -759,7 +759,7 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
     </div>
 
     <!-- 絞り込むボタン -->
-    <button onclick="applySidebarFilters()" class="sf-apply-hide" style="margin-top:20px;width:100%;padding:12px;background:#2BB5C8;color:#fff;border:none;border-radius:8px;font-family:var(--font-display);font-size:13px;font-weight:600;letter-spacing:.06em;cursor:pointer;transition:opacity .2s" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
+    <button onclick="applySidebarFilters()" style="display:none" class="sf-apply-hide" style="margin-top:20px;width:100%;padding:12px;background:#2BB5C8;color:#fff;border:none;border-radius:8px;font-family:var(--font-display);font-size:13px;font-weight:600;letter-spacing:.06em;cursor:pointer;transition:opacity .2s" onmouseover="this.style.opacity='.85'" onmouseout="this.style.opacity='1'">
       絞り込む
     </button>
     <button onclick="resetSidebarFilters()" style="margin-top:8px;width:100%;padding:9px;background:transparent;color:var(--gray-400);border:1px solid var(--gray-200);border-radius:8px;font-size:12px;cursor:pointer;transition:all .2s" onmouseover="this.style.borderColor='#2BB5C8';this.style.color='#2BB5C8'" onmouseout="this.style.borderColor='var(--gray-200)';this.style.color='var(--gray-400)'">
