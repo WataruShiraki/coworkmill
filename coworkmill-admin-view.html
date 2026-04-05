@@ -2019,7 +2019,12 @@ function showVibeToast() {
       var tag=document.createElement('span');
       var col=wsColor(v.workstyle);
       tag.style.cssText='display:inline-block;font-size:11px;font-weight:600;padding:3px 10px;border-radius:10px;color:'+col+';background:'+col+'1A;border:1px solid '+col+'33';
-      tag.textContent=v.workstyle;
+      (function(){
+        var en=v.workstyle.replace(/[\u3000-\u9FFF\uFF00-\uFFEF]+.*/g,'').trim();
+        var ja=v.workstyle.replace(/^[\x00-\x7F]+/,'').trim();
+        if(en&&ja){tag.innerHTML=en+'<br><span style="font-size:10px;font-weight:400;opacity:.85">'+ja+'</span>';}
+        else{tag.textContent=v.workstyle;}
+      })();
       wsRow.appendChild(tag);
     }
     // メッセージ
