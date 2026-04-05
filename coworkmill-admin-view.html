@@ -1548,7 +1548,7 @@ function setVibe(el,val){
   var already=el.classList.contains('on');
   var fgg=el.closest('.fgg');
   var onCount=fgg.querySelectorAll('.fo.on').length;
-  if(!already&&onCount>=3){return;}
+  if(!already&&onCount>=3){showVibeToast();return;}
   if(already){
     el.classList.remove('on');
     var ftg=el.querySelector('.ftg');if(ftg)ftg.textContent='';
@@ -1873,4 +1873,19 @@ document.addEventListener('click', function(e){
     if(typeof resetVibeUI === 'function') resetVibeUI();
   }
 });
+</script><script>
+function showVibeToast() {
+  var existing = document.getElementById('vibe-toast');
+  if(existing) { clearTimeout(existing._timer); existing.remove(); }
+  var toast = document.createElement('div');
+  toast.id = 'vibe-toast';
+  toast.textContent = '場所の特徴は最大3つまで選択できます';
+  toast.style.cssText = 'position:fixed;bottom:32px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:500;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,.3);opacity:0;transition:opacity .2s;pointer-events:none;white-space:nowrap';
+  document.body.appendChild(toast);
+  requestAnimationFrame(function(){ toast.style.opacity='1'; });
+  toast._timer = setTimeout(function(){
+    toast.style.opacity='0';
+    setTimeout(function(){ toast.remove(); }, 200);
+  }, 2000);
+}
 </script></body></html>
