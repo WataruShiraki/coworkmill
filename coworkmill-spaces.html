@@ -846,7 +846,17 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
   
 </footer>
 <script src="coworkmill-features.js"></script>
-<script>
+<script>var _VIBE_LABEL={
+    urban:'都市の高層階',machiya:'古民家・町家',
+    nature:'自然・山・海',warehouse:'倉庫・工場跡',
+    hotel:'ホテル併設',gallery:'ミュージアム隣接',
+    station:'駅直結',minimal:'ミニマル・無機質',
+    terrace:'テラス・屋外席',waterside:'川沿い・水辺',
+    green:'緑・植物いっぱい',library:'ライブラリー・書棚',
+    retro:'歴史的建造物・レトロ',hideout:'路地裏・隠れ家',
+    art:'アート・ギャラリー空間',highceiling:'吹き抜け・高天井'
+  };
+
 
 const SUPABASE_URL_SP = 'https://jakwntemjkwqwaqujffh.supabase.co';
 const SUPABASE_KEY_SP = 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
@@ -876,21 +886,13 @@ function makeCard(d, i, type) {
   const isPick = d.plan === 'pro';
   const href = 'coworkmill-detail.html?id=' + d.id;
   var _ph=d.price_dropin_hour,_pd=d.price_dropin_day,_pm=d.price_monthly_amount,_pmx=d.price_monthly_max;
-  var priceLines=[];
-  if(_ph||_pd){
-    var dp='ドロップイン: ';
-    if(_ph)dp+=_ph.toLocaleString('ja-JP')+'円/1時間';
-    if(_ph&&_pd)dp+='<br>';
-    if(_pd)dp+=_pd.toLocaleString('ja-JP')+'円/1日';
-    priceLines.push(dp);
-  }
-  if(_pm){
-    var mp='月額: '+_pm.toLocaleString('ja-JP')+'円';
-    if(_pmx)mp+='～'+_pmx.toLocaleString('ja-JP')+'円';
-    priceLines.push(mp);
-  }
-  const price = priceLines.length?priceLines.join('<br>'):'料金はお問い合わせ';
-  const vibes = Array.isArray(d.vibe) ? d.vibe : (d.vibe ? [d.vibe] : []);
+  const price = (function(){
+    if(_ph) return '¥' + _ph.toLocaleString('ja-JP') + ' / 時間〜';
+    if(_pd) return '¥' + _pd.toLocaleString('ja-JP') + ' / 日〜';
+    if(_pm) return '¥' + _pm.toLocaleString('ja-JP') + ' / 月〜';
+    return '料金はお問い合わせ';
+  })();
+  const vibes = (d.vibe ? d.vibe.split(',').map(function(v){return v.trim();}).filter(Boolean).map(function(v){return _VIBE_LABEL[v]||v;}) : []);
   const delay = 'animation-delay:' + (i * 0.05) + 's';
 
   if (type === 'grid') {
