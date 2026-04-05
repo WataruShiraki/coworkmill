@@ -748,12 +748,12 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
     <div class="sf-block">
       <div class="sf-title">設備 <span class="sf-clear">クリア</span></div>
       <div class="sf-options">
-        <div class="sf-opt" onclick="toggleSf(this)"><div class="sf-check"></div><span class="sf-name">EN OK</span></div>
-        <div class="sf-opt" onclick="toggleSf(this)"><div class="sf-check"></div><span class="sf-name">24時間利用可</span></div>
-        <div class="sf-opt" onclick="toggleSf(this)"><div class="sf-check"></div><span class="sf-name">完全個室あり</span></div>
-        <div class="sf-opt" onclick="toggleSf(this)"><div class="sf-check"></div><span class="sf-name">会議室あり</span></div>
-        <div class="sf-opt" onclick="toggleSf(this)"><div class="sf-check"></div><span class="sf-name">クレジットカード可</span></div>
-        <div class="sf-opt" onclick="toggleSf(this)"><div class="sf-check"></div><span class="sf-name">ドロップイン可</span></div>
+        <div class="sf-opt" onclick="toggleSf(this)" data-fac="english"><div class="sf-check"></div><span class="sf-name">EN OK</span></div>
+        <div class="sf-opt" onclick="toggleSf(this)" data-fac="open24h"><div class="sf-check"></div><span class="sf-name">24時間利用可</span></div>
+        <div class="sf-opt" onclick="toggleSf(this)" data-fac="private_room"><div class="sf-check"></div><span class="sf-name">完全個室あり</span></div>
+        <div class="sf-opt" onclick="toggleSf(this)" data-fac="meeting_room"><div class="sf-check"></div><span class="sf-name">会議室あり</span></div>
+        <div class="sf-opt" onclick="toggleSf(this)" data-fac="credit_card"><div class="sf-check"></div><span class="sf-name">クレジットカード可</span></div>
+        <div class="sf-opt" onclick="toggleSf(this)" data-fac="dropin"><div class="sf-check"></div><span class="sf-name">ドロップイン可</span></div>
       </div>
     </div>
 
@@ -1057,7 +1057,7 @@ function toggleSf(el) {
 }
 
 function filterSidebar(){
-  var CITY_MAP={tokyo:'東京都',osaka:'大阪府',kyoto:'京都府',fukuoka:'福岡県',yokohama:'神奈川県',sapporo:'北海道'};
+  var CITY_MAP={tokyo:'東京都',osaka:'大阪府',kyoto:'京都府',fukuoka:'福岡県',yokohama:'神奈川爎',sapporo:'北海道'};
 
   // 都市
   var activeCities=Array.from(document.querySelectorAll('.sf-opt.on[onclick]')).filter(function(el){
@@ -1074,13 +1074,15 @@ function filterSidebar(){
   }).filter(Boolean);
   var allWards=activeWards.length===0;
 
-  // 設備（data-facありのsp-vibe-btn）
-  var activeFacs=Array.from(document.querySelectorAll('.sp-vibe-btn.on[data-fac]')).map(function(el){
-    return el.getAttribute('data-fac')||'';
-  }).filter(Boolean);
+  // 設備（sf-opt[data-fac] および sp-vibe-btn[data-fac] の両方から取得）
+  var activeFacs=[];
+  Array.from(document.querySelectorAll('.sf-opt.on[data-fac], .sp-vibe-btn.on[data-fac]')).forEach(function(el){
+    var f=el.getAttribute('data-fac');
+    if(f&&activeFacs.indexOf(f)===-1)activeFacs.push(f);
+  });
   var allFacs=activeFacs.length===0;
 
-  // テキスト検索
+  // テキスト
   var q=(document.querySelector('.sp-search-input')?document.querySelector('.sp-search-input').value:'').toLowerCase().trim();
 
   var cards=document.querySelectorAll('.scard');
@@ -1090,9 +1092,8 @@ function filterSidebar(){
     var pref=card.dataset.pref||'';
     var area=card.dataset.area||'';
     var facsStr=(card.dataset&&card.dataset.facilities)?card.dataset.facilities:'';
-    var facs=facsStr.split(',').filter(Boolean);
+    var facs=facsStr?facsStr.split(',').filter(Boolean):[];
 
-    // テキスト
     var matchText=!q||name.indexOf(q)>-1;
 
     // 都市
