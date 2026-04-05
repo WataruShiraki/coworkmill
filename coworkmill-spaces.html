@@ -736,12 +736,12 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
     <div class="sf-block">
       <div class="sf-title">雰囲気 <span class="sf-clear">クリア</span></div>
       <div class="sf-options">
-        <div class="sf-opt" onclick="toggleSf(this)"><div class="sf-check"></div><span class="sf-name">都市の高層階</span></div>
-        <div class="sf-opt" onclick="toggleSf(this)"><div class="sf-check"></div><span class="sf-name">古民家・町家</span></div>
-        <div class="sf-opt" onclick="toggleSf(this)"><div class="sf-check"></div><span class="sf-name">自然・山・海</span></div>
-        <div class="sf-opt" onclick="toggleSf(this)"><div class="sf-check"></div><span class="sf-name">倉庫・工場跡</span></div>
-        <div class="sf-opt" onclick="toggleSf(this)"><div class="sf-check"></div><span class="sf-name">ホテル併設</span></div>
-        <div class="sf-opt" onclick="toggleSf(this)"><div class="sf-check"></div><span class="sf-name">ミニマル・無機質</span></div>
+        <div class="sf-opt" onclick="toggleSf(this)" data-vibe="urban"><div class="sf-check"></div><span class="sf-name">都市の高層階</span></div>
+        <div class="sf-opt" onclick="toggleSf(this)" data-vibe="machiya"><div class="sf-check"></div><span class="sf-name">古民家・町家</span></div>
+        <div class="sf-opt" onclick="toggleSf(this)" data-vibe="nature"><div class="sf-check"></div><span class="sf-name">自然・山・海</span></div>
+        <div class="sf-opt" onclick="toggleSf(this)" data-vibe="warehouse"><div class="sf-check"></div><span class="sf-name">倉庫・工場跡</span></div>
+        <div class="sf-opt" onclick="toggleSf(this)" data-vibe="hotel"><div class="sf-check"></div><span class="sf-name">ホテル併設</span></div>
+        <div class="sf-opt" onclick="toggleSf(this)" data-vibe="minimal"><div class="sf-check"></div><span class="sf-name">ミニマル・無機質</span></div>
       </div>
     </div>
 
@@ -894,7 +894,7 @@ function makeCard(d, i, type) {
   const delay = 'animation-delay:' + (i * 0.05) + 's';
 
   if (type === 'grid') {
-    return '<a class="scard" href="' + href + '" style="' + delay + '" data-pref="' + (d.prefecture||'') + '" data-area="' + (d.area||'') + '" data-name="' + (d.name||'').toLowerCase() + '" data-facilities="' + (d.facilities ? d.facilities.join(',') : '') + '">' +
+    return '<a class="scard" href="' + href + '" style="' + delay + '" data-pref="' + (d.prefecture||'') + '" data-area="' + (d.area||'') + '" data-vibe="' + (d.vibe||'') + '" data-name="' + (d.name||'').toLowerCase() + '" data-facilities="' + (d.facilities ? d.facilities.join(',') : '') + '">' +
       '<div class="scard-img" style="' + (img ? 'background-image:url(' + img + ')' : 'background:#1a1a2e') + '">' +
         (isPick ? '<div class="scard-badges"><span class="scard-badge pick">PICK</span></div>' : '') +
       '</div>' +
@@ -1057,7 +1057,7 @@ function toggleSf(el) {
 }
 
 function filterSidebar(){
-  var CITY_MAP={tokyo:'東京都',osaka:'大阪府',kyoto:'京都府',fukuoka:'福岡県',yokohama:'神奈川爎',sapporo:'北海道'};
+  var CITY_MAP={tokyo:'東京都',osaka:'大阪府',kyoto:'京都府',fukuoka:'福岡県',yokohama:'神奈川県',sapporo:'北海道'};
 
   // 都市
   var activeCities=Array.from(document.querySelectorAll('.sf-opt.on[onclick]')).filter(function(el){
@@ -1074,7 +1074,7 @@ function filterSidebar(){
   }).filter(Boolean);
   var allWards=activeWards.length===0;
 
-  // 設備（sf-opt[data-fac] および sp-vibe-btn[data-fac] の両方から取得）
+  // 設備（sf-opt[data-fac] + sp-vibe-btn[data-fac]）
   var activeFacs=[];
   Array.from(document.querySelectorAll('.sf-opt.on[data-fac], .sp-vibe-btn.on[data-fac]')).forEach(function(el){
     var f=el.getAttribute('data-fac');
@@ -1082,7 +1082,13 @@ function filterSidebar(){
   });
   var allFacs=activeFacs.length===0;
 
-  // テキスト
+  // 雰囲気（sf-opt[data-vibe]）
+  var activeVibes=Array.from(document.querySelectorAll('.sf-opt.on[data-vibe]')).map(function(el){
+    return el.getAttribute('data-vibe')||'';
+  }).filter(Boolean);
+  var allVibes=activeVibes.length===0;
+
+  // テキスト検索
   var q=(document.querySelector('.sp-search-input')?document.querySelector('.sp-search-input').value:'').toLowerCase().trim();
 
   var cards=document.querySelectorAll('.scard');
@@ -1093,19 +1099,18 @@ function filterSidebar(){
     var area=card.dataset.area||'';
     var facsStr=(card.dataset&&card.dataset.facilities)?card.dataset.facilities:'';
     var facs=facsStr?facsStr.split(',').filter(Boolean):[];
+    var vibeStr=(card.dataset&&card.dataset.vibe)?card.dataset.vibe:'';
+    var vibes=vibeStr?vibeStr.split(',').filter(Boolean):[];
 
+    // テキスト
     var matchText=!q||name.indexOf(q)>-1;
 
     // 都市
     var matchCity=allCities;
     if(!allCities){
       matchCity=activeCities.some(function(city){
-        if(city==='other'){
-          var known=['東京都','大阪府','京都府','福岡県','神奈川県','北海道'];
-          return known.indexOf(pref)===-1;
-        }
-        var p=CITY_MAP[city];
-        return p?pref.indexOf(p)>-1:false;
+        if(city==='other'){var known=['東京都','大阪府','京都府','福岡県','神奈川県','北海道'];return known.indexOf(pref)===-1;}
+        var p=CITY_MAP[city];return p?pref.indexOf(p)>-1:false;
       });
     }
 
@@ -1121,7 +1126,13 @@ function filterSidebar(){
       matchFac=activeFacs.every(function(fac){return facs.indexOf(fac)>-1;});
     }
 
-    var show=matchText&&matchCity&&matchWard&&matchFac;
+    // 雰囲気（いずれか一致でOK）
+    var matchVibe=allVibes;
+    if(!allVibes){
+      matchVibe=activeVibes.some(function(v){return vibes.indexOf(v)>-1;});
+    }
+
+    var show=matchText&&matchCity&&matchWard&&matchFac&&matchVibe;
     card.style.display=show?'':'none';
     if(show)visible++;
   });

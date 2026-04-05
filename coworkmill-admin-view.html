@@ -1052,18 +1052,22 @@ async function loadSpaceDetail(f) {
     if(document.getElementById('f-has-meeting-room'))document.getElementById('f-has-meeting-room').checked=!!d.has_meeting_room;
     if(document.getElementById('f-meeting-capacity')&&d.meeting_capacity)document.getElementById('f-meeting-capacity').value=d.meeting_capacity;
     /* vibe の on/off を設定 */
+    // vibe: 常にリセットしてから設定
+    document.querySelectorAll('.fgg .fo').forEach(function(f){f.classList.remove('on');var ftg=f.querySelector('.ftg');if(ftg)ftg.textContent='';});
+    var fv=document.getElementById('fvibe');if(fv)fv.value='';
+    var nfv=document.getElementById('nfvibe');if(nfv)nfv.value='';
+    var lbl=document.querySelector('.vibe-count-label');if(lbl)lbl.textContent='0/3';
     if(d.vibe){
       var vibeKeys=(d.vibe||'').split(',').map(function(v){return v.trim();}).filter(Boolean);
-      document.querySelectorAll('.fgg .fo').forEach(function(f){f.classList.remove('on');var ftg=f.querySelector('.ftg');if(ftg)ftg.textContent='';});
       vibeKeys.forEach(function(key){
         var foEl=Array.from(document.querySelectorAll('.fgg .fo')).find(function(f){
           return (f.getAttribute('onclick')||'').indexOf(key)>-1;
         });
         if(foEl){foEl.classList.add('on');var ftg=foEl.querySelector('.ftg');if(ftg)ftg.textContent='✓';}
       });
-      var fvibeEl=document.getElementById('fvibe');if(fvibeEl)fvibeEl.value=vibeKeys.join(',');
-      var nfvibeEl=document.getElementById('nfvibe');if(nfvibeEl)nfvibeEl.value=vibeKeys.join(',');
-      var label=document.querySelector('.vibe-count-label');if(label)label.textContent=vibeKeys.length+'/3';
+      if(fv)fv.value=vibeKeys.join(',');
+      if(nfv)nfv.value=vibeKeys.join(',');
+      if(lbl)lbl.textContent=vibeKeys.length+'/3';
     }
     /* facilities の on/off を設定 */
     document.querySelectorAll('.fgg .fo[data-key]').forEach(function(el){var key=el.dataset.key;if(d.facilities&&d.facilities.includes(key)){el.classList.add('on');}else{el.classList.remove('on');}});
