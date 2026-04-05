@@ -1672,7 +1672,7 @@ function tryMap(){
   if(_mapDone)return;
   var sid=new URLSearchParams(window.location.search).get('id');
   if(!sid)return;
-  fetch(CWM_SB_URL+'/rest/v1/spaces?id=eq.'+sid+'&select=name,latitude,longitude,address,official_url,facilities,price_dropin_day,price_dropin_hour,price_monthly_amount,price_monthly_max,price_note',
+  fetch(CWM_SB_URL+'/rest/v1/spaces?id=eq.'+sid+'&select=name,latitude,longitude,address,official_url,facilities,price_dropin_day,price_dropin_hour,price_monthly_amount,price_monthly_max,price_note,has_meeting_room,meeting_capacity',
     {headers:{'apikey':CWM_SB_KEY,'Authorization':'Bearer '+CWM_SB_KEY}})
   .then(function(r){return r.json();})
   .then(function(data){
@@ -1794,30 +1794,42 @@ window.renderFacilityFlags=function(facs){
 <script>
 /* プラン価格をDBから設定 */
 function renderPlanCards(sp) {
-  var hasDropin = sp.price_dropin_hour || sp.price_dropin_day;
-  var hasMonthly = sp.price_monthly_amount;
+  var hr=sp.price_dropin_hour, dy=sp.price_dropin_day, mo=sp.price_monthly_amount, mx=sp.price_monthly_max;
+  var fmt=function(n){return n?n.toLocaleString('ja-JP')+'円':null;};
+
   // ドロップイン
-  var dropinCard = document.getElementById('plan-dropin');
-  var dropinPrice = document.getElementById('plan-dropin-price');
-  if(hasDropin && dropinCard) {
-    dropinCard.style.display = '';
-    var parts = [];
-    if(sp.price_dropin_hour) parts.push(sp.price_dropin_hour.toLocaleString('ja-JP') + '円 / 1時間');
-    if(sp.price_dropin_day) parts.push(sp.price_dropin_day.toLocaleString('ja-JP') + '円 / 1日');
-    if(dropinPrice) dropinPrice.innerHTML = parts.join('<br>');
+  var dropinCard=document.getElementById('plan-dropin');
+  var dropinPrice=document.getElementById('plan-dropin-price');
+  if(hr||dy){
+    if(dropinCard)dropinCard.style.display='';
+    var parts=[];
+    if(hr)parts.push(fmt(hr)+' / 1時間');
+    if(dy)parts.push(fmt(dy)+' / 1日');
+    if(dropinPrice)dropinPrice.innerHTML=parts.join('<br>');
   }
-  // 月額
-  var monthlyCard = document.getElementById('plan-monthly');
-  var monthlyPrice = document.getElementById('plan-monthly-price');
-  if(hasMonthly && monthlyCard) {
-    monthlyCard.style.display = '';
-    var mo = sp.price_monthly_amount.toLocaleString('ja-JP') + '円';
-    var mx = sp.price_monthly_max ? '～' + sp.price_monthly_max.toLocaleString('ja-JP') + '円' : '～';
-    if(monthlyPrice) monthlyPrice.textContent = mo + mx + ' / 月';
+
+  // 月額プラン
+  var monthlyCard=document.getElementById('plan-monthly');
+  var monthlyPrice=document.getElementById('plan-monthly-price');
+  if(mo){
+    if(monthlyCard)monthlyCard.style.display='';
+    var mp=fmt(mo)+(mx?'～'+fmt(mx):'')+ ' / 月';
+    if(monthlyPrice)monthlyPrice.textContent=mp;
   }
+
+  // 会議室
+  var mtgCard=document.getElementById('plan-mtgroom');
+  var mtgDesc=document.getElementById('plan-mtgroom-desc');
+  if(sp.has_meeting_room&&mtgCard){
+    mtgCard.style.display='';
+    if(mtgDesc&&sp.meeting_capacity){
+      mtgDesc.textContent='最大'+sp.meeting_capacity+'名まで対応';
+    }
+  }
+
   // 公式サイトリンク
-  var planLink = document.getElementById('plan-official-link');
-  if(planLink && sp.official_url) planLink.href = sp.official_url;
+  var planLink=document.getElementById('plan-official-link');
+  if(planLink&&sp.official_url)planLink.href=sp.official_url;
 }
 </script>
 </body>

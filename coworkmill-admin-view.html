@@ -954,6 +954,8 @@ function collectFormData() {
     longitude:       parseFloat(document.getElementById('admin-lon')?.value)||null,
     official_url:    (document.getElementById('f-official-url')?.value?.trim()||null),
     facilities: (function(){var fos=document.querySelectorAll('.fgg .fo.on[data-key]');return Array.from(fos).map(function(el){return el.dataset.key;});})(),
+    has_meeting_room: !!(document.getElementById('f-has-meeting-room')?.checked),
+    meeting_capacity: parseInt(document.getElementById('f-meeting-capacity')?.value)||null,
     nearest_station: g('nfst', 'fst', 'p-station'),
     nearest_line:    g('nfline', 'fline', 'p-line'),
     walk_minutes:    ni('p-walk'),
@@ -1047,6 +1049,8 @@ async function loadSpaceDetail(f) {
     sv('fst',  d.nearest_station);
     sv('fline',d.nearest_line);
     sv('fde',  d.description);
+    if(document.getElementById('f-has-meeting-room'))document.getElementById('f-has-meeting-room').checked=!!d.has_meeting_room;
+    if(document.getElementById('f-meeting-capacity')&&d.meeting_capacity)document.getElementById('f-meeting-capacity').value=d.meeting_capacity;
     /* facilities の on/off を設定 */
     document.querySelectorAll('.fgg .fo[data-key]').forEach(function(el){var key=el.dataset.key;if(d.facilities&&d.facilities.includes(key)){el.classList.add('on');}else{el.classList.remove('on');}});
     /* 料金フィールドを読み込む */
