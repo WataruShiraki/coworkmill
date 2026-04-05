@@ -1051,6 +1051,19 @@ async function loadSpaceDetail(f) {
     sv('fde',  d.description);
     if(document.getElementById('f-has-meeting-room'))document.getElementById('f-has-meeting-room').checked=!!d.has_meeting_room;
     if(document.getElementById('f-meeting-capacity')&&d.meeting_capacity)document.getElementById('f-meeting-capacity').value=d.meeting_capacity;
+    /* vibe の on/off を設定 */
+    if(d.vibe){
+      var vibeKeys=(d.vibe||'').split(',').map(function(v){return v.trim();}).filter(Boolean);
+      // 全vibeを一旦リセット
+      document.querySelectorAll('.fgg .fo').forEach(function(f){f.classList.remove('on');var ftg=f.querySelector('.ftg');if(ftg)ftg.textContent='';});
+      vibeKeys.forEach(function(key){
+        var foEl=document.querySelector('.fgg .fo[onclick*="''+key+''"]');
+        if(foEl){foEl.classList.add('on');var ftg=foEl.querySelector('.ftg');if(ftg)ftg.textContent='\u2713';}
+      });
+      var fvibeEl=document.getElementById('fvibe');if(fvibeEl)fvibeEl.value=vibeKeys.join(',');
+      var nfvibeEl=document.getElementById('nfvibe');if(nfvibeEl)nfvibeEl.value=vibeKeys.join(',');
+      var label=document.querySelector('.vibe-count-label');if(label)label.textContent=vibeKeys.length+'/3';
+    }
     /* facilities の on/off を設定 */
     document.querySelectorAll('.fgg .fo[data-key]').forEach(function(el){var key=el.dataset.key;if(d.facilities&&d.facilities.includes(key)){el.classList.add('on');}else{el.classList.remove('on');}});
     /* 料金フィールドを読み込む */
@@ -1514,12 +1527,37 @@ function tw(el) {
 }
 
 function tf(el){el.classList.toggle('on');el.querySelector('.ftg').textContent=el.classList.contains('on')?'✓':'';}
-function setVibe(el,val){
-  const already = el.classList.contains('on');
-  el.closest('.fgg').querySelectorAll('.fo').forEach(f=>{f.classList.remove('on');f.querySelector('.ftg').textContent='';});
-  if(!already){el.classList.add('on');el.querySelector('.ftg').textContent='✓';}
-  const inp = el.closest('.sec-b').querySelector('input[type=hidden]');
-  if(inp) inp.value = already ? '' : val;
+function setVibe(el, val) {
+  var already = el.classList.contains('on');
+  var fgg = el.closest('.fgg');
+  var onCount = fgg.querySelectorAll('.fo.on').length;
+  // 3つ選択済みで新規追加しようとした場合は無視
+  if(!already && onCount >= 3) {
+    return;
+  }
+  // トグル
+  if(already) {
+    el.classList.remove('on');
+    var ftg = el.querySelector('.ftg');
+    if(ftg) ftg.textContent = '';
+  } else {
+    el.classList.add('on');
+    var ftg2 = el.querySelector('.ftg');
+    if(ftg2) ftg2.textContent = '\u2713';
+  }
+  // 選択中の雰囲気キーを収集してhidden inputに保存
+  var selected = Array.from(fgg.querySelectorAll('.fo.on')).map(function(f){
+    var oc = f.getAttribute('onclick')||'';
+    var m = oc.match(/'([^']+)'/g);
+    return m && m[1] ? m[1].replace(/'/g,'') : '';
+  }).filter(Boolean);
+  var fvibeEl = document.getElementById('fvibe');
+  if(fvibeEl) fvibeEl.value = selected.join(',');
+  var nfvibeEl = document.getElementById('nfvibe');
+  if(nfvibeEl) nfvibeEl.value = selected.join(',');
+  // カウント表示更新
+  var label = el.closest('.sec')?.querySelector('.vibe-count-label');
+  if(label) label.textContent = selected.length + '/3';
 }
 
 async function doSave(){
