@@ -321,7 +321,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:56px;display:flex;ali
 .aside-flags{display:flex;flex-direction:column;gap:6px;margin-bottom:24px}
 .aside-flag{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--gray-600)}
 .aside-flag::before{content:'';width:6px;height:6px;border-radius:50%;background:linear-gradient(135deg,#79F1A4,#2BB5C8);flex-shrink:0}
-.btn-contact{transition:background .2s,transform .2s,box-shadow .2s;width:100%;font-family:var(--font-display);font-size:12px;font-weight:600;letter-spacing:.04em;padding:14px;background:var(--black);color:#fff;border:none;border-radius:8px;cursor:pointer;transition:background .2s;margin-bottom:8px}
+.btn-contact{color:#fff!important;transition:background .2s,transform .2s,box-shadow .2s;width:100%;font-family:var(--font-display);font-size:12px;font-weight:600;letter-spacing:.04em;padding:14px;background:var(--black);color:#fff;border:none;border-radius:8px;cursor:pointer;transition:background .2s;margin-bottom:8px}
 .btn-contact:hover{background:#22a3b4;transform:translateY(-2px);box-shadow:0 6px 20px rgba(43,181,200,.35)}
 .btn-site{width:100%;font-family:var(--font-display);font-size:12px;font-weight:500;letter-spacing:.04em;padding:13px;background:none;color:var(--black);border:1px solid var(--gray-200);border-radius:8px;cursor:pointer;transition:all .2s;text-decoration:none;display:block;text-align:center}
 .btn-site:hover{border-color:var(--black)}
@@ -859,7 +859,12 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
     <div class="aside-card">
       <div class="aside-space-name" id="d-aside-name"></div>
       <div class="aside-city" id="d-aside-city"></div>
-      <div class="aside-price">
+      <div id="d-aside-access" style="display:none;background:#1a1a1a;border-radius:8px;padding:12px 14px;margin-bottom:16px;border:0.5px solid #2a2a2a">
+        <div id="d-aside-address" style="font-size:12px;color:#999;line-height:1.7;margin-bottom:8px"></div>
+        <div style="height:0.5px;background:#2a2a2a;margin-bottom:8px"></div>
+        <div id="d-aside-access-text" style="font-size:12px;color:#fff;line-height:1.7"></div>
+      </div>
+            <div class="aside-price">
         <div class="aside-price-type">ドロップイン</div>
         <div id="d-price-hour-row" style="display:none" class="aside-price-row">
           <span class="aside-price-amount" id="d-price-hour">-</span>
@@ -1493,6 +1498,30 @@ document.addEventListener('DOMContentLoaded', () => {
       // サイドバー施設名
       const asideName = document.getElementById('d-aside-name');
       if (asideName) asideName.textContent = d.name || '';
+
+      // アクセスブロック
+      (function(){
+        var block=document.getElementById('d-aside-access');
+        var addrEl=document.getElementById('d-aside-address');
+        var accessEl=document.getElementById('d-aside-access-text');
+        var addr=(d.prefecture||'')+(d.address||'');
+        var line=d.nearest_line||'';
+        var st=d.nearest_station||'';
+        var min=d.walk_minutes;
+        var mode=d.transport_mode||'walk';
+        var mv=mode==='car'?'車で':'徒歩';
+        if(block&&(addr||line||st)){
+          block.style.display='block';
+          if(addrEl){var addrHtml=addr;var billIdx=addr.search(/[ビクタワイミア]/);if(billIdx>-1)addrHtml=addr.substring(0,billIdx)+'<br>'+addr.substring(billIdx);addrEl.innerHTML=addrHtml;}
+          if(accessEl){
+            var parts=[];
+            if(line) parts.push(line);
+            if(st&&min) parts.push(st+'より '+mv+min+'分');
+            else if(st) parts.push(st);
+            accessEl.innerHTML=parts.join('<br>');
+          }
+        }
+      })();
 
       // 説明文
       const descEl = document.getElementById('d-desc');
