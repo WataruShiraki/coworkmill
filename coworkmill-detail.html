@@ -1536,15 +1536,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // アクセス情報
       const addrEl = document.getElementById('d-address');
-      if (addrEl) addrEl.textContent = d.address || '—';
+      if (addrEl) { var addr = d.address || ''; if (d.prefecture && addr.startsWith(d.prefecture)) { addrEl.textContent = addr || '—'; } else { addrEl.textContent = (d.prefecture || '') + addr || '—'; } }
       const stationEl = document.getElementById('d-station');
       if (stationEl) {
-        let st = d.nearest_station || '';
-        if (d.nearest_line) st += (st ? '（' + d.nearest_line + '）' : d.nearest_line);
-        stationEl.textContent = st || '—';
+        var stLine = d.nearest_line || '';
+        var stName = d.nearest_station || '';
+        var stMin = d.walk_minutes;
+        var stMode = d.transport_mode || 'walk';
+        var stMv = stMode === 'car' ? '車で' : '徒歩';
+        var stParts = [];
+        if (stLine) stParts.push(stLine);
+        if (stName && stMin) stParts.push(stName + 'より ' + stMv + stMin + '分');
+        else if (stName) stParts.push(stName);
+        stationEl.textContent = stParts.join(' ') || '—';
+      }
       }
       const hoursEl = document.getElementById('d-hours');
-      if (hoursEl) hoursEl.textContent = d.business_hours || '—';
+      if (hoursEl) hoursEl.textContent = d.open_hours || '—';
       const phoneEl = document.getElementById('d-phone');
       if (phoneEl) phoneEl.textContent = d.phone || '詳細は公式サイトにて';
 
