@@ -1033,6 +1033,7 @@ function collectFormData() {
     nearest_station: g('nfst', 'fst', 'p-station'),
     nearest_line:    g('nfline', 'fline', 'p-line'),
     walk_minutes:    parseInt(document.getElementById('f-walk-minutes')?.value)||null,
+    open_hours:      document.getElementById('f-open-hours')?.value?.trim()||null,
     transport_mode:  document.getElementById('f-transport-mode')?.value||'walk',
     price_dropin_day: getPriceVal('price-daily','nf-price-daily'),
     price_dropin_hour: getPriceVal('price-hourly','nf-price-hourly'),
