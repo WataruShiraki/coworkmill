@@ -327,7 +327,7 @@ function resetVibeUI(){
           <div class="fg">
             <div class="fl">移動手段&nbsp;<span style="font-size:10px;color:#aaa">タップで選択</span></div>
             <div style="display:flex;gap:10px;padding-top:4px">
-              <button type="button" id="btn-tw" onclick="window.setTransport('walk')" style="padding:8px 20px;border-radius:8px;border:2px solid var(--accent);background:var(--accent);color:#fff;font-size:13px;font-weight:700;cursor:pointer">🚶 徒歩</button>
+              <button type="button" id="btn-tw" onclick="window.setTransport('walk')" style="padding:8px 20px;border-radius:8px;border:2px solid #2BB5C8;background:#2BB5C8;color:#fff;font-size:13px;font-weight:700;cursor:pointer">🚶 徒歩</button>
               <button type="button" id="btn-tc" onclick="window.setTransport('car')" style="padding:8px 20px;border-radius:8px;border:2px solid #ddd;background:#fff;color:#666;font-size:13px;font-weight:700;cursor:pointer">🚗 車</button>
             </div>
             <input type="hidden" id="f-transport-mode" value="walk">
@@ -2060,7 +2060,7 @@ window.setTransport=function(mode){
   var el=document.getElementById('f-transport-mode');if(el)el.value=mode;
   var bw=document.getElementById('btn-tw'),bc=document.getElementById('btn-tc');
   if(!bw||!bc)return;
-  function applyOn(btn){btn.style.background='var(--accent)';btn.style.color='#fff';btn.style.border='2px solid var(--accent)';}
+  function applyOn(btn){btn.style.background='#2BB5C8';btn.style.color='#fff';btn.style.border='2px solid #2BB5C8';}
   function applyOff(btn){btn.style.background='#fff';btn.style.color='#666';btn.style.border='2px solid #ddd';}
   if(mode==='walk'){applyOn(bw);applyOff(bc);}else{applyOn(bc);applyOff(bw);}
   window.updateAccessPreview&&window.updateAccessPreview();
