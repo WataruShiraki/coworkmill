@@ -315,22 +315,32 @@ function resetVibeUI(){
         <div class="fr"><div class="fg"><div class="fl">市区町村<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><input class="fin" id="f-city" placeholder="例）港区" value=""></div></div>
         <div class="fr full"><div class="fg"><div class="fl">町名・番地<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><input class="fin" id="fad" placeholder="例）南青う3-1-3 スプライン青山東急ビ4F・6F" value=""></div></div>
         <div class="fr" style="margin-top:0"><div class="fg" style="width:100%"><div class="fl" style="margin-bottom:6px">住所から地図を設定 <span style="font-size:10px;color:var(--g400)">(ピンをドラッグして正確な位置に調整)</span></div><div id="admin-map-wrap" style="height:360px;border-radius:8px;overflow:hidden;background:#e8e8e8;margin-bottom:6px"><div id="admin-lmap" style="height:360px;width:100%"></div></div><div style="display:flex;gap:8px;font-size:11px;color:var(--g400)"><span>緯度: <span id="admin-lat-disp">-</span></span><span>経度: <span id="admin-lon-disp">-</span></span><button onclick="adminMapSearchAddr()" style="margin-left:auto;padding:3px 10px;background:var(--accent);color:#000;border:none;border-radius:4px;font-size:11px;font-weight:600;cursor:pointer">住所から検索</button></div><input type="hidden" id="admin-lat"><input type="hidden" id="admin-lon"></div></div>
-        <div class="fr"><div class="fg"><div class="fl">最寄駅</div><input class="fin" id="fst" placeholder="例：表参道駅 徒歩3分" value="表参道駅 徒歩3分"></div><div class="fg"><div class="fl">路線</div><input class="fin" id="fline" placeholder="例：東京メトロ銀座線・千代田線・半蔵門線" value="東京メトロ銀座線・千代田線・半蔵門線"></div></div>
         <div class="fr">
-          <div class="fg" style="max-width:140px">
-            <div class="fl">分数</div>
-            <input class="fin" id="f-walk-minutes" type="number" min="1" max="999" placeholder="例：5" style="width:100%">
+          <div class="fg"><div class="fl">最寄駅名</div><input class="fin" id="fst" placeholder="例：外苑前駅" value=""></div>
+          <div class="fg"><div class="fl">路線名</div><input class="fin" id="fline" placeholder="例：東京メトロ銀座線" value=""></div>
+        </div>
+        <div class="fr" style="align-items:flex-start;gap:20px">
+          <div class="fg" style="max-width:130px">
+            <div class="fl">所要時間<span style="font-size:10px;color:#aaa;margin-left:4px">分</span></div>
+            <input class="fin" id="f-walk-minutes" type="number" min="1" max="999" placeholder="5" style="width:100%">
           </div>
           <div class="fg">
             <div class="fl">移動手段</div>
-            <div style="display:flex;gap:8px;padding-top:6px">
-              <button type="button" id="btn-tw" onclick="setTransport('walk')" style="padding:5px 16px;border-radius:6px;border:1px solid var(--accent);background:var(--accent);color:#fff;font-size:12px;font-weight:600;cursor:pointer">徒歩</button>
-              <button type="button" id="btn-tc" onclick="setTransport('car')" style="padding:5px 16px;border-radius:6px;border:1px solid #ddd;background:#fff;color:#666;font-size:12px;cursor:pointer">車</button>
+            <div style="display:flex;gap:10px;padding-top:4px">
+              <button type="button" id="btn-tw" onclick="setTransport('walk')" style="display:flex;align-items:center;gap:6px;padding:8px 20px;border-radius:8px;border:2px solid var(--accent);background:var(--accent);color:#fff;font-size:13px;font-weight:700;cursor:pointer;transition:.15s">
+                <span>🚶</span>徒歩
+              </button>
+              <button type="button" id="btn-tc" onclick="setTransport('car')" style="display:flex;align-items:center;gap:6px;padding:8px 20px;border-radius:8px;border:2px solid #ddd;background:#fff;color:#666;font-size:13px;font-weight:700;cursor:pointer;transition:.15s">
+                <span>🚗</span>車
+              </button>
             </div>
             <input type="hidden" id="f-transport-mode" value="walk">
           </div>
-        </div>
-        <div class="fr full">><div class="fg"><div class="fl">公式サイトURL <span class="req" style="color:#e53e3e;font-size:10px;margin-left:4px">必須</span><div style="font-size:10px;color:#2BB5C8;margin-top:2px">ユーザーが公式サイトにリンクされます</div></div><input class="fin" id="f-official-url" placeholder="https://example.com/reserve" value="" style="font-size:12px" required=""></div></div>
+          <div class="fg" style="flex:1">
+            <div class="fl">表示プレビュー</div>
+            <div id="access-preview" style="margin-top:6px;padding:8px 12px;background:#f5f9ff;border:1px solid #d0e4f7;border-radius:8px;font-size:12px;color:#2b6cb0;min-height:34px;line-height:1.5">入力するとここに表示例が出ます</div>
+          </div>
+        </div></div><input class="fin" id="f-official-url" placeholder="https://example.com/reserve" value="" style="font-size:12px" required=""></div></div>
         <div class="fr full"><div class="fg"><div class="fl">施設説明文<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><textarea class="fta" id="fde"></textarea></div></div>
         <div class="fr"><div class="fg"><div class="fl">Instagram（@から入力）</div><input class="fin" id="fig" value=""></div></div>
       </div>
@@ -1154,9 +1164,32 @@ async function loadSpaceDetail(f) {
     function setTransport(mode){
   var el=document.getElementById('f-transport-mode');if(el)el.value=mode;
   var bw=document.getElementById('btn-tw'),bc=document.getElementById('btn-tc');
-  if(!bw||!bc)return;
-  if(mode==='walk'){bw.style.background='var(--accent)';bw.style.color='#fff';bw.style.borderColor='var(--accent)';bc.style.background='#fff';bc.style.color='#666';bc.style.borderColor='#ddd';}
-  else{bc.style.background='var(--accent)';bc.style.color='#fff';bc.style.borderColor='var(--accent)';bw.style.background='#fff';bw.style.color='#666';bw.style.borderColor='#ddd';}
+  if(bw&&bc){
+    if(mode==='walk'){
+      bw.style.background='var(--accent)';bw.style.color='#fff';bw.style.borderColor='var(--accent)';
+      bc.style.background='#fff';bc.style.color='#666';bc.style.borderColor='#ddd';
+    } else {
+      bc.style.background='var(--accent)';bc.style.color='#fff';bc.style.borderColor='var(--accent)';
+      bw.style.background='#fff';bw.style.color='#666';bw.style.borderColor='#ddd';
+    }
+  }
+  updateAccessPreview();
+}
+function updateAccessPreview(){
+  var line=document.getElementById('fline')?.value||'';
+  var st=document.getElementById('fst')?.value||'';
+  var min=document.getElementById('f-walk-minutes')?.value||'';
+  var mode=document.getElementById('f-transport-mode')?.value||'walk';
+  var mv=mode==='car'?'車で':'徒歩';
+  var prev=document.getElementById('access-preview');
+  if(!prev)return;
+  if(!st&&!line&&!min){prev.textContent='入力するとここに表示例が出ます';prev.style.color='#aaa';return;}
+  var parts=[];
+  if(line)parts.push(line);
+  if(st)parts.push(st+'より');
+  if(min)parts.push(mv+min+'分');
+  prev.textContent=parts.join(' ');
+  prev.style.color='#2b6cb0';
 }
 sv('fu',   d.website_url);
     sv('fig',  d.instagram);
@@ -2016,5 +2049,14 @@ function showVibeToast() {
   window.deleteVoice=function(id){if(!confirm('\u524a\u9664\u3057\u307e\u3059\u304b\uff1f'))return;fetch(SB+'/rest/v1/voices?id=eq.'+id,{method:'DELETE',headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}}).then(function(){window.loadAdminVoices&&window.loadAdminVoices();});};
   var _vt=setInterval(function(){if(typeof window.go==='function'&&!window.go._v2patched){var orig=window.go;window.go=function(id,el){var r=orig.apply(this,arguments);if(id==='voice')setTimeout(function(){window.loadAdminVoices&&window.loadAdminVoices();},100);return r;};window.go._v2patched=true;clearInterval(_vt);}},100);
 })();
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  ['fst','fline','f-walk-minutes'].forEach(function(id){
+    var el=document.getElementById(id);
+    if(el)el.addEventListener('input',function(){if(typeof updateAccessPreview==='function')updateAccessPreview();});
+  });
+});
 </script>
 </body></html>
