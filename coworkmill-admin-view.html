@@ -321,14 +321,14 @@ function resetVibeUI(){
         </div>
         <div class="fr" style="align-items:flex-start;gap:16px;margin-top:4px">
           <div class="fg" style="max-width:120px">
-            <div class="fl">所要時間<span style="font-size:10px;color:#aaa;margin-left:3px">分</span></div>
+            <div class="fl">所要時間&nbsp;<span style="font-size:10px;color:#aaa">分</span></div>
             <input class="fin" id="f-walk-minutes" type="number" min="1" max="999" placeholder="5" style="width:100%">
           </div>
           <div class="fg">
-            <div class="fl">移動手段<span style="font-size:10px;color:#aaa;margin-left:4px">タップで選択</span></div>
+            <div class="fl">移動手段&nbsp;<span style="font-size:10px;color:#aaa">タップで選択</span></div>
             <div style="display:flex;gap:10px;padding-top:4px">
-              <button type="button" id="btn-tw" onclick="setTransport('walk')" style="display:flex;align-items:center;gap:5px;padding:8px 20px;border-radius:8px;border:2px solid var(--accent);background:var(--accent);color:#fff;font-size:13px;font-weight:700;cursor:pointer">🚶 徒歩</button>
-              <button type="button" id="btn-tc" onclick="setTransport('car')" style="display:flex;align-items:center;gap:5px;padding:8px 20px;border-radius:8px;border:2px solid #ddd;background:#fff;color:#666;font-size:13px;font-weight:700;cursor:pointer">🚗 車</button>
+              <button type="button" id="btn-tw" onclick="window.setTransport('walk')" style="padding:8px 20px;border-radius:8px;border:2px solid var(--accent);background:var(--accent);color:#fff;font-size:13px;font-weight:700;cursor:pointer">🚶 徒歩</button>
+              <button type="button" id="btn-tc" onclick="window.setTransport('car')" style="padding:8px 20px;border-radius:8px;border:2px solid #ddd;background:#fff;color:#666;font-size:13px;font-weight:700;cursor:pointer">🚗 車</button>
             </div>
             <input type="hidden" id="f-transport-mode" value="walk">
           </div>
@@ -336,7 +336,7 @@ function resetVibeUI(){
             <div class="fl">表示プレビュー</div>
             <div id="access-preview" style="margin-top:6px;padding:8px 12px;background:#f5f9ff;border:1px solid #d0e4f7;border-radius:8px;font-size:12px;color:#aaa;min-height:34px;line-height:1.5">入力すると表示例が出ます</div>
           </div>
-        </div><input class="fin" id="f-official-url" placeholder="https://example.com/reserve" value="" style="font-size:12px" required=""></div></div>
+        </div></div>
         <div class="fr full"><div class="fg"><div class="fl">施設説明文<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><textarea class="fta" id="fde"></textarea></div></div>
         <div class="fr"><div class="fg"><div class="fl">Instagram（@から入力）</div><input class="fin" id="fig" value=""></div></div>
       </div>
@@ -2053,6 +2053,33 @@ document.addEventListener('DOMContentLoaded',function(){
     var el=document.getElementById(id);
     if(el)el.addEventListener('input',function(){if(typeof updateAccessPreview==='function')updateAccessPreview();});
   });
+});
+</script>
+<script>
+window.setTransport=function(mode){
+  var el=document.getElementById('f-transport-mode');if(el)el.value=mode;
+  var bw=document.getElementById('btn-tw'),bc=document.getElementById('btn-tc');
+  if(!bw||!bc)return;
+  var on='padding:8px 20px;border-radius:8px;border:2px solid var(--accent);background:var(--accent);color:#fff;font-size:13px;font-weight:700;cursor:pointer';
+  var off='padding:8px 20px;border-radius:8px;border:2px solid #ddd;background:#fff;color:#666;font-size:13px;font-weight:700;cursor:pointer';
+  if(mode==='walk'){bw.style.cssText=on;bc.style.cssText=off;}else{bc.style.cssText=on;bw.style.cssText=off;}
+  window.updateAccessPreview&&window.updateAccessPreview();
+};
+window.updateAccessPreview=function(){
+  var line=document.getElementById('fline')?.value||'';
+  var st=document.getElementById('fst')?.value||'';
+  var min=document.getElementById('f-walk-minutes')?.value||'';
+  var mode=document.getElementById('f-transport-mode')?.value||'walk';
+  var prev=document.getElementById('access-preview');if(!prev)return;
+  if(!st&&!line&&!min){prev.textContent='入力すると表示例が出ます';prev.style.color='#aaa';return;}
+  var parts=[];
+  if(line)parts.push(line);
+  if(st)parts.push(st+'より');
+  if(min)parts.push((mode==='car'?'車で':'徒歩')+min+'分');
+  prev.textContent=parts.join(' ');prev.style.color='#2b6cb0';
+};
+document.addEventListener('DOMContentLoaded',function(){
+  ['fst','fline','f-walk-minutes'].forEach(function(id){var el=document.getElementById(id);if(el)el.addEventListener('input',window.updateAccessPreview);});
 });
 </script>
 </body></html>
