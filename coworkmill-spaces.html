@@ -155,6 +155,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:56px;display:flex;ali
 .scard-wtags{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:12px;flex:1}
 .scard-wtag{font-size:8px;padding:2px 7px;background:var(--accent-light);color:#2BB5C8;border-radius:3px;font-weight:500}
 .scard-footer{display:flex;align-items:center;justify-content:space-between;padding-top:10px;border-top:1px solid var(--gray-100)}
+.scard-access{font-size:11px;color:#888;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .scard-price{font-size:13px;color:#fff;line-height:1.7;margin-top:6px}
 .scard-price strong{font-family:var(--font-d);font-size:13px;font-weight:300;color:var(--black);display:block}
 .scard-arrow{font-size:11px;color:var(--gray-400);transition:all .2s}
@@ -905,6 +906,13 @@ function makeCard(d, i, type) {
         '<div class="scard-name">' + (d.name||'') + '</div>' +
         (d.architect_name ? '<div class="scard-design">Design by <span>' + d.architect_name + '</span></div>' : '') +
         (vibes.length ? '<div class="scard-wtags">' + vibes.map(v=>'<span class="scard-wtag">'+v+'</span>').join('') + '</div>' : '') +
+        (function(){
+          var ap=[];
+          if(d.nearest_line)ap.push(d.nearest_line);
+          if(d.nearest_station)ap.push(d.nearest_station+'より');
+          if(d.walk_minutes){var mv=d.transport_mode==='car'?'車で':'徒歩';ap.push(mv+d.walk_minutes+'分');}
+          return ap.length?'<div class="scard-access" style="font-size:11px;color:#888;margin:3px 0 0;">'+ap.join(' ')+'</div>':'';
+        })() +
         '<div class="scard-footer"><div class="scard-price">' + price + '</div><span class="scard-arrow">→</span></div>' +
       '</div></a>';
   } else {
