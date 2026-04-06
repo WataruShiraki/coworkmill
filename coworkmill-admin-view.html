@@ -1048,7 +1048,7 @@ function collectFormData() {
     price_note:      g('nf-price-hourly', 'p-pnote'),
     description:     g('nfde', 'fde', 'p-desc'),
     capacity:        ni('p-cap'),
-    open_hours:      g('p-hours'),
+    open_hours:      g('f-open-hours','p-hours'),
     architect_name:  g('p-arch'),
     vibe:            g('nfvibe', 'p-vibe'),
     website_url:     document.getElementById('f-official-url')?.value||'',
@@ -1132,6 +1132,7 @@ async function loadSpaceDetail(f) {
     if(document.getElementById('f-walk-minutes'))document.getElementById('f-walk-minutes').value=d.walk_minutes||'';
     if(typeof setTransport==='function')setTransport(d.transport_mode||'walk');
     sv('fline',d.nearest_line);
+    if(document.getElementById('f-open-hours'))document.getElementById('f-open-hours').value=d.open_hours||'';
     sv('fde',  d.description);
     if(document.getElementById('f-has-meeting-room'))document.getElementById('f-has-meeting-room').checked=!!d.has_meeting_room;
     if(document.getElementById('f-meeting-capacity')&&d.meeting_capacity)document.getElementById('f-meeting-capacity').value=d.meeting_capacity;
