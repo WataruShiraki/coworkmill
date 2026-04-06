@@ -904,12 +904,7 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
     <div class="related-title" id="rel-arch-title"></div>
     <div class="related-grid" id="rel-arch-grid"></div>
   </div>
-  <div class="related-block" id="rel-ws-block" style="display:none">
-    <div class="related-label">同じ目的</div>
-    <div class="related-title" id="rel-ws-title"></div>
-    <div class="related-grid" id="rel-ws-grid"></div>
   </div>
-</div>
 
 <script>
 // Gallery: CSS-only, no JS needed
@@ -1947,17 +1942,6 @@ function renderPlanCards(sp) {
       });
     }
 
-    // ワークスタイルタグ
-    var tags=space.workstyle_tags||[];
-    if(tags.length){
-      // cs={"overlap":"any"} で配列の重複チェック → cs=contains は全一致なのでovでoverlap
-      // Supabase: workstyle_tags=ov.{tag1,tag2}
-      var tagStr='{'+tags.join(',')+'}'
-      sbFetch('spaces?status=eq.live&workstyle_tags=ov.'+encodeURIComponent(tagStr)+'&id=neq.'+curId+'&limit=3&select='+sel).then(function(rows){
-        var label=tags.slice(0,2).map(function(t){return WS_LABELS[t]||t;}).join('・');
-        renderBlock('rel-ws-block','rel-ws-grid','rel-ws-title',label+'向きのスペース',rows);
-      });
-    }
   };
 })();
 </script>
