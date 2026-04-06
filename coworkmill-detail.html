@@ -894,6 +894,21 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
 
 <!-- ① 関連施設 -->
 <div class="related-section" id="d-related-section" style="display:none">
+  <div class="related-block" id="rel-area-block" style="display:none">
+    <div class="related-label">同じエリア</div>
+    <div class="related-title" id="rel-area-title"></div>
+    <div class="related-grid" id="rel-area-grid"></div>
+  </div>
+  <div class="related-block" id="rel-arch-block" style="display:none">
+    <div class="related-label">同じ建築家</div>
+    <div class="related-title" id="rel-arch-title"></div>
+    <div class="related-grid" id="rel-arch-grid"></div>
+  </div>
+  <div class="related-block" id="rel-ws-block" style="display:none">
+    <div class="related-label">同じ目的</div>
+    <div class="related-title" id="rel-ws-title"></div>
+    <div class="related-grid" id="rel-ws-grid"></div>
+  </div>
 </div>
 
 <script>
@@ -1496,6 +1511,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // サイドバー施設名
       const asideName = document.getElementById('d-aside-name');
       if (asideName) asideName.textContent = d.name || '';
+      if(typeof window.loadRelatedSpaces==='function')window.loadRelatedSpaces(d);
 
       // アクセスブロック
       (function(){
@@ -1875,4 +1891,74 @@ function renderPlanCards(sp) {
 </script>
 
 
+<script>
+(function(){
+  var SB='https://jakwntemjkwqwaqujffh.supabase.co';
+  var KEY='sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+  var WS_LABELS={deep_work:'集中・執筆・戦略',creative:'制作・クリエイティブ',ideation:'アイデア・ブレスト',meeting:'商談・ミーティング',remote_call:'オンライン会議',learning:'学習・リサーチ'};
+
+  function makeRcard(s){
+    var img=s.image_main?'background-image:url('+s.image_main+');background-size:cover;background-position:center':'background:#222';
+    var pref=(s.area||s.prefecture||'').replace(/[都道府県]$/,'');
+    var price=s.price_dropin_hour?'¥'+Number(s.price_dropin_hour).toLocaleString('ja-JP')+' /時間〜':'料金は公式サイトにて';
+    var href='coworkmill-detail.html?slug='+encodeURIComponent(s.slug);
+    return '<a class="rcard" href="'+href+'">'+
+      '<div style="height:160px;'+img+'"></div>'+
+      '<div style="padding:14px 16px">'+
+        '<div style="font-size:13px;font-weight:500;color:var(--black);margin-bottom:4px">'+s.name+'</div>'+
+        '<div style="font-size:11px;color:#2BB5C8;margin-bottom:8px">'+pref+'</div>'+
+        '<div style="font-size:11px;color:var(--gray-400)">'+price+'</div>'+
+      '</div>'+
+    '</a>';
+  }
+
+  function renderBlock(blockId,gridId,titleId,title,spaces){
+    if(!spaces||!spaces.length)return;
+    var block=document.getElementById(blockId);
+    var grid=document.getElementById(gridId);
+    var titleEl=document.getElementById(titleId);
+    if(!block||!grid||!titleEl)return;
+    titleEl.textContent=title;
+    grid.innerHTML=spaces.map(makeRcard).join('');
+    block.style.display='';
+    document.getElementById('d-related-section').style.display='';
+  }
+
+  function sbFetch(path){
+    return fetch(SB+'/rest/v1/'+path,{headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}}).then(function(r){return r.json();});
+  }
+
+  window.loadRelatedSpaces=function(space){
+    if(!space)return;
+    var curId=space.id;
+    var sel='id,slug,name,area,prefecture,image_main,price_dropin_hour,workstyle_tags';
+
+    // エリア
+    if(space.area){
+      sbFetch('spaces?status=eq.live&area=eq.'+encodeURIComponent(space.area)+'&id=neq.'+curId+'&limit=3&select='+sel).then(function(rows){
+        renderBlock('rel-area-block','rel-area-grid','rel-area-title',space.area+'のスペース',rows);
+      });
+    }
+
+    // 建築家
+    if(space.architect_name){
+      sbFetch('spaces?status=eq.live&architect_name=eq.'+encodeURIComponent(space.architect_name)+'&id=neq.'+curId+'&limit=3&select='+sel).then(function(rows){
+        renderBlock('rel-arch-block','rel-arch-grid','rel-arch-title',space.architect_name+'設計のスペース',rows);
+      });
+    }
+
+    // ワークスタイルタグ
+    var tags=space.workstyle_tags||[];
+    if(tags.length){
+      // cs={"overlap":"any"} で配列の重複チェック → cs=contains は全一致なのでovでoverlap
+      // Supabase: workstyle_tags=ov.{tag1,tag2}
+      var tagStr='{'+tags.join(',')+'}'
+      sbFetch('spaces?status=eq.live&workstyle_tags=ov.'+encodeURIComponent(tagStr)+'&id=neq.'+curId+'&limit=3&select='+sel).then(function(rows){
+        var label=tags.slice(0,2).map(function(t){return WS_LABELS[t]||t;}).join('・');
+        renderBlock('rel-ws-block','rel-ws-grid','rel-ws-title',label+'向きのスペース',rows);
+      });
+    }
+  };
+})();
+</script>
 </body></html>

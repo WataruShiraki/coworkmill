@@ -349,7 +349,21 @@ function resetVibeUI(){
       </div>
       </div>
     </div>
-    <div class="sec">
+    
+        <div class="sec">
+          <div class="sec-h"><div class="sec-ht">このスペースでできる仕事</div></div>
+          <div class="sec-b">
+            <div class="fgg" id="ws-tags-grid">
+              <label class="fo" data-ws="deep_work"><input type="checkbox" value="deep_work" style="display:none"><span class="fi-icon">&#x1f4dd;</span><div class="fo-labels"><div class="fo-main">集中・執筆・戦略</div><div class="fo-sub">Deep Work</div></div></label>
+              <label class="fo" data-ws="creative"><input type="checkbox" value="creative" style="display:none"><span class="fi-icon">&#x1f3a8;</span><div class="fo-labels"><div class="fo-main">制作・クリエイティブ</div><div class="fo-sub">Creative Work</div></div></label>
+              <label class="fo" data-ws="ideation"><input type="checkbox" value="ideation" style="display:none"><span class="fi-icon">&#x1f4a1;</span><div class="fo-labels"><div class="fo-main">アイデア・ブレスト</div><div class="fo-sub">Ideation</div></div></label>
+              <label class="fo" data-ws="meeting"><input type="checkbox" value="meeting" style="display:none"><span class="fi-icon">&#x1f91d;</span><div class="fo-labels"><div class="fo-main">商談・ミーティング</div><div class="fo-sub">Meeting</div></div></label>
+              <label class="fo" data-ws="remote_call"><input type="checkbox" value="remote_call" style="display:none"><span class="fi-icon">&#x1f4bb;</span><div class="fo-labels"><div class="fo-main">オンライン会議</div><div class="fo-sub">Remote Call</div></div></label>
+              <label class="fo" data-ws="learning"><input type="checkbox" value="learning" style="display:none"><span class="fi-icon">&#x1f4da;</span><div class="fo-labels"><div class="fo-main">学習・リサーチ</div><div class="fo-sub">Learning</div></div></label>
+            </div>
+          </div>
+        </div>
+<div class="sec">
       <div class="sec-h"><div><div class="sec-ht">場所の特徴 <span class="vibe-count-label" style="font-size:11px;color:var(--gray-400);font-weight:normal">0/3</span></div><div class="sec-hs">3つまで複数選択（任意）</div></div></div>
       <div class="sec-b">
         <div class="fgg" style="grid-template-columns:repeat(4,1fr)">
@@ -1042,6 +1056,7 @@ function collectFormData() {
     nearest_line:    g('nfline', 'fline', 'p-line'),
     walk_minutes:    parseInt(document.getElementById('f-walk-minutes')?.value)||null,
     open_hours:      document.getElementById('f-open-hours')?.value?.trim()||null,
+    workstyle_tags:  Array.from(document.querySelectorAll('#ws-tags-grid input:checked')).map(function(cb){return cb.value;}),
     transport_mode:  document.getElementById('f-transport-mode')?.value||'walk',
     price_dropin_day: getPriceVal('price-daily','nf-price-daily'),
     price_dropin_hour: getPriceVal('price-hourly','nf-price-hourly'),
@@ -1135,6 +1150,13 @@ async function loadSpaceDetail(f) {
     if(typeof setTransport==='function')setTransport(d.transport_mode||'walk');
     sv('fline',d.nearest_line);
     if(document.getElementById('f-open-hours'))document.getElementById('f-open-hours').value=d.open_hours||'';
+    // ワークスタイルタグ読み込み
+    var wsTags=d.workstyle_tags||[];
+    document.querySelectorAll('#ws-tags-grid .fo').forEach(function(lbl){
+      var cb=lbl.querySelector('input');if(!cb)return;
+      var on=wsTags.includes(cb.value);
+      cb.checked=on;lbl.classList.toggle('on',on);
+    });
     sv('fde',  d.description);
     if(document.getElementById('f-has-meeting-room'))document.getElementById('f-has-meeting-room').checked=!!d.has_meeting_room;
     if(document.getElementById('f-meeting-capacity')&&d.meeting_capacity)document.getElementById('f-meeting-capacity').value=d.meeting_capacity;
@@ -2090,6 +2112,15 @@ window.updateAccessPreview=function(){
 };
 document.addEventListener('DOMContentLoaded',function(){
   ['fst','fline','f-walk-minutes'].forEach(function(id){var el=document.getElementById(id);if(el)el.addEventListener('input',window.updateAccessPreview);});
+  // ワークスタイルタグのクリック
+  document.querySelectorAll('#ws-tags-grid .fo').forEach(function(lbl){
+    lbl.addEventListener('click',function(){
+      var cb=lbl.querySelector('input[type="checkbox"]');
+      if(!cb)return;
+      cb.checked=!cb.checked;
+      lbl.classList.toggle('on',cb.checked);
+    });
+  });
 });
 </script>
 </body></html>
