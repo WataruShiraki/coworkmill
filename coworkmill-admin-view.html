@@ -1030,7 +1030,7 @@ function collectFormData() {
   const ni = (...ids) => { const v = g(...ids); return v ? (parseInt(v) || null) : null; };
   return {
     name:            g('nfn', 'fn', 'p-name') || null,
-    area:            g('nfa', 'fa', 'p-area'),
+    area:            g('f-city', 'nfa', 'fa', 'p-area'),
     prefecture:      g('nfc', 'fc', 'p-pref'),
     address:         (function(){var pref=document.querySelector('#nfc option:checked')?.value||document.getElementById('fc')?.value||'';var city=document.getElementById('f-city')?.value?.trim()||'';var street=document.getElementById('nfad')?.value?.trim()||document.getElementById('fad')?.value?.trim()||'';return [pref,city,street].filter(Boolean).join('');})(),
     latitude:        parseFloat(document.getElementById('admin-lat')?.value)||null,
