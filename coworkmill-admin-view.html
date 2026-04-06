@@ -319,28 +319,24 @@ function resetVibeUI(){
           <div class="fg"><div class="fl">最寄駅名</div><input class="fin" id="fst" placeholder="例：外苑前駅" value=""></div>
           <div class="fg"><div class="fl">路線名</div><input class="fin" id="fline" placeholder="例：東京メトロ銀座線" value=""></div>
         </div>
-        <div class="fr" style="align-items:flex-start;gap:20px">
-          <div class="fg" style="max-width:130px">
-            <div class="fl">所要時間<span style="font-size:10px;color:#aaa;margin-left:4px">分</span></div>
+        <div class="fr" style="align-items:flex-start;gap:16px;margin-top:4px">
+          <div class="fg" style="max-width:120px">
+            <div class="fl">所要時間<span style="font-size:10px;color:#aaa;margin-left:3px">分</span></div>
             <input class="fin" id="f-walk-minutes" type="number" min="1" max="999" placeholder="5" style="width:100%">
           </div>
           <div class="fg">
-            <div class="fl">移動手段</div>
+            <div class="fl">移動手段<span style="font-size:10px;color:#aaa;margin-left:4px">タップで選択</span></div>
             <div style="display:flex;gap:10px;padding-top:4px">
-              <button type="button" id="btn-tw" onclick="setTransport('walk')" style="display:flex;align-items:center;gap:6px;padding:8px 20px;border-radius:8px;border:2px solid var(--accent);background:var(--accent);color:#fff;font-size:13px;font-weight:700;cursor:pointer;transition:.15s">
-                <span>🚶</span>徒歩
-              </button>
-              <button type="button" id="btn-tc" onclick="setTransport('car')" style="display:flex;align-items:center;gap:6px;padding:8px 20px;border-radius:8px;border:2px solid #ddd;background:#fff;color:#666;font-size:13px;font-weight:700;cursor:pointer;transition:.15s">
-                <span>🚗</span>車
-              </button>
+              <button type="button" id="btn-tw" onclick="setTransport('walk')" style="display:flex;align-items:center;gap:5px;padding:8px 20px;border-radius:8px;border:2px solid var(--accent);background:var(--accent);color:#fff;font-size:13px;font-weight:700;cursor:pointer">🚶 徒歩</button>
+              <button type="button" id="btn-tc" onclick="setTransport('car')" style="display:flex;align-items:center;gap:5px;padding:8px 20px;border-radius:8px;border:2px solid #ddd;background:#fff;color:#666;font-size:13px;font-weight:700;cursor:pointer">🚗 車</button>
             </div>
             <input type="hidden" id="f-transport-mode" value="walk">
           </div>
-          <div class="fg" style="flex:1">
+          <div class="fg" style="flex:1;min-width:180px">
             <div class="fl">表示プレビュー</div>
-            <div id="access-preview" style="margin-top:6px;padding:8px 12px;background:#f5f9ff;border:1px solid #d0e4f7;border-radius:8px;font-size:12px;color:#2b6cb0;min-height:34px;line-height:1.5">入力するとここに表示例が出ます</div>
+            <div id="access-preview" style="margin-top:6px;padding:8px 12px;background:#f5f9ff;border:1px solid #d0e4f7;border-radius:8px;font-size:12px;color:#aaa;min-height:34px;line-height:1.5">入力すると表示例が出ます</div>
           </div>
-        </div></div><input class="fin" id="f-official-url" placeholder="https://example.com/reserve" value="" style="font-size:12px" required=""></div></div>
+        </div><input class="fin" id="f-official-url" placeholder="https://example.com/reserve" value="" style="font-size:12px" required=""></div></div>
         <div class="fr full"><div class="fg"><div class="fl">施設説明文<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><textarea class="fta" id="fde"></textarea></div></div>
         <div class="fr"><div class="fg"><div class="fl">Instagram（@から入力）</div><input class="fin" id="fig" value=""></div></div>
       </div>
@@ -1161,7 +1157,7 @@ async function loadSpaceDetail(f) {
     if(document.getElementById('price-hourly'))document.getElementById('price-hourly').value=d.price_dropin_hour?d.price_dropin_hour.toLocaleString('ja-JP'):'';
     if(document.getElementById('nf-price-hourly'))document.getElementById('nf-price-hourly').value=d.price_dropin_hour?d.price_dropin_hour.toLocaleString('ja-JP'):'';
     if(document.getElementById('f-official-url'))document.getElementById('f-official-url').value=d.official_url||'';
-    function setTransport(mode){
+    window.setTransport=function(mode){
   var el=document.getElementById('f-transport-mode');if(el)el.value=mode;
   var bw=document.getElementById('btn-tw'),bc=document.getElementById('btn-tc');
   if(bw&&bc){
@@ -1175,7 +1171,7 @@ async function loadSpaceDetail(f) {
   }
   updateAccessPreview();
 }
-function updateAccessPreview(){
+window.updateAccessPreview=function(){
   var line=document.getElementById('fline')?.value||'';
   var st=document.getElementById('fst')?.value||'';
   var min=document.getElementById('f-walk-minutes')?.value||'';
