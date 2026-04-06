@@ -2060,9 +2060,9 @@ window.setTransport=function(mode){
   var el=document.getElementById('f-transport-mode');if(el)el.value=mode;
   var bw=document.getElementById('btn-tw'),bc=document.getElementById('btn-tc');
   if(!bw||!bc)return;
-  var on='padding:8px 20px;border-radius:8px;border:2px solid var(--accent);background:var(--accent);color:#fff;font-size:13px;font-weight:700;cursor:pointer';
-  var off='padding:8px 20px;border-radius:8px;border:2px solid #ddd;background:#fff;color:#666;font-size:13px;font-weight:700;cursor:pointer';
-  if(mode==='walk'){bw.style.cssText=on;bc.style.cssText=off;}else{bc.style.cssText=on;bw.style.cssText=off;}
+  function applyOn(btn){btn.style.background='var(--accent)';btn.style.color='#fff';btn.style.border='2px solid var(--accent)';}
+  function applyOff(btn){btn.style.background='#fff';btn.style.color='#666';btn.style.border='2px solid #ddd';}
+  if(mode==='walk'){applyOn(bw);applyOff(bc);}else{applyOn(bc);applyOff(bw);}
   window.updateAccessPreview&&window.updateAccessPreview();
 };
 window.updateAccessPreview=function(){
