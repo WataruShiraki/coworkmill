@@ -188,6 +188,32 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
   .sp-pc-notice-ttl{font-family:'Montserrat',sans-serif;font-size:18px;font-weight:500;color:#fff;margin-bottom:12px;letter-spacing:-.02em}
   .sp-pc-notice-sub{font-size:13px;color:rgba(255,255,255,.5);line-height:1.8}
 }
+
+.plan-widget{margin:10px 0 14px;background:#1a1a1a;border-radius:8px;padding:12px 14px;border:0.5px solid #2a2a2a}
+.plan-widget-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.plan-widget-label{font-size:10px;font-weight:500;letter-spacing:.06em;color:#666}
+.plan-widget-badge{font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px}
+.plan-badge-free{background:#2a2a2a;color:#aaa}
+.plan-badge-standard{background:#0f2a2c;color:#2BB5C8}
+.plan-badge-pro{background:#241a00;color:#f59e0b}
+.plan-usage-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.plan-usage-label{font-size:11px;color:#666}
+.plan-usage-val{font-size:11px;font-weight:500}
+.plan-usage-val.warn{color:#e55}
+.plan-usage-val.ok{color:#ccc}
+.plan-bar-track{height:4px;background:#2a2a2a;border-radius:2px;overflow:hidden;margin-bottom:4px}
+.plan-bar-fill{height:100%;border-radius:2px;transition:width .3s}
+.plan-bar-fill.free-bar{background:#2BB5C8}
+.plan-bar-fill.warn-bar{background:#e55}
+.plan-bar-fill.pro-bar{background:#f59e0b}
+.plan-usage-note{font-size:10px;margin-bottom:10px}
+.plan-usage-note.warn{color:#e55}
+.plan-usage-note.ok{color:#555}
+.plan-divider{height:0.5px;background:#2a2a2a;margin-bottom:10px}
+.plan-upgrade-link{font-size:11px;color:#2BB5C8;font-weight:500;cursor:pointer;text-decoration:none;display:block;transition:opacity .15s}
+.plan-upgrade-link:hover{opacity:.8}
+.plan-upgrade-link.pro-link{color:#f59e0b}
+.plan-upgrade-sub{font-size:10px;color:#555;margin-top:3px}
 </style>
   <meta name="description" content="COWORKMILLの掲載者向け施設管理画面。">
   <meta name="robots" content="noindex, nofollow">
@@ -227,6 +253,23 @@ function resetVibeUI(){
     <div class="sb-sub">施設管理ポータル</div>
   </div>
   <div class="sb-fac-hd">掲載施設 <span class="pb">Standard</span></div>
+  <div class="plan-widget" id="plan-widget">
+    <div class="plan-widget-row">
+      <span class="plan-widget-label">現在のプラン</span>
+      <span class="plan-widget-badge" id="plan-widget-badge">...</span>
+    </div>
+    <div class="plan-usage-row">
+      <span class="plan-usage-label">掛載施設</span>
+      <span class="plan-usage-val" id="plan-usage-val">-</span>
+    </div>
+    <div class="plan-bar-track">
+      <div class="plan-bar-fill" id="plan-bar-fill" style="width:0%"></div>
+    </div>
+    <div class="plan-usage-note" id="plan-usage-note"></div>
+    <div class="plan-divider"></div>
+    <a class="plan-upgrade-link" id="plan-upgrade-link" href="mailto:info@lily-p.com?subject=プランアップグレードのご相談"></a>
+    <div class="plan-upgrade-sub" id="plan-upgrade-sub"></div>
+  </div>
   <div id="fac-list"></div>
   <button class="add-btn" onclick="addFac()">+ 施設を読み込み中...</button>
   <nav class="sb-nav">
@@ -2093,5 +2136,47 @@ document.addEventListener('DOMContentLoaded',function(){
   ['fst','fline','f-walk-minutes'].forEach(function(id){var el=document.getElementById(id);if(el)el.addEventListener('input',window.updateAccessPreview);});
   });
 });
+
+function updatePlanWidget(plan, usedCount, maxCount){
+  var badge=document.getElementById('plan-widget-badge');
+  var val=document.getElementById('plan-usage-val');
+  var bar=document.getElementById('plan-bar-fill');
+  var note=document.getElementById('plan-usage-note');
+  var link=document.getElementById('plan-upgrade-link');
+  var sub=document.getElementById('plan-upgrade-sub');
+  if(!badge)return;
+  var pct=maxCount>0?Math.min(100,Math.round(usedCount/maxCount*100)):100;
+  var full=usedCount>=maxCount;
+  val.textContent=usedCount+' / '+maxCount+'件';
+  bar.style.width=pct+'%';
+  if(plan==='free'){
+    badge.textContent='FREE';badge.className='plan-widget-badge plan-badge-free';
+    val.className='plan-usage-val'+(full?' warn':' ok');
+    bar.className='plan-bar-fill'+(full?' warn-bar':' free-bar');
+    note.textContent=full?'上限に達しています':'残り'+(maxCount-usedCount)+'件追加できます';
+    note.className='plan-usage-note'+(full?' warn':' ok');
+    link.textContent='Standard にアップグレード →';
+    link.className='plan-upgrade-link';
+    sub.textContent='施設5件まで掛載可能';
+  } else if(plan==='standard'){
+    badge.textContent='STANDARD';badge.className='plan-widget-badge plan-badge-standard';
+    val.className='plan-usage-val ok';
+    bar.className='plan-bar-fill free-bar';
+    note.textContent='残り'+(maxCount-usedCount)+'件追加できます';
+    note.className='plan-usage-note ok';
+    link.textContent='Pro にアップグレード →';
+    link.className='plan-upgrade-link';
+    sub.textContent='施設20件・★PICKバッジ付与';
+  } else {
+    badge.textContent='PRO';badge.className='plan-widget-badge plan-badge-pro';
+    val.className='plan-usage-val ok';
+    bar.className='plan-bar-fill pro-bar';
+    note.textContent='残り'+(maxCount-usedCount)+'件追加できます';
+    note.className='plan-usage-note ok';
+    link.textContent='★ PICK バッジ有効';
+    link.className='plan-upgrade-link pro-link';
+    sub.textContent='最上位プランをご利用中です';
+  }
+}
 </script>
 </body></html>
