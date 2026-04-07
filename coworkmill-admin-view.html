@@ -864,6 +864,41 @@ function resetVibeUI(){
 
 
 
+window.updatePlanWidget=function(plan,usedCount,maxCount){
+  var badge=document.getElementById('plan-widget-badge');
+  var val=document.getElementById('plan-usage-val');
+  var bar=document.getElementById('plan-bar-fill');
+  var note=document.getElementById('plan-usage-note');
+  var link=document.getElementById('plan-upgrade-link');
+  var sub=document.getElementById('plan-upgrade-sub');
+  if(!badge)return;
+  var pct=maxCount>0?Math.min(100,Math.round(usedCount/maxCount*100)):100;
+  var full=usedCount>=maxCount;
+  val.textContent=usedCount+' / '+maxCount+'件';
+  bar.style.width=pct+'%';
+  if(plan==='free'){
+    badge.textContent='FREE';badge.style.cssText='background:#2a2a2a;color:#aaa;font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px';
+    val.style.color=full?'#e55':'#ccc';
+    bar.style.background=full?'#e55':'#2BB5C8';
+    note.textContent=full?'上限に達しています':'残り'+(maxCount-usedCount)+'件追加できます';
+    note.style.color=full?'#e55':'#555';
+    link.textContent='Standard にアップグレード →';link.style.color='#2BB5C8';
+    sub.textContent='施設5件まで掛載可能';
+  } else if(plan==='standard'){
+    badge.textContent='STANDARD';badge.style.cssText='background:#0f2a2c;color:#2BB5C8;font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px';
+    val.style.color='#ccc';bar.style.background='#2BB5C8';
+    note.textContent='残り'+(maxCount-usedCount)+'件追加できます';note.style.color='#555';
+    link.textContent='Pro にアップグレード →';link.style.color='#2BB5C8';
+    sub.textContent='施設20件・★PICKバッジ付与';
+  } else {
+    badge.textContent='PRO';badge.style.cssText='background:#241a00;color:#f59e0b;font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px';
+    val.style.color='#ccc';bar.style.background='#f59e0b';
+    note.textContent='残り'+(maxCount-usedCount)+'件追加できます';note.style.color='#555';
+    link.textContent='★ PICK バッジ有効';link.style.color='#f59e0b';
+    sub.textContent='最上位プランをご利用中です';
+  }
+}
+
 function updateAddBtn() {
   const btn = document.querySelector('.add-btn');
   if (!btn) return;
@@ -2137,40 +2172,5 @@ document.addEventListener('DOMContentLoaded',function(){
   ['fst','fline','f-walk-minutes'].forEach(function(id){var el=document.getElementById(id);if(el)el.addEventListener('input',window.updateAccessPreview);});
   });
 });
-
-window.updatePlanWidget=function(plan,usedCount,maxCount){
-  var badge=document.getElementById('plan-widget-badge');
-  var val=document.getElementById('plan-usage-val');
-  var bar=document.getElementById('plan-bar-fill');
-  var note=document.getElementById('plan-usage-note');
-  var link=document.getElementById('plan-upgrade-link');
-  var sub=document.getElementById('plan-upgrade-sub');
-  if(!badge)return;
-  var pct=maxCount>0?Math.min(100,Math.round(usedCount/maxCount*100)):100;
-  var full=usedCount>=maxCount;
-  val.textContent=usedCount+' / '+maxCount+'件';
-  bar.style.width=pct+'%';
-  if(plan==='free'){
-    badge.textContent='FREE';badge.style.cssText='background:#2a2a2a;color:#aaa;font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px';
-    val.style.color=full?'#e55':'#ccc';
-    bar.style.background=full?'#e55':'#2BB5C8';
-    note.textContent=full?'上限に達しています':'残り'+(maxCount-usedCount)+'件追加できます';
-    note.style.color=full?'#e55':'#555';
-    link.textContent='Standard にアップグレード →';link.style.color='#2BB5C8';
-    sub.textContent='施設5件まで掛載可能';
-  } else if(plan==='standard'){
-    badge.textContent='STANDARD';badge.style.cssText='background:#0f2a2c;color:#2BB5C8;font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px';
-    val.style.color='#ccc';bar.style.background='#2BB5C8';
-    note.textContent='残り'+(maxCount-usedCount)+'件追加できます';note.style.color='#555';
-    link.textContent='Pro にアップグレード →';link.style.color='#2BB5C8';
-    sub.textContent='施設20件・★PICKバッジ付与';
-  } else {
-    badge.textContent='PRO';badge.style.cssText='background:#241a00;color:#f59e0b;font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px';
-    val.style.color='#ccc';bar.style.background='#f59e0b';
-    note.textContent='残り'+(maxCount-usedCount)+'件追加できます';note.style.color='#555';
-    link.textContent='★ PICK バッジ有効';link.style.color='#f59e0b';
-    sub.textContent='最上位プランをご利用中です';
-  }
-}
 </script>
 </body></html>
