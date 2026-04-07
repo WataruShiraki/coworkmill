@@ -359,6 +359,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:56px;display:flex;ali
 .related-title{font-family:var(--font-display);font-size:20px;font-weight:300;letter-spacing:-.02em;color:var(--black);margin-bottom:20px}
 .related-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 .rcard{background:var(--white);border:1px solid var(--gray-100);border-radius:10px;overflow:hidden;cursor:pointer;transition:all .2s;text-decoration:none;display:block}
+.rel-more{display:inline-block;margin-top:16px;font-size:12px;color:#2BB5C8;text-decoration:none;font-weight:500;letter-spacing:.04em;border-bottom:1px solid rgba(43,181,200,.3);padding-bottom:2px;transition:border-color .2s}.rel-more:hover{border-color:#2BB5C8}
 .rcard:hover{border-color:#2BB5C8;transform:translateY(-3px)}
 .rcard-img{height:140px;background-size:cover;background-position:center;position:relative}
 .rcard-img::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.4),transparent 60%)}
@@ -1898,7 +1899,7 @@ function renderPlanCards(sp) {
     var img=s.image_main?'background-image:url('+s.image_main+');background-size:cover;background-position:center':'background:#222';
     var pref=(s.area||s.prefecture||'').replace(/[都道府県]$/,'');
     var price=s.price_dropin_hour?'¥'+Number(s.price_dropin_hour).toLocaleString('ja-JP')+' /時間〜':'料金は公式サイトにて';
-    var href='coworkmill-detail.html?slug='+encodeURIComponent(s.slug);
+    var href=s.slug?'coworkmill-detail.html?slug='+encodeURIComponent(s.slug):'coworkmill-detail.html?id='+encodeURIComponent(s.id);
     return '<a class="rcard" href="'+href+'">'+
       '<div style="height:160px;'+img+'"></div>'+
       '<div style="padding:14px 16px">'+
@@ -1909,7 +1910,7 @@ function renderPlanCards(sp) {
     '</a>';
   }
 
-  function renderBlock(blockId,gridId,titleId,title,spaces){
+  function renderBlock(blockId,gridId,titleId,title,spaces,moreUrl){
     if(!spaces||!spaces.length)return;
     var block=document.getElementById(blockId);
     var grid=document.getElementById(gridId);
@@ -1917,6 +1918,7 @@ function renderPlanCards(sp) {
     if(!block||!grid||!titleEl)return;
     titleEl.textContent=title;
     grid.innerHTML=spaces.map(makeRcard).join('');
+    if(moreUrl){var ml=block.querySelector('.rel-more');if(!ml){ml=document.createElement('a');ml.className='rel-more';block.appendChild(ml);}ml.href=moreUrl;ml.textContent=title+'をもっと見る →';}
     block.style.display='';
     document.getElementById('d-related-section').style.display='';
   }
@@ -1933,14 +1935,14 @@ function renderPlanCards(sp) {
     // エリア
     if(space.area){
       sbFetch('spaces?status=eq.live&area=eq.'+encodeURIComponent(space.area)+'&id=neq.'+curId+'&limit=3&select='+sel).then(function(rows){
-        renderBlock('rel-area-block','rel-area-grid','rel-area-title',space.area+'のスペース',rows);
+        renderBlock('rel-area-block','rel-area-grid','rel-area-title',space.area+'のスペース',rows,'coworkmill-spaces.html?area='+encodeURIComponent(space.area));
       });
     }
 
     // 建築家
     if(space.architect_name){
       sbFetch('spaces?status=eq.live&architect_name=eq.'+encodeURIComponent(space.architect_name)+'&id=neq.'+curId+'&limit=3&select='+sel).then(function(rows){
-        renderBlock('rel-arch-block','rel-arch-grid','rel-arch-title',space.architect_name+'設計のスペース',rows);
+        renderBlock('rel-arch-block','rel-arch-grid','rel-arch-title',space.architect_name+'設計のスペース',rows,'coworkmill-spaces.html?architect='+encodeURIComponent(space.architect_name));
       });
     }
 
