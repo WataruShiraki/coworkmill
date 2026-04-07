@@ -191,13 +191,13 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
 
 .plan-widget{margin:10px 0 14px;background:#1a1a1a;border-radius:8px;padding:12px 14px;border:0.5px solid #2a2a2a;color:#ccc!important}
 .plan-widget-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-.plan-widget-label{font-size:10px;font-weight:500;letter-spacing:.06em;color:#888!important}
+.plan-widget-label{font-size:10px;font-weight:500;letter-spacing:.06em;color:#ccc!important}
 .plan-widget-badge{font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px}
 .plan-badge-free{background:#2a2a2a;color:#aaa!important}
 .plan-badge-standard{background:#0f2a2c;color:#2BB5C8!important}
 .plan-badge-pro{background:#241a00;color:#f59e0b!important}
 .plan-usage-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
-.plan-usage-label{font-size:11px;color:#888!important}
+.plan-usage-label{font-size:11px;color:#ccc!important}
 .plan-usage-val{font-size:11px;font-weight:500;color:#ccc!important}
 .plan-usage-val.warn{color:#e55!important}
 .plan-usage-val.ok{color:#ccc!important}
@@ -213,7 +213,7 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
 .plan-upgrade-link{font-size:11px;color:#2BB5C8!important;font-weight:500;cursor:pointer;text-decoration:none;display:block;transition:opacity .15s}
 .plan-upgrade-link:hover{opacity:.8}
 .plan-upgrade-link.pro-link{color:#f59e0b!important}
-.plan-upgrade-sub{font-size:10px;color:#555!important;margin-top:3px}
+.plan-upgrade-sub{font-size:10px;color:#aaa!important;margin-top:3px}
 </style>
   <meta name="description" content="COWORKMILLの掲載者向け施設管理画面。">
   <meta name="robots" content="noindex, nofollow">
@@ -883,19 +883,19 @@ window.updatePlanWidget=function(plan,usedCount,maxCount){
     note.textContent=full?'上限に達しています':'残り'+(maxCount-usedCount)+'件追加できます';
     note.style.color=full?'#e55':'#555';
     link.textContent='Standard にアップグレード →';link.style.color='#2BB5C8';
-    sub.textContent='施設5件まで掛載可能';sub.style.color='#888';
+    sub.textContent='施設5件まで掛載可能';sub.style.color='#aaa';
   } else if(plan==='standard'){
     badge.textContent='STANDARD';badge.style.cssText='background:#0f2a2c;color:#2BB5C8;font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px';
     val.style.color='#ccc';bar.style.background='#2BB5C8';
-    note.textContent='残り'+(maxCount-usedCount)+'件追加できます';note.style.color='#888';
+    note.textContent='残り'+(maxCount-usedCount)+'件追加できます';note.style.color='#aaa';
     link.textContent='Pro にアップグレード →';link.style.color='#2BB5C8';
-    sub.textContent='施設20件・★PICKバッジ付与';sub.style.color='#888';
+    sub.textContent='施設20件・★PICKバッジ付与';sub.style.color='#aaa';
   } else {
     badge.textContent='PRO';badge.style.cssText='background:#241a00;color:#f59e0b;font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px';
     val.style.color='#ccc';bar.style.background='#f59e0b';
-    note.textContent='残り'+(maxCount-usedCount)+'件追加できます';note.style.color='#888';
+    note.textContent='残り'+(maxCount-usedCount)+'件追加できます';note.style.color='#aaa';
     link.textContent='★ PICK バッジ有効';link.style.color='#f59e0b';
-    sub.textContent='最上位プランをご利用中です';sub.style.color='#888';
+    sub.textContent='最上位プランをご利用中です';sub.style.color='#aaa';
   }
 }
 
