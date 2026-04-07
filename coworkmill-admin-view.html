@@ -1460,7 +1460,7 @@ const ttls = {db:'ダッシュボード',info:'施設情報の編集',new:'新�
 function go(id, el) {
   panels.forEach(p => { const e = document.getElementById('p-'+p); if(e) e.style.display = (p===id)?'block':'none'; });
   /* .contentはp-dbのコンテナ、db以外の時は隠す */
-  var ct=document.querySelector('.content');if(ct)ct.style.display=(id==='db')?'block':'none';
+  var ct=document.querySelector('.content');if(ct)ct.style.display='block';
   document.querySelectorAll('.nl').forEach(l => l.classList.remove('on'));
   if(el) el.classList.add('on');
   const f = facs[cur];
