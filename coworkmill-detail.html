@@ -1440,7 +1440,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const params = new URLSearchParams(window.location.search);
   const spaceId = params.get('id');
-  if (!spaceId) return;
+  const slugParam = params.get('slug');
+  if (!spaceId && !slugParam) return;
 
   const PREF_MAP = {
     '北海道':'HOKKAIDO','青森県':'AOMORI','岩手県':'IWATE','宮城県':'SENDAI','秋田県':'AKITA',
@@ -1479,7 +1480,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   async function loadSpace() {
     try {
-      const res = await fetch(SUPABASE_URL + '/rest/v1/spaces?id=eq.' + spaceId + '&select=*', {
+      const res = await fetch(SUPABASE_URL + '/rest/v1/spaces?' + (slugParam ? 'slug=eq.'+encodeURIComponent(slugParam) : 'id=eq.'+spaceId) + '&select=*', {
         headers: {
           'apikey': SUPABASE_KEY,
           'Authorization': 'Bearer ' + SUPABASE_KEY
