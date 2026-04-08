@@ -780,12 +780,8 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
   <!-- RESULTS -->
   <div>
     <div class="results-header">
-      <div id="area-banner" style="display:none;background:#0f2a2c;border:0.5px solid #2BB5C8;border-radius:8px;padding:10px 16px;margin-bottom:12px;margin-top:16px;align-items:center;justify-content:space-between;font-size:13px;color:#2BB5C8">
-        <span id="area-banner-text"></span>
-        <a href="coworkmill-spaces.html" style="font-size:11px;color:#2BB5C8;opacity:.7;text-decoration:none">絞り込みを解除 ×</a>
-      </div>
-      <div id="q-banner" style="display:none;background:#1a1a2e;border:0.5px solid #2BB5C8;border-radius:8px;padding:10px 16px;margin-bottom:12px;margin-top:8px;flex-direction:row;align-items:center;justify-content:space-between;font-size:13px;color:#2BB5C8">
-        <span id="q-banner-text"></span>
+      <div id="filter-banner" style="display:none;background:#0f2a2c;border:0.5px solid #2BB5C8;border-radius:8px;padding:10px 16px;margin-bottom:12px;margin-top:16px;flex-direction:row;align-items:center;justify-content:space-between;font-size:13px;color:#2BB5C8">
+        <span id="filter-banner-text"></span>
         <a href="coworkmill-spaces.html" style="font-size:11px;color:#2BB5C8;opacity:.7;text-decoration:none">絞り込みを解除 ×</a>
       </div>
       <div class="results-count"><strong id="results-count-num">—</strong> スペース</div>
@@ -886,9 +882,11 @@ async function loadSpaces() {
     if(window._qParam){
       document.querySelectorAll('.sp-search-input').forEach(function(inp){inp.value=window._qParam;});
       filterSidebar();
-      var qb=document.getElementById('q-banner');
-      var qbt=document.getElementById('q-banner-text');
-      if(qb){qb.style.display='flex';}
+      var fb=document.getElementById('filter-banner');var fbt=document.getElementById('filter-banner-text');
+      if(fb&&fbt){fb.style.display='flex';fbt.textContent='「'+window._qParam+'」で絞り込み中';}
+      
+      
+      
       if(qbt){qbt.textContent='「'+window._qParam+'」で絞り込み中';}
     }
     // 件数更新
@@ -980,8 +978,8 @@ document.addEventListener('DOMContentLoaded', function(){
     var tgt = window._prefParam.toLowerCase();
     var prefLabel = PREF_LABEL[window._prefParam] || window._prefParam;
     // バナー表示
-    var banner = document.getElementById('area-banner');
-    var bannerText = document.getElementById('area-banner-text');
+    var banner = document.getElementById('filter-banner');
+    var bannerText = document.getElementById('filter-banner-text');
     if(banner) banner.style.display='flex';
     if(bannerText) bannerText.textContent='「'+prefLabel+'」で絞り込み中';
     // 全チェックを外してから該当のみON
@@ -1051,8 +1049,8 @@ function toggleSpCity(el, city) {
   }
   // area: 市区町村フィルター（?area=パラメータ）
   if(window.areaParam) {
-    var banner = document.getElementById('area-banner');
-    var bannerText = document.getElementById('area-banner-text');
+    var banner = document.getElementById('filter-banner');
+    var bannerText = document.getElementById('filter-banner-text');
     if(banner) banner.style.display = 'flex';
     if(bannerText) bannerText.textContent = '「' + areaParam + '」のスペースを表示中';
   }
@@ -1210,7 +1208,14 @@ function filterSidebar(){
     if(show)visible++;
   });
 
-  var countEl=document.querySelector('.sp-result-count');
+  var countEl=// filter-banner更新
+  var fb=document.getElementById('filter-banner');var fbt=document.getElementById('filter-banner-text');
+  var sq=document.querySelector('.sp-search-input')?.value?.trim()||'';
+  if(fb&&fbt){
+    if(sq&&!window.areaParam&&!window._qParam){fb.style.display='flex';fbt.textContent='「'+sq+'」で絞り込み中';}
+    else if(!sq&&!window.areaParam&&!window._qParam){fb.style.display='none';}
+  }
+  document.querySelector('.sp-result-count');
   if(countEl)countEl.textContent=visible+'件';
 }
 
