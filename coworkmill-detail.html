@@ -1510,14 +1510,14 @@ document.addEventListener('DOMContentLoaded', () => {
       const asideName = document.getElementById('d-aside-name');
       if (asideName) asideName.textContent = d.name || '';
       // ワークスタイルタグセクションの表示制御
-      var wtagSection = document.getElementById('work-tags-section');
-      if(wtagSection){
+      (function(){
+        var wtagSection = document.getElementById('work-tags-section');
+        if(!wtagSection) return;
         var hasTags = d.workstyle_tags && d.workstyle_tags.length > 0;
         wtagSection.style.display = hasTags ? '' : 'none';
-        // 手前のsec-dividerも制御
         var prevDiv = wtagSection.previousElementSibling;
         if(prevDiv && prevDiv.classList.contains('sec-divider')) prevDiv.style.display = hasTags ? '' : 'none';
-      }
+      })();
       if(typeof window.loadRelatedSpaces==='function')window.loadRelatedSpaces(d);
 
       // アクセスブロック
