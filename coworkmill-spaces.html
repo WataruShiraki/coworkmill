@@ -878,6 +878,8 @@ async function loadSpaces() {
     if (!Array.isArray(data)) return;
     allSpaces = data;
     renderSpaces(allSpaces);
+    // qParamフィルター
+    if(window._qParam){document.querySelectorAll('.sp-search-input').forEach(function(inp){inp.value=window._qParam;});filterSidebar();}
     // 件数更新
     const countEl = document.getElementById('results-count-num');
     if (countEl) countEl.textContent = allSpaces.length;
