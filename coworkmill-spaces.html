@@ -780,8 +780,12 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
   <!-- RESULTS -->
   <div>
     <div class="results-header">
-      <div id="area-banner" style="display:none;background:#0f2a2c;border:0.5px solid #2BB5C8;border-radius:8px;padding:10px 16px;margin-bottom:12px;margin-top:8px;align-items:center;justify-content:space-between;font-size:13px;color:#2BB5C8">
+      <div id="area-banner" style="display:none;background:#0f2a2c;border:0.5px solid #2BB5C8;border-radius:8px;padding:10px 16px;margin-bottom:12px;margin-top:16px;align-items:center;justify-content:space-between;font-size:13px;color:#2BB5C8">
         <span id="area-banner-text"></span>
+        <a href="coworkmill-spaces.html" style="font-size:11px;color:#2BB5C8;opacity:.7;text-decoration:none">絞り込みを解除 ×</a>
+      </div>
+      <div id="q-banner" style="display:none;background:#1a1a2e;border:0.5px solid #2BB5C8;border-radius:8px;padding:10px 16px;margin-bottom:12px;margin-top:8px;flex-direction:row;align-items:center;justify-content:space-between;font-size:13px;color:#2BB5C8">
+        <span id="q-banner-text"></span>
         <a href="coworkmill-spaces.html" style="font-size:11px;color:#2BB5C8;opacity:.7;text-decoration:none">絞り込みを解除 ×</a>
       </div>
       <div class="results-count"><strong id="results-count-num">—</strong> スペース</div>
@@ -879,7 +883,14 @@ async function loadSpaces() {
     allSpaces = data;
     renderSpaces(allSpaces);
     // qParamフィルター
-    if(window._qParam){document.querySelectorAll('.sp-search-input').forEach(function(inp){inp.value=window._qParam;});filterSidebar();}
+    if(window._qParam){
+      document.querySelectorAll('.sp-search-input').forEach(function(inp){inp.value=window._qParam;});
+      filterSidebar();
+      var qb=document.getElementById('q-banner');
+      var qbt=document.getElementById('q-banner-text');
+      if(qb){qb.style.display='flex';}
+      if(qbt){qbt.textContent='「'+window._qParam+'」で絞り込み中';}
+    }
     // 件数更新
     const countEl = document.getElementById('results-count-num');
     if (countEl) countEl.textContent = allSpaces.length;
