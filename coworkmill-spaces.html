@@ -965,7 +965,15 @@ document.addEventListener('DOMContentLoaded', function(){
   }
   // prefParamフィルター（TOPページのSEARCHから）
   if(window._prefParam){
+    var PREF_LABEL={'TOKYO':'東京都','OSAKA':'大阪府','AICHI':'愛知県','FUKUOKA':'福岡県','KANAGAWA':'神奈川県','KYOTO':'京都府','HOKKAIDO':'北海道','MIYAGI':'宮城県','HIROSHIMA':'広島県'};
     var tgt = window._prefParam.toLowerCase();
+    var prefLabel = PREF_LABEL[window._prefParam] || window._prefParam;
+    // バナー表示
+    var banner = document.getElementById('area-banner');
+    var bannerText = document.getElementById('area-banner-text');
+    if(banner) banner.style.display='flex';
+    if(bannerText) bannerText.textContent='「'+prefLabel+'」で絞り込み中';
+    // 全チェックを外してから該当のみON
     document.querySelectorAll('.sf-opt').forEach(function(btn){
       var m=(btn.getAttribute('onclick')||'').match(/toggleCity\(this,'([^']+)'\)/);
       if(m){var isOn=btn.classList.contains('on');var isTarget=m[1]===tgt;if(isTarget&&!isOn)btn.click();else if(!isTarget&&isOn)btn.click();}

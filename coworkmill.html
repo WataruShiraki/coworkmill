@@ -673,7 +673,7 @@ footer{background:#0a1628;padding:64px 80px 40px;color:#fff;position:relative;ov
         <div class="s-drop-item" onclick="setField(event,'sf-feature-val','drop-feature','クレジットカード可')">クレジットカード可</div>
       </div>
     </div>
-    <button class="s-btn" onclick="(function(){var PREF_MAP={'東京都':'TOKYO','大阪府':'OSAKA','愛知県':'AICHI','福岡県':'FUKUOKA','神奈川県':'KANAGAWA','京都府':'KYOTO','北海道':'HOKKAIDO','宮城県':'MIYAGI','広島県':'HIROSHIMA'};var FEAT_MAP={'24時間利用可':'open24h','個室あり':'private_room','英語スタッフ駐在':'english','クレカ可':'credit_card','カフェ併設':'cafe'};var PURP_MAP={'集中・執筆・戦略':'deepwork','制作・クリエイティブ':'creative','アイデア・ブレスト':'ideation','商談・ミーティング':'meeting','オンライン会議':'remote','学習・リサーチ':'learning'};var params=new URLSearchParams();var q=(document.querySelector('.hero-search input')||document.querySelector('input[placeholder*=\"\u65bd\u8a2d\u540d\"]'))?.value?.trim()||'';if(q)params.set('q',q);var area=(document.getElementById('sf-area-val')?.textContent||'').trim();var pref=PREF_MAP[area];if(pref&&pref!=='TOKYO')params.set('pref',pref);else if(pref==='TOKYO')params.set('pref','TOKYO');var feat=(document.getElementById('sf-feature-val')?.textContent||'').trim();var featCode=FEAT_MAP[feat];if(featCode)params.set('feature',featCode);var purp=(document.getElementById('sf-purpose-val')?.textContent||'').trim();var purpCode=PURP_MAP[purp];if(purpCode)params.set('plan',purpCode);var qs=params.toString();location.href='coworkmill-spaces.html'+(qs?'?'+qs:'');})()">SEARCH</button>
+    <button class="s-btn" onclick="doSpSearch()">SEARCH</button>
   </div>
   
   
@@ -1048,4 +1048,26 @@ function setGF(el, key) {
     card.style.display = (works && works.includes(key)) ? '' : 'none';
   });
 }
-</script></body></html>
+</script>
+<script>
+function doSpSearch(){
+  var PREF_MAP={'東京都':'TOKYO','大阪府':'OSAKA','愛知県':'AICHI','福岡県':'FUKUOKA','神奈川県':'KANAGAWA','京都府':'KYOTO','北海道':'HOKKAIDO','宮城県':'MIYAGI','広島県':'HIROSHIMA'};
+  var FEAT_MAP={'24時間利用可':'open24h','個室あり':'private_room','英語スタッフ駐在':'english','クレカ可':'credit_card','カフェ併設':'cafe'};
+  var PURP_MAP={'集中・執筆・戦略':'deepwork','制作・クリエイティブ':'creative','アイデア・ブレスト':'ideation','商談・ミーティング':'meeting','オンライン会議':'remote','学習・リサーチ':'learning'};
+  var params=new URLSearchParams();
+  var q=(document.querySelector('.hero-search input')||document.querySelector('input[placeholder*="施設名"]'))?.value?.trim()||'';
+  if(q) params.set('q',q);
+  var area=(document.getElementById('sf-area-val')?.textContent||'').trim();
+  var pref=PREF_MAP[area];
+  if(pref) params.set('pref',pref);
+  var feat=(document.getElementById('sf-feature-val')?.textContent||'').trim();
+  var featCode=FEAT_MAP[feat];
+  if(featCode) params.set('feature',featCode);
+  var purp=(document.getElementById('sf-purpose-val')?.textContent||'').trim();
+  var purpCode=PURP_MAP[purp];
+  if(purpCode) params.set('plan',purpCode);
+  var qs=params.toString();
+  location.href='coworkmill-spaces.html'+(qs?'?'+qs:'');
+}
+</script>
+</body></html>
