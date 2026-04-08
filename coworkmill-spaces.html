@@ -1208,14 +1208,7 @@ function filterSidebar(){
     if(show)visible++;
   });
 
-  var countEl=// filter-banner更新
-  var fb=document.getElementById('filter-banner');var fbt=document.getElementById('filter-banner-text');
-  var sq=document.querySelector('.sp-search-input')?.value?.trim()||'';
-  if(fb&&fbt){
-    if(sq&&!window.areaParam&&!window._qParam){fb.style.display='flex';fbt.textContent='「'+sq+'」で絞り込み中';}
-    else if(!sq&&!window.areaParam&&!window._qParam){fb.style.display='none';}
-  }
-  document.querySelector('.sp-result-count');
+  var countEl=document.querySelector('.sp-result-count');
   if(countEl)countEl.textContent=visible+'件';
 }
 
