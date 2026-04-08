@@ -963,6 +963,14 @@ document.addEventListener('DOMContentLoaded', function(){
     document.querySelectorAll('.sp-search-input').forEach(function(inp){ inp.value = window._qParam; });
     filterSidebar();
   }
+  // prefParamフィルター（TOPページのSEARCHから）
+  if(window._prefParam){
+    var tgt = window._prefParam.toLowerCase();
+    document.querySelectorAll('.sf-opt').forEach(function(btn){
+      var m=(btn.getAttribute('onclick')||'').match(/toggleCity\(this,'([^']+)'\)/);
+      if(m){var isOn=btn.classList.contains('on');var isTarget=m[1]===tgt;if(isTarget&&!isOn)btn.click();else if(!isTarget&&isOn)btn.click();}
+    });
+  }
 });
 
 // SP フィルター適用（件数表示 → 閉じる）
@@ -1012,6 +1020,7 @@ function toggleSpCity(el, city) {
   var plan = params.get('plan');
   window.areaParam = params.get('area');
   window._qParam = params.get('q');
+  window._prefParam = params.get('pref');
   // pref: 都道府県フィルター
   if(pref) {
     var prefSel = document.getElementById('sp-pref');
