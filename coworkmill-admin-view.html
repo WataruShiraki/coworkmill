@@ -214,6 +214,8 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
 .plan-upgrade-link:hover{opacity:.8}
 .plan-upgrade-link.pro-link{color:#f59e0b!important}
 .plan-upgrade-sub{font-size:10px;color:#aaa!important;margin-top:3px}
+
+.voice-badge{display:inline-flex;align-items:center;justify-content:center;background:#e55;color:#fff;font-size:9px;font-weight:700;min-width:16px;height:16px;border-radius:8px;padding:0 4px;margin-left:6px;line-height:1}
 </style>
   <meta name="description" content="COWORKMILLの掲載者向け施設管理画面。">
   <meta name="robots" content="noindex, nofollow">
@@ -861,6 +863,28 @@ function resetVibeUI(){
 
 
 
+
+window.loadVoiceBadge = function(spaceId){
+  var SB='https://jakwntemjkwqwaqujffh.supabase.co';
+  var KEY='sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+  var btn = document.querySelector("[onclick*=\"go('voice'\"]");
+  if(!btn) return;
+  // 既存バッジを削除
+  var old = btn.querySelector('.voice-badge');
+  if(old) old.remove();
+  if(!spaceId) return;
+  fetch(SB+'/rest/v1/voices?space_id=eq.'+spaceId+'&status=eq.pending&select=id',
+    {headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}})
+    .then(function(r){return r.json();})
+    .then(function(rows){
+      if(rows && rows.length > 0){
+        var badge = document.createElement('span');
+        badge.className = 'voice-badge';
+        badge.textContent = rows.length;
+        btn.appendChild(badge);
+      }
+    });
+};
 window.updatePlanWidget=function(plan,usedCount,maxCount){
   var badge=document.getElementById('plan-widget-badge');
   var val=document.getElementById('plan-usage-val');
@@ -913,6 +937,7 @@ function updateAddBtn() {
   const limit = plan === 'free' ? 3 : plan === 'standard' ? 5 : 20;
   const registeredCount = facs.filter(f => f.db_id).length;
   if(typeof window.updatePlanWidget==='function') window.updatePlanWidget(plan, registeredCount, limit);
+  if(typeof window.loadVoiceBadge==='function') window.loadVoiceBadge(facs[cur]?facs[cur].db_id:null);
   const remaining = Math.max(0, limit - registeredCount);
   if (remaining <= 0) {
     btn.textContent = '施設数の上限に達しました';
