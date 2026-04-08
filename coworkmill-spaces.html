@@ -947,7 +947,21 @@ function renderSpaces(spaces) {
   if (list) list.innerHTML = spaces.map((d,i) => makeCard(d,i,'list')).join('');
 }
 
-document.addEventListener('DOMContentLoaded', loadSpaces);
+document.addEventListener('DOMContentLoaded', function(){
+  loadSpaces();
+  // qParam: フリーワードをsearch inputにセット
+  if(window._qParam){
+    document.querySelectorAll('.sp-search-input').forEach(function(inp){ inp.value = window._qParam; });
+  }
+  // sp-prefセレクトのchangeでfilterSidebar起動
+  var spPref = document.getElementById('sp-pref');
+  if(spPref) spPref.addEventListener('change', function(){ filterSidebar(); });
+  // qParam処理
+  if(window._qParam){
+    document.querySelectorAll('.sp-search-input').forEach(function(inp){ inp.value = window._qParam; });
+    filterSidebar();
+  }
+});
 
 // SP フィルター適用（件数表示 → 閉じる）
 function applySpFilters() {
@@ -995,6 +1009,7 @@ function toggleSpCity(el, city) {
   var feature = params.get('feature');
   var plan = params.get('plan');
   window.areaParam = params.get('area');
+  window._qParam = params.get('q');
   // pref: 都道府県フィルター
   if(pref) {
     var prefSel = document.getElementById('sp-pref');

@@ -1029,6 +1029,7 @@ function doSearch() {
   if(feat) params.set('feature', feat);
   var purp = PURPOSE_MAP[purpose];
   if(purp) params.set('plan', purp);
+  var q = (document.querySelector('.hero-search input') || document.querySelector('input[placeholder*="施設名"]'))?.value?.trim()||''; if(q) params.set('q', q);
   var qs = params.toString();
   location.href = 'coworkmill-spaces.html' + (qs ? '?' + qs : '');
 }
