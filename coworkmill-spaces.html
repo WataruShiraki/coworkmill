@@ -1125,10 +1125,16 @@ function filterSidebar(){
     var vibes=vibeStr?vibeStr.split(',').filter(Boolean):[];
 
     // テキスト
-    var matchText=!q||name.indexOf(q)>-1;
+    var matchText=!q||(name.indexOf(q)>-1||(card.dataset.pref||"").toLowerCase().indexOf(q)>-1||(card.dataset.area||"").toLowerCase().indexOf(q)>-1||(card.dataset.arch||"").toLowerCase().indexOf(q)>-1);
 
     // 都市
     var matchCity=allCities;
+    // sp-prefセレクトも確認
+    var spPrefSel=document.getElementById('sp-pref');
+    if(spPrefSel&&spPrefSel.value&&!allCities){
+      var targetPref=spPrefSel.value;
+      matchCity=pref.indexOf(targetPref)>-1;
+    }
     if(!allCities){
       matchCity=activeCities.some(function(city){
         if(city==='other'){var known=['東京都','大阪府','京都府','福岡県','神奈川県','北海道'];return known.indexOf(pref)===-1;}
