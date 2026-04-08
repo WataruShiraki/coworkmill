@@ -267,7 +267,7 @@ function resetVibeUI(){
     </div>
     <div class="plan-usage-note" id="plan-usage-note"></div>
     <div class="plan-divider"></div>
-    <a class="plan-upgrade-link" id="plan-upgrade-link" href="javascript:void(0)" onclick="go('plan',document.querySelector('button.nl[onclick*=\"plan\"]'))"></a>
+    <a class="plan-upgrade-link" id="plan-upgrade-link" href="javascript:void(0)"></a>
     <div class="plan-upgrade-sub" id="plan-upgrade-sub"></div>
   </div>
   <div id="fac-list"></div>
@@ -895,6 +895,16 @@ window.updatePlanWidget=function(plan,usedCount,maxCount){
     sub.textContent='最上位プランをご利用中です';sub.style.color='#aaa';
   }
 }
+  var _lnk=document.getElementById('plan-upgrade-link');
+  if(_lnk&&!_lnk._planClick){
+    _lnk._planClick=true;
+    _lnk.addEventListener('click',function(e){
+      e.preventDefault();
+      var b=document.querySelector('button.nl[onclick*=\'plan\']');
+      if(b)b.click();
+    });
+  }
+  
 
 function updateAddBtn() {
   const btn = document.querySelector('.add-btn');
