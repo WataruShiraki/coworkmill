@@ -694,7 +694,7 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
     <div class="sec-divider"></div>
 
     <!-- Work Tags -->
-    <div>
+    <div id="work-tags-section">
       <div class="section-label">このスペースに向いている仕事</div>
       <div class="work-tags-grid">
         <div class="wtag-card" data-work="deepwork">
@@ -1509,6 +1509,15 @@ document.addEventListener('DOMContentLoaded', () => {
       // サイドバー施設名
       const asideName = document.getElementById('d-aside-name');
       if (asideName) asideName.textContent = d.name || '';
+      // ワークスタイルタグセクションの表示制御
+      var wtagSection = document.getElementById('work-tags-section');
+      if(wtagSection){
+        var hasTags = d.workstyle_tags && d.workstyle_tags.length > 0;
+        wtagSection.style.display = hasTags ? '' : 'none';
+        // 手前のsec-dividerも制御
+        var prevDiv = wtagSection.previousElementSibling;
+        if(prevDiv && prevDiv.classList.contains('sec-divider')) prevDiv.style.display = hasTags ? '' : 'none';
+      }
       if(typeof window.loadRelatedSpaces==='function')window.loadRelatedSpaces(d);
 
       // アクセスブロック
