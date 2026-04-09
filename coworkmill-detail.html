@@ -209,12 +209,27 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:56px;display:flex;ali
 
 /* ── WORK TAGS ── */
 .section-label{font-size:10px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--gray-400);margin-bottom:16px}
-.wtr-item{display:flex;align-items:center;gap:8px;margin-bottom:8px;font-size:12px}
-.wtr-rank{font-size:10px;font-weight:600;color:#2BB5C8;min-width:20px}
-.wtr-name{color:var(--text-1,#ccc);min-width:120px;font-size:12px}
-.wtr-bar-wrap{flex:1;height:3px;background:rgba(255,255,255,.1);border-radius:2px}
-.wtr-bar{height:3px;border-radius:2px;background:#2BB5C8;transition:width .5s}
-.wtr-cnt{font-size:11px;color:#2BB5C8;min-width:30px;text-align:right}
+/* workstyle vote ranking */
+.wtr-wrap{background:#0d1f21;border-radius:10px;padding:16px;margin-bottom:4px}
+.wtr-title{font-size:9px;font-weight:600;letter-spacing:.12em;color:#3a6a6f;text-transform:uppercase;margin-bottom:14px}
+.wtr-item{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.wtr-item:last-child{margin-bottom:0}
+.wtr-rank{font-size:10px;font-weight:700;color:#2BB5C8;min-width:22px;opacity:.9}
+.wtr-rank.top{color:#2BB5C8}
+.wtr-rank.other{color:#2a5a5e;font-size:9px}
+.wtr-name{font-size:12px;color:#c8d8da;min-width:110px;font-weight:500}
+.wtr-bar-wrap{flex:1;height:3px;background:rgba(43,181,200,.12);border-radius:2px}
+.wtr-bar{height:3px;border-radius:2px;background:#2BB5C8;transition:width .6s cubic-bezier(.4,0,.2,1)}
+.wtr-cnt{font-size:11px;color:#2BB5C8;min-width:28px;text-align:right;opacity:.8}
+/* voice list */
+.voices-list{display:flex;flex-direction:column;gap:12px}
+.voice-item{display:flex;gap:12px;padding:14px 16px;background:#0d1f21;border-radius:10px;border:0.5px solid rgba(43,181,200,.12)}
+.voice-avatar{width:34px;height:34px;border-radius:50%;background:#1a3a3e;color:#2BB5C8;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.voice-body{flex:1;min-width:0}
+.voice-meta{display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap}
+.voice-wtag{font-size:10px;font-weight:600;background:rgba(43,181,200,.15);color:#2BB5C8;padding:2px 8px;border-radius:4px;letter-spacing:.04em}
+.voice-name{font-size:11px;color:#5a8a8e}
+.voice-text{font-size:13px;color:#c0d0d2;line-height:1.55}
 .work-tags-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:48px}
 .wtag-card{border:1px solid var(--gray-100);border-radius:10px;padding:16px;cursor:pointer;transition:all .2s}
 .wtag-card:hover,.wtag-card.active{border-color:#2BB5C8;background:var(--accent-light)}
@@ -698,10 +713,8 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
     </div>
 
     <!-- workstyle vote ranking -->
-    <div id="d-wtag-rank-wrap" style="display:none;margin-top:20px">
-      <div style="font-size:10px;font-weight:600;letter-spacing:.12em;color:var(--gray-400);text-transform:uppercase;margin-bottom:12px">仕事タイプ投票ランキング</div>
-      <div id="d-wtag-rank"></div>
-    </div>
+    <div id="d-wtag-rank-wrap" style="display:none;margin-top:16px"><div class="wtr-wrap"><div class="wtr-title">仕事タイプ投票ランキング</div>
+<div id="d-wtag-rank"></div></div></div>
 
     <div class="sec-divider"></div>
 
@@ -1723,7 +1736,7 @@ document.addEventListener('DOMContentLoaded', () => {
           _rankEl.innerHTML=_sorted.slice(0,6).map(function(e,i){
             var pct=Math.round(e[1]/_maxVal*100);
             var rl=i<3?['1位','2位','3位'][i]:'';
-            return '<div class="wtr-item">'+(rl?'<span class="wtr-rank">'+rl+'</span>':'<span class="wtr-rank"></span>')+'<div class="wtr-name">'+e[0]+'</div><div class="wtr-bar-wrap"><div class="wtr-bar" style="width:'+pct+'%"></div></div><div class="wtr-cnt">'+e[1]+'票</div></div>';
+            var rankClass=i<3?'wtr-rank top':'wtr-rank other';return '<div class="wtr-item"><span class="'+rankClass+'">'+( rl||''  )+'</span><div class="wtr-name">'+e[0]+'</div><div class="wtr-bar-wrap"><div class="wtr-bar" style="width:'+pct+'%"></div></div><div class="wtr-cnt">'+e[1]+'票</div></div>';
           }).join('');
           if(_rankWrap)_rankWrap.style.display='';
         }
