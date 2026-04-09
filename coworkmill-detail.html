@@ -1510,6 +1510,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // サイドバー施設名
       const asideName = document.getElementById('d-aside-name');
       if (asideName) asideName.textContent = d.name || '';
+      window._currentSpaceId = d.id;
       // ワークスタイルタグセクションの表示制御
       (function(){
         var wtagSection = document.getElementById('work-tags-section');
@@ -1773,8 +1774,30 @@ function tryMap(){
 }
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function fmt(d){try{return new Date(d).toLocaleDateString('ja-JP');}catch(e){return '';}}
-function lVoices(){var sid=new URLSearchParams(window.location.search).get('id');if(!sid)return;fetch(CWM_SB_URL+'/rest/v1/voices?space_id=eq.'+sid+'&status=eq.approved&order=submitted_at.desc',{headers:{'apikey':CWM_SB_KEY,'Authorization':'Bearer '+CWM_SB_KEY}}).then(function(r){return r.json();}).then(function(data){var list=document.querySelector('.voices-list');if(!list)return;list.innerHTML='';if(!data||!data.length){list.innerHTML='<p style="font-size:12px;color:rgba(255,255,255,.3);padding:8px 0">まだ応援メッセージがありません<\/p>';return;}data.forEach(function(v){var c=document.createElement('div');c.className='cwm-voice-card';c.innerHTML=(v.workstyle?'<span class="cwm-voice-tag">'+esc(v.workstyle)+'<\/span><br>':'')+'<div class="cwm-voice-msg">'+esc(v.message)+'<\/div>'+'<div class="cwm-voice-footer"><span class="cwm-voice-nick">'+esc(v.nickname||'匿名')+'<\/span><span class="cwm-voice-date">'+fmt(v.submitted_at)+'<\/span><\/div>';list.appendChild(c);});}).catch(function(){});}
-window.submitVoice=function(){var sid=new URLSearchParams(window.location.search).get('id');if(!sid)return;var nick=(document.getElementById('vp-nick')?.value||'').trim();var msg=(document.getElementById('vp-text')?.value||'').trim();var ws=(document.getElementById('vp-selected-tag')?.textContent||'').trim();if(!ws){alert('「どの仕事で使いましたか？」を選んでください');return;}if(!msg){alert('メッセージを入力してください');return;}var btn=document.querySelector('.vp-submit');if(btn){btn.disabled=true;btn.textContent='送信中...';}fetch(CWM_SB_URL+'/rest/v1/voices',{method:'POST',headers:{'apikey':CWM_SB_KEY,'Authorization':'Bearer '+CWM_SB_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({space_id:sid,nickname:nick||null,message:msg,workstyle:ws,status:'pending',submitted_at:new Date().toISOString()})}).then(function(r){if(btn){btn.disabled=false;btn.textContent='応援する →';}if(r.ok){document.getElementById('vp-nick').value='';document.getElementById('vp-text').value='';document.getElementById('vp-selected-tag').textContent='';document.querySelectorAll('.vp-tag').forEach(function(t){t.classList.remove('on');});var s1=document.getElementById('vp-step1'),s3=document.getElementById('vp-step3');if(s1)s1.style.display='none';if(s3)s3.style.display='block';}}).catch(function(){alert('通信エラー');if(btn){btn.disabled=false;btn.textContent='応援する →';}});};
+function lVoices(){var sid=window._currentSpaceId;if(!sid)return;fetch(CWM_SB_URL+'/rest/v1/voices?space_id=eq.'+sid+'&status=eq.approved&order=submitted_at.desc',{headers:{'apikey':CWM_SB_KEY,'Authorization':'Bearer '+CWM_SB_KEY}}).then(function(r){return r.json();}).then(function(data){var list=document.querySelector('.voices-list');if(!list)return;list.innerHTML='';if(!data||!data.length){list.innerHTML='<p style="font-size:12px;color:rgba(255,255,255,.3);padding:8px 0">まだ応援メッセージがありません<\/p>';return;}data.forEach(function(v){var c=document.createElement('div');c.className='cwm-voice-card';c.innerHTML=(v.workstyle?'<span class="cwm-voice-tag">'+esc(v.workstyle)+'<\/span><br>':'')+'<div class="cwm-voice-msg">'+esc(v.message)+'<\/div>'+'<div class="cwm-voice-footer"><span class="cwm-voice-nick">'+esc(v.nickname||'匿名')+'<\/span><span class="cwm-voice-date">'+fmt(v.submitted_at)+'<\/span><\/div>';list.appendChild(c);});}).catch(function(){});}
+window.updateWorkstyleTags=async function(spaceId){
+  try{
+    var SB=CWM_SB_URL,KEY=CWM_SB_KEY;
+    // voicesテーブルからこのスペースのapproved workstyleを集計
+    var r=await fetch(SB+'/rest/v1/voices?space_id=eq.'+spaceId+'&status=eq.approved&select=workstyle',
+      {headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}});
+    var data=await r.json();
+    if(!data||!data.length)return;
+    // workstyle投票数を集計
+    var counts={};
+    data.forEach(function(v){if(v.workstyle){var k=v.workstyle.split(' ')[0];counts[k]=(counts[k]||0)+1;}});
+    // TOP3を取得
+    var top3=Object.entries(counts).sort(function(a,b){return b[1]-a[1];}).slice(0,3).map(function(e){return e[0];});
+    if(!top3.length)return;
+    // spaces.workstyle_tagsを更新
+    await fetch(SB+'/rest/v1/spaces?id=eq.'+spaceId,{
+      method:'PATCH',
+      headers:{'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
+      body:JSON.stringify({workstyle_tags:top3})
+    });
+  }catch(e){console.warn('updateWorkstyleTags error:',e);}
+};
+window.submitVoice=function(){var sid=new URLSearchParams(window.location.search).get('id');if(!sid)return;var nick=(document.getElementById('vp-nick')?.value||'').trim();var msg=(document.getElementById('vp-text')?.value||'').trim();var ws=(document.getElementById('vp-selected-tag')?.textContent||'').trim();if(!ws){alert('「どの仕事で使いましたか？」を選んでください');return;}if(!msg){alert('メッセージを入力してください');return;}var btn=document.querySelector('.vp-submit');if(btn){btn.disabled=true;btn.textContent='送信中...';}fetch(CWM_SB_URL+'/rest/v1/voices',{method:'POST',headers:{'apikey':CWM_SB_KEY,'Authorization':'Bearer '+CWM_SB_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({space_id:sid,nickname:nick||null,message:msg,workstyle:ws,status:'pending',submitted_at:new Date().toISOString()})}).then(function(r){if(btn){btn.disabled=false;btn.textContent='応援する →';}if(r.ok){updateWorkstyleTags(sid);document.getElementById('vp-nick').value='';document.getElementById('vp-text').value='';document.getElementById('vp-selected-tag').textContent='';document.querySelectorAll('.vp-tag').forEach(function(t){t.classList.remove('on');});var s1=document.getElementById('vp-step1'),s3=document.getElementById('vp-step3');if(s1)s1.style.display='none';if(s3)s3.style.display='block';}}).catch(function(){alert('通信エラー');if(btn){btn.disabled=false;btn.textContent='応援する →';}});};
 var obs=new MutationObserver(function(){iGal();iTitle();rSec();});
 function start(){var pc=document.querySelector('.gallery-pc');if(pc)obs.observe(pc,{childList:true});var as=document.querySelector('.detail-aside');if(as)obs.observe(as,{childList:true,subtree:true});var dm=document.querySelector('.detail-main');if(dm)obs.observe(dm,{childList:true,subtree:true});iGal();iTitle();rSec();lVoices();[400,800,1500,2500,4000].forEach(function(t){setTimeout(tryMap,t);});}
 if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',start);}else{start();}
