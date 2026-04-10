@@ -30,8 +30,8 @@ a{text-decoration:none;color:inherit}
 .nlbl{font-size:8px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.2);padding:0 16px;margin:10px 0 4px}
 .nl{display:flex;align-items:center;gap:8px;padding:8px 16px;font-size:11px;color:rgba(255,255,255,.45);cursor:pointer;border:none;background:none;width:100%;text-align:left;font-family:var(--fb);transition:all .15s}
 .nl:hover{color:#fff;background:rgba(255,255,255,.06)}
-.nl.on{color:#fff;background:rgba(117,97,169,.3)}
-.ni{font-size:13px;width:16px;text-align:center;flex-shrink:0}
+.nl.on{color:#fff;background:rgba(43,181,200,.12);border-left:2px solid #2BB5C8}
+.ni{display:none}
 .nb{margin-left:auto;font-size:8px;font-weight:600;padding:1px 5px;border-radius:8px;background:var(--pink);color:#fff}
 .nb.am{background:var(--amber)}
 .nb.hidden{display:none}
@@ -112,6 +112,16 @@ a{text-decoration:none;color:inherit}
   .sp-pc-notice-ttl{font-family:'Montserrat',sans-serif;font-size:18px;font-weight:500;color:#fff;margin-bottom:12px}
   .sp-pc-notice-sub{font-size:13px;color:rgba(255,255,255,.5);line-height:1.8}
 }
+.sc{cursor:pointer}
+.sc:hover{border-color:#aaa}
+.sv.alert{color:#ef4444!important}
+.ss.link{color:#2BB5C8;font-size:9px}
+.btn-hide{font-size:11px;padding:3px 9px;border-radius:4px;border:1px solid #fca5a5;background:transparent;color:#ef4444;cursor:pointer;font-family:var(--fb)}
+.btn-del{font-size:11px;padding:3px 9px;border-radius:4px;border:1px solid #dc2626;background:#fef2f2;color:#dc2626;cursor:pointer;font-family:var(--fb)}
+.danger-zone{background:#fef2f2;border:1px solid #fecaca;border-radius:6px;padding:12px 14px;margin-top:12px}
+.dz-title{font-size:11px;font-weight:600;color:#dc2626;margin-bottom:8px}
+.dz-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.dz-desc{font-size:11px;color:#dc2626}
 </style>
 </head>
 <body>
@@ -610,6 +620,27 @@ function makeSpRow(d) {
   const bView = document.createElement('button'); bView.className='bsm'; bView.textContent='詳細 ↗';
   bView.addEventListener('click', () => window.open('coworkmill-detail.html?id='+d.id));
   br.appendChild(sel); br.appendChild(bView);
+  // 非公開ボタン
+  const bHide = document.createElement('button');
+  bHide.className = 'btn-hide';
+  bHide.textContent = '非公開';
+  bHide.title = '施設を非公開にする';
+  bHide.addEventListener('click', async (e) => {
+    e.stopPropagation();
+    if(!confirm('「' + (d.name||'') + '」を非公開にしますか？')) return;
+    try { await sbPatch('/rest/v1/spaces?id=eq.'+d.id, {status:'draft'}); showToast('非公開にしました'); loadSpaces(); } catch(ex){ showToast('エラー: '+ex.message); }
+  });
+  // 削除ボタン
+  const bDel = document.createElement('button');
+  bDel.className = 'btn-del';
+  bDel.textContent = '削除';
+  bDel.title = '施設を完全削除する';
+  bDel.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const overlay = document.getElementById('m-del-confirm');
+    if(overlay){ document.getElementById('m-del-name').textContent = d.name||''; window._delId = d.id; overlay.style.display='flex'; }
+  });
+  br.appendChild(bHide); br.appendChild(bDel);
   tdBtn.appendChild(br);
   [tdName,tdArea,tdContact,tdPlan,tdStatus,tdDate,tdBtn].forEach(td => tr.appendChild(td));
   return tr;
@@ -829,6 +860,54 @@ document.addEventListener('DOMContentLoaded', () => {
   loadSpaces();
   loadArchitects();
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+  // ダッシュボードカード → クリックでページ遷移
+  const scCards = document.querySelectorAll('.sc');
+  scCards.forEach(card => {
+    const sv = card.querySelector('.sv');
+    if(!sv) return;
+    if(sv.id==='db-pending') card.addEventListener('click', ()=>{ const btn=document.querySelector('[onclick*="rv"]'); if(btn) btn.click(); });
+    if(sv.id==='db-contact') card.addEventListener('click', ()=>{ const btn=document.querySelector('[onclick*="ct"]'); if(btn) btn.click(); });
+  });
+  // db-pending/db-contact が 0より大きければ赤くする
+  const observer = new MutationObserver(()=>{
+    const p = document.getElementById('db-pending');
+    const c = document.getElementById('db-contact');
+    if(p) p.classList.toggle('alert', parseInt(p.textContent)||0 > 0);
+    if(c) c.classList.toggle('alert', parseInt(c.textContent)||0 > 0);
+  });
+  ['db-pending','db-contact'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) observer.observe(el, {childList:true, characterData:true, subtree:true});
+  });
+});
+</script>.addEventListener('DOMContentLoaded', () => {
+  const execBtn = document.getElementById('m-del-exec');
+  if(execBtn) execBtn.addEventListener('click', async () => {
+    const id = window._delId;
+    if(!id) return;
+    execBtn.textContent = '削除中...'; execBtn.disabled = true;
+    try {
+      await sbDelete('/rest/v1/spaces?id=eq.'+id);
+      document.getElementById('m-del-confirm').style.display='none';
+      showToast('削除しました');
+      loadSpaces();
+    } catch(ex){ showToast('エラー: '+ex.message); execBtn.textContent='削除する'; execBtn.disabled=false; }
+  });
+});
 </script>
+
+<div id="m-del-confirm" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;align-items:center;justify-content:center">
+  <div style="background:#fff;border-radius:10px;padding:24px;max-width:400px;width:90%">
+    <div style="font-size:15px;font-weight:600;margin-bottom:8px">施設の完全削除</div>
+    <div style="font-size:13px;color:#555;margin-bottom:4px">「<span id="m-del-name"></span>」を削除します。</div>
+    <div style="font-size:12px;color:#dc2626;margin-bottom:20px">この操作は取り消せません。画像・声・情報が全て削除されます。</div>
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button onclick="document.getElementById('m-del-confirm').style.display='none'" style="padding:8px 16px;border:1px solid #ddd;border-radius:6px;background:#fff;cursor:pointer;font-size:13px">キャンセル</button>
+      <button id="m-del-exec" style="padding:8px 16px;border:none;border-radius:6px;background:#dc2626;color:#fff;cursor:pointer;font-size:13px;font-weight:600">削除する</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
