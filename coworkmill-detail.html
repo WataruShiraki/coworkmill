@@ -1705,7 +1705,8 @@ document.addEventListener('DOMContentLoaded', () => {
           orderedCards.forEach(function(c){ grid.appendChild(c); });
           grid.insertAdjacentElement('afterend',pw);grid.insertAdjacentElement('afterend',lbl);}var ws2=document.getElementById('work-tags-section');if(ws2)ws2.style.display='';var pd=ws2?ws2.previousElementSibling:null;if(pd&&pd.classList&&pd.classList.contains('sec-divider'))pd.style.display='';})(voices);
       if (vList && voices && voices.length > 0) {
-        var show5 = voices.slice(0,5);
+        var WS_JA={'Deep Work':'没頭・集中','Ideation':'企画・発想','Client Meeting':'商談・接客','Remote Call':'オンライン会議','Creative Work':'制作・クリエイティブ','Strategy':'戦略・意思決定','Learning':'学習・インプット'};
+          var show5 = voices.slice(0,5);
           var hasMore = voices.length > 5;
           vList.innerHTML = show5.map(function(v) {
           var initial = (v.nickname || '?').charAt(0).toUpperCase();
@@ -1714,7 +1715,7 @@ document.addEventListener('DOMContentLoaded', () => {
             '<div class="voice-avatar">' + initial + '</div>' +
             '<div class="voice-body">' +
               '<div class="voice-meta">' +
-                (v.workstyle ? '<span class="voice-wtag">' + v.workstyle + '</span>' : '') +
+                (v.workstyle ? '<span class="voice-wtag">' + v.workstyle + (WS_JA[v.workstyle] ? ' <span style="font-size:9px;opacity:0.75">' + WS_JA[v.workstyle] + '</span>' : '') + '</span>' : '') +
                 (v.nickname ? '<span class="voice-name">' + v.nickname + '</span>' : '') +
                 '<span class="voice-date">' + date + '</span>' +
               '</div>' +
