@@ -1695,7 +1695,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 利用者の声を読み込む
     try {
-      const vRes = await fetch(SUPABASE_URL + '/rest/v1/voices?space_id=eq.' + (window._currentSpaceId||spaceId) + '&status=eq.approved&select=*&order=submitted_at.desc&limit=6', {
+      const vRes = await fetch(SUPABASE_URL + '/rest/v1/voices?space_id=eq.' + (window._currentSpaceId||spaceId) + '&status=eq.approved&select=*&order=submitted_at.desc&limit=100', {
         headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
       });
       const voices = await vRes.json();
