@@ -1490,6 +1490,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const rows = await res.json();
       if (!rows || !rows[0]) return;
       const d = rows[0];
+      window._currentSpaceId = d.id;
 
       const area = d.area || '';
       const pref = PREF_MAP[d.prefecture] || (d.prefecture || '').replace(/都|道|府|県/, '').toUpperCase();
