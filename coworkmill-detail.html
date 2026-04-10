@@ -1715,7 +1715,7 @@ document.addEventListener('DOMContentLoaded', () => {
             '<div class="voice-avatar">' + initial + '</div>' +
             '<div class="voice-body">' +
               '<div class="voice-meta">' +
-                (v.workstyle ? '<span class="voice-wtag">' + v.workstyle + (WS_JA[v.workstyle] ? ' <span style="font-size:9px;opacity:0.75">' + WS_JA[v.workstyle] + '</span>' : '') + '</span>' : '') +
+                (v.workstyle ? '<span class="voice-wtag">' + (WS_JA[v.workstyle] || v.workstyle) + '<span style="font-size:9px;opacity:0.7;margin-left:4px;font-weight:400">(' + v.workstyle + ')</span>' + '</span>' : '') +
                 (v.nickname ? '<span class="voice-name">' + v.nickname + '</span>' : '') +
                 '<span class="voice-date">' + date + '</span>' +
               '</div>' +
