@@ -1436,8 +1436,8 @@ document.addEventListener('DOMContentLoaded', () => {
 <script>
 // ===== Supabase DB連携 =====
 (function() {
-  const SUPABASE_URL = 'https://jakwntemjkwqwaqujffh.supabase.co';
-  const SUPABASE_KEY = 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+  const CWM_SB_URL = 'https://jakwntemjkwqwaqujffh.supabase.co';
+  const CWM_SB_KEY = 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
 
   const params = new URLSearchParams(window.location.search);
   const spaceId = params.get('id');
@@ -1481,10 +1481,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   async function loadSpace() {
     try {
-      const res = await fetch(SUPABASE_URL + '/rest/v1/spaces?' + (slugParam ? 'slug=eq.'+encodeURIComponent(slugParam) : 'id=eq.'+spaceId) + '&select=*', {
+      const res = await fetch(CWM_SB_URL + '/rest/v1/spaces?' + (slugParam ? 'slug=eq.'+encodeURIComponent(slugParam) : 'id=eq.'+spaceId) + '&select=*', {
         headers: {
-          'apikey': SUPABASE_KEY,
-          'Authorization': 'Bearer ' + SUPABASE_KEY
+          'apikey': CWM_SB_KEY,
+          'Authorization': 'Bearer ' + CWM_SB_KEY
         }
       });
       const rows = await res.json();
@@ -1635,8 +1635,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // ギャラリー（space_imagesテーブルから取得）
       try {
-        const imgRes = await fetch(SUPABASE_URL + '/rest/v1/space_images?space_id=eq.' + spaceId + '&select=url&order=created_at.asc', {
-          headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+        const imgRes = await fetch(CWM_SB_URL + '/rest/v1/space_images?space_id=eq.' + spaceId + '&select=url&order=created_at.asc', {
+          headers: { 'apikey': CWM_SB_KEY, 'Authorization': 'Bearer ' + CWM_SB_KEY }
         });
         const imgs = await imgRes.json();
         const allUrls = [];
@@ -1695,8 +1695,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 利用者の声を読み込む
     try {
-      const vRes = await fetch(SUPABASE_URL + '/rest/v1/voices?space_id=eq.' + (window._currentSpaceId||spaceId) + '&status=eq.approved&select=*&order=submitted_at.desc&limit=100', {
-        headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+      const vRes = await fetch(CWM_SB_URL + '/rest/v1/voices?space_id=eq.' + (window._currentSpaceId||spaceId) + '&status=eq.approved&select=*&order=submitted_at.desc&limit=100', {
+        headers: { 'apikey': CWM_SB_KEY, 'Authorization': 'Bearer ' + CWM_SB_KEY }
       });
       const voices = await vRes.json();
       const vList = document.getElementById('d-voices-list');
@@ -1785,7 +1785,7 @@ function tryMap(){
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function fmt(d){try{return new Date(d).toLocaleDateString('ja-JP');}catch(e){return '';}}
 function lVoices(){var sid=new URLSearchParams(window.location.search).get('id');if(!sid)return;fetch(CWM_SB_URL+'/rest/v1/voices?space_id=eq.'+sid+'&status=eq.approved&order=submitted_at.desc',{headers:{'apikey':CWM_SB_KEY,'Authorization':'Bearer '+CWM_SB_KEY}}).then(function(r){return r.json();}).then(function(data){var list=document.querySelector('.voices-list');if(!list)return;list.innerHTML='';if(!data||!data.length){list.innerHTML='<p style="font-size:12px;color:rgba(255,255,255,.3);padding:8px 0">まだ応援メッセージがありません<\/p>';return;}data.forEach(function(v){var c=document.createElement('div');c.className='cwm-voice-card';c.innerHTML=(v.workstyle?'<span class="cwm-voice-tag">'+esc(v.workstyle)+'<\/span><br>':'')+'<div class="cwm-voice-msg">'+esc(v.message)+'<\/div>'+'<div class="cwm-voice-footer"><span class="cwm-voice-nick">'+esc(v.nickname||'匿名')+'<\/span><span class="cwm-voice-date">'+fmt(v.submitted_at)+'<\/span><\/div>';list.appendChild(c);});}).catch(function(){});}
-window.openVoicesModal=async function(){var ol=document.getElementById('vm-overlay'),vml=document.getElementById('vm-list'),vll=document.getElementById('vm-loading'),tl=document.getElementById('vm-title');if(!ol)return;ol.style.display='block';vml.innerHTML='';vll.style.display='block';var sid=window._currentSpaceId;if(!sid){vll.textContent='エラー';return;}try{var r=await fetch(SUPABASE_URL+'/rest/v1/voices?space_id=eq.'+sid+'&status=eq.approved&select=*&order=submitted_at.desc',{headers:{'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY}});var all=await r.json();vll.style.display='none';if(!all||!all.length){vml.innerHTML='<p style="padding:24px;text-align:center;color:#555;font-size:13px">まだ投稿がありません</p>';return;}if(tl)tl.textContent='利用者の声（'+all.length+'件）';vml.innerHTML=all.map(function(v){var ini=(v.nickname||'?')[0].toUpperCase();var ws=v.workstyle?'<span style="font-size:10px;font-weight:600;background:rgba(43,181,200,.18);color:#2BB5C8;padding:2px 8px;border-radius:4px;margin-right:6px">'+v.workstyle+'</span>':'';var nick=v.nickname?'<span style="font-size:11px;color:#5a8a8e">'+v.nickname+'</span>':'';var dt=v.submitted_at?'<span style="font-size:10px;color:#333;margin-left:auto">'+v.submitted_at.substring(0,10)+'</span>':'';var msg=v.message?'<div style="font-size:13px;color:#c0d0d2;line-height:1.6;margin-top:6px">'+v.message+'</div>':'';return '<div style="display:flex;gap:12px;padding:14px 0;border-bottom:0.5px solid #1a1a1a"><div style="width:34px;height:34px;border-radius:50%;background:#1a3a3e;color:#2BB5C8;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0">'+ini+'</div><div style="flex:1;min-width:0"><div style="display:flex;align-items:center;flex-wrap:wrap;gap:4px">'+ws+nick+dt+'</div>'+msg+'</div></div>';}).join('');} catch(e){vll.textContent='読み込みエラー';}};
+window.openVoicesModal=async function(){var ol=document.getElementById('vm-overlay'),vml=document.getElementById('vm-list'),vll=document.getElementById('vm-loading'),tl=document.getElementById('vm-title');if(!ol)return;ol.style.display='block';vml.innerHTML='';vll.style.display='block';var sid=window._currentSpaceId;if(!sid){vll.textContent='エラー';return;}try{var r=await fetch(CWM_SB_URL+'/rest/v1/voices?space_id=eq.'+sid+'&status=eq.approved&select=*&order=submitted_at.desc',{headers:{'apikey':CWM_SB_KEY,'Authorization':'Bearer '+CWM_SB_KEY}});var all=await r.json();vll.style.display='none';if(!all||!all.length){vml.innerHTML='<p style="padding:24px;text-align:center;color:#555;font-size:13px">まだ投稿がありません</p>';return;}if(tl)tl.textContent='利用者の声（'+all.length+'件）';vml.innerHTML=all.map(function(v){var ini=(v.nickname||'?')[0].toUpperCase();var ws=v.workstyle?'<span style="font-size:10px;font-weight:600;background:rgba(43,181,200,.18);color:#2BB5C8;padding:2px 8px;border-radius:4px;margin-right:6px">'+v.workstyle+'</span>':'';var nick=v.nickname?'<span style="font-size:11px;color:#5a8a8e">'+v.nickname+'</span>':'';var dt=v.submitted_at?'<span style="font-size:10px;color:#333;margin-left:auto">'+v.submitted_at.substring(0,10)+'</span>':'';var msg=v.message?'<div style="font-size:13px;color:#c0d0d2;line-height:1.6;margin-top:6px">'+v.message+'</div>':'';return '<div style="display:flex;gap:12px;padding:14px 0;border-bottom:0.5px solid #1a1a1a"><div style="width:34px;height:34px;border-radius:50%;background:#1a3a3e;color:#2BB5C8;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0">'+ini+'</div><div style="flex:1;min-width:0"><div style="display:flex;align-items:center;flex-wrap:wrap;gap:4px">'+ws+nick+dt+'</div>'+msg+'</div></div>';}).join('');} catch(e){vll.textContent='読み込みエラー';}};
 window.submitVoice=function(){var sid=new URLSearchParams(window.location.search).get('id');if(!sid)return;var nick=(document.getElementById('vp-nick')?.value||'').trim();var msg=(document.getElementById('vp-text')?.value||'').trim();var ws=(document.getElementById('vp-selected-tag')?.textContent||'').trim();if(!ws){alert('「どの仕事で使いましたか？」を選んでください');return;}if(!msg){alert('メッセージを入力してください');return;}var btn=document.querySelector('.vp-submit');if(btn){btn.disabled=true;btn.textContent='送信中...';}fetch(CWM_SB_URL+'/rest/v1/voices',{method:'POST',headers:{'apikey':CWM_SB_KEY,'Authorization':'Bearer '+CWM_SB_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({space_id:sid,nickname:nick||null,message:msg,workstyle:ws,status:'pending',submitted_at:new Date().toISOString()})}).then(function(r){if(btn){btn.disabled=false;btn.textContent='応援する →';}if(r.ok){document.getElementById('vp-nick').value='';document.getElementById('vp-text').value='';document.getElementById('vp-selected-tag').textContent='';document.querySelectorAll('.vp-tag').forEach(function(t){t.classList.remove('on');});var s1=document.getElementById('vp-step1'),s3=document.getElementById('vp-step3');if(s1)s1.style.display='none';if(s3)s3.style.display='block';}}).catch(function(){alert('通信エラー');if(btn){btn.disabled=false;btn.textContent='応援する →';}});};
 var obs=new MutationObserver(function(){iGal();iTitle();rSec();});
 function start(){var pc=document.querySelector('.gallery-pc');if(pc)obs.observe(pc,{childList:true});var as=document.querySelector('.detail-aside');if(as)obs.observe(as,{childList:true,subtree:true});var dm=document.querySelector('.detail-main');if(dm)obs.observe(dm,{childList:true,subtree:true});iGal();iTitle();rSec();lVoices();[400,800,1500,2500,4000].forEach(function(t){setTimeout(tryMap,t);});}
