@@ -599,7 +599,7 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
 .lb-next{right:20px}
 .lb-arrow.disabled{opacity:.2;pointer-events:none}
 .gpc-item{cursor:pointer}
-.wtag-also-label{font-size:9px;color:#2a5a5e;letter-spacing:.06em;margin-top:10px;margin-bottom:7px}.wtag-also-pills{display:flex;flex-wrap:wrap;gap:6px}.wtag-also-pill{padding:5px 11px;border-radius:20px;border:0.5px solid #1e2a2c;font-size:11px;color:#5a7a7e}.wtag-card.wt-rank1{background:#0f2a2e;border-color:#2BB5C8}.wtag-card.wt-rank2{background:#0c2224;border-color:rgba(43,181,200,.4)}.wtag-card.wt-rank3{background:#0b1e20;border-color:rgba(43,181,200,.25)}.wtag-card.wt-rank1 .wtag-card-ja{color:#eafafc}.wtag-card.wt-rank2 .wtag-card-ja{color:#d0e4e6}.wtag-card.wt-rank3 .wtag-card-ja{color:#b8ccce}.wtag-card.wt-rank1 .wtag-card-en{color:#2BB5C8}.wtag-card.wt-rank2 .wtag-card-en{color:rgba(43,181,200,.65)}.wtag-card.wt-rank3 .wtag-card-en{color:rgba(43,181,200,.45)}.wtag-card.wt-rank1 .wtag-card-cnt{color:#2BB5C8;font-size:11px}.wtag-card.wt-rank2 .wtag-card-cnt{color:rgba(43,181,200,.7)}.wtag-card.wt-rank3 .wtag-card-cnt{color:rgba(43,181,200,.5)}
+.wtag-also-label{font-size:9px;color:#2a5a5e;letter-spacing:.06em;margin-top:10px;margin-bottom:7px}.wtag-also-pills{display:flex;flex-wrap:wrap;gap:6px}.wtag-also-pill{padding:5px 11px;border-radius:20px;border:0.5px solid #2a4a4e;font-size:11px;color:#8ab0b4}.wtag-card.wt-rank1{background:#0f2a2e;border-color:#2BB5C8}.wtag-card.wt-rank2{background:#0c2224;border-color:rgba(43,181,200,.4)}.wtag-card.wt-rank3{background:#0b1e20;border-color:rgba(43,181,200,.25)}.wtag-card.wt-rank1 .wtag-card-ja{color:#eafafc}.wtag-card.wt-rank2 .wtag-card-ja{color:#d0e4e6}.wtag-card.wt-rank3 .wtag-card-ja{color:#b8ccce}.wtag-card.wt-rank1 .wtag-card-en{color:#2BB5C8}.wtag-card.wt-rank2 .wtag-card-en{color:rgba(43,181,200,.65)}.wtag-card.wt-rank3 .wtag-card-en{color:rgba(43,181,200,.45)}.wtag-card.wt-rank1 .wtag-card-cnt{color:#2BB5C8;font-size:11px}.wtag-card.wt-rank2 .wtag-card-cnt{color:rgba(43,181,200,.7)}.wtag-card.wt-rank3 .wtag-card-cnt{color:rgba(43,181,200,.5)}
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
@@ -1721,6 +1721,9 @@ document.addEventListener('DOMContentLoaded', () => {
               (v.message ? '<div class="voice-text">' + v.message + '</div>' : '') +
             '</div></div>';
         }).join('');
+          if(hasMore){
+            var mb=document.createElement('div');mb.style.marginTop='12px';var btn=document.createElement('button');btn.onclick=function(){window.openVoicesModal();};btn.style.cssText='width:100%;padding:13px 0;background:transparent;border:0.5px solid rgba(43,181,200,.25);border-radius:10px;color:#2BB5C8;font-size:13px;font-weight:500;cursor:pointer;letter-spacing:.04em';btn.textContent='利用者の声をもっと見る →';mb.appendChild(btn);vList.parentNode.insertBefore(mb,vList.nextSibling);
+          }
       }
     } catch(e) { console.warn('voices error:', e); }
   }
