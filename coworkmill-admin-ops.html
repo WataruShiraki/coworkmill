@@ -900,7 +900,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if(el) observer.observe(el, {childList:true, characterData:true, subtree:true});
   });
 });
-</script>.addEventListener('DOMContentLoaded', () => {
+
+document.addEventListener('DOMContentLoaded', () => {
   const execBtn = document.getElementById('m-del-exec');
   if(execBtn) execBtn.addEventListener('click', async () => {
     const id = window._delId;
@@ -986,6 +987,8 @@ async function saveArchEdit2() {
 }
 </script>
 
+
+</script>
 <div id="m-del-confirm" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;align-items:center;justify-content:center">
   <div style="background:#fff;border-radius:10px;padding:24px;max-width:400px;width:90%">
     <div style="font-size:15px;font-weight:600;margin-bottom:8px">施設の完全削除</div>
