@@ -1407,15 +1407,15 @@ async function saveArchInfo() {
   const dbId = facs[cur] && facs[cur].db_id;
   if (!dbId) { alert('先に施設情報を保存してください。'); return; }
   const archName = document.getElementById('p-arch-name')?.value?.trim() || null;
-  const archFirm = document.getElementById('p-arch-firm')?.value?.trim() || null;
+  const archId   = document.getElementById('p-arch-selected')?.dataset?.archId || null;
   try {
-    await sbFetch('/rest/v1/spaces?id=eq.' + dbId, {
+    const result = await sbFetch('/rest/v1/spaces?id=eq.' + dbId, {
       method: 'PATCH',
-      body: JSON.stringify({ architect_name: archName, architect_firm: archFirm, design_year: archYear ? parseInt(archYear) : null })
+      body: JSON.stringify({ architect_name: archName, architect_id: archId })
     });
     alert('建築家情報を保存しました。');
   } catch(e) {
-    alert('保存に失敗しました: ' + toJapaneseError(e));
+    alert('保存に失敗しました。' + (e.message||''));
   }
 }
 
