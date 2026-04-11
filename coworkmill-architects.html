@@ -301,6 +301,7 @@ const architects = [];
       if(!grouped[letter]) grouped[letter]=[];
       const cnt=spCount[a.id]||0;
       grouped[letter].push({
+        id: a.id,
         name: a.name||a.name_en||'',
         name_en: a.name_en||'',
         href: a.url||'#',
@@ -342,7 +343,7 @@ const architects = [];
             ?'<div class="acard-work" style="background-image:url('+img+')"></div>'
             :'<div class="acard-work"></div>';
         }).join('');
-        return `<a class="acard" href="${firm.href}" target="_blank" rel="noopener">
+        return `<a class="acard" href="coworkmill-architect.html?id=${firm.id}" target="_blank" rel="noopener">
       ${portraitArea}
       <div class="acard-works">${workItems}</div>
       <div class="acard-body">
