@@ -86,7 +86,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:56px;display:flex;ali
 .acard-portrait-initials{font-family:var(--font-d);font-size:40px;font-weight:200;color:rgba(255,255,255,.6);letter-spacing:.04em}
 
 /* WORKS */
-.acard-works{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;height:68px;flex-shrink:0}
+.acard-works{display:flex;flex-wrap:wrap;gap:3px;min-height:36px;flex-shrink:0;align-items:flex-start}
 .acard-work{background-size:cover;background-position:center;background-color:var(--gray-100);transition:transform .3s}
 .acard:hover .acard-work{transform:scale(1.03)}
 
