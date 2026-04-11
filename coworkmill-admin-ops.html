@@ -725,9 +725,9 @@ function makeArchRow(a) {
     if(a.portrait_url){var img=document.createElement('img');img.src=a.portrait_url;img.style.cssText='width:100%;height:100%;object-fit:cover';avatar.appendChild(img);}
     else{avatar.textContent=(a.firm||a.name||'?')[0];}
     var info=document.createElement('div');
-    var nameEl=document.createElement('strong');nameEl.textContent=a.name||'—';
+    var nameEl=document.createElement('strong');nameEl.textContent=a.name_en||a.name||'—';
     info.appendChild(nameEl);
-    if(a.name_en){var enEl=document.createElement('div');enEl.style.cssText='font-size:10px;color:var(--g400)';enEl.textContent=a.name_en;info.appendChild(enEl);}
+    if(a.name_en){var enEl=document.createElement('div');enEl.style.cssText='font-size:10px;color:var(--g400)';enEl.textContent=a.firm||'';info.appendChild(enEl);}
     wrap.appendChild(avatar);wrap.appendChild(info);tdName.appendChild(wrap);
   })();
  const tdFirm = document.createElement('td'); tdFirm.style.cssText='font-size:11px;color:var(--g600)'; tdFirm.textContent = a.firm||'—';
@@ -779,8 +779,8 @@ async function updateArchitectContact() {
 }
 
 async function saveArchitect() {
-  const name = document.getElementById('an-firm').value.trim();
-  const firm = document.getElementById('an-firm').value.trim();
+  const name = document.getElementById('an-name-en').value.trim();
+  const firm = document.getElementById('an-name-en').value.trim();
   if (!name || !firm) { alert('建築家名と事務所名は必須です'); return; }
   // 写真アップロード
   let portrait_url_new = null;
@@ -810,7 +810,7 @@ async function saveArchitect() {
   const r = await sbPost('architects', payload);
   if (r.ok) {
     closeModal('m-arch-new');
-    ['an-name','an-name-en','an-firm','an-url','an-bio','an-email'].forEach(id => document.getElementById(id).value='');
+    ['an-name-en','an-url','an-bio','an-email'].forEach(id => document.getElementById(id).value='');
     document.getElementById('an-contact').value='未連絡';
     showToast('✅ 建築家を登録しました');
     loadArchitects();
