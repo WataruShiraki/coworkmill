@@ -981,7 +981,7 @@ async function saveArchEdit2() {
   };
   try {
     const r = await sbPatch('/rest/v1/architects?id=eq.'+id, payload);
-    if(r.ok) { closeModal('m-arch-edit2'); showToast('保存しました'); loadArchitects(); }
+    if(r.ok) { document.getElementById('m-arch-edit2').style.display='none'; showToast('保存しました'); loadArchitects(); }
     else { showToast('エラーが発生しました'); }
   } catch(e) { showToast('エラー: '+e.message); }
 }
@@ -1039,7 +1039,7 @@ async function saveArchEdit2() {
       </select>
     </div>
     <div style="display:flex;gap:10px;justify-content:flex-end">
-      <button onclick="closeModal('m-arch-edit2')" style="padding:8px 16px;border:1px solid #ddd;border-radius:6px;background:#fff;cursor:pointer;font-size:13px">キャンセル</button>
+      <button onclick="document.getElementById('m-arch-edit2').style.display='none'" style="padding:8px 16px;border:1px solid #ddd;border-radius:6px;background:#fff;cursor:pointer;font-size:13px">キャンセル</button>
       <button onclick="saveArchEdit2()" style="padding:8px 16px;border:none;border-radius:6px;background:#2BB5C8;color:#fff;cursor:pointer;font-size:13px;font-weight:600">保存する</button>
     </div>
   </div>
