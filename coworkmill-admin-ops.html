@@ -629,7 +629,7 @@ function makeSpRow(d) {
   bHide.addEventListener('click', async (e) => {
     e.stopPropagation();
     if(!confirm('「' + (d.name||'') + '」を非公開にしますか？')) return;
-    try { await sbPatch('/rest/v1/spaces?id=eq.'+d.id, {status:'draft'}); showToast('非公開にしました'); loadSpaces(); } catch(ex){ showToast('エラー: '+ex.message); }
+    try { await sbPatch('spaces', 'id=eq.'+d.id, {status:'draft'}); showToast('非公開にしました'); loadSpaces(); } catch(ex){ showToast('エラー: '+ex.message); }
   });
   // 削除ボタン
   const bDel = document.createElement('button');
@@ -980,7 +980,7 @@ async function saveArchEdit2() {
     portrait_url
   };
   try {
-    const r = await sbPatch('/rest/v1/architects?id=eq.'+id, payload);
+    const r = await sbPatch('architects', 'id=eq.'+id, payload);
     if(r.ok) { document.getElementById('m-arch-edit2').style.display='none'; showToast('保存しました'); loadArchitects(); }
     else { showToast('エラーが発生しました'); }
   } catch(e) { showToast('エラー: '+e.message); }
