@@ -320,6 +320,13 @@ a{text-decoration:none;color:inherit}
         <div class="fg"><div class="fl">建築家事務所名または建築家名（ローマ字）</div><input class="fin" id="an-name-en" placeholder="例：Yamada Architects"></div>
         <div class="fg"><div class="fl">公式サイトURL</div><input class="fin" id="an-url" placeholder="例：https://yamada-arch.jp"></div>
     <div class="fg"><div class="fl">プロフィール文</div><textarea class="fta" id="an-bio" placeholder="建築家の紹介文（任意）" rows="3"></textarea></div>
+<div class="fg"><div class="fl">ポートレート写真</div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <div id="an-portrait-preview" style="width:48px;height:48px;border-radius:50%;overflow:hidden;background:#1a2a2e;display:flex;align-items:center;justify-content:center;font-size:18px;color:#2BB5C8;flex-shrink:0">↓</div>
+        <input type="file" id="an-portrait-file" accept="image/*" style="display:none">
+        <button onclick="document.getElementById('an-portrait-file').click()" style="font-size:12px;padding:5px 12px;border:1px solid #ccc;border-radius:4px;background:#fff;cursor:pointer">写真を選択</button>
+        <span id="an-portrait-fname" style="font-size:11px;color:#888"></span>
+      </div></div>
     <div class="fg"><div class="fl">連絡状況</div>
       <select class="fin" id="an-contact">
         <option value="未連絡">未連絡</option>
@@ -594,7 +601,13 @@ function makeSpRow(d) {
   const statusMap = { live:'掲載中', draft:'審査待ち', rejected:'却下' };
   const statusClassMap = { live:'lv', draft:'new', rejected:'rjt' };
   const st = d.status || 'draft';
-  const tdName = document.createElement('td'); tdName.innerHTML = `<strong>${d.name||'—'}</strong>`;
+  const tdName = document.createElement('td'); tdName.innerHTML = '<div style="display:flex;align-items:center;gap:8px">'
+    + '<div style="width:32px;height:32px;border-radius:50%;overflow:hidden;background:#1a2a2e;flex-shrink:0;font-size:12px;font-weight:700;color:#2BB5C8;display:flex;align-items:center;justify-content:center">'
+    + (a.portrait_url ? '<img src="'+a.portrait_url+'" style="width:100%;height:100%;object-fit:cover">' : (a.firm||a.name||'?')[0])
+    + '</div>'
+    + '<div><strong>'+(a.name||'—')+'</strong>'
+    + (a.name_en ? '<div style="font-size:10px;color:var(--g400)">'+a.name_en+'</div>' : '')
+    + '</div></div>'
   const tdArea = document.createElement('td'); tdArea.style.cssText='font-size:11px;color:var(--g600)'; tdArea.textContent = area||'—';
   const tdContact = document.createElement('td');
   tdContact.innerHTML = `<div style="font-size:11px">${d.contact_name||'—'}</div><div style="font-size:10px;color:var(--g400)">${d.contact_email||''}</div>`;
@@ -668,7 +681,7 @@ async function confirmReject() {
 // ─────────────────────────────
 async function loadArchitects() {
   try {
-    const data = await sbGet('architects?select=id,name,name_en,firm,url,bio,contact_status,created_at&order=created_at.desc');
+    const data = await sbGet('architects?select=id,name,name_en,firm,url,bio,portrait_url,contact_status,created_at&order=created_at.desc');
     if (!Array.isArray(data)) return;
 
     // Dashboard counter
@@ -757,9 +770,26 @@ async function saveArchitect() {
   const name = document.getElementById('an-firm').value.trim();
   const firm = document.getElementById('an-firm').value.trim();
   if (!name || !firm) { alert('建築家名と事務所名は必須です'); return; }
+  // 写真アップロード
+  let portrait_url_new = null;
+  if(window._anPortraitFile) {
+    try {
+      const SB2='https://jakwntemjkwqwaqujffh.supabase.co';
+      const KEY2='sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+      const ext=window._anPortraitFile.name.split('.').pop();
+      const path='arch-new-'+Date.now()+'.'+ext;
+      const upRes=await fetch(SB2+'/storage/v1/object/portraits/'+path,{
+        method:'POST',headers:{'apikey':KEY2,'Authorization':'Bearer '+KEY2,'Content-Type':window._anPortraitFile.type},
+        body:window._anPortraitFile
+      });
+      if(upRes.ok) portrait_url_new=SB2+'/storage/v1/object/public/portraits/'+path;
+    } catch(e){console.warn(e);}
+    window._anPortraitFile=null;
+  }
   const payload = {
     name, firm,
     name_en: document.getElementById('an-name-en').value.trim() || null,
+    portrait_url: portrait_url_new || undefined,
     url: document.getElementById('an-url').value.trim() || null,
     bio: document.getElementById('an-bio').value.trim() || null,
     contact_status: document.getElementById('an-contact').value,
@@ -939,6 +969,15 @@ function applyPortraitUrl() {
 }
 document.addEventListener('DOMContentLoaded', () => {
   const fileInput = document.getElementById('ae2-portrait-file');
+  const anFileInput = document.getElementById('an-portrait-file');
+  if(anFileInput) anFileInput.addEventListener('change', function(ev){
+    const f=ev.target.files[0]; if(!f) return;
+    window._anPortraitFile=f;
+    document.getElementById('an-portrait-fname').textContent=f.name;
+    const rd=new FileReader(); rd.onload=e=>{
+      document.getElementById('an-portrait-preview').innerHTML='<img src="'+e.target.result+'" style="width:100%;height:100%;object-fit:cover">';
+    }; rd.readAsDataURL(f);
+  });
   if(fileInput) fileInput.addEventListener('change', async(e) => {
     const file = e.target.files[0];
     if(!file) return;
