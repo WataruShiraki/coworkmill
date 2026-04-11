@@ -717,8 +717,20 @@ function makeArchRow(a) {
   const tr = document.createElement('tr'); tr.className='hov';
   const contactClass = a.contact_status==='掲載同意' ? 'lv' : a.contact_status==='連絡済み' ? 'pnd' : 'new';
   const tdName = document.createElement('td');
-  tdName.innerHTML = `<strong>${a.name||'—'}</strong>${a.name_en?'<div style="font-size:10px;color:var(--g400)">'+a.name_en+'</div>':''}`;
-  const tdFirm = document.createElement('td'); tdFirm.style.cssText='font-size:11px;color:var(--g600)'; tdFirm.textContent = a.firm||'—';
+  (function(){
+    var wrap=document.createElement('div');
+    wrap.style.cssText='display:flex;align-items:center;gap:8px';
+    var avatar=document.createElement('div');
+    avatar.style.cssText='width:32px;height:32px;border-radius:50%;overflow:hidden;background:#1a2a2e;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#2BB5C8';
+    if(a.portrait_url){var img=document.createElement('img');img.src=a.portrait_url;img.style.cssText='width:100%;height:100%;object-fit:cover';avatar.appendChild(img);}
+    else{avatar.textContent=(a.firm||a.name||'?')[0];}
+    var info=document.createElement('div');
+    var nameEl=document.createElement('strong');nameEl.textContent=a.name||'—';
+    info.appendChild(nameEl);
+    if(a.name_en){var enEl=document.createElement('div');enEl.style.cssText='font-size:10px;color:var(--g400)';enEl.textContent=a.name_en;info.appendChild(enEl);}
+    wrap.appendChild(avatar);wrap.appendChild(info);tdName.appendChild(wrap);
+  })();
+ const tdFirm = document.createElement('td'); tdFirm.style.cssText='font-size:11px;color:var(--g600)'; tdFirm.textContent = a.firm||'—';
   const tdUrl = document.createElement('td'); tdUrl.style.fontSize='11px';
   tdUrl.innerHTML = a.url ? `<a href="${a.url}" target="_blank" style="color:#2BB5C8">${a.url.replace('https://','').replace('http://','').replace(/\/$/,'')} ↗</a>` : '—';
   const tdBio = document.createElement('td'); tdBio.style.cssText='font-size:11px;color:var(--g600);max-width:180px';
