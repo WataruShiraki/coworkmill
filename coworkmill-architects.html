@@ -274,94 +274,90 @@ const KUMA_PHOTO = 'data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1
 
 const architects = [];
 
-// DB から建築家を取得して描画
-(async function loadArchitectsFromDB() {
+// DB から取得して既存エンジンで再描画
+(async function() {
   try {
-    const SB_URL = 'https://jakwntemjkwqwaqujffh.supabase.co';
-    const SB_KEY = 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
-    const res = await fetch(SB_URL + '/rest/v1/architects?select=id,name,name_en,firm,url,bio,portrait_url&order=name.asc', {
-      headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
-    });
+    const SB='https://jakwntemjkwqwaqujffh.supabase.co', KEY='sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+    const res = await fetch(SB+'/rest/v1/architects?select=id,name,name_en,firm,url,bio,portrait_url&order=name.asc',{headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}});
     const data = await res.json();
-    if (!data || !data.length) return;
+    if(!data||!data.length) return;
 
-    // 施設紐づき件数を一括取得
-    const spRes = await fetch(SB_URL + '/rest/v1/spaces?select=architect_id&status=eq.live&architect_id=not.is.null', {
-      headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
-    });
+    // 施設紐づき件数
+    const spRes = await fetch(SB+'/rest/v1/spaces?select=architect_id&status=eq.live&architect_id=not.is.null',{headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}});
     const spData = await spRes.json();
-    const spCount = {};
-    (spData||[]).forEach(s => { spCount[s.architect_id] = (spCount[s.architect_id]||0)+1; });
+    const spCount={};
+    (spData||[]).forEach(s=>{spCount[s.architect_id]=(spCount[s.architect_id]||0)+1;});
 
-    // architects.html の既存描画エンジン (group.firms.map) に合わせて
-    // architects 配列を組み立て直す
-    // 既存形式: [ { letter, name, href, origin, works:[] } ]
-    const converted = data.map(a => {
-      const initial = (a.name_en || a.name || '?')[0].toUpperCase();
-      const letter = /^[A-Z]$/.test(initial) ? initial : '#';
-      const cnt = spCount[a.id] || 0;
-      const works = cnt > 0 ? ['\u624b\u304c\u3051\u305f\u65bd\u8a2d ' + cnt + '\u4ef6'] : [];
-      return {
-        id: a.id,
-        letter,
-        name: a.name || a.name_en || '',
-        nameEn: a.name_en || '',
-        firm: a.firm || '',
-        href: a.url || '#',
-        bio: a.bio || '',
-        portrait_url: a.portrait_url || '',
-        origin: a.firm || '',
-        works
-      };
+    // 既存の group.firms 形式に変換
+    const grouped={};
+    data.forEach(a=>{
+      const initial=(a.name_en||a.name||'?')[0].toUpperCase();
+      const letter=/^[A-Z]$/.test(initial)?initial:'#';
+      if(!grouped[letter]) grouped[letter]=[];
+      const cnt=spCount[a.id]||0;
+      grouped[letter].push({
+        name: a.name||a.name_en||'',
+        name_en: a.name_en||'',
+        href: a.url||'#',
+        origin: a.firm||'',
+        bio: a.bio||'',
+        portrait_url: a.portrait_url||'',
+        works: cnt>0?['手がけた施設 '+cnt+'件']:[]
+      });
     });
 
-    // 既存のrenderGroups関数を探して再実行
-    // contentElのinnerHTMLをクリアして再描画
-    const contentEl2 = document.getElementById('content-area') || document.querySelector('.content-area, .alpha-content, [id*="content"]');
+    // アーキテクト数更新
+    const cntEl=document.querySelector('.arch-count');
+    if(cntEl) cntEl.textContent=data.length;
 
-    // アーキテクトカウント更新
-    const cntEl = document.querySelector('.arch-count, [class*="arch-count"]');
-    if (cntEl) cntEl.textContent = converted.length;
+    // 既存 contentEl をクリア
+    const contentEl2=document.getElementById('arch-content');
+    if(!contentEl2) return;
+    contentEl2.innerHTML='';
 
-    // 既存のrenderAll関数があれば呼ぶ
-    if (typeof renderAll === 'function') { window.__archData = converted; renderAll(converted); return; }
-    if (typeof render === 'function') { window.__archData = converted; render(converted); return; }
+    // 既存のカードHTML生成ロジックを再現
+    Object.keys(grouped).sort().forEach(letter=>{
+      const firms=grouped[letter];
+      const sec=document.createElement('div');
+      sec.className='alpha-section';
+      sec.id='section-'+letter;
+      const head=`<div class="alpha-section-head">
+    <div class="alpha-letter">${letter}</div>
+    <div class="alpha-firm-count">${firms.length} FIRM${firms.length>1?'S':''}</div>
+  </div>`;
+      const cards=firms.map(firm=>{
+        const initials=(firm.name||'?').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
+        const portraitArea=firm.portrait_url
+          ?'<div class="acard-portrait-wrap"><img class="acard-portrait" src="'+firm.portrait_url+'" alt="'+firm.name+'"></div>'
+          :'<div class="acard-portrait-wrap"><div class="acard-portrait-init">'+initials+'</div></div>';
+        const workItems=firm.works.map(w=>'<div class="acard-work">'+w+'</div>').join('')||'<div class="acard-work" style="color:var(--gray-400)">比較中</div>';
+        return `<a class="acard" href="${firm.href}" target="_blank" rel="noopener">
+      ${portraitArea}
+      <div class="acard-works">${workItems}</div>
+      <div class="acard-body">
+        <div class="acard-name">${firm.name}</div>
+        <div class="acard-firm">${firm.origin}</div>
+        ${firm.bio?'<div class="acard-bio">'+firm.bio+'</div>':''}
+      </div>
+      <div class="acard-foot">
+        <div class="acard-origin">${firm.origin}</div>
+        <div class="acard-arrow">→</div>
+      </div>
+    </a>`;
+      }).join('');
+      sec.innerHTML=head+`<div class="arch-grid">${cards}</div>`;
+      contentEl2.appendChild(sec);
+    });
 
-    // なければ直接描画
-    window.__archData = converted;
-    if (contentEl2) renderArchsDirectly(converted, contentEl2);
-  } catch(e) { console.error('architect load error:', e); }
+    // アルファベットインデックス更新
+    const letters=Object.keys(grouped);
+    document.querySelectorAll('.alpha-btn').forEach(btn=>{
+      const l=btn.textContent.trim();
+      btn.classList.toggle('disabled',!letters.includes(l));
+      if(letters.includes(l)){btn.href='#section-'+l; btn.addEventListener('click',()=>{document.getElementById('section-'+l)?.scrollIntoView({behavior:'smooth'});});}
+    });
+  } catch(e){console.error('arch load:',e);}
 })();
-
-function renderArchsDirectly(data, container) {
-  const letters = [...new Set(data.map(a=>a.letter))].sort();
-  const allLetters2 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ#'.split('');
-  container.innerHTML = '';
-  letters.forEach(letter => {
-    const items = data.filter(a => a.letter === letter);
-    if (!items.length) return;
-    const sec = document.createElement('div');
-    sec.className = 'alpha-section';
-    sec.id = 'section-' + letter;
-    const cards = items.map(a => {
-      const portrait = a.portrait_url
-        ? '<div class="acard-portrait-wrap"><img src="' + a.portrait_url + '" class="acard-portrait" alt="' + a.name + '"></div>'
-        : '<div class="acard-portrait-wrap"><div class="acard-portrait-init">' + (a.name||'?')[0] + '</div></div>';
-      const works = a.works.length
-        ? '<div class="acard-work">' + a.works.join('</div><div class="acard-work">') + '</div>'
-        : '<div class="acard-work" style="color:var(--gray-400)">比較中</div>';
-      return '<a class="acard" href="' + a.href + '" target="_blank" rel="noopener">' +
-        portrait +
-        '<div class="acard-works">' + works + '</div>' +
-        '<div class="acard-body"><div class="acard-name">' + a.name + '</div>' +
-        '<div class="acard-firm">' + a.firm + '</div>' +
-        (a.bio ? '<div class="acard-bio">' + a.bio + '</div>' : '') +
-        '</div><div class="acard-foot"><div class="acard-origin">' + a.firm + '</div><div class="acard-arrow">→</div></div></a>';
-    }).join('');
-    sec.innerHTML = '<div class="section-head"><div class="alpha-letter">' + letter + '</div><div class="alpha-firm-count">' + items.length + ' FIRM' + (items.length>1?'S':'') + '</div></div><div class="arch-grid">' + cards + '</div>';
-    container.appendChild(sec);
-  });
-}
 
 // Build alphabet index
 const letters = architects.map(a => a.letter);
