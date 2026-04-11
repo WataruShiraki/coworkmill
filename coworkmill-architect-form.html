@@ -1,4 +1,13 @@
-<!DOCTYPE html>
+<div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid rgba(255,255,255,.08)">
+            <div id="af-portrait-preview" style="width:72px;height:72px;border-radius:50%;background:#1a2a2e;flex-shrink:0;display:flex;align-items:center;justify-content:center;overflow:hidden;color:#2BB5C8;font-size:24px;font-weight:700">?</div>
+            <div style="flex:1">
+              <div style="font-size:13px;color:rgba(255,255,255,.7);margin-bottom:6px">ポートレート写真（任意）</div>
+              <input type="file" id="af-portrait-file" accept="image/*" style="display:none">
+              <button type="button" onclick="document.getElementById('af-portrait-file').click()" style="font-size:12px;padding:6px 14px;border:1px solid rgba(255,255,255,.3);border-radius:5px;background:transparent;color:rgba(255,255,255,.8);cursor:pointer">画像を選択</button>
+              <div style="font-size:10px;color:rgba(255,255,255,.35);margin-top:6px">JPG／PNG・5MB以下</div>
+            </div>
+          </div>
+          <!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
@@ -276,14 +285,47 @@ function previewPhoto(input) {
   reader.readAsDataURL(file);
 }
 
-function submitForm(e) {
+async function submitForm(e) {
   e.preventDefault();
   document.getElementById('arch-form').style.display = 'none';
   document.querySelector('.progress').style.display = 'none';
   document.querySelector('.notice').style.display = 'none';
   document.getElementById('thanks').style.display = 'block';
-  window.scrollTo({top:0,behavior:'smooth'});
+  try {
+    const archId = new URLSearchParams(location.search).get('id');
+    if (!archId) return;
+    let portrait_url = null;
+    const file = document.getElementById('af-portrait-file')?.files?.[0];
+    if (file) {
+      const ext = file.name.split('.').pop();
+      const path = 'arch-' + archId + '-' + Date.now() + '.' + ext;
+      const upRes = await fetch('https://jakwntemjkwqwaqujffh.supabase.co/storage/v1/object/portraits/' + path, {
+        method: 'POST',
+        headers: { 'apikey': 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ', 'Authorization': 'Bearer sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ', 'Content-Type': file.type, 'x-upsert': 'true' },
+        body: file
+      });
+      if (upRes.ok) portrait_url = 'https://jakwntemjkwqwaqujffh.supabase.co/storage/v1/object/public/portraits/' + path;
+    }
+    const g = id => document.getElementById(id)?.value?.trim()||null;
+    const payload = { name: g('f-name-ja'), name_en: g('f-name-en'), firm: g('f-firm'), url: g('f-url'), email: g('f-email'), bio: g('profile-bio') };
+    if (portrait_url) payload.portrait_url = portrait_url;
+    await fetch('https://jakwntemjkwqwaqujffh.supabase.co/rest/v1/architects?id=eq.' + archId, {
+      method: 'PATCH',
+      headers: { 'apikey': 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ', 'Authorization': 'Bearer sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ', 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+      body: JSON.stringify(payload)
+    });
+  } catch(err) { console.error('PATCH error:', err); }
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  const pf = document.getElementById('af-portrait-file');
+  if(pf) pf.addEventListener('change', e => {
+    const file = e.target.files[0]; if(!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => { const p=document.getElementById('af-portrait-preview'); if(p) p.innerHTML='<img src="'+ev.target.result+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%">'; };
+    reader.readAsDataURL(file);
+  });
+});
 </script>
 </body>
 </html>

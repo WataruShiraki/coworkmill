@@ -719,6 +719,12 @@ function makeArchRow(a) {
   const delBtn = document.createElement('button'); delBtn.className='bsm'; delBtn.textContent='削除';
   delBtn.style.cssText='color:var(--rtx);border-color:var(--rbd)';
   delBtn.addEventListener('click', () => deleteArchitect(a.id, a.name));
+  // 編集ボタン
+  const editBtn = document.createElement('button');
+  editBtn.textContent = '編集';
+  editBtn.style.cssText = 'font-size:11px;padding:3px 9px;border-radius:4px;border:1px solid #888;background:transparent;color:#555;cursor:pointer;margin-right:4px';
+  editBtn.addEventListener('click', () => openArchEdit2(a));
+  tdBtn.appendChild(editBtn);
   // URL発行ボタン
   const urlBtn = document.createElement('button');
   urlBtn.textContent = 'URL発行';
@@ -908,6 +914,76 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch(ex){ showToast('エラー: '+ex.message); execBtn.textContent='削除する'; execBtn.disabled=false; }
   });
 });
+
+function openArchEdit2(a) {
+  document.getElementById('ae2-id').value = a.id;
+  document.getElementById('ae2-name').value = a.name||'';
+  document.getElementById('ae2-name-en').value = a.name_en||'';
+  document.getElementById('ae2-firm').value = a.firm||'';
+  document.getElementById('ae2-url').value = a.url||'';
+  document.getElementById('ae2-email').value = a.email||'';
+  document.getElementById('ae2-bio').value = a.bio||'';
+  document.getElementById('ae2-contact').value = a.contact_status||'未連絡';
+  window._ae2PortraitUrl = a.portrait_url||'';
+  window._ae2PortraitFile = null;
+  const prev = document.getElementById('ae2-portrait-preview');
+  if(a.portrait_url) { prev.innerHTML='<img src="'+a.portrait_url+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%">'; }
+  else { prev.textContent = (a.name||'?')[0]; }
+  document.getElementById('m-arch-edit2').style.display='flex';
+}
+function applyPortraitUrl() {
+  const url = document.getElementById('ae2-portrait-url').value.trim();
+  if(!url) return;
+  window._ae2PortraitUrl = url;
+  document.getElementById('ae2-portrait-preview').innerHTML='<img src="'+url+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%">';
+  document.getElementById('ae2-portrait-url-row').style.display='none';
+}
+document.addEventListener('DOMContentLoaded', () => {
+  const fileInput = document.getElementById('ae2-portrait-file');
+  if(fileInput) fileInput.addEventListener('change', async(e) => {
+    const file = e.target.files[0];
+    if(!file) return;
+    window._ae2PortraitFile = file;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      document.getElementById('ae2-portrait-preview').innerHTML='<img src="'+ev.target.result+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%">';
+    };
+    reader.readAsDataURL(file);
+  });
+});
+async function saveArchEdit2() {
+  const id = document.getElementById('ae2-id').value;
+  const name = document.getElementById('ae2-name').value.trim();
+  const firm = document.getElementById('ae2-firm').value.trim();
+  if(!name||!firm) { alert('建築家名と事務所名は必須です'); return; }
+  let portrait_url = window._ae2PortraitUrl||null;
+  if(window._ae2PortraitFile) {
+    try {
+      const ext = window._ae2PortraitFile.name.split('.').pop();
+      const path = 'arch-' + id + '-' + Date.now() + '.' + ext;
+      const SB2='https://jakwntemjkwqwaqujffh.supabase.co'; const KEY2='sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+      const upRes = await fetch(SB2+'/storage/v1/object/portraits/'+path, {
+        method:'POST', headers:{'apikey':KEY2,'Authorization':'Bearer '+KEY2,'Content-Type':window._ae2PortraitFile.type,'x-upsert':'true'},
+        body: window._ae2PortraitFile
+      });
+      if(upRes.ok) portrait_url = SB2+'/storage/v1/object/public/portraits/'+path;
+    } catch(e) { console.error(e); }
+  }
+  const payload = {
+    name, firm,
+    name_en: document.getElementById('ae2-name-en').value.trim()||null,
+    url: document.getElementById('ae2-url').value.trim()||null,
+    email: document.getElementById('ae2-email').value.trim()||null,
+    bio: document.getElementById('ae2-bio').value.trim()||null,
+    contact_status: document.getElementById('ae2-contact').value,
+    portrait_url
+  };
+  try {
+    const r = await sbPatch('/rest/v1/architects?id=eq.'+id, payload);
+    if(r.ok) { closeModal('m-arch-edit2'); showToast('保存しました'); loadArchitects(); }
+    else { showToast('エラーが発生しました'); }
+  } catch(e) { showToast('エラー: '+e.message); }
+}
 </script>
 
 <div id="m-del-confirm" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;align-items:center;justify-content:center">
@@ -918,6 +994,50 @@ document.addEventListener('DOMContentLoaded', () => {
     <div style="display:flex;gap:10px;justify-content:flex-end">
       <button onclick="document.getElementById('m-del-confirm').style.display='none'" style="padding:8px 16px;border:1px solid #ddd;border-radius:6px;background:#fff;cursor:pointer;font-size:13px">キャンセル</button>
       <button id="m-del-exec" style="padding:8px 16px;border:none;border-radius:6px;background:#dc2626;color:#fff;cursor:pointer;font-size:13px;font-weight:600">削除する</button>
+    </div>
+  </div>
+</div>
+
+<div id="m-arch-edit2" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;align-items:center;justify-content:center">
+  <div style="background:#fff;border-radius:12px;padding:24px;max-width:540px;width:94%;max-height:90vh;overflow-y:auto">
+    <div style="font-size:15px;font-weight:600;margin-bottom:16px">建築家を編集</div>
+    <input type="hidden" id="ae2-id">
+
+    <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid #eee">
+      <div id="ae2-portrait-preview" style="width:72px;height:72px;border-radius:50%;background:#1a3a3e;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;font-size:24px;color:#2BB5C8;font-weight:700"></div>
+      <div style="flex:1">
+        <div style="font-size:11px;color:#666;margin-bottom:6px">ポートレート写真</div>
+        <input type="file" id="ae2-portrait-file" accept="image/*" style="display:none">
+        <button onclick="document.getElementById('ae2-portrait-file').click()" style="font-size:12px;padding:5px 12px;border:1px solid #ccc;border-radius:5px;background:#fff;cursor:pointer;margin-right:6px">画像を選択</button>
+        <button onclick="document.getElementById('ae2-portrait-url-row').style.display='flex'" style="font-size:12px;padding:5px 12px;border:1px solid #ccc;border-radius:5px;background:#fff;cursor:pointer">URLで入力</button>
+        <div id="ae2-portrait-url-row" style="display:none;gap:6px;margin-top:6px">
+          <input id="ae2-portrait-url" placeholder="https://..." style="flex:1;padding:5px 8px;border:1px solid #ccc;border-radius:4px;font-size:12px">
+          <button onclick="applyPortraitUrl()" style="padding:5px 10px;border:1px solid #2BB5C8;border-radius:4px;background:#2BB5C8;color:#fff;font-size:12px;cursor:pointer">OK</button>
+        </div>
+        <div style="font-size:10px;color:#999;margin-top:4px">JPG/PNG ・ 5MB以下</div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+      <div><div style="font-size:11px;color:#666;margin-bottom:3px">建築家名 *</div><input class="fin" id="ae2-name" style="width:100%"></div>
+      <div><div style="font-size:11px;color:#666;margin-bottom:3px">NAME (English)</div><input class="fin" id="ae2-name-en" style="width:100%"></div>
+    </div>
+    <div style="margin-bottom:10px"><div style="font-size:11px;color:#666;margin-bottom:3px">建築事務所名 *</div><input class="fin" id="ae2-firm" style="width:100%"></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+      <div><div style="font-size:11px;color:#666;margin-bottom:3px">公式サイトURL</div><input class="fin" id="ae2-url" style="width:100%"></div>
+      <div><div style="font-size:11px;color:#666;margin-bottom:3px">メールアドレス</div><input class="fin" id="ae2-email" type="email" style="width:100%"></div>
+    </div>
+    <div style="margin-bottom:10px"><div style="font-size:11px;color:#666;margin-bottom:3px">プロフィール文</div><textarea class="fin" id="ae2-bio" style="width:100%;height:72px;resize:vertical"></textarea></div>
+    <div style="margin-bottom:16px"><div style="font-size:11px;color:#666;margin-bottom:3px">連絡状況</div>
+      <select class="fin" id="ae2-contact" style="width:100%">
+        <option value="未連絡">未連絡</option>
+        <option value="連絡済み">連絡済み</option>
+        <option value="掃載同意済み">掃載同意済み</option>
+      </select>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button onclick="closeModal('m-arch-edit2')" style="padding:8px 16px;border:1px solid #ddd;border-radius:6px;background:#fff;cursor:pointer;font-size:13px">キャンセル</button>
+      <button onclick="saveArchEdit2()" style="padding:8px 16px;border:none;border-radius:6px;background:#2BB5C8;color:#fff;cursor:pointer;font-size:13px;font-weight:600">保存する</button>
     </div>
   </div>
 </div>
