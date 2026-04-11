@@ -396,5 +396,90 @@ document.querySelectorAll('.scard,.work-item,.arch-stat').forEach(el => {
   </div>
 </footer>
 <script src="coworkmill-features.js"></script>
+
+<script>
+(function(){
+  var SB='https://jakwntemjkwqwaqujffh.supabase.co', KEY='sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+  var id = new URLSearchParams(location.search).get('id');
+  if(!id) return; // idなし = デモページそのまま表示
+
+  // architects テーブルから取得
+  fetch(SB+'/rest/v1/architects?id=eq.'+id+'&select=id,name,name_en,firm,url,bio,portrait_url',
+    {headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}})
+  .then(function(r){return r.json();})
+  .then(function(ar){
+    if(!ar||!ar[0]) return;
+    var a = ar[0];
+    var displayName = a.name_en || a.name || a.firm || '';
+    var firmName = a.firm || a.name || '';
+
+    // 名前
+    var nameEl = document.querySelector('.arch-name');
+    if(nameEl) nameEl.textContent = displayName;
+
+    // 事務所名
+    var firmEl = document.querySelector('.arch-firm');
+    if(firmEl) firmEl.textContent = firmName;
+
+    // bio
+    var bioEl = document.querySelector('.arch-bio');
+    if(bioEl) {
+      if(a.bio) {
+        bioEl.innerHTML = '<p>'+a.bio.replace(/\n/g,'</p><p>')+'</p>';
+      } else {
+        bioEl.style.display='none';
+      }
+    }
+
+    // ポートレート写真
+    var photoEl = document.querySelector('.arch-photo');
+    if(photoEl && a.portrait_url) {
+      photoEl.src = a.portrait_url;
+      photoEl.alt = displayName;
+    }
+
+    // ページタイトル
+    document.title = displayName + 'が手がけたコワーキングスペース — COWORKMILL';
+
+    // 統計（stats）を非表示にする（ダミーデータなので）
+    var statsEl = document.querySelector('.arch-stats');
+    if(statsEl) statsEl.style.display='none';
+
+    // タグも非表示
+    var tagsEl = document.querySelector('.arch-tags');
+    if(tagsEl) tagsEl.style.display='none';
+
+    // 公式サイトリンク
+    if(a.url) {
+      var consultBtn = document.querySelector('.arch-consult-btn, a[href*="http"]');
+      if(consultBtn) { consultBtn.href = a.url; consultBtn.style.display=''; }
+    }
+  })
+  .catch(function(){});
+
+  // 手がけた施設一覧を取得
+  fetch(SB+'/rest/v1/spaces?architect_id=eq.'+id+'&select=id,name,slug,area,prefecture,image_main,price_dropin_hour&status=eq.live',
+    {headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}})
+  .then(function(r){return r.json();})
+  .then(function(spaces){
+    if(!spaces||!spaces.length) return;
+    // 手がけたコワーキング施設セクションを更新
+    var worksSection = document.querySelector('.arch-section');
+    if(!worksSection) return;
+    var grid = worksSection.querySelector('.ocard-grid, [class*="grid"], [class*="works"]');
+    if(!grid) return;
+    grid.innerHTML = spaces.map(function(s){
+      return '<a class="ocard" href="coworkmill-detail.html?id='+s.id+'" style="text-decoration:none;display:block">'
+        +'<div class="ocard-img" style="height:160px;background:#111;border-radius:8px;overflow:hidden;margin-bottom:8px">'
+        +(s.image_main?'<img src="'+s.image_main+'" style="width:100%;height:100%;object-fit:cover" alt="'+s.name+'">':'')
+        +'</div>'
+        +'<div class="ocard-name" style="font-weight:600;font-size:14px;color:#fff;margin-bottom:4px">'+s.name+'</div>'
+        +'<div style="font-size:12px;color:rgba(255,255,255,.5)">'+s.prefecture+' / '+(s.area||'')+'</div>'
+        +'</a>';
+    }).join('');
+  })
+  .catch(function(){});
+})();
+</script>
 </body>
 </html>

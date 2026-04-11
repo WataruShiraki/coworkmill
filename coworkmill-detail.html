@@ -2020,7 +2020,7 @@ function renderPlanCards(sp) {
             document.getElementById('arch-profile-link').href=archUrl;
             document.getElementById('arch-name-link').href=archUrl;
             document.getElementById('arch-detail-link').href=archUrl;
-            document.getElementById('arch-name-link').textContent=a.name||a.name_en||'';
+            document.getElementById('arch-name-link').textContent=a.name_en||a.name||'';
             // Design by 表示をローマ字(name_en)に更新
             var dbEl=document.getElementById('d-design-by');
             if(dbEl&&(a.name_en||a.name)){dbEl.innerHTML='Design by <span style="color:#2BB5C8;font-weight:500">'+(a.name_en||a.name)+'</span>';dbEl.style.display='';}
