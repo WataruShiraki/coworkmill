@@ -282,11 +282,16 @@ const architects = [];
     const data = await res.json();
     if(!data||!data.length) return;
 
-    // 施設紐づき件数
-    const spRes = await fetch(SB+'/rest/v1/spaces?select=architect_id&status=eq.live&architect_id=not.is.null',{headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}});
+    // 施設情報（画像付き）取得
+    const spRes = await fetch(SB+'/rest/v1/spaces?select=architect_id,id,name,image_main&status=eq.live&architect_id=not.is.null',{headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}});
     const spData = await spRes.json();
     const spCount={};
-    (spData||[]).forEach(s=>{spCount[s.architect_id]=(spCount[s.architect_id]||0)+1;});
+    const spImages={};
+    (spData||[]).forEach(s=>{
+      spCount[s.architect_id]=(spCount[s.architect_id]||0)+1;
+      if(!spImages[s.architect_id]) spImages[s.architect_id]=[];
+      if(s.image_main) spImages[s.architect_id].push(s.image_main);
+    });
 
     // 既存の group.firms 形式に変換
     const grouped={};
@@ -330,7 +335,13 @@ const architects = [];
         const portraitArea=firm.portrait_url
           ?'<div class="acard-portrait-wrap"><img class="acard-portrait" src="'+firm.portrait_url+'" alt="'+firm.name+'"></div>'
           :'<div class="acard-portrait-wrap"><div class="acard-portrait-init">'+initials+'</div></div>';
-        const workItems=firm.works.map(w=>'<div class="acard-work">'+w+'</div>').join('')||'<div class="acard-work" style="color:var(--gray-400)">比較中</div>';
+        const imgs=firm.spaceImages||[];
+        const workItems=[0,1,2].map(i=>{
+          const img=imgs[i];
+          return img
+            ?'<div class="acard-work" style="background-image:url('+img+')"></div>'
+            :'<div class="acard-work"></div>';
+        }).join('');
         return `<a class="acard" href="${firm.href}" target="_blank" rel="noopener">
       ${portraitArea}
       <div class="acard-works">${workItems}</div>
