@@ -1164,6 +1164,7 @@ function collectFormData() {
     capacity:        ni('p-cap'),
     open_hours:      g('f-open-hours','p-hours'),
     architect_name:  g('p-arch'),
+    architect_id:    document.getElementById('p-arch-selected')?.dataset?.archId || null,
     vibe:            g('nfvibe', 'p-vibe'),
     website_url:     document.getElementById('f-official-url')?.value||'',
     instagram:       g('nfinsta', 'fig'),

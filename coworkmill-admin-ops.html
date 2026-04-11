@@ -329,6 +329,7 @@ a{text-decoration:none;color:inherit}
         <option value="掲載同意">掲載同意</option>
       </select>
     </div>
+    <div class="fg"><div class="fl">メールアドレス</div><input class="fin" id="an-email" type="email" placeholder="例：architect@example.com（URL発行・納品通知用）"></div>
     <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px">
       <button class="bsm" onclick="closeModal('m-arch-new')">キャンセル</button>
       <button class="bpu" onclick="saveArchitect()">登録する</button>
@@ -718,6 +719,16 @@ function makeArchRow(a) {
   const delBtn = document.createElement('button'); delBtn.className='bsm'; delBtn.textContent='削除';
   delBtn.style.cssText='color:var(--rtx);border-color:var(--rbd)';
   delBtn.addEventListener('click', () => deleteArchitect(a.id, a.name));
+  // URL発行ボタン
+  const urlBtn = document.createElement('button');
+  urlBtn.textContent = 'URL発行';
+  urlBtn.style.cssText = 'font-size:11px;padding:3px 9px;border-radius:4px;border:1px solid #2BB5C8;background:transparent;color:#2BB5C8;cursor:pointer;margin-right:4px';
+  urlBtn.title = '建築家登録フォームURLをコピー';
+  urlBtn.addEventListener('click', () => {
+    const url = location.origin + '/coworkmill-architect-form.html?id=' + a.id;
+    navigator.clipboard.writeText(url).then(() => showToast('フォームURLをコピーしました'));
+  });
+  tdBtn.appendChild(urlBtn);
   tdBtn.appendChild(delBtn);
   [tdName,tdFirm,tdUrl,tdBio,tdContact,tdDate,tdBtn].forEach(td => tr.appendChild(td));
   return tr;
@@ -747,12 +758,13 @@ async function saveArchitect() {
     name_en: document.getElementById('an-name-en').value.trim() || null,
     url: document.getElementById('an-url').value.trim() || null,
     bio: document.getElementById('an-bio').value.trim() || null,
-    contact_status: document.getElementById('an-contact').value
+    contact_status: document.getElementById('an-contact').value,
+    email: document.getElementById('an-email')?.value?.trim() || null
   };
   const r = await sbPost('architects', payload);
   if (r.ok) {
     closeModal('m-arch-new');
-    ['an-name','an-name-en','an-firm','an-url','an-bio'].forEach(id => document.getElementById(id).value='');
+    ['an-name','an-name-en','an-firm','an-url','an-bio','an-email'].forEach(id => document.getElementById(id).value='');
     document.getElementById('an-contact').value='未連絡';
     showToast('✅ 建築家を登録しました');
     loadArchitects();
