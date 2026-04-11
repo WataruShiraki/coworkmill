@@ -317,9 +317,8 @@ a{text-decoration:none;color:inherit}
 <div class="modal-bg" id="m-arch-new">
   <div class="modal" style="max-width:520px">
     <div class="modal-ttl">建築家を登録</div>
-    <div class="fg"><div class="fl">建築家名 <span style="color:#ef4444">*</span></div><input class="fin" id="an-name" placeholder="例：山田 太朗"></div>
-    <div class="fg"><div class="fl">建築家名（ローマ字）</div><input class="fin" id="an-name-en" placeholder="例：Taro Yamada"></div>
-    <div class="fg"><div class="fl">建築事務所名 <span style="color:#ef4444">*</span></div><input class="fin" id="an-firm" placeholder="例：山田建築設計事務所"></div>
+        <div class="fg"><div class="fl">建築家事務所名または建築家名（ローマ字）</div><input class="fin" id="an-name-en" placeholder="例：Yamada Architects"></div>
+    <div class="fg"><div class="fl">建築家事務所名または建築家名 <span style="color:#ef4444">*</span></div><input class="fin" id="an-firm" placeholder="例：山田建築設計事務所"></div>
     <div class="fg"><div class="fl">公式サイトURL</div><input class="fin" id="an-url" placeholder="例：https://yamada-arch.jp"></div>
     <div class="fg"><div class="fl">プロフィール文</div><textarea class="fta" id="an-bio" placeholder="建築家の紹介文（任意）" rows="3"></textarea></div>
     <div class="fg"><div class="fl">連絡状況</div>
@@ -756,7 +755,7 @@ async function updateArchitectContact() {
 }
 
 async function saveArchitect() {
-  const name = document.getElementById('an-name').value.trim();
+  const name = document.getElementById('an-firm').value.trim();
   const firm = document.getElementById('an-firm').value.trim();
   if (!name || !firm) { alert('建築家名と事務所名は必須です'); return; }
   const payload = {
@@ -1022,8 +1021,8 @@ async function saveArchEdit2() {
     </div>
 
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
-      <div><div style="font-size:11px;color:#666;margin-bottom:3px">建築家名 *</div><input class="fin" id="ae2-name" style="width:100%"></div>
-      <div><div style="font-size:11px;color:#666;margin-bottom:3px">NAME (English)</div><input class="fin" id="ae2-name-en" style="width:100%"></div>
+      <div><div style="font-size:11px;color:#666;margin-bottom:3px">建築家事務所名または建築家名 *</div><input class="fin" id="ae2-name" style="width:100%"></div>
+      <div><div style="font-size:11px;color:#666;margin-bottom:3px">ローマ字（Shiraki Architects など）</div><input class="fin" id="ae2-name-en" style="width:100%"></div>
     </div>
     <div style="margin-bottom:10px"><div style="font-size:11px;color:#666;margin-bottom:3px">建築事務所名 *</div><input class="fin" id="ae2-firm" style="width:100%"></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">

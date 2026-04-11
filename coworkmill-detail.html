@@ -1,29 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja"><head>
-<meta char
-      // 建築家プロフィールカードを表示
-      if(space.architect_id) {
-        fetch('https://jakwntemjkwqwaqujffh.supabase.co/rest/v1/architects?id=eq.'+space.architect_id+'&select=id,name,name_en,firm,url,bio,portrait_url',
-          {headers:{'apikey':'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ','Authorization':'Bearer sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ'}})
-          .then(r=>r.json()).then(function(ar){
-            if(!ar||!ar[0])return;
-            var a=ar[0];
-            var archUrl='coworkmill-architect.html?id='+a.id;
-            document.getElementById('arch-profile-link').href=archUrl;
-            document.getElementById('arch-name-link').href=archUrl;
-            document.getElementById('arch-detail-link').href=archUrl;
-            document.getElementById('arch-name-link').textContent=a.name||a.name_en||'';
-            document.getElementById('arch-firm-el').textContent=a.firm||'';
-            document.getElementById('arch-bio-el').textContent=a.bio||'';
-            var pw=document.getElementById('arch-portrait-wrap');
-            if(a.portrait_url){
-              pw.innerHTML='<img src="'+a.portrait_url+'" style="width:100%;height:100%;object-fit:cover">';
-            } else {
-              pw.textContent=(a.name||'?')[0];
-            }
-            document.getElementById('arch-profile-block').style.display='block';
-          }).catch(function(){});
-      }set="UTF-8">
+<meta charset="UTF-8">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyBpZD0iX+ODrOOCpOODpOODvF8xIiBkYXRhLW5hbWU9IuODrOOCpOODpOODvF8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjMzOCA0NjIgMTE2IDExNiI+CiAgPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDMwLjIuMSwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDIuMS4xIEJ1aWxkIDEpICAtLT4KICA8ZGVmcz4KICAgIDxzdHlsZT4KICAgICAgLnN0MCB7CiAgICAgICAgZmlsbDogI2ZmZjsKICAgICAgfQoKICAgICAgLnN0MSB7CiAgICAgICAgZmlsbDogdXJsKCNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2KTsKICAgICAgfQogICAgPC9zdHlsZT4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NiIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIzNDkuOSIgeTE9IjQ3Ni4wOSIgeDI9IjQ0OC44NiIgeTI9IjU3MC42MyIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiM4OGM4OTUiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjMTM1N2EwIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCBjbGFzcz0ic3QxIiB4PSIzNDIuMzkiIHk9IjQ2Ni41IiB3aWR0aD0iMTA4IiBoZWlnaHQ9IjEwOCIgcng9IjEyLjI1IiByeT0iMTIuMjUiLz4KICA8Zz4KICAgIDxyZWN0IGNsYXNzPSJzdDAiIHg9IjM4MS42IiB5PSI1MTMuOTMiIHdpZHRoPSIxMy4xMiIgaGVpZ2h0PSIxMy4xMiIvPgogICAgPHJlY3QgY2xhc3M9InN0MCIgeD0iMzgxLjYiIHk9IjUxMy45MyIgd2lkdGg9IjEzLjEyIiBoZWlnaHQ9IjEzLjEyIi8+CiAgICA8cmVjdCBjbGFzcz0ic3QwIiB4PSIzODEuNiIgeT0iNDk4LjE5IiB3aWR0aD0iMTMuMTIiIGhlaWdodD0iMTMuMTIiLz4KICAgIDxwb2x5Z29uIGNsYXNzPSJzdDAiIHBvaW50cz0iMzk0LjcyIDQ5NS41NyAzODEuNiA0OTUuNTcgMzk0LjcyIDQ4Mi40NSAzOTQuNzIgNDk1LjU3Ii8+CiAgICA8cmVjdCBjbGFzcz0ic3QwIiB4PSIzOTcuMzUiIHk9IjQ4Mi40NSIgd2lkdGg9IjEzLjEyIiBoZWlnaHQ9IjEzLjEyIi8+CiAgICA8cmVjdCBjbGFzcz0ic3QwIiB4PSIzODEuNiIgeT0iNTI5LjY4IiB3aWR0aD0iMTMuMTIiIGhlaWdodD0iMTMuMTIiLz4KICAgIDxwb2x5Z29uIGNsYXNzPSJzdDAiIHBvaW50cz0iMzk0LjcyIDU1OC41NCAzODEuNiA1NDUuNDIgMzk0LjcyIDU0NS40MiAzOTQuNzIgNTU4LjU0Ii8+CiAgICA8cmVjdCBjbGFzcz0ic3QwIiB4PSIzOTcuMzUiIHk9IjU0NS40MiIgd2lkdGg9IjEzLjEyIiBoZWlnaHQ9IjEzLjEyIi8+CiAgPC9nPgo8L3N2Zz4=">
   <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iOCIgZmlsbD0iIzBhMGEwYSIvPgogIDx0ZXh0IHg9IjciIHk9IjIzIiBmb250LWZhbWlseT0iR2VvcmdpYSxzZXJpZiIgZm9udC1zaXplPSIyMiIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0id2hpdGUiPkM8L3RleHQ+CiAgPGNpcmNsZSBjeD0iMjIiIGN5PSIxOCIgcj0iMyIgZmlsbD0idXJsKCNnKSIvPgogIDxkZWZzPgogICAgPHJhZGlhbEdyYWRpZW50IGlkPSJnIiBjeD0iNTAlIiBjeT0iNTAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI0VCNjM2NSIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiM3NTYxQTkiLz4KICAgIDwvcmFkaWFsR3JhZGllbnQ+CiAgPC9kZWZzPgo8L3N2Zz4=">
   <meta name="description" content="日本最高峰のデザイナーズコワーキングスペース一覧 — COWORKMILL">
@@ -901,6 +878,21 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
     <div style="display:flex;gap:24px;align-items:flex-start">
       <a id="arch-profile-link" href="#" style="flex-shrink:0;display:block;width:120px;text-decoration:none">
         <div id="arch-portrait-wrap" style="width:120px;height:160px;background:#0d1f22;border-radius:6px;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:700;color:#2BB5C8" id="arch-portrait-init"></div>
+      </a>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:11px;color:rgba(255,255,255,.4);margin-bottom:4px">Design</div>
+        <a id="arch-name-link" href="#" style="font-size:20px;font-weight:700;color:#fff;text-decoration:none;display:block;margin-bottom:4px"></a>
+        <div id="arch-firm-el" style="font-size:13px;color:#2BB5C8;margin-bottom:12px"></div>
+        <div id="arch-bio-el" style="font-size:13px;color:rgba(255,255,255,.6);line-height:1.8;margin-bottom:16px"></div>
+        <a id="arch-detail-link" href="#" style="font-size:12px;color:#2BB5C8;border:1px solid #2BB5C8;padding:6px 16px;border-radius:4px;text-decoration:none;display:inline-block">建築家詳細 →</a>
+      </div>
+    </div>
+  </div>
+  <div id="arch-profile-block" style="display:none;margin:40px 0 32px">
+    <div style="font-size:11px;letter-spacing:.1em;color:#2BB5C8;margin-bottom:16px">— ARCHITECT</div>
+    <div style="display:flex;gap:24px;align-items:flex-start">
+      <a id="arch-profile-link" href="#" style="flex-shrink:0;display:block;width:120px;text-decoration:none">
+        <div id="arch-portrait-wrap" style="width:120px;height:160px;background:#0d1f22;border-radius:6px;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:700;color:#2BB5C8"></div>
       </a>
       <div style="flex:1;min-width:0">
         <div style="font-size:11px;color:rgba(255,255,255,.4);margin-bottom:4px">Design</div>
@@ -2017,7 +2009,29 @@ function renderPlanCards(sp) {
     // 建築家
     if(space.architect_name){
       sbFetch('spaces?status=eq.live&architect_name=eq.'+encodeURIComponent(space.architect_name)+'&id=neq.'+curId+'&limit=3&select='+sel).then(function(rows){
-        renderBlock('rel-arch-block','rel-arch-grid','rel-arch-title',space.architect_name+'設計のスペース',rows,'coworkmill-spaces.html?architect='+encodeURIComponent(space.architect_name));
+        
+      if(space.architect_id) {
+        fetch('https://jakwntemjkwqwaqujffh.supabase.co/rest/v1/architects?id=eq.'+space.architect_id+'&select=id,name,name_en,firm,url,bio,portrait_url',
+          {headers:{'apikey':'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ','Authorization':'Bearer sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ'}})
+          .then(function(r){return r.json();}).then(function(ar){
+            if(!ar||!ar[0])return;
+            var a=ar[0];
+            var archUrl='coworkmill-architect.html?id='+a.id;
+            document.getElementById('arch-profile-link').href=archUrl;
+            document.getElementById('arch-name-link').href=archUrl;
+            document.getElementById('arch-detail-link').href=archUrl;
+            document.getElementById('arch-name-link').textContent=a.name||a.name_en||'';
+            // Design by 表示をローマ字(name_en)に更新
+            var dbEl=document.getElementById('d-design-by');
+            if(dbEl&&(a.name_en||a.name)){dbEl.innerHTML='Design by <span style="color:#2BB5C8;font-weight:500">'+(a.name_en||a.name)+'</span>';dbEl.style.display='';}
+            document.getElementById('arch-firm-el').textContent=a.firm||'';
+            document.getElementById('arch-bio-el').textContent=a.bio||'';
+            var pw=document.getElementById('arch-portrait-wrap');
+            if(a.portrait_url){pw.innerHTML='<img src="'+a.portrait_url+'" style="width:100%;height:100%;object-fit:cover">';}
+            else{pw.textContent=(a.name||'?')[0];}
+            document.getElementById('arch-profile-block').style.display='block';
+          }).catch(function(){});
+      }renderBlock('rel-arch-block','rel-arch-grid','rel-arch-title',space.architect_name+'設計のスペース',rows,'coworkmill-spaces.html?architect='+encodeURIComponent(space.architect_name));
       });
     }
 
