@@ -276,38 +276,7 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
   </div>
 
   <!-- 手がけたオフィス -->
-  <div class="arch-section">
-    <div class="section-label">手がけたオフィス <span style="font-size:9px;font-weight:400;color:var(--gray-400);text-transform:none;letter-spacing:0">OFFICEMILL掲載</span></div>
-    <div class="offices-grid">
-      <a class="ocard" href="coworkmill-detail.html">
-        <div class="ocard-img" style="background-image:url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80')"></div>
-        <div class="ocard-body">
-          <div class="ocard-badge">OFFICEMILL</div>
-          <div class="ocard-city">丸の内 / Tokyo</div>
-          <div class="ocard-name">MARUNOUCHI KK OFFICE</div>
-          <div class="ocard-type">賃貸オフィス · 50〜200坪</div>
-        </div>
-      </a>
-      <a class="ocard" href="coworkmill-detail.html">
-        <div class="ocard-img" style="background-image:url('https://images.unsplash.com/photo-1577412647305-991150c7d163?w=600&q=80')"></div>
-        <div class="ocard-body">
-          <div class="ocard-badge">OFFICEMILL</div>
-          <div class="ocard-city">北浜 / Osaka</div>
-          <div class="ocard-name">KITAHAMA TOWER OFFICE</div>
-          <div class="ocard-type">サービスオフィス · 10〜50坪</div>
-        </div>
-      </a>
-      <a class="ocard" href="coworkmill-detail.html">
-        <div class="ocard-img" style="background-image:url('https://images.unsplash.com/photo-1572025442646-866d16c84a54?w=600&q=80')"></div>
-        <div class="ocard-body">
-          <div class="ocard-badge">OFFICEMILL</div>
-          <div class="ocard-city">天神 / Fukuoka</div>
-          <div class="ocard-name">TENJIN KK SQUARE</div>
-          <div class="ocard-type">賃貸オフィス · 20〜80坪</div>
-        </div>
-      </a>
-    </div>
-  </div>
+
 
   <!-- 相談CTAセクション -->
   <div class="arch-section" style="background:linear-gradient(135deg,rgba(117,97,169,.08),rgba(235,99,101,.06));border-radius:16px;padding:36px 40px;border:1px solid rgba(117,97,169,.2);display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap">
@@ -451,28 +420,6 @@ document.querySelectorAll('.scard,.work-item,.arch-stat').forEach(el => {
   })
   .catch(function(){});
 
-  // 手がけた施設一覧を取得
-  fetch(SB+'/rest/v1/spaces?architect_id=eq.'+id+'&select=id,name,slug,area,prefecture,image_main,price_dropin_hour&status=eq.live',
-    {headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}})
-  .then(function(r){return r.json();})
-  .then(function(spaces){
-    if(!spaces||!spaces.length) return;
-    // 手がけたコワーキング施設セクションを更新
-    var worksSection = document.querySelector('.arch-section');
-    if(!worksSection) return;
-    var grid = worksSection.querySelector('.ocard-grid, [class*="grid"], [class*="works"]');
-    if(!grid) return;
-    grid.innerHTML = spaces.map(function(s){
-      return '<a class="ocard" href="coworkmill-detail.html?id='+s.id+'" style="text-decoration:none;display:block">'
-        +'<div class="ocard-img" style="height:160px;background:#111;border-radius:8px;overflow:hidden;margin-bottom:8px">'
-        +(s.image_main?'<img src="'+s.image_main+'" style="width:100%;height:100%;object-fit:cover" alt="'+s.name+'">':'')
-        +'</div>'
-        +'<div class="ocard-name" style="font-weight:600;font-size:14px;color:#fff;margin-bottom:4px">'+s.name+'</div>'
-        +'<div style="font-size:12px;color:rgba(255,255,255,.5)">'+s.prefecture+' / '+(s.area||'')+'</div>'
-        +'</a>';
-    }).join('');
-  })
-  .catch(function(){});
 })();
 </script>
 </body>
