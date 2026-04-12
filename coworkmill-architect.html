@@ -250,6 +250,44 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
 .arch-modal-send{background:#2BB5C8;color:#000;font-size:12px;font-weight:600;padding:10px 20px;border:none;border-radius:6px;cursor:pointer;width:100%}
 .arch-modal-close{position:absolute;top:12px;right:14px;background:none;border:none;color:#555;font-size:18px;cursor:pointer}
 </style>
+<style>
+.arch-wrap{display:grid;grid-template-columns:1fr 280px;gap:0;max-width:1100px;margin:0 auto}
+.arch-main{padding:40px 48px;border-right:0.5px solid #1a1a1a}
+.arch-sidebar{padding:36px 28px;position:sticky;top:56px;align-self:start}
+.arch-sec-label{font-size:9px;letter-spacing:.14em;color:#444;margin-bottom:12px;margin-top:32px}
+.arch-sec-label:first-child{margin-top:0}
+.arch-works-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.arch-work-card{background:#111;border-radius:8px;overflow:hidden;border:0.5px solid #1a1a1a;text-decoration:none;display:block;transition:border-color .2s}
+.arch-work-card:hover{border-color:#2BB5C8}
+.arch-work-thumb{height:110px;object-fit:cover;width:100%;display:block;background:#0d0d0d}
+.arch-work-info{padding:10px 12px}
+.arch-work-name{font-size:11px;font-weight:500;color:#d0d0d0}
+.arch-work-area{font-size:9px;color:#444;margin-top:2px}
+.arch-inquiry-card{background:#111;border-radius:12px;border:0.5px solid #1f1f1f;overflow:hidden;margin-bottom:10px}
+.arch-inquiry-top{padding:18px 18px 14px}
+.arch-inquiry-label{font-size:9px;letter-spacing:.12em;color:#2BB5C8;margin-bottom:6px}
+.arch-inquiry-title{font-size:15px;font-weight:500;color:#f0f0f0;line-height:1.4}
+.arch-inquiry-divider{height:0.5px;background:#1a1a1a}
+.arch-inquiry-bottom{padding:14px 18px}
+.arch-inquiry-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;background:#2BB5C8;color:#000;font-size:12px;font-weight:700;padding:13px;border-radius:8px;border:none;cursor:pointer;letter-spacing:.02em}
+.arch-inquiry-btn:hover{opacity:.88}
+.arch-url-btn{display:flex;align-items:center;justify-content:space-between;background:#0f0f0f;border:0.5px solid #1f1f1f;border-radius:10px;padding:13px 16px;text-decoration:none;cursor:pointer;transition:border-color .15s;color:inherit}
+.arch-url-btn:hover{border-color:#333}
+.arch-url-left{display:flex;align-items:center;gap:8px}
+.arch-url-ext{width:14px;height:14px;border:1px solid #333;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:8px;color:#555;flex-shrink:0}
+.arch-url-label{font-size:11px;color:#666}
+.arch-url-arrow{font-size:10px;color:#2a2a2a}
+#arch-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;align-items:center;justify-content:center}
+#arch-modal.open{display:flex}
+.arch-modal-box{background:#111;border:0.5px solid #2a2a2a;border-radius:14px;padding:32px;max-width:440px;width:90%;position:relative}
+.arch-modal-close{position:absolute;top:14px;right:16px;background:none;border:none;color:#555;font-size:20px;cursor:pointer;line-height:1}
+.arch-modal-title{font-size:16px;font-weight:500;color:#f0f0f0;margin-bottom:4px}
+.arch-modal-sub{font-size:11px;color:#555;margin-bottom:20px}
+.arch-modal-input{width:100%;background:#0a0a0a;border:0.5px solid #2a2a2a;border-radius:6px;color:#e0e0e0;font-size:12px;padding:10px 12px;margin-bottom:10px;box-sizing:border-box;outline:none;font-family:inherit}
+.arch-modal-textarea{width:100%;background:#0a0a0a;border:0.5px solid #2a2a2a;border-radius:6px;color:#e0e0e0;font-size:12px;padding:10px 12px;height:100px;resize:vertical;box-sizing:border-box;outline:none;font-family:inherit;margin-bottom:14px}
+.arch-modal-send{background:#2BB5C8;color:#000;font-size:12px;font-weight:700;padding:12px;border:none;border-radius:7px;cursor:pointer;width:100%}
+@media(max-width:700px){.arch-wrap{grid-template-columns:1fr}.arch-sidebar{padding:0 20px 40px}.arch-main{padding:24px 20px}}
+</style>
 </head>
 <body style="visibility:hidden">
 
@@ -385,68 +423,7 @@ document.querySelectorAll('.scard,.work-item,.arch-stat').forEach(el => {
 </footer>
 <script src="coworkmill-features.js"></script>
 
-<script>
-(function(){
-  var SB='https://jakwntemjkwqwaqujffh.supabase.co', KEY='sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
-  var id = new URLSearchParams(location.search).get('id');
-  if(!id) return; // idなし = デモページそのまま表示
 
-  // architects テーブルから取得
-  fetch(SB+'/rest/v1/architects?id=eq.'+id+'&select=id,name,name_en,firm,url,bio,portrait_url',
-    {headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}})
-  .then(function(r){return r.json();})
-  .then(function(ar){
-    if(!ar||!ar[0]) return;
-    var a = ar[0];
-    var displayName = a.name_en || a.name || a.firm || '';
-    var firmName = a.firm || a.name || '';
-
-    // 名前
-    var nameEl = document.querySelector('.arch-name');
-    if(nameEl) nameEl.textContent = displayName;
-
-    // 事務所名
-    var firmEl = document.querySelector('.arch-firm');
-    if(firmEl) firmEl.textContent = firmName;
-
-    // bio
-    var bioEl = document.querySelector('.arch-bio');
-    if(bioEl) {
-      if(a.bio) {
-        bioEl.innerHTML = '<p>'+a.bio.replace(/\n/g,'</p><p>')+'</p>';
-      } else {
-        bioEl.style.display='none';
-      }
-    }
-
-    // ポートレート写真
-    var photoEl = document.querySelector('.arch-photo');
-    if(photoEl && a.portrait_url) {
-      photoEl.src = a.portrait_url;
-      photoEl.alt = displayName;
-    }
-
-    // ページタイトル
-    document.title = displayName + 'が手がけたコワーキングスペース — COWORKMILL';
-
-    // 統計（stats）を非表示にする（ダミーデータなので）
-    var statsEl = document.querySelector('.arch-stats');
-    if(statsEl) statsEl.style.display='none';
-
-    // タグも非表示
-    var tagsEl = document.querySelector('.arch-tags');
-    if(tagsEl) tagsEl.style.display='none';
-
-    // 公式サイトリンク
-    if(a.url) {
-      var consultBtn = document.querySelector('.arch-consult-btn, a[href*="http"]');
-      if(consultBtn) { consultBtn.href = a.url; consultBtn.style.display=''; }
-    }
-  })
-  .catch(function(){});
-
-})();
-</script>
 <div id="arch-modal">
   <div class="arch-modal-box">
     <button class="arch-modal-close" onclick="document.getElementById('arch-modal').classList.remove('open')">×</button>
@@ -551,6 +528,144 @@ async function init(){
     worksContainer.appendChild(title);
     worksContainer.appendChild(grid);
   }
+  document.body.style.visibility='visible';
+}
+document.addEventListener('DOMContentLoaded',init);
+})();</script>
+<div id="arch-modal">
+  <div class="arch-modal-box">
+    <button class="arch-modal-close" onclick="document.getElementById('arch-modal').classList.remove('open')">×</button>
+    <div class="arch-modal-title" id="modal-arch-name">問い合わせ</div>
+    <div class="arch-modal-sub">COWORKMILLを通じてお問い合わせいただけます</div>
+    <input class="arch-modal-input" type="text" placeholder="お名前">
+    <input class="arch-modal-input" type="email" placeholder="メールアドレス">
+    <textarea class="arch-modal-textarea" placeholder="お問い合わせ内容"></textarea>
+    <button class="arch-modal-send" onclick="document.getElementById('arch-modal').classList.remove('open')">送信する</button>
+  </div>
+</div>
+<script>(function(){
+var SB='https://jakwntemjkwqwaqujffh.supabase.co',KEY='sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+document.body.style.visibility='hidden';
+async function init(){
+  var id=new URLSearchParams(location.search).get('id');
+  if(!id){document.body.style.visibility='visible';return;}
+  
+  // 建築家データ取得
+  var r=await fetch(SB+'/rest/v1/architects?select=id,name,name_en,firm,bio,url,portrait_url&id=eq.'+id,
+    {headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}});
+  var arr=await r.json();
+  if(!arr||!arr[0]){document.body.style.visibility='visible';return;}
+  var arch=arr[0];
+  
+  // 名前表示: 大=英語(name_en), 小=日本語(name)
+  var nameEl=document.querySelector('.arch-name');
+  var firmEl=document.querySelector('.arch-firm');
+  if(nameEl) nameEl.textContent=arch.name_en||arch.name||'';
+  if(firmEl) firmEl.textContent=(arch.name&&arch.name!==arch.name_en)?arch.name:(arch.firm||'');
+  
+  // モーダルタイトル更新
+  var mt=document.getElementById('modal-arch-name');
+  if(mt) mt.textContent=(arch.name_en||arch.name)+'に問い合わせ';
+  
+  // ======= LAYOUT再構成 =======
+  // 既存のarch-wrap内コンテンツをmain/sidebarに振り分ける
+  var wrap=document.querySelector('.arch-wrap');
+  if(wrap&&!document.querySelector('.arch-main')){
+    var children=[...wrap.children];
+    var mainDiv=document.createElement('div');
+    mainDiv.className='arch-main';
+    var sideDiv=document.createElement('div');
+    sideDiv.className='arch-sidebar';
+    
+    // 既存の問い合わせセクションを除いてmainへ移動
+    children.forEach(function(el){
+      var cls=el.className||'';
+      if(cls.includes('contact')||cls.includes('consult')||cls.includes('cta')||cls.includes('arch-contact')){
+        // スキップ（サイドバーに置き換える）
+      } else {
+        mainDiv.appendChild(el);
+      }
+    });
+    wrap.innerHTML='';
+    wrap.appendChild(mainDiv);
+    wrap.appendChild(sideDiv);
+    
+    // サイドバーにCTAを追加
+    var inquiryCard=document.createElement('div');
+    inquiryCard.className='arch-inquiry-card';
+    inquiryCard.innerHTML='<div class="arch-inquiry-top"><div class="arch-inquiry-label">CONTACT</div><div class="arch-inquiry-title" id="sidebar-arch-name">'+(arch.name_en||arch.name)+'<br>に問い合わせ</div></div><div class="arch-inquiry-divider"></div><div class="arch-inquiry-bottom"><button class="arch-inquiry-btn" id="open-modal-btn"><span style="font-size:15px">✉</span>問い合わせる</button></div>';
+    sideDiv.appendChild(inquiryCard);
+    
+    document.getElementById('open-modal-btn').addEventListener('click',function(){
+      document.getElementById('arch-modal').classList.add('open');
+    });
+    
+    if(arch.url){
+      var urlBtn=document.createElement('a');
+      urlBtn.className='arch-url-btn';
+      urlBtn.href=arch.url;
+      urlBtn.target='_blank';
+      urlBtn.rel='noopener';
+      urlBtn.innerHTML='<div class="arch-url-left"><div class="arch-url-ext">↗</div><span class="arch-url-label">公式サイトを見る</span></div><span class="arch-url-arrow">→</span>';
+      sideDiv.appendChild(urlBtn);
+    }
+  }
+  
+  // ======= WORKS セクション =======
+  var mainEl=document.querySelector('.arch-main')||document.querySelector('.arch-wrap')||document.body;
+  var bioEl=mainEl.querySelector('.arch-bio');
+  
+  // WORKS ラベル
+  var worksLabel=document.createElement('div');
+  worksLabel.className='arch-sec-label';
+  worksLabel.textContent='WORKS — 手がけたコワーキング施設';
+  var worksGrid=document.createElement('div');
+  worksGrid.className='arch-works-grid';
+  
+  // bioの後ろに挿入
+  if(bioEl){
+    bioEl.parentNode.insertBefore(worksLabel, bioEl.nextSibling);
+    worksLabel.parentNode.insertBefore(worksGrid, worksLabel.nextSibling);
+  } else {
+    mainEl.appendChild(worksLabel);
+    mainEl.appendChild(worksGrid);
+  }
+  
+  // 施設データ取得
+  var sr=await fetch(SB+'/rest/v1/spaces?select=id,name,area,prefecture,status&architect_id=eq.'+id+'&status=eq.live',
+    {headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}});
+  var spaces=await sr.json();
+  
+  if(Array.isArray(spaces)&&spaces.length){
+    for(var i=0;i<spaces.length;i++){
+      var sp=spaces[i];
+      var lr=await fetch(SB+'/storage/v1/object/list/space-images',{
+        method:'POST',
+        headers:{'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json'},
+        body:JSON.stringify({prefix:sp.id+'/',limit:1})
+      });
+      var fl=await lr.json();
+      var card=document.createElement('a');
+      card.className='arch-work-card';
+      card.href='coworkmill-detail.html?id='+sp.id;
+      var area=((sp.prefecture||'')+' '+(sp.area||'')).trim();
+      if(Array.isArray(fl)&&fl.length){
+        var img=document.createElement('img');
+        img.className='arch-work-thumb';
+        img.src=SB+'/storage/v1/object/public/space-images/'+sp.id+'/'+fl[0].name;
+        img.alt=sp.name;
+        card.appendChild(img);
+      }
+      var info=document.createElement('div');
+      info.className='arch-work-info';
+      info.innerHTML='<div class="arch-work-name">'+sp.name+'</div><div class="arch-work-area">'+area+'</div>';
+      card.appendChild(info);
+      worksGrid.appendChild(card);
+    }
+  } else {
+    worksLabel.style.display='none';
+  }
+  
   document.body.style.visibility='visible';
 }
 document.addEventListener('DOMContentLoaded',init);
