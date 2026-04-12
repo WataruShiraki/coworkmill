@@ -895,7 +895,6 @@ async function loadTopData() {
           '<div class="gcard-body">' +
             '<div class="gcard-city">' + city + '</div>' +
             '<div class="gcard-name">' + (s.name||'') + '</div>' +
-            (s.architect_name ? '<div class="gcard-arch">Design by ' + (s.architect_id&&window._archNameMap&&window._archNameMap[s.architect_id]?window._archNameMap[s.architect_id]:(s.architect_name||'')) + '</div>' : '') +
           '</div></a>';
       }).join('');
       const gfCount = document.querySelector('.gf-count');
@@ -1084,7 +1083,6 @@ function doSpSearch(){
     document.querySelectorAll('[data-arch-id]').forEach(function(el){
       var archId=el.dataset.archId;
       var nm=window._archNameMap[archId];
-      if(nm){var sp=el.querySelector('.scard-design span,.gcard-arch');if(sp)sp.textContent=nm;}
     });
   }).catch(function(){});
 })();
@@ -1099,7 +1097,6 @@ function doSpSearch(){
   .then(function(archs){
     if(!Array.isArray(archs))return;
     archs.forEach(function(a){if(a.id&&a.name_en)window._archNameMap[a.id]=a.name_en;});
-    document.querySelectorAll('.scard-design span,.gcard-arch').forEach(function(sp){
       var card=sp.closest('[data-arch-id]');
       if(card&&card.dataset.archId&&window._archNameMap[card.dataset.archId]){
         sp.textContent=window._archNameMap[card.dataset.archId];
@@ -1118,7 +1115,6 @@ function doSpSearch(){
     document.querySelectorAll('.gcard').forEach(function(el){
       el.style.setProperty('color','inherit','important');
     });
-    document.querySelectorAll('.gcard-arch').forEach(function(el){
       el.style.setProperty('color','#aaaaaa','important');
       el.style.setProperty('font-size','9px','important');
       el.style.setProperty('font-weight','400','important');
