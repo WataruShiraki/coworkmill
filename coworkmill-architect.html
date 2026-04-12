@@ -509,7 +509,7 @@ async function init(){
     }
   }
   // 施設一覧を取得して表示
-  var sr=await fetch(SB+'/rest/v1/spaces?select=id,name,city,status&architect_id=eq.'+id+'&status=eq.live',
+  var sr=await fetch(SB+'/rest/v1/spaces?select=id,name,area,prefecture,status&architect_id=eq.'+id+'&status=eq.live',
     {headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}});
   var spaces=await sr.json();
   var worksContainer=document.querySelector('.arch-works, [class*="arch-works"]');
@@ -543,7 +543,7 @@ async function init(){
       }
       var info=document.createElement('div');
       info.className='arch-work-info';
-      info.innerHTML='<div class="arch-work-name">'+sp.name+'</div><div class="arch-work-city">'+(sp.city||'')+'</div>';
+      info.innerHTML='<div class="arch-work-name">'+sp.name+'</div><div class="arch-work-city">'+(((sp.prefecture||"")+" "+(sp.area||"")).trim()||'')+'</div>';
       card.appendChild(info);
       grid.appendChild(card);
     }
