@@ -214,7 +214,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:56px;display:flex;ali
 .ctag{font-size:9px;padding:3px 8px;background:var(--gray-100);border-radius:3px;color:var(--gray-600);letter-spacing:.04em}
 .wtag{font-size:9px;padding:3px 8px;border-radius:3px;letter-spacing:.03em;font-weight:500;background:var(--accent-light);color:#2BB5C8;border:1px solid rgba(117,97,169,.15)}
 .wtag-row{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px}
-.card-design-by{font-size:10px;color:var(--gray-400);margin-bottom:10px;letter-spacing:.02em}
+.card-design-by{font-size:10px;color:#aaa;margin-bottom:10px;letter-spacing:.02em}
 .card-design-by span{color:#2BB5C8;font-weight:500}
 .card-foot{display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px solid var(--gray-100)}
 .card-price{font-size:11px;color:var(--gray-600)}
@@ -849,6 +849,7 @@ async function loadTopData() {
           '</div>' +
           '<div class="card-body">' +
           '<div class="card-city">' + city + '</div>' +
+          '<div class="card-design-by">Design by <span>' + (s.architect_name||'') + '</span></div>' +
           '<div class="card-name">' + (s.name || '') + '</div>' +
           
           '</div></a>';
