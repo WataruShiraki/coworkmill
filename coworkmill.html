@@ -842,7 +842,7 @@ async function loadTopData() {
         const city = (s.area ? s.area + ' / ' : '') + pref;
         const img = s.image_main || '';
         const isPick = s.plan === 'pro';
-        return '<a class="card" href="coworkmill-detail.html?id=' + s.id + '" style="animation-delay:' + (i*0.08) + 's">' +
+        return '<a class="card" href="coworkmill-detail.html?id=' + s.id + '" data-arch-id="' + (s.architect_id||'') + '" style="animation-delay:' + (i*0.08) + 's">' +
           '<div class="card-img" style="' + (img ? 'background-image:url(' + img + ')' : 'background:#1a1a2e') + '">' +
           (isPick ? '<span class="pick-badge">PICK</span>' : '') +
           '</div>' +
@@ -1069,5 +1069,23 @@ function doSpSearch(){
   var qs=params.toString();
   location.href='coworkmill-spaces.html'+(qs?'?'+qs:'');
 }
+</script>
+
+<script>
+(function(){
+  var SB='https://jakwntemjkwqwaqujffh.supabase.co',KEY='sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+  window._archNameMap=window._archNameMap||{};
+  fetch(SB+'/rest/v1/architects?select=id,name_en',{headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}})
+  .then(function(r){return r.json();})
+  .then(function(archs){
+    if(!Array.isArray(archs))return;
+    archs.forEach(function(a){if(a.id&&a.name_en)window._archNameMap[a.id]=a.name_en;});
+    document.querySelectorAll('[data-arch-id]').forEach(function(el){
+      var archId=el.dataset.archId;
+      var nm=window._archNameMap[archId];
+      if(nm){var sp=el.querySelector('.scard-design span,.gcard-arch');if(sp)sp.textContent=nm;}
+    });
+  }).catch(function(){});
+})();
 </script>
 </body></html>

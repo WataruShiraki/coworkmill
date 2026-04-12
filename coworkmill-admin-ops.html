@@ -960,7 +960,7 @@ function openArchEdit2(a) {
   document.getElementById('ae2-id').value = a.id;
   document.getElementById('ae2-name').value = a.name||'';
   document.getElementById('ae2-name-en').value = a.name_en||'';
-  document.getElementById('ae2-firm').value = a.firm||'';
+  document.getElementById('ae2-name-en').value = a.firm||'';
   document.getElementById('ae2-url').value = a.url||'';
   document.getElementById('ae2-email').value = a.email||'';
   document.getElementById('ae2-bio').value = a.bio||'';
@@ -1004,7 +1004,7 @@ document.addEventListener('DOMContentLoaded', () => {
 async function saveArchEdit2() {
   const id = document.getElementById('ae2-id').value;
   const name = document.getElementById('ae2-name').value.trim();
-  const firm = document.getElementById('ae2-firm').value.trim();
+  const firm = document.getElementById('ae2-name-en').value.trim();
   if(!name||!firm) { alert('建築家名と事務所名は必須です'); return; }
   let portrait_url = window._ae2PortraitUrl||null;
   if(window._ae2PortraitFile) {
@@ -1074,7 +1074,7 @@ async function saveArchEdit2() {
       <div><div style="font-size:11px;color:#666;margin-bottom:3px">建築家事務所名または建築家名 *</div><input class="fin" id="ae2-name" style="width:100%"></div>
       <div><div style="font-size:11px;color:#666;margin-bottom:3px">ローマ字（Shiraki Architects など）</div><input class="fin" id="ae2-name-en" style="width:100%"></div>
     </div>
-    <div style="margin-bottom:10px"><div style="font-size:11px;color:#666;margin-bottom:3px">建築事務所名 *</div><input class="fin" id="ae2-firm" style="width:100%"></div>
+    <div style="margin-bottom:10px"><input class="fin" id="ae2-firm" style="width:100%"></div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
       <div><div style="font-size:11px;color:#666;margin-bottom:3px">公式サイトURL</div><input class="fin" id="ae2-url" style="width:100%"></div>
       <div><div style="font-size:11px;color:#666;margin-bottom:3px">メールアドレス</div><input class="fin" id="ae2-email" type="email" style="width:100%"></div>
