@@ -1411,7 +1411,7 @@ async function saveArchInfo() {
   try {
     const result = await sbFetch('/rest/v1/spaces?id=eq.' + dbId, {
       method: 'PATCH',
-      body: JSON.stringify({ architect_name: archName, architect_id: archId })
+      body: JSON.stringify({ architect_name: (window._archMap&&window._archMap[archId]?window._archMap[archId]:archName), architect_id: archId })
     });
     alert('建築家情報を保存しました。');
   } catch(e) {
