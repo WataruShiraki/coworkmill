@@ -1731,6 +1731,17 @@ document.addEventListener('DOMContentLoaded', () => {
       if (designByEl && d.architect_name) {
         designByEl.innerHTML = 'Design by <span style="color:#2BB5C8;font-weight:500">' + d.architect_name + '</span>';
         designByEl.style.display = '';
+        if(d.architect_id){
+          fetch('https://jakwntemjkwqwaqujffh.supabase.co/rest/v1/architects?id=eq.'+d.architect_id+'&select=name_en',
+            {headers:{'apikey':'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ','Authorization':'Bearer sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ'}})
+          .then(function(r){return r.json();})
+          .then(function(archs){
+            if(archs&&archs[0]&&archs[0].name_en){
+              var sp=designByEl.querySelector('span');
+              if(sp)sp.textContent=archs[0].name_en;
+            }
+          }).catch(function(){});
+        }
       }
       const archNameEl = document.getElementById('d-arch-name-text');
       if (archNameEl) archNameEl.textContent = d.architect_name || '';
