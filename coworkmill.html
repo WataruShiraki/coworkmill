@@ -849,7 +849,6 @@ async function loadTopData() {
           '</div>' +
           '<div class="card-body">' +
           '<div class="card-city">' + city + '</div>' +
-          '<div class="card-design-by">Design by <span>' + (s.architect_name||'') + '</span></div>' +
           '<div class="card-name">' + (s.name || '') + '</div>' +
           
           '</div></a>';
@@ -896,6 +895,7 @@ async function loadTopData() {
           '<div class="gcard-body">' +
             '<div class="gcard-city">' + city + '</div>' +
             '<div class="gcard-name">' + (s.name||'') + '</div>' +
+          '<div class="card-design-by">Design by <span>' + (s.architect_name||'') + '</span></div>' +
           (s.architect_name ? '<div class="gcard-arch">Design by ' + s.architect_name + '</div>' : '') +
           '</div></a>';
       }).join('');
