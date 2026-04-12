@@ -889,7 +889,7 @@ async function loadTopData() {
         const city = (s.area ? s.area + ' / ' : '') + pref;
         const img = s.image_main || '';
         const vibes = Array.isArray(s.vibe) ? s.vibe : (s.vibe ? [s.vibe] : []);
-        return '<a class="gcard" href="coworkmill-detail.html?id=' + s.id + '">' +
+        return '<a class="gcard" data-arch-id="' + (s.architect_id||'') + '" href="coworkmill-detail.html?id=' + s.id + '">' +
           '<div class="gcard-img" style="' + (img ? 'background-image:url(' + img + ')' : 'background:#1a1a2e') + '"></div>' +
           '<div class="gcard-body">' +
             '<div class="gcard-city">' + city + '</div>' +
@@ -1102,6 +1102,27 @@ function doSpSearch(){
       var card=sp.closest('[data-arch-id]');
       if(card&&card.dataset.archId&&window._archNameMap[card.dataset.archId]){
         sp.textContent=window._archNameMap[card.dataset.archId];
+      }
+    });
+  }).catch(function(){});
+})();
+</script>
+
+<script>
+(function(){
+  var SB="https://jakwntemjkwqwaqujffh.supabase.co",KEY="sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ";
+  window._archNameMap={};
+  fetch(SB+"/rest/v1/architects?select=id,name_en",{headers:{"apikey":KEY,"Authorization":"Bearer "+KEY}})
+  .then(function(r){return r.json();})
+  .then(function(archs){
+    if(!Array.isArray(archs))return;
+    archs.forEach(function(a){if(a.id&&a.name_en)window._archNameMap[a.id]=a.name_en;});
+    document.querySelectorAll(".gcard-arch,.scard-design span").forEach(function(el){
+      var card=el.closest("[data-arch-id]");
+      var archId=card&&card.dataset&&card.dataset.archId;
+      if(archId&&window._archNameMap[archId]){
+        if(el.classList.contains("gcard-arch"))el.textContent="Design by "+window._archNameMap[archId];
+        else el.textContent=window._archNameMap[archId];
       }
     });
   }).catch(function(){});
