@@ -524,14 +524,14 @@ footer{background:#0a1628;padding:64px 80px 40px;color:#fff;position:relative;ov
 
 /* Gallery Grid */
 .gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:0}
-.gcard{display:block;text-decoration:none;border-radius:10px;overflow:hidden;background:#111;position:relative;cursor:pointer;transition:transform .25s}
+.gcard{display:block;text-decoration:none;border-radius:10px;overflow:hidden;background:#111;position:relative;cursor:pointer;transition:transform .25scolor:inherit}
 .gcard:hover{transform:translateY(-3px)}
 .gcard-img{height:180px;background-size:cover;background-position:center 50%;position:relative}
 .gcard-img::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.7) 0%,transparent 55%)}
-.gcard-body{padding:12px 14px}
+.gcard-body{padding:12px 14pxcolor:inherit}
 .gcard-city{font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#2BB5C8;margin-bottom:3px}
 .gcard-name{font-family:'Montserrat',sans-serif;font-size:13px;font-weight:500;color:var(--black);line-height:1.3}
-.gcard-arch{font-size:9px;color:#aaaaaa;margin-top:3px;font-weight:400}
+.gcard-arch{font-size:9px!important;color:#aaaaaa!important;margin-top:3px;font-weight:400!important;text-decoration:none!important}
 @media(max-width:900px){.gallery-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:600px){.gallery-grid{grid-template-columns:repeat(2,1fr);gap:8px}.gcard-img{height:140px}}
 
@@ -1112,4 +1112,19 @@ function doSpSearch(){
 
 
 
+<script>
+(function(){
+  function fix(){
+    document.querySelectorAll('.gcard').forEach(function(el){
+      el.style.setProperty('color','inherit','important');
+    });
+    document.querySelectorAll('.gcard-arch').forEach(function(el){
+      el.style.setProperty('color','#aaaaaa','important');
+      el.style.setProperty('font-size','9px','important');
+      el.style.setProperty('font-weight','400','important');
+    });
+  }
+  [0,300,800,2000,4000].forEach(function(t){setTimeout(fix,t);});
+})();
+</script>
 </body></html>
