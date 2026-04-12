@@ -802,7 +802,7 @@ const TOP_PREF_MAP={'北海道':'HOKKAIDO','青森県':'AOMORI','岩手県':'IWA
 
 async function loadTopData() {
   try {
-    const res = await fetch(SUPABASE_URL_TOP + '/rest/v1/spaces?select=id,name,area,prefecture,plan,status,image_main,architect_name&status=eq.live&order=created_at.desc', {
+    const res = await fetch(SUPABASE_URL_TOP + '/rest/v1/spaces?select=id,name,area,prefecture,plan,status,image_main,architect_name,architect_id&status=eq.live&order=created_at.desc', {
       headers: { 'apikey': SUPABASE_KEY_TOP, 'Authorization': 'Bearer ' + SUPABASE_KEY_TOP }
     });
     const spaces = await res.json();
@@ -842,7 +842,7 @@ async function loadTopData() {
         const city = (s.area ? s.area + ' / ' : '') + pref;
         const img = s.image_main || '';
         const isPick = s.plan === 'pro';
-        return '<a class="card" href="coworkmill-detail.html?id=' + s.id + '" data-arch-id="' + (s.architect_id||'') + '" data-arch-id="' + (s.architect_id||'') + '" style="animation-delay:' + (i*0.08) + 's">' +
+        return '<a class="card" href="coworkmill-detail.html?id=' + s.id + '" data-arch-id="' + (s.architect_id||'') + '" style="animation-delay:' + (i*0.08) + 's">' +
           '<div class="card-img" style="' + (img ? 'background-image:url(' + img + ')' : 'background:#1a1a2e') + '">' +
           (isPick ? '<span class="pick-badge">PICK</span>' : '') +
           '</div>' +
@@ -1107,6 +1107,8 @@ function doSpSearch(){
   }).catch(function(){});
 })();
 </script>
+
+
 
 <script>
 (function(){
