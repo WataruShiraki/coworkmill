@@ -67,7 +67,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:56px;display:flex;ali
 .arch-bio p:last-child{margin-bottom:0}
 
 /* STATS */
-.arch-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--gray-100);border:1px solid var(--gray-100);border-radius:12px;overflow:hidden;margin-top:32px}
+.arch-stats{display:none!important;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--gray-100);border:1px solid var(--gray-100);border-radius:12px;overflow:hidden;margin-top:32px}
 .arch-stat{background:var(--white);padding:24px 28px}
 .stat-num{font-family:var(--font-d);font-size:36px;font-weight:200;letter-spacing:-.04em;color:var(--black);line-height:1}
 .stat-lbl{font-size:10px;color:var(--gray-400);margin-top:4px;letter-spacing:.04em}
@@ -525,6 +525,7 @@ document.addEventListener('DOMContentLoaded',init);
 <script>(function(){
 var SB='https://jakwntemjkwqwaqujffh.supabase.co',KEY='sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
 document.body.style.visibility='hidden';
+  var statsEl=document.querySelector('.arch-stats');if(statsEl)statsEl.style.display='none';
 async function init(){
   var id=new URLSearchParams(location.search).get('id');
   if(!id){document.body.style.visibility='visible';return;}

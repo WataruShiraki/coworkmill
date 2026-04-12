@@ -2206,4 +2206,96 @@ document.addEventListener('DOMContentLoaded',function(){
   });
 });
 </script>
+<script>(function(){
+var SB='https://jakwntemjkwqwaqujffh.supabase.co',KEY='sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+// 施設カードに建築家バッジを追加
+async function addArchBadges(){
+  var cards=document.querySelectorAll('[data-space-id],[data-id],.fcard,[class*="facility-card"]');
+  if(!cards.length) return;
+  // 全施設のarchitect_idを一括取得
+  var r=await fetch(SB+'/rest/v1/spaces?select=id,architect_id',{headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}});
+  var spaces=await r.json();
+  if(!Array.isArray(spaces)) return;
+  var archMap={};
+  spaces.forEach(function(sp){if(sp.architect_id) archMap[sp.id]=sp.architect_id;});
+  
+  // 建築家IDがあれば、建築家名を取得して表示
+  var archIds=[...new Set(Object.values(archMap).filter(Boolean))];
+  if(!archIds.length) return;
+  var ar=await fetch(SB+'/rest/v1/architects?select=id,name,name_en&id=in.('+archIds.join(',')+')',{headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}});
+  var archs=await ar.json();
+  if(!Array.isArray(archs)) return;
+  var archNameMap={};
+  archs.forEach(function(a){archNameMap[a.id]=a.name||a.name_en;});
+  
+  // 各施設詳細画面の建築家フィールドを更新
+  var archNameEls=document.querySelectorAll('[data-field="architect_name"],[class*="arch-name-field"],[id*="architect_name"]');
+  archNameEls.forEach(function(el){
+    var spId=el.closest('[data-id],[data-space-id]');
+    if(!spId) return;
+    var sid=spId.getAttribute('data-id')||spId.getAttribute('data-space-id');
+    var aid=archMap[sid];
+    if(aid&&archNameMap[aid]) el.textContent=archNameMap[aid];
+  });
+}
+document.addEventListener('DOMContentLoaded',function(){setTimeout(addArchBadges,1000);});
+})();</script>
+<script>(function(){
+var SB='https://jakwntemjkwqwaqujffh.supabase.co',KEY='sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+// 施設詳細パネルが開いたとき、建築家IDから建築家名を取得して表示
+var _origShowPanel=window.showSpacePanel||window.openSpaceDetail;
+function patchArchDisplay(){
+  // p-arch-selectedにarchIdが設定されたらarchitect名を表示
+  var archSel=document.getElementById('p-arch-selected');
+  if(!archSel) return;
+  var observer=new MutationObserver(async function(){
+    var archId=archSel.dataset.archId||archSel.textContent.trim();
+    if(!archId||archId.length<10) return;
+    var pArch=document.getElementById('p-arch');
+    if(!pArch) return;
+    if(pArch.value&&pArch.value!==archId) return; // 既に名前が入っていれば無視
+    try{
+      var r=await fetch(SB+'/rest/v1/architects?select=id,name,name_en&id=eq.'+archId,
+        {headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}});
+      var arr=await r.json();
+      if(arr&&arr[0]){
+        var name=arr[0].name||arr[0].name_en||'';
+        if(pArch.tagName==='INPUT') pArch.value=name;
+        else pArch.textContent=name;
+        // バッジも更新
+        archSel.textContent=name+' ✓';
+        archSel.style.cssText='display:inline-flex;align-items:center;gap:4px;background:#1a2a1a;border:0.5px solid #2BB5C8;color:#2BB5C8;font-size:11px;padding:3px 10px;border-radius:4px;';
+      }
+    }catch(e){}
+  });
+  observer.observe(archSel,{attributes:true,childList:true,subtree:true,characterData:true});
+  // 初回チェック
+  observer.takeRecords();
+  var archId=archSel.dataset.archId;
+  if(archId&&archId.length>10){
+    fetch(SB+'/rest/v1/architects?select=id,name,name_en&id=eq.'+archId,
+      {headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}})
+    .then(function(r){return r.json();}).then(function(arr){
+      if(!arr||!arr[0]) return;
+      var name=arr[0].name||arr[0].name_en||'';
+      var pArch=document.getElementById('p-arch');
+      if(pArch){
+        if(pArch.tagName==='INPUT') pArch.value=name;
+        else pArch.textContent=name;
+      }
+      archSel.textContent=name+' ✓';
+      archSel.style.cssText='display:inline-flex;align-items:center;gap:4px;background:#1a2a1a;border:0.5px solid #2BB5C8;color:#2BB5C8;font-size:11px;padding:3px 10px;border-radius:4px;';
+    }).catch(function(){});
+  }
+}
+// パネルが開くたびに再実行
+document.addEventListener('DOMContentLoaded',function(){
+  // 施設クリック時のイベントを監視
+  document.addEventListener('click',function(e){
+    var card=e.target.closest('.fcard,[data-id]');
+    if(card) setTimeout(patchArchDisplay,400);
+  });
+  setTimeout(patchArchDisplay,1000);
+});
+})();</script>
 </body></html>
