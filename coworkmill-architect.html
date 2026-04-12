@@ -424,18 +424,7 @@ document.querySelectorAll('.scard,.work-item,.arch-stat').forEach(el => {
 <script src="coworkmill-features.js"></script>
 
 
-<div id="arch-modal">
-  <div class="arch-modal-box">
-    <button class="arch-modal-close" onclick="document.getElementById('arch-modal').classList.remove('open')">×</button>
-    <div class="arch-modal-title" id="modal-arch-name">建築家に問い合わせ</div>
-    <div class="arch-modal-sub">COWORKMILLを通じてお問い合わせいただけます</div>
-    <div class="arch-modal-form">
-      <input type="text" placeholder="お名前" id="modal-sender-name">
-      <input type="email" placeholder="メールアドレス" id="modal-sender-email">
-      <textarea placeholder="お問い合わせ内容"></textarea>
-      <button class="arch-modal-send" onclick="document.getElementById('arch-modal').classList.remove('open')">送信する</button>
-    </div>
-  </div>
+
 </div>
 <script>(function(){
 var SB='https://jakwntemjkwqwaqujffh.supabase.co',KEY='sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
@@ -532,17 +521,7 @@ async function init(){
 }
 document.addEventListener('DOMContentLoaded',init);
 })();</script>
-<div id="arch-modal">
-  <div class="arch-modal-box">
-    <button class="arch-modal-close" onclick="document.getElementById('arch-modal').classList.remove('open')">×</button>
-    <div class="arch-modal-title" id="modal-arch-name">問い合わせ</div>
-    <div class="arch-modal-sub">COWORKMILLを通じてお問い合わせいただけます</div>
-    <input class="arch-modal-input" type="text" placeholder="お名前">
-    <input class="arch-modal-input" type="email" placeholder="メールアドレス">
-    <textarea class="arch-modal-textarea" placeholder="お問い合わせ内容"></textarea>
-    <button class="arch-modal-send" onclick="document.getElementById('arch-modal').classList.remove('open')">送信する</button>
-  </div>
-</div>
+
 <script>(function(){
 var SB='https://jakwntemjkwqwaqujffh.supabase.co',KEY='sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
 document.body.style.visibility='hidden';
@@ -666,6 +645,116 @@ async function init(){
     worksLabel.style.display='none';
   }
   
+  document.body.style.visibility='visible';
+}
+document.addEventListener('DOMContentLoaded',init);
+})();</script>
+<script>(function(){
+var SB='https://jakwntemjkwqwaqujffh.supabase.co',KEY='sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+document.body.style.visibility='hidden';
+async function init(){
+  var id=new URLSearchParams(location.search).get('id');
+  if(!id){document.body.style.visibility='visible';return;}
+  var r=await fetch(SB+'/rest/v1/architects?select=id,name,name_en,firm,bio,url,portrait_url&id=eq.'+id,
+    {headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}});
+  var arr=await r.json();
+  if(!arr||!arr[0]){document.body.style.visibility='visible';return;}
+  var arch=arr[0];
+
+  // 名前: 大=英語, 小=日本語
+  var nameEl=document.querySelector('.arch-name');
+  var firmEl=document.querySelector('.arch-firm');
+  if(nameEl) nameEl.textContent=arch.name_en||arch.name||'';
+  if(firmEl) firmEl.textContent=(arch.name&&arch.name!==arch.name_en)?arch.name:(arch.firm||'');
+
+  // ポートレート写真
+  var photoEl=document.querySelector('.arch-photo');
+  if(photoEl&&arch.portrait_url) photoEl.src=arch.portrait_url;
+
+  // プロフィール文
+  var bioEl=document.querySelector('.arch-bio');
+  if(bioEl&&arch.bio) bioEl.textContent=arch.bio;
+
+  // ページタイトル
+  document.title=(arch.name_en||arch.name)+'が手がけたコワーキングスペース — COWORKMILL';
+
+  // モーダルタイトル
+  var mt=document.getElementById('modal-arch-name');
+  if(mt) mt.textContent=(arch.name_en||arch.name)+'に問い合わせ';
+  var st=document.getElementById('sidebar-arch-name');
+  if(st) st.innerHTML=(arch.name_en||arch.name)+'<br>に問い合わせ';
+
+  // 問い合わせボタンのイベント（arch-inquiry-cardが既にHTMLにある場合）
+  var btn=document.getElementById('open-modal-btn');
+  if(btn) btn.onclick=function(){document.getElementById('arch-modal').classList.add('open');};
+
+  // 公式URLボタン（arch-url-btnが既にHTMLにある場合）
+  var urlBtn=document.querySelector('.arch-url-btn');
+  if(urlBtn&&arch.url){ urlBtn.href=arch.url; urlBtn.style.display='flex'; }
+  else if(urlBtn&&!arch.url){ urlBtn.style.display='none'; }
+
+  // ======= WORKS: 既存の重複を全部消してから再描画 =======
+  document.querySelectorAll('.arch-works-section,.arch-works-grid,.arch-works-label,[class*="arch-work"]').forEach(function(el){
+    if(!el.classList.contains('arch-work-card')&&!el.classList.contains('arch-work-info')&&!el.classList.contains('arch-work-name')&&!el.classList.contains('arch-work-area')&&!el.classList.contains('arch-work-thumb'))
+      el.remove();
+  });
+  // グリッドだけを持つ独立セクションを全削除
+  document.querySelectorAll('.arch-works-section').forEach(function(el){el.remove();});
+  document.querySelectorAll('.arch-sec-label').forEach(function(el){
+    if(el.textContent.includes('WORKS')) el.remove();
+  });
+
+  var mainEl=document.querySelector('.arch-main')||document.querySelector('.arch-wrap')||document.body;
+  var bioTarget=mainEl.querySelector('.arch-bio');
+
+  // WORKSラベル
+  var worksLabel=document.createElement('div');
+  worksLabel.className='arch-sec-label';
+  worksLabel.textContent='WORKS — 手がけたコワーキング施設';
+  var worksGrid=document.createElement('div');
+  worksGrid.className='arch-works-grid';
+
+  if(bioTarget){
+    bioTarget.insertAdjacentElement('afterend',worksGrid);
+    bioTarget.insertAdjacentElement('afterend',worksLabel);
+  } else {
+    mainEl.appendChild(worksLabel);
+    mainEl.appendChild(worksGrid);
+  }
+
+  // 施設データ取得
+  var sr=await fetch(SB+'/rest/v1/spaces?select=id,name,area,prefecture,status&architect_id=eq.'+id+'&status=eq.live',
+    {headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}});
+  var spaces=await sr.json();
+  if(Array.isArray(spaces)&&spaces.length){
+    for(var i=0;i<spaces.length;i++){
+      var sp=spaces[i];
+      var lr=await fetch(SB+'/storage/v1/object/list/space-images',{
+        method:'POST',
+        headers:{'apikey':KEY,'Authorization':'Bearer '+KEY,'Content-Type':'application/json'},
+        body:JSON.stringify({prefix:sp.id+'/',limit:1})
+      });
+      var fl=await lr.json();
+      var card=document.createElement('a');
+      card.className='arch-work-card';
+      card.href='coworkmill-detail.html?id='+sp.id;
+      var area=((sp.prefecture||'')+' '+(sp.area||'')).trim();
+      if(Array.isArray(fl)&&fl.length){
+        var img=document.createElement('img');
+        img.className='arch-work-thumb';
+        img.src=SB+'/storage/v1/object/public/space-images/'+sp.id+'/'+fl[0].name;
+        img.alt=sp.name;
+        card.appendChild(img);
+      }
+      var info=document.createElement('div');
+      info.className='arch-work-info';
+      info.innerHTML='<div class="arch-work-name">'+sp.name+'</div><div class="arch-work-area">'+area+'</div>';
+      card.appendChild(info);
+      worksGrid.appendChild(card);
+    }
+  } else {
+    worksLabel.style.display='none';
+  }
   document.body.style.visibility='visible';
 }
 document.addEventListener('DOMContentLoaded',init);
