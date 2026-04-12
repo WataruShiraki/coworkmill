@@ -896,7 +896,7 @@ async function loadTopData() {
           '<div class="gcard-body">' +
             '<div class="gcard-city">' + city + '</div>' +
             '<div class="gcard-name">' + (s.name||'') + '</div>' +
-          (s.architect_name ? '<div class="gcard-arch">' + s.architect_name + '</div>' : '') +
+          (s.architect_name ? '<div class="gcard-arch">Design by ' + s.architect_name + '</div>' : '') +
           '</div></a>';
       }).join('');
       const gfCount = document.querySelector('.gf-count');
