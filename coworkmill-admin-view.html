@@ -2206,40 +2206,7 @@ document.addEventListener('DOMContentLoaded',function(){
   });
 });
 </script>
-<script>(function(){
-var SB='https://jakwntemjkwqwaqujffh.supabase.co',KEY='sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
-// 施設カードに建築家バッジを追加
-async function addArchBadges(){
-  var cards=document.querySelectorAll('[data-space-id],[data-id],.fcard,[class*="facility-card"]');
-  if(!cards.length) return;
-  // 全施設のarchitect_idを一括取得
-  var r=await fetch(SB+'/rest/v1/spaces?select=id,architect_id',{headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}});
-  var spaces=await r.json();
-  if(!Array.isArray(spaces)) return;
-  var archMap={};
-  spaces.forEach(function(sp){if(sp.architect_id) archMap[sp.id]=sp.architect_id;});
-  
-  // 建築家IDがあれば、建築家名を取得して表示
-  var archIds=[...new Set(Object.values(archMap).filter(Boolean))];
-  if(!archIds.length) return;
-  var ar=await fetch(SB+'/rest/v1/architects?select=id,name,name_en&id=in.('+archIds.join(',')+')',{headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}});
-  var archs=await ar.json();
-  if(!Array.isArray(archs)) return;
-  var archNameMap={};
-  archs.forEach(function(a){archNameMap[a.id]=a.name||a.name_en;});
-  
-  // 各施設詳細画面の建築家フィールドを更新
-  var archNameEls=document.querySelectorAll('[data-field="architect_name"],[class*="arch-name-field"],[id*="architect_name"]');
-  archNameEls.forEach(function(el){
-    var spId=el.closest('[data-id],[data-space-id]');
-    if(!spId) return;
-    var sid=spId.getAttribute('data-id')||spId.getAttribute('data-space-id');
-    var aid=archMap[sid];
-    if(aid&&archNameMap[aid]) el.textContent=archNameMap[aid];
-  });
-}
-document.addEventListener('DOMContentLoaded',function(){setTimeout(addArchBadges,1000);});
-})();</script>
+
 <script>(function(){
 var SB='https://jakwntemjkwqwaqujffh.supabase.co',KEY='sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
 // 施設詳細パネルが開いたとき、建築家IDから建築家名を取得して表示
@@ -2298,4 +2265,5 @@ document.addEventListener('DOMContentLoaded',function(){
   setTimeout(patchArchDisplay,1000);
 });
 })();</script>
+<script>(function(){var S="https://jakwntemjkwqwaqujffh.supabase.co",K="sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ";async function show(aid){if(!aid||aid.length<10)return;var r=await fetch(S+"/rest/v1/architects?select=id,name,name_en,firm&id=eq."+aid,{headers:{"apikey":K,"Authorization":"Bearer "+K}});var arr=await r.json();if(!arr||!arr[0])return;var a=arr[0];var dn=(a.name||a.name_en||"")+(a.firm&&a.firm!==a.name?" / "+a.firm:"");var s1=document.querySelector(".step-item");if(!s1)return;var ex=document.getElementById("arch-badge-display");if(!ex){ex=document.createElement("div");ex.id="arch-badge-display";ex.style.cssText="display:inline-flex;align-items:center;gap:6px;background:#f0faf7;border:1px solid #2BB5C8;color:#0a7a60;font-size:12px;font-weight:500;padding:6px 12px;border-radius:6px;margin-top:8px";s1.appendChild(ex);}ex.innerHTML="<span style=color:#2BB5C8>✓</span> "+dn+" — 紐づけ完了";}function clr(){var ex=document.getElementById("arch-badge-display");if(ex)ex.remove();}document.addEventListener("click",function(e){var card=e.target.closest(".an-card,[data-id]");if(!card)return;var sid=card.dataset.id||card.getAttribute("data-id");if(!sid)return;clr();setTimeout(async function(){var r=await fetch(S+"/rest/v1/spaces?select=architect_id&id=eq."+sid,{headers:{"apikey":K,"Authorization":"Bearer "+K}});var arr=await r.json();if(arr&&arr[0]&&arr[0].architect_id)show(arr[0].architect_id);},700);});})();</script>
 </body></html>
