@@ -290,6 +290,32 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
 </style>
 <style>#arch-modal.open{display:flex!important}.arch-stats{display:none!important}</style>
 <style>#arch-modal.open{display:flex!important}.arch-stats{display:none!important}</style>
+<style>
+.arch-wrap{display:grid!important;grid-template-columns:1fr 280px!important;gap:0!important;max-width:1100px;margin:0 auto}
+.arch-main{padding:40px 48px!important;border-right:0.5px solid #1a1a1a!important}
+.arch-sidebar{padding:36px 28px!important;position:sticky;top:56px;align-self:start!important}
+.arch-sec-label{font-size:9px;letter-spacing:.14em;color:#444;margin-bottom:12px;margin-top:32px}
+.arch-sec-label:first-child{margin-top:0}
+.arch-works-grid{display:grid!important;grid-template-columns:1fr 1fr!important;gap:10px!important}
+.arch-work-card{background:#111;border-radius:8px;overflow:hidden;border:0.5px solid #1a1a1a;text-decoration:none;display:block;transition:border-color .2s}
+.arch-work-card:hover{border-color:#2BB5C8}
+.arch-work-thumb{height:110px;object-fit:cover;width:100%;display:block;background:#0d0d0d}
+.arch-work-info{padding:10px 12px}
+.arch-work-name{font-size:11px;font-weight:500;color:#d0d0d0}
+.arch-inquiry-card{background:#111;border-radius:12px;border:0.5px solid #1f1f1f;overflow:hidden;margin-bottom:10px}
+.arch-inquiry-top{padding:18px 18px 14px}
+.arch-inquiry-label{font-size:9px;letter-spacing:.12em;color:#2BB5C8;margin-bottom:6px}
+.arch-inquiry-title{font-size:15px;font-weight:500;color:#f0f0f0;line-height:1.4}
+.arch-inquiry-divider{height:0.5px;background:#1a1a1a}
+.arch-inquiry-bottom{padding:14px 18px}
+.arch-inquiry-btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;background:#2BB5C8;color:#000;font-size:12px;font-weight:700;padding:13px;border-radius:8px;border:none;cursor:pointer}
+.arch-url-btn{display:flex;align-items:center;justify-content:space-between;background:#0f0f0f;border:0.5px solid #1f1f1f;border-radius:10px;padding:13px 16px;text-decoration:none;cursor:pointer;color:inherit;transition:border-color .15s}
+.arch-url-btn:hover{border-color:#333}
+.arch-contact-btn,.arch-stats{display:none!important}
+@media(max-width:700px){.arch-wrap{grid-template-columns:1fr!important}.arch-sidebar{padding:0 20px 40px!important}.arch-main{padding:24px 20px!important}}
+#arch-modal.open{display:flex!important}
+.arch-stats{display:none!important}
+</style>
 </head>
 <body style="visibility:hidden">
 
@@ -433,7 +459,80 @@ document.querySelectorAll('.scard,.work-item,.arch-stat').forEach(el => {
 
 
 
-<div id="arch-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;align-items:center;justify-content:center"><div class="arch-modal-box"><button class="arch-modal-close" onclick="document.getElementById('arch-modal').classList.remove('open')">×</button><div class="arch-modal-title" id="modal-arch-name">問い合わせ</div><input class="arch-modal-input" type="text" placeholder="お名前"><input class="arch-modal-input" type="email" placeholder="メールアドレス"><textarea class="arch-modal-textarea" placeholder="お問い合わせ内容"></textarea><button class="arch-modal-send" onclick="document.getElementById('arch-modal').classList.remove('open')">送信する</button></div></div>
-<script>(function(){var S="https://jakwntemjkwqwaqujffh.supabase.co",K="sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ",d=false;document.body.style.visibility="hidden";async function init(){if(d)return;d=true;var id=new URLSearchParams(location.search).get("id");if(!id){document.body.style.visibility="visible";return;}try{var r=await fetch(S+"/rest/v1/architects?select=*&id=eq."+id,{headers:{"apikey":K,"Authorization":"Bearer "+K}});var arr=await r.json();if(!arr||!arr[0]){document.body.style.visibility="visible";return;}var a=arr[0];var nEl=document.querySelector(".arch-name"),fEl=document.querySelector(".arch-firm");if(nEl)nEl.textContent=a.name_en||a.name||"";if(fEl)fEl.textContent=(a.name&&a.name!==a.name_en)?a.name:(a.firm||"");var ph=document.querySelector(".arch-photo");if(ph&&a.portrait_url)ph.src=a.portrait_url;var bio=document.querySelector(".arch-bio");if(bio&&a.bio)bio.textContent=a.bio;document.title=(a.name_en||a.name)+"が手がけたコワーキングスペース — COWORKMILL";var mt=document.getElementById("modal-arch-name");if(mt)mt.textContent=(a.name_en||a.name)+"に問い合わせ";var st=document.getElementById("sidebar-arch-name");if(st)st.innerHTML=(a.name_en||a.name)+"<br>に問い合わせ";var ob=document.getElementById("open-modal-btn");if(ob)ob.onclick=function(){document.getElementById("arch-modal").classList.add("open");};var ub=document.querySelector(".arch-url-btn");if(ub&&a.url)ub.href=a.url;else if(ub)ub.style.display="none";document.querySelectorAll(".arch-works-section,.arch-works-grid").forEach(function(el){el.remove();});document.querySelectorAll(".arch-sec-label").forEach(function(el){if(el.textContent.includes("WORKS"))el.remove();});var m=document.querySelector(".arch-main")||document.body;var bEl=m.querySelector(".arch-bio");var wL=document.createElement("div");wL.className="arch-sec-label";wL.textContent="WORKS — 手がけたコワーキング施設";var wG=document.createElement("div");wG.className="arch-works-grid";if(bEl){bEl.insertAdjacentElement("afterend",wG);bEl.insertAdjacentElement("afterend",wL);}else{m.appendChild(wL);m.appendChild(wG);}var sr=await fetch(S+"/rest/v1/spaces?select=id,name,area,prefecture&architect_id=eq."+a.id+"&status=eq.live",{headers:{"apikey":K,"Authorization":"Bearer "+K}});var spaces=await sr.json();if(Array.isArray(spaces)&&spaces.length){for(var i=0;i<spaces.length;i++){var sp=spaces[i];var lr=await fetch(S+"/storage/v1/object/list/space-images",{method:"POST",headers:{"apikey":K,"Authorization":"Bearer "+K,"Content-Type":"application/json"},body:JSON.stringify({prefix:sp.id+"/",limit:1})});var fl=await lr.json();var c=document.createElement("a");c.className="arch-work-card";c.href="coworkmill-detail.html?id="+sp.id;if(Array.isArray(fl)&&fl.length){var img=document.createElement("img");img.className="arch-work-thumb";img.src=S+"/storage/v1/object/public/space-images/"+sp.id+"/"+fl[0].name;c.appendChild(img);}var inf=document.createElement("div");inf.className="arch-work-info";var nm=document.createElement("div");nm.className="arch-work-name";nm.textContent=sp.name;inf.appendChild(nm);c.appendChild(inf);wG.appendChild(c);}}else{wL.style.display="none";}}catch(e){console.error(e);}document.body.style.visibility="visible";}if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",init);}else{init();}})();</script>
+
+
+<div id="arch-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;align-items:center;justify-content:center"><div class="arch-modal-box"><button class="arch-modal-close" onclick="document.getElementById('arch-modal').classList.remove('open')">&#215;</button><div class="arch-modal-title" id="modal-arch-name">問い合わせ</div><input class="arch-modal-input" type="text" placeholder="お名前"><input class="arch-modal-input" type="email" placeholder="メールアドレス"><textarea class="arch-modal-textarea" placeholder="お問い合わせ内容"></textarea><button class="arch-modal-send" onclick="document.getElementById('arch-modal').classList.remove('open')">送信する</button></div></div>
+<script>(function(){
+var S="https://jakwntemjkwqwaqujffh.supabase.co",K="sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ",d=false;
+document.body.style.visibility="hidden";
+function init(){
+  if(d)return;d=true;
+  var id=new URLSearchParams(location.search).get("id");
+  if(!id){document.body.style.visibility="visible";return;}
+  fetch(S+"/rest/v1/architects?select=*&id=eq."+id,{headers:{"apikey":K,"Authorization":"Bearer "+K}})
+  .then(function(r){return r.json();})
+  .then(function(arr){
+    if(!arr||!arr[0]){document.body.style.visibility="visible";return;}
+    var a=arr[0];
+    var nEl=document.querySelector(".arch-name"),fEl=document.querySelector(".arch-firm");
+    if(nEl)nEl.textContent=a.name_en||a.name||"";
+    if(fEl)fEl.textContent=(a.name&&a.name!==a.name_en)?a.name:(a.firm||"");
+    var ph=document.querySelector(".arch-photo");if(ph&&a.portrait_url)ph.src=a.portrait_url;
+    var bio=document.querySelector(".arch-bio");if(bio&&a.bio)bio.textContent=a.bio;
+    document.title=(a.name_en||a.name)+"が手がけたコワーキングスペース — COWORKMILL";
+    var mt=document.getElementById("modal-arch-name");if(mt)mt.textContent=(a.name_en||a.name)+"に問い合わせ";
+    // サイドバー構築
+    var wrap=document.querySelector(".arch-wrap");
+    if(wrap&&!document.querySelector(".arch-sidebar")){
+      // arch-mainを作成してコンテンツを移動
+      var existing=[].slice.call(wrap.children);
+      var mainDiv=document.createElement("div");
+      mainDiv.className="arch-main";
+      existing.forEach(function(el){
+        var cls=el.className||"";
+        if(!cls.includes("arch-contact")&&!cls.includes("consult")&&!cls.includes("cta")){
+          mainDiv.appendChild(el);
+        }
+      });
+      var sideDiv=document.createElement("div");
+      sideDiv.className="arch-sidebar";
+      sideDiv.innerHTML='<div class="arch-inquiry-card"><div class="arch-inquiry-top"><div class="arch-inquiry-label">CONTACT</div><div class="arch-inquiry-title" id="sidebar-arch-name">'+(a.name_en||a.name)+'<br>に問い合わせ</div></div><div class="arch-inquiry-divider"></div><div class="arch-inquiry-bottom"><button class="arch-inquiry-btn" id="open-modal-btn"><span style="font-size:15px">&#x2709;</span>問い合わせる</button></div></div>'+(a.url?'<a class="arch-url-btn" href="'+a.url+'" target="_blank" rel="noopener"><div style="display:flex;align-items:center;gap:8px"><div style="width:14px;height:14px;border:1px solid #333;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:8px;color:#555">&#x2197;</div><span style="font-size:11px;color:#666">公式サイトを見る</span></div><span style="font-size:10px;color:#2a2a2a">&#x2192;</span></a>':"")+'
+      ';
+      wrap.innerHTML="";
+      wrap.appendChild(mainDiv);
+      wrap.appendChild(sideDiv);
+      var ob=document.getElementById("open-modal-btn");
+      if(ob)ob.onclick=function(){document.getElementById("arch-modal").classList.add("open");};
+    }
+    // WORKS再描画
+    document.querySelectorAll(".arch-works-section,.arch-works-grid").forEach(function(el){el.remove();});
+    document.querySelectorAll(".arch-sec-label").forEach(function(el){if(el.textContent.includes("WORKS"))el.remove();});
+    var m=document.querySelector(".arch-main")||document.body;
+    var bEl=m.querySelector(".arch-bio");
+    var wL=document.createElement("div");wL.className="arch-sec-label";wL.textContent="WORKS — 手がけたコワーキング施設";
+    var wG=document.createElement("div");wG.className="arch-works-grid";
+    if(bEl){bEl.insertAdjacentElement("afterend",wG);bEl.insertAdjacentElement("afterend",wL);}else{m.appendChild(wL);m.appendChild(wG);}
+    fetch(S+"/rest/v1/spaces?select=id,name,area,prefecture&architect_id=eq."+a.id+"&status=eq.live",{headers:{"apikey":K,"Authorization":"Bearer "+K}})
+    .then(function(r){return r.json();})
+    .then(function(spaces){
+      if(!Array.isArray(spaces)||!spaces.length){wL.style.display="none";document.body.style.visibility="visible";return;}
+      var done=0;
+      spaces.forEach(function(sp){
+        fetch(S+"/storage/v1/object/list/space-images",{method:"POST",headers:{"apikey":K,"Authorization":"Bearer "+K,"Content-Type":"application/json"},body:JSON.stringify({prefix:sp.id+"/",limit:1})})
+        .then(function(r){return r.json();})
+        .then(function(fl){
+          var c=document.createElement("a");c.className="arch-work-card";c.href="coworkmill-detail.html?id="+sp.id;
+          if(fl&&fl.length){var img=document.createElement("img");img.className="arch-work-thumb";img.src=S+"/storage/v1/object/public/space-images/"+sp.id+"/"+fl[0].name;c.appendChild(img);}
+          var inf=document.createElement("div");inf.className="arch-work-info";
+          var nm=document.createElement("div");nm.className="arch-work-name";nm.textContent=sp.name;inf.appendChild(nm);
+          c.appendChild(inf);wG.appendChild(c);
+          done++;if(done===spaces.length)document.body.style.visibility="visible";
+        });
+      });
+    });
+  });
+}
+if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",init);}else{init();}
+})();</script>
 </body>
 </html>
