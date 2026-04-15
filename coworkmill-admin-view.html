@@ -2272,31 +2272,29 @@ document.addEventListener('DOMContentLoaded',function(){
 
 
 
+
 <script>(function(){
 var S="https://jakwntemjkwqwaqujffh.supabase.co",K="sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ";
-var _sm={};
-fetch(S+"/rest/v1/spaces?select=id,name,architect_id",{headers:{"apikey":K,"Authorization":"Bearer "+K}})
-.then(function(r){return r.json();})
-.then(function(a){if(Array.isArray(a))a.forEach(function(s){_sm[s.id]=s.architect_id;});});
 async function showArchBadge(archId){
   var r=await fetch(S+"/rest/v1/architects?select=id,name,name_en,firm&id=eq."+archId,{headers:{"apikey":K,"Authorization":"Bearer "+K}});
   var a=(await r.json())[0];if(!a)return;
   var dn=(a.name||a.name_en||"")+(a.firm&&a.firm!==a.name?" / "+a.firm:"");
-  var s1=document.querySelector(".step-item");if(!s1)return;
+  var container=document.querySelector("#p-arch .sec-b");
+  if(!container)return;
   var ex=document.getElementById("arch-badge-display");
-  if(!ex){ex=document.createElement("div");ex.id="arch-badge-display";
-    ex.style.cssText="display:flex;align-items:center;gap:8px;background:#f0faf7;border:1px solid #2BB5C8;color:#0a7a60;font-size:13px;font-weight:500;padding:10px 14px;border-radius:8px;margin-top:10px";
-    s1.appendChild(ex);}
+  if(!ex){
+    ex=document.createElement("div");ex.id="arch-badge-display";
+    ex.style.cssText="display:flex;align-items:center;gap:8px;background:#f0faf7;border:1px solid #2BB5C8;color:#0a7a60;font-size:13px;font-weight:500;padding:10px 14px;border-radius:8px;margin-top:10px;";
+    container.appendChild(ex);
+  }
   ex.innerHTML="<span style=\"color:#2BB5C8;font-size:16px\">&#x2713;</span><span><strong>"+dn+"</strong>&#12288;紐づけ完了</span>";
-  document.querySelectorAll("div,p").forEach(function(el){
-    if(el.children.length===0&&el.textContent.includes("未登録の建築家"))el.parentElement.style.display="none";
-  });
-  var si=s1.querySelector("input[type=text]");if(si){si.disabled=true;si.style.opacity="0.4";}
+  document.querySelectorAll("#p-arch [class*=warn],[class*=notice]").forEach(function(el){if(el.textContent.includes("未登録"))el.style.display="none";});
+  var si=document.getElementById("p-arch-search");if(si){si.disabled=true;si.style.opacity="0.4";}
 }
-function clearBadge(){
+function clearArchBadge(){
   var ex=document.getElementById("arch-badge-display");if(ex)ex.remove();
-  var s1=document.querySelector(".step-item");if(s1){var si=s1.querySelector("input[type=text]");if(si){si.disabled=false;si.style.opacity="1";}}
-  document.querySelectorAll("div,p").forEach(function(el){if(el.style.display==="none"&&el.textContent.includes("未登録"))el.style.display="";});
+  document.querySelectorAll("#p-arch [class*=warn],[class*=notice]").forEach(function(el){if(el.textContent.includes("未登録"))el.style.display="";});
+  var si=document.getElementById("p-arch-search");if(si){si.disabled=false;si.style.opacity="1";}
 }
 document.addEventListener("click",async function(e){
   var btn=e.target.closest("button");
@@ -2304,12 +2302,10 @@ document.addEventListener("click",async function(e){
   var onFi=document.querySelector("#fac-list .fi.on");
   if(!onFi)return;
   setTimeout(async function(){
-    clearBadge();
-    var rawName=onFi.querySelector("[class*=fi-name],[class*=name],span");
-    var name=rawName?rawName.textContent.trim():(onFi.textContent.trim().split("\n")[0]);
+    clearArchBadge();
     var r=await fetch(S+"/rest/v1/spaces?select=id,name,architect_id",{headers:{"apikey":K,"Authorization":"Bearer "+K}});
     var spaces=await r.json();
-    var found=spaces.find(function(sp){return sp.name&&(onFi.textContent.includes(sp.name));});
+    var found=spaces.find(function(sp){return sp.name&&onFi.textContent.includes(sp.name);});
     if(found&&found.architect_id)showArchBadge(found.architect_id);
   },500);
 });
