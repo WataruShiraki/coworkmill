@@ -1153,9 +1153,9 @@ document.addEventListener('click', function() {
 .arch-ed-title em{font-style:italic;color:#2BB5C8}
 .arch-ed-title--accent{color:#2BB5C8;font-style:italic}
 .arch-ed-desc{font-size:12px;color:rgba(255,255,255,.45);letter-spacing:.06em}
-.arch-feature{display:grid;grid-template-columns:1fr 400px;min-height:480px;margin-bottom:3px;text-decoration:none;cursor:pointer;overflow:hidden;transition:opacity .2s}
+.arch-feature{display:grid;grid-template-columns:1fr 400px;min-height:240px;margin-bottom:3px;text-decoration:none;cursor:pointer;overflow:hidden;transition:opacity .2s}
 .arch-feature:hover{opacity:.95}
-.arch-feature--reverse{grid-template-columns:400px 1fr}
+.arch-feature--reverse{grid-template-columns:400px 1fr}.arch-spaces-photos{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;margin-top:14px;border-radius:4px;overflow:hidden}.arch-space-photo{height:72px;object-fit:cover;width:100%;display:block;background:#1a1a1a}.arch-spaces-label{font-size:9px;letter-spacing:.12em;color:#444;margin-top:14px;margin-bottom:4px}
 .arch-feature--reverse .arch-feature-photo{order:2}
 .arch-feature--reverse .arch-feature-info{order:1}
 .arch-feature-photo{position:relative;overflow:hidden;background:#111;background-size:cover;background-position:center;transition:transform .8s cubic-bezier(.16,1,.3,1)}
@@ -1325,5 +1325,6 @@ function toggleRegions(){
   </div>
 </footer>
 <script src="coworkmill-features.js"></script>
+<script>(function(){var S="https://jakwntemjkwqwaqujffh.supabase.co",K="sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ";async function injectPhotos(){  var r=await fetch(S+"/rest/v1/architects?select=id,name_en",{headers:{"apikey":K,"Authorization":"Bearer "+K}});  var archs=await r.json();  var features=document.querySelectorAll(".arch-feature");  for(var fi=0;fi<features.length;fi++){    var feature=features[fi];    var els=feature.querySelectorAll("[class*=name]");    var nameText="";for(var i=0;i<els.length;i++){var t=els[i].textContent.trim();if(t.length>2&&t.length<50){nameText=t;break;}}    var arch=archs.find(function(a){return nameText&&a.name_en&&(nameText===a.name_en||nameText.toLowerCase()===a.name_en.toLowerCase());});    if(!arch)continue;    var sr=await fetch(S+"/rest/v1/spaces?select=id,name&architect_id=eq."+arch.id+"&status=eq.live&limit=3",{headers:{"apikey":K,"Authorization":"Bearer "+K}});    var spaces=await sr.json();    if(!Array.isArray(spaces)||!spaces.length)continue;    var photos=[];    for(var i=0;i<spaces.length;i++){      var lr=await fetch(S+"/storage/v1/object/list/space-images",{method:"POST",headers:{"apikey":K,"Authorization":"Bearer "+K,"Content-Type":"application/json"},body:JSON.stringify({prefix:spaces[i].id+"/",limit:1})});      var files=await lr.json();      if(Array.isArray(files)&&files.length)photos.push(S+"/storage/v1/object/public/space-images/"+spaces[i].id+"/"+files[0].name);    }    if(!photos.length)continue;    var info=feature.querySelector(".arch-feature-info");if(!info||info.querySelector(".arch-spaces-photos"))continue;    var lbl=document.createElement("div");lbl.className="arch-spaces-label";lbl.textContent="WORKS";    var grid=document.createElement("div");grid.className="arch-spaces-photos";    photos.forEach(function(url){var img=document.createElement("img");img.className="arch-space-photo";img.src=url;img.loading="lazy";grid.appendChild(img);});    info.appendChild(lbl);info.appendChild(grid);  }}if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",injectPhotos);}else{injectPhotos();}})();</script>
 </body>
 </html>
