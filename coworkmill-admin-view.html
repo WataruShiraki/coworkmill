@@ -2268,6 +2268,127 @@ document.addEventListener('DOMContentLoaded',function(){
 
 
 
-<script>(function(){var S="https://jakwntemjkwqwaqujffh.supabase.co",K="sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ";async function updateVoicesBadge(spaceId){  var url=S+"/rest/v1/voices?status=eq.pending&select=id";  if(spaceId) url+=("&space_id=eq."+spaceId);  var r=await fetch(url,{headers:{"apikey":K,"Authorization":"Bearer "+K,"Prefer":"count=exact"}});  var count=parseInt(r.headers.get("content-range").split("/")[1])||0;  var menuBtns=Array.from(document.querySelectorAll("button,a")).filter(function(el){return el.textContent.includes("\u5229\u7528\u8005\u306e\u58f0");});  menuBtns.forEach(function(btn){    var badge=btn.querySelector(".voices-badge");    if(count>0){      if(!badge){        badge=document.createElement("span");        badge.className="voices-badge";        badge.style.cssText="display:inline-flex;align-items:center;justify-content:center;background:#e85d5d;color:#fff;font-size:9px;font-weight:700;min-width:16px;height:16px;border-radius:8px;padding:0 4px;margin-left:6px;line-height:1;";        btn.appendChild(badge);      }      badge.textContent=count;    } else {      if(badge) badge.remove();    }  });}function getCurrentSpaceId(){  var active=document.querySelector("#fac-list .fi.on, #fac-list .fi.active");  return active?active.dataset.id||null:null;}document.addEventListener("DOMContentLoaded",function(){  setTimeout(function(){updateVoicesBadge(getCurrentSpaceId());},1500);});document.addEventListener("click",function(e){  var fi=e.target.closest("#fac-list .fi");  if(!fi)return;  setTimeout(function(){updateVoicesBadge(getCurrentSpaceId());},800);});document.addEventListener("click",function(e){  var btn=e.target.closest("button,a");  if(!btn)return;  if(btn.textContent.includes("\u5229\u7528\u8005\u306e\u58f0")){    setTimeout(function(){updateVoicesBadge(getCurrentSpaceId());},500);  }});})();</script>
-<script>(function(){var S="https://jakwntemjkwqwaqujffh.supabase.co",K="sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ";async function show(aid){if(!aid||aid.length<10)return;var r=await fetch(S+"/rest/v1/architects?select=id,name,name_en,firm&id=eq."+aid,{headers:{"apikey":K,"Authorization":"Bearer "+K}});var arr=await r.json();if(!arr||!arr[0])return;var a=arr[0];var dn=(a.name||a.name_en||"")+(a.firm&&a.firm!==a.name?" / "+a.firm:"");var s1=document.querySelector(".step-item");if(!s1)return;var ex=document.getElementById("arch-badge-display");if(!ex){ex=document.createElement("div");ex.id="arch-badge-display";ex.style.cssText="display:inline-flex;align-items:center;gap:6px;background:#f0faf7;border:1px solid #2BB5C8;color:#0a7a60;font-size:12px;font-weight:500;padding:6px 12px;border-radius:6px;margin-top:8px";s1.appendChild(ex);}ex.innerHTML="<span style=color:#2BB5C8>\u2713</span> "+dn+" \u2014 \u7d10\u3065\u3051\u5b8c\u4e86";}function clr(){var ex=document.getElementById("arch-badge-display");if(ex)ex.remove();}document.addEventListener("click",function(e){var card=e.target.closest(".an-card,[data-id]");if(!card)return;var sid=card.dataset.id||card.getAttribute("data-id");if(!sid)return;clr();setTimeout(async function(){var r=await fetch(S+"/rest/v1/spaces?select=architect_id&id=eq."+sid,{headers:{"apikey":K,"Authorization":"Bearer "+K}});var arr=await r.json();if(arr&&arr[0]&&arr[0].architect_id)show(arr[0].architect_id);},700);});})();</script>
+
+
+<script>(function(){
+var S="https://jakwntemjkwqwaqujffh.supabase.co",K="sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ";
+var _spaceMap={}; // id→architect_id
+var _currentSpaceId=null;
+
+// 全スペースのarchitect_idをキャッシュ
+async function loadSpaceMap(){
+  var r=await fetch(S+"/rest/v1/spaces?select=id,architect_id",{headers:{"apikey":K,"Authorization":"Bearer "+K}});
+  var arr=await r.json();
+  if(Array.isArray(arr)) arr.forEach(function(sp){_spaceMap[sp.id]=sp.architect_id;});
+}
+
+// 建築家名取得してバッジ表示
+async function showArchBadge(archId){
+  if(!archId||archId.length<10)return;
+  var r=await fetch(S+"/rest/v1/architects?select=id,name,name_en,firm&id=eq."+archId,{headers:{"apikey":K,"Authorization":"Bearer "+K}});
+  var arr=await r.json();
+  if(!arr||!arr[0])return;
+  var a=arr[0];
+  var dn=(a.name||a.name_en||"")+(a.firm&&a.firm!==a.name?" / "+a.firm:"");
+  var s1=document.querySelector(".step-item");
+  if(!s1)return;
+  // STEP1を「紐づけ完了」状態に変更
+  var ex=document.getElementById("arch-badge-display");
+  if(!ex){
+    ex=document.createElement("div");
+    ex.id="arch-badge-display";
+    ex.style.cssText="display:flex;align-items:center;gap:8px;background:#f0faf7;border:1px solid #2BB5C8;color:#0a7a60;font-size:13px;font-weight:500;padding:10px 14px;border-radius:8px;margin-top:10px";
+    s1.appendChild(ex);
+  }
+  ex.innerHTML="<span style=\"color:#2BB5C8;font-size:16px\">&#x2713;</span><span><strong>"+dn+"</strong>&#12288;\u7d10\u3065\u3051\u5b8c\u4e86</span>";
+  // STEP2の警告を非表示
+  var warns=document.querySelectorAll(".step-item ~ div[class*=warn], .step-item ~ .arch-warn");
+  // 黄色い警告バナーも非表示
+  document.querySelectorAll("[class*=warn],[class*=notice]").forEach(function(el){if(el.textContent.includes("\u672a\u767b\u9332"))el.style.display="none";});
+  // 検索inputを無効化
+  var si=s1.querySelector("input");if(si){si.disabled=true;si.style.opacity="0.4";}
+}
+
+function clearArchBadge(){
+  var ex=document.getElementById("arch-badge-display");if(ex)ex.remove();
+  var s1=document.querySelector(".step-item");
+  if(s1){var si=s1.querySelector("input");if(si){si.disabled=false;si.style.opacity="1";}}
+  document.querySelectorAll("[class*=warn],[class*=notice]").forEach(function(el){if(el.textContent.includes("\u672a\u767b\u9332"))el.style.display="";});
+}
+
+// 現在の建築家情報パネルにバッジを表示
+function refreshArchBadge(){
+  if(!_currentSpaceId)return;
+  var archId=_spaceMap[_currentSpaceId];
+  clearArchBadge();
+  if(archId) showArchBadge(archId);
+}
+
+// fi クリック→スペースID記録
+document.addEventListener("click",function(e){
+  var fi=e.target.closest("#fac-list .fi");
+  if(!fi)return;
+  clearArchBadge();
+  // fiのindexからspaceIdを取得（spaceMapのキーはsupabaseのid）
+  var idx=Array.from(document.querySelectorAll("#fac-list .fi")).indexOf(fi);
+  var ids=Object.keys(_spaceMap);
+  // supabaseからのorder=created_at.ascで取得したインデックスと一致させる
+  // より確実な方法: fiのテキスト名でspaceMapを検索
+  var fiName=fi.querySelector("[class*=name],[class*=title],span,div");
+  var nameText=fiName?fiName.textContent.trim():"";
+  // spaceMapのidを全部試してname照合
+  // 代わりに: fiにdata-idがない場合、スペース一覧をDBから名前で照合
+  setTimeout(async function(){
+    // アクティブなfiの名前からspaceIdを特定
+    var activeFi=document.querySelector("#fac-list .fi.on, #fac-list .fi.active");
+    var activeName=activeFi?(activeFi.textContent||"").trim().split("\n")[0].trim().replace(/[●・]/g,"").trim():"";
+    // spaces APIで名前照合
+    var r=await fetch(S+"/rest/v1/spaces?select=id,name,architect_id",{headers:{"apikey":K,"Authorization":"Bearer "+K}});
+    var spaces=await r.json();
+    var found=spaces.find(function(sp){return activeName&&sp.name&&sp.name.includes(activeName)||activeName&&activeName.includes(sp.name);});
+    if(found){
+      _currentSpaceId=found.id;
+      _spaceMap[found.id]=found.architect_id;
+    }
+  },400);
+});
+
+// 建築家情報ボタンクリック
+document.addEventListener("click",function(e){
+  var btn=e.target.closest("button,a");
+  if(!btn)return;
+  if(btn.textContent.includes("\u5efa\u7bc9\u5bb6")){
+    setTimeout(refreshArchBadge,600);
+  }
+});
+
+// ページ読み込み時にキャッシュ＋初期表示
+document.addEventListener("DOMContentLoaded",async function(){
+  await loadSpaceMap();
+  // 既に開いているパネルがあれば更新
+  setTimeout(refreshArchBadge,1000);
+});
+
+// 利用者の声バッジ
+async function updateVoicesBadge(spaceId){
+  var url=S+"/rest/v1/voices?status=eq.pending&select=id";
+  if(spaceId)url+=("&space_id=eq."+spaceId);
+  var r=await fetch(url,{headers:{"apikey":K,"Authorization":"Bearer "+K,"Prefer":"count=exact"}});
+  var ct=r.headers.get("content-range")||"0/0";
+  var count=parseInt(ct.split("/")[1])||0;
+  Array.from(document.querySelectorAll("button,a")).filter(function(el){return el.textContent.includes("\u5229\u7528\u8005\u306e\u58f0");}).forEach(function(btn){
+    var badge=btn.querySelector(".voices-badge");
+    if(count>0){
+      if(!badge){badge=document.createElement("span");badge.className="voices-badge";badge.style.cssText="display:inline-flex;align-items:center;justify-content:center;background:#e85d5d;color:#fff;font-size:9px;font-weight:700;min-width:16px;height:16px;border-radius:8px;padding:0 4px;margin-left:6px;line-height:1;";btn.appendChild(badge);}
+      badge.textContent=count;
+    } else {if(badge)badge.remove();}
+  });
+}
+document.addEventListener("DOMContentLoaded",function(){setTimeout(function(){updateVoicesBadge();},2000);});
+document.addEventListener("click",function(e){
+  var fi2=e.target.closest("#fac-list .fi");
+  if(fi2)setTimeout(function(){updateVoicesBadge(_currentSpaceId);},800);
+});
+
+})();</script>
 </body></html>
