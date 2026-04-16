@@ -1,4 +1,22 @@
-.arch-new-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;}.arch-new-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;}.arch-new-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;}
+
+<script>
+(function(){
+function fixFirm(){
+  document.querySelectorAll(".arch-new-card").forEach(function(card){
+    var nameEl=card.querySelector(".arch-new-name");
+    var firmEl=card.querySelector(".arch-new-firm");
+    if(!nameEl||!firmEl)return;
+    var name=nameEl.textContent.trim();
+    var firm=firmEl.textContent.trim();
+    if(firm&&firm===name)firmEl.style.display="none";
+  });
+}
+var obs=new MutationObserver(fixFirm);
+var sec=document.getElementById("architect-story");
+if(sec)obs.observe(sec,{childList:true,subtree:true});
+setTimeout(fixFirm,3000);
+})();
+</script>.arch-new-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;}.arch-new-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;}.arch-new-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;}
 <style>
 .arch-new-grid{grid-template-columns:repeat(5,1fr)!important;}
 .arch-new-empty-txt{display:none!important;}
