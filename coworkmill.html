@@ -1,4 +1,48 @@
 
+<style>
+@media(max-width:768px){
+.arch-new-grid{grid-template-columns:repeat(2,1fr)!important;gap:10px!important;}
+.arch-new-name{font-size:12px!important;}
+.arch-new-firm{font-size:11px!important;}
+.arch-new-cnt{font-size:10px!important;}
+.arch-new-thumb{height:32px!important;}
+}
+</style>
+<script>
+(function(){
+var S="https://jakwntemjkwqwaqujffh.supabase.co",K="sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ";
+function patchJaName(){
+  document.querySelectorAll(".arch-new-card").forEach(function(card){
+    var nameEl=card.querySelector(".arch-new-name");
+    var firmEl=card.querySelector(".arch-new-firm");
+    if(!nameEl||!firmEl)return;
+    if(firmEl.dataset.patched)return;
+    firmEl.dataset.patched="1";
+    var nameEn=nameEl.textContent.trim();
+    var firm=firmEl.textContent.trim();
+    // firmがname_enと同じ→日本語名をAPI取得して表示
+    if(firm===nameEn||!firm){
+      var href=card.href||card.getAttribute("href")||"";
+      var m=href.match(/id=([a-f0-9-]+)/);
+      if(!m)return;
+      fetch(S+"/rest/v1/architects?select=name&id=eq."+m[1],{headers:{"apikey":K,"Authorization":"Bearer "+K}})
+        .then(function(r){return r.json();})
+        .then(function(data){
+          if(data&&data[0]&&data[0].name){
+            firmEl.textContent=data[0].name;
+            firmEl.style.display="";
+          }
+        }).catch(function(){});
+    }
+  });
+}
+// MutationObserverで動的生成後も対応
+var sec=document.getElementById("architect-story");
+if(sec)new MutationObserver(patchJaName).observe(sec,{childList:true,subtree:true});
+setTimeout(patchJaName,2000);
+setTimeout(patchJaName,5000);
+})();
+</script>
 <script>(function(){var s=document.createElement("style");s.textContent=".acard-portrait{filter:none!important;transition:none!important;}";(document.head||document.documentElement).appendChild(s);})();</script>
 <script>
 (function(){
