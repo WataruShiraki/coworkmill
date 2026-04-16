@@ -1,4 +1,19 @@
-<!DOCTYPE html>
+
+<script>
+(function(){
+var ns=document.querySelector(".nav-logo span");if(ns)ns.style.display="none";
+var firmEl=document.querySelector(".arch-firm");if(firmEl){var nameEl=document.querySelector(".arch-name-en");if(nameEl&&firmEl.textContent.trim()===nameEl.textContent.trim())firmEl.style.display="none";}
+fetch("coworkmill.html").then(function(r){return r.text();}).then(function(html){
+  var dp=new DOMParser();var doc=dp.parseFromString(html,"text/html");
+  var srcNav=doc.querySelector("nav");
+  var srcFooter=doc.querySelector("footer");
+  var curNav=document.querySelector("nav");
+  var curFooter=document.querySelector("footer");
+  if(srcNav&&curNav){curNav.outerHTML=srcNav.outerHTML;}
+  if(srcFooter&&curFooter){curFooter.outerHTML=srcFooter.outerHTML;}
+}).catch(function(){});
+})();
+</script><!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
