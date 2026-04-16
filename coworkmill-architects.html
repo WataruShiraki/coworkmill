@@ -1,4 +1,16 @@
-<!DOCTYPE html>
+
+<style>.acard-portrait{filter:grayscale(0%)!important;}</style>
+<script>
+(function(){
+// target="_blank" を全削除
+document.querySelectorAll('a[target="_blank"]').forEach(function(a){a.removeAttribute("target");});
+// MutationObserverで動的生成後も対応
+var obs=new MutationObserver(function(){
+  document.querySelectorAll('a[target="_blank"]').forEach(function(a){a.removeAttribute("target");});
+});
+obs.observe(document.body,{childList:true,subtree:true});
+})();
+</script><!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
