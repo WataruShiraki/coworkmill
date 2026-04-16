@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>建築家 — COWORKMILL</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="coworkmill_logo2.svg" type="image/svg+xml">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#0e0e0e;color:#f0f0f0;font-family:"Noto Sans JP",-apple-system,sans-serif;min-height:100vh;display:flex;flex-direction:column;}
+a{color:inherit;text-decoration:none;}
+.global-nav{display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:64px;background:#0e0e0e;border-bottom:1px solid #1e1e1e;position:sticky;top:0;z-index:100;}
+.global-nav-logo img{height:26px;width:auto;}
+.global-nav-links{display:flex;gap:28px;font-size:13px;color:#888;align-items:center;}
+.global-nav-links a:hover{color:#fff;}
+.global-nav-cta{background:#2BB5C8;color:#000!important;padding:8px 18px;border-radius:4px;font-size:13px;font-weight:700;}
+.arch-main{flex:1;max-width:960px;margin:0 auto;width:100%;padding:56px 40px 60px;}
+.arch-hero{display:flex;gap:36px;align-items:flex-start;margin-bottom:48px;}
+.arch-portrait{width:160px;height:160px;border-radius:10px;object-fit:cover;object-position:top center;flex-shrink:0;background:#1a1a1a;display:block;}
+.arch-info{flex:1;}
+.arch-label{font-size:10px;letter-spacing:.2em;color:#2BB5C8;text-transform:uppercase;margin-bottom:10px;}
+.arch-name-ja{font-size:14px;color:#888;margin-bottom:6px;}
+.arch-name-en{font-size:30px;font-weight:700;line-height:1.2;margin-bottom:16px;}
+.arch-bio{font-size:14px;line-height:1.9;color:#aaa;margin-bottom:24px;max-width:540px;}
+.arch-contact-btn{display:inline-flex;align-items:center;gap:8px;background:transparent;border:1px solid #2BB5C8;color:#2BB5C8;padding:10px 22px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;}
+.arch-contact-btn:hover{background:#2BB5C8;color:#000;}
+.arch-works-title{font-size:10px;letter-spacing:.2em;color:#555;text-transform:uppercase;margin-bottom:24px;padding-bottom:14px;border-bottom:1px solid #1e1e1e;}
+.arch-works-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;}
+.space-card{display:block;background:#141414;border-radius:10px;overflow:hidden;border:1px solid #1e1e1e;transition:border-color .2s;}
+.space-card:hover{border-color:#2BB5C8;}
+.space-card-img{width:100%;height:170px;object-fit:cover;display:block;background:#1a1a1a;}
+.space-card-body{padding:14px 16px;}
+.space-card-name{font-size:14px;font-weight:600;margin-bottom:4px;}
+.space-card-area{font-size:12px;color:#555;}
+.loading{text-align:center;padding:80px 0;color:#444;font-size:14px;}
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;align-items:center;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal{background:#161616;border:1px solid #2a2a2a;border-radius:12px;width:100%;max-width:480px;padding:32px;margin:16px;}
+.modal h2{font-size:17px;font-weight:700;margin-bottom:20px;}
+.modal label{display:block;font-size:12px;color:#888;margin-bottom:5px;margin-top:14px;}
+.modal input,.modal textarea,.modal select{width:100%;background:#1e1e1e;border:1px solid #2a2a2a;border-radius:6px;color:#fff;padding:9px 12px;font-size:14px;font-family:inherit;outline:none;}
+.modal textarea{height:110px;resize:vertical;}
+.modal input:focus,.modal textarea:focus,.modal select:focus{border-color:#2BB5C8;}
+.modal-btns{display:flex;gap:10px;margin-top:22px;}
+.btn-submit{flex:1;background:#2BB5C8;color:#000;border:none;border-radius:6px;padding:11px;font-size:14px;font-weight:700;cursor:pointer;}
+.btn-cancel{background:transparent;border:1px solid #333;color:#888;border-radius:6px;padding:11px 18px;font-size:14px;cursor:pointer;}
+.btn-cancel:hover{color:#fff;}
+.modal-ok{display:none;text-align:center;padding:20px 0;}
+.modal-ok .check{font-size:36px;color:#2BB5C8;margin-bottom:12px;}
+.err{color:#e55;font-size:12px;margin-top:6px;display:none;}
+.global-footer{background:#0a0a0a;border-top:1px solid #1a1a1a;padding:48px 40px 0;margin-top:auto;}
+.global-footer-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;padding-bottom:40px;}
+.global-footer-brand p{font-size:12px;color:#555;margin-top:12px;line-height:1.7;}
+.global-footer-brand .brand-name{font-size:13px;font-weight:700;color:#888;margin-top:8px;}
+.global-footer-col h4{font-size:11px;letter-spacing:.12em;color:#555;text-transform:uppercase;margin-bottom:16px;}
+.global-footer-col a{display:block;font-size:13px;color:#666;margin-bottom:10px;}
+.global-footer-col a:hover{color:#fff;}
+.global-footer-bottom{max-width:1200px;margin:0 auto;padding:20px 0 28px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid #1a1a1a;}
+.global-footer-copy{font-size:11px;color:#444;}
+.global-footer-bottom-links{display:flex;gap:20px;}
+.global-footer-bottom-links a{font-size:11px;color:#444;}
+.global-footer-bottom-links a:hover{color:#888;}
+@media(max-width:768px){.global-nav{padding:0 20px;}.global-nav-links{gap:16px;font-size:12px;}.arch-main{padding:32px 20px 40px;}.arch-hero{flex-direction:column;gap:20px;}.arch-portrait{width:120px;height:120px;}.global-footer-inner{grid-template-columns:1fr 1fr;gap:24px;}.global-footer{padding:32px 20px 0;}}
+</style>
+</head>
+<body>
+<nav class="global-nav">
+<a href="coworkmill.html" class="global-nav-logo"><img src="coworkmill_logo2.svg" alt="COWORKMILL" onerror="this.style.display='none'"></a>
+<div class="global-nav-links">
+<a href="coworkmill-spaces.html">コワーキングを探す</a>
+<a href="coworkmill-architects.html">建築家から探す</a>
+<a href="coworkmill-photos.html">写真から探す</a>
+<a href="coworkmill-register.html" class="global-nav-cta">コワーキング登録</a>
+</div>
+</nav>
+<main class="arch-main" id="root"><div class="loading">読み込み中…</div></main>
+<div class="modal-overlay" id="modal">
+<div class="modal">
+<div id="mform">
+<h2 id="mtitle"></h2>
+<label>お名前 *</label><input type="text" id="cn">
+<label>メール *</label><input type="email" id="ce">
+<label>種類</label><select id="ck"><option>設計相談</option><option>施工相談</option><option>コワーキング設計</option><option>その他</option></select>
+<label>内容 *</label><textarea id="cb"></textarea>
+<p class="err" id="er">必須項目を入力してください</p>
+<div class="modal-btns"><button class="btn-cancel" id="mc">キャンセル</button><button class="btn-submit" id="ms">送信する</button></div>
+</div>
+<div class="modal-ok" id="mok"><div class="check">✓</div><p>送信しました。</p><button class="btn-cancel" id="mcl" style="margin-top:16px;width:100%">閉じる</button></div>
+</div>
+</div>
+<footer class="global-footer">
+<div class="global-footer-inner">
+<div class="global-footer-brand">
+<img src="coworkmill_logo2.svg" alt="COWORKMILL" style="height:22px;opacity:.6" onerror="this.style.display='none'">
+<p>デザイン性で厳選されたコワーキングを、<br>仕事タイプや建築家で探そう。</p>
+<p class="brand-name">Lily Partners, Inc.</p>
+</div>
+<div class="global-footer-col"><h4>探す</h4><a href="coworkmill-spaces.html">コワーキングを探す</a><a href="coworkmill-architects.html">建築家から探す</a><a href="coworkmill-photos.html">写真から探す</a></div>
+<div class="global-footer-col"><h4>掃載・運営</h4><a href="coworkmill-register.html">コワーキング登録</a><a href="coworkmill-contact.html">お問い合わせ</a><a href="coworkmill-company.html">運営会社</a></div>
+<div class="global-footer-col"><h4>関連サービス</h4><a href="https://officemill.jp" target="_blank">OFFICEMILL →</a><a href="https://cafemill.jp" target="_blank">CAFEMILL →</a></div>
+</div>
+<div class="global-footer-bottom"><p class="global-footer-copy">© 2026 Lily Partners, Inc.</p><div class="global-footer-bottom-links"><a href="coworkmill-privacy.html">プライバシーポリシー</a><a href="coworkmill-terms.html">利用規約</a></div></div>
+</footer>
+<script>
+(function(){
+var S="https://jakwntemjkwqwaqujffh.supabase.co",K="sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ";
+var id=new URLSearchParams(location.search).get("id");
+var modal=document.getElementById("modal");
+function closeModal(){modal.classList.remove("open");}
+document.getElementById("mc").onclick=closeModal;
+document.getElementById("mcl").onclick=function(){closeModal();document.getElementById("mok").style.display="none";document.getElementById("mform").style.display="block";};
+document.getElementById("ms").onclick=async function(){
+var n=document.getElementById("cn").value.trim(),e=document.getElementById("ce").value.trim(),b=document.getElementById("cb").value.trim(),t=document.getElementById("ck").value;
+if(!n||!e||!b){document.getElementById("er").style.display="block";return;}
+document.getElementById("er").style.display="none";
+try{await fetch("https://formspree.io/f/xzzpjywb",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({name:n,email:e,_replyto:e,_subject:"[COWORKMILL] "+t,message:document.getElementById("mtitle").textContent+"\n"+t+"\n"+n+"\n"+e+"\n"+b})});}catch(x){}
+document.getElementById("mform").style.display="none";document.getElementById("mok").style.display="block";
+};
+if(!id){document.getElementById("root").innerHTML='<div class="loading">建築家が見つかりません</div>';return;}
+async function go(){
+try{
+var ar=await fetch(S+"/rest/v1/architects?select=*&id=eq."+id,{headers:{"apikey":K,"Authorization":"Bearer "+K}});
+var a=(await ar.json())[0];
+if(!a){document.getElementById("root").innerHTML='<div class="loading">建築家が見つかりません</div>';return;}
+document.title=(a.name_en||a.name)+"が手がけたコワーキングスペース — COWORKMILL";
+document.getElementById("mtitle").textContent=(a.name_en||a.name)+"にお問い合わせ";
+var sr=await fetch(S+"/rest/v1/spaces?select=id,name,area&architect_id=eq."+id+"&status=eq.live",{headers:{"apikey":K,"Authorization":"Bearer "+K}});
+var spaces=await sr.json();
+var cards="";
+if(Array.isArray(spaces)&&spaces.length){for(var i=0;i<spaces.length;i++){var sp=spaces[i],ph="";
+try{var lr=await fetch(S+"/storage/v1/object/list/space-images",{method:"POST",headers:{"apikey":K,"Authorization":"Bearer "+K,"Content-Type":"application/json"},body:JSON.stringify({prefix:sp.id+"/",limit:1})});var fs=await lr.json();if(Array.isArray(fs)&&fs.length)ph=S+"/storage/v1/object/public/space-images/"+sp.id+"/"+fs[0].name;}catch(e2){}
+cards+='<a href="coworkmill-detail.html?id='+sp.id+'" class="space-card">'+(ph?'<img class="space-card-img" src="'+ph+'" loading="lazy">':'<div class="space-card-img"></div>')+'<div class="space-card-body"><div class="space-card-name">'+sp.name+'</div><div class="space-card-area">'+sp.area+'</div></div></a>';}}
+var nameJa=(a.firm&&a.firm!==a.name_en)?a.firm:(a.name||"");
+var nameEn=a.name_en||"";
+document.getElementById("root").innerHTML='<div class="arch-hero">'+(a.portrait_url?'<img class="arch-portrait" src="'+a.portrait_url+'" alt="'+nameEn+'">':"")+'<div class="arch-info"><div class="arch-label">Architect</div>'+(nameJa&&nameJa!==nameEn?'<div class="arch-name-ja">'+nameJa+"</div>":"")+'<div class="arch-name-en">'+nameEn+'</div>'+(a.bio?'<div class="arch-bio">'+a.bio+"</div>":"")+'<button class="arch-contact-btn" id="cbtn">✉️ '+nameEn+'にお問い合わせ</button></div></div>'+(cards?'<div class="arch-works-title">手がけたコワーキングスペース — '+spaces.length+' 件</div><div class="arch-works-grid">'+cards+"</div>":"");
+document.getElementById("cbtn").onclick=function(){modal.classList.add("open");};
+}catch(e){document.getElementById("root").innerHTML='<div class="loading">エラー: '+e.message+'</div>';}
+}
+go();
+})();
+</script>
+</body>
+</html>
