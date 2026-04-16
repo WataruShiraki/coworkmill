@@ -1,4 +1,25 @@
 
+<script>
+document.addEventListener("DOMContentLoaded",function(){
+function fix(){
+  document.querySelectorAll(".acard-portrait").forEach(function(img){
+    img.style.setProperty("filter","none","important");
+  });
+}
+fix();
+new MutationObserver(fix).observe(document.body||document.documentElement,{childList:true,subtree:true});
+});
+if(document.readyState!=="loading"){
+  document.querySelectorAll(".acard-portrait").forEach(function(img){
+    img.style.setProperty("filter","none","important");
+  });
+  new MutationObserver(function(){
+    document.querySelectorAll(".acard-portrait").forEach(function(img){
+      img.style.setProperty("filter","none","important");
+    });
+  }).observe(document.body||document.documentElement,{childList:true,subtree:true});
+}
+</script>
 <style>.acard-portrait{filter:grayscale(0%)!important;}</style>
 <script>
 (function(){
