@@ -1,4 +1,25 @@
 
+<script>
+(function(){
+function setSPGrid(){
+  var g=document.querySelector(".arch-new-grid");
+  if(!g)return;
+  if(window.innerWidth<=768){
+    g.style.setProperty("grid-template-columns","repeat(2,1fr)","important");
+    g.style.setProperty("gap","10px","important");
+  }else{
+    g.style.removeProperty("grid-template-columns");
+    g.style.removeProperty("gap");
+  }
+}
+setSPGrid();
+window.addEventListener("resize",setSPGrid);
+// 建築家カード生成後にも実行
+var sec=document.getElementById("architect-story");
+if(sec)new MutationObserver(setSPGrid).observe(sec,{childList:true,subtree:true});
+setTimeout(setSPGrid,2000);
+})();
+</script>
 <style>
 @media(max-width:768px){
 .arch-new-grid{grid-template-columns:repeat(2,1fr)!important;gap:10px!important;}
