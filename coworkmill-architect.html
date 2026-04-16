@@ -1,4 +1,19 @@
-<!DOCTYPE html>
+
+<script>
+(function(){
+var fl=document.createElement("link");fl.rel="icon";fl.type="image/svg+xml";
+fl.href="coworkmill_logo2.svg";
+document.head.appendChild(fl);
+fetch("coworkmill.html").then(function(r){return r.text();}).then(function(html){
+  var dp=new DOMParser();
+  var doc=dp.parseFromString(html,"text/html");
+  var srcFooter=doc.querySelector("footer");
+  if(srcFooter&&!document.querySelector("footer")){
+    document.body.appendChild(srcFooter);
+  }
+}).catch(function(){});
+})();
+</script><!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
