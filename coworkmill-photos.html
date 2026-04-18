@@ -433,6 +433,73 @@ renderGrid(photos);
     </div>
   </div>
 </footer>
+
+<style>
+.area-filter{overflow-x:auto;flex-wrap:wrap;justify-content:flex-start;padding:0 40px 32px;gap:8px;}
+.area-filter::-webkit-scrollbar{display:none}
+.atag{font-size:11px;white-space:nowrap;}
+@media(max-width:768px){.area-filter{padding:0 16px 24px;}}
+</style>
+<script>
+(function(){
+var S="https://jakwntemjkwqwaqujffh.supabase.co",K="sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ";
+var FEATS=[{k:"all",l:"すべて"},{k:"highrise",l:"都市の高層階"},{k:"machiya",l:"古民家・町家"},{k:"nature",l:"自然・山・海"},{k:"warehouse",l:"倉庫・工場跡"},{k:"hotel",l:"ホテル併設"},{k:"museum",l:"ミュージアム隣接"},{k:"station",l:"駅直結"},{k:"minimal",l:"ミニマル・無機質"},{k:"terrace",l:"テラス・屋外席"},{k:"waterside",l:"川沿い・水辺"},{k:"green",l:"緑・植物いっぱい"},{k:"library",l:"ライブラリー・書棚"},{k:"retro",l:"歴史的建造物・レトロ"},{k:"hidden",l:"路地裏・隠れ家"},{k:"art",l:"アート・ギャラリー空間"},{k:"atrium",l:"吹き抜け・高天井"}];
+var activeKey="all";
+var vibeMap={};
+function buildTags(){
+var f=document.getElementById("area-filter");
+if(!f)return;
+f.innerHTML="";
+FEATS.forEach(function(ft){
+var b=document.createElement("button");
+b.className="atag"+(ft.k==="all"?" on":"");
+b.setAttribute("data-key",ft.k);
+b.textContent=ft.l;
+b.addEventListener("click",function(){filterBy(ft.k);});
+f.appendChild(b);
+});
+}
+function applyVibe(){
+var items=document.querySelectorAll(".photo-item");
+items.forEach(function(item){
+var m=(item.getAttribute("href")||"").match(/id=([a-f0-9\-]{36})/);
+if(m&&vibeMap[m[1]]){item.setAttribute("data-vibe",vibeMap[m[1]]);}
+});
+if(activeKey!=="all")filterBy(activeKey);
+}
+function filterBy(key){
+activeKey=key;
+document.querySelectorAll(".atag[data-key]").forEach(function(b){
+b.classList.toggle("on",b.getAttribute("data-key")===key);
+});
+var items=document.querySelectorAll(".photo-item");
+var shown=0;
+items.forEach(function(item){
+var vibe=item.getAttribute("data-vibe")||"";
+var vibes=vibe.split(",").map(function(v){return v.trim();});
+var show=(key==="all"||vibes.indexOf(key)>=0);
+item.style.display=show?"":"none";
+if(show)shown++;
+});
+var nr=document.querySelector(".no-results");
+if(nr)nr.style.display=(shown===0?"block":"none");
+}
+function fetchVibeData(){
+fetch(S+"/rest/v1/spaces?select=id,vibe&status=eq.live",{
+headers:{"apikey":K,"Authorization":"Bearer "+K}
+}).then(function(r){return r.json();}).then(function(d){
+d.forEach(function(s){if(s.vibe)vibeMap[s.id]=s.vibe;});
+applyVibe();
+}).catch(function(){});
+}
+function init(){buildTags();fetchVibeData();
+var obs=new MutationObserver(function(){applyVibe();});
+var g=document.getElementById("photo-grid");
+if(g)obs.observe(g,{childList:true});
+}
+if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",init);}else{setTimeout(init,200);}
+})();
+</script>
 <script src="coworkmill-features.js"></script>
 </body>
 </html>
