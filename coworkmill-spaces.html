@@ -850,6 +850,32 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
     </div>
   
 </footer>
+
+<script>
+/* workstyle_tags → data-work パッチ */
+(function(){
+var S="https://jakwntemjkwqwaqujffh.supabase.co",K="sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ";
+var MAP={"Deep Work":"deepwork","Creative":"creative","Ideation":"ideation","Meeting":"meeting","Remote Call":"remotecall","Learning":"learning"};
+function applyWorkstyle(){
+fetch(S+'/rest/v1/spaces?select=id,workstyle_tags&status=eq.live',{
+headers:{"apikey":K,"Authorization":"Bearer "+K}
+}).then(function(r){return r.json();}).then(function(d){
+d.forEach(function(sp){
+if(!sp.workstyle_tags||!sp.workstyle_tags.length)return;
+var card=document.querySelector('.scard[href*="id='+sp.id+'"]');
+if(!card)return;
+var works=sp.workstyle_tags.map(function(t){return MAP[t]||t.toLowerCase().replace(/\s+/g,"");});
+card.setAttribute("data-work",works.join(" "));
+});
+});
+}
+var obs=new MutationObserver(function(){applyWorkstyle();});
+var grid=document.getElementById("view-grid-content");
+if(grid){obs.observe(grid,{childList:true});}
+if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",function(){setTimeout(applyWorkstyle,500);});}
+else{setTimeout(applyWorkstyle,500);}
+})();
+</script>
 <script src="coworkmill-features.js"></script>
 <script>var _VIBE_LABEL={
     urban:'都市の高層階',machiya:'古民家・町家',
