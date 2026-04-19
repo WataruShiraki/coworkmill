@@ -1,0 +1,35 @@
+# COWORKMILL
+
+> デザイン性で厳選されたコワーキングスペースを、仕事タイプや建築家で探せる検索サービス。
+
+COWORKMILL（コワークミル）は、建築家・デザイン会社が手がけた国内のコワーキングスペースを専門に掲載する検索サービスです。「美しい空間で働く」をコンセプトに、デザイン性と機能性を兼ね備えた施設のみを厳選して掲載しています。
+
+## サービスの特徴
+
+- 建築家・デザイン事務所から探せる: 施設を手がけた建築家でコワーキングスペースを絞り込める唯一のサービス
+- 仕事タイプで絞り込める: Deep Work・Creative・Ideation・Meeting・Remote Call・Learningの6タイプ
+- 場所の特徴で絞り込める: 都市の高層階・古民家・自然・倉庫跡・テラス・水辺・緑など16種類の雰囲気タグ
+- 写真から直感的に探せる: 施設の雰囲気を写真一覧から感覚的に選べる
+- 全国対応: 東京・大阪・京都・名古屋・福岡など全国の主要都市に対応
+
+## 掲載施設について
+
+掲載施設はすべて審査制。デザイン性・空間品質・利便性を基準に厳選。ドロップイン（都度利用）から月額プランまで対応。料金・設備情報も詳しく掲載。
+
+## 利用者向けページ
+
+- トップページ: https://coworkmill.jp/coworkmill.html
+- 施設一覧・検索: https://coworkmill.jp/coworkmill-spaces.html
+- 写真から探す: https://coworkmill.jp/coworkmill-photos.html
+- 建築家から探す: https://coworkmill.jp/coworkmill-architects.html
+
+## 施設オーナー向けページ
+
+- 掲載申し込み: https://coworkmill.jp/coworkmill-register.html
+- お問い合わせ: https://coworkmill.jp/coworkmill-contact.html
+
+## 運営会社
+
+Lily Partners LLC（リリィパートナーズ合同会社）
+所在地: 東京都大田区
+サービスURL: https://coworkmill.jp
