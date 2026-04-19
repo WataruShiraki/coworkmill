@@ -292,6 +292,8 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
   .arch-alpha-link{font-size:10px}
 }
 </style>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"COWORKMILL","url":"https://coworkmill.jp","description":"建築家・デザイン会社が手がけたコワーキングスペースを全国から探せる検索サービス","potentialAction":{"@type":"SearchAction","target":"https://coworkmill.jp/coworkmill-spaces.html?q={search_term_string}","query-input":"required name=search_term_string"}}</script>
 </head>
 <body>
 
@@ -410,7 +412,8 @@ const architects = [];
       </div>
     </a>`;
       }).join('');
-      sec.innerHTML=head+`<div class="arch-grid">${cards}</div>`;
+      sec.innerHTML=head+`<h1 class="sr-only">建築家・デザイン事務所から探す</h1>
+<div class="arch-grid">${cards}</div>`;
       contentEl2.appendChild(sec);
     });
 
