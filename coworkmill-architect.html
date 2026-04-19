@@ -141,5 +141,78 @@ document.getElementById("cbtn").onclick=function(){modal.classList.add("open");}
 go();
 })();
 </script>
+
+<style>
+#arch-hamburger{display:none}
+#arch-nav-overlay{display:none}
+@media(max-width:768px){
+  .global-nav-links{display:none!important}
+  #arch-hamburger{
+    display:flex!important;
+    flex-direction:column;justify-content:space-between;
+    width:22px;height:16px;
+    cursor:pointer;background:none;border:none;padding:0;
+    margin-left:auto;flex-shrink:0;z-index:1001;
+  }
+  #arch-hamburger span{
+    display:block;width:100%;height:2px;
+    background:rgba(255,255,255,.85);border-radius:2px;
+    transition:transform .3s,opacity .3s;
+  }
+  #arch-hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+  #arch-hamburger.open span:nth-child(2){opacity:0}
+  #arch-hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+  #arch-nav-overlay{
+    display:none;
+    position:fixed;top:64px;left:0;right:0;
+    background:rgba(10,10,10,.97);
+    border-top:1px solid #1e1e1e;
+    z-index:1000;flex-direction:column;
+    padding:20px 0 28px;
+  }
+  #arch-nav-overlay.open{display:flex!important}
+  .arch-sp-link{
+    display:block;padding:16px 28px;font-size:16px;
+    color:rgba(255,255,255,.75);text-decoration:none;
+    border-bottom:1px solid #1a1a1a;
+    font-family:'Noto Sans JP',sans-serif;
+    transition:color .15s;
+  }
+  .arch-sp-link:last-child{border-bottom:none}
+  .arch-sp-cta{
+    margin:16px 28px 0;display:block;
+    background:#2BB5C8;color:#000!important;
+    text-align:center;padding:14px;border-radius:8px;
+    font-size:14px;font-weight:700;text-decoration:none;
+  }
+}
+</style>
+<script>
+(function(){
+  function buildArchHamburger(){
+    var nav=document.querySelector('nav,.global-nav');
+    if(!nav||document.getElementById('arch-hamburger'))return;
+    var links=nav.querySelectorAll('.global-nav-links a');
+    var btn=document.createElement('button');
+    btn.id='arch-hamburger';
+    btn.setAttribute('aria-label','メニュー');
+    btn.innerHTML='<span></span><span></span><span></span>';
+    nav.appendChild(btn);
+    var overlay=document.createElement('div');
+    overlay.id='arch-nav-overlay';
+    Array.from(links).forEach(function(a){
+      var el=document.createElement('a');
+      el.href=a.href;el.textContent=a.textContent.trim();
+      el.className=a.classList.contains('global-nav-cta')?'arch-sp-cta':'arch-sp-link';
+      overlay.appendChild(el);
+    });
+    document.body.appendChild(overlay);
+    btn.addEventListener('click',function(e){e.stopPropagation();var o=overlay.classList.toggle('open');btn.classList.toggle('open',o);});
+    document.addEventListener('click',function(e){if(!nav.contains(e.target)&&!overlay.contains(e.target)){overlay.classList.remove('open');btn.classList.remove('open');}});
+    overlay.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){overlay.classList.remove('open');btn.classList.remove('open');});});
+  }
+  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',buildArchHamburger);}else{buildArchHamburger();}
+})();
+</script>
 </body>
 </html>
