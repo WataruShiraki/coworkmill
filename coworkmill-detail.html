@@ -2085,7 +2085,7 @@ function renderPlanCards(sp) {
     var name = sp.name || '';
     var rawDesc = sp.description || '';
     // descriptionの最初の120文字（改行除去）
-    var shortDesc = rawDesc.replace(/
+    var shortDesc = rawDesc.replace(/[\r\n]+/g,
 +/g,' ').trim();
     if(shortDesc.length > 120) shortDesc = shortDesc.substring(0,118) + '…';
     var desc = name + 'のコワーキングスペース詳細。' + shortDesc;
