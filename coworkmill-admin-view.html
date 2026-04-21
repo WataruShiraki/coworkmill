@@ -1487,23 +1487,8 @@ function renderArch() {
       </div>
     </div>`;
   }
-  box.innerHTML = html;
-  // 既存architect_idがある場合に解除ボタンを表示
-  (function(){
-    var dbId=facs[cur]?facs[cur].db_id:null;
-    if(!dbId)return;
-    var SB='https://jakwntemjkwqwaqujffh.supabase.co',K='sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
-    fetch(SB+'/rest/v1/spaces?id=eq.'+dbId+'&select=architect_id,architect_name',{headers:{'apikey':K,'Authorization':'Bearer '+K}})
-    .then(function(r){return r.json();})
-    .then(function(d){
-      if(!d||!d[0]||!d[0].architect_id)return;
-      var aid=d[0].architect_id,anm=d[0].architect_name||'';
-      var sel=document.getElementById('p-arch-selected');
-      if(sel){sel.style.display='flex';sel.dataset.archId=aid;}
-      var snm=document.getElementById('p-arch-selected-name');
-      if(snm)snm.textContent=anm;
-    }).catch(function(){});
-  })();
+    box.innerHTML = html;
+  setTimeout(function(){var d=facs[cur]&&facs[cur].db_id;if(!d)return;fetch('https://jakwntemjkwqwaqujffh.supabase.co/rest/v1/spaces?id=eq.'+d+'&select=architect_id,architect_name',{headers:{apikey:'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ',Authorization:'Bearer sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ'}}).then(function(r){return r.json();}).then(function(rows){if(!rows||!rows[0]||!rows[0].architect_id)return;var el=document.getElementById('p-arch-selected');if(el){el.style.display='flex';el.dataset.archId=rows[0].architect_id;}var nm=document.getElementById('p-arch-selected-name');if(nm)nm.textContent=rows[0].architect_name||'';}).catch(function(){});},0);
 }
 let cur = 0;
 const panels = ['db','info','new','photo','voice','arch','co','st','plan'];
