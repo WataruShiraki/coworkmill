@@ -694,6 +694,27 @@ footer{background:#0a1628;padding:64px 80px 40px;color:#fff;position:relative;ov
 @media(max-width:900px){.gallery-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:600px){.gallery-grid{grid-template-columns:repeat(2,1fr);gap:8px}.gcard-img{height:140px}}
 
+
+/* ===== PICK UP carousel ===== */
+.pickup-overflow { overflow: hidden; }
+#pickup-list {
+  display: flex !important;
+  gap: 24px;
+  width: max-content;
+  animation: marquee-scroll 20s linear infinite;
+}
+#pickup-list:hover { animation-play-state: paused; }
+#pickup-list .card {
+  width: 360px !important;
+  min-width: 360px !important;
+  max-width: 360px !important;
+  flex-shrink: 0;
+}
+@keyframes marquee-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+/* ============================ */
 </style>
 
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"COWORKMILLとはどんなサービスですか？","acceptedAnswer":{"@type":"Answer","text":"COWORKMILLは、建築家・デザイン会社が手がけたコワーキングスペースを専門に掲載する検索サービスです。仕事タイプ（Deep Work・Creative・Meetingなど）や建築家、場所の特徴（高層階・古民家・水辺など）で絞り込んで理想の空間を見つけられます。"}},{"@type":"Question","name":"どうやってコワーキングスペースを探せますか？","acceptedAnswer":{"@type":"Answer","text":"エリア・駅名での検索のほか、仕事タイプ（集中作業・ブレスト・商談など）、設計した建築家・デザイン事務所、場所の雰囲気（倉庫跡・テラス・緑いっぱいなど）でも絞り込めます。写真一覧から直感的に探すこともできます。"}},{"@type":"Question","name":"掲載はどうすれば申し込めますか？","acceptedAnswer":{"@type":"Answer","text":"掲載申し込みページから無料でご申請いただけます。Free・Standard・Proの3プランをご用意しており、審査通過後に掲載が開始されます。"}}]}</script>
@@ -841,7 +862,7 @@ footer{background:#0a1628;padding:64px 80px 40px;color:#fff;position:relative;ov
 </div>
 
 <!-- FEATURED CARDS -->
-<section class="sec">
+<section class="sec pickup-overflow">
   <div class="sec-head">
     <div>
       <div class="sec-title">PICK <span>UP</span></div>
@@ -1302,6 +1323,25 @@ function doSpSearch(){
     });
   }
   [0,300,800,2000,4000].forEach(function(t){setTimeout(fix,t);});
+})();
+</script>
+<script>
+(function(){
+  var pl = document.getElementById('pickup-list');
+  if(!pl) return;
+  // Supabaseからカードが動的に挿入された後に複製する
+  var obs = new MutationObserver(function(muts, o){
+    if(pl.children.length > 0){
+      o.disconnect();
+      Array.from(pl.children).forEach(function(c){ pl.appendChild(c.cloneNode(true)); });
+    }
+  });
+  obs.observe(pl, {childList: true});
+  // すでにカードがある場合の即時複製
+  if(pl.children.length > 0){
+    obs.disconnect();
+    Array.from(pl.children).forEach(function(c){ pl.appendChild(c.cloneNode(true)); });
+  }
 })();
 </script>
 </body></html>
