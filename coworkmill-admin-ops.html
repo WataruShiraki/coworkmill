@@ -603,10 +603,10 @@ function makeSpRow(d) {
   const st = d.status || 'draft';
   const tdName = document.createElement('td'); tdName.innerHTML = '<div style="display:flex;align-items:center;gap:8px">'
     + '<div style="width:32px;height:32px;border-radius:50%;overflow:hidden;background:#1a2a2e;flex-shrink:0;font-size:12px;font-weight:700;color:#2BB5C8;display:flex;align-items:center;justify-content:center">'
-    + (a.portrait_url ? '<img src="'+a.portrait_url+'" style="width:100%;height:100%;object-fit:cover">' : (a.firm||a.name||'?')[0])
+    + (d.portrait_url ? '<img src="'+d.portrait_url+'" style="width:100%;height:100%;object-fit:cover">' : (d.firm||d.name||'?')[0])
     + '</div>'
-    + '<div><strong>'+(a.name||'—')+'</strong>'
-    + (a.name_en ? '<div style="font-size:10px;color:var(--g400)">'+a.name_en+'</div>' : '')
+    + '<div><strong>'+(d.name||'—')+'</strong>'
+    + (d.name_en ? '<div style="font-size:10px;color:var(--g400)">'+d.name_en+'</div>' : '')
     + '</div></div>'
   const tdArea = document.createElement('td'); tdArea.style.cssText='font-size:11px;color:var(--g600)'; tdArea.textContent = area||'—';
   const tdContact = document.createElement('td');
@@ -697,7 +697,7 @@ async function loadArchitects() {
     } else {
       pending.slice(0,3).forEach(a => {
         const tr = document.createElement('tr'); tr.className='hov';
-        tr.innerHTML = `<td><strong>${a.name||'—'}</strong></td><td style="font-size:11px;color:var(--g600)">${a.firm||'—'}</td><td><span class="bdg new">未連絡</span></td>`;
+        tr.innerHTML = `<td><strong>${d.name||'—'}</strong></td><td style="font-size:11px;color:var(--g600)">${d.firm||'—'}</td><td><span class="bdg new">未連絡</span></td>`;
         dbArchTbody.appendChild(tr);
       });
     }
