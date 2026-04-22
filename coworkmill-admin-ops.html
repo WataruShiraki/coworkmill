@@ -697,7 +697,7 @@ async function loadArchitects() {
     } else {
       pending.slice(0,3).forEach(a => {
         const tr = document.createElement('tr'); tr.className='hov';
-        tr.innerHTML = `<td><strong>${d.name||'—'}</strong></td><td style="font-size:11px;color:var(--g600)">${d.firm||'—'}</td><td><span class="bdg new">未連絡</span></td>`;
+        tr.innerHTML = `<td><strong>${a.name||'—'}</strong></td><td style="font-size:11px;color:var(--g600)">${a.firm||'—'}</td><td><span class="bdg new">未連絡</span></td>`;
         dbArchTbody.appendChild(tr);
       });
     }
