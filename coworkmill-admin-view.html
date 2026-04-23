@@ -247,7 +247,27 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
       <input id="login-pass" type="password" placeholder="パスワード" style="width:100%;box-sizing:border-box;background:#111;border:1px solid #333;border-radius:6px;padding:10px 12px;color:#fff;font-size:13px;outline:none" onkeydown="if(event.key==='Enter')doLogin()">
     </div>
     <button onclick="doLogin()" id="login-btn" style="width:100%;background:#2BB5C8;color:#fff;border:none;border-radius:6px;padding:12px;font-size:14px;font-weight:600;cursor:pointer">ログイン</button>
-    <div style="text-align:center;margin-top:16px;font-size:11px;color:#444">パスワードを忘れた場合は運営にお問い合わせください</div>
+    <div style="text-align:center;margin-top:16px">
+      <button onclick="showForgotView()" style="background:none;border:none;color:#555;font-size:11px;cursor:pointer;text-decoration:underline;padding:0">パスワードをお忘れの方</button>
+    </div>
+
+    <!-- パスワード忘れビュー -->
+    <div id="forgot-view" style="display:none;margin-top:20px;border-top:1px solid #2a2a2a;padding-top:20px">
+      <div style="text-align:center;margin-bottom:16px">
+        <div style="font-size:13px;font-weight:600;color:#ccc;margin-bottom:8px">🔑 パスワードのリセット</div>
+        <div style="font-size:11px;color:#666;line-height:1.7">
+          パスワードのリセットは運営が対応します。<br>
+          登録メールアドレスと会社名を添えて<br>
+          下記までご連絡ください。
+        </div>
+      </div>
+      <a href="mailto:ws@lily-p.com?subject=【COWORKMILL】パスワードリセットのご依頼&body=会社名：%0Aご登録メールアドレス：%0A%0Aパスワードのリセットをお願いします。" style="display:block;background:#1a2a1a;border:1px solid #2d4a2d;border-radius:6px;padding:12px;text-align:center;text-decoration:none;color:#66bb6a;font-size:12px;font-weight:600">
+        ✉️ ws@lily-p.com にメールする
+      </a>
+      <div style="text-align:center;margin-top:12px">
+        <button onclick="hideForgotView()" style="background:none;border:none;color:#555;font-size:11px;cursor:pointer;text-decoration:underline;padding:0">← ログインに戻る</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -310,7 +330,15 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
   };
 
   // ログアウト処理
-  window.doLogout = function() {
+  
+  window.showForgotView = function() {
+    document.getElementById('forgot-view').style.display = 'block';
+    document.getElementById('login-error').style.display = 'none';
+  };
+  window.hideForgotView = function() {
+    document.getElementById('forgot-view').style.display = 'none';
+  };
+window.doLogout = function() {
     sessionStorage.removeItem(SESS_KEY);
     location.reload();
   };
