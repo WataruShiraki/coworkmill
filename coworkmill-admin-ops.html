@@ -658,6 +658,38 @@ function makeSpRow(d) {
   return tr;
 }
 
+async function loadAccounts() {
+  try {
+    const data = await sbGet('accounts?select=id,company,email,plan,space_count,paid_until,status,created_at&order=created_at.desc');
+    if (!Array.isArray(data)) return;
+    const tbody = document.getElementById('ac-tbody');
+    if (!tbody) return;
+    tbody.innerHTML = '';
+    if (data.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7" class="empty">登録済みアカウントはありません</td></tr>';
+      return;
+    }
+    data.forEach(ac => {
+      const tr = document.createElement('tr');
+      tr.className = 'hov';
+      const planClass = ac.plan === 'pro' ? 'pro' : ac.plan === 'standard' ? 'std' : 'fr';
+      const planLabel = ac.plan === 'pro' ? 'Pro' : ac.plan === 'standard' ? 'Standard' : 'Free';
+      const statusClass = ac.status === 'active' ? 'lv' : 'dr';
+      const statusLabel = ac.status === 'active' ? '有効' : '無効';
+      tr.innerHTML = `
+        <td><strong>${ac.company||'—'}</strong></td>
+        <td style="font-size:11px;color:var(--g400)">${ac.email||'—'}</td>
+        <td><span class="bdg ${planClass}">${planLabel}</span></td>
+        <td style="font-size:11px">${ac.space_count||0}件</td>
+        <td style="font-size:11px;color:var(--g400)">${ac.paid_until||'—'}</td>
+        <td><span class="bdg ${statusClass}">${statusLabel}</span></td>
+        <td style="font-size:11px;color:var(--g400)">${fmtDate(ac.created_at)}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  } catch(e) { console.warn('loadAccounts error:', e); }
+}
+
 async function confirmApprove() {
   if (!pendingSpaceId) return;
   const r = await sbPatch('spaces','id=eq.'+pendingSpaceId,{status:'live'});
