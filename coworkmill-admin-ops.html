@@ -267,7 +267,7 @@ a{text-decoration:none;color:inherit}
           <button class="bpu" onclick="openModal('m-newac')">＋ 新規アカウント作成</button>
         </div>
         <table class="tbl">
-          <thead><tr><th>会社名</th><th>メールアドレス</th><th>プラン</th><th>登録施設数</th><th>無料期間終了日</th><th>ステータス</th><th>作成日</th><th></th></tr></thead>
+          <thead><tr><th>会社名</th><th>メールアドレス *</th><th>プラン</th><th>登録施設数</th><th>無料期間終了日</th><th>ステータス</th><th>作成日</th><th></th></tr></thead>
           <tbody id="ac-tbody"><tr><td colspan="8" class="empty">登録済みアカウントはありません</td></tr></tbody>
         </table>
       </div>
@@ -406,7 +406,7 @@ a{text-decoration:none;color:inherit}
     <div class="modal-ttl">新規アカウント作成</div>
     <div class="modal-body">運営が代理でプロプランアカウントを作成します。完了後に施設を紐付け、オーナーに移譲できます。</div>
     <div class="fg"><div class="fl">会社名 *</div><input class="fin" id="na-company" placeholder="例：〇〇株式会社"></div>
-    <div class="fg"><div class="fl">メールアドレス</div><input class="fin" id="na-email" type="email" placeholder="例：info@example.com（未定の場合は空欄でOK）"></div>
+    <div class="fg"><div class="fl">メールアドレス</div><input class="fin" id="na-email" type="email" placeholder="例：info@example.com" required></div>
     <div class="fg"><div class="fl">仮パスワード *</div><input class="fin" id="na-pass" type="password" placeholder="初回ログイン後に変更を促します"></div>
     <div class="fg"><div class="fl">プラン</div>
       <select class="fin" id="na-plan">
@@ -659,6 +659,40 @@ function makeSpRow(d) {
 }
 
 
+
+function editAccount(id, company, email, plan) {
+  document.getElementById('ea-id').value = id;
+  document.getElementById('ea-company').value = company;
+  document.getElementById('ea-email').value = email;
+  document.getElementById('ea-plan').value = plan;
+  document.getElementById('ea-pass').value = '';
+  document.getElementById('m-editac').classList.add('open');
+}
+
+async function doEditAccount() {
+  const id = document.getElementById('ea-id').value;
+  const co = document.getElementById('ea-company').value.trim();
+  const em = document.getElementById('ea-email').value.trim();
+  const pl = document.getElementById('ea-plan').value;
+  const pa = document.getElementById('ea-pass').value.trim();
+  if (!co || !em) { alert('会社名とメールアドレスは必須です'); return; }
+  const body = { company: co, email: em, plan: pl };
+  if (pa) body.password_plain = pa;
+  try {
+    const res = await fetch(SB_URL + '/rest/v1/accounts?id=eq.' + id, {
+      method: 'PATCH',
+      headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    if (res.ok) {
+      closeModal('m-editac');
+      showToast('✅ アカウントを更新しました');
+      await loadAccounts();
+    } else {
+      showToast('❌ 更新に失敗しました');
+    }
+  } catch(e) { showToast('❌ エラー：' + e.message); }
+}
 async function deleteAccount(id, company) {
   if (!confirm(`「${company}」を削除しますか？\nこの操作は取り消せません。`)) return;
   try {
@@ -719,6 +753,7 @@ async function loadAccounts() {
         <td><span class="bdg ${statusClass}">${statusLabel}</span></td>
         <td style="font-size:11px;color:var(--g400)">${fmtDate(ac.created_at)}</td>
         <td style="white-space:nowrap">
+          <button class="btn-sm" onclick="editAccount('${ac.id}','${ac.company||''}','${ac.email||''}','${ac.plan||'pro'}')" style="margin-right:4px;background:#e3f2fd;color:#1565c0;border:1px solid #90caf9">編集</button>
           <button class="btn-sm" onclick="toggleAcStatus('${ac.id}',${isActive})" style="margin-right:4px;background:${isActive?'#f0f0f0':'#e8f5e9'};color:${isActive?'#666':'#2e7d32'};border:1px solid ${isActive?'#ccc':'#a5d6a7'}">${isActive?'停止':'有効化'}</button>
           <button class="btn-sm" onclick="deleteAccount('${ac.id}','${ac.company||''}')" style="background:#fff0f0;color:#c62828;border:1px solid #ffcdd2">削除</button>
         </td>
@@ -905,7 +940,7 @@ async function doCreateAccount() {
   const pl = document.getElementById('na-plan').value;
   const nt = document.getElementById('na-note').value.trim();
   const pd = document.getElementById('na-period')?.value || null;
-  if (!co || !pa) { alert('会社名とパスワードは必須です'); return; }
+  if (!co || !em || !pa) { alert('会社名・メールアドレス・パスワードは必須です'); return; }
   try {
     const body = { company: co, email: em || null, password_plain: pa, plan: pl, note: nt || null };
     if (pd) {
@@ -1172,6 +1207,32 @@ async function saveArchEdit2() {
     <div style="display:flex;gap:10px;justify-content:flex-end">
       <button onclick="document.getElementById('m-arch-edit2').style.display='none'" style="padding:8px 16px;border:1px solid #ddd;border-radius:6px;background:#fff;cursor:pointer;font-size:13px">キャンセル</button>
       <button onclick="saveArchEdit2()" style="padding:8px 16px;border:none;border-radius:6px;background:#2BB5C8;color:#fff;cursor:pointer;font-size:13px;font-weight:600">保存する</button>
+    </div>
+  </div>
+</div>
+
+<!-- アカウント編集モーダル -->
+<div id="m-editac" class="modal-bg" onclick="if(event.target===this)closeModal('m-editac')">
+  <div class="modal" style="max-width:480px">
+    <div class="modal-title">アカウント編集</div>
+    <div class="modal-body">
+      <input type="hidden" id="ea-id">
+      <label class="fl">会社名 *</label>
+      <input id="ea-company" type="text" class="fi" placeholder="例：〇〇株式会社">
+      <label class="fl">メールアドレス *</label>
+      <input id="ea-email" type="email" class="fi" placeholder="例：info@example.com">
+      <label class="fl">プラン</label>
+      <select id="ea-plan" class="fi">
+        <option value="pro">Pro（施設登録無制限）</option>
+        <option value="standard">Standard（5施設）</option>
+        <option value="free">Free（3施設）</option>
+      </select>
+      <label class="fl">パスワード変更（空欄で変更なし）</label>
+      <input id="ea-pass" type="password" class="fi" placeholder="変更する場合のみ入力">
+    </div>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeModal('m-editac')">キャンセル</button>
+      <button class="btn-primary" onclick="doEditAccount()">変更を保存</button>
     </div>
   </div>
 </div>
