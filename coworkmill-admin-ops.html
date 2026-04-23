@@ -759,7 +759,7 @@ async function loadAccounts() {
         <td><strong>${ac.company||'—'}</strong></td>
         <td style="font-size:11px;color:var(--g400)">${ac.email||'—'}</td>
         <td><span class="bdg ${planClass}">${planLabel}</span></td>
-        <td style="font-size:11px">${ac.space_count||0}件</td>
+        <td style="font-size:11px">${spaceCountMap[ac.id]||0}件</td>
         <td style="font-size:11px;color:var(--g400)">${ac.paid_until||'—'}</td>
         <td><span class="bdg ${statusClass}">${statusLabel}</span></td>
         <td style="font-size:11px;color:var(--g400)">${fmtDate(ac.created_at)}</td>
