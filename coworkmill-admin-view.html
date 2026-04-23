@@ -228,7 +228,118 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
 .an-sub{font-size:11px;color:#aaa;margin-top:6px}
 #voice-modal-overlay.open{display:flex!important}
 </style></head>
-<body><script>
+<body>
+<!-- ===== LOGIN SCREEN ===== -->
+<div id="login-screen" style="display:none;position:fixed;inset:0;background:#0d0d0d;z-index:9999;display:flex;align-items:center;justify-content:center">
+  <div style="background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;padding:40px;width:360px;max-width:90vw">
+    <div style="text-align:center;margin-bottom:32px">
+      <div style="font-size:13px;letter-spacing:.2em;color:#2BB5C8;margin-bottom:8px">COWORKMILL</div>
+      <div style="font-size:18px;font-weight:700;color:#fff">施設管理ポータル</div>
+      <div style="font-size:12px;color:#666;margin-top:4px">オーナーログイン</div>
+    </div>
+    <div id="login-error" style="display:none;background:#2a1010;border:1px solid #c62828;border-radius:6px;padding:10px 14px;font-size:12px;color:#ef9a9a;margin-bottom:16px"></div>
+    <div style="margin-bottom:16px">
+      <label style="display:block;font-size:11px;color:#888;margin-bottom:6px">メールアドレス</label>
+      <input id="login-email" type="email" placeholder="登録メールアドレス" style="width:100%;box-sizing:border-box;background:#111;border:1px solid #333;border-radius:6px;padding:10px 12px;color:#fff;font-size:13px;outline:none" onkeydown="if(event.key==='Enter')document.getElementById('login-pass').focus()">
+    </div>
+    <div style="margin-bottom:24px">
+      <label style="display:block;font-size:11px;color:#888;margin-bottom:6px">パスワード</label>
+      <input id="login-pass" type="password" placeholder="パスワード" style="width:100%;box-sizing:border-box;background:#111;border:1px solid #333;border-radius:6px;padding:10px 12px;color:#fff;font-size:13px;outline:none" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button onclick="doLogin()" id="login-btn" style="width:100%;background:#2BB5C8;color:#fff;border:none;border-radius:6px;padding:12px;font-size:14px;font-weight:600;cursor:pointer">ログイン</button>
+    <div style="text-align:center;margin-top:16px;font-size:11px;color:#444">パスワードを忘れた場合は運営にお問い合わせください</div>
+  </div>
+</div>
+
+<script>
+// ===== LOGIN AUTH =====
+(function() {
+  const SB_URL = 'https://jakwntemjkwqwaqujffh.supabase.co';
+  const SB_KEY = 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+  const SESS_KEY = 'cwm_account';
+
+  // セッション確認
+  function getSession() {
+    try { return JSON.parse(sessionStorage.getItem(SESS_KEY)); } catch(e) { return null; }
+  }
+
+  // ログイン処理
+  window.doLogin = async function() {
+    const email = document.getElementById('login-email').value.trim();
+    const pass  = document.getElementById('login-pass').value;
+    const errEl = document.getElementById('login-error');
+    const btn   = document.getElementById('login-btn');
+
+    if (!email || !pass) {
+      errEl.textContent = 'メールアドレスとパスワードを入力してください';
+      errEl.style.display = 'block';
+      return;
+    }
+    btn.textContent = 'ログイン中...';
+    btn.disabled = true;
+    errEl.style.display = 'none';
+
+    try {
+      const res = await fetch(SB_URL + '/rest/v1/accounts?email=eq.' + encodeURIComponent(email) + '&select=id,company,email,plan,status,password_plain', {
+        headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY }
+      });
+      const data = await res.json();
+      const account = Array.isArray(data) && data[0];
+
+      if (!account) {
+        throw new Error('メールアドレスが見つかりません');
+      }
+      if (account.status === 'suspended') {
+        throw new Error('このアカウントは停止中です。運営にお問い合わせください');
+      }
+      if (account.password_plain !== pass) {
+        throw new Error('パスワードが正しくありません');
+      }
+
+      // ログイン成功 → セッション保存
+      const sess = { id: account.id, company: account.company, email: account.email, plan: account.plan };
+      sessionStorage.setItem(SESS_KEY, JSON.stringify(sess));
+      showApp(sess);
+
+    } catch(e) {
+      errEl.textContent = e.message;
+      errEl.style.display = 'block';
+      btn.textContent = 'ログイン';
+      btn.disabled = false;
+    }
+  };
+
+  // ログアウト処理
+  window.doLogout = function() {
+    sessionStorage.removeItem(SESS_KEY);
+    location.reload();
+  };
+
+  // アプリ表示
+  function showApp(sess) {
+    document.getElementById('login-screen').style.display = 'none';
+    document.body.style.overflow = '';
+    // ヘッダーにログイン情報を表示
+    const header = document.querySelector('.header-title, .admin-header, #header-company');
+    if (header) header.textContent = sess.company;
+  }
+
+  // 初期化
+  document.addEventListener('DOMContentLoaded', function() {
+    const sess = getSession();
+    if (sess) {
+      showApp(sess);
+    } else {
+      const ls = document.getElementById('login-screen');
+      ls.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+  });
+})();
+// ===== END LOGIN AUTH =====
+</script>
+<!-- ===== END LOGIN SCREEN ===== -->
+<script>
 // 施設切り替え時にvibeをリセットする関数
 function resetVibeUI(){
   document.querySelectorAll('.fgg .fo').forEach(function(f){
