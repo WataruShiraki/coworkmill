@@ -397,6 +397,11 @@ function resetVibeUI(){
     <button class="nl" onclick="go('st',this)"><span class="ni">👁</span>掲載ステータス</button>
     <button class="nl" onclick="go('plan',this)"><span class="ni">⭐</span>プラン管理</button>
   </nav>
+  <div class="sb-logout" style="padding:8px 16px;border-top:1px solid #1e1e1e">
+    <button onclick="doLogout()" style="width:100%;background:transparent;border:1px solid #333;border-radius:6px;padding:8px;font-size:11px;color:#666;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .2s" onmouseover="this.style.borderColor='#c62828';this.style.color='#ef9a9a'" onmouseout="this.style.borderColor='#333';this.style.color='#666'">
+      <span>⏏</span> ログアウト
+    </button>
+  </div>
   <div class="sb-foot" onclick="location.href='coworkmill.html'">← COWORKMILLを見る</div>
 </aside>
 
