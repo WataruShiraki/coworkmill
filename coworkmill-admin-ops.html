@@ -828,18 +828,30 @@ async function deleteArchitect(id, name) {
 // ─────────────────────────────
 // Account management (local only)
 // ─────────────────────────────
-function doCreateAccount() {
+async function doCreateAccount() {
   const co = document.getElementById('na-company').value.trim();
+  const em = document.getElementById('na-email').value.trim();
   const pa = document.getElementById('na-pass').value.trim();
+  const pl = document.getElementById('na-plan').value;
+  const nt = document.getElementById('na-note').value.trim();
+  const pd = document.getElementById('na-period')?.value || null;
   if (!co || !pa) { alert('会社名とパスワードは必須です'); return; }
-  closeModal('m-newac');
-  ['na-company','na-email','na-pass','na-note'].forEach(id => document.getElementById(id).value='');
-  showToast('✅ アカウントを作成しました：' + co);
+  try {
+    const body = { company: co, email: em || null, password_plain: pa, plan: pl, note: nt || null };
+    if (pd) {
+      const months = parseInt(pd) || 12;
+      const until = new Date();
+      until.setMonth(until.getMonth() + months);
+      body.paid_until = until.toISOString().split('T')[0];
+    }
+    const res = await sbPost('accounts', body);
+    if (!res || res.error) throw new Error(res?.error?.message || '保存失敗');
+    closeModal('m-newac');
+    ['na-company','na-email','na-pass','na-note'].forEach(id => document.getElementById(id).value='');
+    showToast('✅ アカウントを作成しました：' + co);
+    await loadAccounts();
+  } catch(e) { showToast('❌ エラー：' + e.message); }
 }
-
-// ─────────────────────────────
-// Reply modal
-// ─────────────────────────────
 function showReplyModal(name, email) {
   document.getElementById('m-rp-to').textContent = name + ' <' + email + '>';
   openModal('m-rp');
