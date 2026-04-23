@@ -727,7 +727,18 @@ async function toggleAcStatus(id, isActive) {
 }
 async function loadAccounts() {
   try {
-    const data = await sbGet('accounts?select=id,company,email,plan,space_count,paid_until,status,created_at&order=created_at.desc');
+    // accountsとspacesのカウントを同時取得
+    const [data, spacesData] = await Promise.all([
+      sbGet('accounts?select=id,company,email,plan,paid_until,status,created_at&order=created_at.desc'),
+      sbGet('spaces?select=account_id')
+    ]);
+    // account_idごとの施設数を集計
+    const spaceCountMap = {};
+    if (Array.isArray(spacesData)) {
+      spacesData.forEach(s => {
+        if (s.account_id) spaceCountMap[s.account_id] = (spaceCountMap[s.account_id] || 0) + 1;
+      });
+    }
     if (!Array.isArray(data)) return;
     const tbody = document.getElementById('ac-tbody');
     if (!tbody) return;
