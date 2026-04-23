@@ -658,6 +658,39 @@ function makeSpRow(d) {
   return tr;
 }
 
+
+async function deleteAccount(id, company) {
+  if (!confirm(`「${company}」を削除しますか？\nこの操作は取り消せません。`)) return;
+  try {
+    const res = await fetch(SB_URL + '/rest/v1/accounts?id=eq.' + id, {
+      method: 'DELETE',
+      headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY }
+    });
+    if (res.ok) {
+      showToast('🗑️ ' + company + ' を削除しました');
+      await loadAccounts();
+    } else {
+      showToast('❌ 削除に失敗しました');
+    }
+  } catch(e) { showToast('❌ エラー：' + e.message); }
+}
+
+async function toggleAcStatus(id, isActive) {
+  const newStatus = isActive ? 'suspended' : 'active';
+  try {
+    const res = await fetch(SB_URL + '/rest/v1/accounts?id=eq.' + id, {
+      method: 'PATCH',
+      headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: newStatus })
+    });
+    if (res.ok) {
+      showToast(isActive ? '⏸️ アカウントを停止しました' : '▶️ アカウントを有効化しました');
+      await loadAccounts();
+    } else {
+      showToast('❌ 更新に失敗しました');
+    }
+  } catch(e) { showToast('❌ エラー：' + e.message); }
+}
 async function loadAccounts() {
   try {
     const data = await sbGet('accounts?select=id,company,email,plan,space_count,paid_until,status,created_at&order=created_at.desc');
@@ -676,6 +709,7 @@ async function loadAccounts() {
       const planLabel = ac.plan === 'pro' ? 'Pro' : ac.plan === 'standard' ? 'Standard' : 'Free';
       const statusClass = ac.status === 'active' ? 'lv' : 'dr';
       const statusLabel = ac.status === 'active' ? '有効' : '無効';
+      const isActive = ac.status === 'active';
       tr.innerHTML = `
         <td><strong>${ac.company||'—'}</strong></td>
         <td style="font-size:11px;color:var(--g400)">${ac.email||'—'}</td>
@@ -684,6 +718,10 @@ async function loadAccounts() {
         <td style="font-size:11px;color:var(--g400)">${ac.paid_until||'—'}</td>
         <td><span class="bdg ${statusClass}">${statusLabel}</span></td>
         <td style="font-size:11px;color:var(--g400)">${fmtDate(ac.created_at)}</td>
+        <td style="white-space:nowrap">
+          <button class="btn-sm" onclick="toggleAcStatus('${ac.id}',${isActive})" style="margin-right:4px;background:${isActive?'#f0f0f0':'#e8f5e9'};color:${isActive?'#666':'#2e7d32'};border:1px solid ${isActive?'#ccc':'#a5d6a7'}">${isActive?'停止':'有効化'}</button>
+          <button class="btn-sm" onclick="deleteAccount('${ac.id}','${ac.company||''}')" style="background:#fff0f0;color:#c62828;border:1px solid #ffcdd2">削除</button>
+        </td>
       `;
       tbody.appendChild(tr);
     });
