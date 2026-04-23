@@ -977,11 +977,11 @@ function go(id, el) {
   document.querySelectorAll('.nl').forEach(l => l.classList.remove('on'));
   if(el) el.classList.add('on');
   document.getElementById('ttl').textContent = ttlm[id]||id;
-}
 
-// ─────────────────────────────
-// Modal
-// ─────────────────────────────
+  // タブ切り替え時に自動ロード
+  const loaders = { sp: loadSpaces, ac: loadAccounts, ar: loadArchitects };
+  if (loaders[id]) loaders[id]();
+}
 function openModal(id) { const m=document.getElementById(id); if(m) m.classList.add('open'); }
 function closeModal(id) { const m=document.getElementById(id); if(m) m.classList.remove('open'); }
 document.addEventListener('click', e => { if(e.target.classList.contains('modal-bg')) e.target.classList.remove('open'); });
