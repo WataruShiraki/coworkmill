@@ -448,7 +448,7 @@ function resetVibeUI(){
     <span style="font-size:11px;color:#f97316;font-weight:600" id="ban-nm"></span>
     <span class="tbs live" id="ban-st" style="margin-left:4px">掲載中</span>
   </div>
-  <div class="content">
+  <div class="content" style="display:none">
 
   <!-- DASHBOARD -->
   <div id="p-db" style="display:none">
@@ -1674,9 +1674,11 @@ function go(id, el) {
     }
   }
 
-  // db-voice-sectionはアナリティクスタブのみ表示
+  // db-voice-sectionとcontentはアナリティクスタブのみ表示
   const dbv = document.getElementById('db-voice-section');
   if (dbv) dbv.style.display = (id === 'db') ? 'block' : 'none';
+  const contentEl = document.querySelector('.content');
+  if (contentEl) contentEl.style.display = (id === 'db') ? 'block' : 'none';
 }
 function swFac(id) {
   cur = id;
