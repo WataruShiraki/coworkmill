@@ -280,65 +280,46 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
 
   // セッション確認
   function getSession() {
-    try { return JSON.parse(sessionStorage.getItem(SESS_KEY)); } catch(e) { return null; }
+    try {
+      const sess = JSON.parse(sessionStorage.getItem(SESS_KEY));
+      // tokenも存在確認
+      const token = sessionStorage.getItem('cwm_token');
+      if (!sess || !token) return null;
+      return sess;
+    } catch(e) { return null; }
   }
 
   // ログイン処理
   window.doLogin = async function() {
-    const email = document.getElementById('login-email').value.trim();
-    const pass  = document.getElementById('login-pass').value;
-    const errEl = document.getElementById('login-error');
-    const btn   = document.getElementById('login-btn');
-
+    const email  = document.getElementById('login-email').value.trim();
+    const pass   = document.getElementById('login-pass').value;
+    const errEl  = document.getElementById('login-error');
+    const btn    = document.getElementById('login-btn');
     if (!email || !pass) {
       errEl.textContent = 'メールアドレスとパスワードを入力してください';
-      errEl.style.display = 'block';
-      return;
+      errEl.style.display = 'block'; return;
     }
-    btn.textContent = 'ログイン中...';
-    btn.disabled = true;
-    errEl.style.display = 'none';
-
+    btn.textContent = 'ログイン中...'; btn.disabled = true; errEl.style.display = 'none';
     try {
-      const res = await fetch(SB_URL + '/rest/v1/accounts?email=eq.' + encodeURIComponent(email) + '&select=id,company,email,plan,status,password_plain', {
-        headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY }
+      const res = await fetch('https://jakwntemjkwqwaqujffh.supabase.co/functions/v1/cwm-auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'login', email, password: pass })
       });
       const data = await res.json();
-      const account = Array.isArray(data) && data[0];
-
-      if (!account) {
-        throw new Error('メールアドレスが見つかりません');
-      }
-      if (account.status === 'suspended') {
-        throw new Error('このアカウントは停止中です。運営にお問い合わせください');
-      }
-      if (account.password_plain !== pass) {
-        throw new Error('パスワードが正しくありません');
-      }
-
-      // ログイン成功 → セッション保存
-      const sess = { id: account.id, company: account.company, email: account.email, plan: account.plan };
-      sessionStorage.setItem(SESS_KEY, JSON.stringify(sess));
-      showApp(sess);
-
+      if (!res.ok || data.error) throw new Error(data.error || 'ログインに失敗しました');
+      // JWTトークンをsessionStorageに保存
+      sessionStorage.setItem('cwm_token', data.token);
+      sessionStorage.setItem('cwm_account', JSON.stringify(data.account));
+      showApp(data.account);
     } catch(e) {
       errEl.textContent = e.message;
       errEl.style.display = 'block';
-      btn.textContent = 'ログイン';
-      btn.disabled = false;
+      btn.textContent = 'ログイン'; btn.disabled = false;
     }
   };
 
-  // ログアウト処理
-  
-  window.showForgotView = function() {
-    document.getElementById('forgot-view').style.display = 'block';
-    document.getElementById('login-error').style.display = 'none';
-  };
-  window.hideForgotView = function() {
-    document.getElementById('forgot-view').style.display = 'none';
-  };
-window.doLogout = function() {
+  window.doLogout = function() {
     sessionStorage.removeItem(SESS_KEY);
     location.reload();
   };
