@@ -222,10 +222,10 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <style>
-.an-card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:20px 24px}
-.an-label{font-size:11px;font-weight:600;color:#888;letter-spacing:.05em;margin-bottom:8px}
-.an-num{font-size:32px;font-weight:700;color:#1a1a1a;line-height:1}
-.an-sub{font-size:11px;color:#aaa;margin-top:6px}
+.an-card{background:var(--g900,#111);border:1px solid var(--g700,#333);border-radius:12px;padding:24px 28px;transition:border-color .2s}.an-card:hover{border-color:var(--g500,#555)}
+.an-label{font-size:11px;color:var(--g400,#888);letter-spacing:.05em;text-transform:uppercase;margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.an-num{font-size:40px;font-weight:700;color:var(--g50,#fff);margin:10px 0 6px;line-height:1}
+.an-sub{font-size:11px;color:var(--g500,#666)}
 #voice-modal-overlay.open{display:flex!important}
 </style></head>
 <body>
@@ -452,7 +452,7 @@ function resetVibeUI(){
 
   <!-- DASHBOARD -->
   <div id="p-db" style="display:none">
-<div id="analytics-grid" style="display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:24px">
+<div id="analytics-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:32px">
   <div class="an-card" id="an-click">
     <div class="an-label">🔗 公式サイトへのクリック送客数</div>
     <div class="an-num" id="an-click-num">-</div>
@@ -471,7 +471,7 @@ function resetVibeUI(){
     <div class="an-sub">累計 / <span id="an-voice-new">-</span>件 新着</div>
   </div>
 </div>
-<div id="db-voice-section" style="background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:16px;display:none">
+<div id="db-voice-section" style="display:none;background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:16px;display:none">
   <div style="font-size:13px;font-weight:600;color:#1a1a1a;margin-bottom:12px">💬 利用者の声</div>
   <div id="db-voice-list"></div>
   <div id="db-voice-more" style="display:none;text-align:center;margin-top:12px">
@@ -1670,8 +1670,11 @@ function go(id, el) {
       if(photoContent) photoContent.style.display = 'block';
     }
   }
-}
 
+  // db-voice-sectionはアナリティクスタブのみ表示
+  const dbv = document.getElementById('db-voice-section');
+  if (dbv) dbv.style.display = (id === 'db') ? 'block' : 'none';
+}
 function swFac(id) {
   cur = id;
   const f = facs[id];
