@@ -677,7 +677,7 @@ async function doEditAccount() {
   const pa = document.getElementById('ea-pass').value.trim();
   if (!co || !em) { alert('会社名とメールアドレスは必須です'); return; }
   const body = { company: co, email: em, plan: pl };
-  if (pa) body.password_plain = pa;
+  if (pa) body.password_hash = pa;
   try {
     const res = await fetch(SB_URL + '/rest/v1/accounts?id=eq.' + id, {
       method: 'PATCH',
@@ -953,7 +953,7 @@ async function doCreateAccount() {
   const pd = document.getElementById('na-period')?.value || null;
   if (!co || !em || !pa) { alert('会社名・メールアドレス・パスワードは必須です'); return; }
   try {
-    const body = { company: co, email: em || null, password_plain: pa, plan: pl, note: nt || null };
+    const body = { company: co, email: em || null, password_hash: pa, plan: pl, note: nt || null };
     if (pd) {
       const months = parseInt(pd) || 12;
       const until = new Date();
