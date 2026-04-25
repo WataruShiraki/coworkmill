@@ -671,12 +671,12 @@ function editAccount(id, company, email, plan) {
 }
 
 async function doEditAccount() {
-  const id = document.getElementById('edit-ac-id').value;
-  const co = document.getElementById('edit-ac-company').value.trim();
-  const em = document.getElementById('edit-ac-email').value.trim();
-  const pl = document.getElementById('edit-ac-plan').value;
-  const pa = document.getElementById('edit-ac-pass') ? document.getElementById('edit-ac-pass').value.trim() || null : null;
-  const no = document.getElementById('edit-ac-note') ? document.getElementById('edit-ac-note').value.trim() || null : null;
+  const id = document.getElementById('ea-id').value;
+  const co = document.getElementById('ea-company').value.trim();
+  const em = document.getElementById('ea-email').value.trim();
+  const pl = document.getElementById('ea-plan').value;
+  const pa = document.getElementById('ea-pass') ? document.getElementById('ea-pass').value.trim() || null : null;
+  const no = document.getElementById('ea-note') ? document.getElementById('ea-note').value.trim() || null : null;
   if (!co || !em) { alert('会社名・メールは必須です'); return; }
   try {
     const res = await fetch(SB_URL + '/rest/v1/rpc/update_account', {
