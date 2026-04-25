@@ -670,28 +670,24 @@ function editAccount(id, company, email, plan) {
 }
 
 async function doEditAccount() {
-  const id = document.getElementById('ea-id').value;
-  const co = document.getElementById('ea-company').value.trim();
-  const em = document.getElementById('ea-email').value.trim();
-  const pl = document.getElementById('ea-plan').value;
-  const pa = document.getElementById('ea-pass').value.trim();
-  if (!co || !em) { alert('会社名とメールアドレスは必須です'); return; }
-  const body = { company: co, email: em, plan: pl };
-  if (pa) body.password_hash = pa;
+  const id = document.getElementById('edit-ac-id').value;
+  const co = document.getElementById('edit-ac-company').value.trim();
+  const em = document.getElementById('edit-ac-email').value.trim();
+  const pl = document.getElementById('edit-ac-plan').value;
+  const pa = document.getElementById('edit-ac-pass')?.value.trim() || null;
+  const no = document.getElementById('edit-ac-note')?.value.trim() || null;
+  if (!co || !em) { alert('会社名・メールは必須です'); return; }
   try {
-    const res = await fetch(SB_URL + '/rest/v1/accounts?id=eq.' + id, {
-      method: 'PATCH',
-      headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' },
-      body: JSON.stringify(body)
+    const res = await fetch(SB_URL + '/rest/v1/rpc/update_account', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'apikey': SERVICE_ROLE_KEY, 'Authorization': 'Bearer ' + SERVICE_ROLE_KEY },
+      body: JSON.stringify({ p_id: id, p_company: co, p_email: em, p_plan: pl, p_password: pa || null, p_note: no })
     });
-    if (res.ok) {
-      closeModal('m-editac');
-      showToast('✅ アカウントを更新しました');
-      await loadAccounts();
-    } else {
-      showToast('❌ 更新に失敗しました');
-    }
-  } catch(e) { showToast('❌ エラー：' + e.message); }
+    if (!res.ok) { const d = await res.json(); throw new Error(d.message || JSON.stringify(d)); }
+    alert('更新しました');
+    document.getElementById('m-editac').style.display = 'none';
+    loadAccounts();
+  } catch(e) { alert('エラー: ' + e.message); }
 }
 async function deleteAccount(id, company) {
   if (!confirm(`「${company}」を削除しますか？\nこの操作は取り消せません。`)) return;
@@ -945,190 +941,25 @@ async function deleteArchitect(id, name) {
 // Account management (local only)
 // ─────────────────────────────
 async function doCreateAccount() {
-  const co = document.getElementById('na-company').value.trim();
-  const em = document.getElementById('na-email').value.trim();
-  const pa = document.getElementById('na-pass').value.trim();
-  const pl = document.getElementById('na-plan').value;
-  const nt = document.getElementById('na-note').value.trim();
-  const pd = document.getElementById('na-period')?.value || null;
-  if (!co || !em || !pa) { alert('会社名・メールアドレス・パスワードは必須です'); return; }
+  const co = document.getElementById('ac-company').value.trim();
+  const em = document.getElementById('ac-email').value.trim();
+  const pa = document.getElementById('ac-pass').value.trim();
+  const pl = document.getElementById('ac-plan').value;
+  const no = document.getElementById('ac-note')?.value.trim() || null;
+  if (!co || !em || !pa) { alert('会社名・メール・パスワードは必須です'); return; }
   try {
-    const body = { company: co, email: em || null, password_hash: pa, plan: pl, note: nt || null };
-    if (pd) {
-      const months = parseInt(pd) || 12;
-      const until = new Date();
-      until.setMonth(until.getMonth() + months);
-      body.paid_until = until.toISOString().split('T')[0];
-    }
-    const res = await sbPost('accounts', body);
-    if (!res || res.error) throw new Error(res?.error?.message || '保存失敗');
-    closeModal('m-newac');
-    ['na-company','na-email','na-pass','na-note'].forEach(id => document.getElementById(id).value='');
-    showToast('✅ アカウントを作成しました：' + co);
-    await loadAccounts();
-  } catch(e) { showToast('❌ エラー：' + e.message); }
+    const res = await fetch(SB_URL + '/rest/v1/rpc/create_account', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'apikey': SERVICE_ROLE_KEY, 'Authorization': 'Bearer ' + SERVICE_ROLE_KEY },
+      body: JSON.stringify({ p_company: co, p_email: em, p_password: pa, p_plan: pl, p_note: no })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || JSON.stringify(data));
+    alert('アカウントを作成しました');
+    document.getElementById('m-newac').style.display = 'none';
+    loadAccounts();
+  } catch(e) { alert('エラー: ' + e.message); }
 }
-function showReplyModal(name, email) {
-  document.getElementById('m-rp-to').textContent = name + ' <' + email + '>';
-  openModal('m-rp');
-}
-function confirmReply() {
-  closeModal('m-rp');
-  document.getElementById('m-rp-b').value='';
-  showToast('✓ 返信を送信しました');
-}
-
-// ─────────────────────────────
-// Navigation
-// ─────────────────────────────
-const pnls = ['db','rv','sp','ac','ar','ct'];
-const ttlm = {db:'ダッシュボード',rv:'掲載申請の審査',sp:'掲載者・施設管理',ac:'アカウント管理',ar:'建築家管理',ct:'お問い合わせ管理'};
-function go(id, el) {
-  pnls.forEach(p => { const e = document.getElementById('p-'+p); if(e) e.style.display = p===id?'block':'none'; });
-  document.querySelectorAll('.nl').forEach(l => l.classList.remove('on'));
-  if(el) el.classList.add('on');
-  document.getElementById('ttl').textContent = ttlm[id]||id;
-
-  // タブ切り替え時に自動ロード
-  const loaders = { sp: loadSpaces, ac: loadAccounts, ar: loadArchitects };
-  if (loaders[id]) loaders[id]();
-}
-function openModal(id) { const m=document.getElementById(id); if(m) m.classList.add('open'); }
-function closeModal(id) { const m=document.getElementById(id); if(m) m.classList.remove('open'); }
-document.addEventListener('click', e => { if(e.target.classList.contains('modal-bg')) e.target.classList.remove('open'); });
-
-// ─────────────────────────────
-// Table filter
-// ─────────────────────────────
-function filterTable(tbodyId, query) {
-  const tbody = document.getElementById(tbodyId);
-  if (!tbody) return;
-  const q = query.toLowerCase();
-  Array.from(tbody.rows).forEach(tr => {
-    const txt = tr.innerText.toLowerCase();
-    tr.style.display = (!q || txt.includes(q)) ? '' : 'none';
-  });
-}
-function filterTableBySelect(tbodyId, val, col) {
-  const tbody = document.getElementById(tbodyId);
-  if (!tbody) return;
-  Array.from(tbody.rows).forEach(tr => {
-    if (!val) { tr.style.display=''; return; }
-    const cell = tr.cells[col];
-    tr.style.display = (cell && cell.innerText.includes(val)) ? '' : 'none';
-  });
-}
-
-// ─────────────────────────────
-// Toast
-// ─────────────────────────────
-function showToast(msg) {
-  const t = document.createElement('div');
-  t.style.cssText='position:fixed;bottom:24px;right:24px;background:#166534;color:#fff;padding:12px 20px;border-radius:8px;font-size:12px;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,.15);transition:opacity .3s';
-  t.textContent = msg;
-  document.body.appendChild(t);
-  setTimeout(() => { t.style.opacity='0'; setTimeout(()=>t.remove(),300); }, 2800);
-}
-
-// ─────────────────────────────
-// Date display
-// ─────────────────────────────
-(function() {
-  const d = new Date();
-  const jp = new Intl.DateTimeFormat('ja-JP',{year:'numeric',month:'long',day:'numeric',weekday:'short'});
-  document.getElementById('tb-dt').textContent = jp.format(d);
-})();
-
-// ─────────────────────────────
-// Init
-// ─────────────────────────────
-document.addEventListener('DOMContentLoaded', () => {
-  loadSpaces();
-  loadArchitects();
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-  // ダッシュボードカード → クリックでページ遷移
-  const scCards = document.querySelectorAll('.sc');
-  scCards.forEach(card => {
-    const sv = card.querySelector('.sv');
-    if(!sv) return;
-    if(sv.id==='db-pending') card.addEventListener('click', ()=>{ const btn=document.querySelector('[onclick*="rv"]'); if(btn) btn.click(); });
-    if(sv.id==='db-contact') card.addEventListener('click', ()=>{ const btn=document.querySelector('[onclick*="ct"]'); if(btn) btn.click(); });
-  });
-  // db-pending/db-contact が 0より大きければ赤くする
-  const observer = new MutationObserver(()=>{
-    const p = document.getElementById('db-pending');
-    const c = document.getElementById('db-contact');
-    if(p) p.classList.toggle('alert', parseInt(p.textContent)||0 > 0);
-    if(c) c.classList.toggle('alert', parseInt(c.textContent)||0 > 0);
-  });
-  ['db-pending','db-contact'].forEach(id=>{
-    const el = document.getElementById(id);
-    if(el) observer.observe(el, {childList:true, characterData:true, subtree:true});
-  });
-});
-
-document.addEventListener('DOMContentLoaded', () => {
-  const execBtn = document.getElementById('m-del-exec');
-  if(execBtn) execBtn.addEventListener('click', async () => {
-    const id = window._delId;
-    if(!id) return;
-    execBtn.textContent = '削除中...'; execBtn.disabled = true;
-    try {
-      await sbDelete('/rest/v1/spaces?id=eq.'+id);
-      document.getElementById('m-del-confirm').style.display='none';
-      showToast('削除しました');
-      loadSpaces();
-    } catch(ex){ showToast('エラー: '+ex.message); execBtn.textContent='削除する'; execBtn.disabled=false; }
-  });
-});
-
-function openArchEdit2(a) {
-  document.getElementById('ae2-id').value = a.id;
-  document.getElementById('ae2-name').value = a.name||'';
-  document.getElementById('ae2-name-en').value = a.name_en||'';
-  document.getElementById('ae2-name-en').value = a.firm||'';
-  document.getElementById('ae2-url').value = a.url||'';
-  document.getElementById('ae2-email').value = a.email||'';
-  document.getElementById('ae2-bio').value = a.bio||'';
-  document.getElementById('ae2-contact').value = a.contact_status||'未連絡';
-  window._ae2PortraitUrl = a.portrait_url||'';
-  window._ae2PortraitFile = null;
-  const prev = document.getElementById('ae2-portrait-preview');
-  if(a.portrait_url) { prev.innerHTML='<img src="'+a.portrait_url+'" style="width:100%;height:100%;object-fit:cover;border-radius:0">'; }
-  else { prev.textContent = (a.name||'?')[0]; }
-  document.getElementById('m-arch-edit2').style.display='flex';
-}
-function applyPortraitUrl() {
-  const url = document.getElementById('ae2-portrait-url').value.trim();
-  if(!url) return;
-  window._ae2PortraitUrl = url;
-  document.getElementById('ae2-portrait-preview').innerHTML='<img src="'+url+'" style="width:100%;height:100%;object-fit:cover;border-radius:0">';
-  document.getElementById('ae2-portrait-url-row').style.display='none';
-}
-document.addEventListener('DOMContentLoaded', () => {
-  const fileInput = document.getElementById('ae2-portrait-file');
-  const anFileInput = document.getElementById('an-portrait-file');
-  if(anFileInput) anFileInput.addEventListener('change', function(ev){
-    const f=ev.target.files[0]; if(!f) return;
-    window._anPortraitFile=f;
-    document.getElementById('an-portrait-fname').textContent=f.name;
-    const rd=new FileReader(); rd.onload=e=>{
-      document.getElementById('an-portrait-preview').innerHTML='<img src="'+e.target.result+'" style="width:100%;height:100%;object-fit:cover">';
-    }; rd.readAsDataURL(f);
-  });
-  if(fileInput) fileInput.addEventListener('change', async(e) => {
-    const file = e.target.files[0];
-    if(!file) return;
-    window._ae2PortraitFile = file;
-    const reader = new FileReader();
-    reader.onload = ev => {
-      document.getElementById('ae2-portrait-preview').innerHTML='<img src="'+ev.target.result+'" style="width:100%;height:100%;object-fit:cover;border-radius:0">';
-    };
-    reader.readAsDataURL(file);
-  });
-});
 async function saveArchEdit2() {
   const id = document.getElementById('ae2-id').value;
   const name = document.getElementById('ae2-name').value.trim();
