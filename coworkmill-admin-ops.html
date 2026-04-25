@@ -455,9 +455,10 @@ async function inviteOwner(email) {
 const SB_URL = 'https://jakwntemjkwqwaqujffh.supabase.co';
 const SB_KEY = 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
 
-async function sbGet(path) {
+async function sbGet(path, useServiceRole = false) {
+  const key = useServiceRole ? SERVICE_ROLE_KEY : SB_KEY;
   const res = await fetch(SB_URL + '/rest/v1/' + path, {
-    headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
+    headers: { 'apikey': key, 'Authorization': 'Bearer ' + key }
   });
   return res.json();
 }
@@ -725,7 +726,7 @@ async function loadAccounts() {
   try {
     // accountsとspacesのカウントを同時取得
     const [data, spacesData] = await Promise.all([
-      sbGet('accounts?select=id,company,email,plan,paid_until,status,created_at&order=created_at.desc'),
+      sbGet('accounts?select=id,company,email,plan,paid_until,status,created_at&order=created_at.desc', true),
       sbGet('spaces?select=account_id')
     ]);
     // account_idごとの施設数を集計
