@@ -427,7 +427,7 @@ a{text-decoration:none;color:inherit}
     <div style="padding:10px 12px;background:var(--al);border-radius:6px;font-size:11px;color:var(--purple);margin-bottom:16px">💡 作成後に施設を代理入力し、準備完了後に「移譲」でオーナーに引き渡します。</div>
     <div class="modal-foot">
       <button class="bsm" onclick="closeModal('m-newac')">キャンセル</button>
-      <button class="bpu" onclick="doCreateAccount()">アカウントを作成する</button>
+      <button class="bpu" type="button" onclick="doCreateAccount()">アカウントを作成する</button>
     </div>
   </div>
 </div>
@@ -941,11 +941,11 @@ async function deleteArchitect(id, name) {
 // Account management (local only)
 // ─────────────────────────────
 async function doCreateAccount() {
-  const co = document.getElementById('ac-company').value.trim();
-  const em = document.getElementById('ac-email').value.trim();
-  const pa = document.getElementById('ac-pass').value.trim();
-  const pl = document.getElementById('ac-plan').value;
-  const no = document.getElementById('ac-note') ? document.getElementById('ac-note').value.trim() || null : null;
+  const co = document.getElementById('na-company').value.trim();
+  const em = document.getElementById('na-email').value.trim();
+  const pa = document.getElementById('na-pass').value.trim();
+  const pl = document.getElementById('na-plan').value;
+  const no = document.getElementById('na-note') ? document.getElementById('na-note').value.trim() || null : null;
   if (!co || !em || !pa) { alert('会社名・メール・パスワードは必須です'); return; }
   try {
     const res = await fetch(SB_URL + '/rest/v1/rpc/create_account', {
