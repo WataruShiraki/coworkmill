@@ -463,23 +463,25 @@ async function sbGet(path, useServiceRole = false) {
   return res.json();
 }
 async function sbPatch(table, filter, body) {
-  return fetch(SB_URL + '/rest/v1/' + table + '?' + filter, {
+  const res = await fetch(SB_URL + '/rest/v1/' + table + '?' + filter, {
     method: 'PATCH',
-    headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+    headers: { 'apikey': SERVICE_ROLE_KEY, 'Authorization': 'Bearer ' + SERVICE_ROLE_KEY, 'Content-Type': 'application/json', 'Prefer': 'return=representation' },
     body: JSON.stringify(body)
   });
+  return res.json();
 }
 async function sbPost(table, body) {
-  return fetch(SB_URL + '/rest/v1/' + table, {
+  const res = await fetch(SB_URL + '/rest/v1/' + table, {
     method: 'POST',
-    headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+    headers: { 'apikey': SERVICE_ROLE_KEY, 'Authorization': 'Bearer ' + SERVICE_ROLE_KEY, 'Content-Type': 'application/json', 'Prefer': 'return=representation' },
     body: JSON.stringify(body)
   });
+  return res.json();
 }
 async function sbDelete(table, filter) {
   return fetch(SB_URL + '/rest/v1/' + table + '?' + filter, {
     method: 'DELETE',
-    headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
+    headers: { 'apikey': SERVICE_ROLE_KEY, 'Authorization': 'Bearer ' + SERVICE_ROLE_KEY }
   });
 }
 
