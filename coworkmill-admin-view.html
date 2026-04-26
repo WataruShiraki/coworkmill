@@ -326,6 +326,15 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
 
   // アプリ表示
   function showApp(sess) {
+    // アカウントのプランをサイドバーに即時反映
+    (function() {
+      var _badge = document.querySelector('.plan-widget-badge');
+      var _planWidget = document.querySelector('.plan-widget');
+      if (_badge && account && account.plan) {
+        _badge.textContent = account.plan.toUpperCase();
+        _badge.className = 'plan-widget-badge plan-' + account.plan;
+      }
+    })();
     window._cwmAccountId = sess.id; // 施設追加・編集時に使用
     document.getElementById('login-screen').style.display = 'none';
     document.body.style.overflow = '';
