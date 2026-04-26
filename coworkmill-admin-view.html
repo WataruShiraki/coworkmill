@@ -275,7 +275,7 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
 // ===== LOGIN AUTH =====
 (function() {
   const SB_URL = 'https://jakwntemjkwqwaqujffh.supabase.co';
-  const SB_KEY = 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+  const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impha3dudGVtamt3cXdhcXVqZmZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3NjkwNjQsImV4cCI6MjA5MDM0NTA2NH0.q2MoO_BBBpFSSVxnqpAMDqMiVFpWNDTvWKDtFAQFi0c';
   const SESS_KEY = 'cwm_account';
 
   // セッション確認
@@ -998,7 +998,7 @@ function resetVibeUI(){
 
 window.loadVoiceBadge = function(spaceId){
   var SB='https://jakwntemjkwqwaqujffh.supabase.co';
-  var KEY='sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+  var KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impha3dudGVtamt3cXdhcXVqZmZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3NjkwNjQsImV4cCI6MjA5MDM0NTA2NH0.q2MoO_BBBpFSSVxnqpAMDqMiVFpWNDTvWKDtFAQFi0c';
   var btn = document.querySelector("[onclick*=\"go('voice'\"]");
   if(!btn) return;
   // 既存バッジを削除
@@ -1234,7 +1234,7 @@ function setStep(n) {
 
 // ===== Supabase設定 =====
 const SUPABASE_URL = 'https://jakwntemjkwqwaqujffh.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impha3dudGVtamt3cXdhcXVqZmZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3NjkwNjQsImV4cCI6MjA5MDM0NTA2NH0.q2MoO_BBBpFSSVxnqpAMDqMiVFpWNDTvWKDtFAQFi0c';
 
 async function sbFetch(path, options = {}) {
   const res = await fetch(SUPABASE_URL + path, {
@@ -1894,7 +1894,7 @@ async function pubFac() {
 // アナリティクスデータ読み込み
 window.loadAnalytics = async function(){
   var SB='https://jakwntemjkwqwaqujffh.supabase.co';
-  var KEY='sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+  var KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impha3dudGVtamt3cXdhcXVqZmZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3NjkwNjQsImV4cCI6MjA5MDM0NTA2NH0.q2MoO_BBBpFSSVxnqpAMDqMiVFpWNDTvWKDtFAQFi0c';
   // タイトルから施設名取得
   var ttlEl=document.getElementById('ttl');
   var parts=ttlEl?ttlEl.textContent.split('—'):[];
@@ -2225,7 +2225,7 @@ _fio.observe(document.body,{childList:true,subtree:true});
 <script>
 window.loadClickStats=function(){
   var SB='https://jakwntemjkwqwaqujffh.supabase.co';
-  var KEY='sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+  var KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impha3dudGVtamt3cXdhcXVqZmZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3NjkwNjQsImV4cCI6MjA5MDM0NTA2NH0.q2MoO_BBBpFSSVxnqpAMDqMiVFpWNDTvWKDtFAQFi0c';
   fetch(SB+'/rest/v1/click_logs?event=eq.reserve_click&select=id',{
     headers:{'apikey':KEY,'Authorization':'Bearer '+KEY,'Prefer':'count=exact','Range':'0-0'}
   }).then(function(r){
@@ -2295,7 +2295,7 @@ function showVibeToast() {
 <script>
 (function(){
   var SB='https://jakwntemjkwqwaqujffh.supabase.co';
-  var KEY='sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+  var KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impha3dudGVtamt3cXdhcXVqZmZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3NjkwNjQsImV4cCI6MjA5MDM0NTA2NH0.q2MoO_BBBpFSSVxnqpAMDqMiVFpWNDTvWKDtFAQFi0c';
   var WS_COLOR={'Deep Work':'#4F46E5','Creative Work':'#7C3AED','Creative':'#7C3AED','Ideation':'#DB2777','Meeting':'#EA580C','Remote Call':'#0EA5E9','Learning':'#059669','Client Meeting':'#D97706'};
   var WS_JA={'Deep Work':'集中・執筆・戦略','Creative Work':'制作・クリエイティブ','Creative':'制作・クリエイティブ','Ideation':'アイデア・ブレスト','Meeting':'商談・ミーティング','Client Meeting':'商談・ミーティング','Remote Call':'オンライン会議','Learning':'学習・リサーチ'};
   function wsColor(ws){if(!ws)return '#2BB5C8';for(var k in WS_COLOR){if(ws.indexOf(k)>-1)return WS_COLOR[k];}return '#2BB5C8';}
@@ -2348,7 +2348,7 @@ document.addEventListener('DOMContentLoaded',function(){
 
 
 <!-- v1776250755501 -->
-<script>(function(){var S="https://jakwntemjkwqwaqujffh.supabase.co",K="sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ";function hideStep2(){var sb=document.querySelector("#p-arch .sec-b");if(!sb)return;var c=Array.from(sb.children);if(c[1])c[1].style.display="none";if(c[2])c[2].style.display="none";}function showStep2(){var sb=document.querySelector("#p-arch .sec-b");if(!sb)return;var c=Array.from(sb.children);if(c[1])c[1].style.display="";if(c[2])c[2].style.display="";}async function showArchBadge(aid){var r=await fetch(S+"/rest/v1/architects?select=id,name,name_en,firm&id=eq."+aid,{headers:{"apikey":K,"Authorization":"Bearer "+K}});var a=(await r.json())[0];if(!a)return;var dn=(a.name||a.name_en||"")+(a.firm&&a.firm!==a.name?" / "+a.firm:"");var sb=document.querySelector("#p-arch .sec-b");if(!sb)return;var ex=document.getElementById("arch-badge-display");if(!ex){ex=document.createElement("div");ex.id="arch-badge-display";ex.style.cssText="display:flex;align-items:center;gap:8px;background:#f0faf7;border:1px solid #2BB5C8;color:#0a7a60;font-size:13px;font-weight:500;padding:10px 14px;border-radius:8px;margin-top:12px;";sb.appendChild(ex);}ex.innerHTML="<span style=\"color:#2BB5C8;font-size:16px\">&#x2713;</span><span><strong>"+dn+"</strong>&#12288;紐づけ完了</span>";var _pd=document.getElementById('p-arch-selected');if(_pd)_pd.dataset.archId=aid;var _btn=document.createElement('button');_btn.textContent='✕ 解除';_btn.style.cssText='margin-left:12px;padding:2px 10px;border:1px solid #ccc;border-radius:4px;background:#fff;color:#555;cursor:pointer;font-size:11px;';_btn.addEventListener('click',function(){clearArchSelection();var bd=document.getElementById('arch-badge-display');if(bd)bd.remove();var si=document.getElementById('p-arch-search');if(si){si.disabled=false;si.style.opacity='1';}var step2=document.querySelector('.step2-wrap,.sec-step2,[class*=step2]');if(step2)step2.style.display='';});ex.appendChild(_btn);var si=document.getElementById("p-arch-search");if(si){si.disabled=true;si.style.opacity="0.4";}hideStep2();}function clearBadge(){var ex=document.getElementById("arch-badge-display");if(ex)ex.remove();var si=document.getElementById("p-arch-search");if(si){si.disabled=false;si.style.opacity="1";}showStep2();}document.addEventListener("click",async function(e){var btn=e.target.closest("button");if(!btn||!btn.textContent.includes("建築家"))return;var onFi=document.querySelector("#fac-list .fi.on");if(!onFi)return;setTimeout(async function(){clearBadge();var r=await fetch(S+"/rest/v1/spaces?select=id,name,architect_id",{headers:{"apikey":K,"Authorization":"Bearer "+K}});var sp=await r.json();var found=sp.find(function(s){return s.name&&onFi.textContent.includes(s.name);});if(found&&found.architect_id){showArchBadge(found.architect_id);}},500);});async function uvb(){var r=await fetch(S+"/rest/v1/voices?status=eq.pending&select=id",{headers:{"apikey":K,"Authorization":"Bearer "+K,"Prefer":"count=exact"}});var cnt=parseInt((r.headers.get("content-range")||"0/0").split("/")[1])||0;Array.from(document.querySelectorAll("button,a")).filter(function(el){return el.textContent.includes("利用者の声");}).forEach(function(btn){var b=btn.querySelector(".vb");if(cnt>0){if(!b){b=document.createElement("span");b.className="vb";b.style.cssText="display:inline-flex;align-items:center;justify-content:center;background:#e85d5d;color:#fff;font-size:9px;font-weight:700;min-width:16px;height:16px;border-radius:8px;padding:0 4px;margin-left:6px;";btn.appendChild(b);}b.textContent=cnt;}else{if(b)b.remove();}});}document.addEventListener("DOMContentLoaded",function(){setTimeout(uvb,2000);});})();</script>
+<script>(function(){var S="https://jakwntemjkwqwaqujffh.supabase.co",K="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impha3dudGVtamt3cXdhcXVqZmZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3NjkwNjQsImV4cCI6MjA5MDM0NTA2NH0.q2MoO_BBBpFSSVxnqpAMDqMiVFpWNDTvWKDtFAQFi0c";function hideStep2(){var sb=document.querySelector("#p-arch .sec-b");if(!sb)return;var c=Array.from(sb.children);if(c[1])c[1].style.display="none";if(c[2])c[2].style.display="none";}function showStep2(){var sb=document.querySelector("#p-arch .sec-b");if(!sb)return;var c=Array.from(sb.children);if(c[1])c[1].style.display="";if(c[2])c[2].style.display="";}async function showArchBadge(aid){var r=await fetch(S+"/rest/v1/architects?select=id,name,name_en,firm&id=eq."+aid,{headers:{"apikey":K,"Authorization":"Bearer "+K}});var a=(await r.json())[0];if(!a)return;var dn=(a.name||a.name_en||"")+(a.firm&&a.firm!==a.name?" / "+a.firm:"");var sb=document.querySelector("#p-arch .sec-b");if(!sb)return;var ex=document.getElementById("arch-badge-display");if(!ex){ex=document.createElement("div");ex.id="arch-badge-display";ex.style.cssText="display:flex;align-items:center;gap:8px;background:#f0faf7;border:1px solid #2BB5C8;color:#0a7a60;font-size:13px;font-weight:500;padding:10px 14px;border-radius:8px;margin-top:12px;";sb.appendChild(ex);}ex.innerHTML="<span style=\"color:#2BB5C8;font-size:16px\">&#x2713;</span><span><strong>"+dn+"</strong>&#12288;紐づけ完了</span>";var _pd=document.getElementById('p-arch-selected');if(_pd)_pd.dataset.archId=aid;var _btn=document.createElement('button');_btn.textContent='✕ 解除';_btn.style.cssText='margin-left:12px;padding:2px 10px;border:1px solid #ccc;border-radius:4px;background:#fff;color:#555;cursor:pointer;font-size:11px;';_btn.addEventListener('click',function(){clearArchSelection();var bd=document.getElementById('arch-badge-display');if(bd)bd.remove();var si=document.getElementById('p-arch-search');if(si){si.disabled=false;si.style.opacity='1';}var step2=document.querySelector('.step2-wrap,.sec-step2,[class*=step2]');if(step2)step2.style.display='';});ex.appendChild(_btn);var si=document.getElementById("p-arch-search");if(si){si.disabled=true;si.style.opacity="0.4";}hideStep2();}function clearBadge(){var ex=document.getElementById("arch-badge-display");if(ex)ex.remove();var si=document.getElementById("p-arch-search");if(si){si.disabled=false;si.style.opacity="1";}showStep2();}document.addEventListener("click",async function(e){var btn=e.target.closest("button");if(!btn||!btn.textContent.includes("建築家"))return;var onFi=document.querySelector("#fac-list .fi.on");if(!onFi)return;setTimeout(async function(){clearBadge();var r=await fetch(S+"/rest/v1/spaces?select=id,name,architect_id",{headers:{"apikey":K,"Authorization":"Bearer "+K}});var sp=await r.json();var found=sp.find(function(s){return s.name&&onFi.textContent.includes(s.name);});if(found&&found.architect_id){showArchBadge(found.architect_id);}},500);});async function uvb(){var r=await fetch(S+"/rest/v1/voices?status=eq.pending&select=id",{headers:{"apikey":K,"Authorization":"Bearer "+K,"Prefer":"count=exact"}});var cnt=parseInt((r.headers.get("content-range")||"0/0").split("/")[1])||0;Array.from(document.querySelectorAll("button,a")).filter(function(el){return el.textContent.includes("利用者の声");}).forEach(function(btn){var b=btn.querySelector(".vb");if(cnt>0){if(!b){b=document.createElement("span");b.className="vb";b.style.cssText="display:inline-flex;align-items:center;justify-content:center;background:#e85d5d;color:#fff;font-size:9px;font-weight:700;min-width:16px;height:16px;border-radius:8px;padding:0 4px;margin-left:6px;";btn.appendChild(b);}b.textContent=cnt;}else{if(b)b.remove();}});}document.addEventListener("DOMContentLoaded",function(){setTimeout(uvb,2000);});})();</script>
 <script>
 /* 建築家紐付け解除ボタン表示パッチ */
 document.addEventListener('click', function(e) {
@@ -2373,7 +2373,7 @@ document.addEventListener('click', function(e) {
     if (!dbId) return;
     
     fetch('https://jakwntemjkwqwaqujffh.supabase.co/rest/v1/spaces?id=eq.' + dbId + '&select=architect_id,architect_name', {
-      headers: {apikey: 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ', Authorization: 'Bearer sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ'}
+      headers: {apikey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impha3dudGVtamt3cXdhcXVqZmZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3NjkwNjQsImV4cCI6MjA5MDM0NTA2NH0.q2MoO_BBBpFSSVxnqpAMDqMiVFpWNDTvWKDtFAQFi0c', Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impha3dudGVtamt3cXdhcXVqZmZoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ3NjkwNjQsImV4cCI6MjA5MDM0NTA2NH0.q2MoO_BBBpFSSVxnqpAMDqMiVFpWNDTvWKDtFAQFi0c'}
     }).then(function(r) { return r.json(); })
     .then(function(rows) {
       if (!rows || !rows[0] || !rows[0].architect_id) return;
