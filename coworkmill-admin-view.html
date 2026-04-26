@@ -20,8 +20,7 @@
 <title>施設管理画面 — COWORKMILL</title>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&amp;family=Noto+Sans+JP:wght@300;400;500&amp;display=swap" rel="stylesheet">
 <style>
-*,*::before,*::after{
-    plan = (JSON.parse(sessionStorage.getItem("cwm_account")||"{}").plan)||plan;box-sizing:border-box;margin:0;padding:0}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --black:#0a0a0a;--white:#fff;--g50:#f7f7f7;--g100:#efefef;--g200:#e0e0e0;
   --g400:#a0a0a0;--g600:#606060;--pink:#2BB5C8;--purple:#2BB5C8;--al:#f0edf8;
@@ -313,6 +312,12 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
       sessionStorage.setItem('cwm_token', data.token);
       sessionStorage.setItem('cwm_account', JSON.stringify(data.account));
       showApp(data.account);
+      // プランバッジをアカウントのプランで即時修正
+      setTimeout(function() {
+        var _b = document.querySelector('.plan-widget-badge');
+        var _p = (data.account && data.account.plan) ? data.account.plan.toUpperCase() : 'PRO';
+        if (_b) { _b.textContent = _p; _b.className = 'plan-widget-badge plan-' + (data.account.plan||'pro'); }
+      }, 800);
     } catch(e) {
       errEl.textContent = e.message;
       errEl.style.display = 'block';
