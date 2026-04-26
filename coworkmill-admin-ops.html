@@ -692,20 +692,17 @@ async function doEditAccount() {
     loadAccounts();
   } catch(e) { alert('エラー: ' + e.message); }
 }
-async function deleteAccount(id, company) {
-  if (!confirm(`「${company}」を削除しますか？\nこの操作は取り消せません。`)) return;
+async function deleteAccount(id) {
+  if (!confirm('このアカウントを削除しますか？')) return;
   try {
-    const res = await fetch(SB_URL + '/rest/v1/accounts?id=eq.' + id, {
-      method: 'DELETE',
-      headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY }
-    });
+    const res = await sbDelete('accounts', 'id=eq.' + id);
     if (res.ok) {
-      showToast('🗑️ ' + company + ' を削除しました');
-      await loadAccounts();
+      alert('削除しました');
+      loadAccounts();
     } else {
-      showToast('❌ 削除に失敗しました');
+      alert('削除に失敗しました');
     }
-  } catch(e) { showToast('❌ エラー：' + e.message); }
+  } catch(e) { alert('エラー: ' + e.message); }
 }
 
 async function toggleAcStatus(id, isActive) {
