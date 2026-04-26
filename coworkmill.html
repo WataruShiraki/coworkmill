@@ -986,7 +986,7 @@ const TOP_PREF_MAP={'北海道':'HOKKAIDO','青森県':'AOMORI','岩手県':'IWA
 async function loadTopData() {
 
   try {
-    const res = await fetch(SUPABASE_URL_TOP + '/rest/v1/spaces?select=id,name,area,prefecture,plan,status,image_main,architect_name,architect_id&status=eq.live&order=created_at.desc', {
+    const res = await fetch(SUPABASE_URL_TOP + '/rest/v1/spaces?select=id,name,area,prefecture,plan,status,image_main,architect_name,architect_id&status=eq.live&plan=eq.pro&order=created_at.desc', {
       headers: { 'apikey': SUPABASE_KEY_TOP, 'Authorization': 'Bearer ' + SUPABASE_KEY_TOP }
     });
     const spaces = await res.json();
