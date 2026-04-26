@@ -1062,7 +1062,7 @@ function updateAddBtn() {
   const plan = 'standard';
   const limit = plan === 'free' ? 1 : plan === 'standard' ? 5 : 20;
   const registeredCount = facs.filter(f => f.db_id).length;
-  if(typeof window.updatePlanWidget==='function') window.updatePlanWidget(account.plan, registeredCount, limit);
+  if(typeof window.updatePlanWidget==='function') window.updatePlanWidget((getSession()||{plan:"free"}).plan, registeredCount, limit);
   if(typeof window.loadVoiceBadge==='function') window.loadVoiceBadge(facs[cur]?facs[cur].db_id:null);
   const remaining = Math.max(0, limit - registeredCount);
   if (remaining <= 0) {
