@@ -1063,6 +1063,8 @@ function updateAddBtn() {
   const limit = plan === 'free' ? 1 : plan === 'standard' ? 5 : 20;
   const registeredCount = facs.filter(f => f.db_id).length;
   if(typeof window.updatePlanWidget==='function') window.updatePlanWidget((JSON.parse(sessionStorage.getItem(SESS_KEY)||"{}").plan||"free"), registeredCount, limit);
+  // プランバッジを即時更新
+  (function(){ var _b=document.querySelector(".plan-widget-badge"); var _p=JSON.parse(sessionStorage.getItem(SESS_KEY)||"{}").plan||"free"; if(_b) { _b.textContent=_p.toUpperCase(); _b.className="plan-widget-badge plan-"+_p; } })();
   if(typeof window.loadVoiceBadge==='function') window.loadVoiceBadge(facs[cur]?facs[cur].db_id:null);
   const remaining = Math.max(0, limit - registeredCount);
   if (remaining <= 0) {
