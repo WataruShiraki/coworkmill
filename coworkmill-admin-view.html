@@ -320,7 +320,7 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
   };
 
   window.doLogout = function() {
-    sessionStorage.removeItem(SESS_KEY);
+    sessionStorage.clear();
     location.reload();
   };
 
