@@ -1067,7 +1067,8 @@ function updateAddBtn() {
   const btn = document.querySelector('.add-btn');
   if (!btn) return;
   const plan = 'standard';
-  const limit = plan === 'free' ? 1 : plan === 'standard' ? 5 : 20;
+  const limit = plan === 'free' ? 1 : plan === 'standard' ? 5 : (_acctPlan === 'pro' ? 20 : (_acctPlan === 'standard' ? 5 : 1));
+  const _acctPlan = (JSON.parse(sessionStorage.getItem('cwm_account')||'{}').plan)||'free';
   const registeredCount = facs.filter(f => f.db_id).length;
   if(typeof window.updatePlanWidget==='function') window.updatePlanWidget((JSON.parse(sessionStorage.getItem(SESS_KEY)||"{}").plan||"free"), registeredCount, limit);
   // プランバッジを即時更新
