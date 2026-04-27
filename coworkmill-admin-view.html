@@ -312,12 +312,7 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
       sessionStorage.setItem('cwm_account', JSON.stringify(data.account));
       showApp(data.account);
       loadSpacesFromDB();
-      // プランバッジをアカウントのプランで即時修正
-      setTimeout(function() {
-        var _b = document.querySelector('.plan-widget-badge');
-        var _p = (data.account && data.account.plan) ? data.account.plan.toUpperCase() : 'PRO';
-        if (_b) { _b.textContent = _p; _b.className = 'plan-widget-badge plan-' + (data.account.plan||'pro'); }
-      }, 800);
+      
     } catch(e) {
       errEl.textContent = e.message;
       errEl.style.display = 'block';
