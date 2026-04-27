@@ -281,7 +281,6 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
   // セッション確認
   function getSession() {
     try {
-      const sess = JSON.parse(sessionStorage.getItem(SESS_KEY));
       // tokenも存在確認
       const token = sessionStorage.getItem('cwm_token');
       if (!sess || !token) return null;
@@ -1067,8 +1066,6 @@ function updateAddBtn() {
   const btn = document.querySelector('.add-btn');
   if (!btn) return;
   const plan = 'standard';
-  const limit = plan === 'free' ? 1 : plan === 'standard' ? 5 : (_acctPlan === 'pro' ? 20 : (_acctPlan === 'standard' ? 5 : 1));
-  const _acctPlan = (JSON.parse(sessionStorage.getItem('cwm_account')||'{}').plan)||'free';
   const registeredCount = facs.filter(f => f.db_id).length;").plan||"free"; if(_b) { _b.textContent=_p.toUpperCase(); _b.className="plan-widget-badge plan-"+_p; } })();
   if(typeof window.loadVoiceBadge==='function') window.loadVoiceBadge(facs[cur]?facs[cur].db_id:null);
   const remaining = Math.max(0, limit - registeredCount);
