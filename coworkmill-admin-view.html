@@ -1070,13 +1070,7 @@ function updateAddBtn() {
   const limit = plan === 'free' ? 1 : plan === 'standard' ? 5 : (_acctPlan === 'pro' ? 20 : (_acctPlan === 'standard' ? 5 : 1));
   const _acctPlan = (JSON.parse(sessionStorage.getItem('cwm_account')||'{}').plan)||'free';
   const registeredCount = facs.filter(f => f.db_id).length;
-  if(typeof window.updatePlanWidget==='function') window.(function(){
-    var _acct = JSON.parse(sessionStorage.getItem('cwm_account')||'{}');
-    var _p = _acct.plan || 'free';
-    var _limits = {free:1, standard:5, pro:20};
-    var _max = _limits[_p] || 20;
-    updatePlanWidget(_p, registeredCount, _max);
-  })();
+  if(typeof window.updatePlanWidget==='function') window.var _acct2 = JSON.parse(sessionStorage.getItem('cwm_account')||'{}'); var _p2 = _acct2.plan||'free'; var _lim2 = {free:1,standard:5,pro:20}; updatePlanWidget(_p2, registeredCount, _lim2[_p2]||20);
   // プランバッジを即時更新
   (function(){ var _b=document.querySelector(".plan-widget-badge"); var _p=JSON.parse(sessionStorage.getItem(SESS_KEY)||"{}").plan||"free"; if(_b) { _b.textContent=_p.toUpperCase(); _b.className="plan-widget-badge plan-"+_p; } })();
   if(typeof window.loadVoiceBadge==='function') window.loadVoiceBadge(facs[cur]?facs[cur].db_id:null);
