@@ -1318,7 +1318,7 @@ function toJapaneseError(e) {
 // Supabaseから施設一覧を取得してサイドバーを更新
 async function loadSpacesFromDB() {
   try {
-    const data = await sbFetch('/rest/v1/spaces?account_id=eq.' + (JSON.parse(sessionStorage.getItem('cwm_account')||'{}').id||'') + '&select=id,name,status&order=created_at.asc');
+    const data = await sbFetch('/rest/v1/spaces?account_id=eq.' + (JSON.parse(sessionStorage.getItem('cwm_account')||'{}').id||'') + '&select=id,name,status,plan&order=created_at.asc');
     if (data && data.length > 0) {
       // DBのデータでfacsを上書き
       facs.length = 0;
