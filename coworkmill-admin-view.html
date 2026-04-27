@@ -312,6 +312,7 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
       sessionStorage.setItem('cwm_token', data.token);
       sessionStorage.setItem('cwm_account', JSON.stringify(data.account));
       showApp(data.account);
+      loadSpacesFromDB();
       // プランバッジをアカウントのプランで即時修正
       setTimeout(function() {
         var _b = document.querySelector('.plan-widget-badge');
