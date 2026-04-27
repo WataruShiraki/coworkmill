@@ -1061,7 +1061,7 @@ function updateAddBtn() {
   const btn = document.querySelector('.add-btn');
   if (!btn) return;
   const plan = 'standard';
-  const registeredCount = facs.filter(f => f.db_id).length;").plan||"free"; if(_b) { _b.textContent=_p.toUpperCase(); _b.className="plan-widget-badge plan-"+_p; } })();
+  const registeredCount = facs.filter(f => f.db_id).length;
   if(typeof window.loadVoiceBadge==='function') window.loadVoiceBadge(facs[cur]?facs[cur].db_id:null);
   const remaining = Math.max(0, limit - registeredCount);
   if (remaining <= 0) {
