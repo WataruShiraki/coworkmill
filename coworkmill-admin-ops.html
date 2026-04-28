@@ -485,6 +485,20 @@ async function sbDelete(table, filter) {
   });
 }
 
+// sbGet/sbPost/sbPatch helper return values are parsed JSON bodies
+// (arrays or error objects), not Response. Use these helpers to judge
+// success/error consistently across all call sites.
+function _sbOk(r) {
+  if (r === null || r === undefined) return true;
+  if (Array.isArray(r)) return true;
+  if (typeof r === 'object' && (r.code || r.message)) return false;
+  return true;
+}
+function _sbErr(r) {
+  if (!r || typeof r !== 'object') return '不明なエラー';
+  return r.message || r.hint || r.details || JSON.stringify(r);
+}
+
 // ─────────────────────────────
 // Helpers
 // ─────────────────────────────
@@ -1086,8 +1100,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function openArchEdit2(a) {
   document.getElementById('ae2-id').value = a.id;
   document.getElementById('ae2-name').value = a.name||'';
-  document.getElementById('ae2-name-en').value = a.name_en||'';
-  document.getElementById('ae2-name-en').value = a.firm||'';
+  document.getElementById('ae2-name-en').value = a.name_en || a.firm || '';
   document.getElementById('ae2-url').value = a.url||'';
   document.getElementById('ae2-email').value = a.email||'';
   document.getElementById('ae2-bio').value = a.bio||'';
