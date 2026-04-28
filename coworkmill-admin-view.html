@@ -216,7 +216,9 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
 .plan-upgrade-sub{font-size:10px;color:#aaa!important;margin-top:3px}
 
 .voice-badge{display:inline-flex;align-items:center;justify-content:center;background:#e55;color:#fff;font-size:9px;font-weight:700;min-width:16px;height:16px;border-radius:8px;padding:0 4px;margin-left:6px;line-height:1}
-</style>
+
+  .pb { display: none !important; }
+  </style>
   <meta name="description" content="COWORKMILLの掲載者向け施設管理画面。">
   <meta name="robots" content="noindex, nofollow">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
@@ -310,6 +312,17 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
       // JWTトークンをlocalStorageに保存
       localStorage.setItem('cwm_token', data.token);
       localStorage.setItem('cwm_account', JSON.stringify(data.account));
+      // DBから最新のaccount情報を取得してlocalStorageを更新
+      try {
+        const _freshRes = await fetch('https://jakwntemjkwqwaqujffh.supabase.co/rest/v1/accounts?id=eq.' + data.account.id + '&select=id,company,email,plan,status', {
+          headers: { apikey: 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ', Authorization: 'Bearer ' + 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ' }
+        });
+        const _freshData = await _freshRes.json();
+        if (Array.isArray(_freshData) && _freshData[0]) {
+          data.account = Object.assign(data.account, _freshData[0]);
+          localStorage.setItem('cwm_account', JSON.stringify(data.account));
+        }
+      } catch(e) {}
       showApp(data.account);
       loadSpacesFromDB();
       
