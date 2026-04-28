@@ -630,7 +630,7 @@ function makeSpRow(d) {
   sel.addEventListener('change', async function() {
     if (!this.value) return;
     const r = await sbPatch('spaces','id=eq.'+d.id,{plan:this.value});
-    if (r.ok) { showToast('プランを変更しました'); loadSpaces(); } else { alert('変更失敗'); this.value=''; }
+    if (_sbOk(r)) { showToast('プランを変更しました'); loadSpaces(); } else { alert('変更失敗: ' + _sbErr(r)); this.value=''; }
   });
   const bView = document.createElement('button'); bView.className='bsm'; bView.textContent='詳細 ↗';
   bView.addEventListener('click', () => window.open('coworkmill-detail.html?id='+d.id));
@@ -781,8 +781,8 @@ async function confirmApprove() {
   if (!pendingSpaceId) return;
   const r = await sbPatch('spaces','id=eq.'+pendingSpaceId,{status:'live'});
   closeModal('m-ap');
-  if (r.ok) { showToast('✅ 承認しました'); loadSpaces(); }
-  else alert('承認に失敗しました');
+  if (_sbOk(r)) { showToast('✅ 承認しました'); loadSpaces(); }
+  else alert('承認に失敗しました: ' + _sbErr(r));
   pendingSpaceId=null;
 }
 async function confirmReject() {
@@ -790,8 +790,8 @@ async function confirmReject() {
   const r = await sbPatch('spaces','id=eq.'+pendingSpaceId,{status:'rejected'});
   closeModal('m-rj');
   document.getElementById('m-rj-r').value='';
-  if (r.ok) { showToast('却下しました'); loadSpaces(); }
-  else alert('却下に失敗しました');
+  if (_sbOk(r)) { showToast('却下しました'); loadSpaces(); }
+  else alert('却下に失敗しました: ' + _sbErr(r));
   pendingSpaceId=null;
 }
 
@@ -893,8 +893,8 @@ async function updateArchitectContact() {
   const status = document.getElementById('ae-contact').value;
   const r = await sbPatch('architects','id=eq.'+id,{contact_status:status});
   closeModal('m-arch-edit');
-  if (r.ok) { showToast('連絡状況を更新しました'); loadArchitects(); }
-  else alert('更新に失敗しました');
+  if (_sbOk(r)) { showToast('連絡状況を更新しました'); loadArchitects(); }
+  else alert('更新に失敗しました: ' + _sbErr(r));
 }
 
 async function saveArchitect() {
@@ -927,14 +927,14 @@ async function saveArchitect() {
     email: document.getElementById('an-email')?.value?.trim() || null
   };
   const r = await sbPost('architects', payload);
-  if (r.ok) {
+  if (_sbOk(r)) {
     closeModal('m-arch-new');
     ['an-name-en','an-url','an-bio','an-email'].forEach(id => document.getElementById(id).value='');
     document.getElementById('an-contact').value='未連絡';
     showToast('✅ 建築家を登録しました');
     loadArchitects();
   } else {
-    alert('登録に失敗しました。architects テーブルが存在するか確認してください。');
+    alert('登録に失敗しました: ' + _sbErr(r));
   }
 }
 async function deleteArchitect(id, name) {
@@ -1075,7 +1075,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if(!id) return;
     execBtn.textContent = '削除中...'; execBtn.disabled = true;
     try {
-      await sbDelete('/rest/v1/spaces?id=eq.'+id);
+      await sbDelete('spaces','id=eq.'+id);
       document.getElementById('m-del-confirm').style.display='none';
       showToast('削除しました');
       loadSpaces();
@@ -1133,18 +1133,33 @@ async function saveArchEdit2() {
   const name = document.getElementById('ae2-name').value.trim();
   const firm = document.getElementById('ae2-name-en').value.trim();
   if(!name||!firm) { alert('建築家名と事務所名は必須です'); return; }
-  let portrait_url = window._ae2PortraitUrl||null;
+  const btn = document.querySelector('#m-arch-edit2 button[onclick="saveArchEdit2()"]');
+  if(btn){ btn.disabled = true; btn.textContent = '保存中...'; }
+  let portrait_url = window._ae2PortraitUrl || null;
   if(window._ae2PortraitFile) {
     try {
-      const ext = window._ae2PortraitFile.name.split('.').pop();
+      const ext = (window._ae2PortraitFile.name.split('.').pop() || 'jpg').toLowerCase();
       const path = 'arch-' + id + '-' + Date.now() + '.' + ext;
-      const SB2='https://jakwntemjkwqwaqujffh.supabase.co'; const KEY2='sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+      const SB2 = 'https://jakwntemjkwqwaqujffh.supabase.co';
+      const KEY2 = 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
       const upRes = await fetch(SB2+'/storage/v1/object/portraits/'+path, {
-        method:'POST', headers:{'apikey':KEY2,'Authorization':'Bearer '+KEY2,'Content-Type':window._ae2PortraitFile.type,'x-upsert':'true'},
+        method: 'POST',
+        headers: {'apikey':KEY2,'Authorization':'Bearer '+KEY2,'Content-Type':window._ae2PortraitFile.type,'x-upsert':'true'},
         body: window._ae2PortraitFile
       });
-      if(upRes.ok) portrait_url = SB2+'/storage/v1/object/public/portraits/'+path;
-    } catch(e) { console.error(e); }
+      if(upRes.ok) {
+        portrait_url = SB2+'/storage/v1/object/public/portraits/'+path;
+      } else {
+        const errBody = await upRes.text().catch(()=>'');
+        if(btn){ btn.disabled = false; btn.textContent = '保存する'; }
+        showToast('画像のアップロードに失敗しました: ' + (errBody.substring(0,80) || upRes.status));
+        return;
+      }
+    } catch(e) {
+      if(btn){ btn.disabled = false; btn.textContent = '保存する'; }
+      showToast('画像のアップロードでエラー: ' + e.message);
+      return;
+    }
   }
   const payload = {
     name, firm,
@@ -1157,9 +1172,19 @@ async function saveArchEdit2() {
   };
   try {
     const r = await sbPatch('architects', 'id=eq.'+id, payload);
-    if(r.ok) { document.getElementById('m-arch-edit2').style.display='none'; showToast('保存しました'); loadArchitects(); }
-    else { showToast('エラーが発生しました'); }
-  } catch(e) { showToast('エラー: '+e.message); }
+    if(_sbOk(r)) {
+      document.getElementById('m-arch-edit2').style.display='none';
+      showToast('保存しました');
+      window._ae2PortraitFile = null;
+      loadArchitects();
+    } else {
+      showToast('保存エラー: ' + _sbErr(r));
+    }
+  } catch(e) {
+    showToast('保存エラー: ' + e.message);
+  } finally {
+    if(btn){ btn.disabled = false; btn.textContent = '保存する'; }
+  }
 }
 </script>
 
