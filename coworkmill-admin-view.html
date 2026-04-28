@@ -1062,6 +1062,9 @@ function updateAddBtn() {
   if (!btn) return;
   const plan = 'standard';
   const registeredCount = facs.filter(f => f.db_id).length;
+  const acctPlan = (JSON.parse(sessionStorage.getItem('cwm_account')||'{}')||{}).plan||'free';
+  const planLimit = acctPlan==='pro'?20:acctPlan==='standard'?5:1;
+  updatePlanWidget(acctPlan, registeredCount, planLimit);
   if(typeof window.loadVoiceBadge==='function') window.loadVoiceBadge(facs[cur]?facs[cur].db_id:null);
   const remaining = Math.max(0, limit - registeredCount);
   if (remaining <= 0) {
