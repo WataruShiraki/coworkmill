@@ -15,7 +15,7 @@ User-agent: Googlebot
 Allow: /
 
 # Sitemap
-Sitemap: https://coworkmill.jp/sitemap.xml
+Sitemap: https://cowkml.com/sitemap.xml
 
 # LLMs.txt
-LLMs: https://coworkmill.jp/llms.txt
+LLMs: https://cowkml.com/llms.txt

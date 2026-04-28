@@ -18,18 +18,18 @@ COWORKMILL（コワークミル）は、建築家・デザイン会社が手が�
 
 ## 利用者向けページ
 
-- トップページ: https://coworkmill.jp/coworkmill.html
-- 施設一覧・検索: https://coworkmill.jp/coworkmill-spaces.html
-- 写真から探す: https://coworkmill.jp/coworkmill-photos.html
-- 建築家から探す: https://coworkmill.jp/coworkmill-architects.html
+- トップページ: https://cowkml.com/coworkmill.html
+- 施設一覧・検索: https://cowkml.com/coworkmill-spaces.html
+- 写真から探す: https://cowkml.com/coworkmill-photos.html
+- 建築家から探す: https://cowkml.com/coworkmill-architects.html
 
 ## 施設オーナー向けページ
 
-- 掲載申し込み: https://coworkmill.jp/coworkmill-register.html
-- お問い合わせ: https://coworkmill.jp/coworkmill-contact.html
+- 掲載申し込み: https://cowkml.com/coworkmill-register.html
+- お問い合わせ: https://cowkml.com/coworkmill-contact.html
 
 ## 運営会社
 
 Lily Partners LLC（リリィパートナーズ合同会社）
 所在地: 東京都大田区
-サービスURL: https://coworkmill.jp
+サービスURL: https://cowkml.com
