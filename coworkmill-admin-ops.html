@@ -687,6 +687,13 @@ async function doEditAccount() {
       body: JSON.stringify({ p_id: id, p_company: co, p_email: em, p_plan: pl, p_password: pa, p_note: no })
     });
     if (!res.ok) { const d = await res.json(); throw new Error(d.message || JSON.stringify(d)); }
+    // ★アカウントのプラン変更に追従して、紐づく全施設のplanも同じ値に揃える
+    const syncRes = await fetch(SB_URL + '/rest/v1/spaces?account_id=eq.' + id, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', 'apikey': SERVICE_ROLE_KEY, 'Authorization': 'Bearer ' + SERVICE_ROLE_KEY, 'Prefer': 'return=minimal' },
+      body: JSON.stringify({ plan: pl })
+    });
+    if (!syncRes.ok) { const sd = await syncRes.json().catch(()=>({})); console.warn('spaces plan sync failed:', sd); }
     alert('更新しました');
     document.getElementById('m-editac').style.display = 'none';
     loadAccounts();
