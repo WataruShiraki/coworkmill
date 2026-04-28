@@ -281,10 +281,10 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
   // セッション確認
   function getSession() {
     try {
-      // tokenも存在確認
       const token = localStorage.getItem('cwm_token');
-      if (!sess || !token) return null;
-      return sess;
+      const acct = localStorage.getItem('cwm_account');
+      if (!token || !acct) return null;
+      return JSON.parse(acct);
     } catch(e) { return null; }
   }
 
