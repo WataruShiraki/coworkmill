@@ -352,7 +352,19 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
   document.addEventListener('DOMContentLoaded', function() {
     const sess = getSession();
     if (sess) {
-      showApp(sess);
+      (async function() {
+        try {
+          const _r = await fetch('https://jakwntemjkwqwaqujffh.supabase.co/rest/v1/accounts?id=eq.' + sess.id + '&select=id,company,email,plan,status', {
+            headers: { apikey: 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ', Authorization: 'Bearer ' + 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ' }
+          });
+          const _d = await _r.json();
+          if (Array.isArray(_d) && _d[0]) {
+            const updated = Object.assign(sess, _d[0]);
+            localStorage.setItem('cwm_account', JSON.stringify(updated));
+            showApp(updated);
+          } else { showApp(sess); }
+        } catch(e) { showApp(sess); }
+      })();
     } else {
       const ls = document.getElementById('login-screen');
       ls.style.display = 'flex';
