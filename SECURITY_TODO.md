@@ -1,60 +1,58 @@
-# セキュリティ対策 TODO
+# セキュリティ対策 進捗
 
-## 現状(2026-04-29 時点)
+## 完了済み(2026-04-29)
 
-開発を高速化するため、複数の Supabase テーブルで RLS(Row Level Security)が
-無効化されている、または UPDATE/DELETE が `anon` キーに対して開放された状態。
+### Phase 1: voices テーブル(利用者の声)完全保護 ✅
 
-### RLS無効化済みテーブル
-- `voices`(2026-04-29 無効化、admin の承認/削除を動かすため)
+**Edge Function `cwm-admin` をデプロイ**して、admin の write 操作(承認/削除)を JWT 認証付きバックエンド経由に切り替え。
 
-### RLS有効だが UPDATE/DELETE が anon に開いてないテーブル
-- `spaces`(SELECT/INSERT のみ anon 許可、UPDATE は service_role 経由?)
-- `architects`
-- `accounts`
-- `registrations`
-- `space_images`
-- `reviews`(投稿用)
-- `click_logs`
+実装内容:
+- 新規 Edge Function `cwm-admin` 作成・デプロイ
+  - URL: `https://jakwntemjkwqwaqujffh.supabase.co/functions/v1/cwm-admin`
+  - cwm_token (HMAC-SHA256 署名 JWT) を verify
+  - account.status 有効性チェック
+  - target='voice' の場合: 対象 voice の space_id がリクエスタの所有か確認
+  - 一致したら service_role で update/delete 実行
+- admin-view.html の `approveVoice` / `deleteVoice` を Edge Function 経由に書き換え
+- voices テーブルの RLS を**再有効化**
+- 既存ポリシー: `voices_anon_insert`(投稿フォーム用)、`voices_public_select`(公開表示用)
+- UPDATE/DELETE は anon ポリシー無し → 完全拒否
 
-## 起こりうる攻撃シナリオ(本番化後)
+**動作検証(2026-04-29)**:
+- ✅ publishable key で直接 PATCH → HTTP 200 だが body=`[]`(0行更新)、データは保護される
+- ✅ admin 画面の「承認して公開」「削除」ボタン → Edge Function 経由で動く
+- ✅ JWT 検証エラー時はユーザーに「再ログインしてください」アラート + リロード
+- ✅ 他人の施設の voice を操作しようとした場合は 403 拒否
 
-1. **誰かが開発者ツールを開く** → サイトのHTMLに埋め込まれた `sb_publishable_*` キーを取得
-2. そのキーで Supabase REST API を直接叩く
-3. RLS無効テーブル(voices)に対して、誰でも以下が可能になる:
-   - 全件SELECT(問題なし、元から公開情報)
-   - 任意レコードのUPDATE(reviewの本文書き換え、なりすまし、sql injectionは無理だが意味的破壊が可能)
-   - 任意レコードのDELETE(嫌がらせ的全消し)
+## 残タスク
 
-## 推奨対策
+### Phase 2: spaces テーブル(施設情報)保護
+spaces の UPDATE/DELETE 操作も同様に cwm-admin 経由化する。
+- admin-view.html の施設情報更新処理を Edge Function 経由に
+- cwm-admin に target='space' のロジック追加
+  - space.account_id がリクエスタと一致するか確認
+- spaces RLS は既に anon UPDATE policy 無し(現状維持で OK)
 
-### 短期(MVP公開直後〜利用者100人ごろまで)
-- voices テーブルにRLSを再有効化
-- ポリシー追加:
-  - `voices_anon_insert` (公開フォーム用、既にある)
-  - `voices_public_select` (公開表示用、既にある)
-  - **新規**: 認証済みユーザーが**自分の施設の**voicesのみUPDATE/DELETEできるポリシー
-    ```sql
-    CREATE POLICY voices_owner_update ON voices
-      FOR UPDATE TO authenticated
-      USING (space_id IN (SELECT id FROM spaces WHERE owner_id = auth.uid()));
-    CREATE POLICY voices_owner_delete ON voices
-      FOR DELETE TO authenticated
-      USING (space_id IN (SELECT id FROM spaces WHERE owner_id = auth.uid()));
-    ```
+### Phase 3: architects, space_images
+同パターンで保護。
 
-### 中期(認証導入時に必須)
-- admin-view.html に Supabase Auth (email/password または magic link) を導入
-- ログイン後、`auth.uid()` を使ったRLSポリシーで施設オーナー単位でアクセス制御
-- spaces, architects, voices, space_images すべてに owner ベースのRLS
-- 公開キー(sb_publishable_*)はSELECTのみで write には使えない構成にする
+### Phase 4: 監査ログ・レート制限
+- cwm-admin 内で操作ログを別テーブルに記録
+- 連続呼び出しを制限(brute force 対策)
 
-### 長期
-- service_role キーが必要な処理はサーバーレス関数(Supabase Edge Functions)経由に移行
-- 公開キーはブラウザに置いてもOK、書き込み系は全てログイン+RLSで保護
+## 補足: 攻撃シナリオへの耐性
 
-## 補足
+| 攻撃 | 結果 |
+|------|------|
+| publishable key で voices を勝手に削除 | RLS で拒否(検証済み) |
+| publishable key で他人の voice を承認 | RLS で拒否(検証済み) |
+| 他人の cwm_token を入手して操作 | JWT verify で別人と判明、ownership check で 403 |
+| 他人の施設の voice を、自分のアカウントから操作 | ownership check で 403 |
+| 期限切れ JWT で操作 | JWT verify で 401(自動的にリロード+再ログイン) |
+| 改ざん JWT で操作 | HMAC-SHA256 検証で 401 |
 
-現在のサイトは利用者が極めて少ないため、上記対策は急ぎではない。
-ただし、コワーキング業界でちょっと話題になった瞬間、悪意ある操作を受ける可能性は十分ある。
-**「お問い合わせ」「掲載申し込み」が日に5件以上来るようになったら本気で対策する**を目安に。
+## メモ
+
+- CWM_JWT_SECRET は Supabase Edge Function の環境変数として管理(漏洩リスクなし)
+- service_role key は Edge Function 内のみで使用、ブラウザに出ない
+- cwm_token は localStorage 保存、有効期限あり(cwm-auth で発行時に exp 設定)
