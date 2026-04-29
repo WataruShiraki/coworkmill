@@ -1286,6 +1286,39 @@ const SUPABASE_URL = 'https://jakwntemjkwqwaqujffh.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
 
 async function sbFetch(path, options = {}) {
+  // ===== セキュリティ: spaces UPDATE/DELETE は cwm-admin Edge Function 経由に =====
+  const method = (options.method || 'GET').toUpperCase();
+  const spacesIdMatch = path.match(/^\/rest\/v1\/spaces\?id=eq\.([0-9a-f-]{36})/);
+  if (spacesIdMatch && (method === 'PATCH' || method === 'DELETE')) {
+    const token = localStorage.getItem('cwm_token');
+    if (!token) {
+      alert('ログインセッションが切れています。再ログインしてください。');
+      location.reload();
+      throw new Error('no token');
+    }
+    const id = spacesIdMatch[1];
+    const action = method === 'PATCH' ? 'update' : 'delete';
+    const data = options.body ? JSON.parse(options.body) : null;
+    const res = await fetch(SUPABASE_URL + '/functions/v1/cwm-admin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token, target: 'space', action, id, data })
+    });
+    const result = await res.json();
+    if (res.status === 401) {
+      alert('認証エラー: 再ログインしてください');
+      localStorage.removeItem('cwm_token');
+      location.reload();
+      throw new Error('auth error');
+    }
+    if (!res.ok || !result.ok) {
+      throw new Error(result.error || (action + ' に失敗しました'));
+    }
+    // 既存呼び出しは戻り値を見ないか、配列を期待するので space オブジェクトを配列で返す
+    return result.space ? [result.space] : null;
+  }
+
+  // ===== 通常処理(SELECT、INSERT、その他テーブルの操作) =====
   const res = await fetch(SUPABASE_URL + path, {
     ...options,
     headers: {
