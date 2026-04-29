@@ -1782,6 +1782,34 @@ function swFac(id) {
   cur = id;
   const f = facs[id];
   document.querySelectorAll('.fi').forEach(el => el.classList.toggle('on', el.id==='fi-'+id));
+  // === 新規施設(まだDB未保存) → 新規登録パネルへ切り替え + フォームリセット ===
+  if (!f.db_id) {
+    if (typeof panels !== 'undefined') {
+      panels.forEach(p => { const e=document.getElementById('p-'+p); if(e) e.style.display='none'; });
+    }
+    const pNew = document.getElementById('p-new');
+    if (pNew) pNew.style.display='block';
+    if (typeof setStep === 'function') setStep(1);
+    document.querySelectorAll('.nl').forEach(l=>l.classList.remove('on'));
+    const ttl=document.getElementById('ttl');if(ttl)ttl.innerHTML='新しい施設を登録';
+    const tbs=document.getElementById('tbs');if(tbs){tbs.textContent='下書き';tbs.className='tbs draft';}
+    const banIc=document.getElementById('ban-ic');if(banIc){banIc.textContent='新';banIc.style.background='rgba(255,255,255,.15)';}
+    const banNm=document.getElementById('ban-nm');if(banNm)banNm.textContent='新しい施設 を登録中';
+    const tbr=document.getElementById('tbr');if(tbr)tbr.innerHTML='<button class="bol" onclick="cancelNew()">キャンセル</button><button class="bsv" onclick="saveNew()">施設を登録する</button>';
+    // 全フィールドリセット
+    ['nfn','nfd','nfc','nfa','nfad','nfde','nfst','nfline','nfvibe','nfinsta',
+     'nf-price-hourly','nf-price-daily','nf-price-monthly','nf-price-monthly-max',
+     'nf-smoking','nf-contact-name','nf-contact-email',
+     'f-walk-minutes','f-meeting-capacity','f-open-hours','f-official-url',
+     'f-city','admin-lat','admin-lon'
+    ].forEach(i=>{const e=document.getElementById(i);if(e)e.value='';});
+    const mr=document.getElementById('f-has-meeting-room');if(mr)mr.checked=false;
+    const tm=document.getElementById('f-transport-mode');if(tm)tm.value='walk';
+    document.querySelectorAll('.fgg .fo.on').forEach(el=>el.classList.remove('on'));
+    const archSel=document.getElementById('p-arch-selected');if(archSel){archSel.dataset.archId='';archSel.textContent='';}
+    const archBadge=document.getElementById('arch-badge-display');if(archBadge)archBadge.remove();
+    return;
+  }
   // Show locked banner if locked
   const existingBanner = document.getElementById('locked-banner');
   if(existingBanner) existingBanner.remove();
