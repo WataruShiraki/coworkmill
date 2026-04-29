@@ -1406,7 +1406,6 @@ function collectFormData() {
     architect_name:  g('p-arch'),
     architect_id:    document.getElementById('p-arch-selected')?.dataset?.archId || null,
     vibe:            g('nfvibe', 'p-vibe'),
-    website_url:     document.getElementById('f-official-url')?.value||'',
     instagram:       g('nfinsta', 'fig'),
     smoking:         g('nf-smoking', 'smoking'),
     contact_name:    g('nf-contact-name'),
@@ -1550,7 +1549,7 @@ window.updateAccessPreview=function(){
   prev.textContent=parts.join(' ');
   prev.style.color='#2b6cb0';
 }
-sv('fu',   d.website_url);
+sv('fu',   d.official_url);
     sv('fig',  d.instagram);
   
     // 設備ボタンのftg補完（DB読み込み後にチェックマークを表示）
