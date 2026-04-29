@@ -522,7 +522,7 @@ function resetVibeUI(){
         <div class="fr"><div class="fg"><div class="fl">都道府県<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><select class="fin" id="fc" style="cursor:pointer"><option value="">選択してください</option><option value="北海道">北海道</option><option value="青森県">青森県</option><option value="岩手県">岩手県</option><option value="宮城県">宮城県</option><option value="秋田県">秋田県</option><option value="山形県">山形県</option><option value="福島県">福島県</option><option value="茨城県">茨城県</option><option value="栃木県">栃木県</option><option value="群馬県">群馬県</option><option value="埼玉県">埼玉県</option><option value="千葉県">千葉県</option><option value="東京都">東京都</option><option value="神奈川県">神奈川県</option><option value="新潟県">新潟県</option><option value="富山県">富山県</option><option value="石川県">石川県</option><option value="福井県">福井県</option><option value="山梨県">山梨県</option><option value="長野県">長野県</option><option value="岐阜県">岐阜県</option><option value="静岡県">静岡県</option><option value="愛知県">愛知県</option><option value="三重県">三重県</option><option value="滋賀県">滋賀県</option><option value="京都府">京都府</option><option value="大阪府">大阪府</option><option value="兵庫県">兵庫県</option><option value="奈良県">奈良県</option><option value="和歌山県">和歌山県</option><option value="鳥取県">鳥取県</option><option value="島根県">島根県</option><option value="岡山県">岡山県</option><option value="広島県">広島県</option><option value="山口県">山口県</option><option value="徳島県">徳島県</option><option value="香川県">香川県</option><option value="愛媛県">愛媛県</option><option value="高知県">高知県</option><option value="福岡県">福岡県</option><option value="佐賀県">佐賀県</option><option value="長崎県">長崎県</option><option value="熊本県">熊本県</option><option value="大分県">大分県</option><option value="宮崎県">宮崎県</option><option value="鹿児島県">鹿児島県</option><option value="沖縄県">沖縄県</option></select></div></div>
         <div class="fr"><div class="fg"><div class="fl">市区町村<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><input class="fin" id="f-city" placeholder="例）港区" value=""></div></div>
         <div class="fr full"><div class="fg"><div class="fl">町名・番地<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><input class="fin" id="fad" placeholder="例：1-1-1 ミルビル4F（番地・建物名）" value=""></div></div>
-        <div class="fr" style="margin-top:0"><div class="fg" style="width:100%"><div class="fl" style="margin-bottom:6px">住所から地図を設定 <span style="font-size:10px;color:var(--g400)">(ピンをドラッグして正確な位置に調整)</span></div><div id="admin-map-wrap" style="height:360px;border-radius:8px;overflow:hidden;background:#e8e8e8;margin-bottom:6px"><div id="admin-lmap" style="height:360px;width:100%"></div></div><div style="display:flex;gap:8px;font-size:11px;color:var(--g400)"><span>緯度: <span id="admin-lat-disp">-</span></span><span>経度: <span id="admin-lon-disp">-</span></span><button onclick="adminMapSearchAddr()" style="margin-left:auto;padding:3px 10px;background:#2BB5C8;color:#000;border:none;border-radius:4px;font-size:11px;font-weight:600;cursor:pointer">住所から検索</button></div><input type="hidden" id="admin-lat"><input type="hidden" id="admin-lon"></div></div>
+        <div id="addr-map-anchor-info"></div><div class="fr" id="addr-map-block" style="margin-top:0"><div class="fg" style="width:100%"><div class="fl" style="margin-bottom:6px">住所から地図を設定 <span style="font-size:10px;color:var(--g400)">(ピンをドラッグして正確な位置に調整)</span></div><div id="admin-map-wrap" style="height:360px;border-radius:8px;overflow:hidden;background:#e8e8e8;margin-bottom:6px"><div id="admin-lmap" style="height:360px;width:100%"></div></div><div style="display:flex;gap:8px;font-size:11px;color:var(--g400)"><span>緯度: <span id="admin-lat-disp">-</span></span><span>経度: <span id="admin-lon-disp">-</span></span><button onclick="adminMapSearchAddr()" style="margin-left:auto;padding:3px 10px;background:#2BB5C8;color:#000;border:none;border-radius:4px;font-size:11px;font-weight:600;cursor:pointer">住所から検索</button></div><input type="hidden" id="admin-lat"><input type="hidden" id="admin-lon"></div></div>
         <div class="fr">
           <div class="fg"><div class="fl">最寄駅名</div><input class="fin" id="fst" placeholder="例：外苑前駅" value=""></div>
           <div class="fg"><div class="fl">路線名</div><input class="fin" id="fline" placeholder="例：東京メトロ銀座線" value=""></div>
@@ -722,6 +722,7 @@ function resetVibeUI(){
         <div class="fr full"><div class="fg"><div class="fl">施設名<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><input class="fin" id="nfn" placeholder="例：MILLOFFICE 渋谷"></div></div>
         <div class="fr"><div class="fg"><div class="fl">都道府県<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><select class="fin" id="nfc" style="cursor:pointer"><option value="">選択してください</option><option value="北海道">北海道</option><option value="青森県">青森県</option><option value="岩手県">岩手県</option><option value="宮城県">宮城県</option><option value="秋田県">秋田県</option><option value="山形県">山形県</option><option value="福島県">福島県</option><option value="茨城県">茨城県</option><option value="栃木県">栃木県</option><option value="群馬県">群馬県</option><option value="埼玉県">埼玉県</option><option value="千葉県">千葉県</option><option value="東京都">東京都</option><option value="神奈川県">神奈川県</option><option value="新潟県">新潟県</option><option value="富山県">富山県</option><option value="石川県">石川県</option><option value="福井県">福井県</option><option value="山梨県">山梨県</option><option value="長野県">長野県</option><option value="岐阜県">岐阜県</option><option value="静岡県">静岡県</option><option value="愛知県">愛知県</option><option value="三重県">三重県</option><option value="滋賀県">滋賀県</option><option value="京都府">京都府</option><option value="大阪府">大阪府</option><option value="兵庫県">兵庫県</option><option value="奈良県">奈良県</option><option value="和歌山県">和歌山県</option><option value="鳥取県">鳥取県</option><option value="島根県">島根県</option><option value="岡山県">岡山県</option><option value="広島県">広島県</option><option value="山口県">山口県</option><option value="徳島県">徳島県</option><option value="香川県">香川県</option><option value="愛媛県">愛媛県</option><option value="高知県">高知県</option><option value="福岡県">福岡県</option><option value="佐賀県">佐賀県</option><option value="長崎県">長崎県</option><option value="熊本県">熊本県</option><option value="大分県">大分県</option><option value="宮崎県">宮崎県</option><option value="鹿児島県">鹿児島県</option><option value="沖縄県">沖縄県</option></select></div><div class="fg"><div class="fl">市区町村<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><input class="fin" id="nf-city" placeholder="例：渋谷区"></div></div>
         <div class="fr full"><div class="fg"><div class="fl">町名・番地<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><input class="fin" id="nfad" placeholder="例：1-1-1 ミルビル4F"></div></div>
+        <div id="addr-map-anchor-new"></div>
         <div class="fr"><div class="fg"><div class="fl">最寄駅</div><input class="fin" id="nfst" placeholder="例：渋谷駅"></div><div class="fg"><div class="fl">路線</div><input class="fin" id="nfline" placeholder="例：JR山手線"></div></div>
         <div class="fr"><div class="fg" style="max-width:160px"><div class="fl">所要時間（分）</div><input class="fin" id="nf-walk-minutes" type="number" min="1" max="999" placeholder="例：5" style="width:100%"></div><div class="fg"><div class="fl">移動手段&nbsp;<span style="font-size:10px;color:#aaa">タップで選択</span></div><div style="display:flex;gap:10px;padding-top:4px"><button type="button" id="nf-btn-tw" onclick="window.setTransportNew('walk')" style="padding:8px 20px;border-radius:8px;border:2px solid #2BB5C8;background:#2BB5C8;color:#fff;font-size:13px;font-weight:700;cursor:pointer">🚶 徒歩</button><button type="button" id="nf-btn-tc" onclick="window.setTransportNew('car')" style="padding:8px 20px;border-radius:8px;border:2px solid #ddd;background:#fff;color:#666;font-size:13px;font-weight:700;cursor:pointer">🚗 車</button></div><input type="hidden" id="nf-transport-mode" value="walk"></div></div>
         <div class="fr full"><div class="fg"><div class="fl">営業時間<span style="font-size:10px;color:#aaa;margin-left:6px">任意</span></div><input class="fin" id="nf-open-hours" placeholder="例：月～金 9:00～22:00、土日 10:00～18:00 / 24時間営業"></div></div>
@@ -1835,6 +1836,8 @@ function swFac(id) {
     document.querySelectorAll('.fgg .fo.on').forEach(el=>el.classList.remove('on'));
     const archSel=document.getElementById('p-arch-selected');if(archSel){archSel.dataset.archId='';archSel.textContent='';}
     const archBadge=document.getElementById('arch-badge-display');if(archBadge)archBadge.remove();
+    // 地図セクションを新規登録パネルへ移動
+    if(typeof window.moveAdminMapTo === 'function') window.moveAdminMapTo('addr-map-anchor-new');
     return;
   }
   // Show locked banner if locked
@@ -1868,6 +1871,8 @@ function swFac(id) {
   if(f.st==='live') bar.innerHTML = '<div class="sdot green"></div><div class="st"><strong>掲載中</strong></div>';
   else if(f.st==='locked') bar.innerHTML = '<div class="sdot" style="background:#a0a0a0"></div><div class="st"><strong>非公開</strong> — Standardプランにアップグレードすると再公開できます</div>';
   else bar.innerHTML = '<div class="sdot amber"></div><div class="st"><strong>下書き</strong> — 情報を入力して内容を保存してください。</div>';
+  // 地図セクションを既存編集パネルへ戻す
+  if(typeof window.moveAdminMapTo === 'function') window.moveAdminMapTo('addr-map-anchor-info');
   // DBから施設データを取得してフォームに反映
   loadSpaceDetail(f);
   const tbr = document.getElementById('tbr');
@@ -1922,6 +1927,8 @@ function addFac() {
   // 建築家選択もリセット
   const archSel=document.getElementById('p-arch-selected');if(archSel){archSel.dataset.archId='';archSel.textContent='';}
   const archBadge=document.getElementById('arch-badge-display');if(archBadge)archBadge.remove();
+  // 地図セクションを新規登録パネルへ移動
+  if(typeof window.moveAdminMapTo === 'function') window.moveAdminMapTo('addr-map-anchor-new');
 }
 
 async function saveNew() {
@@ -2580,6 +2587,19 @@ window.setTransportNew = function(mode) {
     if (tw) { tw.style.background='#fff'; tw.style.borderColor='#ddd'; tw.style.color='#666'; }
     if (tc) { tc.style.background='#2BB5C8'; tc.style.borderColor='#2BB5C8'; tc.style.color='#fff'; }
   }
+};
+</script>
+
+<script>
+window.moveAdminMapTo = function(anchorId) {
+  const block = document.getElementById('addr-map-block');
+  const anchor = document.getElementById(anchorId);
+  if (!block || !anchor) return;
+  anchor.insertAdjacentElement('afterend', block);
+  // Leaflet マップサイズの再計算
+  setTimeout(function() {
+    try { if (window._adminMap) window._adminMap.invalidateSize(); } catch(e){}
+  }, 200);
 };
 </script>
 </body></html>
