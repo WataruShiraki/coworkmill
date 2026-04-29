@@ -483,6 +483,13 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
   cursor:pointer;
   padding:4px 8px;
 }
+.sp-filter-close-x{
+  background:none;border:none;padding:6px;cursor:pointer;
+  color:var(--gray-600);display:flex;align-items:center;justify-content:center;
+  border-radius:8px;transition:background .2s;margin-left:-6px;
+}
+.sp-filter-close-x:hover{background:var(--gray-100)}
+.sp-filter-close-x svg{display:block}
 @media(min-width:961px){
   .sp-filter-open-btn{display:none !important}
 }
@@ -490,6 +497,8 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
   .sp-filter-wrap{background:#1a1a1a}
   .sp-filter-header{background:#1a1a1a;border-bottom-color:#2a2a2a}
   .sp-filter-title{color:#f0f0f0}
+  .sp-filter-close-x{color:#ccc}
+  .sp-filter-close-x:hover{background:#2a2a2a}
 }
 
 /* ── SP FILTER BAR ROW ── */
@@ -652,6 +661,9 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
 
   <!-- ヘッダー：タイトル + リセット -->
   <div class="sp-filter-header">
+    <button class="sp-filter-close-x" onclick="closeSpFilter()" aria-label="絞り込みを閉じる">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    </button>
     <span class="sp-filter-title">絞り込み</span>
     <button class="sp-filter-reset" onclick="resetSpFilters()">リセット</button>
   </div>
@@ -715,7 +727,7 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
   </div>
 
   <!-- 固定CTA：この条件で検索 -->
-  <div class="sp-filter-cta" style="display:none">
+  <div class="sp-filter-cta">
     <button class="sp-filter-apply" onclick="applySpFilters()">
       <span id="sp-filter-count">この条件で検索</span>
     </button>
@@ -1391,4 +1403,47 @@ window.cwmToggleSfAcc = function(btn){
   if(!opts.classList.contains('sf-collapsed')) btn.classList.add('is-open');
 };
 </script>
+
+<script>
+// SP絞り込みモーダル UX 改善
+(function(){
+  window.closeSpFilter = function(){
+    var w = document.getElementById('sp-filter-wrap');
+    if (w) w.classList.remove('open');
+    document.body.style.overflow = '';
+  };
+  // モーダル開閉に応じて body スクロールロック
+  var wrap = document.getElementById('sp-filter-wrap');
+  if (wrap){
+    new MutationObserver(function(){
+      document.body.style.overflow = wrap.classList.contains('open') ? 'hidden' : '';
+    }).observe(wrap, { attributes: true, attributeFilter: ['class'] });
+  }
+  // ESCキーで閉じる
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape'){
+      var w = document.getElementById('sp-filter-wrap');
+      if (w && w.classList.contains('open')) closeSpFilter();
+    }
+  });
+  // 結果数を CTA ボタンのテキストに反映(filter変更時)
+  function updateCtaCount(){
+    var btnSpan = document.getElementById('sp-filter-count');
+    if (!btnSpan) return;
+    var total = document.querySelectorAll('.scard').length;
+    var hidden = document.querySelectorAll('.scard[style*="display: none"], .scard[style*="display:none"]').length;
+    var n = total - hidden;
+    btnSpan.textContent = n > 0 ? (n + '件のスペースを見る') : 'この条件で検索';
+  }
+  document.addEventListener('input', function(e){
+    if (e.target.closest && e.target.closest('#sp-filter-wrap')) setTimeout(updateCtaCount, 100);
+  });
+  document.addEventListener('click', function(e){
+    if (e.target.closest && e.target.closest('#sp-filter-wrap')) setTimeout(updateCtaCount, 150);
+  });
+  // 初期表示時にも 1 度更新
+  setTimeout(updateCtaCount, 1500);
+})();
+</script>
+
 </body></html>
