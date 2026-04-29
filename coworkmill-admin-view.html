@@ -1838,6 +1838,10 @@ function swFac(id) {
     const archBadge=document.getElementById('arch-badge-display');if(archBadge)archBadge.remove();
     // 地図セクションを新規登録パネルへ移動
     if(typeof window.moveAdminMapTo === 'function') window.moveAdminMapTo('addr-map-anchor-new');
+    // Leafletマップ未初期化なら初期化
+    if(!window._adminMap && typeof window.adminMapInit === 'function') {
+      setTimeout(function(){ try { window.adminMapInit(35.6689, 139.7208); } catch(e){ console.warn('map init failed:', e); } }, 300);
+    }
     return;
   }
   // Show locked banner if locked
@@ -1929,6 +1933,10 @@ function addFac() {
   const archBadge=document.getElementById('arch-badge-display');if(archBadge)archBadge.remove();
   // 地図セクションを新規登録パネルへ移動
   if(typeof window.moveAdminMapTo === 'function') window.moveAdminMapTo('addr-map-anchor-new');
+  // Leafletマップ未初期化なら初期化(東京駅周辺をデフォルト位置に)
+  if(!window._adminMap && typeof window.adminMapInit === 'function') {
+    setTimeout(function(){ try { window.adminMapInit(35.6689, 139.7208); } catch(e){ console.warn('map init failed:', e); } }, 300);
+  }
 }
 
 async function saveNew() {
