@@ -521,7 +521,7 @@ function resetVibeUI(){
         <div class="fr full"><div class="fg"><div class="fl">施設名<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><input class="fin" id="fn" value=""></div></div>
         <div class="fr"><div class="fg"><div class="fl">都道府県<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><select class="fin" id="fc" style="cursor:pointer"><option value="">選択してください</option><option value="北海道">北海道</option><option value="青森県">青森県</option><option value="岩手県">岩手県</option><option value="宮城県">宮城県</option><option value="秋田県">秋田県</option><option value="山形県">山形県</option><option value="福島県">福島県</option><option value="茨城県">茨城県</option><option value="栃木県">栃木県</option><option value="群馬県">群馬県</option><option value="埼玉県">埼玉県</option><option value="千葉県">千葉県</option><option value="東京都">東京都</option><option value="神奈川県">神奈川県</option><option value="新潟県">新潟県</option><option value="富山県">富山県</option><option value="石川県">石川県</option><option value="福井県">福井県</option><option value="山梨県">山梨県</option><option value="長野県">長野県</option><option value="岐阜県">岐阜県</option><option value="静岡県">静岡県</option><option value="愛知県">愛知県</option><option value="三重県">三重県</option><option value="滋賀県">滋賀県</option><option value="京都府">京都府</option><option value="大阪府">大阪府</option><option value="兵庫県">兵庫県</option><option value="奈良県">奈良県</option><option value="和歌山県">和歌山県</option><option value="鳥取県">鳥取県</option><option value="島根県">島根県</option><option value="岡山県">岡山県</option><option value="広島県">広島県</option><option value="山口県">山口県</option><option value="徳島県">徳島県</option><option value="香川県">香川県</option><option value="愛媛県">愛媛県</option><option value="高知県">高知県</option><option value="福岡県">福岡県</option><option value="佐賀県">佐賀県</option><option value="長崎県">長崎県</option><option value="熊本県">熊本県</option><option value="大分県">大分県</option><option value="宮崎県">宮崎県</option><option value="鹿児島県">鹿児島県</option><option value="沖縄県">沖縄県</option></select></div></div>
         <div class="fr"><div class="fg"><div class="fl">市区町村<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><input class="fin" id="f-city" placeholder="例）港区" value=""></div></div>
-        <div class="fr full"><div class="fg"><div class="fl">町名・番地<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><input class="fin" id="fad" placeholder="例）南青う3-1-3 スプライン青山東急ビ4F・6F" value=""></div></div>
+        <div class="fr full"><div class="fg"><div class="fl">町名・番地<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><input class="fin" id="fad" placeholder="例：1-1-1 ミルビル4F（番地・建物名）" value=""></div></div>
         <div class="fr" style="margin-top:0"><div class="fg" style="width:100%"><div class="fl" style="margin-bottom:6px">住所から地図を設定 <span style="font-size:10px;color:var(--g400)">(ピンをドラッグして正確な位置に調整)</span></div><div id="admin-map-wrap" style="height:360px;border-radius:8px;overflow:hidden;background:#e8e8e8;margin-bottom:6px"><div id="admin-lmap" style="height:360px;width:100%"></div></div><div style="display:flex;gap:8px;font-size:11px;color:var(--g400)"><span>緯度: <span id="admin-lat-disp">-</span></span><span>経度: <span id="admin-lon-disp">-</span></span><button onclick="adminMapSearchAddr()" style="margin-left:auto;padding:3px 10px;background:#2BB5C8;color:#000;border:none;border-radius:4px;font-size:11px;font-weight:600;cursor:pointer">住所から検索</button></div><input type="hidden" id="admin-lat"><input type="hidden" id="admin-lon"></div></div>
         <div class="fr">
           <div class="fg"><div class="fl">最寄駅名</div><input class="fin" id="fst" placeholder="例：外苑前駅" value=""></div>
@@ -553,7 +553,7 @@ function resetVibeUI(){
           </div>
         </div>
         <div class="fr full"><div class="fg"><div class="fl">施設説明文<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><textarea class="fta" id="fde"></textarea></div></div>
-        <div class="fr"><div class="fg"><div class="fl">Instagram（@から入力）</div><input class="fin" id="fig" value=""></div></div>
+        <div class="fr"><div class="fg"><div class="fl">Instagram（@から入力）</div><input class="fin" id="fig" placeholder="例：@millcowork_shibuya" value=""></div><div class="fg"><div class="fl">公式サイトURL</div><input class="fin" id="f-official-url" placeholder="例：https://example.com" value=""></div></div>
       </div>
       </div>
     
@@ -720,9 +720,11 @@ function resetVibeUI(){
       <div class="sec-h"><div><div class="sec-ht">基本情報（新規施設）</div></div></div>
       <div class="sec-b">
         <div class="fr full"><div class="fg"><div class="fl">施設名<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><input class="fin" id="nfn" placeholder="例：MILLOFFICE 渋谷"></div></div>
-        <div class="fr"><div class="fg"><div class="fl">都道府県<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><select class="fin" id="nfc" style="cursor:pointer"><option value="">選択してください</option><option value="北海道">北海道</option><option value="青森県">青森県</option><option value="岩手県">岩手県</option><option value="宮城県">宮城県</option><option value="秋田県">秋田県</option><option value="山形県">山形県</option><option value="福島県">福島県</option><option value="茨城県">茨城県</option><option value="栃木県">栃木県</option><option value="群馬県">群馬県</option><option value="埼玉県">埼玉県</option><option value="千葉県">千葉県</option><option value="東京都">東京都</option><option value="神奈川県">神奈川県</option><option value="新潟県">新潟県</option><option value="富山県">富山県</option><option value="石川県">石川県</option><option value="福井県">福井県</option><option value="山梨県">山梨県</option><option value="長野県">長野県</option><option value="岐阜県">岐阜県</option><option value="静岡県">静岡県</option><option value="愛知県">愛知県</option><option value="三重県">三重県</option><option value="滋賀県">滋賀県</option><option value="京都府">京都府</option><option value="大阪府">大阪府</option><option value="兵庫県">兵庫県</option><option value="奈良県">奈良県</option><option value="和歌山県">和歌山県</option><option value="鳥取県">鳥取県</option><option value="島根県">島根県</option><option value="岡山県">岡山県</option><option value="広島県">広島県</option><option value="山口県">山口県</option><option value="徳島県">徳島県</option><option value="香川県">香川県</option><option value="愛媛県">愛媛県</option><option value="高知県">高知県</option><option value="福岡県">福岡県</option><option value="佐賀県">佐賀県</option><option value="長崎県">長崎県</option><option value="熊本県">熊本県</option><option value="大分県">大分県</option><option value="宮崎県">宮崎県</option><option value="鹿児島県">鹿児島県</option><option value="沖縄県">沖縄県</option></select></div><div class="fg"><div class="fl">エリア</div><input class="fin" id="nfa" placeholder="例：渋谷"></div></div>
-        <div class="fr full"><div class="fg"><div class="fl">住所<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><input class="fin" id="nfad" placeholder="例：東京都港区1-1-1 ミルビル1F"></div></div>
-        <div class="fr"><div class="fg"><div class="fl">最寄駅</div><input class="fin" id="nfst" placeholder="例：渋谷駅 徒歩3分"></div><div class="fg"><div class="fl">路線</div><input class="fin" id="nfline" placeholder="例：JR山手線"></div></div>
+        <div class="fr"><div class="fg"><div class="fl">都道府県<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><select class="fin" id="nfc" style="cursor:pointer"><option value="">選択してください</option><option value="北海道">北海道</option><option value="青森県">青森県</option><option value="岩手県">岩手県</option><option value="宮城県">宮城県</option><option value="秋田県">秋田県</option><option value="山形県">山形県</option><option value="福島県">福島県</option><option value="茨城県">茨城県</option><option value="栃木県">栃木県</option><option value="群馬県">群馬県</option><option value="埼玉県">埼玉県</option><option value="千葉県">千葉県</option><option value="東京都">東京都</option><option value="神奈川県">神奈川県</option><option value="新潟県">新潟県</option><option value="富山県">富山県</option><option value="石川県">石川県</option><option value="福井県">福井県</option><option value="山梨県">山梨県</option><option value="長野県">長野県</option><option value="岐阜県">岐阜県</option><option value="静岡県">静岡県</option><option value="愛知県">愛知県</option><option value="三重県">三重県</option><option value="滋賀県">滋賀県</option><option value="京都府">京都府</option><option value="大阪府">大阪府</option><option value="兵庫県">兵庫県</option><option value="奈良県">奈良県</option><option value="和歌山県">和歌山県</option><option value="鳥取県">鳥取県</option><option value="島根県">島根県</option><option value="岡山県">岡山県</option><option value="広島県">広島県</option><option value="山口県">山口県</option><option value="徳島県">徳島県</option><option value="香川県">香川県</option><option value="愛媛県">愛媛県</option><option value="高知県">高知県</option><option value="福岡県">福岡県</option><option value="佐賀県">佐賀県</option><option value="長崎県">長崎県</option><option value="熊本県">熊本県</option><option value="大分県">大分県</option><option value="宮崎県">宮崎県</option><option value="鹿児島県">鹿児島県</option><option value="沖縄県">沖縄県</option></select></div><div class="fg"><div class="fl">市区町村<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><input class="fin" id="nf-city" placeholder="例：渋谷区"></div></div>
+        <div class="fr full"><div class="fg"><div class="fl">町名・番地<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><input class="fin" id="nfad" placeholder="例：1-1-1 ミルビル4F"></div></div>
+        <div class="fr"><div class="fg"><div class="fl">最寄駅</div><input class="fin" id="nfst" placeholder="例：渋谷駅"></div><div class="fg"><div class="fl">路線</div><input class="fin" id="nfline" placeholder="例：JR山手線"></div></div>
+        <div class="fr"><div class="fg" style="max-width:160px"><div class="fl">所要時間（分）</div><input class="fin" id="nf-walk-minutes" type="number" min="1" max="999" placeholder="例：5" style="width:100%"></div><div class="fg"><div class="fl">移動手段&nbsp;<span style="font-size:10px;color:#aaa">タップで選択</span></div><div style="display:flex;gap:10px;padding-top:4px"><button type="button" id="nf-btn-tw" onclick="window.setTransportNew('walk')" style="padding:8px 20px;border-radius:8px;border:2px solid #2BB5C8;background:#2BB5C8;color:#fff;font-size:13px;font-weight:700;cursor:pointer">🚶 徒歩</button><button type="button" id="nf-btn-tc" onclick="window.setTransportNew('car')" style="padding:8px 20px;border-radius:8px;border:2px solid #ddd;background:#fff;color:#666;font-size:13px;font-weight:700;cursor:pointer">🚗 車</button></div><input type="hidden" id="nf-transport-mode" value="walk"></div></div>
+        <div class="fr full"><div class="fg"><div class="fl">営業時間<span style="font-size:10px;color:#aaa;margin-left:6px">任意</span></div><input class="fin" id="nf-open-hours" placeholder="例：月～金 9:00～22:00、土日 10:00～18:00 / 24時間営業"></div></div>
         <div class="fr full"><div class="fg"><div class="fl">施設説明文</div><textarea class="fta" id="nfde" placeholder="施設の雰囲気・こだわりをご記入ください"></textarea></div></div>
       </div>
     </div>
@@ -757,7 +759,7 @@ function resetVibeUI(){
       <div class="sec-b">
         <div class="fr">
           
-          <div class="fg"><div class="fl">Instagram（@から入力）</div><input class="fin" id="nfinsta" placeholder="例：@millcowork_shibuya"></div>
+          <div class="fg"><div class="fl">Instagram（@から入力）</div><input class="fin" id="nfinsta" placeholder="例：@millcowork_shibuya"></div><div class="fg"><div class="fl">公式サイトURL</div><input class="fin" id="nf-official-url" placeholder="例：https://example.com"></div>
         </div>
       </div>
     </div>
@@ -793,8 +795,27 @@ function resetVibeUI(){
           <div class="fg"><div class="fl">都度利用（ドロップイン）- 1日利用</div><input class="fin" id="nf-price-daily" placeholder="例：3300"></div>
         </div>
         <div class="fr">
-          <div class="fg"><div class="fl">月額利用</div><input class="fin" id="nf-price-monthly" placeholder="例：9900"></div>
-          <div class="fg"></div>
+          <div class="fg"><div class="fl">月額利用（最低）</div><input class="fin" id="nf-price-monthly" placeholder="例：30000"></div>
+          <div class="fg"><div class="fl">月額利用（最高）<span style="font-size:10px;color:#aaa;margin-left:6px">空欄なら「〜円〜」と表示</span></div><input class="fin" id="nf-price-monthly-max" placeholder="例：300000"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 会議室情報 -->
+    <div class="sec">
+      <div class="sec-h"><div><div class="sec-ht">会議室情報</div><div class="sec-hs">会議室がある場合は記入してください</div></div></div>
+      <div class="sec-b">
+        <div class="fr">
+          <div class="fg" style="max-width:240px">
+            <div style="display:flex;align-items:center;gap:10px;padding:8px 0">
+              <input type="checkbox" id="nf-has-meeting-room" style="width:18px;height:18px;cursor:pointer">
+              <div class="fl" style="margin:0">会議室あり</div>
+            </div>
+          </div>
+          <div class="fg">
+            <div class="fl">最大収容人数</div>
+            <input class="fin" type="number" id="nf-meeting-capacity" placeholder="例：10" min="1" max="200" style="width:120px">
+          </div>
         </div>
       </div>
     </div>
@@ -1387,18 +1408,18 @@ function collectFormData() {
     name:            g('nfn', 'fn', 'p-name') || null,
     area:            g('f-city', 'nfa', 'fa', 'p-area'),
     prefecture:      g('nfc', 'fc', 'p-pref'),
-    address:         (function(){var pref=document.querySelector('#nfc option:checked')?.value||document.getElementById('fc')?.value||'';var city=document.getElementById('f-city')?.value?.trim()||'';var street=document.getElementById('nfad')?.value?.trim()||document.getElementById('fad')?.value?.trim()||'';return [pref,city,street].filter(Boolean).join('');})(),
+    address:         (function(){var pref=document.querySelector('#nfc option:checked')?.value||document.getElementById('fc')?.value||'';var city=document.getElementById('nf-city')?.value?.trim()||document.getElementById('f-city')?.value?.trim()||'';var street=document.getElementById('nfad')?.value?.trim()||document.getElementById('fad')?.value?.trim()||'';return [pref,city,street].filter(Boolean).join('');})(),
     latitude:        parseFloat(document.getElementById('admin-lat')?.value)||null,
     longitude:       parseFloat(document.getElementById('admin-lon')?.value)||null,
-    official_url:    (document.getElementById('f-official-url')?.value?.trim()||null),
+    official_url:    ((document.getElementById('nf-official-url')?.value?.trim()) || (document.getElementById('f-official-url')?.value?.trim()) || null),
     facilities: (function(){var fos=document.querySelectorAll('.fgg .fo.on[data-key]');return Array.from(fos).map(function(el){return el.dataset.key;});})(),
-    has_meeting_room: !!(document.getElementById('f-has-meeting-room')?.checked),
-    meeting_capacity: parseInt(document.getElementById('f-meeting-capacity')?.value)||null,
+    has_meeting_room: !!(document.getElementById('nf-has-meeting-room')?.checked || document.getElementById('f-has-meeting-room')?.checked),
+    meeting_capacity: parseInt(document.getElementById('nf-meeting-capacity')?.value || document.getElementById('f-meeting-capacity')?.value)||null,
     nearest_station: g('nfst', 'fst', 'p-station'),
     nearest_line:    g('nfline', 'fline', 'p-line'),
-    walk_minutes:    parseInt(document.getElementById('f-walk-minutes')?.value)||null,
-    open_hours:      document.getElementById('f-open-hours')?.value?.trim()||null,
-    transport_mode:  document.getElementById('f-transport-mode')?.value||'walk',
+    walk_minutes:    parseInt(document.getElementById('nf-walk-minutes')?.value || document.getElementById('f-walk-minutes')?.value)||null,
+    open_hours:      (document.getElementById('nf-open-hours')?.value?.trim() || document.getElementById('f-open-hours')?.value?.trim())||null,
+    transport_mode:  document.getElementById('nf-transport-mode')?.value || document.getElementById('f-transport-mode')?.value || 'walk',
     price_dropin_day: getPriceVal('price-daily','nf-price-daily'),
     price_dropin_hour: getPriceVal('price-hourly','nf-price-hourly'),
     price_monthly_amount: getPriceVal('price-monthly','nf-price-monthly'),
@@ -1797,14 +1818,20 @@ function swFac(id) {
     const banNm=document.getElementById('ban-nm');if(banNm)banNm.textContent='新しい施設 を登録中';
     const tbr=document.getElementById('tbr');if(tbr)tbr.innerHTML='<button class="bol" onclick="cancelNew()">キャンセル</button><button class="bsv" onclick="saveNew()">施設を登録する</button>';
     // 全フィールドリセット
-    ['nfn','nfd','nfc','nfa','nfad','nfde','nfst','nfline','nfvibe','nfinsta',
+    ['nfn','nfd','nfc','nfa','nf-city','nfad','nfde','nfst','nfline','nfvibe','nfinsta',
+     'nf-walk-minutes','nf-meeting-capacity','nf-open-hours','nf-official-url',
      'nf-price-hourly','nf-price-daily','nf-price-monthly','nf-price-monthly-max',
      'nf-smoking','nf-contact-name','nf-contact-email',
      'f-walk-minutes','f-meeting-capacity','f-open-hours','f-official-url',
      'f-city','admin-lat','admin-lon'
     ].forEach(i=>{const e=document.getElementById(i);if(e)e.value='';});
     const mr=document.getElementById('f-has-meeting-room');if(mr)mr.checked=false;
+    const nmr=document.getElementById('nf-has-meeting-room');if(nmr)nmr.checked=false;
     const tm=document.getElementById('f-transport-mode');if(tm)tm.value='walk';
+    const ntm=document.getElementById('nf-transport-mode');if(ntm)ntm.value='walk';
+    const ntw=document.getElementById('nf-btn-tw');const ntc=document.getElementById('nf-btn-tc');
+    if(ntw){ntw.style.background='#2BB5C8';ntw.style.borderColor='#2BB5C8';ntw.style.color='#fff';}
+    if(ntc){ntc.style.background='#fff';ntc.style.borderColor='#ddd';ntc.style.color='#666';}
     document.querySelectorAll('.fgg .fo.on').forEach(el=>el.classList.remove('on'));
     const archSel=document.getElementById('p-arch-selected');if(archSel){archSel.dataset.archId='';archSel.textContent='';}
     const archBadge=document.getElementById('arch-badge-display');if(archBadge)archBadge.remove();
@@ -1879,7 +1906,8 @@ function addFac() {
   document.getElementById('tbr').innerHTML = '<button class="bol" onclick="cancelNew()">キャンセル</button><button class="bsv" onclick="saveNew()">施設を登録する</button>';
   // === 新規登録フォームの全フィールドをクリア ===
   // テキスト/数値/select 系
-  ['nfn','nfd','nfc','nfa','nfad','nfde','nfst','nfline','nfvibe','nfinsta',
+  ['nfn','nfd','nfc','nfa','nf-city','nfad','nfde','nfst','nfline','nfvibe','nfinsta',
+   'nf-walk-minutes','nf-meeting-capacity','nf-open-hours','nf-official-url',
    'nf-price-hourly','nf-price-daily','nf-price-monthly','nf-price-monthly-max',
    'nf-smoking','nf-contact-name','nf-contact-email',
    'f-walk-minutes','f-meeting-capacity','f-open-hours','f-official-url',
@@ -2537,6 +2565,22 @@ document.addEventListener('click', function(e) {
     }).catch(function() {});
   }, 300);
 });
+</script>
+
+<script>
+window.setTransportNew = function(mode) {
+  const tw = document.getElementById('nf-btn-tw');
+  const tc = document.getElementById('nf-btn-tc');
+  const tm = document.getElementById('nf-transport-mode');
+  if (tm) tm.value = mode;
+  if (mode === 'walk') {
+    if (tw) { tw.style.background='#2BB5C8'; tw.style.borderColor='#2BB5C8'; tw.style.color='#fff'; }
+    if (tc) { tc.style.background='#fff'; tc.style.borderColor='#ddd'; tc.style.color='#666'; }
+  } else {
+    if (tw) { tw.style.background='#fff'; tw.style.borderColor='#ddd'; tw.style.color='#666'; }
+    if (tc) { tc.style.background='#2BB5C8'; tc.style.borderColor='#2BB5C8'; tc.style.color='#fff'; }
+  }
+};
 </script>
 </body></html>
 <!-- deploy -->
