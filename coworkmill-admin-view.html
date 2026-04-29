@@ -1093,7 +1093,11 @@ window.updatePlanWidget=function(plan,usedCount,maxCount){
 function updateAddBtn() {
   const btn = document.querySelector('.add-btn');
   if (!btn) return;
-  const plan = 'standard';
+  // localStorageから現在のplanを取得して limit を計算
+  // (非同期の最新値取得は下のIIFEで行う、ここはキャッシュ即座値)
+  const _acctSync = JSON.parse(localStorage.getItem('cwm_account')||'{}');
+  const plan = _acctSync.plan || 'free';
+  const limit = plan === 'pro' ? 20 : plan === 'standard' ? 5 : 1;
   const registeredCount = facs.filter(f => f.db_id).length;
   // DBからアカウントの最新planを取得して反映
   (async () => {
