@@ -851,7 +851,7 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
           <div class="plan-card-desc" id="plan-mtgroom-desc">最大1名まで対応</div>
           <div class="plan-card-price">要問い合わせ</div>
         </div></div>
-      <div class="plan-note-link">空き状況・料金の詳細は<a id="plan-official-link" href="#" target="_blank" rel="noopener">公式サイト</a>でご確認ください</div>
+      <div class="plan-note-link" id="plan-note-link-wrap" style="display:none">空き状況・料金の詳細は<a id="plan-official-link" href="#" target="_blank" rel="noopener">公式サイト</a>でご確認ください</div>
     </div>
 
 
@@ -942,7 +942,7 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
         </div>
       </div>
       </div>
-      <button class="btn-contact" id="d-website" onclick="(function(){var u=document.getElementById('cwm-official-url')?.value;var sid=new URLSearchParams(window.location.search).get('id');if(sid){fetch(CWM_SB_URL+'/rest/v1/click_logs',{method:'POST',headers:{'apikey':CWM_SB_KEY,'Authorization':'Bearer '+CWM_SB_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({space_id:sid,event:'reserve_click'})}).catch(function(){});}if(u&amp;&amp;u!=='#')window.open(u,'_blank');else alert('公式サイトが未設定です。オペレーターにお問い合わせください');})();">公式サイトで空き確認・予約</button>
+      <button class="btn-contact" id="d-website" style="display:none" onclick="(function(){var u=document.getElementById('cwm-official-url')?.value;var sid=new URLSearchParams(window.location.search).get('id');if(sid){fetch(CWM_SB_URL+'/rest/v1/click_logs',{method:'POST',headers:{'apikey':CWM_SB_KEY,'Authorization':'Bearer '+CWM_SB_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({space_id:sid,event:'reserve_click'})}).catch(function(){});}if(u&amp;&amp;u!=='#')window.open(u,'_blank');else alert('公式サイトが未設定です。オペレーターにお問い合わせください');})();">公式サイトで空き確認・予約</button>
       <a href="https://instagram.com/aoyama_atelier" target="_blank" rel="noopener" class="btn-instagram" id="d-instagram">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
         <span id="d-instagram-handle">@aoyama_atelier</span>
@@ -1021,7 +1021,7 @@ document.querySelectorAll('.voice-item,.plan-item,.fac-item').forEach(el => {
       <div class="foot-links">
         <a href="coworkmill-register.html">コワーキング登録</a>
         <a href="coworkmill-contact.html">お問い合わせ</a>
-        <a href="https://lily-p.com/" target="_blank" rel="noopener">運営会社</a>
+        <a href="coworkmill-company.html">運営会社</a>
       </div>
     </div>
     <div>
@@ -1651,8 +1651,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // 公式サイト
       const siteBtn = document.getElementById('d-website');
-      if (siteBtn && d.website_url) {
-        siteBtn.onclick = function() { window.open(d.website_url, '_blank'); };
+      if (siteBtn && d.official_url) {
+        siteBtn.onclick = function() { window.open(d.official_url, '_blank'); };
+        siteBtn.style.display = '';
       }
 
       // Instagram
@@ -1972,9 +1973,13 @@ function renderPlanCards(sp) {
     }
   }
 
-  // 公式サイトリンク
+  // 公式サイトリンク (official_url がある時だけ親divごと表示)
   var planLink=document.getElementById('plan-official-link');
-  if(planLink&&sp.official_url)planLink.href=sp.official_url;
+  var planLinkWrap=document.getElementById('plan-note-link-wrap');
+  if(planLink&&sp.official_url){
+    planLink.href=sp.official_url;
+    if(planLinkWrap)planLinkWrap.style.display='';
+  }
 }
 </script>
 

@@ -145,4 +145,60 @@
     });
   };
   document.head.appendChild(s);
+
+
+  // ============================================================
+  // CM module: お気に入り(localStorage) + ヘッダー♡アイコン挿入
+  // 全ページのナビ右側に♡アイコンを自動で追加し、favorites.htmlへ導線
+  // ============================================================
+  if (!window.CM) window.CM = {};
+  var CM = window.CM;
+  CM.favKey = CM.favKey || 'cm_favorites';
+  CM.getFavs = CM.getFavs || function() {
+    try { return JSON.parse(localStorage.getItem(CM.favKey)) || []; }
+    catch(e) { return []; }
+  };
+  CM.toggleFav = CM.toggleFav || function(id) {
+    var favs = CM.getFavs();
+    var i = favs.indexOf(id);
+    if (i >= 0) favs.splice(i,1); else favs.push(id);
+    localStorage.setItem(CM.favKey, JSON.stringify(favs));
+    CM.refreshFavBadges && CM.refreshFavBadges();
+    return i < 0;
+  };
+  CM.isFav = CM.isFav || function(id) { return CM.getFavs().indexOf(id) >= 0; };
+  CM.refreshFavBadges = CM.refreshFavBadges || function() {
+    var count = CM.getFavs().length;
+    document.querySelectorAll('.cm-fav-count').forEach(function(el) {
+      el.textContent = count;
+      el.style.display = count > 0 ? 'flex' : 'none';
+    });
+  };
+  CM.injectFavNav = CM.injectFavNav || function() {
+    var navRight = document.querySelector('.nav-right');
+    if (!navRight || navRight.querySelector('.cm-fav-nav')) return;
+    var btn = document.createElement('a');
+    btn.className = 'cm-fav-nav';
+    btn.href = 'coworkmill-favorites.html';
+    btn.title = 'お気に入り';
+    btn.setAttribute('aria-label', 'お気に入り一覧');
+    btn.style.cssText = 'position:relative;width:36px;height:36px;border-radius:8px;border:1px solid var(--gray-200,#2a2a2a);background:var(--white,transparent);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;text-decoration:none;color:var(--gray-600,rgba(255,255,255,.7));flex-shrink:0;overflow:visible;margin-right:8px';
+    btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg><span class="cm-fav-count" style="position:absolute;top:-5px;right:-5px;width:16px;height:16px;background:linear-gradient(135deg,#79F1A4,#2BB5C8);color:#fff;font-family:Montserrat,sans-serif;font-size:9px;font-weight:700;border-radius:50%;display:none;align-items:center;justify-content:center">' + CM.getFavs().length + '</span>';
+    btn.addEventListener('mouseenter', function(){ btn.style.borderColor = '#2BB5C8'; });
+    btn.addEventListener('mouseleave', function(){ btn.style.borderColor = 'var(--gray-200,#2a2a2a)'; });
+    var cta = navRight.querySelector('.nav-cta');
+    if (cta) navRight.insertBefore(btn, cta);
+    else navRight.appendChild(btn);
+    CM.refreshFavBadges();
+  };
+  // 自動マウント(login/admin系を除く全ページで)
+  function _autoMount() {
+    var path = (location.pathname || '').toLowerCase();
+    if (/login|admin/.test(path)) return; // 管理画面・ログインは除外
+    CM.injectFavNav();
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', _autoMount);
+  } else { _autoMount(); }
+
 })();
