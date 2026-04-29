@@ -367,7 +367,9 @@ const architects = [];
       });
     });
 
-    // アーキテクト数更新
+    // アーキテクト数更新(strong を直接更新)
+    const cntStrong=document.querySelector('.page-count strong');
+    if(cntStrong) cntStrong.textContent=data.length;
     const cntEl=document.querySelector('.arch-count');
     if(cntEl) cntEl.textContent=data.length;
 

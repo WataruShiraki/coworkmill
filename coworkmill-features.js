@@ -201,4 +201,161 @@
     document.addEventListener('DOMContentLoaded', _autoMount);
   } else { _autoMount(); }
 
+
+
+  // ============================================================
+  // CWM Polish: 全ページ共通の磨き上げレイヤー
+  // ============================================================
+  (function cwmPolish() {
+    if (window.__cwmPolished) return;
+    window.__cwmPolished = true;
+
+    var st = document.createElement('style');
+    st.textContent = [
+      // === タイポ調整: line-height/letter-spacing統一 ===
+      ':root{--cwm-ease:cubic-bezier(0.16,1,0.3,1);--cwm-cyan:#2BB5C8;--cwm-cyan-glow:rgba(43,181,200,.32)}',
+
+      // === カードhover (.card 全般) ===
+      '.card{transition:transform .35s var(--cwm-ease),box-shadow .35s var(--cwm-ease),border-color .35s var(--cwm-ease)}',
+      '.card:hover{transform:translateY(-2px);box-shadow:0 16px 40px -12px rgba(0,0,0,.45),0 4px 8px -4px rgba(0,0,0,.2)}',
+      '.card .card-img,.card-img{transition:transform .8s var(--cwm-ease),filter .4s var(--cwm-ease)}',
+      '.card:hover .card-img{transform:scale(1.025)}',
+
+      // === 「すべて見る →」「もっと見る →」系の矢印スライド ===
+      'a[href]:not([class*="nav-cta"]):not(.cm-fav-nav){transition:opacity .25s var(--cwm-ease),color .25s var(--cwm-ease)}',
+      // テキスト末尾の矢印を含むリンクのアニメ用クラス(JS側で自動付与)
+      '.cwm-arrow-link{display:inline-flex;align-items:center;gap:6px;transition:gap .25s var(--cwm-ease)}',
+      '.cwm-arrow-link:hover{gap:12px}',
+      '.cwm-arrow-link .cwm-arrow{display:inline-block;transition:transform .25s var(--cwm-ease);font-feature-settings:"cv11";will-change:transform}',
+      '.cwm-arrow-link:hover .cwm-arrow{transform:translateX(2px)}',
+
+      // === 検索バー focus 時のグロー ===
+      'input[type="search"]:focus,input[type="text"]:focus{box-shadow:0 0 0 3px var(--cwm-cyan-glow);border-color:var(--cwm-cyan) !important;transition:box-shadow .2s var(--cwm-ease),border-color .2s var(--cwm-ease)}',
+
+      // === 画像 LQIP fade-in ===
+      'img[loading="lazy"]:not(.cwm-loaded){opacity:0;filter:blur(6px);transition:opacity .6s var(--cwm-ease),filter .6s var(--cwm-ease)}',
+      'img.cwm-loaded{opacity:1;filter:none}',
+      // 詳細ページのbg-image-cardも fade-in (背景画像はopacityで)
+      '.card-img,[style*="background-image"]{transition:opacity .5s var(--cwm-ease),transform .8s var(--cwm-ease)}',
+
+      // === PICKバッジの磨き上げ ===
+      '.pick-badge{position:relative;overflow:hidden;background:linear-gradient(135deg,#7BE8FF 0%,#2BB5C8 100%) !important;color:#04212a !important;font-weight:700 !important;letter-spacing:.16em !important;font-size:9px !important;padding:5px 10px !important;border-radius:3px !important;box-shadow:0 1px 0 rgba(255,255,255,.35) inset,0 4px 12px -2px rgba(43,181,200,.45) !important}',
+      '.pick-badge::after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.25) 50%,transparent 70%);pointer-events:none}',
+      // ★文字を消してきれいに(JS側でも textContent: 'PICK' に統一)
+      '.pick-badge{font-family:Montserrat,sans-serif !important}',
+
+      // === ♡カウンターバッジを単色シアンに ===
+      '.cm-fav-count{background:var(--cwm-cyan) !important;background:linear-gradient(135deg,#2BB5C8,#1a9aad) !important;box-shadow:0 0 0 1.5px rgba(0,0,0,.15)}',
+
+      // === データが少ない時のグリッド中央寄せ(1-3) ===
+      // 1〜3件の時に左寄せだとスカスカに見える → 中央配置
+      '.spaces-grid:has(> *:nth-child(-n+3):last-child),' +
+      '.gallery-grid:has(> *:nth-child(-n+3):last-child),' +
+      '#gallery-grid:has(> *:nth-child(-n+3):last-child),' +
+      '#photos-list:has(> *:nth-child(-n+3):last-child){justify-content:center}',
+
+      // === セクションエントランス(scroll-driven fade) ===
+      '@media (prefers-reduced-motion:no-preference){' +
+        '.cwm-reveal{opacity:0;transform:translateY(16px);transition:opacity .8s var(--cwm-ease),transform .8s var(--cwm-ease)}' +
+        '.cwm-reveal.is-in{opacity:1;transform:none}' +
+      '}',
+
+      // === aspect-ratio で画像CLS抑止(card-img) ===
+      '.card-img{aspect-ratio:4/3;background-color:#0f1416;background-size:cover;background-position:center}',
+
+      // === スクロール連動ヘッダーblur改善 ===
+      'nav.is-scrolled,nav.scrolled{backdrop-filter:saturate(1.4) blur(20px);-webkit-backdrop-filter:saturate(1.4) blur(20px);background:rgba(10,10,10,.72) !important;border-bottom:0.5px solid rgba(255,255,255,.06)}'
+    ].join('\n');
+    document.head.appendChild(st);
+
+    // === img[loading="lazy"] が完了したら .cwm-loaded を付与 ===
+    function markLoaded(img) {
+      if (!img || img.classList.contains('cwm-loaded')) return;
+      img.classList.add('cwm-loaded');
+    }
+    function processImages(root) {
+      var imgs = (root || document).querySelectorAll('img[loading="lazy"]');
+      imgs.forEach(function(img){
+        if (img.complete && img.naturalHeight > 0) markLoaded(img);
+        else { img.addEventListener('load', function(){ markLoaded(img); }, {once:true});
+               img.addEventListener('error', function(){ markLoaded(img); }, {once:true}); }
+      });
+    }
+    processImages(document);
+    // MutationObserver で動的追加にも対応
+    new MutationObserver(function(mutations){
+      mutations.forEach(function(m){ m.addedNodes.forEach(function(n){
+        if (n.nodeType === 1) processImages(n);
+      });});
+    }).observe(document.body, {childList:true, subtree:true});
+
+    // === テキスト末尾の "→" を <span class="cwm-arrow"> でラップしてアニメ可能に ===
+    function wireArrowLinks() {
+      var anchors = document.querySelectorAll('a:not(.cwm-arrow-wired)');
+      anchors.forEach(function(a){
+        a.classList.add('cwm-arrow-wired');
+        var html = a.innerHTML;
+        // テキストの最後が " →" or "→" の時だけラップ
+        if (/(?:\s|^)→\s*$/.test(a.textContent)) {
+          var newHtml = html.replace(/→(\s*)$/, '<span class="cwm-arrow">→</span>$1');
+          if (newHtml !== html) {
+            a.innerHTML = newHtml;
+            a.classList.add('cwm-arrow-link');
+          }
+        }
+      });
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', wireArrowLinks);
+    else wireArrowLinks();
+    setTimeout(wireArrowLinks, 800);
+    setTimeout(wireArrowLinks, 2000);
+
+    // === スクロール連動ヘッダー ===
+    var nav = document.querySelector('nav');
+    if (nav) {
+      var ticking = false;
+      function onScroll() {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(function(){
+          var sy = (document.scrollingElement || document.documentElement).scrollTop || window.scrollY || document.body.scrollTop || 0;
+          if (sy > 8) nav.classList.add('is-scrolled');
+          else nav.classList.remove('is-scrolled');
+          ticking = false;
+        });
+      }
+      window.addEventListener('scroll', onScroll, {passive:true});
+      document.body.addEventListener('scroll', onScroll, {passive:true});
+      onScroll();
+    }
+
+    // === セクションのフェードイン (IntersectionObserver) ===
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if (e.isIntersecting) {
+            e.target.classList.add('is-in');
+            io.unobserve(e.target);
+          }
+        });
+      }, {rootMargin:'0px 0px -10% 0px', threshold:0.05});
+      document.querySelectorAll('section, .gallery-sec, .arch-editorial, .photo-disc-sec, .om-banner').forEach(function(s){
+        s.classList.add('cwm-reveal');
+        io.observe(s);
+      });
+    }
+
+    // === PICK badge 文字を「PICK」に統一(★を除去) ===
+    function cleanupPickBadges() {
+      document.querySelectorAll('.pick-badge').forEach(function(b){
+        var t = (b.textContent || '').trim();
+        if (t.indexOf('★') >= 0 || t.indexOf('☆') >= 0) {
+          b.textContent = 'PICK';
+        }
+      });
+    }
+    setTimeout(cleanupPickBadges, 500);
+    setTimeout(cleanupPickBadges, 1500);
+  })();
+
 })();
