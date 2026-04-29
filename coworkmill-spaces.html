@@ -882,16 +882,7 @@ var MAP={"Deep Work":"deepwork","Creative":"creative","Ideation":"ideation","Mee
 function applyWorkstyle(){
 fetch(S+'/rest/v1/spaces?select=id,workstyle_tags&status=eq.live',{headers:{"apikey":K,"Authorization":"Bearer "+K}}).then(function(r){return r.json();}).then(function(d){d.forEach(function(sp){if(!sp.workstyle_tags||!sp.workstyle_tags.length)return;var card=document.querySelector('.scard[href*="id='+sp.id+'"]');if(!card)return;var works=sp.workstyle_tags.map(function(t){return MAP[t]||t.toLowerCase().replace(/\s+/g,"");});card.setAttribute("data-work",works.join(" "));});}).catch(function(){});
 }
-function patchFilterSidebar(){
-if(typeof filterSidebar!=="function")return;
-var _orig=filterSidebar;
-window.filterSidebar=function(){
-_orig();
-var onChips=Array.from(document.querySelectorAll(".chip.on")).map(function(c){return c.getAttribute("data-work");}).filter(Boolean);
-if(onChips.indexOf("all")>=0||!onChips.length)return;
-document.querySelectorAll(".scard").forEach(function(card){var dw=(card.getAttribute("data-work")||"").split(" ");var match=onChips.some(function(k){return dw.indexOf(k)>=0;});if(!match)card.style.display="none";});
-};
-}
+function patchFilterSidebar(){return;}
 var obs=new MutationObserver(function(){applyWorkstyle();});
 var grid=document.getElementById("view-grid-content");
 if(grid)obs.observe(grid,{childList:true});
@@ -1184,94 +1175,42 @@ function toggleSf(el) {
 }
 
 function filterSidebar(){
-  var CITY_MAP={tokyo:'æ±äº¬é½',osaka:'å¤§éªåº',kyoto:'äº¬é½åº',fukuoka:'ç¦å²¡ç',yokohama:'ç¥å¥å·ç',sapporo:'åæµ·é',hokkaido:'åæµ·é',aomori:'éæ£®ç',iwate:'å²©æç',miyagi:'å®®åç',akita:'ç§ç°ç',yamagata:'å±±å½¢ç',fukushima:'ç¦å³¶ç',ibaraki:'è¨åç',tochigi:'æ æ¨ç',gunma:'ç¾¤é¦¬ç',saitama:'å¼çç',chiba:'åèç',niigata:'æ°æ½ç',toyama:'å¯å±±ç',ishikawa:'ç³å·ç',fukui:'ç¦äºç',yamanashi:'å±±æ¢¨ç',nagano:'é·éç',gifu:'å²éç',shizuoka:'éå²¡ç',aichi:'æç¥ç',mie:'ä¸éç',shiga:'æ»è³ç',hyogo:'åµåº«ç',nara:'å¥è¯ç',wakayama:'åæ­å±±ç',tottori:'é³¥åç',shimane:'å³¶æ ¹ç',okayama:'å²¡å±±ç',hiroshima:'åºå³¶ç',yamaguchi:'å±±å£ç',tokushima:'å¾³å³¶ç',kagawa:'é¦å·ç',ehime:'æåªç',kochi:'é«ç¥ç',saga:'ä½è³ç',nagasaki:'é·å´ç',kumamoto:'çæ¬ç',oita:'å¤§åç',miyazaki:'å®®å´ç',kagoshima:'é¹¿åå³¶ç',okinawa:'æ²ç¸ç'};
-
-  // Ã©ÂÂ½Ã¥Â¸Â
-  var activeCities=Array.from(document.querySelectorAll('.sf-opt.on[onclick]')).filter(function(el){
-    return el.getAttribute('onclick').indexOf('toggleCity')>-1;
-  }).map(function(el){
-    var m=el.getAttribute('onclick').match(/'([^']+)'/);
-    return m?m[1]:'';
-  }).filter(Boolean);
-  var allCities=activeCities.length===0;
-
-  // Ã¥ÂÂº
-  var activeWards=Array.from(document.querySelectorAll('.sf-ward.on')).map(function(el){
-    return el.textContent.trim();
-  }).filter(Boolean);
-  var allWards=activeWards.length===0;
-
-  // Ã¨Â¨Â­Ã¥ÂÂÃ¯Â¼Âsf-opt[data-fac] + sp-vibe-btn[data-fac]Ã¯Â¼Â
-  var activeFacs=[];
-  Array.from(document.querySelectorAll('.sf-opt.on[data-fac], .sp-vibe-btn.on[data-fac]')).forEach(function(el){
-    var f=el.getAttribute('data-fac');
-    if(f&&activeFacs.indexOf(f)===-1)activeFacs.push(f);
-  });
-  var allFacs=activeFacs.length===0;
-
-  // Ã©ÂÂ°Ã¥ÂÂ²Ã¦Â°ÂÃ¯Â¼Âsf-opt[data-vibe]Ã¯Â¼Â
-  var activeVibes=Array.from(document.querySelectorAll('.sf-opt.on[data-vibe]')).map(function(el){
-    return el.getAttribute('data-vibe')||'';
-  }).filter(Boolean);
-  var allVibes=activeVibes.length===0;
-
-  // Ã£ÂÂÃ£ÂÂ­Ã£ÂÂ¹Ã£ÂÂÃ¦Â¤ÂÃ§Â´Â¢
+  var CITY_MAP = {
+    tokyo:'東京都',osaka:'大阪府',kyoto:'京都府',fukuoka:'福岡県',yokohama:'神奈川県',sapporo:'北海道',
+    hokkaido:'北海道',aomori:'青森県',iwate:'岩手県',miyagi:'宮城県',akita:'秋田県',yamagata:'山形県',
+    fukushima:'福島県',ibaraki:'茨城県',tochigi:'栃木県',gunma:'群馬県',saitama:'埼玉県',chiba:'千葉県',
+    niigata:'新潟県',toyama:'富山県',ishikawa:'石川県',fukui:'福井県',yamanashi:'山梨県',nagano:'長野県',
+    gifu:'岐阜県',shizuoka:'静岡県',aichi:'愛知県',mie:'三重県',shiga:'滋賀県',hyogo:'兵庫県',
+    nara:'奈良県',wakayama:'和歌山県',tottori:'鳥取県',shimane:'島根県',okayama:'岡山県',hiroshima:'広島県',
+    yamaguchi:'山口県',tokushima:'徳島県',kagawa:'香川県',ehime:'愛媛県',kochi:'高知県',saga:'佐賀県',
+    nagasaki:'長崎県',kumamoto:'熊本県',oita:'大分県',miyazaki:'宮崎県',kagoshima:'鹿児島県',okinawa:'沖縄県'
+  };
+  var activeCities=Array.from(document.querySelectorAll('.sf-opt.on[onclick]')).filter(function(el){return el.getAttribute('onclick').indexOf('toggleCity')>-1;}).map(function(el){var m=el.getAttribute('onclick').match(/'([^']+)'/);return m?m[1]:'';}).filter(Boolean);
+  var activeWards=Array.from(document.querySelectorAll('.sf-ward.on')).map(function(e){return e.textContent.trim();}).filter(Boolean);
+  var activeFacs=[];Array.from(document.querySelectorAll('.sf-opt.on[data-fac], .sp-vibe-btn.on[data-fac]')).forEach(function(el){var f=el.getAttribute('data-fac');if(f&&activeFacs.indexOf(f)===-1)activeFacs.push(f);});
+  var activeVibes=Array.from(document.querySelectorAll('.sf-opt.on[data-vibe]')).map(function(e){return e.getAttribute('data-vibe')||'';}).filter(Boolean);
+  var activeChips=Array.from(document.querySelectorAll('.chip.on')).map(function(c){return c.dataset.work;}).filter(Boolean);
   var q=(document.querySelector('.sp-search-input')?document.querySelector('.sp-search-input').value:'').toLowerCase().trim();
-
-  var cards=document.querySelectorAll('.scard');
   var visible=0;
-  cards.forEach(function(card){
+  document.querySelectorAll('.scard').forEach(function(card){
     var name=(card.dataset.name||'').toLowerCase();
     var pref=card.dataset.pref||'';
     var area=card.dataset.area||'';
-    var facsStr=(card.dataset&&card.dataset.facilities)?card.dataset.facilities:'';
-    var facs=facsStr?facsStr.split(',').filter(Boolean):[];
-    var vibeStr=(card.dataset&&card.dataset.vibe)?card.dataset.vibe:'';
-    var vibes=vibeStr?vibeStr.split(',').filter(Boolean):[];
-
-    // Ã£ÂÂÃ£ÂÂ­Ã£ÂÂ¹Ã£ÂÂ
-    var matchText=!q||(name.indexOf(q)>-1||(card.dataset.pref||"").toLowerCase().indexOf(q)>-1||(card.dataset.area||"").toLowerCase().indexOf(q)>-1||(card.dataset.arch||"").toLowerCase().indexOf(q)>-1);
-
-    // Ã©ÂÂ½Ã¥Â¸Â
-    var matchCity=allCities;
-    // sp-prefÃ£ÂÂ»Ã£ÂÂ¬Ã£ÂÂ¯Ã£ÂÂÃ£ÂÂÃ§Â¢ÂºÃ¨ÂªÂ
-    var spPrefSel=document.getElementById('sp-pref');
-    if(spPrefSel&&spPrefSel.value&&!allCities){
-      var targetPref=spPrefSel.value;
-      matchCity=pref.indexOf(targetPref)>-1;
-    }
-    if(!allCities){
-      matchCity=activeCities.some(function(city){
-        if(city==='other'){var known=['Ã¦ÂÂ±Ã¤ÂºÂ¬Ã©ÂÂ½','Ã¥Â¤Â§Ã©ÂÂªÃ¥ÂºÂ','Ã¤ÂºÂ¬Ã©ÂÂ½Ã¥ÂºÂ','Ã§Â¦ÂÃ¥Â²Â¡Ã§ÂÂ','Ã§Â¥ÂÃ¥Â¥ÂÃ¥Â·ÂÃ§ÂÂ','Ã¥ÂÂÃ¦ÂµÂ·Ã©ÂÂ'];return known.indexOf(pref)===-1;}
-        var p=CITY_MAP[city];return p?pref.indexOf(p)>-1:false;
-      });
-    }
-
-    // Ã¥ÂÂº
-    var matchWard=allWards;
-    if(!allWards&&matchCity){
-      matchWard=activeWards.some(function(ward){return area===ward;});
-    }
-
-    // Ã¨Â¨Â­Ã¥ÂÂÃ¯Â¼ÂÃ¥ÂÂ¨Ã¦ÂÂ¡Ã¤Â»Â¶ANDÃ¯Â¼Â
-    var matchFac=allFacs;
-    if(!allFacs){
-      matchFac=activeFacs.every(function(fac){return facs.indexOf(fac)>-1;});
-    }
-
-    // Ã©ÂÂ°Ã¥ÂÂ²Ã¦Â°ÂÃ¯Â¼ÂÃ£ÂÂÃ£ÂÂÃ£ÂÂÃ£ÂÂÃ¤Â¸ÂÃ¨ÂÂ´Ã£ÂÂ§OKÃ¯Â¼Â
-    var matchVibe=allVibes;
-    if(!allVibes){
-      matchVibe=activeVibes.some(function(v){return vibes.indexOf(v)>-1;});
-    }
-
-    var show=matchText&&matchCity&&matchWard&&matchFac&&matchVibe;
+    var facs=(card.dataset.facilities||'').split(',').filter(Boolean);
+    var vibes=(card.dataset.vibe||'').split(',').filter(Boolean);
+    var works=(card.getAttribute('data-work')||'').split(' ').filter(Boolean);
+    var matchText=!q||name.indexOf(q)>-1||pref.toLowerCase().indexOf(q)>-1||area.toLowerCase().indexOf(q)>-1;
+    var matchCity=!activeCities.length||activeCities.some(function(c){if(c==='other'){return ['東京都','大阪府','京都府','福岡県','神奈川県','北海道'].indexOf(pref)===-1;}var p=CITY_MAP[c];return p?pref.indexOf(p)>-1:false;});
+    var matchWard=!activeWards.length||(matchCity&&activeWards.some(function(w){return area===w;}));
+    var matchFac=!activeFacs.length||activeFacs.every(function(f){return facs.indexOf(f)>-1;});
+    var matchVibe=!activeVibes.length||activeVibes.some(function(v){return vibes.indexOf(v)>-1;});
+    var matchChip=!activeChips.length||activeChips.indexOf('all')>-1||activeChips.some(function(w){return works.indexOf(w)>-1;});
+    var show=matchText&&matchCity&&matchWard&&matchFac&&matchVibe&&matchChip;
     card.style.display=show?'':'none';
     if(show)visible++;
   });
-
-  var countEl=document.querySelector('.sp-result-count');
-  if(countEl)countEl.textContent=visible+'Ã¤Â»Â¶';
+  var cnt=document.querySelector('.sp-result-count');
+  if(cnt)cnt.textContent=visible+'件';
 }
 
 function filterCards(){filterSidebar();}
