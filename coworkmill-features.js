@@ -264,7 +264,20 @@
       '.card-img{aspect-ratio:4/3;background-color:#0f1416;background-size:cover;background-position:center}',
 
       // === スクロール連動ヘッダーblur改善 ===
-      'nav.is-scrolled,nav.scrolled{backdrop-filter:saturate(1.4) blur(20px);-webkit-backdrop-filter:saturate(1.4) blur(20px);background:rgba(10,10,10,.72) !important;border-bottom:0.5px solid rgba(255,255,255,.06)}'
+      'nav.is-scrolled,nav.scrolled{backdrop-filter:saturate(1.4) blur(20px);-webkit-backdrop-filter:saturate(1.4) blur(20px);background:rgba(10,10,10,.72) !important;border-bottom:0.5px solid rgba(255,255,255,.06)}',
+
+      // === gallery-grid 件数少時の中央寄せ強化(列数を可変に) ===
+      // 元の4列固定だと2件→左に偏るため、件数3以下では auto-fit に切り替え
+      '@supports selector(:has(*)){',
+        '.gallery-grid:has(> *:nth-child(-n+3):last-child){grid-template-columns:repeat(auto-fit,minmax(280px,360px)) !important;justify-content:center}',
+        '#gallery-grid:has(> *:nth-child(-n+3):last-child){grid-template-columns:repeat(auto-fit,minmax(280px,360px)) !important;justify-content:center}',
+        '.spaces-grid:has(> *:nth-child(-n+3):last-child){grid-template-columns:repeat(auto-fit,minmax(280px,360px)) !important;justify-content:center}',
+        '#photos-list:has(> *:nth-child(-n+3):last-child){grid-template-columns:repeat(auto-fit,minmax(280px,360px)) !important;justify-content:center}',
+      '}',
+
+      // === ヒーロー直後の旧検索セクションを非表示(機能はヒーロー内検索バーに統合済み) ===
+      // ヒーロー縮小により画面に露出してしまった旧式セクション
+      '.search-section{display:none !important}'
     ].join('\n');
     document.head.appendChild(st);
 
