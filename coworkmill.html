@@ -989,9 +989,19 @@ async function loadTopData() {
     const prefs = new Set(live.map(s => s.prefecture).filter(Boolean));
     const statPrefs = document.getElementById('stat-prefs');
     if (statPrefs) statPrefs.textContent = prefs.size;
-    const archs = new Set(live.map(s => s.architect_name).filter(Boolean));
-    const statArchs = document.getElementById('stat-archs');
-    if (statArchs) statArchs.textContent = archs.size;
+    // 建築家カウンター: architectsテーブル全体から取得
+    // (施設に紐づかない建築家も含めて、登録されている全建築家を表示)
+    fetch(SUPABASE_URL_TOP + '/rest/v1/architects?select=id', {
+      headers: { 'apikey': SUPABASE_KEY_TOP, 'Authorization': 'Bearer ' + SUPABASE_KEY_TOP }
+    }).then(function(r){ return r.json(); }).then(function(rows) {
+      var statArchs = document.getElementById('stat-archs');
+      if (statArchs && Array.isArray(rows)) statArchs.textContent = rows.length;
+    }).catch(function(){
+      // フォールバック: live施設に紐づく建築家のみ
+      var archs = new Set(live.map(function(s){return s.architect_name;}).filter(Boolean));
+      var statArchs = document.getElementById('stat-archs');
+      if (statArchs) statArchs.textContent = archs.size;
+    });
 
     // PICK UP
     const pickupList = document.getElementById('pickup-list');
