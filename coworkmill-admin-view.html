@@ -2164,7 +2164,7 @@ window.loadAnalytics = async function(){
   if(!dbId)return;
   // ① クリック送客数
   try{
-    var cr=await fetch(SB+'/rest/v1/click_logs?space_id=eq.'+dbId+'&select=id',{headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}});
+    var cr=await fetch(SB+'/rest/v1/click_logs?space_id=eq.'+dbId+'&event=eq.reserve_click&select=id',{headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}});
     var clicks=cr.ok?await cr.json():[];
     var cel=document.getElementById('an-click-num');
     if(cel)cel.textContent=clicks.length||0;
@@ -2172,7 +2172,15 @@ window.loadAnalytics = async function(){
   // ② ページユーザー（計測準備中）
   var pvel=document.getElementById('an-pv-num');if(pvel)pvel.textContent='―';
   // ③ Instagram送客数
-  var iel=document.getElementById('an-insta-num');if(iel)iel.textContent='0';
+  try {
+    var ir = await fetch(SB+'/rest/v1/click_logs?space_id=eq.'+dbId+'&event=eq.instagram_click&select=id',{headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}});
+    var insta = ir.ok ? await ir.json() : [];
+    var iel = document.getElementById('an-insta-num');
+    if (iel) iel.textContent = insta.length || 0;
+  } catch(e) {
+    var iel2 = document.getElementById('an-insta-num');
+    if (iel2) iel2.textContent = '0';
+  }
   // ④ 利用者の声
   try{
     var vr=await fetch(SB+'/rest/v1/voices?space_id=eq.'+dbId+'&select=*&order=submitted_at.desc',{headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}});

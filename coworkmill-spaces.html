@@ -751,7 +751,7 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
         <div class="sf-ward-wrap" id="wards-fukuoka" style="display:none"><div class="sf-ward-label">エリアで絞る</div><div class="sf-ward-grid"><div class="sf-ward" onclick="toggleWard(this)">天神</div><div class="sf-ward" onclick="toggleWard(this)">博多</div><div class="sf-ward" onclick="toggleWard(this)">大名</div><div class="sf-ward" onclick="toggleWard(this)">薬院</div></div></div>
         <div class="sf-opt" onclick="toggleCity(this,'yokohama')"><div class="sf-check"></div><span class="sf-name">横浜</span><span class="sf-cnt">10</span></div>
         <div class="sf-opt" onclick="toggleCity(this,'sapporo')"><div class="sf-check"></div><span class="sf-name">札幌</span><span class="sf-cnt">8</span></div>
-        <div class="sf-opt" onclick="toggleCity(this,'other')"><div class="sf-check"></div><span class="sf-name">その他</span><span class="sf-cnt">7</span></div>
+        <button class="sf-show-more" type="button" id="sf-pref-show-more" onclick="window.cwmShowAllPrefectures()" style="margin-top:8px;width:100%;padding:8px;background:transparent;border:1px solid var(--gray-200);color:var(--gray-500);font-size:11px;cursor:pointer;border-radius:6px">+ 全都道府県を表示</button>
       </div>
     </div>
 
@@ -1322,8 +1322,20 @@ function handleSort(val) {
   var cards = Array.from(document.querySelectorAll('.scard'));
   var container = document.getElementById('view-grid-content');
   if(!container || !cards.length) return;
-  if(val === 'popular') {
-    cards.sort(function(a,b){ return parseInt(b.dataset.clicks||0) - parseInt(a.dataset.clicks||0); });
+  if(val === '新着順' || val === 'newest') {
+    // dataset.created (timestamp ms) があれば降順
+    cards.sort(function(a,b){ return parseInt(b.dataset.created||0) - parseInt(a.dataset.created||0); });
+  } else if(val === '人気順' || val === 'popular') {
+    // クリック送客数の降順(現状はトラッキング初期段階のため、新着順をフォールバック)
+    cards.sort(function(a,b){
+      var diff = parseInt(b.dataset.clicks||0) - parseInt(a.dataset.clicks||0);
+      if (diff !== 0) return diff;
+      return parseInt(b.dataset.created||0) - parseInt(a.dataset.created||0);
+    });
+  } else if(val === '価格が安い順' || val === 'cheap') {
+    cards.sort(function(a,b){
+      return (parseInt(a.dataset.price||999999999)||999999999) - (parseInt(b.dataset.price||999999999)||999999999);
+    });
   }
   cards.forEach(function(c){ container.appendChild(c); });
 }
@@ -1459,6 +1471,56 @@ window.toggleChip = function(el) {
   // workstyle フィルタを再評価する処理を呼ぶ
   var event = new CustomEvent('chip:change', { detail: { work: el.dataset.work } });
   document.dispatchEvent(event);
+};
+</script>
+
+<script>
+window.cwmShowAllPrefectures = function() {
+  var btn = document.getElementById('sf-pref-show-more');
+  if (!btn) return;
+  if (btn.dataset.expanded === '1') {
+    document.querySelectorAll('.sf-opt-pref-extra').forEach(function(el){ el.style.display = 'none'; });
+    btn.textContent = '+ 全都道府県を表示';
+    btn.dataset.expanded = '0';
+    return;
+  }
+  if (document.querySelector('.sf-opt-pref-extra')) {
+    document.querySelectorAll('.sf-opt-pref-extra').forEach(function(el){ el.style.display = ''; });
+    btn.textContent = '− 隠す';
+    btn.dataset.expanded = '1';
+    return;
+  }
+  var ALL = [
+    ['hokkaido','北海道'],['aomori','青森県'],['iwate','岩手県'],['miyagi','宮城県'],
+    ['akita','秋田県'],['yamagata','山形県'],['fukushima','福島県'],['ibaraki','茨城県'],
+    ['tochigi','栃木県'],['gunma','群馬県'],['saitama','埼玉県'],['chiba','千葉県'],
+    ['niigata','新潟県'],['toyama','富山県'],['ishikawa','石川県'],['fukui','福井県'],
+    ['yamanashi','山梨県'],['nagano','長野県'],['gifu','岐阜県'],['shizuoka','静岡県'],
+    ['aichi','愛知県'],['mie','三重県'],['shiga','滋賀県'],['hyogo','兵庫県'],
+    ['nara','奈良県'],['wakayama','和歌山県'],['tottori','鳥取県'],['shimane','島根県'],
+    ['okayama','岡山県'],['hiroshima','広島県'],['yamaguchi','山口県'],['tokushima','徳島県'],
+    ['kagawa','香川県'],['ehime','愛媛県'],['kochi','高知県'],['saga','佐賀県'],
+    ['nagasaki','長崎県'],['kumamoto','熊本県'],['oita','大分県'],['miyazaki','宮崎県'],
+    ['kagoshima','鹿児島県'],['okinawa','沖縄県']
+  ];
+  var cards = document.querySelectorAll('.scard');
+  var prefCounts = {};
+  cards.forEach(function(c){
+    var pref = c.dataset.pref || '';
+    if (pref) prefCounts[pref] = (prefCounts[pref]||0) + 1;
+  });
+  var parent = btn.parentElement;
+  ALL.forEach(function(pair){
+    var key = pair[0], jaName = pair[1];
+    var cnt = prefCounts[jaName] || 0;
+    var div = document.createElement('div');
+    div.className = 'sf-opt sf-opt-pref-extra';
+    div.setAttribute('onclick', "toggleCity(this,'"+key+"')");
+    div.innerHTML = '<div class="sf-check"></div><span class="sf-name">' + jaName.replace(/[県府]$/,'') + '</span><span class="sf-cnt">' + cnt + '</span>';
+    parent.insertBefore(div, btn);
+  });
+  btn.textContent = '− 隠す';
+  btn.dataset.expanded = '1';
 };
 </script>
 </body></html>
