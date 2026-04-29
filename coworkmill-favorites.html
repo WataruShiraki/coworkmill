@@ -323,14 +323,18 @@ function renderFavs() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  // お気に入りが空の場合はサンプルデータを投入
-  if (CM.getFavs().length === 0) {
-    const sampleIds = [
-      'aoyama-atelier','shibuya-craft','machiya-work',
-      'the-warehouse','tenjin-studio','harbor-view',
-      'kitahama-office','roppongi-atelier','shiro-studio','aoyama-lounge'
-    ];
-    localStorage.setItem(CM.favKey, JSON.stringify(sampleIds));
+  // 過去のバージョンで自動投入された古いサンプルIDをクリーンアップ
+  // (UUID形式でない古いスラッグ形式のお気に入りを除去)
+  const LEGACY_SAMPLE_IDS = [
+    'aoyama-atelier','shibuya-craft','machiya-work',
+    'the-warehouse','tenjin-studio','harbor-view',
+    'kitahama-office','roppongi-atelier','shiro-studio','aoyama-lounge'
+  ];
+  const currentFavs = CM.getFavs();
+  const cleaned = currentFavs.filter(id => !LEGACY_SAMPLE_IDS.includes(id));
+  if (cleaned.length !== currentFavs.length) {
+    localStorage.setItem(CM.favKey, JSON.stringify(cleaned));
+    if (CM.refreshFavBadges) CM.refreshFavBadges();
   }
   renderFavs();
   CM.injectFavNav();
