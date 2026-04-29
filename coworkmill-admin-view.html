@@ -1049,7 +1049,7 @@ function resetVibeUI(){
       <div class="pc" style="position:relative">
         <div style="position:absolute;top:10px;right:10px;font-size:8px;font-weight:600;padding:2px 8px;background:linear-gradient(135deg,#79F1A4,#2BB5C8);color:#fff;border-radius:10px">人気</div>
         <div class="ph"><div class="pl">PRO</div><div class="pn">Pro</div><div class="pp">¥8,000<span style="font-size:11px;font-weight:400;color:var(--g400)"> /月（税抜）</span></div></div>
-        <div class="pb2"><div class="pfs"><div class="pf ok">✓ 画像 無制限</div><div class="pf ok">✓ 施設 20件まで</div><div class="pf ok">✓ 利用者の声</div><div class="pf ok" style="display:flex;align-items:center;gap:8px">✓ PICKバッジ <span style="display:inline-flex;align-items:center;gap:3px;background:linear-gradient(135deg,#79F1A4,#2BB5C8);border-radius:4px;padding:2px 7px;font-family:'Montserrat',sans-serif;font-size:8px;font-weight:600;color:#fff;letter-spacing:.06em">★ PICK</span></div><div class="pf ok">✓ 検索優先表示</div></div><button class="pbtn pro" onclick="alert('Proプランへアップグレード（Stripe決済）')">Proにアップグレード</button></div>
+        <div class="pb2"><div class="pfs"><div class="pf ok">✓ 画像 50枚</div><div class="pf ok">✓ 施設 20件まで</div><div class="pf ok">✓ 利用者の声</div><div class="pf ok" style="display:flex;align-items:center;gap:8px">✓ PICKバッジ <span style="display:inline-flex;align-items:center;gap:3px;background:linear-gradient(135deg,#79F1A4,#2BB5C8);border-radius:4px;padding:2px 7px;font-family:'Montserrat',sans-serif;font-size:8px;font-weight:600;color:#fff;letter-spacing:.06em">★ PICK</span></div><div class="pf ok">✓ 検索優先表示</div></div><button class="pbtn pro" onclick="alert('Proプランへアップグレード（Stripe決済）')">Proにアップグレード</button></div>
       </div>
 
       </div>
@@ -1085,6 +1085,44 @@ window.loadVoiceBadge = function(spaceId){
       }
     });
 };
+window.updatePlanCards = function() {
+  var acct = JSON.parse(localStorage.getItem('cwm_account')||'{}');
+  var plan = acct.plan || 'free';
+  var planLabel = plan === 'pro' ? 'Pro' : plan === 'standard' ? 'Standard' : 'Free';
+  // ヘッダーのプランバッジ
+  var headerBadge = document.querySelector('#p-plan .sec-h span[style*="background:var(--al)"]');
+  if (headerBadge) headerBadge.textContent = planLabel + ' プラン';
+  // 3カード(Free=0, Standard=1, Pro=2)
+  var cards = document.querySelectorAll('#p-plan .plg .pc');
+  var idx = plan === 'pro' ? 2 : plan === 'standard' ? 1 : 0;
+  var planNames = ['Free','Standard','Pro'];
+  var planLabels = ['FREE','STANDARD','PRO'];
+  cards.forEach(function(pc, i) {
+    pc.classList.toggle('cur', i === idx);
+    var pl = pc.querySelector('.ph .pl');
+    if (pl) {
+      pl.textContent = i === idx ? '現在のプラン' : planLabels[i];
+      pl.classList.toggle('c', i === idx);
+    }
+    var btn = pc.querySelector('button.pbtn');
+    if (btn) {
+      btn.classList.remove('dis','pro','std');
+      btn.disabled = false;
+      btn.onclick = null;
+      if (i === idx) {
+        btn.textContent = '利用中'; btn.classList.add('dis'); btn.disabled = true;
+      } else if (i < idx) {
+        btn.textContent = 'ダウングレード'; btn.classList.add('dis'); btn.disabled = true;
+      } else {
+        btn.textContent = planNames[i] + 'にアップグレード';
+        if (i === 2) btn.classList.add('pro');
+        else btn.classList.add('std');
+        btn.onclick = (function(p){ return function(){ alert(p+'プランへアップグレード（Stripe決済）'); }; })(planNames[i]);
+      }
+    }
+  });
+};
+
 window.updatePlanWidget=function(plan,usedCount,maxCount){
   var badge=document.getElementById('plan-widget-badge');
   var val=document.getElementById('plan-usage-val');
@@ -1781,6 +1819,7 @@ const panels = ['db','info','new','photo','voice','arch','co','st','plan'];
 const ttls = {db:'ダッシュボード',info:'施設情報の編集',new:'新しい施設を登録',photo:'写真管理',voice:'利用者の声',arch:'建築家情報',co:'企業情報',st:'掲載ステータス',plan:'プラン管理'};
 
 function go(id, el) {
+  if(id==='plan' && typeof updatePlanCards==='function') setTimeout(updatePlanCards, 50);
   panels.forEach(p => { const e = document.getElementById('p-'+p); if(e) e.style.display = (p===id)?'block':'none'; });
   /* .contentはp-dbのコンテナ、db以外の時は隠す */
   var ct=document.querySelector('.content');if(ct)ct.style.display='block';

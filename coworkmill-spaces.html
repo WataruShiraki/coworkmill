@@ -1446,4 +1446,19 @@ window.cwmToggleSfAcc = function(btn){
 })();
 </script>
 
+
+<script>
+// 仕事タイプ chip を単一選択モードに変更
+window.toggleChip = function(el) {
+  var all = el.closest('.filter-chips').querySelectorAll('.chip');
+  // 全部 off にしてから、クリックされたものだけ on
+  all.forEach(function(c){ c.classList.remove('on'); });
+  el.classList.add('on');
+  // 既存のフィルタ処理をトリガー(他箇所で chip.on を見るロジック)
+  if (typeof window.applyChipFilter === 'function') window.applyChipFilter();
+  // workstyle フィルタを再評価する処理を呼ぶ
+  var event = new CustomEvent('chip:change', { detail: { work: el.dataset.work } });
+  document.dispatchEvent(event);
+};
+</script>
 </body></html>
