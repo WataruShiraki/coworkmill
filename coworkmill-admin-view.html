@@ -554,6 +554,7 @@ function resetVibeUI(){
         </div>
         <div class="fr full"><div class="fg"><div class="fl">施設説明文<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><textarea class="fta" id="fde"></textarea></div></div>
         <div class="fr"><div class="fg"><div class="fl">Instagram（@から入力）</div><input class="fin" id="fig" placeholder="例：@millcowork_shibuya" value=""></div><div class="fg"><div class="fl">公式サイトURL</div><input class="fin" id="f-official-url" placeholder="例：https://example.com" value=""></div></div>
+        <div class="fr"><div class="fg"><div class="fl">YouTube動画URL <span style="font-size:9px;color:#aaa;margin-left:4px">任意 — 詳細ページに動画埋め込み表示</span></div><input class="fin" id="f-youtube-url" placeholder="例：https://www.youtube.com/watch?v=XXXX" value=""></div></div>
       </div>
       </div>
     
@@ -1493,6 +1494,7 @@ function collectFormData() {
     architect_id:    document.getElementById('p-arch-selected')?.dataset?.archId || null,
     vibe:            g('nfvibe', 'p-vibe'),
     instagram:       g('nfinsta', 'fig'),
+    youtube_url:     g('nf-youtube-url', 'f-youtube-url'),
     smoking:         g('nf-smoking', 'smoking'),
     contact_name:    g('nf-contact-name'),
     contact_email:   g('nf-contact-email'),
@@ -1637,6 +1639,7 @@ window.updateAccessPreview=function(){
 }
 sv('fu',   d.official_url);
     sv('fig',  d.instagram);
+    sv('f-youtube-url', d.youtube_url);
   
     // 設備ボタンのftg補完（DB読み込み後にチェックマークを表示）
     document.querySelectorAll('.fgg .fo.on').forEach(function(fo){
@@ -2152,16 +2155,29 @@ async function pubFac() {
 window.loadAnalytics = async function(){
   var SB='https://jakwntemjkwqwaqujffh.supabase.co';
   var KEY='sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
-  // タイトルから施設名取得
-  var ttlEl=document.getElementById('ttl');
-  var parts=ttlEl?ttlEl.textContent.split('—'):[];
-  var facName=parts.length>1?parts[1].trim():'';
-  if(!facName)return;
-  // spacesからdbId取得
-  var sr=await fetch(SB+'/rest/v1/spaces?name=eq.'+encodeURIComponent(facName)+'&select=id',{headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}});
-  var spaces=sr.ok?await sr.json():[];
-  var dbId=spaces&&spaces[0]?spaces[0].id:null;
-  if(!dbId)return;
+  // dbId取得: 優先順 = facs[cur].db_id > タイトル抽出
+  var dbId = null;
+  try {
+    if (typeof cur !== 'undefined' && typeof facs !== 'undefined' && facs[cur] && facs[cur].db_id) {
+      dbId = facs[cur].db_id;
+    }
+  } catch(e) {}
+  if (!dbId) {
+    // フォールバック: タイトルから抽出
+    var ttlEl=document.getElementById('ttl');
+    var parts=ttlEl?ttlEl.textContent.split('—'):[];
+    var facName=parts.length>1?parts[1].trim():'';
+    if(!facName) return;
+    var sr=await fetch(SB+'/rest/v1/spaces?name=eq.'+encodeURIComponent(facName)+'&select=id',{headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}});
+    var spaces=sr.ok?await sr.json():[];
+    dbId = spaces && spaces[0] ? spaces[0].id : null;
+  }
+  if(!dbId) {
+    // 完全失敗時、Analytics値を「-」に
+    var els=['an-click-num','an-insta-num','an-pv-num','an-voice-num'];
+    els.forEach(function(id){var e=document.getElementById(id);if(e)e.textContent='-';});
+    return;
+  }
   // ① クリック送客数
   try{
     var cr=await fetch(SB+'/rest/v1/click_logs?space_id=eq.'+dbId+'&event=eq.reserve_click&select=id',{headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}});

@@ -756,6 +756,16 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
 
     <div class="sec-divider"></div>
 
+    <!-- YouTube (任意・URL未登録時はJSで非表示) -->
+    <div class="yt-section" id="d-yt-section" style="display:none;margin-bottom:48px">
+      <div class="section-label">動画で見る</div>
+      <div class="yt-wrap" style="position:relative;width:100%;padding-bottom:56.25%;background:#000;border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.15)">
+        <iframe id="d-yt-iframe" src="" allowfullscreen frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" style="position:absolute;inset:0;width:100%;height:100%;border:0"></iframe>
+      </div>
+    </div>
+
+    <div class="sec-divider"></div>
+
     <!-- Voices -->
     <div class="voices-section">
       <div class="section-label">利用者の声</div>
@@ -1737,6 +1747,21 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       } catch(e) { console.warn('gallery error:', e); }
 
+      // YouTube埋め込み(任意)
+      try {
+        var ytSec = document.getElementById('d-yt-section');
+        var ytIframe = document.getElementById('d-yt-iframe');
+        var ytUrl = d.youtube_url;
+        if (ytSec && ytIframe && ytUrl) {
+          var vid = '';
+          var m1 = ytUrl.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([A-Za-z0-9_-]{11})/);
+          if (m1 && m1[1]) vid = m1[1];
+          if (vid) {
+            ytIframe.src = 'https://www.youtube.com/embed/' + vid;
+            ytSec.style.display = 'block';
+          }
+        }
+      } catch(e){}
       // 設計者（architect情報）
       const designByEl = document.getElementById('d-design-by');
       if (designByEl && d.architect_name) {
