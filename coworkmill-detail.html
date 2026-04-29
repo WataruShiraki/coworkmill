@@ -658,9 +658,12 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
 </nav>
 
 <!-- GALLERY -->
-<div class="gallery">
+<div class="gallery" style="position:relative">
   <div class="gallery-sp" id="gallery-sp"></div>
   <div class="gallery-pc" id="gallery-pc"></div>
+  <button id="detail-heart" type="button" onclick="toggleDetailFav()" title="お気に入りに追加" style="position:absolute;top:16px;right:16px;width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.4);background:rgba(0,0,0,.55);backdrop-filter:saturate(1.4) blur(10px);-webkit-backdrop-filter:saturate(1.4) blur(10px);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .25s cubic-bezier(0.16,1,0.3,1);z-index:10">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="detail-heart-svg"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+  </button>
 </div>
 <div class="gallery-more-wrap" id="gallery-more-wrap" style="display:none">
   <button class="gallery-more-btn" id="gallery-toggle-btn" onclick="
@@ -1385,9 +1388,10 @@ function updateDetailHeart() {
   const svg = document.getElementById('detail-heart-svg');
   if (!btn || !svg) return;
   const fav = CM.isFav(DETAIL_ID);
-  svg.setAttribute('stroke', fav ? '#2BB5C8' : '#ccc');
+  svg.setAttribute('stroke', fav ? '#2BB5C8' : '#fff');
   svg.setAttribute('fill', fav ? '#2BB5C8' : 'none');
-  btn.style.borderColor = fav ? '#2BB5C8' : 'var(--gray-200)';
+  btn.style.borderColor = fav ? '#2BB5C8' : 'rgba(255,255,255,.4)';
+  btn.style.background = fav ? 'rgba(43,181,200,.18)' : 'rgba(0,0,0,.55)';
   btn.title = fav ? 'お気に入りから外す' : 'お気に入りに追加';
 }
 function toggleDetailFav() {
