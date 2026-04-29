@@ -787,17 +787,48 @@ function resetVibeUI(){
       </div>
     </div>
 
-    <!-- 料金 -->
+    <!-- 料金設定 -->
     <div class="sec">
-      <div class="sec-h"><div><div class="sec-ht">料金</div><div class="sec-hs">空欄の場合は非表示になります</div></div></div>
+      <div class="sec-h"><div><div class="sec-ht">料金設定</div><div class="sec-hs">入力した項目のみ施設詳細ページに表示されます</div></div></div>
       <div class="sec-b">
-        <div class="fr">
-          <div class="fg"><div class="fl">都度利用（ドロップイン）- 時間利用</div><input class="fin" id="nf-price-hourly" placeholder="例：550"></div>
-          <div class="fg"><div class="fl">都度利用（ドロップイン）- 1日利用</div><input class="fin" id="nf-price-daily" placeholder="例：3300"></div>
+        <div style="background:rgba(43,181,200,.06);border:1px solid rgba(43,181,200,.2);border-radius:8px;padding:14px 16px;margin-bottom:12px">
+          <div style="font-size:11px;font-weight:600;color:var(--accent);letter-spacing:.06em;margin-bottom:10px">ドロップイン（時間単位・日単位）</div>
+          <div class="fr">
+            <div class="fg">
+              <div class="fl">時間当たり料金<span style="font-size:9px;color:var(--g400);margin-left:4px">数値のみ入力</span></div>
+              <div style="display:flex;align-items:center;gap:6px">
+                <input class="fin" id="nf-price-hourly" placeholder="例: 550" style="flex:1">
+                <span style="font-size:12px;color:var(--g400);white-space:nowrap">円 / 時間</span>
+              </div>
+            </div>
+            <div class="fg">
+              <div class="fl">1日当たり料金<span style="font-size:9px;color:var(--g400);margin-left:4px">数値のみ入力</span></div>
+              <div style="display:flex;align-items:center;gap:6px">
+                <input class="fin" id="nf-price-daily" placeholder="例: 3300" style="flex:1">
+                <span style="font-size:12px;color:var(--g400);white-space:nowrap">円 / 日</span>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="fr">
-          <div class="fg"><div class="fl">月額利用（最低）</div><input class="fin" id="nf-price-monthly" placeholder="例：30000"></div>
-          <div class="fg"><div class="fl">月額利用（最高）<span style="font-size:10px;color:#aaa;margin-left:6px">空欄なら「〜円〜」と表示</span></div><input class="fin" id="nf-price-monthly-max" placeholder="例：300000"></div>
+        <div style="background:rgba(255,200,50,.05);border:1px solid rgba(255,200,50,.2);border-radius:8px;padding:14px 16px">
+          <div style="font-size:11px;font-weight:600;color:#c9a820;letter-spacing:.06em;margin-bottom:10px">月額プラン</div>
+          <div class="fr">
+            <div class="fg">
+              <div class="fl">最低利用料金<span style="font-size:9px;color:var(--g400);margin-left:4px">数値のみ</span></div>
+              <div style="display:flex;align-items:center;gap:6px">
+                <input class="fin" id="nf-price-monthly" placeholder="例: 30000" style="flex:1">
+                <span style="font-size:12px;color:var(--g400);white-space:nowrap">円～</span>
+              </div>
+            </div>
+            <div class="fg">
+              <div class="fl">最高利用料金<span style="font-size:9px;color:var(--g400);margin-left:4px">空欄なら「●●円～」と表示</span></div>
+              <div style="display:flex;align-items:center;gap:6px">
+                <input class="fin" id="nf-price-monthly-max" placeholder="例: 300000" style="flex:1">
+                <span style="font-size:12px;color:var(--g400);white-space:nowrap">円</span>
+              </div>
+            </div>
+          </div>
+          <div style="font-size:10px;color:var(--g400);margin-top:8px">例：最低30,000円・最高300,000円の場合 → 「月額 30,000円～300,000円」と表示されます</div>
         </div>
       </div>
     </div>
@@ -837,19 +868,6 @@ function resetVibeUI(){
           </div>
           <div class="fg"></div>
         </div>
-      </div>
-    </div>
-
-    <!-- 施設担当者 -->
-    <div class="sec">
-      <div class="sec-h"><div><div class="sec-ht">施設担当者（任意）</div><div class="sec-hs">施設ごとに担当者が異なる場合のみご記入ください</div></div></div>
-      <div class="sec-b">
-        <div style="padding:10px 14px;background:#f0edf8;border-radius:6px;border:1px solid rgba(117,97,169,.2);font-size:11px;color:var(--g600);line-height:1.8;margin-bottom:14px">未入力の場合は、企業情報に登録された担当者に問い合わせが届きます。</div>
-        <div class="fr">
-          <div class="fg"><div class="fl">担当者名</div><input class="fin" id="nf-contact-name" placeholder="例：山田 太郎（任意）"></div>
-          <div class="fg"><div class="fl">担当者メール</div><input class="fin" id="nf-contact-email" placeholder="例：info@example.com（任意）"></div>
-        </div>
-        <div style="padding:10px 12px;background:var(--g50);border-radius:5px;border:1px solid var(--g100);font-size:9px;color:var(--g400);line-height:1.7">🔒 この情報は運営チームのみが閲覧します。掲載ページには表示されません。</div>
       </div>
     </div>
 
