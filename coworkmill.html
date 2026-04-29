@@ -1101,12 +1101,18 @@ async function loadTopData() {
 document.addEventListener('DOMContentLoaded', function(){ loadTopData(); loadArchitectsTop(); });
 
   async function loadArchitectsTop(){
+    // セクション全体への参照(0件時は丸ごと非表示)
+    const section = document.getElementById('architect-story');
     try{
       const r=await fetch('https://jakwntemjkwqwaqujffh.supabase.co/rest/v1/architects?select=id,name,name_en,portrait_url&order=created_at.asc',
         {headers:{'apikey':'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ','Authorization':'Bearer sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ'}});
       const data=await r.json();
       const track=document.getElementById('arch-track');
-      if(!track||!Array.isArray(data)||!data.length)return;
+      // 建築家が0件 or 取得失敗 → セクション丸ごと非表示
+      if(!track||!Array.isArray(data)||!data.length){
+        if(section) section.style.display='none';
+        return;
+      }
       track.innerHTML=data.map(a=>{
         const nm=a.name_en||a.name||'';
         const imgHtml=a.portrait_url
@@ -1114,7 +1120,11 @@ document.addEventListener('DOMContentLoaded', function(){ loadTopData(); loadArc
           : `<div style="width:100%;aspect-ratio:1/1;background:#1a1a1a;display:flex;align-items:center;justify-content:center;font-size:28px;color:#555">${nm.charAt(0)}</div>`;
         return `<div class="arch-portrait-card" onclick="location.href='coworkmill-architects.html'" style="cursor:pointer">${imgHtml}<div class="arch-portrait-info"><div class="arch-portrait-name">${nm}</div></div></div>`;
       }).join('');
-    }catch(e){console.warn('arch load err',e);}
+    }catch(e){
+      console.warn('arch load err',e);
+      // 取得エラー時もセクション非表示
+      if(section) section.style.display='none';
+    }
   }
 
 </script>
