@@ -1184,7 +1184,9 @@ async function handlePhotoUpload(input) {
   if (!dbId) { alert('先に施設情報を保存してください。'); if(input.value !== undefined) input.value=''; return; }
 
   // プラン別上限チェック
-  const plan = (facs[cur] && facs[cur].plan) || 'free';
+  // 写真上限はアカウントレベルのplanで判定(施設毎ではなく企業毎)
+  const _acct = JSON.parse(localStorage.getItem('cwm_account')||'{}');
+  const plan = _acct.plan || 'free';
   const photoLimit = plan === 'free' ? 5 : plan === 'standard' ? 20 : 50;
   const currentImgs = await sbFetch('/rest/v1/space_images?space_id=eq.' + dbId + '&select=id');
   const currentCount = currentImgs ? currentImgs.length : 0;
@@ -1243,7 +1245,9 @@ async function loadPhotos(dbId) {
     const imgs = await sbFetch('/rest/v1/space_images?space_id=eq.' + dbId + '&select=id,url&order=created_at.asc');
     const spaceData = await sbFetch('/rest/v1/spaces?id=eq.' + dbId + '&select=image_main,plan');
     const mainUrl = spaceData && spaceData[0] ? spaceData[0].image_main : null;
-    const pl = (spaceData && spaceData[0] && spaceData[0].plan) || 'free';
+    // 写真上限はアカウントレベルのplanで判定
+    const _acct = JSON.parse(localStorage.getItem('cwm_account')||'{}');
+    const pl = _acct.plan || 'free';
     if (facs[cur]) facs[cur].plan = pl;
     const lim = pl === 'free' ? 5 : pl === 'standard' ? 20 : 50;
     const cnt = imgs ? imgs.length : 0;
