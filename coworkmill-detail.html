@@ -643,6 +643,15 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
 .vp-tag.on{border-color:#2BB5C8!important;color:#2BB5C8!important;background:rgba(43,181,200,.12)!important}
 .leaflet-control-attribution{font-size:8px!important}
 </style>
+
+<style>
+/* === SP対応: nav-center を 768px 以下で隠す (2026/04/30) === */
+@media (max-width: 768px) {
+  nav .nav-center,
+  .nav-center { display: none !important; }
+  nav .nav-right .nav-cta { font-size: 12px; padding: 6px 12px; }
+}
+</style>
 </head>
 <body>
 
