@@ -61,12 +61,37 @@
     btn.parentNode.replaceChild(newBtn,btn);
     newBtn.disabled=true;
 
+    // input にバリデーション属性を仕込む(HTML5側の最初のフェンス)
+    if (nameInput)    { nameInput.maxLength = 100;    nameInput.required = true; }
+    if (companyInput) { companyInput.maxLength = 200; companyInput.required = true; }
+    if (urlInput)     { urlInput.maxLength = 500;     urlInput.type = 'url'; }
+    if (ownerInput)   { ownerInput.maxLength = 100;   ownerInput.required = true; }
+    if (emailInput)   { emailInput.maxLength = 254;   emailInput.required = true; emailInput.type = 'email'; }
+
+    // バリデーションルール — cwm.validate(共通)を使い、戻り値の error プロパティをそのまま msg に
+    function _check(fn){ return function(v){ var r=fn(v); return r.ok; }; }
+    function _msg(fn, v){ var r=fn(v); return r.error; }
     const rules=[
-      {input:nameInput,    test:v=>v.trim().length>0,                       msg:'施設名を入力してください'},
-      {input:companyInput, test:v=>v.trim().length>0,                       msg:'会社名・屋号を入力してください'},
-      {input:urlInput,     test:v=>/^https?:\/\/.+\..+/.test(v.trim()),     msg:'https:// から始まるURLを入力してください'},
-      {input:ownerInput,   test:v=>v.trim().length>0,                       msg:'担当者名を入力してください'},
-      {input:emailInput,   test:v=>/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v.trim()), msg:'正しいメールアドレスを入力してください'},
+      {input:nameInput,
+       test:_check(function(v){ return cwm.validate.string(v,{min:1,max:100,label:'施設名'}); }),
+       safe:_check(function(v){ return cwm.validate.safeText(v,{label:'施設名'}); }),
+       msg:'施設名を入力してください(100文字以内)'},
+      {input:companyInput,
+       test:_check(function(v){ return cwm.validate.string(v,{min:1,max:200,label:'会社名'}); }),
+       safe:_check(function(v){ return cwm.validate.safeText(v,{label:'会社名'}); }),
+       msg:'会社名・屋号を入力してください(200文字以内)'},
+      {input:urlInput,
+       test:_check(function(v){ return cwm.validate.url(v,{label:'URL',allowEmpty:true}); }),
+       safe:function(){ return true; },
+       msg:'https:// から始まる正しいURLを入力してください'},
+      {input:ownerInput,
+       test:_check(function(v){ return cwm.validate.string(v,{min:1,max:100,label:'担当者名'}); }),
+       safe:_check(function(v){ return cwm.validate.safeText(v,{label:'担当者名'}); }),
+       msg:'担当者名を入力してください(100文字以内)'},
+      {input:emailInput,
+       test:_check(function(v){ return cwm.validate.email(v,{label:'メールアドレス'}); }),
+       safe:function(){ return true; },
+       msg:'正しいメールアドレスを入力してください'},
     ];
 
     // エラー・OKアイコンをinputの直後（同じ親の中）に追加
@@ -83,7 +108,15 @@
 
     function validate(rule,show){
       const val=rule.input?.value||'';
-      const ok=rule.test(val);
+      // ステップ1: フォーマット検証
+      var ok=rule.test(val);
+      // ステップ2: 安全性検証(<script>, javascript:, on*= を含む文字列を拒否)
+      if (ok && rule.safe && !rule.safe(val)) {
+        ok = false;
+        if (rule.errEl) rule.errEl.textContent = '入力に使用できない文字列が含まれています';
+      } else if (rule.errEl && rule.msg) {
+        rule.errEl.textContent = rule.msg;
+      }
       if(show||(rule.input&&rule.input.dataset.touched)){
         rule.input.classList.toggle('cwm-input-ok',ok);
         rule.input.classList.toggle('cwm-input-err',!ok&&val.length>0);
