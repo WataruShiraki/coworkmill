@@ -484,6 +484,11 @@ function resetVibeUI(){
     <div class="an-num" id="an-insta-num">-</div>
     <div class="an-sub">累計</div>
   </div>
+<div class="an-card" id="an-yt">
+    <div class="an-label">▶️ 動画再生数</div>
+    <div class="an-num" id="an-yt-num">-</div>
+    <div class="an-sub">累計</div>
+  </div>
 <div class="an-card" id="an-voice">
     <div class="an-label">💬 利用者の声</div>
     <div class="an-num" id="an-voice-num">-</div>
@@ -2196,6 +2201,16 @@ window.loadAnalytics = async function(){
   } catch(e) {
     var iel2 = document.getElementById('an-insta-num');
     if (iel2) iel2.textContent = '0';
+  }
+  // ④ YouTube動画再生数
+  try {
+    var yr = await fetch(SB+'/rest/v1/click_logs?space_id=eq.'+dbId+'&event=eq.youtube_play&select=id',{headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}});
+    var ytPlays = yr.ok ? await yr.json() : [];
+    var yel = document.getElementById('an-yt-num');
+    if (yel) yel.textContent = ytPlays.length || 0;
+  } catch(e) {
+    var yel2 = document.getElementById('an-yt-num');
+    if (yel2) yel2.textContent = '0';
   }
   // ④ 利用者の声
   try{
