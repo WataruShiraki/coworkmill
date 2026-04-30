@@ -953,7 +953,7 @@ function makeCard(d, i, type) {
   const city = (d.area ? d.area + ' / ' : '') + pref;
   const img = d.image_main || '';
   const isPick = d.plan === 'pro';
-  const href = 'coworkmill-detail.html?id=' + d.id;
+  const href = 'coworkmill-detail.html?id=' + encodeURIComponent(d.id);
   var _ph=d.price_dropin_hour,_pd=d.price_dropin_day,_pm=d.price_monthly_amount,_pmx=d.price_monthly_max;
   const price = (function(){
     if(_ph) return '¥' + _ph.toLocaleString('ja-JP') + ' / 時間〜';
@@ -966,14 +966,14 @@ function makeCard(d, i, type) {
 
   if (type === 'grid') {
     return '<a class="scard" href="' + href + '" style="' + delay + '" data-pref="' + (d.prefecture||'') + '" data-area="' + (d.area||'') + '" data-vibe="' + (d.vibe||'') + '" data-name="' + (d.name||'').toLowerCase() + '" data-facilities="' + (d.facilities ? d.facilities.join(',') : '') + '">' +
-      '<div class="scard-img" style="' + (img ? 'background-image:url(' + img + ')' : 'background:#1a1a2e') + '">' +
+      '<div class="scard-img" style="' + (img ? 'background-image:url(\'' + cwm.safeUrl(img) + '\')' : 'background:#1a1a2e') + '">' +
         (isPick ? '<div class="scard-badges"><span class="scard-badge pick">PICK</span></div>' : '') +
       '</div>' +
       '<div class="scard-body">' +
-        '<div class="scard-city">' + city + '</div>' +
-        '<div class="scard-name">' + (d.name||'') + '</div>' +
+        '<div class="scard-city">' + cwm.esc(city) + '</div>' +
+        '<div class="scard-name">' + cwm.esc(d.name||'') + '</div>' +
         (d.architect_name ? '<div class="scard-design">Design by <span>' + (d.architect_id&&window._archNameMap&&window._archNameMap[d.architect_id]?window._archNameMap[d.architect_id]:(d.architect_name||'')) + '</span></div>' : '') +
-        (vibes.length ? '<div class="scard-wtags">' + vibes.map(v=>'<span class="scard-wtag">'+v+'</span>').join('') + '</div>' : '') +
+        (vibes.length ? '<div class="scard-wtags">' + vibes.map(v=>'<span class="scard-wtag">'+cwm.esc(v)+'</span>').join('') + '</div>' : '') +
         (function(){
           var ap=[];
           if(d.nearest_line)ap.push(d.nearest_line);
@@ -985,7 +985,7 @@ function makeCard(d, i, type) {
       '</div></a>';
   } else {
     return '<a class="lcard" href="' + href + '" style="' + delay + '">' +
-      '<div class="lcard-img" style="' + (img ? 'background-image:url(' + img + ')' : 'background:#1a1a2e') + '"></div>' +
+      '<div class="lcard-img" style="' + (img ? 'background-image:url(\'' + cwm.safeUrl(img) + '\')' : 'background:#1a1a2e') + '"></div>' +
       '<div class="lcard-body">' +
         '<div class="lcard-city">' + city + '</div>' +
         '<div class="lcard-name">' + (d.name||'') + '</div>' +
@@ -1444,7 +1444,7 @@ window.cwmShowAllPrefectures = function() {
     var div = document.createElement('div');
     div.className = 'sf-opt sf-opt-pref-extra';
     div.setAttribute('onclick', "toggleCity(this,'"+key+"')");
-    div.innerHTML = '<div class="sf-check"></div><span class="sf-name">' + jaName.replace(/[県府]$/,'') + '</span><span class="sf-cnt">' + cnt + '</span>';
+    div.innerHTML = '<div class="sf-check"></div><span class="sf-name">' + cwm.esc(jaName.replace(/[県府]$/,'')) + '</span><span class="sf-cnt">' + cnt + '</span>';
     parent.insertBefore(div, btn);
   });
   btn.textContent = '− 隠す';
