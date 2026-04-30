@@ -1005,14 +1005,14 @@ async function loadTopData() {
         const city = (s.area ? s.area + ' / ' : '') + pref;
         const img = s.image_main || '';
         const isPick = s.plan === 'pro';
-        return '<a class="card" href="coworkmill-detail.html?id=' + s.id + '" data-arch-id="' + (s.architect_id||'') + '" style="animation-delay:' + (i*0.08) + 's">' +
-          '<div class="card-img" style="' + (img ? 'background-image:url(' + img + ')' : 'background:#1a1a2e') + '">' +
+        return '<a class="card" href="coworkmill-detail.html?id=' + encodeURIComponent(s.id) + '" data-arch-id="' + cwm.escAttr(s.architect_id||'') + '" style="animation-delay:' + (i*0.08) + 's">' +
+          '<div class="card-img" style="' + (img ? 'background-image:url(\'' + cwm.safeUrl(img) + '\')' : 'background:#1a1a2e') + '">' +
           (isPick ? '<span class="pick-badge">PICK</span>' : '') +
           '</div>' +
           '<div class="card-body">' +
-          '<div class="card-city">' + city + '</div>' +
-          '<div class="card-name">' + (s.name || '') + '</div>' +
-          (s.architect_name ? '<div class="card-design-by">Design by <span>' + s.architect_name + '</span></div>' : '') +
+          '<div class="card-city">' + cwm.esc(city) + '</div>' +
+          '<div class="card-name">' + cwm.esc(s.name || '') + '</div>' +
+          (s.architect_name ? '<div class="card-design-by">Design by <span>' + cwm.esc(s.architect_name) + '</span></div>' : '') +
           
           '</div></a>';
       }).join('');
@@ -1023,8 +1023,11 @@ async function loadTopData() {
     if (heroTiles && live.length > 0) {
       const doubled = [...live, ...live];
       heroTiles.innerHTML = doubled.map(s =>
-        '<div class="hero-tile" onclick="location.href=\'coworkmill-detail.html?id=\'' + s.id + '\'">' + (s.name || '') + '</div>'
+        '<div class="hero-tile" data-id="' + cwm.escAttr(s.id) + '">' + cwm.esc(s.name || '') + '</div>'
       ).join('');
+      heroTiles.querySelectorAll('.hero-tile[data-id]').forEach(function(el){
+        el.addEventListener('click', function(){ location.href = 'coworkmill-detail.html?id=' + encodeURIComponent(el.dataset.id); });
+      });
     }
 
     // 建築家スクロール
@@ -1037,11 +1040,11 @@ async function loadTopData() {
       heroArch.innerHTML = doubled.map(s => {
         const pref = TOP_PREF_MAP[s.prefecture] || '';
         return '<div class="hero-arch-card" onclick="location.href=\'coworkmill-spaces.html\'">' +
-          '<div class="hero-arch-initial-bg">' + (s.architect_name||'').charAt(0) + '</div>' +
+          '<div class="hero-arch-initial-bg">' + cwm.esc((s.architect_name||'').charAt(0)) + '</div>' +
           '<div class="hero-arch-card-overlay"></div>' +
           '<div class="hero-arch-card-info"><div class="hero-arch-label">ARCHITECT</div>' +
-          '<div class="hero-arch-name">' + (s.architect_name||'') + '</div>' +
-          '<div class="hero-arch-cnt">' + pref + '</div></div></div>';
+          '<div class="hero-arch-name">' + cwm.esc(s.architect_name||'') + '</div>' +
+          '<div class="hero-arch-cnt">' + cwm.esc(pref) + '</div></div></div>';
       }).join('');
     }
 
@@ -1053,12 +1056,12 @@ async function loadTopData() {
         const city = (s.area ? s.area + ' / ' : '') + pref;
         const img = s.image_main || '';
         const vibes = Array.isArray(s.vibe) ? s.vibe : (s.vibe ? [s.vibe] : []);
-        return '<a class="gcard" data-arch-id="' + (s.architect_id||'') + '" href="coworkmill-detail.html?id=' + s.id + '">' +
-          '<div class="gcard-img" style="' + (img ? 'background-image:url(' + img + ')' : 'background:#1a1a2e') + '"></div>' +
+        return '<a class="gcard" data-arch-id="' + cwm.escAttr(s.architect_id||'') + '" href="coworkmill-detail.html?id=' + encodeURIComponent(s.id) + '">' +
+          '<div class="gcard-img" style="' + (img ? 'background-image:url(\'' + cwm.safeUrl(img) + '\')' : 'background:#1a1a2e') + '"></div>' +
           '<div class="gcard-body">' +
-            '<div class="gcard-city">' + city + '</div>' +
-            '<div class="gcard-name">' + (s.name||'') + '</div>' +
-          (s.architect_name ? '<div class="gcard-arch">Design by ' + s.architect_name + '</div>' : '') +
+            '<div class="gcard-city">' + cwm.esc(city) + '</div>' +
+            '<div class="gcard-name">' + cwm.esc(s.name||'') + '</div>' +
+          (s.architect_name ? '<div class="gcard-arch">Design by ' + cwm.esc(s.architect_name) + '</div>' : '') +
           '</div></a>';
       }).join('');
       const gfCount = document.querySelector('.gf-count');
