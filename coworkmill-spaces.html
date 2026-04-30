@@ -1234,17 +1234,12 @@ function resetSidebarFilters() {
 function resetSpFilters() { resetSidebarFilters(); }
 
 function toggleChip(el) {
-  var work = el.dataset.work;
-  if(work === 'all') {
-    document.querySelectorAll('.chip').forEach(function(c){ c.classList.remove('on'); });
-    el.classList.add('on');
-  } else {
-    document.querySelector('.chip[data-work="all"]')?.classList.remove('on');
-    el.classList.toggle('on');
-    var anyOn = Array.from(document.querySelectorAll('.chip:not([data-work="all"])')).some(function(c){ return c.classList.contains('on'); });
-    if(!anyOn) document.querySelector('.chip[data-work="all"]')?.classList.add('on');
-  }
-  filterSidebar();
+  var container = el.closest('.chips') || el.parentElement;
+  if (!container) return;
+  var all = container.querySelectorAll('.chip');
+  all.forEach(function(c){ c.classList.remove('on'); });
+  el.classList.add('on');
+  if (typeof window.filterSidebar === 'function') window.filterSidebar();
 }
 
 function setView(mode) {
