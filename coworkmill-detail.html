@@ -2123,11 +2123,11 @@ function renderPlanCards(sp) {
             document.getElementById('arch-name-link').textContent=a.name_en||a.name||'';
             // Design by 表示をローマ字(name_en)に更新
             var dbEl=document.getElementById('d-design-by');
-            if(dbEl&&(a.name_en||a.name)){var _archLabel=(a.name_en||a.name);var _archHtml='<a href="coworkmill-architect.html?id='+a.id+'" style="color:#2BB5C8;font-weight:500;text-decoration:none">'+_archLabel+'</a>';dbEl.innerHTML='Design by '+_archHtml;dbEl.style.display='';}
+            if(dbEl&&(a.name_en||a.name)){var _archLabel=(a.name_en||a.name);var _archHtml='<a href="coworkmill-architect.html?id='+encodeURIComponent(a.id)+'" style="color:#2BB5C8;font-weight:500;text-decoration:none">'+cwm.esc(_archLabel)+'</a>';dbEl.innerHTML='Design by '+_archHtml;dbEl.style.display='';}
             document.getElementById('arch-firm-el').textContent=a.firm||'';
             document.getElementById('arch-bio-el').textContent=a.bio||'';
             var pw=document.getElementById('arch-portrait-wrap');
-            if(a.portrait_url){pw.innerHTML='<img src="'+a.portrait_url+'" style="width:100%;height:100%;object-fit:cover" alt="施設写真">';}
+            if(a.portrait_url){pw.innerHTML='<img src="'+cwm.safeUrl(a.portrait_url)+'" alt="" style="width:100%;height:100%;object-fit:cover" alt="施設写真">';}
             else{pw.textContent=(a.name||'?')[0];}
             document.getElementById('arch-profile-block').style.display='block';
           }).catch(function(){});
