@@ -305,14 +305,14 @@ function renderFavs() {
     link.href = space.href;
     link.className = 'fav-link';
     link.innerHTML = `
-      <div class="fav-img" style="background-image:url('${imgUrl}')"></div>
+      <div class="fav-img" style="background-image:url('${cwm.safeUrl(imgUrl)}')"></div>
       <div class="fav-body">
-        <div class="fav-city">${space.city}</div>
-        <div class="fav-name">${space.name}</div>
-        <div class="fav-arch">Design by <span>${space.arch}</span></div>
-        <div class="fav-tags">${space.tags.map(t => `<span class="fav-tag">${t}</span>`).join('')}</div>
+        <div class="fav-city">${cwm.esc(space.city)}</div>
+        <div class="fav-name">${cwm.esc(space.name)}</div>
+        <div class="fav-arch">Design by <span>${cwm.esc(space.arch)}</span></div>
+        <div class="fav-tags">${space.tags.map(t => `<span class="fav-tag">${cwm.esc(t)}</span>`).join('')}</div>
         <div class="fav-foot">
-          <div class="fav-price">¥<strong>${space.price}</strong>/日〜</div>
+          <div class="fav-price">¥<strong>${cwm.esc(space.price)}</strong>/日〜</div>
         </div>
       </div>`;
 
