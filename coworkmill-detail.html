@@ -1757,7 +1757,44 @@ document.addEventListener('DOMContentLoaded', () => {
           var m1 = ytUrl.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/|youtube\.com\/shorts\/)([A-Za-z0-9_-]{11})/);
           if (m1 && m1[1]) vid = m1[1];
           if (vid) {
-            ytIframe.src = 'https://www.youtube.com/embed/' + vid + '?rel=0&modestbranding=1&playsinline=1';
+            ytIframe.src = 'https://www.youtube.com/embed/' + vid + '?enablejsapi=1&rel=0&modestbranding=1&playsinline=1';
+            // YouTube IFrame Player API で再生開始を計測
+            try {
+              if (!window._ytApiLoaded) {
+                window._ytApiLoaded = true;
+                var tag = document.createElement('script');
+                tag.src = 'https://www.youtube.com/iframe_api';
+                document.head.appendChild(tag);
+              }
+              window.onYouTubeIframeAPIReady = function() {
+                if (window._ytPlayer) return;
+                window._ytPlayer = new YT.Player('d-yt-iframe', {
+                  events: {
+                    'onStateChange': function(e) {
+                      // PLAYING (1) の時かつ未送信ならカウント
+                      if (e.data === 1 && !window._ytPlayCounted) {
+                        window._ytPlayCounted = true;
+                        var sid = new URLSearchParams(window.location.search).get('id');
+                        if (sid) {
+                          fetch(CWM_SB_URL + '/rest/v1/click_logs', {
+                            method: 'POST',
+                            headers: {
+                              'apikey': CWM_SB_KEY,
+                              'Authorization': 'Bearer ' + CWM_SB_KEY,
+                              'Content-Type': 'application/json',
+                              'Prefer': 'return=minimal'
+                            },
+                            body: JSON.stringify({ space_id: sid, event: 'youtube_play' })
+                          }).catch(function(){});
+                        }
+                      }
+                    }
+                  }
+                });
+              };
+              // すでに API がロード済の場合は手動で初期化
+              if (window.YT && window.YT.Player) window.onYouTubeIframeAPIReady();
+            } catch(_e) {}
             ytSec.style.display = 'block';
           }
         }
