@@ -50,6 +50,21 @@
   const s=document.createElement('script');
   s.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
   s.onload=function(){
+    // Wait for cwm.validate (cwm-security.js) to be ready
+    if (!window.cwm || !window.cwm.validate) {
+      var _waitTries = 0;
+      var _waitInt = setInterval(function(){
+        _waitTries++;
+        if (window.cwm && window.cwm.validate) {
+          clearInterval(_waitInt);
+          s.onload();
+        } else if (_waitTries > 50) {
+          clearInterval(_waitInt);
+          console.error('[register] cwm.validate failed to load');
+        }
+      }, 50);
+      return;
+    }
     const sb=window.supabase.createClient('https://jakwntemjkwqwaqujffh.supabase.co','sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ');
 
     const inputs=document.querySelectorAll('input');
