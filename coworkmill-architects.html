@@ -400,13 +400,13 @@ const architects = [];
             ?'<div class="acard-work" style="background-image:url('+img+')"></div>'
             :'<div class="acard-work"></div>';
         }).join('');
-        return `<a class="acard" href="coworkmill-architect.html?id=${firm.id}" target="_blank" rel="noopener">
+        return `<a class="acard" href="coworkmill-architect.html?id=${encodeURIComponent(firm.id)}" target="_blank" rel="noopener">
       ${portraitArea}
       <div class="acard-works">${workItems}</div>
       <div class="acard-body">
-        <div class="acard-name">${firm.name}</div>
+        <div class="acard-name">${cwm.esc(firm.name)}</div>
         <div class="acard-firm">${firm.origin}</div>
-        ${firm.bio?'<div class="acard-bio">'+firm.bio+'</div>':''}
+        ${firm.bio?'<div class="acard-bio">'+cwm.esc(firm.bio)+'</div>':''}
       </div>
       <div class="acard-foot">
         <div class="acard-origin">${firm.origin}</div>
@@ -462,10 +462,10 @@ architects.forEach(group => {
   const cards = group.firms.map(firm => {
     const initials = firm.name.split(' ').map(w=>w[0]).slice(0,2).join('');
     const portraitArea = firm.portrait === 'KUMA'
-      ? `<div class="acard-portrait-wrap"><img class="acard-portrait-img" src="${KUMA_PHOTO}" alt="${firm.name}" style="width:100%;height:100%;object-fit:cover;object-position:center top"><div class="acard-portrait-overlay"></div><div class="acard-portrait-badge">Architect</div><div class="acard-portrait-cnt">${firm.spaces} space${firm.spaces>1?'s':''}</div></div>`
+      ? `<div class="acard-portrait-wrap"><img class="acard-portrait-img" src="${KUMA_PHOTO}" alt="${cwm.escAttr(firm.name)}" style="width:100%;height:100%;object-fit:cover;object-position:center top"><div class="acard-portrait-overlay"></div><div class="acard-portrait-badge">Architect</div><div class="acard-portrait-cnt">${cwm.esc(firm.spaces)} space${firm.spaces>1?'s':''}</div></div>`
       : firm.portraitUrl
-        ? `<div class="acard-portrait-wrap"><img class="acard-portrait-img" src="${firm.portraitUrl}" alt="${firm.name}" style="width:100%;height:100%;object-fit:cover;object-position:center top;filter:grayscale(20%)"><div class="acard-portrait-overlay"></div><div class="acard-portrait-badge">Architect</div><div class="acard-portrait-cnt">${firm.spaces} space${firm.spaces>1?'s':''}</div></div>`
-        : `<div class="acard-portrait-placeholder-wrap"><div class="acard-portrait-initials">${initials}</div><div class="acard-portrait-badge" style="position:absolute;top:12px;left:12px">Architect</div><div class="acard-portrait-cnt" style="position:absolute;bottom:12px;right:12px">${firm.spaces} space${firm.spaces>1?'s':''}</div></div>`;
+        ? `<div class="acard-portrait-wrap"><img class="acard-portrait-img" src="${cwm.safeUrl(firm.portraitUrl)}" alt="${cwm.escAttr(firm.name)}" style="width:100%;height:100%;object-fit:cover;object-position:center top;filter:grayscale(20%)"><div class="acard-portrait-overlay"></div><div class="acard-portrait-badge">Architect</div><div class="acard-portrait-cnt">${cwm.esc(firm.spaces)} space${firm.spaces>1?'s':''}</div></div>`
+        : `<div class="acard-portrait-placeholder-wrap"><div class="acard-portrait-initials">${cwm.esc(initials)}</div><div class="acard-portrait-badge" style="position:absolute;top:12px;left:12px">Architect</div><div class="acard-portrait-cnt" style="position:absolute;bottom:12px;right:12px">${cwm.esc(firm.spaces)} space${firm.spaces>1?'s':''}</div></div>`;
 
     const works = firm.photos.map(p => p
       ? `<div class="acard-work" style="background-image:url('${p}')"></div>`
@@ -476,7 +476,7 @@ architects.forEach(group => {
       ${portraitArea}
       <div class="acard-works">${works}</div>
       <div class="acard-body">
-        <div class="acard-name">${firm.name}</div>
+        <div class="acard-name">${cwm.esc(firm.name)}</div>
         <div class="acard-firm">${firm.firm}</div>
         <div class="acard-style">${firm.style||''}</div>
         <div class="acard-foot">
