@@ -47,10 +47,9 @@
 
   if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded',resetPlans); } else { resetPlans(); }
 
-  const s=document.createElement('script');
-  s.src='https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
   function _bootstrapRegister(){
     if (!window.cwm || !window.cwm.validate) return false;
+    if (!window.supabase || !window.supabase.createClient) return false;
     const sb=window.supabase.createClient('https://jakwntemjkwqwaqujffh.supabase.co','sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ');
 
     const inputs=document.querySelectorAll('input');
@@ -179,17 +178,21 @@
     });
     return true;
   }
-  // Try bootstrap, retry once shared/cwm-security.js loads
-  s.onload=function(){
+  // Run when DOM is ready and both window.supabase + cwm.validate exist
+  function _initRegister(){
     if (_bootstrapRegister()) return;
     var _t=0;
     var _i=setInterval(function(){
       _t++;
       if (_bootstrapRegister()) clearInterval(_i);
-      else if (_t>50) { clearInterval(_i); console.error('[register] cwm.validate failed to load'); }
+      else if (_t>100) { clearInterval(_i); console.error('[register] supabase or cwm.validate failed to load after 5s'); }
     }, 50);
-  };
-  document.head.appendChild(s);
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', _initRegister);
+  } else {
+    _initRegister();
+  }
 
 
   // ============================================================
