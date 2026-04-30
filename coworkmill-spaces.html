@@ -1211,6 +1211,9 @@ function filterSidebar(){
   });
   var cnt=document.querySelector('.sp-result-count');
   if(cnt)cnt.textContent=visible+'件';
+  // 上部 results-count-num も同期(本数のみ表示。後ろは "スペース" がHTML側で固定)
+  var cntNum=document.getElementById('results-count-num');
+  if(cntNum)cntNum.textContent=visible;
 }
 
 function filterCards(){filterSidebar();}
