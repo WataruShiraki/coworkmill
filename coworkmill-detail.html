@@ -1729,7 +1729,7 @@ document.addEventListener('DOMContentLoaded', () => {
             pcEl.innerHTML = allUrls.map(function(url, i) {
               var extra = i >= 8 ? ' gpc-extra' : '';
               var style = i >= 8 ? ' style="display:none"' : '';
-              return '<div class="gpc-item' + extra + '"' + style + '><img src="' + url + '" alt="" loading="eager"></div>';
+              return '<div class="gpc-item' + extra + '"' + style + '><img src="' + cwm.safeUrl(url) + '" alt="" loading="eager"></div>';
             }).join('');
           }
 
