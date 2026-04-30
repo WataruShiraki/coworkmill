@@ -1720,7 +1720,7 @@ document.addEventListener('DOMContentLoaded', () => {
           // SP用（全枚）
           const spEl = document.getElementById('gallery-sp');
           if (spEl) spEl.innerHTML = allUrls.map(function(url) {
-            return '<div class="gsp-item"><img src="' + url + '" alt="" loading="eager"></div>';
+            return '<div class="gsp-item"><img src="' + cwm.safeUrl(url) + '" alt="" loading="eager"></div>';
           }).join('') + (hasMore ? '<div style="margin-top:12px"><button onclick="window.openVoicesModal()" style="width:100%;padding:13px 0;background:transparent;border:0.5px solid rgba(43,181,200,.25);border-radius:10px;color:#2BB5C8;font-size:13px;font-weight:500;cursor:pointer;letter-spacing:.04em">利用者の声をもっと見る →</button></div>' : '');
 
           // PC用（最初の8枚まで表示、残りはextra）
