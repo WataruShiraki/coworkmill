@@ -1802,9 +1802,9 @@ document.addEventListener('DOMContentLoaded', () => {
       // 設計者（architect情報）
       const designByEl = document.getElementById('d-design-by');
       if (designByEl && d.architect_name) {
-        var _archInner1 = '<span style="color:#2BB5C8;font-weight:500">' + d.architect_name + '</span>';
+        var _archInner1 = '<span style="color:#2BB5C8;font-weight:500">' + cwm.esc(d.architect_name) + '</span>';
         if (d.architect_id) {
-          _archInner1 = '<a href="coworkmill-architect.html?id=' + d.architect_id + '" style="color:#2BB5C8;font-weight:500;text-decoration:none">' + d.architect_name + '</a>';
+          _archInner1 = '<a href="coworkmill-architect.html?id=' + encodeURIComponent(d.architect_id) + '" style="color:#2BB5C8;font-weight:500;text-decoration:none">' + cwm.esc(d.architect_name) + '</a>';
         }
         designByEl.innerHTML = 'Design by ' + _archInner1;
         designByEl.style.display = '';
