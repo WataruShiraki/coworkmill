@@ -580,6 +580,15 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
   @media(min-width:961px){.sp-filter-wrap{background:var(--black-soft,#111);border-right-color:#333}}
 }
 </style>
+
+<style>
+/* === SP対応: nav-center を 768px 以下で隠す (2026/04/30) === */
+@media (max-width: 768px) {
+  nav .nav-center,
+  .nav-center { display: none !important; }
+  nav .nav-right .nav-cta { font-size: 12px; padding: 6px 12px; }
+}
+</style>
 </head>
 <body>
 
