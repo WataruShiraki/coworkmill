@@ -37,6 +37,8 @@ img{max-width:100%;display:block}
 .j-nav-links a{transition:color .2s}
 .j-nav-links a:hover{color:var(--fg)}
 .j-nav-links a.j-active{color:var(--fg)}
+.j-nav-links a.j-back-to-main{font-family:var(--fb);font-style:italic;font-size:13px;color:var(--fg-3);letter-spacing:.04em;transition:color .2s}
+.j-nav-links a.j-back-to-main:hover{color:var(--fg)}
 
 /* ジャーナルラベル(雑誌っぽいセリフ) */
 .j-brand-label{font-family:var(--fb);font-style:italic;font-size:20px;color:var(--fg-2);letter-spacing:.02em;margin-left:10px;line-height:1;position:relative;top:1px}
@@ -84,15 +86,12 @@ img{max-width:100%;display:block}
 
 <header class="j-nav">
   <div class="j-nav-inner">
-    <a href="/coworkmill.html" class="j-logo">
+    <a href="/journal/" class="j-logo">
       <img src="/shared/coworkmill-logo.svg" alt="COWORKMILL">
       <span class="j-brand-label">journal</span>
     </a>
     <nav class="j-nav-links">
-      <a href="/coworkmill-spaces.html">コワーキングを探す</a>
-      <a href="/coworkmill-architects.html">建築家から探す</a>
-      <a href="/coworkmill-photos.html">写真から探す</a>
-      <a href="/journal/" class="j-active">ジャーナル</a>
+      <a href="/coworkmill.html" class="j-back-to-main">← COWORKMILL TOP</a>
     </nav>
   </div>
 </header>
