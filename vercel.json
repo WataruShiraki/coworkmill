@@ -54,5 +54,11 @@
         }
       ]
     }
+  ],
+  "rewrites": [
+    {
+      "source": "/journal/:slug((?!index|article).*)",
+      "destination": "/journal/article.html?slug=:slug"
+    }
   ]
 }
