@@ -11,6 +11,13 @@
 <meta id="og-img" property="og:image" content="">
 <meta id="og-url" property="og:url" content="">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@coworkmill">
+<link id="canonical-link" rel="canonical" href="https://coworkmill.vercel.app/journal/">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<meta property="og:locale" content="ja_JP">
+<meta property="article:publisher" content="https://coworkmill.vercel.app/">
+<link rel="icon" href="/coworkmill_icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/coworkmill_icon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
@@ -196,6 +203,30 @@ function renderArticle(a) {
   document.getElementById('og-desc').content = a.excerpt || '';
   document.getElementById('og-img').content = a.og_image || a.hero_image || '';
   document.getElementById('og-url').content = location.href;
+  // canonical も /journal/[slug]/ の正規 URL に
+  const canonicalEl = document.getElementById('canonical-link');
+  if (canonicalEl) {
+    canonicalEl.href = 'https://coworkmill.vercel.app/journal/' + encodeURIComponent(a.slug);
+  }
+  // article specific meta
+  const articleMeta = document.createElement('meta');
+  articleMeta.setAttribute('property', 'article:published_time');
+  articleMeta.setAttribute('content', a.published_at || '');
+  document.head.appendChild(articleMeta);
+  if (a.author_name) {
+    const authorMeta = document.createElement('meta');
+    authorMeta.setAttribute('name', 'author');
+    authorMeta.setAttribute('content', a.author_name);
+    document.head.appendChild(authorMeta);
+  }
+  if (a.tags && Array.isArray(a.tags)) {
+    a.tags.forEach(t => {
+      const tagMeta = document.createElement('meta');
+      tagMeta.setAttribute('property', 'article:tag');
+      tagMeta.setAttribute('content', String(t));
+      document.head.appendChild(tagMeta);
+    });
+  }
   
   const ld = {
     "@context": "https://schema.org",
