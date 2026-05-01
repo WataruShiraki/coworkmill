@@ -150,33 +150,33 @@ nav{height:56px;display:flex;align-items:center;padding:0 40px;background:var(--
         <div class="fr2">
           <div class="fg">
             <label class="fl">姓名（日本語）<span class="req">*</span></label>
-            <input class="fin" id="name-ja" placeholder="例：山田 太郎" required>
+            <input class="fin" id="name-ja" placeholder="例：山田 太郎" maxlength="100" required>
           </div>
           <div class="fg">
             <label class="fl">Name (English)<span class="req">*</span></label>
-            <input class="fin" id="name-en" placeholder="e.g. Taro Yamada" required>
+            <input class="fin" id="name-en" placeholder="e.g. Taro Yamada" maxlength="100" required>
           </div>
         </div>
 
         <div class="fg">
           <label class="fl">事務所・組織名<span class="req">*</span></label>
-          <input class="fin" id="org" placeholder="例：山田建築設計事務所" required>
+          <input class="fin" id="org" placeholder="例：山田建築設計事務所" maxlength="200" required>
         </div>
 
         <div class="fr2">
           <div class="fg">
             <label class="fl">国籍・活動拠点<span class="req">*</span></label>
-            <input class="fin" id="country" placeholder="例：日本" required>
+            <input class="fin" id="country" placeholder="例：日本" maxlength="100" required>
           </div>
           <div class="fg">
             <label class="fl">公式サイトURL<span class="req">*</span></label>
-            <input class="fin" id="url" type="url" placeholder="https://example.com" required>
+            <input class="fin" id="url" type="url" placeholder="https://example.com" maxlength="500" required>
           </div>
         </div>
 
         <div class="fg">
           <label class="fl">ご連絡用メールアドレス<span class="req">*</span></label>
-          <input class="fin" id="email" type="email" placeholder="taro@example.com" required>
+          <input class="fin" id="email" type="email" placeholder="taro@example.com" maxlength="254" required>
           <div class="fhint">掲載内容に変更がある場合にご連絡します。サイトには表示されません。</div>
         </div>
       </div>
@@ -207,11 +207,11 @@ nav{height:56px;display:flex;align-items:center;padding:0 40px;background:var(--
         <div class="fsec-sub">建築・デザインへの考え方や活動について自由にご記入ください</div>
         <div class="fg">
           <label class="fl">日本語</label>
-          <textarea class="fta" id="bio-ja" placeholder="建築・デザインへの思いや活動についてご記入ください。" style="min-height:120px"></textarea>
+          <textarea class="fta" id="bio-ja" placeholder="建築・デザインへの思いや活動についてご記入ください。" maxlength="5000" style="min-height:120px"></textarea>
         </div>
         <div class="fg">
           <label class="fl">English（任意）</label>
-          <textarea class="fta" id="bio-en" placeholder="Please describe your architectural philosophy and practice." style="min-height:120px"></textarea>
+          <textarea class="fta" id="bio-en" placeholder="Please describe your architectural philosophy and practice." maxlength="5000" style="min-height:120px"></textarea>
         </div>
       </div>
 
@@ -254,13 +254,46 @@ nav{height:56px;display:flex;align-items:center;padding:0 40px;background:var(--
 
 <script>
 function goStep(n) {
-  // Validate step 1
+  // Validate step 1 — 共通バリデーター cwm.validate.* を使う
   if(n === 2) {
-    const required = ['name-ja','name-en','org','country','url','email'];
-    for(const id of required) {
-      const el = document.getElementById(id);
-      if(!el.value.trim()) { el.focus(); el.style.borderColor = 'var(--pink)'; return; }
+    if (!window.cwm || !window.cwm.validate) { alert('セキュリティモジュールが読み込まれていません'); return; }
+    const checks = [
+      { id: 'name-ja',  fn: v => cwm.validate.string(v, {min:1, max:100, label:'姓名(日本語)'}),
+        safe: v => cwm.validate.safeText(v, {label:'姓名'}) },
+      { id: 'name-en',  fn: v => cwm.validate.string(v, {min:1, max:100, label:'Name (English)'}),
+        safe: v => cwm.validate.safeText(v, {label:'Name'}) },
+      { id: 'org',      fn: v => cwm.validate.string(v, {min:1, max:200, label:'事務所名'}),
+        safe: v => cwm.validate.safeText(v, {label:'事務所名'}) },
+      { id: 'country',  fn: v => cwm.validate.string(v, {min:1, max:100, label:'国籍・拠点'}),
+        safe: v => cwm.validate.safeText(v, {label:'国籍'}) },
+      { id: 'url',      fn: v => cwm.validate.url(v, {label:'公式サイトURL', allowEmpty:false}),
+        safe: v => ({ ok:true }) },
+      { id: 'email',    fn: v => cwm.validate.email(v, {label:'メールアドレス'}),
+        safe: v => ({ ok:true }) }
+    ];
+    for(const c of checks) {
+      const el = document.getElementById(c.id);
+      if (!el) continue;
+      const r = c.fn(el.value || '');
+      if (!r.ok) { el.focus(); el.style.borderColor = 'var(--pink)'; alert(r.error); return; }
+      const r2 = c.safe(el.value || '');
+      if (!r2.ok) { el.focus(); el.style.borderColor = 'var(--pink)'; alert(r2.error); return; }
       el.style.borderColor = '';
+    }
+  }
+  // Step 2 → 3: bio フィールドの safeText チェック
+  if(n === 3) {
+    if (window.cwm && window.cwm.validate) {
+      const bioJa = document.getElementById('bio-ja');
+      const bioEn = document.getElementById('bio-en');
+      for (const t of [bioJa, bioEn]) {
+        if (!t || !t.value) continue;
+        const r = cwm.validate.multiline(t.value, {min:0, max:5000, label:'プロフィール文'});
+        if (!r.ok) { t.focus(); t.style.borderColor = 'var(--pink)'; alert(r.error); return; }
+        const r2 = cwm.validate.safeText(t.value, {label:'プロフィール文'});
+        if (!r2.ok) { t.focus(); t.style.borderColor = 'var(--pink)'; alert(r2.error); return; }
+        t.style.borderColor = '';
+      }
     }
   }
 
@@ -288,34 +321,86 @@ function previewPhoto(input) {
 
 async function submitForm(e) {
   e.preventDefault();
+
+  // Defense-in-depth: もう一度 cwm.validate で全フィールドを通す
+  if (window.cwm && window.cwm.validate) {
+    const g = id => document.getElementById(id)?.value || '';
+    const finalChecks = [
+      cwm.validate.string(g('name-ja'),  {min:1, max:100, label:'姓名(日本語)'}),
+      cwm.validate.string(g('name-en'),  {min:1, max:100, label:'Name (English)'}),
+      cwm.validate.string(g('org'),      {min:1, max:200, label:'事務所名'}),
+      cwm.validate.string(g('country'),  {min:1, max:100, label:'国籍・拠点'}),
+      cwm.validate.url(g('url'),         {label:'公式サイトURL', allowEmpty:false}),
+      cwm.validate.email(g('email'),     {label:'メールアドレス'}),
+      cwm.validate.multiline(g('bio-ja'),{min:0, max:5000, label:'プロフィール(日本語)'}),
+      cwm.validate.multiline(g('bio-en'),{min:0, max:5000, label:'プロフィール(English)'}),
+      cwm.validate.safeText(g('name-ja')+' '+g('name-en')+' '+g('org')+' '+g('country')+' '+g('bio-ja')+' '+g('bio-en'), {label:'入力内容'})
+    ];
+    for (const r of finalChecks) {
+      if (!r.ok) { alert(r.error); return; }
+    }
+  }
+
   document.getElementById('arch-form').style.display = 'none';
   document.querySelector('.progress').style.display = 'none';
   document.querySelector('.notice').style.display = 'none';
   document.getElementById('thanks').style.display = 'block';
+
   try {
     const archId = new URLSearchParams(location.search).get('id');
     if (!archId) return;
+
+    // Portrait 画像のアップロードは引き続き Storage 直アクセス
+    // (Storage は anon でも upsert 可能。将来は Edge Function 経由にする予定)
     let portrait_url = null;
     const file = document.getElementById('af-portrait-file')?.files?.[0];
     if (file) {
-      const ext = file.name.split('.').pop();
-      const path = 'arch-' + archId + '-' + Date.now() + '.' + ext;
-      const upRes = await fetch('https://jakwntemjkwqwaqujffh.supabase.co/storage/v1/object/portraits/' + path, {
-        method: 'POST',
-        headers: { 'apikey': 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ', 'Authorization': 'Bearer sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ', 'Content-Type': file.type, 'x-upsert': 'true' },
-        body: file
-      });
-      if (upRes.ok) portrait_url = 'https://jakwntemjkwqwaqujffh.supabase.co/storage/v1/object/public/portraits/' + path;
+      // ファイルサイズの fence: 5MB
+      if (file.size > 5 * 1024 * 1024) { console.warn('portrait file too large'); }
+      else {
+        const ext = (file.name.split('.').pop() || 'jpg').replace(/[^a-z0-9]/gi, '').toLowerCase().slice(0, 5);
+        const path = 'arch-' + archId + '-' + Date.now() + '.' + ext;
+        const upRes = await fetch('https://jakwntemjkwqwaqujffh.supabase.co/storage/v1/object/portraits/' + path, {
+          method: 'POST',
+          headers: { 'apikey': 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ', 'Authorization': 'Bearer sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ', 'Content-Type': file.type, 'x-upsert': 'true' },
+          body: file
+        });
+        if (upRes.ok) portrait_url = 'https://jakwntemjkwqwaqujffh.supabase.co/storage/v1/object/public/portraits/' + path;
+      }
     }
-    const g = id => document.getElementById(id)?.value?.trim()||null;
-    const payload = { name: g('f-name-ja'), name_en: g('f-name-en'), firm: g('f-firm'), url: g('f-url'), email: g('f-email'), bio: g('profile-bio') };
-    if (portrait_url) payload.portrait_url = portrait_url;
-    await fetch('https://jakwntemjkwqwaqujffh.supabase.co/rest/v1/architects?id=eq.' + archId, {
-      method: 'PATCH',
+
+    // architects テーブル直接 PATCH は Phase 3 RLS でブロックされるため、
+    // 運営承認待ちキューとして registrations テーブルに INSERT する
+    // (anon でも INSERT 可能、運営が後で確認 → architects に反映)
+    const g = id => (document.getElementById(id)?.value || '').trim() || null;
+    const queuePayload = {
+      space_name: '__architect_update__',
+      company_name: g('org'),
+      website: g('url'),
+      owner_name: g('name-ja'),
+      contact_email: g('email'),
+      plan: 'free',
+      status: 'pending',
+      submitted_at: new Date().toISOString(),
+      // 追加情報を JSON で入れる
+      meta: JSON.stringify({
+        type: 'architect_update',
+        architect_id: archId,
+        name_ja: g('name-ja'),
+        name_en: g('name-en'),
+        firm: g('org'),
+        country: g('country'),
+        bio_ja: g('bio-ja'),
+        bio_en: g('bio-en'),
+        portrait_url: portrait_url
+      })
+    };
+    await fetch('https://jakwntemjkwqwaqujffh.supabase.co/rest/v1/registrations', {
+      method: 'POST',
       headers: { 'apikey': 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ', 'Authorization': 'Bearer sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ', 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
-      body: JSON.stringify(payload)
+      body: JSON.stringify(queuePayload)
     });
-  } catch(err) { console.error('PATCH error:', err); }
+  } catch(err) { console.error('queue insert error:', err); }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
