@@ -363,7 +363,7 @@ Deno.serve(async (req: Request) => {
         if (insertData.subtitle && (typeof insertData.subtitle !== "string" || insertData.subtitle.length > 300)) {
           return jsonResponse({ error: "サブタイトルが長すぎます(300文字以内)" }, 400);
         }
-        if (!insertData.category || !["area-guide","interview","workstyle","data","design","other"].includes(insertData.category)) {
+        if (!insertData.category || !["interview","trend","news","other"].includes(insertData.category)) {
           return jsonResponse({ error: "カテゴリが無効です" }, 400);
         }
         if (insertData.body_md && (typeof insertData.body_md !== "string" || insertData.body_md.length > 100000)) {
@@ -412,7 +412,7 @@ Deno.serve(async (req: Request) => {
         if (updateData.title !== undefined && (typeof updateData.title !== "string" || updateData.title.length > 200)) {
           return jsonResponse({ error: "タイトルが無効です" }, 400);
         }
-        if (updateData.category !== undefined && !["area-guide","interview","workstyle","data","design","other"].includes(updateData.category)) {
+        if (updateData.category !== undefined && !["interview","trend","news","other"].includes(updateData.category)) {
           return jsonResponse({ error: "カテゴリが無効です" }, 400);
         }
         if (updateData.body_md !== undefined && updateData.body_md.length > 100000) {
