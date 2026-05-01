@@ -1,21 +1,11 @@
 User-agent: *
 Allow: /
 
-# AI Crawlers
-User-agent: GPTBot
-Allow: /
+Disallow: /coworkmill-admin-view.html
+Disallow: /coworkmill-admin-ops.html
+Disallow: /coworkmill-journal-admin.html
+Disallow: /coworkmill-login.html
+Disallow: /coworkmill-login-ops.html
 
-User-agent: ClaudeBot
-Allow: /
-
-User-agent: PerplexityBot
-Allow: /
-
-User-agent: Googlebot
-Allow: /
-
-# Sitemap
-Sitemap: https://cowkml.com/sitemap.xml
-
-# LLMs.txt
-LLMs: https://cowkml.com/llms.txt
+Sitemap: https://coworkmill.vercel.app/sitemap.xml
+Sitemap: https://coworkmill.vercel.app/journal/sitemap.xml
