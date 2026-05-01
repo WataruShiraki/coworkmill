@@ -327,6 +327,25 @@ Deno.serve(async (req: Request) => {
         return jsonResponse({ error: "data が必要です" }, 400);
       }
 
+      if (action === "list") {
+        // status フィルタ可能。指定なければ全部返す。
+        const filterStatus = (data && data.status) || null;
+        let query = sb.from("articles").select("id,slug,title,subtitle,category,status,published_at,updated_at,tags,is_pr,reading_minutes,author_name,excerpt").order("updated_at", { ascending: false }).limit(200);
+        if (filterStatus && ["draft","scheduled","live","archived"].includes(filterStatus)) {
+          query = query.eq("status", filterStatus);
+        }
+        const { data: list, error } = await query;
+        if (error) return jsonResponse({ error: error.message }, 500);
+        return jsonResponse({ ok: true, data: list });
+      }
+
+      if (action === "get") {
+        if (!id) return jsonResponse({ error: "id が必要です" }, 400);
+        const { data: row, error } = await sb.from("articles").select("*").eq("id", id).single();
+        if (error) return jsonResponse({ error: error.message }, 500);
+        return jsonResponse({ ok: true, data: row });
+      }
+
       if (action === "insert") {
         const insertData: any = { ...(data || {}) };
         delete insertData.id;
