@@ -1,6 +1,6 @@
 # COWORKMILL セキュリティ状況
 
-最終更新: 2026-04-30(段階A 完了)
+最終更新: 2026-05-01(段階B 完了)
 
 ## ✅ Phase 1 完了(2026-04-29): voices テーブル保護
 - voices に対する write は cwm-admin Edge Function 経由のみ
@@ -46,14 +46,42 @@ shared/cwm-security.js が以下を提供:
 - cwm.safeUrl(s): javascript:/data:/vbscript:/file: スキームを拒否してから esc
 - cwm.escMultiline(s): cwm.esc + 改行を <br> に変換
 
-## ✅ HTTP セキュリティヘッダ(vercel.json)
-- Content-Security-Policy(unsafe-inline は当面残す。将来削除予定)
+## ✅ 入力バリデーション完了(2026-05-01)
+
+### 共通バリデーター shared/cwm-security.js に追加(commit 95a2fea)
+- cwm.validate.string(s, {min, max, label, allowEmpty}) — 長さ制限つき汎用 text
+- cwm.validate.email(s, {label}) — RFC-5322 lite + 254 文字キャップ
+- cwm.validate.url(s, {label, allowEmpty}) — http/https のみ、URL constructor 経由、最大2000文字
+- cwm.validate.phone(s, {label}) — 数字/ハイフン/括弧/+ のみ、最低7桁
+- cwm.validate.multiline(s, {min, max}) — textarea 用、制御文字除去
+- cwm.validate.oneOf(s, allowed) — ホワイトリスト
+- cwm.validate.safeText(s) — XSS payload 拒否(<script>, javascript:, on*=)
+- cwm.validate.all(checks) — 複数バリデーターを一括処理
+
+### 各フォームに適用
+- **register form** (commit 51ddb46) — 5 input すべて maxLength + safeText 適用、URL に javascript: 拒否、動作確認済み
+- **contact form** (commit 32a5394) — 3 input + 1 textarea、submit ロジックも新規実装、registrations queue 経由
+- **architect-form** (commit 3bb8af7) — 6 input + 2 textarea、anon 直接 PATCH をやめて registrations queue 経由に切り替え
+- **login forms** (commit 9da0ed3) — 全 input に maxlength、password に minlength 8、email + safeText チェック追加
+
+## ✅ HTTP セキュリティヘッダ(vercel.json — commit 4f5854e)
+- Content-Security-Policy(active): script-src から `'unsafe-eval'` 削除済み(`'unsafe-inline'` は当面残す)
+- Content-Security-Policy-Report-Only: 厳しい strict CSP で違反検知のみ
 - X-Frame-Options: DENY
 - X-Content-Type-Options: nosniff
+- X-XSS-Protection: 1; mode=block
 - Referrer-Policy: strict-origin-when-cross-origin
 - Permissions-Policy: camera=()/microphone=()/geolocation=(self)/interest-cohort=()
-- X-XSS-Protection
-- HSTS は DNS 設定後に追加予定(現時点で cowkml.com は未接続)
+- Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+- Cross-Origin-Opener-Policy: same-origin (window.opener制御 — reverse-tabnabbing対策)
+- Cross-Origin-Resource-Policy: same-origin (cross-origin読み込み制限)
+
+その他の CSP ハードニング(既存):
+- object-src 'none'
+- base-uri 'self'
+- form-action 'self'
+- frame-ancestors 'none'
+- upgrade-insecure-requests
 
 ## 🟡 Phase 4(後日): admin-ops 保護(super admin)
 運営者(白木さん本人)が使う画面。別権限レベルが必要:
@@ -66,29 +94,28 @@ shared/cwm-security.js が以下を提供:
 
 ## 🟡 残タスク(優先度順)
 
-### 高優先(ローンチ直前)
-1. **入力バリデーション強化(フロント側)**
-   - 登録フォーム / お問い合わせフォームの URL 正規表現 / 文字数上限
-   - workstyle 投稿の長さ制限(現状 server 側で nullable のため)
-
-2. **CSP の unsafe-inline 削除**
-   - 残存するインライン script / style を外部化
-   - nonce ベース CSP に切り替え
-
 ### 中優先(ローンチ後すぐ)
-3. **audit_logs を admin-view から見られるように**
+1. **CSP `unsafe-inline` の完全削除**
+   - 現状: 18ファイル合計 78個のインライン `<script>`、35個のインライン `<style>`、737個のインライン event handler
+   - 戦略: hash-based CSP で既知のインラインscriptを許可 + 段階的に外部化
+   - Report-Only ヘッダで現実の違反を観測してから本番 CSP に昇格
+2. **audit_logs を admin-view から見られるように**
    - 現在 service_role のみ閲覧可
    - JWT 経由で自分のアカウント分だけ表示する Edge Function を追加(`cwm-admin` に audit.list を追加)
-
-4. **レート制限の永続化**
+3. **レート制限の永続化**
    - 現状 in-memory(Edge Function instance ごと)
    - 強化版: Supabase の rate_limit テーブル + Postgres function に移行
    - もしくは Cloudflare Workers KV 等の外部ストレージ
+4. **registrations queue の運営承認 UI**
+   - architect-form / contact form の送信が queue に入る
+   - admin-ops に承認画面を追加して、承認時に architects / 通知メール送信に反映
+5. **Cross-Origin-Embedder-Policy: require-corp**
+   - Supabase / fonts / YouTube が CORS で require-corp を返すようになったら追加
 
 ### 低優先(将来)
-5. **Phase 4: admin-ops 保護**(super admin 権限導入)
-6. **画像アップロード時のウイルススキャン**(Storage hook)
-7. **異常検知アラート**(audit_logs を定期 SELECT して slack 通知)
+6. **Phase 4: admin-ops 保護**(super admin 権限導入)
+7. **画像アップロード時のウイルススキャン**(Storage hook)
+8. **異常検知アラート**(audit_logs を定期 SELECT して slack 通知)
 
 ## 補足
 
