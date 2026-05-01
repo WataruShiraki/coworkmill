@@ -211,21 +211,21 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
 .article-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-bottom:48px}
 @media(max-width:720px){.article-grid{grid-template-columns:1fr}}
 
-.acard{display:block;text-decoration:none;color:inherit;background:#fff;border:1px solid var(--g200);border-radius:14px;overflow:hidden;transition:all .25s ease;padding:24px}
+.acard{display:block;text-decoration:none;color:inherit !important;background:#fff;border:1px solid var(--g200);border-radius:14px;overflow:hidden;transition:all .25s ease;padding:24px;opacity:1 !important}
 .acard:hover{border-color:#2BB5C8;transform:translateY(-2px);box-shadow:0 8px 24px rgba(43,181,200,.1)}
 
 .acard-hero{aspect-ratio:16/9;background:linear-gradient(135deg,#79F1A4 0%,#2BB5C8 100%);border-radius:8px;margin:-24px -24px 20px;background-size:cover;background-position:center;position:relative}
 .acard-cat-badge{position:absolute;top:12px;left:12px;background:rgba(0,0,0,.65);backdrop-filter:blur(8px);color:#fff;padding:4px 10px;border-radius:4px;font-size:10px;font-weight:500;letter-spacing:.08em}
 .acard-pr-badge{position:absolute;top:12px;right:12px;background:#FFD700;color:#000;padding:4px 10px;border-radius:4px;font-size:10px;font-weight:600;letter-spacing:.08em}
 
-.acard-title{font-family:var(--fd);font-size:18px;font-weight:600;line-height:1.5;margin-bottom:10px;color:var(--g800)}
-.acard-subtitle{font-size:12px;color:var(--g500);line-height:1.7;margin-bottom:14px}
-.acard-excerpt{font-size:13px;color:var(--g600);line-height:1.8;margin-bottom:18px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.acard-title{font-family:var(--fd);font-size:18px;font-weight:600;line-height:1.5;margin-bottom:10px;color:#1a1a1a !important;opacity:1 !important}
+.acard-subtitle{font-size:12px;color:#6b7280 !important;line-height:1.7;margin-bottom:14px;opacity:1 !important}
+.acard-excerpt{font-size:13px;color:#374151 !important;line-height:1.8;margin-bottom:18px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;opacity:1 !important}
 
-.acard-meta{display:flex;align-items:center;justify-content:space-between;font-size:11px;color:var(--g500);padding-top:14px;border-top:1px solid var(--g100)}
+.acard-meta{display:flex;align-items:center;justify-content:space-between;font-size:11px;color:#6b7280 !important;padding-top:14px;border-top:1px solid var(--g100);opacity:1 !important}
 .acard-meta-left{display:flex;align-items:center;gap:10px}
 .acard-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
-.acard-tag{font-size:10px;color:var(--g500);background:var(--g50);padding:3px 8px;border-radius:3px}
+.acard-tag{font-size:10px;color:#6b7280 !important;background:#f3f4f6;padding:3px 8px;border-radius:3px;opacity:1 !important}
 
 .loading,.empty-state{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--g500);font-size:13px}
 .empty-state{padding:80px 20px}
