@@ -7,7 +7,7 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { verify } from "https://deno.land/x/djwt@v3.0.2/mod.ts";
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
-const SUPABASE_SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+const SUPABASE_SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_KEY")!;
 const JWT_SECRET = Deno.env.get("CWM_JWT_SECRET")!;
 
 const cors = {
@@ -541,8 +541,8 @@ Deno.serve(async (req: Request) => {
           try {
             const userRes = await fetch(SUPABASE_URL + "/auth/v1/admin/users/" + w.user_id, {
               headers: {
-                "apikey": SUPABASE_SERVICE_ROLE_KEY,
-                "Authorization": "Bearer " + SUPABASE_SERVICE_ROLE_KEY
+                "apikey": SUPABASE_SERVICE_KEY,
+                "Authorization": "Bearer " + SUPABASE_SERVICE_KEY
               }
             });
             const user = await userRes.json();
@@ -572,8 +572,8 @@ Deno.serve(async (req: Request) => {
         const createRes = await fetch(SUPABASE_URL + "/auth/v1/admin/users", {
           method: "POST",
           headers: {
-            "apikey": SUPABASE_SERVICE_ROLE_KEY,
-            "Authorization": "Bearer " + SUPABASE_SERVICE_ROLE_KEY,
+            "apikey": SUPABASE_SERVICE_KEY,
+            "Authorization": "Bearer " + SUPABASE_SERVICE_KEY,
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
@@ -600,8 +600,8 @@ Deno.serve(async (req: Request) => {
           await fetch(SUPABASE_URL + "/auth/v1/admin/users/" + created.id, {
             method: "DELETE",
             headers: {
-              "apikey": SUPABASE_SERVICE_ROLE_KEY,
-              "Authorization": "Bearer " + SUPABASE_SERVICE_ROLE_KEY
+              "apikey": SUPABASE_SERVICE_KEY,
+              "Authorization": "Bearer " + SUPABASE_SERVICE_KEY
             }
           });
           await writeAuditLog(sb, accountId, target, action, null, "error", error.message, ip);
@@ -658,8 +658,8 @@ Deno.serve(async (req: Request) => {
         const updateRes = await fetch(SUPABASE_URL + "/auth/v1/admin/users/" + writer.user_id, {
           method: "PUT",
           headers: {
-            "apikey": SUPABASE_SERVICE_ROLE_KEY,
-            "Authorization": "Bearer " + SUPABASE_SERVICE_ROLE_KEY,
+            "apikey": SUPABASE_SERVICE_KEY,
+            "Authorization": "Bearer " + SUPABASE_SERVICE_KEY,
             "Content-Type": "application/json"
           },
           body: JSON.stringify({ password: d.new_password })
@@ -684,8 +684,8 @@ Deno.serve(async (req: Request) => {
         await fetch(SUPABASE_URL + "/auth/v1/admin/users/" + writer.user_id, {
           method: "DELETE",
           headers: {
-            "apikey": SUPABASE_SERVICE_ROLE_KEY,
-            "Authorization": "Bearer " + SUPABASE_SERVICE_ROLE_KEY
+            "apikey": SUPABASE_SERVICE_KEY,
+            "Authorization": "Bearer " + SUPABASE_SERVICE_KEY
           }
         });
         await writeAuditLog(sb, accountId, target, action, id, "ok", null, ip);
