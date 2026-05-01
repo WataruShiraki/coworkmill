@@ -1253,7 +1253,7 @@ function setView(mode) {
 
 function handleSort(val) {
   var cards = Array.from(document.querySelectorAll('.scard'));
-  var container = document.getElementById('spaces-grid');
+  var container = document.querySelector('.scard')?.parentElement;
   if(!container) return;
   // PLAN ランク (Pro=3 / Standard=2 / Free=1)
   var planRank = { pro: 3, standard: 2, free: 1 };
