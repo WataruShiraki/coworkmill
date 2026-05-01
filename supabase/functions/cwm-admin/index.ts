@@ -3,6 +3,7 @@
 // CWM_JWT_SECRET, runs ownership checks, then writes via service_role.
 // Anon key NEVER has UPDATE/DELETE/INSERT permission on protected tables.
 
+import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import { verify } from "https://deno.land/x/djwt@v3.0.2/mod.ts";
 
