@@ -13,102 +13,109 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
 <style>
 :root{
-  --black:#0a0a0a; --white:#fff;
-  --g50:#fafafa; --g100:#f5f5f5; --g200:#eee; --g300:#ddd; --g400:#aaa; --g500:#888; --g600:#666; --g700:#444; --g800:#333; --g900:#111;
-  --teal:#2BB5C8;
+  --bg:#121212; --bg-2:#1a1a1a; --bg-3:#222; --bg-4:#2a2a2a;
+  --fg:#f0f0f0; --fg-2:#ccc; --fg-3:#999; --fg-4:#666;
+  --line:#2a2a2a; --line-2:#333;
+  --teal:#79F1A4; --teal-2:#2BB5C8;
   --fb:'Cormorant Garamond',serif;
   --fd:'Noto Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;
 }
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:var(--fd);font-size:15px;line-height:1.9;color:var(--g900);background:var(--white);-webkit-font-smoothing:antialiased}
-a{color:var(--g900);text-decoration:underline}
+body{font-family:var(--fd);font-size:15px;line-height:1.95;color:var(--fg);background:var(--bg);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
 img{max-width:100%;display:block}
 
 /* ナビ */
-.j-nav{position:sticky;top:0;background:rgba(255,255,255,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--g200);z-index:100}
-.j-nav-inner{max-width:1200px;margin:0 auto;padding:18px 32px;display:flex;align-items:center;justify-content:space-between}
-.j-logo{font-family:var(--fb);font-size:22px;font-weight:600;letter-spacing:.04em;text-decoration:none}
-.j-logo small{font-family:var(--fd);font-size:11px;color:var(--g500);font-weight:400;letter-spacing:.15em;text-transform:uppercase;margin-left:10px}
-.j-nav-links{display:flex;gap:28px;font-size:13px;color:var(--g700)}
-.j-nav-links a{color:inherit;text-decoration:none}
-.j-nav-links a:hover{color:var(--g900)}
+.j-nav{position:sticky;top:0;background:rgba(18,18,18,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);z-index:100}
+.j-nav-inner{max-width:1400px;margin:0 auto;padding:14px 32px;display:flex;align-items:center;justify-content:space-between;gap:32px}
+.j-logo{display:flex;align-items:center;gap:0}
+.j-logo img{height:32px;width:auto}
+.j-nav-links{display:flex;gap:28px;font-size:12.5px;color:var(--fg-2);align-items:center}
+.j-nav-links a:hover{color:var(--fg)}
+.j-nav-links a.j-active{color:var(--fg)}
+.j-brand-label{font-family:var(--fb);font-style:italic;font-size:13px;color:var(--fg-3);letter-spacing:.04em;margin-left:6px}
 
 /* 記事 */
 .j-article{max-width:760px;margin:0 auto;padding:60px 32px 80px}
 @media(max-width:640px){.j-article{padding:40px 20px 60px}}
 
-.j-back{font-size:12px;color:var(--g500);font-family:var(--fb);font-style:italic;margin-bottom:32px;display:inline-block;text-decoration:none}
-.j-back:hover{color:var(--g900)}
+.j-back{font-size:12px;color:var(--fg-4);font-family:var(--fb);font-style:italic;margin-bottom:32px;display:inline-block;letter-spacing:.04em;transition:color .2s}
+.j-back:hover{color:var(--fg-2)}
 
-.j-cat-line{font-size:11px;color:var(--teal);font-weight:500;letter-spacing:.15em;text-transform:uppercase;margin-bottom:16px}
-.j-title{font-family:var(--fb);font-size:42px;font-weight:600;line-height:1.3;letter-spacing:.01em;margin-bottom:16px;color:var(--g900)}
-@media(max-width:640px){.j-title{font-size:30px}}
-.j-subtitle{font-size:16px;color:var(--g600);line-height:1.7;margin-bottom:32px;font-weight:400}
+.j-cat-line{font-size:11px;color:var(--teal);font-weight:500;letter-spacing:.18em;text-transform:uppercase;margin-bottom:18px}
+.j-title{font-family:var(--fb);font-size:46px;font-weight:500;line-height:1.25;letter-spacing:.01em;margin-bottom:18px;color:var(--fg)}
+@media(max-width:640px){.j-title{font-size:32px}}
+.j-subtitle{font-size:16px;color:var(--fg-2);line-height:1.7;margin-bottom:36px;font-weight:400}
 
-.j-meta{display:flex;align-items:center;gap:16px;padding:20px 0;border-top:1px solid var(--g200);border-bottom:1px solid var(--g200);margin-bottom:40px;font-size:12px;color:var(--g500)}
-.j-author{color:var(--g700);font-weight:500}
-.j-pr{display:inline-block;font-size:10px;background:var(--g100);color:var(--g600);padding:2px 8px;border-radius:3px;letter-spacing:.05em}
-.j-pr-disclosure{background:var(--g50);border:1px solid var(--g200);padding:14px 18px;border-radius:4px;font-size:12px;color:var(--g600);margin-bottom:32px;line-height:1.7}
+.j-meta{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:20px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:44px;font-size:12px;color:var(--fg-4)}
+.j-author{color:var(--fg-2);font-weight:500}
+.j-pr{display:inline-block;font-size:10px;background:var(--bg-3);color:var(--fg-3);padding:2px 8px;border-radius:3px;letter-spacing:.05em}
+.j-pr-disclosure{background:var(--bg-2);border:1px solid var(--line);padding:14px 18px;border-radius:4px;font-size:12px;color:var(--fg-3);margin-bottom:36px;line-height:1.7}
 
-.j-hero{margin-bottom:48px;border-radius:6px;overflow:hidden;background:var(--g100)}
+.j-hero{margin-bottom:52px;border-radius:6px;overflow:hidden;background:var(--bg-3)}
 .j-hero img{width:100%;display:block}
 
-.j-body{font-size:15px;line-height:1.95;color:var(--g800)}
-.j-body h2{font-family:var(--fb);font-size:28px;font-weight:600;margin:48px 0 18px;color:var(--g900);line-height:1.4}
-.j-body h3{font-size:18px;font-weight:600;margin:36px 0 14px;color:var(--g900)}
-.j-body p{margin-bottom:24px}
-.j-body strong{font-weight:600}
-.j-body em{font-style:italic;color:var(--g700)}
-.j-body blockquote{border-left:3px solid var(--g300);padding:12px 0 12px 24px;margin:32px 0;color:var(--g600);font-style:italic;font-family:var(--fb);font-size:18px;line-height:1.7}
-.j-body ul,.j-body ol{margin:0 0 24px 28px}
+.j-body{font-size:15px;line-height:2.0;color:var(--fg-2)}
+.j-body h2{font-family:var(--fb);font-size:30px;font-weight:500;margin:56px 0 20px;color:var(--fg);line-height:1.4}
+.j-body h3{font-size:18px;font-weight:600;margin:40px 0 14px;color:var(--fg)}
+.j-body p{margin-bottom:26px}
+.j-body strong{font-weight:600;color:var(--fg)}
+.j-body em{font-style:italic;color:var(--fg-2)}
+.j-body blockquote{border-left:3px solid var(--teal);padding:8px 0 8px 24px;margin:32px 0;color:var(--fg-3);font-style:italic;font-family:var(--fb);font-size:18px;line-height:1.7}
+.j-body ul,.j-body ol{margin:0 0 26px 28px}
 .j-body li{margin-bottom:10px}
-.j-body img{margin:32px auto;border-radius:4px}
-.j-body a{color:var(--teal)}
+.j-body img{margin:36px auto;border-radius:4px}
+.j-body a{color:var(--teal);text-decoration:underline;text-decoration-color:rgba(121,241,164,.4);text-underline-offset:3px;transition:text-decoration-color .2s}
+.j-body a:hover{text-decoration-color:var(--teal)}
 
-.j-tags{display:flex;gap:8px;flex-wrap:wrap;margin:48px 0 32px;padding-top:32px;border-top:1px solid var(--g200)}
-.j-tag{font-size:12px;color:var(--g500);background:var(--g100);padding:5px 14px;border-radius:3px;text-decoration:none}
+.j-tags{display:flex;gap:8px;flex-wrap:wrap;margin:52px 0 36px;padding-top:36px;border-top:1px solid var(--line)}
+.j-tag{font-size:12px;color:var(--fg-3);background:var(--bg-3);padding:5px 14px;border-radius:3px}
 
-.j-author-box{background:var(--g50);padding:28px;border-radius:6px;margin-top:48px;display:flex;gap:20px;align-items:flex-start}
-.j-author-avatar{width:56px;height:56px;border-radius:50%;background:var(--g200);flex-shrink:0;background-size:cover;background-position:center}
+.j-author-box{background:var(--bg-2);border:1px solid var(--line);padding:28px;border-radius:6px;margin-top:52px;display:flex;gap:20px;align-items:flex-start}
+.j-author-avatar{width:56px;height:56px;border-radius:50%;background:var(--bg-3);flex-shrink:0;background-size:cover;background-position:center}
 .j-author-info{flex:1}
-.j-author-name{font-weight:600;font-size:14px;margin-bottom:6px;color:var(--g900)}
-.j-author-bio{font-size:13px;color:var(--g600);line-height:1.7}
+.j-author-name{font-weight:600;font-size:14px;margin-bottom:6px;color:var(--fg)}
+.j-author-bio{font-size:13px;color:var(--fg-3);line-height:1.7}
 
-.j-credits{margin-top:48px;padding:24px;background:var(--g50);border-radius:4px;font-size:11px;color:var(--g500);line-height:1.8}
-.j-credits-h{font-weight:600;color:var(--g700);margin-bottom:8px;font-size:11px;letter-spacing:.05em;text-transform:uppercase}
+.j-credits{margin-top:52px;padding:24px;background:var(--bg-2);border:1px solid var(--line);border-radius:4px;font-size:11px;color:var(--fg-3);line-height:1.8}
+.j-credits-h{font-weight:600;color:var(--fg-2);margin-bottom:8px;font-size:11px;letter-spacing:.05em;text-transform:uppercase}
 
-.j-related{max-width:1200px;margin:0 auto;padding:60px 32px;border-top:1px solid var(--g200)}
-.j-related h3{font-family:var(--fb);font-style:italic;font-size:24px;font-weight:500;text-align:center;margin-bottom:32px;color:var(--g700)}
+.j-related{max-width:1200px;margin:0 auto;padding:60px 32px;border-top:1px solid var(--line)}
+.j-related h3{font-family:var(--fb);font-style:italic;font-size:26px;font-weight:500;text-align:center;margin-bottom:36px;color:var(--fg-3)}
 .j-related-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
 @media(max-width:900px){.j-related-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:640px){.j-related-grid{grid-template-columns:1fr}}
-.j-r-card{cursor:pointer;text-decoration:none;color:inherit}
-.j-r-card:hover{opacity:.7}
-.j-r-img{aspect-ratio:16/10;background:var(--g100);border-radius:4px;margin-bottom:12px;background-size:cover;background-position:center}
-.j-r-cat{font-size:10px;color:var(--teal);font-weight:500;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px}
-.j-r-title{font-size:14px;font-weight:600;line-height:1.5}
+.j-r-card{cursor:pointer}
+.j-r-card:hover{opacity:.85}
+.j-r-img{aspect-ratio:16/10;background:var(--bg-3);border-radius:4px;margin-bottom:14px;background-size:cover;background-position:center}
+.j-r-cat{font-size:10px;color:var(--teal);font-weight:500;letter-spacing:.15em;text-transform:uppercase;margin-bottom:6px}
+.j-r-title{font-size:14px;font-weight:600;line-height:1.55;color:var(--fg)}
 
-/* フッター */
-.j-foot{border-top:1px solid var(--g200);padding:48px 32px;text-align:center;color:var(--g500);font-size:12px}
-.j-foot a{color:var(--g700);margin:0 12px;text-decoration:none}
-.j-foot a:hover{color:var(--g900)}
-.j-foot-copy{margin-top:20px;font-family:var(--fb);font-style:italic}
+.j-foot{border-top:1px solid var(--line);padding:48px 32px;text-align:center;color:var(--fg-4);font-size:12px}
+.j-foot a{color:var(--fg-3);margin:0 12px;transition:color .2s}
+.j-foot a:hover{color:var(--fg)}
+.j-foot-copy{margin-top:20px;font-family:var(--fb);font-style:italic;color:var(--fg-4)}
 
-.j-status{padding:120px 20px;text-align:center;color:var(--g500);font-size:13px}
+.j-status{padding:120px 20px;text-align:center;color:var(--fg-4);font-size:13px}
+.j-status a{color:var(--fg-3);text-decoration:underline;margin-top:16px;display:inline-block}
 </style>
 </head>
 <body>
 
 <header class="j-nav">
   <div class="j-nav-inner">
-    <a href="/journal/" class="j-logo">COWORKMILL <small>journal</small></a>
+    <a href="/coworkmill.html" class="j-logo">
+      <img src="/shared/coworkmill-logo.svg" alt="COWORKMILL">
+      <span class="j-brand-label">journal</span>
+    </a>
     <nav class="j-nav-links">
-      <a href="/coworkmill.html">施設を探す</a>
-      <a href="/journal/">journal</a>
-      <a href="/coworkmill-architects.html">建築家</a>
+      <a href="/coworkmill-spaces.html">コワーキングを探す</a>
+      <a href="/coworkmill-architects.html">建築家から探す</a>
+      <a href="/coworkmill-photos.html">写真から探す</a>
+      <a href="/journal/" class="j-active">ジャーナル</a>
     </nav>
   </div>
 </header>
@@ -152,12 +159,9 @@ function formatDate(iso) {
 }
 
 function getSlug() {
-  // 1. ?slug= で渡された場合(直接 article.html にアクセス)
   const params = new URLSearchParams(location.search);
   const fromQuery = params.get('slug');
   if (fromQuery) return fromQuery;
-  // 2. /journal/[slug] の pathname から抽出(Vercel rewrite 経由)
-  //    rewrite では location.search は元のままなので pathname を見る
   const m = location.pathname.match(/^\/journal\/([a-z0-9-]+)\/?$/);
   if (m && m[1] !== 'index' && m[1] !== 'article') return m[1];
   return '';
@@ -166,7 +170,7 @@ function getSlug() {
 async function loadArticle() {
   const slug = getSlug();
   if (!slug || !/^[a-z0-9-]+$/.test(slug)) {
-    document.getElementById('main').innerHTML = '<div class="j-status">記事が見つかりません</div>';
+    document.getElementById('main').innerHTML = '<div class="j-status">記事が見つかりません<br><br><a href="/journal/">← journal トップに戻る</a></div>';
     return;
   }
   try {
@@ -175,7 +179,7 @@ async function loadArticle() {
     });
     const data = await res.json();
     if (!Array.isArray(data) || !data[0]) {
-      document.getElementById('main').innerHTML = '<div class="j-status">記事が見つかりません<br><br><a href="/journal/" style="color:#888">← journal トップに戻る</a></div>';
+      document.getElementById('main').innerHTML = '<div class="j-status">記事が見つかりません<br><br><a href="/journal/">← journal トップに戻る</a></div>';
       return;
     }
     renderArticle(data[0]);
@@ -187,7 +191,6 @@ async function loadArticle() {
 }
 
 function renderArticle(a) {
-  // メタタグ更新
   document.title = a.meta_title || (a.title + ' — COWORKMILL journal');
   document.getElementById('meta-desc').content = a.meta_description || a.excerpt || '';
   document.getElementById('og-title').content = a.title;
@@ -195,7 +198,6 @@ function renderArticle(a) {
   document.getElementById('og-img').content = a.og_image || a.hero_image || '';
   document.getElementById('og-url').content = location.href;
   
-  // JSON-LD Article schema
   const ld = {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -211,7 +213,6 @@ function renderArticle(a) {
   ldEl.textContent = JSON.stringify(ld);
   document.head.appendChild(ldEl);
   
-  // 本文レンダリング
   const main = document.getElementById('main');
   main.innerHTML = '';
   
@@ -274,13 +275,11 @@ function renderArticle(a) {
     article.appendChild(heroDiv);
   }
   
-  // 本文(body_html を innerHTML で挿入。エディタ側でサニタイズ済み前提)
   const body = document.createElement('div');
   body.className = 'j-body';
   if (a.body_html) {
     body.innerHTML = a.body_html;
   } else if (a.body_md) {
-    // 簡易 Markdown → HTML(段落のみ)
     body.innerHTML = a.body_md.split(/\n\n+/).map(p => {
       const escaped = p.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
       if (/^#{2,}\s/.test(p)) {
@@ -326,7 +325,6 @@ function renderArticle(a) {
   authorBox.appendChild(info);
   article.appendChild(authorBox);
   
-  // クレジット欄(media_assets から)
   const credits = document.createElement('div');
   credits.className = 'j-credits';
   credits.id = 'credits-box';
@@ -383,7 +381,7 @@ async function loadRelated(category, excludeId) {
     data.forEach(a => {
       const card = document.createElement('a');
       card.className = 'j-r-card';
-      card.href = '/journal/article.html?slug=' + encodeURIComponent(a.slug);
+      card.href = '/journal/' + encodeURIComponent(a.slug);
       const img = document.createElement('div');
       img.className = 'j-r-img';
       if (a.hero_image && cwm && cwm.safeUrl) {
