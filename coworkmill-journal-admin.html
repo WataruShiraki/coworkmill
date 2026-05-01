@@ -145,11 +145,9 @@ label{display:block;font-size:11px;color:var(--fg2);margin-bottom:6px;letter-spa
           <div>
             <label>カテゴリ *</label>
             <select id="f-category">
-              <option value="area-guide">エリアガイド</option>
-              <option value="interview">取材</option>
-              <option value="workstyle">ワークスタイル</option>
-              <option value="data">データ・トレンド</option>
-              <option value="design">建築・デザイン</option>
+              <option value="interview">インタビュー</option>
+              <option value="trend">トレンド</option>
+              <option value="news">ニュース</option>
               <option value="other">その他</option>
             </select>
           </div>
@@ -442,7 +440,7 @@ function readForm() {
 function updatePreview() {
   const data = readForm();
   document.getElementById('pv-cat').textContent = {
-    'area-guide':'エリアガイド','interview':'取材','workstyle':'ワークスタイル','data':'データ・トレンド','design':'建築・デザイン','other':'その他'
+    'interview':'インタビュー','trend':'トレンド','news':'ニュース','other':'その他'
   }[data.category] || data.category;
   document.getElementById('pv-title').textContent = data.title || '(タイトル未入力)';
   document.getElementById('pv-subtitle').textContent = data.subtitle || '';
