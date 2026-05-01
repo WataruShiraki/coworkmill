@@ -1,1 +1,581 @@
-<!DOCTYPE html><html lang="ja"><head><meta charset="UTF-8"><title>journal 管理 — COWORKMILL</title></head><body>placeholder</body></html>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>journal 管理 — COWORKMILL</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0a0a;--bg2:#111;--bg3:#1a1a1a;--bd:#2a2a2a;--bd2:#3a3a3a;--fg:#fff;--fg2:#aaa;--fg3:#666;--accent:#79F1A4;--accent2:#2BB5C8;--err:#f87171;--ok:#4ade80;--warn:#fbbf24;--fd:'Noto Sans JP',sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--fd);font-size:13px;background:var(--bg);color:var(--fg);min-height:100vh;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:0;background:none;color:inherit}
+input,textarea,select{font-family:inherit;font-size:13px;background:var(--bg2);border:1px solid var(--bd);color:var(--fg);padding:10px 12px;border-radius:6px;width:100%;outline:none}
+input:focus,textarea:focus,select:focus{border-color:var(--bd2)}
+textarea{resize:vertical;min-height:120px;line-height:1.7}
+label{display:block;font-size:11px;color:var(--fg2);margin-bottom:6px;letter-spacing:.05em}
+.j-head{display:flex;align-items:center;justify-content:space-between;padding:18px 28px;border-bottom:1px solid var(--bd);background:var(--bg2)}
+.j-logo{font-size:15px;font-weight:600;letter-spacing:.04em}
+.j-logo small{font-size:11px;color:var(--fg2);margin-left:8px;font-weight:400}
+.j-head-r{display:flex;align-items:center;gap:16px;font-size:12px;color:var(--fg2)}
+.j-head-r a{color:var(--fg2)}
+.j-head-r a:hover{color:var(--fg)}
+.j-tabs{display:flex;gap:4px;padding:14px 28px;background:var(--bg2);border-bottom:1px solid var(--bd)}
+.j-tab{padding:8px 18px;font-size:12px;color:var(--fg2);border-radius:6px}
+.j-tab.on{background:var(--bg3);color:var(--fg)}
+.j-tab:hover:not(.on){color:var(--fg)}
+.j-pane{padding:24px 28px}
+.j-filter{display:flex;gap:8px;margin-bottom:20px;align-items:center}
+.j-fbtn{padding:6px 14px;font-size:11px;border:1px solid var(--bd);border-radius:999px;color:var(--fg2);background:transparent}
+.j-fbtn.on{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.j-fbtn:hover:not(.on){border-color:var(--bd2);color:var(--fg)}
+.j-list{display:flex;flex-direction:column;gap:10px}
+.j-item{display:flex;align-items:center;gap:16px;padding:16px 20px;background:var(--bg2);border:1px solid var(--bd);border-radius:8px;transition:border-color .15s}
+.j-item:hover{border-color:var(--bd2)}
+.j-i-thumb{width:80px;height:50px;background:var(--bg3);border-radius:4px;background-size:cover;background-position:center;flex-shrink:0}
+.j-i-main{flex:1;min-width:0}
+.j-i-meta{display:flex;align-items:center;gap:10px;margin-bottom:5px;font-size:10px;color:var(--fg3);letter-spacing:.04em}
+.j-i-status{padding:2px 8px;border-radius:3px;text-transform:uppercase;font-weight:500}
+.j-i-status.draft{background:#3a2c1a;color:var(--warn)}
+.j-i-status.live{background:#1a3a2c;color:var(--ok)}
+.j-i-status.archived{background:#2a2a2a;color:var(--fg3)}
+.j-i-status.scheduled{background:#1a2a3a;color:var(--accent2)}
+.j-i-cat{color:var(--accent2);text-transform:uppercase;font-weight:500}
+.j-i-title{font-size:14px;font-weight:600;line-height:1.4;color:var(--fg);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.j-i-actions{display:flex;gap:6px;flex-shrink:0}
+.j-btn{padding:6px 12px;font-size:11px;border:1px solid var(--bd);border-radius:5px;color:var(--fg2);transition:all .15s;background:transparent}
+.j-btn:hover{border-color:var(--bd2);color:var(--fg)}
+.j-btn.primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#000;border:0;font-weight:600}
+.j-btn.primary:hover{filter:brightness(1.1)}
+.j-btn.danger{color:var(--err);border-color:#3a1a1a}
+.j-btn.danger:hover{background:#2a1a1a;color:var(--err)}
+.j-ed{display:grid;grid-template-columns:1fr 1fr;gap:24px;height:calc(100vh - 240px)}
+.j-ed-l{overflow-y:auto;padding-right:8px}
+.j-ed-r{overflow-y:auto;background:#fff;color:#111;border-radius:8px;padding:32px}
+.j-ed-r p,.j-ed-r h1,.j-ed-r h2,.j-ed-r h3,.j-ed-r ul,.j-ed-r ol,.j-ed-r blockquote{margin-bottom:16px}
+.j-ed-r h1{font-size:32px;font-weight:600;line-height:1.3;font-family:'Cormorant Garamond',serif}
+.j-ed-r h2{font-size:22px;font-weight:600;margin-top:32px}
+.j-ed-r h3{font-size:17px;font-weight:600;margin-top:24px}
+.j-ed-r p{line-height:1.9;color:#333}
+.j-ed-r ul,.j-ed-r ol{margin-left:24px}
+.j-ed-r li{margin-bottom:6px}
+.j-ed-r blockquote{border-left:3px solid #ddd;padding:6px 0 6px 16px;color:#666;font-style:italic}
+.j-ed-r a{color:var(--accent2);text-decoration:underline}
+.j-ed-r code{background:#f5f5f5;padding:2px 6px;border-radius:3px;font-size:12px}
+.j-ed-r img{max-width:100%;border-radius:4px;margin:24px 0}
+.j-ed-r .preview-meta{color:#888;font-size:11px;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid #eee}
+.j-ed-r .preview-cat{color:var(--accent2);font-size:10px;letter-spacing:.15em;text-transform:uppercase;font-weight:500;margin-bottom:8px}
+.j-ed-r .preview-hero{aspect-ratio:16/9;background:#f5f5f5;background-size:cover;background-position:center;border-radius:4px;margin-bottom:24px}
+.j-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.j-fg{margin-bottom:14px}
+.j-actions-bar{display:flex;gap:8px;margin-bottom:18px;padding-bottom:18px;border-bottom:1px solid var(--bd);align-items:center}
+.j-toggle{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--fg2)}
+.j-toggle input{width:auto}
+.j-msg{padding:12px 16px;border-radius:6px;margin-bottom:16px;font-size:12px;display:none}
+.j-msg.ok{background:#1a3a2c;color:var(--ok);border:1px solid #2a5a3c;display:block}
+.j-msg.err{background:#3a1a1a;color:var(--err);border:1px solid #5a2a2a;display:block}
+.j-empty{text-align:center;padding:80px 20px;color:var(--fg3)}
+.j-ai-bar{padding:14px;background:var(--bg3);border-radius:6px;margin-bottom:16px;font-size:11px;color:var(--fg2)}
+@media(max-width:900px){.j-ed{grid-template-columns:1fr;height:auto}.j-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header class="j-head">
+  <div class="j-logo">COWORKMILL <small>journal 管理</small></div>
+  <div class="j-head-r">
+    <a href="/journal/" target="_blank">公開ページ ↗</a>
+    <a href="/coworkmill-admin-view.html">施設管理</a>
+    <span id="acc-name">—</span>
+    <button class="j-btn" onclick="logout()">ログアウト</button>
+  </div>
+</header>
+
+<div class="j-tabs">
+  <button class="j-tab on" data-tab="list" onclick="switchTab('list')">記事一覧</button>
+  <button class="j-tab" data-tab="edit" onclick="switchTab('edit')">記事を編集</button>
+</div>
+
+<main class="j-pane">
+  <div id="msg" class="j-msg"></div>
+
+  <section id="pane-list">
+    <div class="j-filter" id="filter">
+      <button class="j-fbtn on" data-status="" onclick="filterList('')">すべて</button>
+      <button class="j-fbtn" data-status="draft" onclick="filterList('draft')">下書き</button>
+      <button class="j-fbtn" data-status="live" onclick="filterList('live')">公開中</button>
+      <button class="j-fbtn" data-status="archived" onclick="filterList('archived')">アーカイブ</button>
+      <span style="flex:1"></span>
+      <button class="j-btn primary" onclick="newArticle()">+ 新規作成</button>
+    </div>
+    <div class="j-list" id="list"><div class="j-empty">読み込み中...</div></div>
+  </section>
+
+  <section id="pane-edit" style="display:none">
+    <div class="j-ai-bar">
+      🤖 AI 下書き生成は <strong>Phase 3</strong> で実装予定です。当面は手書きで進めましょう。
+    </div>
+    <div class="j-actions-bar">
+      <button class="j-btn primary" onclick="saveArticle()">下書き保存</button>
+      <button class="j-btn" onclick="publishArticle()" id="btn-pub">公開</button>
+      <button class="j-btn" onclick="unpublishArticle()" id="btn-unpub" style="display:none">非公開に戻す</button>
+      <button class="j-btn danger" onclick="deleteArticle()" id="btn-del" style="display:none">アーカイブ</button>
+      <span style="flex:1"></span>
+      <span style="font-size:11px;color:var(--fg3)" id="ed-status">新規記事</span>
+    </div>
+    <div class="j-ed">
+      <div class="j-ed-l">
+        <div class="j-fg">
+          <label>タイトル *</label>
+          <input id="f-title" maxlength="200" placeholder="記事のタイトル">
+        </div>
+        <div class="j-fg">
+          <label>サブタイトル</label>
+          <input id="f-subtitle" maxlength="300" placeholder="読者が興味を持つリード文">
+        </div>
+        <div class="j-row">
+          <div>
+            <label>slug *(URL、半角英小文字/数字/ハイフンのみ)</label>
+            <input id="f-slug" maxlength="100" placeholder="shibuya-best-5">
+          </div>
+          <div>
+            <label>カテゴリ *</label>
+            <select id="f-category">
+              <option value="area-guide">エリアガイド</option>
+              <option value="interview">取材</option>
+              <option value="workstyle">ワークスタイル</option>
+              <option value="data">データ・トレンド</option>
+              <option value="design">建築・デザイン</option>
+              <option value="other">その他</option>
+            </select>
+          </div>
+        </div>
+        <div class="j-fg">
+          <label>抜粋 (一覧カードに表示)</label>
+          <textarea id="f-excerpt" maxlength="500" style="min-height:60px" placeholder="記事の概要を150-200文字くらいで"></textarea>
+        </div>
+        <div class="j-fg">
+          <label>ヒーロー画像 URL</label>
+          <input id="f-hero" maxlength="2000" placeholder="https://...">
+        </div>
+        <div class="j-fg">
+          <label>本文 (Markdown)</label>
+          <textarea id="f-body" maxlength="100000" style="min-height:400px;font-family:Menlo,Consolas,monospace;font-size:13px" placeholder="## 見出し&#10;&#10;本文を Markdown で書きます。&#10;&#10;**太字** や *イタリック*、[リンク](https://example.com)、&gt; 引用 などが使えます。"></textarea>
+        </div>
+        <div class="j-row">
+          <div>
+            <label>タグ (カンマ区切り、最大20個)</label>
+            <input id="f-tags" maxlength="500" placeholder="渋谷,集中作業,デザイン">
+          </div>
+          <div>
+            <label>読了時間 (分)</label>
+            <input id="f-reading" type="number" min="1" max="60" placeholder="5">
+          </div>
+        </div>
+        <div class="j-fg">
+          <label>著者名</label>
+          <input id="f-author" maxlength="100" value="COWORKMILL journal 編集部">
+        </div>
+        <div class="j-fg">
+          <label class="j-toggle">
+            <input type="checkbox" id="f-pr"> PR記事として公開する
+          </label>
+        </div>
+        <div class="j-fg" id="pr-disc-wrap" style="display:none">
+          <label>PR開示文 *</label>
+          <input id="f-pr-disc" maxlength="500" placeholder="※本記事は◯◯株式会社の提供によりお届けします">
+        </div>
+        <details style="margin-top:24px;border-top:1px solid var(--bd);padding-top:24px">
+          <summary style="cursor:pointer;color:var(--fg2);font-size:12px;margin-bottom:14px">SEO メタ設定</summary>
+          <div class="j-fg">
+            <label>meta title (上書き、未設定なら title が使われる)</label>
+            <input id="f-meta-title" maxlength="200">
+          </div>
+          <div class="j-fg">
+            <label>meta description</label>
+            <input id="f-meta-desc" maxlength="500">
+          </div>
+          <div class="j-fg">
+            <label>OG画像 URL (未設定なら hero_image が使われる)</label>
+            <input id="f-og-img" maxlength="2000">
+          </div>
+        </details>
+      </div>
+      <div class="j-ed-r" id="preview">
+        <div class="preview-cat" id="pv-cat">エリアガイド</div>
+        <div id="pv-hero" class="preview-hero" style="display:none"></div>
+        <h1 id="pv-title">タイトル</h1>
+        <div id="pv-subtitle" style="color:#666;font-size:15px;margin-top:8px;margin-bottom:20px"></div>
+        <div class="preview-meta" id="pv-meta"></div>
+        <div id="pv-body"></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
+<script src="/shared/cwm-security.js"></script>
+<script>
+const SUPABASE_URL = 'https://jakwntemjkwqwaqujffh.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+const FN_URL = SUPABASE_URL + '/functions/v1/cwm-admin';
+
+const cwmToken = localStorage.getItem('cwm_token');
+const cwmAccount = localStorage.getItem('cwm_account');
+if (!cwmToken) {
+  alert('ログインセッションが切れています。再ログインしてください。');
+  location.href = '/coworkmill-login.html';
+}
+
+try {
+  const accObj = JSON.parse(cwmAccount || '{}');
+  document.getElementById('acc-name').textContent = accObj.email || accObj.company_name || '—';
+} catch (e) {}
+
+let allArticles = [];
+let activeFilter = '';
+let editing = null;
+
+async function callEdge(target, action, data, id) {
+  const body = { target, action };
+  if (data !== undefined) body.data = data;
+  if (id !== undefined) body.id = id;
+  const r = await fetch(FN_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': SUPABASE_KEY,
+      'Authorization': 'Bearer ' + cwmToken
+    },
+    body: JSON.stringify(body)
+  });
+  const result = await r.json();
+  if (!r.ok || result.error) throw new Error(result.error || 'API error ' + r.status);
+  return result;
+}
+
+function showMsg(text, type) {
+  const el = document.getElementById('msg');
+  el.textContent = text;
+  el.className = 'j-msg ' + (type || 'ok');
+  setTimeout(() => { el.className = 'j-msg'; }, 4000);
+}
+
+function switchTab(name) {
+  document.querySelectorAll('.j-tab').forEach(t => t.classList.toggle('on', t.dataset.tab === name));
+  document.getElementById('pane-list').style.display = name === 'list' ? '' : 'none';
+  document.getElementById('pane-edit').style.display = name === 'edit' ? '' : 'none';
+  if (name === 'list') loadList();
+}
+
+function filterList(status) {
+  activeFilter = status;
+  document.querySelectorAll('.j-fbtn').forEach(b => b.classList.toggle('on', (b.dataset.status || '') === status));
+  renderList();
+}
+
+async function loadList() {
+  try {
+    const r = await fetch(SUPABASE_URL + '/rest/v1/articles?select=*&order=updated_at.desc', {
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+    });
+    const data = await r.json();
+    const remoteArts = Array.isArray(data) ? data : [];
+    const remoteIds = new Set(remoteArts.map(a => a.id));
+    const localOnly = allArticles.filter(a => !remoteIds.has(a.id));
+    allArticles = [...remoteArts, ...localOnly].sort((a, b) =>
+      new Date(b.updated_at || 0) - new Date(a.updated_at || 0)
+    );
+    renderList();
+  } catch (e) {
+    document.getElementById('list').innerHTML = '<div class="j-empty">読み込みに失敗しました</div>';
+  }
+}
+
+function renderList() {
+  const list = document.getElementById('list');
+  let arts = allArticles;
+  if (activeFilter) arts = arts.filter(a => a.status === activeFilter);
+  if (!arts.length) {
+    list.innerHTML = '<div class="j-empty">' + (activeFilter ? 'このステータスの記事はありません' : 'まだ記事がありません<br><br>右上の「+ 新規作成」から始めましょう') + '</div>';
+    return;
+  }
+  list.innerHTML = '';
+  arts.forEach(a => {
+    const item = document.createElement('div');
+    item.className = 'j-item';
+    const thumb = document.createElement('div');
+    thumb.className = 'j-i-thumb';
+    if (a.hero_image && cwm && cwm.safeUrl) {
+      thumb.style.backgroundImage = "url('" + cwm.safeUrl(a.hero_image) + "')";
+    }
+    item.appendChild(thumb);
+    const main = document.createElement('div');
+    main.className = 'j-i-main';
+    const meta = document.createElement('div');
+    meta.className = 'j-i-meta';
+    const status = document.createElement('span');
+    status.className = 'j-i-status ' + (a.status || 'draft');
+    status.textContent = a.status || 'draft';
+    meta.appendChild(status);
+    const cat = document.createElement('span');
+    cat.className = 'j-i-cat';
+    cat.textContent = a.category || '';
+    meta.appendChild(cat);
+    if (a.published_at) {
+      const dt = document.createElement('span');
+      dt.textContent = new Date(a.published_at).toLocaleDateString('ja-JP');
+      meta.appendChild(dt);
+    }
+    if (a.is_pr) {
+      const pr = document.createElement('span');
+      pr.style.cssText = 'background:#3a2a1a;color:#fbbf24;padding:2px 6px;border-radius:3px';
+      pr.textContent = 'PR';
+      meta.appendChild(pr);
+    }
+    main.appendChild(meta);
+    const title = document.createElement('div');
+    title.className = 'j-i-title';
+    title.textContent = a.title || '(無題)';
+    main.appendChild(title);
+    item.appendChild(main);
+    const actions = document.createElement('div');
+    actions.className = 'j-i-actions';
+    const edBtn = document.createElement('button');
+    edBtn.className = 'j-btn';
+    edBtn.textContent = '編集';
+    edBtn.onclick = () => editArticle(a.id);
+    actions.appendChild(edBtn);
+    if (a.status === 'live') {
+      const viewBtn = document.createElement('a');
+      viewBtn.className = 'j-btn';
+      viewBtn.textContent = '表示';
+      viewBtn.href = '/journal/' + a.slug;
+      viewBtn.target = '_blank';
+      actions.appendChild(viewBtn);
+    }
+    item.appendChild(actions);
+    list.appendChild(item);
+  });
+}
+
+function newArticle() {
+  editing = null;
+  document.getElementById('f-title').value = '';
+  document.getElementById('f-subtitle').value = '';
+  document.getElementById('f-slug').value = '';
+  document.getElementById('f-category').value = 'area-guide';
+  document.getElementById('f-excerpt').value = '';
+  document.getElementById('f-hero').value = '';
+  document.getElementById('f-body').value = '';
+  document.getElementById('f-tags').value = '';
+  document.getElementById('f-reading').value = '';
+  document.getElementById('f-author').value = 'COWORKMILL journal 編集部';
+  document.getElementById('f-pr').checked = false;
+  document.getElementById('f-pr-disc').value = '';
+  document.getElementById('f-meta-title').value = '';
+  document.getElementById('f-meta-desc').value = '';
+  document.getElementById('f-og-img').value = '';
+  document.getElementById('pr-disc-wrap').style.display = 'none';
+  document.getElementById('btn-unpub').style.display = 'none';
+  document.getElementById('btn-del').style.display = 'none';
+  document.getElementById('btn-pub').style.display = '';
+  document.getElementById('ed-status').textContent = '新規記事';
+  switchTab('edit');
+  updatePreview();
+}
+
+function editArticle(id) {
+  const a = allArticles.find(x => x.id === id);
+  if (!a) return;
+  editing = a;
+  document.getElementById('f-title').value = a.title || '';
+  document.getElementById('f-subtitle').value = a.subtitle || '';
+  document.getElementById('f-slug').value = a.slug || '';
+  document.getElementById('f-category').value = a.category || 'area-guide';
+  document.getElementById('f-excerpt').value = a.excerpt || '';
+  document.getElementById('f-hero').value = a.hero_image || '';
+  document.getElementById('f-body').value = a.body_md || '';
+  document.getElementById('f-tags').value = (a.tags || []).join(',');
+  document.getElementById('f-reading').value = a.reading_minutes || '';
+  document.getElementById('f-author').value = a.author_name || 'COWORKMILL journal 編集部';
+  document.getElementById('f-pr').checked = !!a.is_pr;
+  document.getElementById('f-pr-disc').value = a.pr_disclosure || '';
+  document.getElementById('f-meta-title').value = a.meta_title || '';
+  document.getElementById('f-meta-desc').value = a.meta_description || '';
+  document.getElementById('f-og-img').value = a.og_image || '';
+  document.getElementById('pr-disc-wrap').style.display = a.is_pr ? '' : 'none';
+  document.getElementById('btn-pub').style.display = a.status === 'live' ? 'none' : '';
+  document.getElementById('btn-unpub').style.display = a.status === 'live' ? '' : 'none';
+  document.getElementById('btn-del').style.display = '';
+  document.getElementById('ed-status').textContent = '編集中: ' + (a.status || 'draft');
+  switchTab('edit');
+  updatePreview();
+}
+
+function readForm() {
+  const tags = (document.getElementById('f-tags').value || '').split(',').map(s => s.trim()).filter(Boolean).slice(0, 20);
+  const reading = parseInt(document.getElementById('f-reading').value) || null;
+  return {
+    title: document.getElementById('f-title').value.trim(),
+    subtitle: document.getElementById('f-subtitle').value.trim() || null,
+    slug: document.getElementById('f-slug').value.trim(),
+    category: document.getElementById('f-category').value,
+    excerpt: document.getElementById('f-excerpt').value.trim() || null,
+    hero_image: document.getElementById('f-hero').value.trim() || null,
+    body_md: document.getElementById('f-body').value,
+    tags: tags,
+    reading_minutes: reading,
+    author_name: document.getElementById('f-author').value.trim() || 'COWORKMILL journal 編集部',
+    is_pr: document.getElementById('f-pr').checked,
+    pr_disclosure: document.getElementById('f-pr').checked ? (document.getElementById('f-pr-disc').value.trim() || null) : null,
+    meta_title: document.getElementById('f-meta-title').value.trim() || null,
+    meta_description: document.getElementById('f-meta-desc').value.trim() || null,
+    og_image: document.getElementById('f-og-img').value.trim() || null
+  };
+}
+
+function updatePreview() {
+  const data = readForm();
+  document.getElementById('pv-cat').textContent = {
+    'area-guide':'エリアガイド','interview':'取材','workstyle':'ワークスタイル','data':'データ・トレンド','design':'建築・デザイン','other':'その他'
+  }[data.category] || data.category;
+  document.getElementById('pv-title').textContent = data.title || '(タイトル未入力)';
+  document.getElementById('pv-subtitle').textContent = data.subtitle || '';
+  const hero = document.getElementById('pv-hero');
+  if (data.hero_image) {
+    hero.style.display = '';
+    hero.style.backgroundImage = "url('" + data.hero_image.replace(/['"\\]/g, '') + "')";
+  } else {
+    hero.style.display = 'none';
+  }
+  let metaTxt = data.author_name;
+  if (data.reading_minutes) metaTxt += ' · 読了 ' + data.reading_minutes + '分';
+  if (data.tags.length) metaTxt += ' · #' + data.tags.join(' #');
+  document.getElementById('pv-meta').textContent = metaTxt;
+  const bodyEl = document.getElementById('pv-body');
+  try {
+    if (window.marked) {
+      bodyEl.innerHTML = marked.parse(data.body_md || '');
+    } else {
+      bodyEl.textContent = data.body_md || '(本文未入力)';
+    }
+  } catch (e) {
+    bodyEl.textContent = '(プレビュー生成エラー)';
+  }
+}
+
+['f-title','f-subtitle','f-slug','f-category','f-excerpt','f-hero','f-body','f-tags','f-reading','f-author'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('input', updatePreview);
+});
+document.getElementById('f-pr').addEventListener('change', e => {
+  document.getElementById('pr-disc-wrap').style.display = e.target.checked ? '' : 'none';
+});
+
+function validate(d) {
+  if (!d.title) return 'タイトルを入力してください';
+  if (d.title.length > 200) return 'タイトルは200文字以内です';
+  if (!d.slug) return 'slug を入力してください';
+  if (!/^[a-z0-9-]{1,100}$/.test(d.slug)) return 'slug は半角英小文字/数字/ハイフンのみ、1〜100文字';
+  if (!d.category) return 'カテゴリを選んでください';
+  if (d.is_pr && !d.pr_disclosure) return 'PR記事には開示文が必須です';
+  return null;
+}
+
+async function saveArticle() {
+  const data = readForm();
+  const err = validate(data);
+  if (err) { showMsg(err, 'err'); return; }
+  if (data.body_md && window.marked) {
+    try { data.body_html = marked.parse(data.body_md); } catch (e) {}
+  }
+  try {
+    if (editing && editing.id) {
+      const res = await callEdge('article', 'update', data, editing.id);
+      editing = res.data;
+      const idx = allArticles.findIndex(a => a.id === editing.id);
+      if (idx >= 0) allArticles[idx] = editing; else allArticles.unshift(editing);
+      showMsg('更新しました');
+    } else {
+      const res = await callEdge('article', 'insert', data);
+      editing = res.data;
+      allArticles.unshift(editing);
+      document.getElementById('btn-del').style.display = '';
+      showMsg('下書きとして保存しました');
+    }
+    document.getElementById('ed-status').textContent = '編集中: ' + (editing.status || 'draft');
+  } catch (e) {
+    showMsg(e.message, 'err');
+  }
+}
+
+async function publishArticle() {
+  if (!editing || !editing.id) {
+    showMsg('まず下書きを保存してください', 'err');
+    return;
+  }
+  if (!confirm('この記事を公開しますか?')) return;
+  try {
+    await saveArticle();
+    if (!editing || !editing.id) return;
+    await callEdge('article', 'publish', undefined, editing.id);
+    editing.status = 'live';
+    editing.published_at = new Date().toISOString();
+    const idx = allArticles.findIndex(a => a.id === editing.id);
+    if (idx >= 0) allArticles[idx] = editing;
+    showMsg('公開しました 🎉');
+    document.getElementById('btn-pub').style.display = 'none';
+    document.getElementById('btn-unpub').style.display = '';
+    document.getElementById('ed-status').textContent = '編集中: live';
+  } catch (e) {
+    showMsg(e.message, 'err');
+  }
+}
+
+async function unpublishArticle() {
+  if (!editing) return;
+  if (!confirm('この記事を非公開にしますか?')) return;
+  try {
+    await callEdge('article', 'unpublish', undefined, editing.id);
+    editing.status = 'draft';
+    const idx = allArticles.findIndex(a => a.id === editing.id);
+    if (idx >= 0) allArticles[idx] = editing;
+    showMsg('非公開にしました');
+    document.getElementById('btn-pub').style.display = '';
+    document.getElementById('btn-unpub').style.display = 'none';
+    document.getElementById('ed-status').textContent = '編集中: draft';
+  } catch (e) {
+    showMsg(e.message, 'err');
+  }
+}
+
+async function deleteArticle() {
+  if (!editing) return;
+  if (!confirm('この記事をアーカイブ(ソフト削除)しますか?\n公開ページからは消えますが、データは残ります。')) return;
+  try {
+    await callEdge('article', 'delete', undefined, editing.id);
+    showMsg('アーカイブしました');
+    const idx = allArticles.findIndex(a => a.id === editing.id);
+    if (idx >= 0) allArticles[idx].status = 'archived';
+    setTimeout(() => switchTab('list'), 800);
+  } catch (e) {
+    showMsg(e.message, 'err');
+  }
+}
+
+function logout() {
+  if (!confirm('ログアウトしますか?')) return;
+  localStorage.removeItem('cwm_token');
+  localStorage.removeItem('cwm_account');
+  location.href = '/coworkmill-login.html';
+}
+
+loadList();
+</script>
+</body>
+</html>
