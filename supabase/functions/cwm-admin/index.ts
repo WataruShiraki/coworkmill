@@ -525,6 +525,177 @@ Deno.serve(async (req: Request) => {
     }
 
 
+    // ============== writer (運営による journal ライター管理) ==============
+    if (target === "writer") {
+      if (action === "list") {
+        const { data: writers, error } = await sb
+          .from("journal_writers")
+          .select("id,user_id,display_name,bio,role,status,created_at,last_login_at")
+          .order("created_at", { ascending: false });
+        if (error) {
+          await writeAuditLog(sb, accountId, target, action, null, "error", error.message, ip);
+          return jsonResponse({ error: error.message }, 500);
+        }
+        const enriched = [];
+        for (const w of writers || []) {
+          try {
+            const userRes = await fetch(SUPABASE_URL + "/auth/v1/admin/users/" + w.user_id, {
+              headers: {
+                "apikey": SUPABASE_SERVICE_ROLE_KEY,
+                "Authorization": "Bearer " + SUPABASE_SERVICE_ROLE_KEY
+              }
+            });
+            const user = await userRes.json();
+            enriched.push({ ...w, email: user?.email || null });
+          } catch (e) {
+            enriched.push({ ...w, email: null });
+          }
+        }
+        return jsonResponse({ ok: true, data: enriched });
+      }
+
+      if (action === "create") {
+        const d = data || {};
+        const emailRe = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+        if (!d.email || typeof d.email !== "string" || !emailRe.test(d.email) || d.email.length > 254) {
+          return jsonResponse({ error: "正しいメールアドレスを入力してください" }, 400);
+        }
+        if (!d.password || typeof d.password !== "string" || d.password.length < 8 || d.password.length > 200) {
+          return jsonResponse({ error: "パスワードは8〜200文字で入力してください" }, 400);
+        }
+        if (!d.display_name || typeof d.display_name !== "string" || d.display_name.length < 1 || d.display_name.length > 100) {
+          return jsonResponse({ error: "表示名は1〜100文字で入力してください" }, 400);
+        }
+        if (d.bio && (typeof d.bio !== "string" || d.bio.length > 1000)) {
+          return jsonResponse({ error: "bio は1000文字以内で入力してください" }, 400);
+        }
+        const createRes = await fetch(SUPABASE_URL + "/auth/v1/admin/users", {
+          method: "POST",
+          headers: {
+            "apikey": SUPABASE_SERVICE_ROLE_KEY,
+            "Authorization": "Bearer " + SUPABASE_SERVICE_ROLE_KEY,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            email: d.email,
+            password: d.password,
+            email_confirm: true,
+            user_metadata: { display_name: d.display_name, role: "writer" }
+          })
+        });
+        const created = await createRes.json();
+        if (!createRes.ok || !created.id) {
+          await writeAuditLog(sb, accountId, target, action, null, "error", created.msg || created.message || "auth create failed", ip);
+          return jsonResponse({ error: created.msg || created.message || "ユーザー作成に失敗しました" }, createRes.status || 500);
+        }
+        const { data: writer, error } = await sb.from("journal_writers").insert({
+          user_id: created.id,
+          display_name: d.display_name,
+          bio: d.bio || null,
+          role: "writer",
+          status: "active",
+          invited_by: accountId
+        }).select().single();
+        if (error) {
+          await fetch(SUPABASE_URL + "/auth/v1/admin/users/" + created.id, {
+            method: "DELETE",
+            headers: {
+              "apikey": SUPABASE_SERVICE_ROLE_KEY,
+              "Authorization": "Bearer " + SUPABASE_SERVICE_ROLE_KEY
+            }
+          });
+          await writeAuditLog(sb, accountId, target, action, null, "error", error.message, ip);
+          return jsonResponse({ error: error.message }, 500);
+        }
+        await writeAuditLog(sb, accountId, target, action, writer.id, "ok", null, ip);
+        return jsonResponse({ ok: true, data: { ...writer, email: d.email } });
+      }
+
+      if (action === "update") {
+        if (!id) return jsonResponse({ error: "id が必要です" }, 400);
+        const d = data || {};
+        const updateData: any = {};
+        if (d.display_name !== undefined) {
+          if (typeof d.display_name !== "string" || d.display_name.length < 1 || d.display_name.length > 100) {
+            return jsonResponse({ error: "表示名は1〜100文字" }, 400);
+          }
+          updateData.display_name = d.display_name;
+        }
+        if (d.bio !== undefined) {
+          if (d.bio !== null && (typeof d.bio !== "string" || d.bio.length > 1000)) {
+            return jsonResponse({ error: "bio は1000文字以内" }, 400);
+          }
+          updateData.bio = d.bio;
+        }
+        if (d.status !== undefined) {
+          if (!["active","suspended","deleted"].includes(d.status)) {
+            return jsonResponse({ error: "status が無効です" }, 400);
+          }
+          updateData.status = d.status;
+        }
+        if (Object.keys(updateData).length === 0) {
+          return jsonResponse({ error: "更新するフィールドがありません" }, 400);
+        }
+        const { data: updated, error } = await sb.from("journal_writers").update(updateData).eq("id", id).select().single();
+        if (error) {
+          await writeAuditLog(sb, accountId, target, action, id, "error", error.message, ip);
+          return jsonResponse({ error: error.message }, 500);
+        }
+        await writeAuditLog(sb, accountId, target, action, id, "ok", null, ip);
+        return jsonResponse({ ok: true, data: updated });
+      }
+
+      if (action === "reset_password") {
+        if (!id) return jsonResponse({ error: "id が必要です" }, 400);
+        const d = data || {};
+        if (!d.new_password || typeof d.new_password !== "string" || d.new_password.length < 8 || d.new_password.length > 200) {
+          return jsonResponse({ error: "新しいパスワードは8〜200文字" }, 400);
+        }
+        const { data: writer, error: wErr } = await sb.from("journal_writers").select("user_id").eq("id", id).single();
+        if (wErr || !writer) {
+          return jsonResponse({ error: "ライターが見つかりません" }, 404);
+        }
+        const updateRes = await fetch(SUPABASE_URL + "/auth/v1/admin/users/" + writer.user_id, {
+          method: "PUT",
+          headers: {
+            "apikey": SUPABASE_SERVICE_ROLE_KEY,
+            "Authorization": "Bearer " + SUPABASE_SERVICE_ROLE_KEY,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ password: d.new_password })
+        });
+        if (!updateRes.ok) {
+          const err = await updateRes.text();
+          await writeAuditLog(sb, accountId, target, action, id, "error", err.substring(0, 200), ip);
+          return jsonResponse({ error: "パスワード変更に失敗しました" }, 500);
+        }
+        await writeAuditLog(sb, accountId, target, action, id, "ok", null, ip);
+        return jsonResponse({ ok: true });
+      }
+
+      if (action === "delete") {
+        if (!id) return jsonResponse({ error: "id が必要です" }, 400);
+        const { data: writer, error: wErr } = await sb.from("journal_writers").select("user_id").eq("id", id).single();
+        if (wErr || !writer) {
+          return jsonResponse({ error: "ライターが見つかりません" }, 404);
+        }
+        await sb.from("articles").update({ author_user_id: null }).eq("author_user_id", writer.user_id);
+        await sb.from("journal_writers").delete().eq("id", id);
+        await fetch(SUPABASE_URL + "/auth/v1/admin/users/" + writer.user_id, {
+          method: "DELETE",
+          headers: {
+            "apikey": SUPABASE_SERVICE_ROLE_KEY,
+            "Authorization": "Bearer " + SUPABASE_SERVICE_ROLE_KEY
+          }
+        });
+        await writeAuditLog(sb, accountId, target, action, id, "ok", null, ip);
+        return jsonResponse({ ok: true });
+      }
+
+      return jsonResponse({ error: "不明な操作: " + action }, 400);
+    }
+
+
     return jsonResponse({ error: "不明な操作対象: " + target }, 400);
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
