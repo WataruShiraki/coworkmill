@@ -83,7 +83,33 @@ img{max-width:100%;display:block}
 /* 記事グリッド */
 .j-grid{max-width:1200px;margin:0 auto;padding:48px 32px 100px;display:grid;grid-template-columns:repeat(3,1fr);gap:56px 32px}
 @media(max-width:900px){.j-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:640px){.j-grid{grid-template-columns:1fr;gap:48px;padding:32px 20px 60px}.j-hero h1{font-size:40px}.j-hero{padding:70px 24px 56px}}
+@media(max-width:768px){
+  .j-nav-inner{padding:12px 18px;gap:14px}
+  .j-logo img{height:24px}
+  .j-brand-label{font-size:16px;margin-left:7px}
+  .j-nav-links{font-size:11.5px;gap:14px}
+  .j-nav-links a.j-back-to-main{font-size:11.5px}
+  .j-hero{padding:48px 20px 40px}
+  .j-hero h1{font-size:34px;line-height:1.2}
+  .j-hero-eyebrow{font-size:12px;margin-bottom:10px}
+  .j-hero p{font-size:13px;line-height:1.85}
+  .j-cats{padding:24px 18px 0;gap:6px;flex-wrap:nowrap;overflow-x:auto;justify-content:flex-start;scrollbar-width:none}
+  .j-cats::-webkit-scrollbar{display:none}
+  .j-cat{flex-shrink:0;padding:7px 14px;font-size:11.5px}
+  .j-grid{grid-template-columns:1fr;gap:36px;padding:28px 18px 56px}
+  .j-card-img{aspect-ratio:16/10;margin-bottom:14px}
+  .j-card-title{font-size:17px}
+  .j-card-excerpt{font-size:12.5px;-webkit-line-clamp:2}
+  .j-foot{padding:36px 18px;font-size:11px}
+  .j-foot a{margin:0 6px;display:inline-block;padding:4px 0}
+  .j-foot-copy{margin-top:14px;font-size:11px}
+}
+@media(max-width:480px){
+  .j-hero h1{font-size:28px;letter-spacing:.01em}
+  .j-hero{padding:40px 18px 32px}
+  .j-nav-links a.j-back-to-main span.full{display:none}
+  .j-nav-links a.j-back-to-main span.short{display:inline!important}
+}
 
 .j-card{cursor:pointer;transition:opacity .2s}
 .j-card:hover{opacity:.85}
@@ -116,7 +142,7 @@ img{max-width:100%;display:block}
       <span class="j-brand-label">journal</span>
     </a>
     <nav class="j-nav-links">
-      <a href="/coworkmill.html" class="j-back-to-main">← COWORKMILL TOP</a>
+      <a href="/coworkmill.html" class="j-back-to-main"><span class="full">← COWORKMILL TOP</span><span class="short" style="display:none">← TOP</span></a>
     </nav>
   </div>
 </header>
