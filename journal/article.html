@@ -154,8 +154,15 @@ function formatDate(iso) {
 }
 
 function getSlug() {
+  // 1. ?slug= で渡された場合(直接 article.html にアクセス)
   const params = new URLSearchParams(location.search);
-  return params.get('slug') || '';
+  const fromQuery = params.get('slug');
+  if (fromQuery) return fromQuery;
+  // 2. /journal/[slug] の pathname から抽出(Vercel rewrite 経由)
+  //    rewrite では location.search は元のままなので pathname を見る
+  const m = location.pathname.match(/^\/journal\/([a-z0-9-]+)\/?$/);
+  if (m && m[1] !== 'index' && m[1] !== 'article') return m[1];
+  return '';
 }
 
 async function loadArticle() {
