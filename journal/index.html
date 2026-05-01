@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>COWORKMILL journal — デザインコワーキングの編集メディア</title>
-<meta name="description" content="COWORKMILL journal は、デザイン性に優れたコワーキングスペースの取材・選び方・トレンドを伝える編集メディアです。エリアガイド、運営者・建築家インタビュー、ワークスタイル別の選び方など、月10本ペースで記事をお届けします。">
+<meta name="description" content="COWORKMILL journal は、デザイン性に優れたコワーキングスペースの取材・選び方・トレンドを伝える編集メディアです。インタビュー、トレンド、ニュースを月10本ペースで配信。">
 <meta property="og:title" content="COWORKMILL journal">
 <meta property="og:description" content="デザインコワーキングの「いま」と「これから」を伝える編集メディア">
 <meta property="og:type" content="website">
@@ -13,75 +13,86 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
 <style>
 :root{
-  --black:#0a0a0a; --white:#fff;
-  --g50:#fafafa; --g100:#f5f5f5; --g200:#eee; --g300:#ddd; --g400:#aaa; --g500:#888; --g600:#666; --g700:#444; --g800:#333; --g900:#111;
-  --teal:#2BB5C8; --green:#79F1A4;
+  --bg:#121212; --bg-2:#1a1a1a; --bg-3:#222; --bg-4:#2a2a2a;
+  --fg:#f0f0f0; --fg-2:#ccc; --fg-3:#999; --fg-4:#666;
+  --line:#2a2a2a; --line-2:#333;
+  --teal:#79F1A4; --teal-2:#2BB5C8;
   --fb:'Cormorant Garamond',serif;
   --fd:'Noto Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;
 }
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:var(--fd);font-size:14px;line-height:1.7;color:var(--g900);background:var(--white);-webkit-font-smoothing:antialiased}
+body{font-family:var(--fd);font-size:14px;line-height:1.7;color:var(--fg);background:var(--bg);-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}
 img{max-width:100%;display:block}
 
-/* ヘッダー */
-.j-nav{position:sticky;top:0;background:rgba(255,255,255,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--g200);z-index:100}
-.j-nav-inner{max-width:1200px;margin:0 auto;padding:18px 32px;display:flex;align-items:center;justify-content:space-between}
-.j-logo{font-family:var(--fb);font-size:22px;font-weight:600;letter-spacing:.04em;color:var(--g900)}
-.j-logo small{font-family:var(--fd);font-size:11px;color:var(--g500);font-weight:400;letter-spacing:.15em;text-transform:uppercase;margin-left:10px}
-.j-nav-links{display:flex;gap:28px;font-size:13px;color:var(--g700)}
-.j-nav-links a:hover{color:var(--g900)}
+/* ヘッダー(COWORKMILL本体と統一) */
+.j-nav{position:sticky;top:0;background:rgba(18,18,18,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);z-index:100}
+.j-nav-inner{max-width:1400px;margin:0 auto;padding:14px 32px;display:flex;align-items:center;justify-content:space-between;gap:32px}
+.j-logo{display:flex;align-items:center;gap:0}
+.j-logo img{height:32px;width:auto;display:block}
+.j-nav-links{display:flex;gap:28px;font-size:12.5px;color:var(--fg-2);align-items:center}
+.j-nav-links a{transition:color .2s}
+.j-nav-links a:hover{color:var(--fg)}
+.j-nav-links a.j-active{color:var(--fg)}
+
+/* ジャーナルラベル(雑誌っぽいセリフ) */
+.j-brand-label{font-family:var(--fb);font-style:italic;font-size:13px;color:var(--fg-3);letter-spacing:.04em;margin-left:6px}
 
 /* ヒーロー */
-.j-hero{padding:80px 32px 60px;text-align:center;border-bottom:1px solid var(--g200)}
-.j-hero-eyebrow{font-family:var(--fb);font-style:italic;font-size:14px;color:var(--g500);letter-spacing:.05em;margin-bottom:14px}
-.j-hero h1{font-family:var(--fb);font-size:48px;font-weight:600;letter-spacing:.02em;line-height:1.2;margin-bottom:16px}
-.j-hero p{font-size:14px;color:var(--g600);max-width:560px;margin:0 auto;line-height:1.9}
+.j-hero{padding:90px 32px 70px;text-align:center;border-bottom:1px solid var(--line)}
+.j-hero-eyebrow{font-family:var(--fb);font-style:italic;font-size:14px;color:var(--fg-4);letter-spacing:.05em;margin-bottom:16px}
+.j-hero h1{font-family:var(--fb);font-size:56px;font-weight:500;letter-spacing:.02em;line-height:1.15;margin-bottom:20px;color:var(--fg)}
+.j-hero p{font-size:13.5px;color:var(--fg-3);max-width:560px;margin:0 auto;line-height:1.95}
 
 /* カテゴリフィルター */
 .j-cats{max-width:1200px;margin:0 auto;padding:32px 32px 0;display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
-.j-cat{padding:8px 18px;border:1px solid var(--g300);border-radius:999px;font-size:12px;color:var(--g700);cursor:pointer;transition:all .2s;background:var(--white)}
-.j-cat:hover{border-color:var(--g900);color:var(--g900)}
-.j-cat.on{background:var(--g900);color:var(--white);border-color:var(--g900)}
+.j-cat{padding:8px 18px;border:1px solid var(--line-2);border-radius:999px;font-size:12px;color:var(--fg-3);cursor:pointer;transition:all .2s;background:transparent;font-family:var(--fd)}
+.j-cat:hover{border-color:var(--fg-3);color:var(--fg-2)}
+.j-cat.on{background:var(--fg);color:var(--bg);border-color:var(--fg)}
 
 /* 記事グリッド */
-.j-grid{max-width:1200px;margin:0 auto;padding:48px 32px 80px;display:grid;grid-template-columns:repeat(3,1fr);gap:48px 32px}
+.j-grid{max-width:1200px;margin:0 auto;padding:48px 32px 100px;display:grid;grid-template-columns:repeat(3,1fr);gap:56px 32px}
 @media(max-width:900px){.j-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:640px){.j-grid{grid-template-columns:1fr;gap:40px;padding:32px 20px 60px}.j-hero h1{font-size:36px}.j-hero{padding:60px 24px 48px}}
+@media(max-width:640px){.j-grid{grid-template-columns:1fr;gap:48px;padding:32px 20px 60px}.j-hero h1{font-size:40px}.j-hero{padding:70px 24px 56px}}
 
 .j-card{cursor:pointer;transition:opacity .2s}
-.j-card:hover{opacity:.7}
-.j-card-img{aspect-ratio:16/10;background:var(--g100);border-radius:4px;overflow:hidden;margin-bottom:16px;background-size:cover;background-position:center}
-.j-card-meta{font-family:var(--fb);font-style:italic;font-size:12px;color:var(--g500);margin-bottom:8px;letter-spacing:.04em}
-.j-card-cat{font-size:10px;color:var(--teal);font-weight:500;letter-spacing:.12em;text-transform:uppercase;margin-right:10px}
-.j-card-title{font-size:18px;font-weight:600;line-height:1.5;margin-bottom:10px;color:var(--g900)}
-.j-card-excerpt{font-size:13px;color:var(--g600);line-height:1.7;margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.j-card:hover{opacity:.85}
+.j-card:hover .j-card-title{color:var(--teal)}
+.j-card-img{aspect-ratio:16/10;background:var(--bg-3);border-radius:4px;overflow:hidden;margin-bottom:18px;background-size:cover;background-position:center}
+.j-card-meta{font-family:var(--fb);font-style:italic;font-size:12px;color:var(--fg-4);margin-bottom:10px;letter-spacing:.04em}
+.j-card-cat{font-size:10px;color:var(--teal);font-weight:500;letter-spacing:.15em;text-transform:uppercase;margin-right:12px;font-family:var(--fd);font-style:normal}
+.j-card-title{font-size:18px;font-weight:600;line-height:1.55;margin-bottom:10px;color:var(--fg);transition:color .2s}
+.j-card-excerpt{font-size:12.5px;color:var(--fg-3);line-height:1.8;margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .j-card-tags{display:flex;gap:6px;flex-wrap:wrap}
-.j-tag{font-size:11px;color:var(--g500);background:var(--g100);padding:3px 10px;border-radius:3px}
-.j-card-pr{display:inline-block;font-size:10px;color:var(--g500);background:var(--g100);padding:2px 8px;border-radius:3px;margin-left:8px;letter-spacing:.05em}
+.j-tag{font-size:10.5px;color:var(--fg-3);background:var(--bg-3);padding:3px 10px;border-radius:3px}
+.j-card-pr{display:inline-block;font-size:9.5px;color:var(--fg-4);background:var(--bg-3);padding:2px 8px;border-radius:3px;margin-left:8px;letter-spacing:.05em;font-family:var(--fd);font-style:normal}
 
 /* ローディング・空 */
-.j-status{grid-column:1/-1;text-align:center;padding:80px 20px;color:var(--g500);font-size:13px}
+.j-status{grid-column:1/-1;text-align:center;padding:80px 20px;color:var(--fg-4);font-size:13px}
 
 /* フッター */
-.j-foot{border-top:1px solid var(--g200);padding:48px 32px;text-align:center;color:var(--g500);font-size:12px}
-.j-foot a{color:var(--g700);margin:0 12px}
-.j-foot a:hover{color:var(--g900)}
-.j-foot-copy{margin-top:20px;font-family:var(--fb);font-style:italic}
+.j-foot{border-top:1px solid var(--line);padding:48px 32px;text-align:center;color:var(--fg-4);font-size:12px}
+.j-foot a{color:var(--fg-3);margin:0 12px;transition:color .2s}
+.j-foot a:hover{color:var(--fg)}
+.j-foot-copy{margin-top:20px;font-family:var(--fb);font-style:italic;color:var(--fg-4)}
 </style>
 </head>
 <body>
 
 <header class="j-nav">
   <div class="j-nav-inner">
-    <a href="/journal/" class="j-logo">COWORKMILL <small>journal</small></a>
+    <a href="/coworkmill.html" class="j-logo">
+      <img src="/shared/coworkmill-logo.svg" alt="COWORKMILL">
+      <span class="j-brand-label">journal</span>
+    </a>
     <nav class="j-nav-links">
-      <a href="/coworkmill.html">施設を探す</a>
-      <a href="/journal/">journal</a>
-      <a href="/coworkmill-architects.html">建築家</a>
+      <a href="/coworkmill-spaces.html">コワーキングを探す</a>
+      <a href="/coworkmill-architects.html">建築家から探す</a>
+      <a href="/coworkmill-photos.html">写真から探す</a>
+      <a href="/journal/" class="j-active">ジャーナル</a>
     </nav>
   </div>
 </header>
@@ -89,7 +100,7 @@ img{max-width:100%;display:block}
 <section class="j-hero">
   <div class="j-hero-eyebrow">— Editorial Notes —</div>
   <h1>COWORKMILL journal</h1>
-  <p>デザイン性に優れたコワーキングスペースの取材・選び方・トレンドを伝える編集メディア。<br>エリアガイドから建築家インタビューまで、コワーキングを「知る・選ぶ」を支えます。</p>
+  <p>デザイン性に優れたコワーキングスペースの取材・選び方・トレンドを伝える編集メディア。<br>インタビューからニュースまで、コワーキングを「知る・選ぶ」を支えます。</p>
 </section>
 
 <div class="j-cats" id="cats">
@@ -160,14 +171,12 @@ function render() {
   filtered.forEach(a => {
     const card = document.createElement('a');
     card.className = 'j-card';
-    card.href = '/journal/article.html?slug=' + encodeURIComponent(a.slug);
+    card.href = '/journal/' + encodeURIComponent(a.slug);
     
     const img = document.createElement('div');
     img.className = 'j-card-img';
     if (a.hero_image && cwm && cwm.safeUrl) {
       img.style.backgroundImage = "url('" + cwm.safeUrl(a.hero_image) + "')";
-    } else if (a.hero_image) {
-      img.style.backgroundImage = "url('" + a.hero_image.replace(/[\\'"]/g, '') + "')";
     }
     card.appendChild(img);
     
