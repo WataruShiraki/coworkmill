@@ -606,9 +606,7 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
     <div class="sp-sort-wrap">
       <select class="sort-select sp-sort-select" id="sort-select-sp" onchange="handleSort(this.value)">
         <option>新着順</option>
-        <option>人気順</option>
-        
-        <option>エリア</option>
+        <option>おすすめ順</option>
       </select>
     </div>
     <div class="sp-view-wrap">
@@ -641,9 +639,7 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
       <span style="font-size:10px;color:var(--gray-400);white-space:nowrap">並び替え</span>
       <select class="sort-select">
         <option>新着順</option>
-        <option>人気順</option>
-        
-        <option>エリア</option>
+        <option>おすすめ順</option>
       </select>
       <div style="width:1px;height:20px;background:var(--gray-200)"></div>
       <button class="view-btn on" id="view-grid" onclick="setView('grid')" title="グリッド">
@@ -911,7 +907,7 @@ let allSpaces = [];
 
 async function loadSpaces() {
   try {
-    const res = await fetch(SUPABASE_URL_SP + '/rest/v1/spaces?select=id,name,area,prefecture,plan,status,image_main,architect_name,architect_firm,vibe,price_dropin,price_dropin_hour,price_dropin_day,price_monthly_amount,price_monthly_max,facilities,created_at&status=eq.live' + (window.areaParam ? '&area=eq.' + encodeURIComponent(window.areaParam) : '') + '&order=created_at.desc', {
+    const res = await fetch(SUPABASE_URL_SP + '/rest/v1/spaces?select=id,name,area,prefecture,plan,status,image_main,images,description,workstyle_tags,architect_name,architect_firm,vibe,price_dropin,price_dropin_hour,price_dropin_day,price_monthly_amount,price_monthly_max,facilities,created_at&status=eq.live' + (window.areaParam ? '&area=eq.' + encodeURIComponent(window.areaParam) : '') + '&order=created_at.desc', {
       headers: { 'apikey': SUPABASE_KEY_SP, 'Authorization': 'Bearer ' + SUPABASE_KEY_SP }
     });
     const data = await res.json();
@@ -965,7 +961,7 @@ function makeCard(d, i, type) {
   const delay = 'animation-delay:' + (i * 0.05) + 's';
 
   if (type === 'grid') {
-    return '<a class="scard" href="' + href + '" style="' + delay + '" data-pref="' + (d.prefecture||'') + '" data-area="' + (d.area||'') + '" data-vibe="' + (d.vibe||'') + '" data-name="' + (d.name||'').toLowerCase() + '" data-facilities="' + (d.facilities ? d.facilities.join(',') : '') + '">' +
+    return '<a class="scard" href="' + href + '" style="' + delay + '" data-pref="' + (d.prefecture||'') + '" data-area="' + (d.area||'') + '" data-vibe="' + (d.vibe||'') + '" data-plan="' + (d.plan||'free') + '" data-img-count="' + (Array.isArray(d.images)?d.images.length:(d.image_main?1:0)) + '" data-desc-len="' + ((d.description||'').length) + '" data-tag-count="' + (Array.isArray(d.workstyle_tags)?d.workstyle_tags.length:0) + '" data-name="' + (d.name||'').toLowerCase() + '" data-facilities="' + (d.facilities ? d.facilities.join(',') : '') + '">' +
       '<div class="scard-img" style="' + (img ? 'background-image:url(\'' + cwm.safeUrl(img) + '\')' : 'background:#1a1a2e') + '">' +
         (isPick ? '<div class="scard-badges"><span class="scard-badge pick">PICK</span></div>' : '') +
       '</div>' +
@@ -1257,14 +1253,31 @@ function setView(mode) {
 
 function handleSort(val) {
   var cards = Array.from(document.querySelectorAll('.scard'));
-  var container = document.getElementById('view-grid-content');
-  if(!container || !cards.length) return;
-  if(val === '新着順' || val === 'newest') {
-    cards.sort(function(a,b){ return parseInt(b.dataset.created||0) - parseInt(a.dataset.created||0); });
-  } else if(val === '人気順' || val === 'popular') {
+  var container = document.getElementById('spaces-grid');
+  if(!container) return;
+  // PLAN ランク (Pro=3 / Standard=2 / Free=1)
+  var planRank = { pro: 3, standard: 2, free: 1 };
+  // コンテンツ充実度スコア(写真数 × 3 + 説明文長 capped + workstyle_tags数 × 2)
+  function contentScore(c) {
+    var imgs = parseInt(c.dataset.imgCount || 0);
+    var descLen = parseInt(c.dataset.descLen || 0);
+    var tags = parseInt(c.dataset.tagCount || 0);
+    return imgs * 3 + Math.min(descLen / 100, 10) + tags * 2;
+  }
+  if (val === '新着順' || val === 'newest') {
     cards.sort(function(a,b){
-      var diff = parseInt(b.dataset.clicks||0) - parseInt(a.dataset.clicks||0);
+      return parseInt(b.dataset.created||0) - parseInt(a.dataset.created||0);
+    });
+  } else if (val === 'おすすめ順' || val === 'recommended') {
+    cards.sort(function(a,b){
+      // 1. プラン順
+      var ap = planRank[(a.dataset.plan||'free').toLowerCase()] || 1;
+      var bp = planRank[(b.dataset.plan||'free').toLowerCase()] || 1;
+      if (ap !== bp) return bp - ap;
+      // 2. 同プラン内はコンテンツ充実度スコア
+      var diff = contentScore(b) - contentScore(a);
       if (diff !== 0) return diff;
+      // 3. 同点なら新着順
       return parseInt(b.dataset.created||0) - parseInt(a.dataset.created||0);
     });
   }
