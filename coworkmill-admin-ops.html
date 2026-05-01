@@ -167,6 +167,7 @@ a{text-decoration:none;color:inherit}
     <button class="nl" onclick="go('ac',this)"><span class="ni">👤</span>アカウント管理</button>
     <button class="nl" onclick="go('ar',this)"><span class="ni">🏛</span>建築家管理<span class="nb am hidden" id="nb-ar">0</span></button>
     <a class="nl" href="coworkmill-journal-admin.html" target="_blank" style="text-decoration:none;display:flex;align-items:center"><span class="ni">📝</span>journal 編集</a>
+    <button class="nl" onclick="go('jw',this)"><span class="ni">✍️</span>コラム編集者<span class="nb am hidden" id="nb-jw">0</span></button>
     <button class="nl" onclick="go('ct',this)"><span class="ni">✉️</span>お問い合わせ<span class="nb hidden" id="nb-ct">0</span></button>
   </nav>
   <div class="sb-foot" onclick="location.href='coworkmill.html'">← サイトを見る</div>
@@ -290,7 +291,32 @@ a{text-decoration:none;color:inherit}
     </div>
 
     <!-- ===== CONTACT ===== -->
-    <div id="p-ct" style="display:none">
+    <div id="p-jw" class="pnl" style="display:none">
+  <h2 style="font-size:18px;margin-bottom:18px;color:var(--white)">✍️ コラム編集者管理</h2>
+  <p style="color:var(--gray-400);font-size:13px;margin-bottom:24px;line-height:1.7">外部ライターを招待してジャーナルの記事を執筆してもらえます。<br>追加するとパスワードが発行されるので、ライターに連絡してください。</p>
+
+  <button onclick="showWriterCreateModal()" style="background:linear-gradient(135deg,#79F1A4,#2BB5C8);color:#000;border:none;padding:10px 20px;border-radius:6px;cursor:pointer;font-weight:600;font-size:13px;margin-bottom:24px">+ 新しいライターを追加</button>
+
+  <div id="writers-list" style="display:flex;flex-direction:column;gap:12px"></div>
+</div>
+
+<!-- ライター作成モーダル -->
+<div id="writer-create-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;align-items:center;justify-content:center;padding:20px">
+  <div style="background:#1a1a1a;border:1px solid #333;border-radius:10px;padding:32px;max-width:480px;width:100%;max-height:90vh;overflow-y:auto">
+    <h3 style="font-size:18px;margin-bottom:20px;color:#fff">新しいライターを追加</h3>
+    <div style="margin-bottom:14px"><label style="display:block;font-size:12px;color:#999;margin-bottom:6px">表示名 <span style="color:#f87171">*</span></label><input id="wf-name" type="text" maxlength="100" style="width:100%;padding:10px;background:#0a0a0a;border:1px solid #333;border-radius:5px;color:#fff;font-size:13px" placeholder="例:山田 太郎"></div>
+    <div style="margin-bottom:14px"><label style="display:block;font-size:12px;color:#999;margin-bottom:6px">メールアドレス <span style="color:#f87171">*</span></label><input id="wf-email" type="email" maxlength="254" style="width:100%;padding:10px;background:#0a0a0a;border:1px solid #333;border-radius:5px;color:#fff;font-size:13px" placeholder="example@email.com"></div>
+    <div style="margin-bottom:14px"><label style="display:block;font-size:12px;color:#999;margin-bottom:6px">パスワード <span style="color:#f87171">*</span></label><div style="display:flex;gap:6px"><input id="wf-pass" type="text" minlength="8" maxlength="200" style="flex:1;padding:10px;background:#0a0a0a;border:1px solid #333;border-radius:5px;color:#fff;font-size:13px" placeholder="8文字以上"><button onclick="generatePassword()" type="button" style="padding:10px 16px;background:#222;border:1px solid #333;border-radius:5px;color:#ccc;cursor:pointer;font-size:12px;white-space:nowrap">自動生成</button></div></div>
+    <div style="margin-bottom:20px"><label style="display:block;font-size:12px;color:#999;margin-bottom:6px">プロフィール(任意)</label><textarea id="wf-bio" maxlength="1000" style="width:100%;padding:10px;background:#0a0a0a;border:1px solid #333;border-radius:5px;color:#fff;font-size:13px;min-height:80px;font-family:inherit" placeholder="ライター紹介文"></textarea></div>
+    <div id="wf-err" style="display:none;color:#f87171;font-size:12px;margin-bottom:14px;padding:10px;background:rgba(248,113,113,.1);border-radius:4px"></div>
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button onclick="closeWriterModal()" style="padding:10px 18px;background:transparent;border:1px solid #333;border-radius:5px;color:#ccc;cursor:pointer;font-size:13px">キャンセル</button>
+      <button id="wf-submit-btn" onclick="submitNewWriter()" style="padding:10px 24px;background:linear-gradient(135deg,#79F1A4,#2BB5C8);color:#000;border:none;border-radius:5px;cursor:pointer;font-weight:600;font-size:13px">追加してパスワード発行</button>
+    </div>
+  </div>
+</div>
+
+<div id="p-ct" style="display:none">
       <div class="sec">
         <div class="sec-h">
           <div><div class="sec-ht">お問い合わせ管理</div><div class="sec-hs">サイトから届いた問い合わせ一覧</div></div>
@@ -1005,7 +1031,7 @@ function go(id, el) {
   document.getElementById('ttl').textContent = ttlm[id]||id;
 
   // タブ切り替え時に自動ロード
-  const loaders = { sp: loadSpaces, ac: loadAccounts, ar: loadArchitects };
+  const loaders = { sp: loadSpaces, ac: loadAccounts, ar: loadArchitects , jw: loadWriters };
   if (loaders[id]) loaders[id]();
 }
 function openModal(id) { const m=document.getElementById(id); if(m) m.classList.add('open'); }
@@ -1203,6 +1229,198 @@ async function saveArchEdit2() {
 }
 </script>
 
+
+
+
+// ============== コラム編集者(journal writer)管理 ==============
+const FN_URL_JW = 'https://jakwntemjkwqwaqujffh.supabase.co/functions/v1/cwm-admin';
+
+async function callFnJW(target, action, opts) {
+  opts = opts || {};
+  const tk = localStorage.getItem('cwm_token');
+  if (!tk) { alert('ログインが必要です'); return null; }
+  const body = { token: tk, target, action };
+  if (opts.id) body.id = opts.id;
+  if (opts.data) body.data = opts.data;
+  try {
+    const r = await fetch(FN_URL_JW, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'apikey': 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ', 'Authorization': 'Bearer sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ' },
+      body: JSON.stringify(body)
+    });
+    const j = await r.json();
+    if (!r.ok || j.error) {
+      return { ok: false, error: j.error || ('HTTP ' + r.status) };
+    }
+    return { ok: true, data: j.data };
+  } catch (e) {
+    return { ok: false, error: e.message };
+  }
+}
+
+async function loadWriters() {
+  const list = document.getElementById('writers-list');
+  if (!list) return;
+  list.innerHTML = '<div style="color:#666;font-size:13px;padding:20px;text-align:center">読み込み中...</div>';
+  const res = await callFnJW('writer', 'list');
+  if (!res || !res.ok) {
+    list.innerHTML = '<div style="color:#f87171;font-size:13px;padding:20px;text-align:center">エラー: ' + (res ? res.error : 'unknown') + '</div>';
+    return;
+  }
+  if (!res.data || !res.data.length) {
+    list.innerHTML = '<div style="color:#666;font-size:13px;padding:40px;text-align:center;background:#1a1a1a;border:1px dashed #333;border-radius:8px">ライターはまだいません</div>';
+    return;
+  }
+  list.innerHTML = '';
+  res.data.forEach(w => {
+    const card = document.createElement('div');
+    card.style.cssText = 'background:#1a1a1a;border:1px solid #2a2a2a;border-radius:8px;padding:16px;display:flex;justify-content:space-between;align-items:center;gap:14px';
+    
+    const info = document.createElement('div');
+    info.style.flex = '1';
+    
+    const nameLine = document.createElement('div');
+    nameLine.style.cssText = 'font-weight:600;color:#fff;font-size:14px;margin-bottom:4px';
+    nameLine.textContent = w.display_name;
+    if (w.status !== 'active') {
+      const badge = document.createElement('span');
+      badge.style.cssText = 'margin-left:8px;font-size:10px;background:#444;color:#ccc;padding:2px 8px;border-radius:3px';
+      badge.textContent = w.status === 'suspended' ? '停止中' : '削除済';
+      nameLine.appendChild(badge);
+    }
+    info.appendChild(nameLine);
+    
+    const email = document.createElement('div');
+    email.style.cssText = 'color:#999;font-size:12px;margin-bottom:2px';
+    email.textContent = w.email || '(email 取得失敗)';
+    info.appendChild(email);
+    
+    if (w.bio) {
+      const bio = document.createElement('div');
+      bio.style.cssText = 'color:#666;font-size:11px;margin-top:4px;line-height:1.5';
+      bio.textContent = w.bio.substring(0, 80) + (w.bio.length > 80 ? '...' : '');
+      info.appendChild(bio);
+    }
+    
+    const meta = document.createElement('div');
+    meta.style.cssText = 'color:#555;font-size:10px;margin-top:6px';
+    meta.textContent = '追加: ' + new Date(w.created_at).toLocaleDateString('ja-JP');
+    info.appendChild(meta);
+    
+    card.appendChild(info);
+    
+    const actions = document.createElement('div');
+    actions.style.cssText = 'display:flex;flex-direction:column;gap:6px';
+    
+    const resetBtn = document.createElement('button');
+    resetBtn.style.cssText = 'padding:6px 12px;background:#222;color:#ccc;border:1px solid #333;border-radius:4px;cursor:pointer;font-size:11px';
+    resetBtn.textContent = 'パスワード再発行';
+    resetBtn.onclick = () => resetWriterPassword(w.id, w.display_name);
+    actions.appendChild(resetBtn);
+    
+    const toggleBtn = document.createElement('button');
+    toggleBtn.style.cssText = 'padding:6px 12px;background:' + (w.status === 'active' ? '#553' : '#262') + ';color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:11px';
+    toggleBtn.textContent = w.status === 'active' ? '停止' : '再開';
+    toggleBtn.onclick = () => toggleWriterStatus(w.id, w.status === 'active' ? 'suspended' : 'active');
+    actions.appendChild(toggleBtn);
+    
+    const delBtn = document.createElement('button');
+    delBtn.style.cssText = 'padding:6px 12px;background:#411;color:#f87171;border:1px solid #533;border-radius:4px;cursor:pointer;font-size:11px';
+    delBtn.textContent = '削除';
+    delBtn.onclick = () => deleteWriter(w.id, w.display_name);
+    actions.appendChild(delBtn);
+    
+    card.appendChild(actions);
+    list.appendChild(card);
+  });
+}
+
+function showWriterCreateModal() {
+  document.getElementById('wf-name').value = '';
+  document.getElementById('wf-email').value = '';
+  document.getElementById('wf-pass').value = '';
+  document.getElementById('wf-bio').value = '';
+  document.getElementById('wf-err').style.display = 'none';
+  document.getElementById('writer-create-modal').style.display = 'flex';
+}
+
+function closeWriterModal() {
+  document.getElementById('writer-create-modal').style.display = 'none';
+}
+
+function generatePassword() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789';
+  let pwd = '';
+  for (let i = 0; i < 12; i++) pwd += chars[Math.floor(Math.random() * chars.length)];
+  document.getElementById('wf-pass').value = pwd;
+}
+
+async function submitNewWriter() {
+  const name = document.getElementById('wf-name').value.trim();
+  const email = document.getElementById('wf-email').value.trim();
+  const pass = document.getElementById('wf-pass').value;
+  const bio = document.getElementById('wf-bio').value.trim();
+  const err = document.getElementById('wf-err');
+  err.style.display = 'none';
+  
+  if (!name || !email || !pass) { err.textContent = '名前、メール、パスワードは必須です'; err.style.display = 'block'; return; }
+  if (pass.length < 8) { err.textContent = 'パスワードは8文字以上にしてください'; err.style.display = 'block'; return; }
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { err.textContent = 'メールアドレスの形式が正しくありません'; err.style.display = 'block'; return; }
+  
+  const btn = document.getElementById('wf-submit-btn');
+  btn.disabled = true;
+  btn.textContent = '作成中...';
+  
+  const res = await callFnJW('writer', 'create', { data: { display_name: name, email, password: pass, bio: bio || null } });
+  
+  btn.disabled = false;
+  btn.textContent = '追加してパスワード発行';
+  
+  if (!res || !res.ok) {
+    err.textContent = res ? res.error : '作成に失敗しました';
+    err.style.display = 'block';
+    return;
+  }
+  
+  // 成功 → モーダル閉じて結果表示
+  closeWriterModal();
+  
+  // 発行情報を表示
+  const info = document.createElement('div');
+  info.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px';
+  info.innerHTML = '<div style="background:#1a1a1a;border:1px solid #333;border-radius:10px;padding:32px;max-width:480px;width:100%"><h3 style="font-size:18px;margin-bottom:14px;color:#79F1A4">✓ ライターを追加しました</h3><p style="color:#ccc;font-size:13px;margin-bottom:18px;line-height:1.7">下記の情報をライターに連絡してください。<br><strong style="color:#f87171">パスワードは今後表示されません</strong>。必ずコピーして保管してください。</p><div style="background:#0a0a0a;border:1px solid #333;border-radius:6px;padding:16px;font-family:monospace;font-size:13px;color:#fff;line-height:2"><div>ログイン URL: <span id="r-url" style="color:#79F1A4">/journal-admin</span></div><div>メール: <span id="r-email" style="color:#79F1A4"></span></div><div>パスワード: <span id="r-pass" style="color:#79F1A4"></span></div></div><div style="margin-top:18px;display:flex;gap:10px;justify-content:flex-end"><button id="r-copy" style="padding:10px 18px;background:#222;border:1px solid #333;border-radius:5px;color:#ccc;cursor:pointer;font-size:13px">コピー</button><button id="r-close" style="padding:10px 24px;background:linear-gradient(135deg,#79F1A4,#2BB5C8);color:#000;border:none;border-radius:5px;cursor:pointer;font-weight:600;font-size:13px">閉じる</button></div></div>';
+  document.body.appendChild(info);
+  document.getElementById('r-email').textContent = email;
+  document.getElementById('r-pass').textContent = pass;
+  document.getElementById('r-copy').onclick = () => {
+    navigator.clipboard.writeText('ログインURL: ' + location.origin + '/coworkmill-journal-admin.html\nメール: ' + email + '\nパスワード: ' + pass);
+    document.getElementById('r-copy').textContent = 'コピー済';
+  };
+  document.getElementById('r-close').onclick = () => { info.remove(); loadWriters(); };
+}
+
+async function resetWriterPassword(id, name) {
+  const newPass = prompt('「' + name + '」さんの新しいパスワードを入力してください(8文字以上):');
+  if (!newPass) return;
+  if (newPass.length < 8) { alert('8文字以上にしてください'); return; }
+  const res = await callFnJW('writer', 'reset_password', { id, data: { new_password: newPass } });
+  if (!res || !res.ok) { alert('エラー: ' + (res ? res.error : 'unknown')); return; }
+  alert('パスワードを変更しました。新しいパスワードをライターに連絡してください:\n\n' + newPass);
+}
+
+async function toggleWriterStatus(id, newStatus) {
+  if (!confirm(newStatus === 'suspended' ? 'このライターのアカウントを停止しますか?' : 'このライターのアカウントを再開しますか?')) return;
+  const res = await callFnJW('writer', 'update', { id, data: { status: newStatus } });
+  if (!res || !res.ok) { alert('エラー: ' + (res ? res.error : 'unknown')); return; }
+  loadWriters();
+}
+
+async function deleteWriter(id, name) {
+  if (!confirm('「' + name + '」さんのアカウントを完全削除しますか?\n書いた記事は残りますが、著者表記が外れます。')) return;
+  const res = await callFnJW('writer', 'delete', { id });
+  if (!res || !res.ok) { alert('エラー: ' + (res ? res.error : 'unknown')); return; }
+  loadWriters();
+}
 
 </script>
 <div id="m-del-confirm" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;align-items:center;justify-content:center">
