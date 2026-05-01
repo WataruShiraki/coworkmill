@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="meta-title">記事 — COWORKMILL journal</title>
+<meta id="meta-desc" name="description" content="">
+<meta property="og:type" content="article">
+<meta id="og-title" property="og:title" content="">
+<meta id="og-desc" property="og:description" content="">
+<meta id="og-img" property="og:image" content="">
+<meta id="og-url" property="og:url" content="">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --black:#0a0a0a; --white:#fff;
+  --g50:#fafafa; --g100:#f5f5f5; --g200:#eee; --g300:#ddd; --g400:#aaa; --g500:#888; --g600:#666; --g700:#444; --g800:#333; --g900:#111;
+  --teal:#2BB5C8;
+  --fb:'Cormorant Garamond',serif;
+  --fd:'Noto Sans JP',-apple-system,BlinkMacSystemFont,sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--fd);font-size:15px;line-height:1.9;color:var(--g900);background:var(--white);-webkit-font-smoothing:antialiased}
+a{color:var(--g900);text-decoration:underline}
+img{max-width:100%;display:block}
+
+/* ナビ */
+.j-nav{position:sticky;top:0;background:rgba(255,255,255,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--g200);z-index:100}
+.j-nav-inner{max-width:1200px;margin:0 auto;padding:18px 32px;display:flex;align-items:center;justify-content:space-between}
+.j-logo{font-family:var(--fb);font-size:22px;font-weight:600;letter-spacing:.04em;text-decoration:none}
+.j-logo small{font-family:var(--fd);font-size:11px;color:var(--g500);font-weight:400;letter-spacing:.15em;text-transform:uppercase;margin-left:10px}
+.j-nav-links{display:flex;gap:28px;font-size:13px;color:var(--g700)}
+.j-nav-links a{color:inherit;text-decoration:none}
+.j-nav-links a:hover{color:var(--g900)}
+
+/* 記事 */
+.j-article{max-width:760px;margin:0 auto;padding:60px 32px 80px}
+@media(max-width:640px){.j-article{padding:40px 20px 60px}}
+
+.j-back{font-size:12px;color:var(--g500);font-family:var(--fb);font-style:italic;margin-bottom:32px;display:inline-block;text-decoration:none}
+.j-back:hover{color:var(--g900)}
+
+.j-cat-line{font-size:11px;color:var(--teal);font-weight:500;letter-spacing:.15em;text-transform:uppercase;margin-bottom:16px}
+.j-title{font-family:var(--fb);font-size:42px;font-weight:600;line-height:1.3;letter-spacing:.01em;margin-bottom:16px;color:var(--g900)}
+@media(max-width:640px){.j-title{font-size:30px}}
+.j-subtitle{font-size:16px;color:var(--g600);line-height:1.7;margin-bottom:32px;font-weight:400}
+
+.j-meta{display:flex;align-items:center;gap:16px;padding:20px 0;border-top:1px solid var(--g200);border-bottom:1px solid var(--g200);margin-bottom:40px;font-size:12px;color:var(--g500)}
+.j-author{color:var(--g700);font-weight:500}
+.j-pr{display:inline-block;font-size:10px;background:var(--g100);color:var(--g600);padding:2px 8px;border-radius:3px;letter-spacing:.05em}
+.j-pr-disclosure{background:var(--g50);border:1px solid var(--g200);padding:14px 18px;border-radius:4px;font-size:12px;color:var(--g600);margin-bottom:32px;line-height:1.7}
+
+.j-hero{margin-bottom:48px;border-radius:6px;overflow:hidden;background:var(--g100)}
+.j-hero img{width:100%;display:block}
+
+.j-body{font-size:15px;line-height:1.95;color:var(--g800)}
+.j-body h2{font-family:var(--fb);font-size:28px;font-weight:600;margin:48px 0 18px;color:var(--g900);line-height:1.4}
+.j-body h3{font-size:18px;font-weight:600;margin:36px 0 14px;color:var(--g900)}
+.j-body p{margin-bottom:24px}
+.j-body strong{font-weight:600}
+.j-body em{font-style:italic;color:var(--g700)}
+.j-body blockquote{border-left:3px solid var(--g300);padding:12px 0 12px 24px;margin:32px 0;color:var(--g600);font-style:italic;font-family:var(--fb);font-size:18px;line-height:1.7}
+.j-body ul,.j-body ol{margin:0 0 24px 28px}
+.j-body li{margin-bottom:10px}
+.j-body img{margin:32px auto;border-radius:4px}
+.j-body a{color:var(--teal)}
+
+.j-tags{display:flex;gap:8px;flex-wrap:wrap;margin:48px 0 32px;padding-top:32px;border-top:1px solid var(--g200)}
+.j-tag{font-size:12px;color:var(--g500);background:var(--g100);padding:5px 14px;border-radius:3px;text-decoration:none}
+
+.j-author-box{background:var(--g50);padding:28px;border-radius:6px;margin-top:48px;display:flex;gap:20px;align-items:flex-start}
+.j-author-avatar{width:56px;height:56px;border-radius:50%;background:var(--g200);flex-shrink:0;background-size:cover;background-position:center}
+.j-author-info{flex:1}
+.j-author-name{font-weight:600;font-size:14px;margin-bottom:6px;color:var(--g900)}
+.j-author-bio{font-size:13px;color:var(--g600);line-height:1.7}
+
+.j-credits{margin-top:48px;padding:24px;background:var(--g50);border-radius:4px;font-size:11px;color:var(--g500);line-height:1.8}
+.j-credits-h{font-weight:600;color:var(--g700);margin-bottom:8px;font-size:11px;letter-spacing:.05em;text-transform:uppercase}
+
+.j-related{max-width:1200px;margin:0 auto;padding:60px 32px;border-top:1px solid var(--g200)}
+.j-related h3{font-family:var(--fb);font-style:italic;font-size:24px;font-weight:500;text-align:center;margin-bottom:32px;color:var(--g700)}
+.j-related-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
+@media(max-width:900px){.j-related-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.j-related-grid{grid-template-columns:1fr}}
+.j-r-card{cursor:pointer;text-decoration:none;color:inherit}
+.j-r-card:hover{opacity:.7}
+.j-r-img{aspect-ratio:16/10;background:var(--g100);border-radius:4px;margin-bottom:12px;background-size:cover;background-position:center}
+.j-r-cat{font-size:10px;color:var(--teal);font-weight:500;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px}
+.j-r-title{font-size:14px;font-weight:600;line-height:1.5}
+
+/* フッター */
+.j-foot{border-top:1px solid var(--g200);padding:48px 32px;text-align:center;color:var(--g500);font-size:12px}
+.j-foot a{color:var(--g700);margin:0 12px;text-decoration:none}
+.j-foot a:hover{color:var(--g900)}
+.j-foot-copy{margin-top:20px;font-family:var(--fb);font-style:italic}
+
+.j-status{padding:120px 20px;text-align:center;color:var(--g500);font-size:13px}
+</style>
+</head>
+<body>
+
+<header class="j-nav">
+  <div class="j-nav-inner">
+    <a href="/journal/" class="j-logo">COWORKMILL <small>journal</small></a>
+    <nav class="j-nav-links">
+      <a href="/coworkmill.html">施設を探す</a>
+      <a href="/journal/">journal</a>
+      <a href="/coworkmill-architects.html">建築家</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <div class="j-status">読み込み中...</div>
+</main>
+
+<section class="j-related" id="related-sec" style="display:none">
+  <h3>Related Stories</h3>
+  <div class="j-related-grid" id="related-grid"></div>
+</section>
+
+<footer class="j-foot">
+  <div>
+    <a href="/coworkmill.html">COWORKMILL TOP</a>
+    <a href="/journal/">journal</a>
+    <a href="https://lily-p.com" target="_blank" rel="noopener noreferrer">運営会社</a>
+    <a href="/coworkmill-privacy.html">プライバシーポリシー</a>
+    <a href="/coworkmill-terms.html">利用規約</a>
+  </div>
+  <div class="j-foot-copy">© COWORKMILL journal — Edited by Lily Partners LLC</div>
+</footer>
+
+<script src="/shared/cwm-security.js"></script>
+<script>
+const SUPABASE_URL = 'https://jakwntemjkwqwaqujffh.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+
+const CATEGORY_LABELS = {
+  'area-guide': 'エリアガイド',
+  'interview': '取材',
+  'workstyle': 'ワークスタイル',
+  'data': 'データ・トレンド',
+  'design': '建築・デザイン',
+  'other': 'その他'
+};
+
+function formatDate(iso) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  return d.getFullYear() + '.' + String(d.getMonth()+1).padStart(2,'0') + '.' + String(d.getDate()).padStart(2,'0');
+}
+
+function getSlug() {
+  const params = new URLSearchParams(location.search);
+  return params.get('slug') || '';
+}
+
+async function loadArticle() {
+  const slug = getSlug();
+  if (!slug || !/^[a-z0-9-]+$/.test(slug)) {
+    document.getElementById('main').innerHTML = '<div class="j-status">記事が見つかりません</div>';
+    return;
+  }
+  try {
+    const res = await fetch(SUPABASE_URL + '/rest/v1/articles?select=*&slug=eq.' + encodeURIComponent(slug) + '&status=eq.live&limit=1', {
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+    });
+    const data = await res.json();
+    if (!Array.isArray(data) || !data[0]) {
+      document.getElementById('main').innerHTML = '<div class="j-status">記事が見つかりません<br><br><a href="/journal/" style="color:#888">← journal トップに戻る</a></div>';
+      return;
+    }
+    renderArticle(data[0]);
+    loadMedia(data[0].id);
+    loadRelated(data[0].category, data[0].id);
+  } catch (e) {
+    document.getElementById('main').innerHTML = '<div class="j-status">記事の読み込みに失敗しました</div>';
+  }
+}
+
+function renderArticle(a) {
+  // メタタグ更新
+  document.title = a.meta_title || (a.title + ' — COWORKMILL journal');
+  document.getElementById('meta-desc').content = a.meta_description || a.excerpt || '';
+  document.getElementById('og-title').content = a.title;
+  document.getElementById('og-desc').content = a.excerpt || '';
+  document.getElementById('og-img').content = a.og_image || a.hero_image || '';
+  document.getElementById('og-url').content = location.href;
+  
+  // JSON-LD Article schema
+  const ld = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": a.title,
+    "description": a.excerpt,
+    "image": a.hero_image,
+    "datePublished": a.published_at,
+    "dateModified": a.updated_at,
+    "author": { "@type": "Person", "name": a.author_name }
+  };
+  const ldEl = document.createElement('script');
+  ldEl.type = 'application/ld+json';
+  ldEl.textContent = JSON.stringify(ld);
+  document.head.appendChild(ldEl);
+  
+  // 本文レンダリング
+  const main = document.getElementById('main');
+  main.innerHTML = '';
+  
+  const article = document.createElement('article');
+  article.className = 'j-article';
+  
+  const back = document.createElement('a');
+  back.className = 'j-back';
+  back.href = '/journal/';
+  back.textContent = '← journal';
+  article.appendChild(back);
+  
+  const cat = document.createElement('div');
+  cat.className = 'j-cat-line';
+  cat.textContent = CATEGORY_LABELS[a.category] || a.category;
+  article.appendChild(cat);
+  
+  const title = document.createElement('h1');
+  title.className = 'j-title';
+  title.textContent = a.title;
+  article.appendChild(title);
+  
+  if (a.subtitle) {
+    const sub = document.createElement('p');
+    sub.className = 'j-subtitle';
+    sub.textContent = a.subtitle;
+    article.appendChild(sub);
+  }
+  
+  const meta = document.createElement('div');
+  meta.className = 'j-meta';
+  const author = document.createElement('span');
+  author.className = 'j-author';
+  author.textContent = a.author_name;
+  meta.appendChild(author);
+  meta.appendChild(document.createTextNode(formatDate(a.published_at)));
+  if (a.reading_minutes) meta.appendChild(document.createTextNode('読了 ' + a.reading_minutes + '分'));
+  if (a.is_pr) {
+    const pr = document.createElement('span');
+    pr.className = 'j-pr';
+    pr.textContent = 'PR';
+    meta.appendChild(pr);
+  }
+  article.appendChild(meta);
+  
+  if (a.is_pr && a.pr_disclosure) {
+    const disc = document.createElement('div');
+    disc.className = 'j-pr-disclosure';
+    disc.textContent = a.pr_disclosure;
+    article.appendChild(disc);
+  }
+  
+  if (a.hero_image && cwm && cwm.safeUrl) {
+    const heroDiv = document.createElement('div');
+    heroDiv.className = 'j-hero';
+    const img = document.createElement('img');
+    img.src = cwm.safeUrl(a.hero_image);
+    img.alt = a.title;
+    heroDiv.appendChild(img);
+    article.appendChild(heroDiv);
+  }
+  
+  // 本文(body_html を innerHTML で挿入。エディタ側でサニタイズ済み前提)
+  const body = document.createElement('div');
+  body.className = 'j-body';
+  if (a.body_html) {
+    body.innerHTML = a.body_html;
+  } else if (a.body_md) {
+    // 簡易 Markdown → HTML(段落のみ)
+    body.innerHTML = a.body_md.split(/\n\n+/).map(p => {
+      const escaped = p.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      if (/^#{2,}\s/.test(p)) {
+        return '<h2>' + escaped.replace(/^#{2,}\s+/, '') + '</h2>';
+      }
+      return '<p>' + escaped + '</p>';
+    }).join('');
+  }
+  article.appendChild(body);
+  
+  if (a.tags && Array.isArray(a.tags) && a.tags.length) {
+    const tags = document.createElement('div');
+    tags.className = 'j-tags';
+    a.tags.forEach(t => {
+      const tag = document.createElement('span');
+      tag.className = 'j-tag';
+      tag.textContent = '#' + t;
+      tags.appendChild(tag);
+    });
+    article.appendChild(tags);
+  }
+  
+  const authorBox = document.createElement('div');
+  authorBox.className = 'j-author-box';
+  const avatar = document.createElement('div');
+  avatar.className = 'j-author-avatar';
+  if (a.author_avatar && cwm && cwm.safeUrl) {
+    avatar.style.backgroundImage = "url('" + cwm.safeUrl(a.author_avatar) + "')";
+  }
+  authorBox.appendChild(avatar);
+  const info = document.createElement('div');
+  info.className = 'j-author-info';
+  const name = document.createElement('div');
+  name.className = 'j-author-name';
+  name.textContent = a.author_name;
+  info.appendChild(name);
+  if (a.author_bio) {
+    const bio = document.createElement('div');
+    bio.className = 'j-author-bio';
+    bio.textContent = a.author_bio;
+    info.appendChild(bio);
+  }
+  authorBox.appendChild(info);
+  article.appendChild(authorBox);
+  
+  // クレジット欄(media_assets から)
+  const credits = document.createElement('div');
+  credits.className = 'j-credits';
+  credits.id = 'credits-box';
+  credits.style.display = 'none';
+  article.appendChild(credits);
+  
+  main.appendChild(article);
+}
+
+async function loadMedia(articleId) {
+  try {
+    const res = await fetch(SUPABASE_URL + '/rest/v1/media_assets?article_id=eq.' + articleId + '&select=alt_text,source_type,photographer,source_name,source_url,license', {
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+    });
+    const data = await res.json();
+    if (!Array.isArray(data) || !data.length) return;
+    
+    const box = document.getElementById('credits-box');
+    if (!box) return;
+    box.style.display = 'block';
+    box.innerHTML = '';
+    const h = document.createElement('div');
+    h.className = 'j-credits-h';
+    h.textContent = '画像クレジット';
+    box.appendChild(h);
+    
+    data.forEach(m => {
+      const line = document.createElement('div');
+      let txt = '・' + (m.alt_text || '画像') + ': ';
+      if (m.source_type === 'own') txt += '撮影/' + (m.photographer || 'COWORKMILL journal 編集部');
+      else if (m.source_type === 'facility') txt += '写真提供/' + (m.source_name || '施設');
+      else if (m.source_type === 'stock') txt += (m.source_name || 'Stock') + (m.photographer ? ' / ' + m.photographer : '');
+      else if (m.source_type === 'ai') txt += 'AI生成画像';
+      else if (m.source_type === 'cc') txt += 'CC: ' + (m.source_name || '');
+      if (m.license) txt += ' (' + m.license + ')';
+      line.textContent = txt;
+      box.appendChild(line);
+    });
+  } catch (e) {}
+}
+
+async function loadRelated(category, excludeId) {
+  if (!category) return;
+  try {
+    const res = await fetch(SUPABASE_URL + '/rest/v1/articles?select=slug,title,category,hero_image&category=eq.' + category + '&status=eq.live&id=neq.' + excludeId + '&order=published_at.desc&limit=3', {
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
+    });
+    const data = await res.json();
+    if (!Array.isArray(data) || !data.length) return;
+    
+    const sec = document.getElementById('related-sec');
+    const grid = document.getElementById('related-grid');
+    grid.innerHTML = '';
+    data.forEach(a => {
+      const card = document.createElement('a');
+      card.className = 'j-r-card';
+      card.href = '/journal/article.html?slug=' + encodeURIComponent(a.slug);
+      const img = document.createElement('div');
+      img.className = 'j-r-img';
+      if (a.hero_image && cwm && cwm.safeUrl) {
+        img.style.backgroundImage = "url('" + cwm.safeUrl(a.hero_image) + "')";
+      }
+      card.appendChild(img);
+      const c = document.createElement('div');
+      c.className = 'j-r-cat';
+      c.textContent = CATEGORY_LABELS[a.category] || a.category;
+      card.appendChild(c);
+      const t = document.createElement('div');
+      t.className = 'j-r-title';
+      t.textContent = a.title;
+      card.appendChild(t);
+      grid.appendChild(card);
+    });
+    sec.style.display = 'block';
+  } catch (e) {}
+}
+
+loadArticle();
+</script>
+</body>
+</html>
