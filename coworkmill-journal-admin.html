@@ -268,10 +268,16 @@ label{font-size:12px;color:var(--fg-3);display:block;margin-bottom:6px}
   <div class="modal">
     <h3>画像を挿入(出所必須)</h3>
     <div class="field">
-      <label>画像 URL</label>
-      <input type="text" id="img-url" placeholder="https://...">
-      <small>Supabase Storage アップロードは Phase 2-6 で実装予定。今は外部 URL を入れてください。</small>
+      <label>画像をアップロード</label>
+      <input type="file" id="img-file" accept="image/jpeg,image/png,image/webp,image/gif,image/svg+xml">
+      <small>JPEG / PNG / WebP / GIF / SVG・10MB まで。アップロードすると下の URL は自動で埋まります。</small>
     </div>
+    <div class="field">
+      <label>または 画像 URL(外部)</label>
+      <input type="text" id="img-url" placeholder="https://...">
+      <small>Unsplash 等の外部画像を使う場合はこちらに URL を入れてください。</small>
+    </div>
+    <div id="img-upload-progress" style="display:none;font-size:11px;color:var(--fg-3);margin-bottom:10px"></div>
     <div class="field">
       <label>代替テキスト(alt)<span style="color:var(--red)"> *</span></label>
       <input type="text" id="img-alt" maxlength="500" placeholder="アクセシビリティのため必須">
@@ -305,7 +311,7 @@ label{font-size:12px;color:var(--fg-3);display:block;margin-bottom:6px}
   </div>
 </div>
 
-<div class="flash" id="flash"></div>
+<div class="flash" id="flash" onclick="this.classList.remove('show')" title="クリックで閉じる"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
 <script>
@@ -317,6 +323,8 @@ let session = null;
 let writerProfile = null;
 let currentArticle = null;
 let mde = null;
+let isDirty = false;
+function markDirty(){ isDirty = true; }
 
 // =================== Auth ===================
 function getSession(){
@@ -493,17 +501,50 @@ function showEditor(){
   });
   
   window.scrollTo(0, 0);
+  isDirty = false;
+  // input 監視
+  ['ed-title','ed-subtitle','ed-slug','ed-category','ed-status','ed-excerpt','ed-tags','ed-hero','ed-reading'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.removeEventListener('input', markDirty);
+      el.removeEventListener('change', markDirty);
+      el.addEventListener('input', markDirty);
+      el.addEventListener('change', markDirty);
+    }
+  });
+  if (mde && mde.codemirror) {
+    mde.codemirror.on('change', markDirty);
+  }
 }
 
 function backToList(){
+  if (isDirty) {
+    if (!confirm('編集中の内容は失われます。一覧に戻ってもよろしいですか?')) return;
+  }
   if (mde) { mde.toTextArea(); mde = null; }
   document.getElementById('view-editor').classList.remove('show');
   document.getElementById('view-list').style.display = 'block';
+  isDirty = false;
   refresh();
 }
 
 function slugify(t){
   return (t||'').toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g,'-').replace(/-+/g,'-').replace(/^-|-$/g,'').substring(0, 100);
+}
+
+async function checkSlugAvailable(slug, excludeId){
+  // 自分以外で同じ slug を持つ記事がないか確認(全 status 対象、live じゃなくても重複は禁止)
+  let url = SUPABASE_URL + '/rest/v1/articles?select=id,status&slug=eq.' + encodeURIComponent(slug) + '&limit=1';
+  // 自分の記事は anon SELECT は status=live 以外見えない、authenticated は自分のだけ。
+  // ここでは authenticated として fetch すれば自分のは見える、他人のは live のみ。
+  // つまり「他人の draft とぶつかる」ケースは検知できない、ただし RLS の writer_insert は author_user_id=auth.uid() を要求するので
+  // 他人の slug と被ったときは 409(unique constraint)が DB から返ってくる、それでフォロー。
+  const r = await fetch(url, {
+    headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + session.access_token }
+  });
+  const data = await r.json();
+  if (Array.isArray(data) && data[0] && data[0].id !== excludeId) return false;
+  return true;
 }
 
 async function saveArticle(){
@@ -515,20 +556,68 @@ async function saveArticle(){
     document.getElementById('ed-slug').value = slug;
   }
   if (!/^[a-z0-9-]{1,100}$/.test(slug)) {
-    flash('スラッグは英小文字・数字・ハイフンのみ', true); return;
+    flash('スラッグは英小文字・数字・ハイフンのみ・1〜100文字です', true); return;
+  }
+  
+  const titleVal = document.getElementById('ed-title').value.trim();
+  if (!titleVal) {
+    flash('タイトルを入力してください', true); return;
+  }
+  if (titleVal.length > 200) {
+    flash('タイトルは200文字以内です', true); return;
+  }
+  
+  const subtitle = document.getElementById('ed-subtitle').value.trim();
+  if (subtitle.length > 300) {
+    flash('サブタイトルは300文字以内です', true); return;
   }
   
   const tags = document.getElementById('ed-tags').value.split(',').map(s=>s.trim()).filter(s=>s);
+  if (tags.length > 20) {
+    flash('タグは20個までです', true); return;
+  }
+  if (tags.some(t => t.length > 50)) {
+    flash('各タグは50文字以内にしてください', true); return;
+  }
+  
+  const excerpt = document.getElementById('ed-excerpt').value.trim();
+  if (excerpt.length > 500) {
+    flash('抜粋は500文字以内です', true); return;
+  }
+  
   const reading = parseInt(document.getElementById('ed-reading').value) || null;
+  if (reading !== null && (reading < 1 || reading > 120)) {
+    flash('読了時間は1〜120分の範囲です', true); return;
+  }
+  
+  const bodyMd = mde.value();
+  if (bodyMd.length > 100000) {
+    flash('本文は100,000文字以内です', true); return;
+  }
+  
+  const status = document.getElementById('ed-status').value;
+  
+  // 公開時の確認
+  if (status === 'live' && currentArticle.status !== 'live') {
+    if (!confirm('この記事を「公開」状態にして全ユーザーが閲覧できるようにします。よろしいですか?')) {
+      return;
+    }
+  }
+  
+  // slug 重複チェック(自分の記事を除く)
+  const slugOk = await checkSlugAvailable(slug, currentArticle.id);
+  if (!slugOk) {
+    flash('このスラッグはすでに使われています。別のものを指定してください。', true); return;
+  }
   
   const payload = {
     slug,
-    title: document.getElementById('ed-title').value.trim(),
-    subtitle: document.getElementById('ed-subtitle').value.trim() || null,
+    title: titleVal,
+    subtitle: subtitle || null,
     category: document.getElementById('ed-category').value,
-    status: document.getElementById('ed-status').value,
-    body_md: mde.value(),
-    excerpt: document.getElementById('ed-excerpt').value.trim() || null,
+    status,
+    body_md: bodyMd,
+    excerpt: excerpt || null,
     tags: tags.length ? tags : null,
     hero_image: document.getElementById('ed-hero').value.trim() || null,
     reading_minutes: reading,
@@ -537,9 +626,6 @@ async function saveArticle(){
   };
   if (payload.status === 'live' && !currentArticle.published_at) {
     payload.published_at = new Date().toISOString();
-  }
-  if (!payload.title || payload.title.length > 200) {
-    flash('タイトルは1〜200文字で入力してください', true); return;
   }
   
   document.getElementById('save-status').textContent = '保存中...';
@@ -571,31 +657,52 @@ async function saveArticle(){
     }
     const data = await r.json();
     if (!r.ok) {
-      flash((Array.isArray(data) ? data[0] : data)?.message || '保存に失敗しました', true);
+      let msg = (Array.isArray(data) ? data[0] : data)?.message || '保存に失敗しました';
+      // unique violation を判別
+      if (msg.indexOf('duplicate key') > -1 || msg.indexOf('unique') > -1) {
+        msg = 'このスラッグはすでに使われています。別のものを指定してください。';
+      }
+      flash(msg, true);
       document.getElementById('save-status').textContent = '';
       return;
     }
     currentArticle = Array.isArray(data) ? data[0] : data;
     document.getElementById('btn-delete').style.display = 'block';
     document.getElementById('save-status').textContent = '保存しました ' + new Date().toLocaleTimeString('ja-JP');
+    isDirty = false;
     flash('保存しました');
   } catch (e) {
+    console.error(e);
     flash('エラー: ' + e.message, true);
   }
 }
 
 async function deleteArticle(){
   if (!currentArticle?.id) return;
-  if (!confirm('この記事を削除します。よろしいですか?')) return;
-  const r = await fetch(SUPABASE_URL + '/rest/v1/articles?id=eq.' + currentArticle.id, {
-    method: 'DELETE',
-    headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + session.access_token }
-  });
-  if (r.ok) {
-    flash('削除しました');
-    backToList();
-  } else {
-    flash('削除に失敗しました', true);
+  const title = currentArticle.title || '(無題)';
+  if (!confirm('「' + title + '」を完全に削除します。この操作は元に戻せません。よろしいですか?')) return;
+  
+  try {
+    // 関連する media_assets も削除(ON DELETE CASCADE で自動削除されるはずだが念のため)
+    const r = await fetch(SUPABASE_URL + '/rest/v1/articles?id=eq.' + currentArticle.id, {
+      method: 'DELETE',
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + session.access_token }
+    });
+    if (r.ok) {
+      isDirty = false;
+      flash('削除しました');
+      // dirty フラグはクリアしてから backToList を呼ぶ(確認ダイアログ防止)
+      if (mde) { mde.toTextArea(); mde = null; }
+      document.getElementById('view-editor').classList.remove('show');
+      document.getElementById('view-list').style.display = 'block';
+      refresh();
+    } else {
+      const err = await r.json().catch(() => ({}));
+      flash(err.message || '削除に失敗しました', true);
+    }
+  } catch (e) {
+    console.error(e);
+    flash('削除エラー: ' + e.message, true);
   }
 }
 
@@ -615,29 +722,121 @@ function openImgModal(editor){
   document.getElementById('img-modal').classList.add('show');
   ['img-url','img-alt','img-source-name','img-photographer','img-permission'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('img-source-type').value = 'own';
+  const fileInput = document.getElementById('img-file');
+  if (fileInput) fileInput.value = '';
+  
+  // ファイル選択時のバリデーション
+  if (fileInput && !fileInput.dataset.bound) {
+    fileInput.dataset.bound = '1';
+    fileInput.addEventListener('change', () => {
+      const f = fileInput.files?.[0];
+      if (!f) return;
+      const okMime = ['image/jpeg','image/png','image/webp','image/gif','image/svg+xml'].includes(f.type);
+      if (!okMime) {
+        flash('対応形式は JPEG / PNG / WebP / GIF / SVG です', true);
+        fileInput.value = '';
+        return;
+      }
+      if (f.size > 10 * 1024 * 1024) {
+        flash('ファイルサイズは10MBまでです', true);
+        fileInput.value = '';
+        return;
+      }
+      // alt が空なら、ファイル名から提案
+      const altInput = document.getElementById('img-alt');
+      if (!altInput.value) {
+        const baseName = f.name.replace(/\.[^.]+$/, '').replace(/[_-]/g, ' ');
+        altInput.placeholder = '例: ' + baseName;
+      }
+    });
+  }
+  
+  // ソース種別変更で必須欄の見た目を切り替え
+  const srcSelect = document.getElementById('img-source-type');
+  const updateSourceUI = () => {
+    const v = srcSelect.value;
+    const nameWrap = document.getElementById('img-source-name-wrap');
+    const permWrap = document.getElementById('img-permission-wrap');
+    if (nameWrap) nameWrap.style.opacity = (v === 'stock' || v === 'cc') ? '1' : '0.6';
+    if (permWrap) permWrap.style.opacity = v === 'facility' ? '1' : '0.6';
+  };
+  if (!srcSelect.dataset.bound) {
+    srcSelect.dataset.bound = '1';
+    srcSelect.addEventListener('change', updateSourceUI);
+  }
+  updateSourceUI();
 }
 function closeImgModal(){
   document.getElementById('img-modal').classList.remove('show');
+  // ファイル input をクリア(次回のために)
+  const fileInput = document.getElementById('img-file');
+  if (fileInput) fileInput.value = '';
+}
+
+async function uploadFileToStorage(file){
+  if (!currentArticle?.id) throw new Error('画像アップロードには先に記事を保存してください');
+  if (file.size > 10 * 1024 * 1024) throw new Error('ファイルサイズは10MB以下にしてください');
+  
+  // パス: {user_id}/{article_id}/{timestamp}-{filename}
+  const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, '_').substring(0, 100);
+  const path = session.user.id + '/' + currentArticle.id + '/' + Date.now() + '-' + safeName;
+  
+  const progressEl = document.getElementById('img-upload-progress');
+  progressEl.style.display = 'block';
+  progressEl.textContent = 'アップロード中...';
+  
+  const r = await fetch(SUPABASE_URL + '/storage/v1/object/journal-images/' + path, {
+    method: 'POST',
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': 'Bearer ' + session.access_token,
+      'Content-Type': file.type,
+      'x-upsert': 'true'
+    },
+    body: file
+  });
+  
+  if (!r.ok) {
+    const err = await r.text();
+    progressEl.style.display = 'none';
+    throw new Error('アップロード失敗: ' + err.substring(0, 200));
+  }
+  
+  const publicUrl = SUPABASE_URL + '/storage/v1/object/public/journal-images/' + path;
+  progressEl.textContent = 'アップロード完了';
+  setTimeout(() => { progressEl.style.display = 'none'; }, 2000);
+  return publicUrl;
 }
 
 async function insertImage(){
-  const url = document.getElementById('img-url').value.trim();
+  let url = document.getElementById('img-url').value.trim();
+  const fileInput = document.getElementById('img-file');
+  const file = fileInput.files?.[0];
   const alt = document.getElementById('img-alt').value.trim();
   const sourceType = document.getElementById('img-source-type').value;
   const sourceName = document.getElementById('img-source-name').value.trim();
   const photographer = document.getElementById('img-photographer').value.trim();
   const permission = document.getElementById('img-permission').value.trim();
   
-  if (!url) { flash('画像 URL を入力してください', true); return; }
+  // バリデーション
+  if (!file && !url) { flash('画像ファイルか URL のどちらかを指定してください', true); return; }
   if (!alt) { flash('代替テキスト(alt)は必須です', true); return; }
+  if (alt.length > 500) { flash('代替テキストは500文字以内です', true); return; }
   if (sourceType === 'facility' && !permission) { flash('施設提供の場合、掲載許諾メモは必須です', true); return; }
   if (sourceType === 'stock' && !sourceName) { flash('ストック写真の場合、ソース名(Unsplash 等)は必須です', true); return; }
+  if (!currentArticle?.id) { flash('画像挿入には先に記事を保存してください', true); return; }
   
-  // 記事 id 必須(media_assets は article_id NOT NULL)
-  if (!currentArticle?.id) {
-    flash('画像挿入には先に記事を保存してください', true); return;
+  // ファイルがあればアップロード
+  if (file) {
+    try {
+      url = await uploadFileToStorage(file);
+    } catch (e) {
+      flash(e.message, true);
+      return;
+    }
   }
   
+  // media_assets に登録
   try {
     const r = await fetch(SUPABASE_URL + '/rest/v1/media_assets', {
       method: 'POST',
@@ -671,22 +870,33 @@ async function insertImage(){
   const cm = mde.codemirror;
   const cur = cm.getCursor();
   cm.replaceRange(md, cur);
+  markDirty();
   closeImgModal();
   flash('画像を挿入しました(出所も記録されました)');
 }
 
 // =================== UI ヘルパ ===================
+let _flashTimer = null;
 function flash(msg, isError){
   const el = document.getElementById('flash');
   el.textContent = msg;
   el.className = 'flash show' + (isError ? ' error' : '');
-  setTimeout(() => el.classList.remove('show'), 3500);
+  if (_flashTimer) clearTimeout(_flashTimer);
+  // エラーは長め(7秒)に表示、成功は3.5秒
+  _flashTimer = setTimeout(() => el.classList.remove('show'), isError ? 7000 : 3500);
 }
 
 async function refresh(){
   const list = await loadArticles();
   renderList(list);
 }
+
+window.addEventListener('beforeunload', (e) => {
+  if (isDirty) {
+    e.preventDefault();
+    e.returnValue = '';
+  }
+});
 
 // =================== 起動 ===================
 async function bootstrap(){
@@ -743,7 +953,13 @@ document.getElementById('login-form').addEventListener('submit', async (e) => {
     await loadWriterProfile();
     showApp();
   } catch (err) {
-    errEl.textContent = err.message;
+    let msg = err.message || 'ログインに失敗しました';
+    if (msg.toLowerCase().indexOf('invalid login credentials') > -1) {
+      msg = 'メールアドレスまたはパスワードが間違っています';
+    } else if (msg.toLowerCase().indexOf('email not confirmed') > -1) {
+      msg = 'メールアドレスが確認されていません。編集部にお問い合わせください。';
+    }
+    errEl.textContent = msg;
     errEl.style.display = 'block';
     btn.textContent = 'ログイン';
     btn.disabled = false;
