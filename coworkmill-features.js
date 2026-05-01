@@ -426,12 +426,12 @@
   // ので、安全な実装を新規追加する。cwm.validate.* 全部チェックしたうえで
   // inquiries テーブルに書き込む(テーブル不在時はサイレントに success 表示)
   // ============================================================
-  (function wireContactForm() {
-    if (!/contact/i.test(location.pathname)) return;
-    if (window.cwm == null || window.cwm.validate == null) return;
+  function _bootstrapContactForm() {
+    if (!/contact/i.test(location.pathname)) return true;  // skip
+    if (window.cwm == null || window.cwm.validate == null) return false;  // retry
     var inputs = document.querySelectorAll('input');
     var textareas = document.querySelectorAll('textarea');
-    if (inputs.length < 3 || textareas.length < 1) return;
+    if (inputs.length < 3 || textareas.length < 1) return false;  // DOM not ready yet
     var nameInput = inputs[0], companyInput = inputs[1], emailInput = inputs[2];
     var bodyArea = textareas[0];
     var btn = document.querySelector('button.cwm-arrow-link') || document.querySelector('button');
@@ -545,6 +545,13 @@
         }
       } catch (err) { showSuccess(); }
     }, true);
+    return true;
+  }
+  // wireContactForm を retry-loop で起動 — cwm-security.js が defer load される前に
+  // features.js が走った場合に備えて、cwm.validate がアタッチされるまで待つ
+  (function pollContact() {
+    try { if (_bootstrapContactForm()) return; } catch (e) { /* keep trying */ }
+    setTimeout(pollContact, 50);
   })();
 
 })();
