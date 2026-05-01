@@ -57,11 +57,11 @@ a{text-decoration:none;color:inherit}
 
     <div class="fg">
       <label class="fl">メールアドレス</label>
-      <input class="fin" id="email" type="email" placeholder="info@example.com" autocomplete="email">
+      <input class="fin" id="email" type="email" placeholder="info@example.com" maxlength="254" autocomplete="email" required>
     </div>
     <div class="fg">
       <label class="fl">パスワード</label>
-      <input class="fin" id="pass" type="password" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')login()">
+      <input class="fin" id="pass" type="password" placeholder="••••••••" maxlength="200" autocomplete="current-password" onkeydown="if(event.key==='Enter')login()" required>
     </div>
     <div class="forgot" onclick="resetPassword()">パスワードをお忘れの方</div>
 
@@ -94,6 +94,21 @@ async function login() {
     errEl.textContent = 'メールアドレスとパスワードを入力してください。';
     errEl.classList.add('show');
     return;
+  }
+  // 共通バリデーター — フォーマットだけ確認(パスワードは Supabase 側がチェック)
+  if (window.cwm && window.cwm.validate) {
+    const emailCheck = cwm.validate.email(email, { label: 'メールアドレス' });
+    if (!emailCheck.ok) {
+      errEl.textContent = emailCheck.error;
+      errEl.classList.add('show');
+      return;
+    }
+    const passSafe = cwm.validate.safeText(pass, { label: 'パスワード' });
+    if (!passSafe.ok) {
+      errEl.textContent = passSafe.error;
+      errEl.classList.add('show');
+      return;
+    }
   }
 
   btn.textContent = 'ログイン中...';

@@ -63,15 +63,15 @@ a{text-decoration:none;color:inherit}
     <div class="err" id="reg-err"></div>
     <div class="fg">
       <label class="fl">メールアドレス</label>
-      <input class="fin" id="reg-email" type="email" placeholder="ops@cowkml.com">
+      <input class="fin" id="reg-email" type="email" placeholder="ops@cowkml.com" maxlength="254" required>
     </div>
     <div class="fg">
       <label class="fl">パスワード（8文字以上）</label>
-      <input class="fin" id="reg-pass" type="password" placeholder="••••••••">
+      <input class="fin" id="reg-pass" type="password" placeholder="••••••••" minlength="8" maxlength="200" required>
     </div>
     <div class="fg">
       <label class="fl">パスワード（確認）</label>
-      <input class="fin" id="reg-pass2" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')register()">
+      <input class="fin" id="reg-pass2" type="password" placeholder="••••••••" minlength="8" maxlength="200" onkeydown="if(event.key==='Enter')register()" required>
     </div>
     <button class="btn" onclick="register()">アカウントを作成してログイン</button>
   </div>
@@ -83,11 +83,11 @@ a{text-decoration:none;color:inherit}
     <div class="err" id="err">メールアドレスまたはパスワードが正しくありません。</div>
     <div class="fg">
       <label class="fl">メールアドレス</label>
-      <input class="fin" id="email" type="email" placeholder="ops@cowkml.com">
+      <input class="fin" id="email" type="email" placeholder="ops@cowkml.com" maxlength="254" required>
     </div>
     <div class="fg">
       <label class="fl">パスワード</label>
-      <input class="fin" id="pass" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')login()">
+      <input class="fin" id="pass" type="password" placeholder="••••••••" maxlength="200" onkeydown="if(event.key==='Enter')login()" required>
     </div>
     <div class="forgot"><a href="?reset" style="color:var(--g400);font-size:10px">アカウントをリセット</a></div>
     <button class="btn" onclick="login()">ログイン</button>
@@ -134,6 +134,13 @@ function register() {
     errEl.textContent = 'メールアドレスとパスワードを入力してください。';
     errEl.classList.add('show'); return;
   }
+  // 共通バリデーター
+  if (window.cwm && window.cwm.validate) {
+    const e = cwm.validate.email(email, { label: 'メールアドレス' });
+    if (!e.ok) { errEl.textContent = e.error; errEl.classList.add('show'); return; }
+    const s = cwm.validate.safeText(pass, { label: 'パスワード' });
+    if (!s.ok) { errEl.textContent = s.error; errEl.classList.add('show'); return; }
+  }
   if (pass.length < 8) {
     errEl.textContent = 'パスワードは8文字以上にしてください。';
     errEl.classList.add('show'); return;
@@ -155,6 +162,13 @@ function login() {
   errEl.classList.remove('show');
 
   if (!email || !pass) { errEl.classList.add('show'); return; }
+  // 共通バリデーター — email フォーマットだけチェック
+  if (window.cwm && window.cwm.validate) {
+    const e = cwm.validate.email(email, { label: 'メールアドレス' });
+    if (!e.ok) { errEl.textContent = e.error; errEl.classList.add('show'); return; }
+    const s = cwm.validate.safeText(pass, { label: 'パスワード' });
+    if (!s.ok) { errEl.textContent = s.error; errEl.classList.add('show'); return; }
+  }
 
   const stored = getStored();
   if (!stored || email !== stored.email || pass !== stored.pass) {
