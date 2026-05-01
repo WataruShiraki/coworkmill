@@ -345,14 +345,9 @@ function toast(msg, kind) {
 //  → 短期解: Edge Function に article.list を追加(後で。今はサンプル記事1件しか無いので live だけでも問題なし)
 async function loadArticles() {
   try {
-    // 暫定: anon キーで status='live' のみ取得(下書きは取れない)
-    // Phase 1B 拡張で article.list アクションを追加する
-    const url = SUPABASE_URL + '/rest/v1/articles?select=id,slug,title,subtitle,category,status,published_at,updated_at,tags,is_pr&order=updated_at.desc';
-    const res = await fetch(url, {
-      headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
-    });
-    const data = await res.json();
-    allArticles = Array.isArray(data) ? data : [];
+    // Edge Function 経由(JWT 認証つきで全status見れる)
+    const r = await callEdge('article', 'list', { data: activeStatus ? { status: activeStatus } : {} });
+    allArticles = r.data || [];
     renderRows();
   } catch (e) {
     document.getElementById('rows').innerHTML = '<div class="empty">読み込みに失敗: ' + cwm.esc(e.message) + '</div>';
@@ -426,7 +421,7 @@ document.getElementById('filters').addEventListener('click', e => {
   document.querySelectorAll('.fchip').forEach(b => b.classList.remove('on'));
   e.target.classList.add('on');
   activeStatus = e.target.dataset.st || '';
-  renderRows();
+  loadArticles();  // server-side フィルタで再取得
 });
 
 // === エディタ ===
@@ -455,13 +450,10 @@ async function openEditor(id) {
     document.getElementById('btn-archive').style.display = 'inline-flex';
     // 既存記事をフェッチ
     try {
-      const res = await fetch(SUPABASE_URL + '/rest/v1/articles?select=*&id=eq.' + id + '&limit=1', {
-        headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
-      });
-      const data = await res.json();
-      if (Array.isArray(data) && data[0]) {
-        editingArticle = data[0];
-        const a = data[0];
+      const r = await callEdge('article', 'get', { id });
+      if (r.data) {
+        editingArticle = r.data;
+        const a = r.data;
         document.getElementById('f-title').value = a.title || '';
         document.getElementById('f-subtitle').value = a.subtitle || '';
         document.getElementById('f-slug').value = a.slug || '';
