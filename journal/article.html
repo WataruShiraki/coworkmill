@@ -49,14 +49,14 @@ img{max-width:100%;display:block}
 
 /* 記事 */
 .j-article{max-width:760px;margin:0 auto;padding:60px 32px 80px}
-@media(max-width:640px){.j-article{padding:40px 20px 60px}}
+
 
 .j-back{font-size:12px;color:var(--fg-4);font-family:var(--fb);font-style:italic;margin-bottom:32px;display:inline-block;letter-spacing:.04em;transition:color .2s}
 .j-back:hover{color:var(--fg-2)}
 
 .j-cat-line{font-size:11px;color:var(--teal);font-weight:500;letter-spacing:.18em;text-transform:uppercase;margin-bottom:18px}
 .j-title{font-family:var(--fb);font-size:46px;font-weight:500;line-height:1.25;letter-spacing:.01em;margin-bottom:18px;color:var(--fg)}
-@media(max-width:640px){.j-title{font-size:32px}}
+
 .j-subtitle{font-size:16px;color:var(--fg-2);line-height:1.7;margin-bottom:36px;font-weight:400}
 
 .j-meta{display:flex;align-items:center;gap:16px;flex-wrap:wrap;padding:20px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:44px;font-size:12px;color:var(--fg-4)}
@@ -96,7 +96,7 @@ img{max-width:100%;display:block}
 .j-related h3{font-family:var(--fb);font-style:italic;font-size:26px;font-weight:500;text-align:center;margin-bottom:36px;color:var(--fg-3)}
 .j-related-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
 @media(max-width:900px){.j-related-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:640px){.j-related-grid{grid-template-columns:1fr}}
+
 .j-r-card{cursor:pointer}
 .j-r-card:hover{opacity:.85}
 .j-r-img{aspect-ratio:16/10;background:var(--bg-3);border-radius:4px;margin-bottom:14px;background-size:cover;background-position:center}
@@ -110,6 +110,51 @@ img{max-width:100%;display:block}
 
 .j-status{padding:120px 20px;text-align:center;color:var(--fg-4);font-size:13px}
 .j-status a{color:var(--fg-3);text-decoration:underline;margin-top:16px;display:inline-block}
+@media(max-width:768px){
+  .j-nav-inner{padding:12px 18px;gap:14px}
+  .j-logo img{height:24px}
+  .j-brand-label{font-size:16px;margin-left:7px}
+  .j-nav-links{font-size:11.5px;gap:14px}
+  .j-nav-links a.j-active,.j-nav-links a:hover{}
+  .j-nav-links a.j-back-to-main{font-size:11.5px}
+  .j-article{padding:36px 18px 56px;max-width:100%}
+  .j-back{font-size:11.5px;margin-bottom:24px}
+  .j-cat-line{font-size:10px;margin-bottom:14px;letter-spacing:.14em}
+  .j-title{font-size:30px;line-height:1.3;margin-bottom:14px}
+  .j-subtitle{font-size:14.5px;margin-bottom:28px;line-height:1.7}
+  .j-meta{padding:14px 0;margin-bottom:32px;gap:12px;font-size:11.5px}
+  .j-pr-disclosure{padding:12px 14px;font-size:11.5px;margin-bottom:28px}
+  .j-hero{margin-bottom:36px;border-radius:4px}
+  .j-body{font-size:14.5px;line-height:1.95}
+  .j-body h2{font-size:24px;margin:40px 0 16px}
+  .j-body h3{font-size:17px;margin:28px 0 12px}
+  .j-body p{margin-bottom:22px}
+  .j-body blockquote{padding:8px 0 8px 18px;margin:24px 0;font-size:16px}
+  .j-body ul,.j-body ol{margin:0 0 22px 22px}
+  .j-body img{margin:24px auto}
+  .j-tags{margin:36px 0 28px;padding-top:28px;gap:6px}
+  .j-tag{font-size:11px;padding:4px 11px}
+  .j-author-box{padding:20px;margin-top:36px;gap:16px;border-radius:4px}
+  .j-author-avatar{width:48px;height:48px}
+  .j-author-name{font-size:13.5px}
+  .j-author-bio{font-size:12.5px;line-height:1.7}
+  .j-credits{margin-top:36px;padding:18px;font-size:10.5px}
+  .j-related{padding:40px 18px}
+  .j-related h3{font-size:22px;margin-bottom:24px}
+  .j-related-grid{grid-template-columns:1fr;gap:24px}
+  .j-r-img{aspect-ratio:16/10;margin-bottom:10px}
+  .j-r-title{font-size:13.5px}
+  .j-foot{padding:36px 18px;font-size:11px}
+  .j-foot a{margin:0 6px;display:inline-block;padding:4px 0}
+  .j-foot-copy{margin-top:14px;font-size:11px}
+}
+@media(max-width:480px){
+  .j-title{font-size:24px;letter-spacing:.005em}
+  .j-body{font-size:14px}
+  .j-body h2{font-size:21px}
+  .j-nav-links a.j-back-to-main span.full{display:none}
+  .j-nav-links a.j-back-to-main span.short{display:inline!important}
+}
 </style>
 </head>
 <body>
@@ -121,7 +166,7 @@ img{max-width:100%;display:block}
       <span class="j-brand-label">journal</span>
     </a>
     <nav class="j-nav-links">
-      <a href="/coworkmill.html" class="j-back-to-main">← COWORKMILL TOP</a>
+      <a href="/coworkmill.html" class="j-back-to-main"><span class="full">← COWORKMILL TOP</span><span class="short" style="display:none">← TOP</span></a>
     </nav>
   </div>
 </header>
