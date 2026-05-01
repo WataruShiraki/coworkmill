@@ -10,6 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
 <style>
 :root{
   --bg:#fafafa; --bg-2:#fff; --bg-3:#f4f4f4; --bg-4:#ebebeb;
@@ -43,7 +44,7 @@ label{font-size:12px;color:var(--fg-3);display:block;margin-bottom:6px}
 .login-help{margin-top:24px;padding-top:24px;border-top:1px solid var(--line);font-size:11px;color:var(--fg-4);line-height:1.7}
 
 /* ===== ヘッダー ===== */
-.app-nav{position:sticky;top:0;background:rgba(18,18,18,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);z-index:100}
+.app-nav{position:sticky;top:0;background:rgba(255,255,255,.95);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);z-index:100}
 .app-nav-inner{max-width:1400px;margin:0 auto;padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:24px}
 .app-logo{display:flex;align-items:center;gap:10px}
 .app-logo img{height:28px}
@@ -143,8 +144,8 @@ label{font-size:12px;color:var(--fg-3);display:block;margin-bottom:6px}
 
 /* EasyMDE - default light theme */
 .EasyMDEContainer{margin-top:6px}
-.EasyMDEContainer .CodeMirror{min-height:400px;font-size:15px;line-height:1.8}
-.EasyMDEContainer .editor-toolbar{border-radius:4px 4px 0 0}
+.EasyMDEContainer .CodeMirror{min-height:400px;font-size:15px;line-height:1.8;border:1px solid #d0d0d0;border-top:none;background:#fff;color:#1a1a1a}
+.EasyMDEContainer .editor-toolbar{border-radius:4px 4px 0 0;border:1px solid #d0d0d0;background:#f7f7f7}
 .EasyMDEContainer .editor-toolbar button{color:#333!important}
 .EasyMDEContainer .editor-toolbar button:hover,.EasyMDEContainer .editor-toolbar button.active{background:#f0f0f0;color:#000!important}
 .EasyMDEContainer .editor-toolbar i.separator{border-left-color:#ddd;border-right-color:#fff}
@@ -525,7 +526,7 @@ function showEditor(){
     element: document.getElementById('ed-body'),
     initialValue: currentArticle.body_md || '',
     spellChecker: false,
-    autoDownloadFontAwesome: true,
+    autoDownloadFontAwesome: false,
     toolbar: [
       'bold','italic','strikethrough','|',
       'heading-2','heading-3','|',
