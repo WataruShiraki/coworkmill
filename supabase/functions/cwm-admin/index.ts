@@ -78,6 +78,28 @@ async function writeAuditLog(
 Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: cors });
 
+  // === 一時的な診断エンドポイント === (後で削除)
+  const url = new URL(req.url);
+  if (url.searchParams.get("diag") === "envcheck") {
+    const envNames = [
+      "SUPABASE_URL",
+      "SUPABASE_SERVICE_ROLE_KEY",
+      "SUPABASE_SERVICE_KEY",
+      "SUPABASE_ANON_KEY",
+      "CWM_JWT_SECRET",
+      "SUPABASE_DB_URL"
+    ];
+    const result: Record<string, boolean | string> = {};
+    for (const n of envNames) {
+      const v = Deno.env.get(n);
+      result[n] = v ? ("set, length=" + v.length) : "MISSING";
+    }
+    return new Response(JSON.stringify(result, null, 2), {
+      status: 200,
+      headers: { "Content-Type": "application/json", ...cors }
+    });
+  }
+
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim()
     ?? req.headers.get("cf-connecting-ip")
     ?? null;
