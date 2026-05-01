@@ -91,7 +91,52 @@ label{font-size:12px;color:var(--fg-3);display:block;margin-bottom:6px}
 .editor-head .save-status{font-size:11px;color:var(--fg-4);margin-left:auto}
 
 .editor-grid{display:grid;grid-template-columns:1fr 320px;gap:24px;align-items:start}
-@media(max-width:980px){.editor-grid{grid-template-columns:1fr}}
+@media(max-width:980px){.editor-grid{grid-template-columns:1fr}.editor-side{position:static;top:auto}}
+@media(max-width:768px){
+  .login-card{padding:32px 24px;border-radius:6px}
+  .login-card h1{font-size:13px;margin-bottom:24px}
+  .app-nav-inner{padding:12px 16px;gap:12px}
+  .app-logo img{height:24px}
+  .app-logo .label{font-size:15px}
+  .app-meta{gap:10px;font-size:11px}
+  .app-user{display:none}
+  .app-logout{padding:5px 10px;font-size:11px}
+  .app-main{padding:20px 16px 48px}
+  .list-head{margin-bottom:20px;gap:10px}
+  .list-head h2{font-size:17px}
+  .btn-primary,.btn-secondary{padding:9px 16px;font-size:12px}
+  .article-row{padding:14px 16px;gap:12px;flex-wrap:wrap}
+  .article-row .a-status{min-width:auto;font-size:9.5px;padding:3px 8px}
+  .article-row .a-title{font-size:13.5px}
+  .article-row .a-meta{font-size:11px}
+  .article-row .a-actions{flex:1 0 100%;margin-top:6px;justify-content:flex-end}
+  .editor-head{margin-bottom:16px}
+  .editor-head .back{font-size:13px}
+  .editor-head .save-status{font-size:10.5px}
+  .editor-grid{gap:16px}
+  .editor-main input.title-input{font-size:18px;padding:12px 14px}
+  .EasyMDEContainer .CodeMirror{min-height:300px;font-size:14px}
+  .EasyMDEContainer .editor-toolbar{flex-wrap:wrap}
+  .EasyMDEContainer .editor-toolbar button{padding:0;width:30px;height:30px}
+  .editor-side{position:static!important;gap:12px}
+  .side-card{padding:16px 18px}
+  .side-card h3{font-size:11px;margin-bottom:10px}
+  .side-card .field{margin-bottom:10px}
+  .modal{padding:24px 20px;border-radius:6px;max-height:88vh}
+  .modal h3{font-size:14px;margin-bottom:14px}
+  .modal .field{margin-bottom:12px}
+  .modal small{font-size:10.5px}
+  .flash{bottom:16px;right:16px;left:16px;max-width:none;font-size:11.5px}
+  input,textarea,select{font-size:14px;padding:10px 11px}
+  label{font-size:11.5px}
+}
+@media(max-width:480px){
+  .login-card{padding:24px 18px}
+  .app-logo .label{font-size:13.5px}
+  .article-row{padding:12px 14px}
+  .editor-main input.title-input{font-size:16px}
+  .EasyMDEContainer .CodeMirror{font-size:13.5px;min-height:240px}
+}
 
 .editor-main .field{margin-bottom:16px}
 .editor-main input.title-input{font-size:22px;font-weight:600;padding:14px 16px;background:var(--bg-2)}
