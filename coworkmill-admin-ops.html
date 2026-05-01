@@ -1023,7 +1023,7 @@ function confirmReply() {
 // Navigation
 // ─────────────────────────────
 const pnls = ['db','rv','sp','ac','ar','jw','ct'];
-const ttlm = {db:'ダッシュボード',rv:'掲載申請の審査',sp:'掲載者・施設管理',ac:'アカウント管理',ar:'建築家管理',ct:'お問い合わせ管理'};
+const ttlm = {db:'ダッシュボード',rv:'掲載申請の審査',sp:'掲載者・施設管理',ac:'アカウント管理',ar:'建築家管理',jw:'コラム編集者管理',ct:'お問い合わせ管理'};
 function go(id, el) {
   pnls.forEach(p => { const e = document.getElementById('p-'+p); if(e) e.style.display = p===id?'block':'none'; });
   document.querySelectorAll('.nl').forEach(l => l.classList.remove('on'));
