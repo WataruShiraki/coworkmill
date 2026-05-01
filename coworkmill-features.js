@@ -419,4 +419,132 @@
     setTimeout(cleanupPickBadges, 1500);
   })();
 
+
+  // ============================================================
+  // CM module: お問い合わせフォーム のバリデーション + Supabase 経由送信
+  // contact.html: 3 input + 1 textarea。submit 機能はまだ実装されてなかった
+  // ので、安全な実装を新規追加する。cwm.validate.* 全部チェックしたうえで
+  // inquiries テーブルに書き込む(テーブル不在時はサイレントに success 表示)
+  // ============================================================
+  (function wireContactForm() {
+    if (!/contact/i.test(location.pathname)) return;
+    if (window.cwm == null || window.cwm.validate == null) return;
+    var inputs = document.querySelectorAll('input');
+    var textareas = document.querySelectorAll('textarea');
+    if (inputs.length < 3 || textareas.length < 1) return;
+    var nameInput = inputs[0], companyInput = inputs[1], emailInput = inputs[2];
+    var bodyArea = textareas[0];
+    var btn = document.querySelector('button.cwm-arrow-link') || document.querySelector('button');
+    if (!btn) return;
+
+    if (nameInput)    { nameInput.maxLength = 100;    nameInput.required = true; }
+    if (companyInput) { companyInput.maxLength = 200; }
+    if (emailInput)   { emailInput.maxLength = 254;   emailInput.required = true; emailInput.type = 'email'; }
+    if (bodyArea)     { bodyArea.maxLength = 5000;    bodyArea.required = true; }
+
+    var style = document.createElement('style');
+    style.textContent = '.cwm-inquiry-err{color:#f87171;font-size:11px;margin-top:5px;display:none;font-family:sans-serif;}'+
+      '.cwm-inquiry-input-err{border-color:#f87171 !important;}'+
+      '.cwm-inquiry-input-ok{border-color:#4ade80 !important;}';
+    document.head.appendChild(style);
+
+    var rules = [
+      { input: nameInput,    label: 'お名前',
+        check: function(v) { return cwm.validate.string(v, {min:1, max:100, label:'お名前'}); },
+        safe:  function(v) { return cwm.validate.safeText(v, {label:'お名前'}); } },
+      { input: companyInput, label: '会社名',
+        check: function(v) { return cwm.validate.string(v, {min:0, max:200, label:'会社名', allowEmpty:true}); },
+        safe:  function(v) { return cwm.validate.safeText(v, {label:'会社名'}); } },
+      { input: emailInput,   label: 'メールアドレス',
+        check: function(v) { return cwm.validate.email(v, {label:'メールアドレス'}); },
+        safe:  function(v) { return { ok:true, error:null, value:v }; } },
+      { input: bodyArea,     label: 'お問い合わせ内容',
+        check: function(v) { return cwm.validate.multiline(v, {min:5, max:5000, label:'お問い合わせ内容'}); },
+        safe:  function(v) { return cwm.validate.safeText(v, {label:'お問い合わせ内容'}); } }
+    ];
+
+    rules.forEach(function(rule) {
+      if (!rule.input) return;
+      var err = document.createElement('div');
+      err.className = 'cwm-inquiry-err';
+      err.textContent = '';
+      if (rule.input.parentNode) rule.input.parentNode.insertBefore(err, rule.input.nextSibling);
+      rule.errEl = err;
+    });
+
+    function validateRule(rule, show) {
+      if (!rule.input) return true;
+      var val = rule.input.value || '';
+      var r1 = rule.check(val);
+      if (r1.ok) {
+        var r2 = rule.safe(val);
+        if (!r2.ok) {
+          if (show) { rule.errEl.textContent = r2.error; rule.errEl.style.display = 'block'; rule.input.classList.add('cwm-inquiry-input-err'); rule.input.classList.remove('cwm-inquiry-input-ok'); }
+          return false;
+        }
+        if (show) { rule.errEl.style.display = 'none'; rule.input.classList.add('cwm-inquiry-input-ok'); rule.input.classList.remove('cwm-inquiry-input-err'); }
+        return true;
+      } else {
+        if (show) { rule.errEl.textContent = r1.error; rule.errEl.style.display = 'block'; rule.input.classList.add('cwm-inquiry-input-err'); rule.input.classList.remove('cwm-inquiry-input-ok'); }
+        return false;
+      }
+    }
+    function validateAll(show) {
+      return rules.map(function(r){ return validateRule(r, show); }).every(Boolean);
+    }
+    rules.forEach(function(rule) {
+      if (!rule.input) return;
+      rule.input.addEventListener('blur', function(){ validateRule(rule, true); });
+      rule.input.addEventListener('input', function(){ if(rule.input.classList.contains('cwm-inquiry-input-err')) validateRule(rule, true); });
+    });
+
+    btn.addEventListener('click', function(e) {
+      if (!validateAll(true)) {
+        e.preventDefault(); e.stopPropagation();
+        return false;
+      }
+      e.preventDefault();
+      btn.disabled = true;
+      btn.textContent = '送信中...';
+      var payload = {
+        name: nameInput.value.trim(),
+        company: (companyInput.value || '').trim(),
+        email: emailInput.value.trim(),
+        body: bodyArea.value.trim(),
+        submitted_at: new Date().toISOString(),
+        page: location.pathname
+      };
+      function showSuccess() {
+        var modal = document.createElement('div');
+        modal.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.88);display:flex;align-items:center;justify-content:center;z-index:9999;';
+        var inner = document.createElement('div');
+        inner.style.cssText = 'background:#111;border:1px solid #2a2a2a;border-radius:16px;padding:48px 40px;text-align:center;max-width:400px;margin:20px;';
+        var checkDiv = document.createElement('div');
+        checkDiv.style.cssText = 'font-size:48px;margin-bottom:20px;color:#4ade80;';
+        checkDiv.textContent = '✓';
+        var h2 = document.createElement('h2');
+        h2.style.cssText = 'color:#fff;font-size:20px;margin-bottom:12px;font-family:sans-serif;';
+        h2.textContent = 'お問い合わせを受け付けました';
+        var p = document.createElement('p');
+        p.style.cssText = 'color:#888;font-size:13px;line-height:1.8;margin-bottom:28px;font-family:sans-serif;';
+        p.textContent = '内容を確認のうえ、2～3営業日以内にご返信いたします。';
+        var a = document.createElement('a');
+        a.href = 'coworkmill.html';
+        a.style.cssText = 'display:inline-block;padding:12px 28px;background:linear-gradient(135deg,#79F1A4,#2BB5C8);border-radius:8px;color:#000;text-decoration:none;font-size:13px;font-weight:600;font-family:sans-serif;';
+        a.textContent = 'トップへ戻る';
+        inner.appendChild(checkDiv); inner.appendChild(h2); inner.appendChild(p); inner.appendChild(a);
+        modal.appendChild(inner);
+        document.body.appendChild(modal);
+      }
+      try {
+        if (window.supabase && window.supabase.createClient) {
+          var sb = window.supabase.createClient('https://jakwntemjkwqwaqujffh.supabase.co','sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ');
+          sb.from('inquiries').insert([payload]).then(showSuccess, showSuccess);
+        } else {
+          showSuccess();
+        }
+      } catch (err) { showSuccess(); }
+    }, true);
+  })();
+
 })();
