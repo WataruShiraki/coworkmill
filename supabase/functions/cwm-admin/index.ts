@@ -319,6 +319,193 @@ Deno.serve(async (req: Request) => {
       return jsonResponse({ error: "不明なアクション: " + action }, 400);
     }
 
+    // ============== article (COWORKMILL journal) ==============
+    if (target === "article") {
+      // 記事は account に紐づかず、運営マスターデータ。JWT を通れば編集可能。
+      // 複数ライター(account 別 ownership)は Phase 5 で対応予定。
+      if (!data && action !== "delete" && action !== "publish" && action !== "unpublish") {
+        return jsonResponse({ error: "data が必要です" }, 400);
+      }
+
+      if (action === "insert") {
+        const insertData: any = { ...(data || {}) };
+        delete insertData.id;
+        delete insertData.created_at;
+        delete insertData.view_count;
+        delete insertData.published_at;
+        delete insertData.body_html;
+
+        if (!insertData.slug || typeof insertData.slug !== "string" || !/^[a-z0-9-]{1,100}$/.test(insertData.slug)) {
+          return jsonResponse({ error: "slug が無効です(英小文字/数字/ハイフン、1〜100文字)" }, 400);
+        }
+        if (!insertData.title || typeof insertData.title !== "string" || insertData.title.length < 1 || insertData.title.length > 200) {
+          return jsonResponse({ error: "タイトルが無効です(1〜200文字)" }, 400);
+        }
+        if (insertData.subtitle && (typeof insertData.subtitle !== "string" || insertData.subtitle.length > 300)) {
+          return jsonResponse({ error: "サブタイトルが長すぎます(300文字以内)" }, 400);
+        }
+        if (!insertData.category || !["area-guide","interview","workstyle","data","design","other"].includes(insertData.category)) {
+          return jsonResponse({ error: "カテゴリが無効です" }, 400);
+        }
+        if (insertData.body_md && (typeof insertData.body_md !== "string" || insertData.body_md.length > 100000)) {
+          return jsonResponse({ error: "本文が長すぎます(10万文字以内)" }, 400);
+        }
+        if (insertData.excerpt && (typeof insertData.excerpt !== "string" || insertData.excerpt.length > 500)) {
+          return jsonResponse({ error: "概要が長すぎます(500文字以内)" }, 400);
+        }
+        if (insertData.tags && (!Array.isArray(insertData.tags) || insertData.tags.length > 20)) {
+          return jsonResponse({ error: "タグは20個以内です" }, 400);
+        }
+        if (insertData.author_name && (typeof insertData.author_name !== "string" || insertData.author_name.length > 100)) {
+          return jsonResponse({ error: "著者名が長すぎます(100文字以内)" }, 400);
+        }
+        if (insertData.hero_image && (typeof insertData.hero_image !== "string" || insertData.hero_image.length > 2000)) {
+          return jsonResponse({ error: "hero_image URL が長すぎます" }, 400);
+        }
+        if (insertData.is_pr && !insertData.pr_disclosure) {
+          return jsonResponse({ error: "PR記事には pr_disclosure が必須です" }, 400);
+        }
+
+        // 強制設定
+        insertData.status = "draft"; // 新規は必ず draft
+        if (!insertData.author_name) insertData.author_name = "COWORKMILL journal 編集部";
+
+        const { data: created, error } = await sb.from("articles").insert(insertData).select().single();
+        if (error) {
+          await writeAuditLog(sb, accountId, target, action, null, "error", error.message, ip);
+          return jsonResponse({ error: error.message }, 500);
+        }
+        await writeAuditLog(sb, accountId, target, action, created.id, "ok", null, ip);
+        return jsonResponse({ ok: true, data: created });
+      }
+
+      if (action === "update") {
+        if (!id) return jsonResponse({ error: "id が必要です" }, 400);
+        const updateData: any = { ...(data || {}) };
+        delete updateData.id;
+        delete updateData.created_at;
+        delete updateData.view_count;
+        delete updateData.body_html;
+
+        if (updateData.slug !== undefined && !/^[a-z0-9-]{1,100}$/.test(updateData.slug)) {
+          return jsonResponse({ error: "slug が無効です" }, 400);
+        }
+        if (updateData.title !== undefined && (typeof updateData.title !== "string" || updateData.title.length > 200)) {
+          return jsonResponse({ error: "タイトルが無効です" }, 400);
+        }
+        if (updateData.category !== undefined && !["area-guide","interview","workstyle","data","design","other"].includes(updateData.category)) {
+          return jsonResponse({ error: "カテゴリが無効です" }, 400);
+        }
+        if (updateData.body_md !== undefined && updateData.body_md.length > 100000) {
+          return jsonResponse({ error: "本文が長すぎます" }, 400);
+        }
+        if (updateData.status !== undefined && !["draft","scheduled","live","archived"].includes(updateData.status)) {
+          return jsonResponse({ error: "status が無効です" }, 400);
+        }
+        if (updateData.tags !== undefined && (!Array.isArray(updateData.tags) || updateData.tags.length > 20)) {
+          return jsonResponse({ error: "タグは20個以内です" }, 400);
+        }
+
+        const { data: updated, error } = await sb.from("articles").update(updateData).eq("id", id).select().single();
+        if (error) {
+          await writeAuditLog(sb, accountId, target, action, id, "error", error.message, ip);
+          return jsonResponse({ error: error.message }, 500);
+        }
+        await writeAuditLog(sb, accountId, target, action, id, "ok", null, ip);
+        return jsonResponse({ ok: true, data: updated });
+      }
+
+      if (action === "publish") {
+        if (!id) return jsonResponse({ error: "id が必要です" }, 400);
+        const { error } = await sb.from("articles").update({
+          status: "live",
+          published_at: new Date().toISOString()
+        }).eq("id", id);
+        if (error) {
+          await writeAuditLog(sb, accountId, target, action, id, "error", error.message, ip);
+          return jsonResponse({ error: error.message }, 500);
+        }
+        await writeAuditLog(sb, accountId, target, action, id, "ok", null, ip);
+        return jsonResponse({ ok: true });
+      }
+
+      if (action === "unpublish") {
+        if (!id) return jsonResponse({ error: "id が必要です" }, 400);
+        const { error } = await sb.from("articles").update({ status: "draft" }).eq("id", id);
+        if (error) {
+          await writeAuditLog(sb, accountId, target, action, id, "error", error.message, ip);
+          return jsonResponse({ error: error.message }, 500);
+        }
+        await writeAuditLog(sb, accountId, target, action, id, "ok", null, ip);
+        return jsonResponse({ ok: true });
+      }
+
+      if (action === "delete") {
+        // soft delete: status=archived(履歴を残すため hard delete はしない)
+        if (!id) return jsonResponse({ error: "id が必要です" }, 400);
+        const { error } = await sb.from("articles").update({ status: "archived" }).eq("id", id);
+        if (error) {
+          await writeAuditLog(sb, accountId, target, action, id, "error", error.message, ip);
+          return jsonResponse({ error: error.message }, 500);
+        }
+        await writeAuditLog(sb, accountId, target, action, id, "ok", null, ip);
+        return jsonResponse({ ok: true });
+      }
+
+      return jsonResponse({ error: "不明な操作: " + action }, 400);
+    }
+
+    // ============== media (記事画像、出所必須) ==============
+    if (target === "media") {
+      if (action === "insert") {
+        const insertData: any = { ...(data || {}) };
+        delete insertData.id;
+        delete insertData.uploaded_at;
+
+        if (!insertData.url || typeof insertData.url !== "string" || insertData.url.length > 2000) {
+          return jsonResponse({ error: "url が無効です" }, 400);
+        }
+        if (!insertData.alt_text || typeof insertData.alt_text !== "string" || insertData.alt_text.length < 1 || insertData.alt_text.length > 500) {
+          return jsonResponse({ error: "alt_text は必須です(1〜500文字、アクセシビリティ要件)" }, 400);
+        }
+        if (!insertData.source_type || !["own","facility","stock","ai","cc"].includes(insertData.source_type)) {
+          return jsonResponse({ error: "source_type は必須です(own/facility/stock/ai/cc)" }, 400);
+        }
+        // 著作権周りの整合性チェック
+        if (insertData.source_type === "facility" && !insertData.permission_note) {
+          return jsonResponse({ error: "施設写真は permission_note(掲載許諾の記録)が必要です" }, 400);
+        }
+        if (insertData.source_type === "stock" && !insertData.source_name) {
+          return jsonResponse({ error: "ストック写真は source_name(Unsplash 等)が必要です" }, 400);
+        }
+        if (insertData.source_url && (typeof insertData.source_url !== "string" || insertData.source_url.length > 2000)) {
+          return jsonResponse({ error: "source_url が長すぎます" }, 400);
+        }
+
+        const { data: created, error } = await sb.from("media_assets").insert(insertData).select().single();
+        if (error) {
+          await writeAuditLog(sb, accountId, target, action, null, "error", error.message, ip);
+          return jsonResponse({ error: error.message }, 500);
+        }
+        await writeAuditLog(sb, accountId, target, action, created.id, "ok", null, ip);
+        return jsonResponse({ ok: true, data: created });
+      }
+
+      if (action === "delete") {
+        if (!id) return jsonResponse({ error: "id が必要です" }, 400);
+        const { error } = await sb.from("media_assets").delete().eq("id", id);
+        if (error) {
+          await writeAuditLog(sb, accountId, target, action, id, "error", error.message, ip);
+          return jsonResponse({ error: error.message }, 500);
+        }
+        await writeAuditLog(sb, accountId, target, action, id, "ok", null, ip);
+        return jsonResponse({ ok: true });
+      }
+
+      return jsonResponse({ error: "不明な操作: " + action }, 400);
+    }
+
+
     return jsonResponse({ error: "不明な操作対象: " + target }, 400);
   } catch (e) {
     const msg = e instanceof Error ? e.message : String(e);
