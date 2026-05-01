@@ -188,7 +188,7 @@ label{font-size:12px;color:var(--fg-3);display:block;margin-bottom:6px}
       <img src="/shared/coworkmill-logo.svg" alt="COWORKMILL">
       <span class="label">journal</span>
     </div>
-    <h1>編集者ログイン</h1>
+    <h1>運営ログイン</h1>
     <form id="login-form">
       <div class="field">
         <label>メールアドレス</label>
@@ -202,8 +202,8 @@ label{font-size:12px;color:var(--fg-3);display:block;margin-bottom:6px}
       <div class="login-error" id="login-error" style="display:none"></div>
     </form>
     <div class="login-help">
-      ID・パスワードは編集部から発行されます。<br>
-      パスワードを忘れた場合は編集部までご連絡ください。
+      Lily Partners 運営者専用ページです。<br>
+      Supabase Auth に登録したメールでログインしてください。
     </div>
   </div>
 </section>
@@ -227,7 +227,7 @@ label{font-size:12px;color:var(--fg-3);display:block;margin-bottom:6px}
   <!-- 記事一覧 -->
   <section id="view-list">
     <div class="list-head">
-      <h2>あなたの記事 <span class="h-meta" id="list-count"></span></h2>
+      <h2>ジャーナル記事 <span class="h-meta" id="list-count"></span></h2>
       <button class="btn-primary" onclick="newArticle()">+ 新しい記事を書く</button>
     </div>
     <div id="articles-area"><div class="empty">読み込み中...</div></div>
@@ -417,7 +417,7 @@ function logout(){
 
 // =================== Articles CRUD ===================
 async function loadArticles(){
-  const r = await fetch(SUPABASE_URL + '/rest/v1/articles?select=*&author_user_id=eq.' + session.user.id + '&order=updated_at.desc', {
+  const r = await fetch(SUPABASE_URL + '/rest/v1/articles?select=*&order=updated_at.desc', {
     headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + session.access_token }
   });
   const data = await r.json();
@@ -435,7 +435,7 @@ function renderList(articles){
   const area = document.getElementById('articles-area');
   document.getElementById('list-count').textContent = '(' + articles.length + '件)';
   if (!articles.length){
-    area.innerHTML = '<div class="empty">まだ記事がありません。<br>「+ 新しい記事を書く」から最初の記事を書いてみましょう。</div>';
+    area.innerHTML = '<div class="empty">まだ記事がありません。<br>「+ 新しい記事を書く」から記事を作成してください。</div>';
     return;
   }
   area.innerHTML = '';
