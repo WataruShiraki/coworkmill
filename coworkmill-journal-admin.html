@@ -577,6 +577,7 @@ function showEditor(){
       'quote','unordered-list','ordered-list','|',
       'link',
       { name:'image', action:function(editor){ if(typeof openImgModal==='function') openImgModal(); else alert('画像挿入機能の準備中です。ページを再読込してください。'); }, className:'fa fa-picture-o', title:'画像を挿入' },
+      { name:'youtube', action:function(editor){ insertYoutube(editor); }, className:'fa fa-youtube-play', title:'YouTube動画を埋め込む' },
       'code','|',
       'preview','side-by-side','fullscreen','|',
       'guide'
@@ -682,6 +683,16 @@ async function saveArticle(){
   if (bodyMd.length > 100000) {
     flash('本文は100,000文字以内です', true); return;
   }
+
+  // 本文 markdown を HTML に変換 (公開ページの描画用)
+  let bodyHtml = '';
+  try {
+    if (typeof mde.markdown === 'function') {
+      bodyHtml = mde.markdown(bodyMd);
+    }
+  } catch (e) {
+    console.warn('save markdown render error:', e);
+  }
   
   const status = document.getElementById('ed-status').value;
   
@@ -705,6 +716,7 @@ async function saveArticle(){
     category: document.getElementById('ed-category').value,
     status,
     body_md: bodyMd,
+    body_html: bodyHtml || null,
     excerpt: excerpt || null,
     tags: tags.length ? tags : null,
     hero_image: document.getElementById('ed-hero').value.trim() || null,
@@ -1081,6 +1093,46 @@ async function uploadHeroFile(){
     uploadBtn.disabled = false;
     fileIn.value = '';
   }
+}
+
+// YouTube URL から 11文字のVideo IDを抽出
+function extractYoutubeId(input){
+  if (!input) return null;
+  const s = input.trim();
+  // 既に ID だけ (11文字英数字+_-)
+  if (/^[\w-]{11}$/.test(s)) return s;
+  // 各種URLパターン
+  const patterns = [
+    /youtube\.com\/watch\?(?:[^&]*&)*v=([\w-]{11})/,
+    /youtu\.be\/([\w-]{11})/,
+    /youtube\.com\/embed\/([\w-]{11})/,
+    /youtube\.com\/shorts\/([\w-]{11})/,
+    /youtube\.com\/live\/([\w-]{11})/
+  ];
+  for (const p of patterns) {
+    const m = s.match(p);
+    if (m) return m[1];
+  }
+  return null;
+}
+
+function insertYoutube(editor){
+  const input = prompt('YouTube動画のURLまたはVideo IDを入力してください\n例: https://www.youtube.com/watch?v=dQw4w9WgXcQ');
+  if (!input) return;
+  const id = extractYoutubeId(input);
+  if (!id) {
+    flash('YouTube URLとして認識できませんでした。動画ページのURLを貼り付けてください。', true);
+    return;
+  }
+  // 行頭で独立した段落として挿入。article側で iframe に変換される。
+  const cm = editor.codemirror;
+  const cur = cm.getCursor();
+  const lineText = cm.getLine(cur.line) || '';
+  const lineEmpty = lineText.trim() === '';
+  const before = (cur.ch > 0 && !lineEmpty) ? '\n\n' : '';
+  const after = '\n\n';
+  cm.replaceSelection(before + 'https://www.youtube.com/watch?v=' + id + after);
+  cm.focus();
 }
 
 async function insertImage(){

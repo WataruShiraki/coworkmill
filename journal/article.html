@@ -79,6 +79,8 @@ img{max-width:100%;display:block}
 .j-body img{margin:36px auto;border-radius:4px}
 .j-body a{color:var(--teal);text-decoration:underline;text-decoration-color:rgba(121,241,164,.4);text-underline-offset:3px;transition:text-decoration-color .2s}
 .j-body a:hover{text-decoration-color:var(--teal)}
+.j-youtube{position:relative;width:100%;padding-top:56.25%;margin:36px 0;border-radius:4px;overflow:hidden;background:#000}
+.j-youtube iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0}
 
 .j-tags{display:flex;gap:8px;flex-wrap:wrap;margin:52px 0 36px;padding-top:36px;border-top:1px solid var(--line)}
 .j-tag{font-size:12px;color:var(--fg-3);background:var(--bg-3);padding:5px 14px;border-radius:3px}
@@ -229,6 +231,53 @@ function getSlug() {
   const m = location.pathname.match(/^\/journal\/([a-z0-9-]+)\/?$/);
   if (m && m[1] !== 'index' && m[1] !== 'article') return m[1];
   return '';
+}
+
+// YouTube URL を含む段落を responsive iframe に変換
+function transformBodyHtml(html) {
+  if (!html) return '';
+  // <p>https://www.youtube.com/watch?v=ID...</p> や <p>https://youtu.be/ID</p>
+  // marked.js は autolink でアンカー化することもあるため両パターンを処理
+  const ytRe = /<p>\s*(?:<a [^>]*>)?(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/watch\?[^<\s]*?v=|youtu\.be\/|youtube\.com\/shorts\/|youtube\.com\/embed\/|youtube\.com\/live\/)([\w-]{11})[^<]*(?:<\/a>)?\s*<\/p>/gi;
+  return html.replace(ytRe, function(_, id){
+    return '<div class="j-youtube"><iframe src="https://www.youtube.com/embed/' + id + '" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe></div>';
+  });
+}
+
+// body_html が無い旧記事のための簡易 markdown レンダラ (画像と見出しと段落)
+function renderMarkdownFallback(md) {
+  if (!md) return '';
+  return md.split(/\n\n+/).map(function(block) {
+    const trimmed = block.trim();
+    if (!trimmed) return '';
+    // 見出し
+    const hMatch = trimmed.match(/^(#{2,3})\s+(.+)$/);
+    if (hMatch) {
+      const tag = hMatch[1].length === 2 ? 'h2' : 'h3';
+      return '<' + tag + '>' + escapeHtml(hMatch[2]) + '</' + tag + '>';
+    }
+    // 単独画像 ![alt](url)
+    const imgOnly = trimmed.match(/^!\[([^\]]*)\]\(([^)]+)\)$/);
+    if (imgOnly) {
+      return '<p><img src="' + escapeAttr(imgOnly[2]) + '" alt="' + escapeAttr(imgOnly[1]) + '"></p>';
+    }
+    // 段落 (インラインの ![alt](url) と [text](url) を変換)
+    let p = escapeHtml(trimmed)
+      .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, function(_, alt, url){
+        return '<img src="' + escapeAttr(url) + '" alt="' + escapeAttr(alt) + '">';
+      })
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, function(_, text, url){
+        return '<a href="' + escapeAttr(url) + '">' + text + '</a>';
+      });
+    return '<p>' + p + '</p>';
+  }).join('');
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+function escapeAttr(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
 async function loadArticle() {
@@ -396,15 +445,9 @@ function renderArticle(a) {
   const body = document.createElement('div');
   body.className = 'j-body';
   if (a.body_html) {
-    body.innerHTML = a.body_html;
+    body.innerHTML = transformBodyHtml(a.body_html);
   } else if (a.body_md) {
-    body.innerHTML = a.body_md.split(/\n\n+/).map(p => {
-      const escaped = p.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-      if (/^#{2,}\s/.test(p)) {
-        return '<h2>' + escaped.replace(/^#{2,}\s+/, '') + '</h2>';
-      }
-      return '<p>' + escaped + '</p>';
-    }).join('');
+    body.innerHTML = transformBodyHtml(renderMarkdownFallback(a.body_md));
   }
   article.appendChild(body);
   
