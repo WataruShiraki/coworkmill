@@ -775,17 +775,17 @@ async function deleteArticle(){
 }
 
 function previewArticle(){
-  if (typeof easyMDE === 'undefined' || !easyMDE) {
+  if (typeof mde === 'undefined' || !mde) {
     flash('エディタが起動していません', true); return;
   }
   // EasyMDE の Side-by-Side プレビューを切り替え
   if (typeof EasyMDE !== 'undefined' && EasyMDE.toggleSideBySide) {
-    EasyMDE.toggleSideBySide(easyMDE);
-  } else if (easyMDE.toggleSideBySide) {
-    easyMDE.toggleSideBySide();
+    EasyMDE.toggleSideBySide(mde);
+  } else if (mde.toggleSideBySide) {
+    mde.toggleSideBySide();
   } else {
     // fallback: toggle preview
-    easyMDE.togglePreview();
+    mde.togglePreview();
   }
 }
 
@@ -897,8 +897,8 @@ async function insertImage(){
     
     // markdown 挿入
     const md = '![' + alt.replace(/[\[\]]/g, '') + '](' + imageUrl + ')';
-    if (typeof easyMDE !== 'undefined' && easyMDE) {
-      const cm = easyMDE.codemirror;
+    if (typeof mde !== 'undefined' && mde) {
+      const cm = mde.codemirror;
       cm.replaceSelection(md);
       cm.focus();
     }
