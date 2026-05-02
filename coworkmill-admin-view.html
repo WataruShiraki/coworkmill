@@ -3098,5 +3098,249 @@ window.moveAdminMapTo = function(anchorId) {
   setTimeout(attachMapSearchOverrideV6, 3000);
 })();
 </script>
+<script>
+/* ============================================================
+   admin-view-fix v7 (added 2026-05-03)
+   建築家情報パネル(p-arch)の表示・リセットを正しく行う。
+
+   問題1: リロード後、紐付け済み建築家がいるのに STEP1 の
+          ✓ 選択済み 表示には出ず、STEP2 の「建築家名」「建築事務所名」
+          入力欄に値だけが残っていた。
+          → go('arch') 内の処理(L1860付近)が architect_id の有無を
+            問わず常に STEP2 の入力欄(p-arch-name / p-arch-firm)へ
+            値を入れていたため。
+   問題2: 別の施設に切り替えても建築家パネルがクリアされず、
+          前の施設の建築家情報がそのまま見えてしまう。新規施設
+          追加時にも前の値が残り、別の建築家を登録できなかった。
+          → swFac() に建築家フィールドのリセット処理が無かったため
+            (新規施設 branch の L1927 では `archSel.textContent=''`で
+            子要素 p-arch-selected-name ごと破壊するバグもあった)。
+
+   修正：
+     1) go() を wrap：id==='arch' の時、DB から architect_id /
+        architect_name / architect_firm を取得し、
+          - architect_id あり → STEP1 の p-arch-selected に表示、
+            STEP2 は空、STEP1 検索ボックスも空
+          - architect_id なし & 手入力のみ → STEP2 に値、STEP1 空
+          - 両方なし → 全空
+     2) swFac() を wrap：施設切り替え時に必ず arch パネルを全クリア
+     3) clearArchPanelAllSafe(): p-arch-selected-name 子要素を保持しつつ
+        text のみクリア（textContent='' で子要素を消さない）
+   ============================================================ */
+(function(){
+  var SB  = 'https://jakwntemjkwqwaqujffh.supabase.co';
+  var KEY = 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+
+  /* ── dbId 取得（v6 と同じ仕組み）─────────────────────── */
+  function getDbIdNow(){
+    var on = document.querySelector('#fac-list .fi.on') || document.querySelector('#fac-list .fi.active');
+    if (on && on.dataset && on.dataset.dbId) return on.dataset.dbId;
+    try {
+      if (window.facs && Array.isArray(window.facs) && typeof window.cur === 'number') {
+        var f = window.facs[window.cur];
+        if (f && f.db_id) return f.db_id;
+      }
+    } catch(e){}
+    var p = document.getElementById('p-dbid');
+    if (p && p.value) return p.value;
+    return null;
+  }
+
+  /* ── arch パネル要素ヘルパ ───────────────────────────── */
+  function $id(id){ return document.getElementById(id); }
+
+  /* ── STEP1 のみクリア（検索ボックス＋✓選択済み表示） ──── */
+  function clearStep1(){
+    var search = $id('p-arch-search');
+    if (search) search.value = '';
+    var sel = $id('p-arch-selected');
+    if (sel) {
+      sel.style.display = 'none';
+      sel.dataset.archId = '';
+    }
+    var nm = $id('p-arch-selected-name');
+    if (nm) nm.textContent = ''; /* 子要素は消さず text だけクリア */
+    var results = $id('p-arch-results');
+    if (results) results.style.display = 'none';
+    var selBox = $id('p-arch-select');
+    if (selBox) selBox.innerHTML = '';
+  }
+
+  /* ── STEP2 のみクリア（建築家名・建築事務所名入力） ───── */
+  function clearStep2(){
+    var n2 = $id('p-arch-name');
+    var f2 = $id('p-arch-firm');
+    if (n2) n2.value = '';
+    if (f2) f2.value = '';
+  }
+
+  /* ── 全クリア（施設切り替え時に呼ぶ） ──────────────────── */
+  function clearArchPanelAllSafe(){
+    clearStep1();
+    clearStep2();
+  }
+  window.__clearArchPanelAllSafe = clearArchPanelAllSafe;
+
+  /* ── STEP1 の ✓選択済み 表示にデータを入れる ─────────── */
+  function showStep1Selected(archId, displayText){
+    var sel = $id('p-arch-selected');
+    var nm  = $id('p-arch-selected-name');
+    if (!sel) return;
+    /* p-arch-selected 内に p-arch-selected-name span が無くなっていたら
+       再構築する（v5/v6 以前のバグで子要素が消えるケースに備えて） */
+    if (!nm) {
+      var newNm = document.createElement('span');
+      newNm.id = 'p-arch-selected-name';
+      /* "✓ 選択済み：" ラベルspanの後に挿入する */
+      var label = sel.querySelector('span');
+      if (label && label.nextSibling) sel.insertBefore(newNm, label.nextSibling);
+      else sel.appendChild(newNm);
+      nm = newNm;
+    }
+    nm.textContent = displayText || '';
+    sel.dataset.archId = archId || '';
+    sel.style.display = 'block';
+  }
+
+  /* ── arch パネルをDBから読み込んで正しく表示する ────────── */
+  function loadArchPanel(){
+    var dbId = getDbIdNow();
+    if (!dbId) {
+      /* 新規施設（DB未保存）→ 全クリア */
+      clearArchPanelAllSafe();
+      return;
+    }
+    if (typeof window.sbFetch !== 'function') {
+      console.warn('[admin-fix v7] sbFetch not ready, retry');
+      setTimeout(loadArchPanel, 300);
+      return;
+    }
+    window.sbFetch('/rest/v1/spaces?id=eq.' + encodeURIComponent(dbId) + '&select=architect_id,architect_name,architect_firm')
+      .then(function(rows){
+        var d = (rows && rows[0]) || {};
+        var archId   = d.architect_id || null;
+        var archName = d.architect_name || '';
+        var archFirm = d.architect_firm || '';
+
+        if (archId) {
+          /* 紐付け済み → STEP1 に「✓ 選択済み：事務所名（個人名）」、STEP2 は空 */
+          /* architects テーブルから最新の name/firm を引く（リネーム対応） */
+          fetch(SB + '/rest/v1/architects?id=eq.' + encodeURIComponent(archId) + '&select=name,firm', {
+            headers: { apikey: KEY, Authorization: 'Bearer ' + KEY }
+          }).then(function(r){ return r.ok ? r.json() : []; }).then(function(arows){
+            var a = (Array.isArray(arows) && arows[0]) || {};
+            var firm = a.firm || archFirm || '';
+            var name = a.name || archName || '';
+            var disp;
+            if (firm && name) disp = firm + '（' + name + '）';
+            else disp = firm || name || '（建築家情報）';
+            clearStep2();
+            var search = $id('p-arch-search');
+            if (search) search.value = '';
+            var results = $id('p-arch-results');
+            if (results) results.style.display = 'none';
+            showStep1Selected(archId, disp);
+          }).catch(function(e){
+            console.warn('[admin-fix v7] architects lookup failed', e);
+            /* 取得失敗時はDBに保存されている name/firm で代替表示 */
+            var disp;
+            if (archFirm && archName) disp = archFirm + '（' + archName + '）';
+            else disp = archFirm || archName || '（建築家情報）';
+            clearStep2();
+            var search = $id('p-arch-search');
+            if (search) search.value = '';
+            showStep1Selected(archId, disp);
+          });
+        } else if (archName || archFirm) {
+          /* 手入力のみ（紐付けなし）→ STEP2 に値、STEP1 はクリア */
+          clearStep1();
+          var n2 = $id('p-arch-name');
+          var f2 = $id('p-arch-firm');
+          if (n2) n2.value = archName || '';
+          if (f2) f2.value = archFirm || '';
+        } else {
+          /* 何も無い → 全空 */
+          clearArchPanelAllSafe();
+        }
+      })
+      .catch(function(e){
+        console.warn('[admin-fix v7] loadArchPanel sbFetch failed', e);
+      });
+  }
+  window.__loadArchPanel = loadArchPanel;
+
+  /* ── go() wrap：id==='arch' の時に正しい状態へ上書き ───── */
+  function attachGoWrapV7(){
+    if (typeof window.go !== 'function') return;
+    if (window.__goFixedV7) return;
+    var origGo = window.go;
+    window.go = function(id, el){
+      var ret = origGo.apply(this, arguments);
+      if (id === 'arch') {
+        /* 既存処理(L1860付近)が STEP2 に書き込み済みなので、
+           その後に DB 由来の正しい状態で上書きする。
+           sbFetch 完了タイミングを考慮して遅延起動。 */
+        setTimeout(loadArchPanel, 250);
+      }
+      return ret;
+    };
+    window.__goFixedV7 = true;
+    console.log('[admin-fix v7] go() wrapped');
+  }
+  attachGoWrapV7();
+  document.addEventListener('DOMContentLoaded', attachGoWrapV7);
+  setTimeout(attachGoWrapV7, 500);
+  setTimeout(attachGoWrapV7, 1500);
+  setTimeout(attachGoWrapV7, 3000);
+
+  /* ── swFac() wrap：施設切り替え時に必ず arch パネルをクリア ── */
+  function attachSwFacWrapV7(){
+    if (typeof window.swFac !== 'function') return;
+    if (window.__swFacFixedV7) return;
+    var origSwFac = window.swFac;
+    window.swFac = function(id){
+      /* 切り替え前に必ずクリア（前の施設の建築家が残らないように） */
+      try { clearArchPanelAllSafe(); } catch(e){ console.warn('[admin-fix v7] clear failed', e); }
+      var ret = origSwFac.apply(this, arguments);
+      /* 切り替え後、現在開いているパネルが arch ならDBから読み直す */
+      try {
+        var archPanel = $id('p-arch');
+        if (archPanel && archPanel.style.display !== 'none') {
+          setTimeout(loadArchPanel, 250);
+        }
+      } catch(e){}
+      return ret;
+    };
+    window.__swFacFixedV7 = true;
+    console.log('[admin-fix v7] swFac() wrapped');
+  }
+  attachSwFacWrapV7();
+  document.addEventListener('DOMContentLoaded', attachSwFacWrapV7);
+  setTimeout(attachSwFacWrapV7, 500);
+  setTimeout(attachSwFacWrapV7, 1500);
+  setTimeout(attachSwFacWrapV7, 3000);
+
+  /* ── saveArchInfo() の後に panel をリフレッシュ ───────── */
+  function attachSaveRefreshV7(){
+    if (typeof window.saveArchInfo !== 'function') return;
+    if (window.__saveRefreshFixedV7) return;
+    var origSave = window.saveArchInfo;
+    window.saveArchInfo = async function(){
+      var ret = await origSave.apply(this, arguments);
+      /* 保存成功時はDBから読み直して正しい状態に再描画 */
+      setTimeout(loadArchPanel, 300);
+      return ret;
+    };
+    window.__saveRefreshFixedV7 = true;
+    console.log('[admin-fix v7] saveArchInfo refresh wired');
+  }
+  attachSaveRefreshV7();
+  document.addEventListener('DOMContentLoaded', attachSaveRefreshV7);
+  /* v6 の saveArchInfo wrap が後から走る場合に備えて遅延再アタッチ */
+  setTimeout(attachSaveRefreshV7, 1000);
+  setTimeout(attachSaveRefreshV7, 2500);
+  setTimeout(attachSaveRefreshV7, 4000);
+})();
+</script>
 </body></html>
 <!-- deploy -->
