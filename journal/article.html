@@ -226,12 +226,14 @@ async function loadArticle() {
   const _previewParams = new URLSearchParams(location.search);
   if (_previewParams.get('preview') === '1') {
     try {
-      const raw = sessionStorage.getItem('cwm_journal_preview');
+      const raw = localStorage.getItem('cwm_journal_preview');
       if (!raw) {
         document.getElementById('main').innerHTML = '<div class="j-back-wrap"><a class="j-back" href="/journal/">← 一覧に戻る</a></div><div class="j-empty">プレビューデータが見つかりません。<br>journal 管理画面の「プレビュー」ボタンから開いてください。</div>';
         return;
       }
       const a = JSON.parse(raw);
+      // 1度読んだら削除(プレビューの古いデータ残留防止)
+      try { localStorage.removeItem('cwm_journal_preview'); } catch(e) {}
       // 検索エンジンに拾わせない
       const robotsMeta = document.querySelector('meta[name="robots"]');
       if (robotsMeta) robotsMeta.setAttribute('content','noindex,nofollow');
