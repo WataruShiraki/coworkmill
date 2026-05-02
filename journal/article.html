@@ -725,18 +725,16 @@ loadArticle();
 
   async function loadPicks(){
     try {
-      const r = await fetch(SB_URL + '/rest/v1/spaces?select=id,name,area,prefecture,image_main&status=eq.live&plan=eq.pro&order=created_at.desc&limit=12', {
+      const r = await fetch(SB_URL + '/rest/v1/spaces?select=id,name,area,prefecture,image_main&status=eq.live&plan=eq.pro&order=created_at.desc&limit=3', {
         headers: {'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY}
       });
       const data = await r.json();
       const arr = Array.isArray(data) ? data : [];
       if (!arr.length) return;
-      // shuffle and take 3
-      const shuffled = arr.slice().sort(() => Math.random() - 0.5).slice(0, 3);
       const list = document.getElementById('aside-picks-list');
       if (!list) return;
       list.innerHTML = '';
-      shuffled.forEach((s, idx) => {
+      arr.forEach((s, idx) => {
         const card = document.createElement('a');
         card.className = 'j-pick-card';
         card.href = '/coworkmill-detail.html?id=' + encodeURIComponent(s.id);
