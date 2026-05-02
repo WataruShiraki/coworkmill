@@ -158,6 +158,15 @@ img{max-width:100%;display:block}
 </style>
 </head>
 <body>
+  <div id="preview-banner" style="display:none;position:sticky;top:0;z-index:1000;background:#f59e0b;color:#fff;text-align:center;padding:8px 16px;font-size:13px;font-weight:500;letter-spacing:.04em">📝 下書きプレビュー(このページは公開されていません)</div>
+  <script>
+    if (new URLSearchParams(location.search).get('preview') === '1') {
+      document.addEventListener('DOMContentLoaded', () => {
+        const b = document.getElementById('preview-banner');
+        if (b) b.style.display = 'block';
+      });
+    }
+  </script>
 
 <header class="j-nav">
   <div class="j-nav-inner">
@@ -225,7 +234,7 @@ async function loadArticle() {
     return;
   }
   try {
-    const res = await fetch(SUPABASE_URL + '/rest/v1/articles?select=*&slug=eq.' + encodeURIComponent(slug) + '&status=eq.live&limit=1', {
+    const res = await fetch(SUPABASE_URL + '/rest/v1/articles?select=*&slug=eq.' + encodeURIComponent(slug) + (isPreview ? '&limit=1' : '&status=eq.live&limit=1'), {
       headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
     });
     const data = await res.json();
