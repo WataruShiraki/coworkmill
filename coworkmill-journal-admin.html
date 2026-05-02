@@ -177,6 +177,16 @@ label{font-size:12px;color:var(--fg-3);display:block;margin-bottom:6px}
 .img-tab:hover{background:#ebebeb}
 .img-tab-active{background:#1ba85a!important;color:#fff!important;border-color:#1ba85a}
 .img-pane{margin-top:14px}
+
+#img-modal{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.55);z-index:5000;align-items:center;justify-content:center;padding:20px}
+#img-modal.modal-overlay{display:none}
+#img-modal[style*="flex"]{display:flex!important}
+#img-modal .modal{background:#fff;color:#1a1a1a;border-radius:6px;padding:28px 30px;max-width:540px;width:100%;max-height:88vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+#img-modal h3{margin:0 0 14px;font-size:17px;color:#1a1a1a}
+#img-modal label{display:block;margin-bottom:6px;font-size:12.5px;color:#666;font-weight:500}
+#img-modal input[type="text"],#img-modal input[type="url"],#img-modal input[type="file"]{width:100%;padding:10px 12px;font-size:14px;border:1px solid #d0d0d0;border-radius:3px;background:#fff;color:#1a1a1a;font-family:inherit}
+#img-modal input:focus{outline:none;border-color:#1ba85a}
+#img-modal .field{margin-bottom:14px}
 </style>
 </head>
 <body>
@@ -531,7 +541,7 @@ function showEditor(){
       'heading-2','heading-3','|',
       'quote','unordered-list','ordered-list','|',
       'link',
-      { name:'image', action:openImgModal, className:'fa fa-picture-o', title:'画像を挿入' },
+      { name:'image', action:function(editor){ if(typeof openImgModal==='function') openImgModal(); else alert('画像挿入機能の準備中です。ページを再読込してください。'); }, className:'fa fa-picture-o', title:'画像を挿入' },
       'code','|',
       'preview','side-by-side','fullscreen','|',
       'guide'
@@ -757,53 +767,18 @@ function previewArticle(){
 }
 
 // =================== 画像挿入 ===================
-function openImgModal(editor){
-  document.getElementById('img-modal').classList.add('show');
-  ['img-url','img-alt','img-source-name','img-photographer','img-permission'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('img-source-type').value = 'own';
-  const fileInput = document.getElementById('img-file');
-  if (fileInput) fileInput.value = '';
-  
-  // ファイル選択時のバリデーション
-  if (fileInput && !fileInput.dataset.bound) {
-    fileInput.dataset.bound = '1';
-    fileInput.addEventListener('change', () => {
-      const f = fileInput.files?.[0];
-      if (!f) return;
-      const okMime = ['image/jpeg','image/png','image/webp','image/gif','image/svg+xml'].includes(f.type);
-      if (!okMime) {
-        flash('対応形式は JPEG / PNG / WebP / GIF / SVG です', true);
-        fileInput.value = '';
-        return;
-      }
-      if (f.size > 10 * 1024 * 1024) {
-        flash('ファイルサイズは10MBまでです', true);
-        fileInput.value = '';
-        return;
-      }
-      // alt が空なら、ファイル名から提案
-      const altInput = document.getElementById('img-alt');
-      if (!altInput.value) {
-        const baseName = f.name.replace(/\.[^.]+$/, '').replace(/[_-]/g, ' ');
-        altInput.placeholder = '例: ' + baseName;
-      }
-    });
-  }
-  
-  // ソース種別変更で必須欄の見た目を切り替え
-  const srcSelect = document.getElementById('img-source-type');
-  const updateSourceUI = () => {
-    const v = srcSelect.value;
-    const nameWrap = document.getElementById('img-source-name-wrap');
-    const permWrap = document.getElementById('img-permission-wrap');
-    if (nameWrap) nameWrap.style.opacity = (v === 'stock' || v === 'cc') ? '1' : '0.6';
-    if (permWrap) permWrap.style.opacity = v === 'facility' ? '1' : '0.6';
-  };
-  if (!srcSelect.dataset.bound) {
-    srcSelect.dataset.bound = '1';
-    srcSelect.addEventListener('change', updateSourceUI);
-  }
-  updateSourceUI();
+function openImgModal(){
+  const m = document.getElementById('img-modal');
+  if (!m) { alert('画像モーダルが見つかりません'); return; }
+  m.style.display = 'flex';
+  // reset
+  const fIn = document.getElementById('img-file');
+  const uIn = document.getElementById('img-url');
+  const aIn = document.getElementById('img-alt');
+  if (fIn) fIn.value = '';
+  if (uIn) uIn.value = '';
+  if (aIn) { aIn.value = ''; setTimeout(()=>aIn.focus(), 50); }
+  if (typeof switchImgTab === 'function') switchImgTab('upload');
 }
 function closeImgModal(){
   document.getElementById('img-modal').classList.remove('show');
@@ -1030,6 +1005,20 @@ function closeImgModal(){
   document.getElementById('img-alt').value = '';
   switchImgTab('upload');
 }
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    const m = document.getElementById('img-modal');
+    if (m && m.style.display !== 'none' && m.style.display !== '') {
+      if (typeof closeImgModal === 'function') closeImgModal();
+    }
+  }
+});
+document.addEventListener('click', (e) => {
+  if (e.target && e.target.id === 'img-modal') {
+    if (typeof closeImgModal === 'function') closeImgModal();
+  }
+});
 </script>
 </body>
 </html>
