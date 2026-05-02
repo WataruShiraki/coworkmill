@@ -2881,5 +2881,222 @@ window.moveAdminMapTo = function(anchorId) {
   setTimeout(attachFixes, 3000);
 })();
 </script>
+<script>
+/* ============================================================
+   admin-view-fix v6 (added 2026-05-03)
+   v5 で saveArchInfo を上書きしたが、getCurrentDbId が
+   `.fi.active` を探していたため `.fi.on`（renderFacList が付与する
+   実際のクラス名）を見つけられず「施設が選択されていません」が
+   誤発火 → DB保存に到達しない → リロードで建築家が消える、という
+   状態だった。
+
+   合わせて、施設クリック時に lat/lon が未登録だと
+   _attachFiHandler が自動で nominatim を叩き、ネットワーク失敗時に
+   `alert('検索エラー')` がポップアップしていた件も抑制する。
+
+   修正：
+     1) #fac-list 内の各 .fi に data-db-id を埋め込み、
+        saveArchInfo の dbId 解決ルートを増やす
+     2) saveArchInfo を v6 として再上書き（v5 のロジックを継承しつつ
+        `.fi.on` ベースの dbId 取得に対応）
+     3) adminMapSearchAddr の catch から alert を除去（console.warn 化）
+   ============================================================ */
+(function(){
+  var SB  = 'https://jakwntemjkwqwaqujffh.supabase.co';
+  var KEY = 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+
+  /* ── 1) .fi に data-db-id を埋める ───────────────────── */
+  function tagFis(){
+    var src = (typeof window.facs !== 'undefined' && Array.isArray(window.facs)) ? window.facs
+            : (typeof facs !== 'undefined' ? facs : null);
+    if (!src) return;
+    document.querySelectorAll('#fac-list .fi').forEach(function(li){
+      var m = (li.id || '').match(/^fi-(\d+)$/);
+      if (!m) return;
+      var idx = parseInt(m[1], 10);
+      var f = src[idx];
+      if (f && f.db_id) li.dataset.dbId = f.db_id;
+      else if (li.dataset.dbId) delete li.dataset.dbId;
+    });
+  }
+  function startTagging(){
+    var fl = document.getElementById('fac-list');
+    if (!fl) return false;
+    if (fl.__v6tagged) return true;
+    fl.__v6tagged = true;
+    new MutationObserver(tagFis).observe(fl, { childList: true, subtree: true });
+    tagFis();
+    return true;
+  }
+  if (!startTagging()) {
+    document.addEventListener('DOMContentLoaded', startTagging);
+    setTimeout(startTagging, 500);
+    setTimeout(startTagging, 1500);
+    setTimeout(startTagging, 3000);
+  }
+
+  /* ── 2) dbId 取得（.fi.on 優先 + dataset 経由） ──────── */
+  function getDbIdNow(){
+    /* a) アクティブな .fi の data-db-id（v6 で埋めた値）*/
+    var on = document.querySelector('#fac-list .fi.on') || document.querySelector('#fac-list .fi.active');
+    if (on && on.dataset && on.dataset.dbId) return on.dataset.dbId;
+    /* b) facs/cur が window 公開されていれば使う */
+    try {
+      if (window.facs && Array.isArray(window.facs) && typeof window.cur === 'number') {
+        var f = window.facs[window.cur];
+        if (f && f.db_id) return f.db_id;
+      }
+    } catch(e){}
+    /* c) p-dbid input フォールバック（既存実装互換）*/
+    var p = document.getElementById('p-dbid');
+    if (p && p.value) return p.value;
+    return null;
+  }
+
+  /* ── 3) saveArchInfo を v6 として再上書き ────────────── */
+  function attachSaveOverrideV6(){
+    if (typeof window.saveArchInfo !== 'function') return;
+    if (window.__saveArchInfoFixedV6) return;
+    window.saveArchInfo = async function(){
+      try {
+        tagFis(); /* 描画遅延ガード */
+        var dbId = getDbIdNow();
+        if (!dbId) {
+          alert('施設が選択されていません。施設リストから施設を選んで再度お試しください。');
+          console.warn('[admin-fix v6] no dbId');
+          return;
+        }
+        var sel = document.getElementById('p-arch-selected');
+        var archId   = (sel && sel.dataset && sel.dataset.archId) || null;
+        var archName = ((document.getElementById('p-arch-name') || {}).value || '').trim() || null;
+        var archFirm = ((document.getElementById('p-arch-firm') || {}).value || '').trim() || null;
+
+        if (archId && (!archName || !archFirm)) {
+          try {
+            var r0 = await fetch(SB + '/rest/v1/architects?id=eq.' + encodeURIComponent(archId) + '&select=name,firm', {
+              headers: { apikey: KEY, Authorization: 'Bearer ' + KEY }
+            });
+            if (r0.ok) {
+              var rows = await r0.json();
+              if (Array.isArray(rows) && rows[0]) {
+                if (!archName) archName = rows[0].name || null;
+                if (!archFirm) archFirm = rows[0].firm || null;
+              }
+            }
+          } catch(e){ console.warn('[admin-fix v6] resolve from architects failed', e); }
+        }
+
+        var payload = { architect_id: archId, architect_name: archName, architect_firm: archFirm };
+        console.log('[admin-fix v6] sbFetch PATCH', dbId, payload);
+
+        if (typeof window.sbFetch !== 'function') {
+          throw new Error('sbFetch is not defined; admin runtime not ready');
+        }
+        await window.sbFetch('/rest/v1/spaces?id=eq.' + dbId, {
+          method: 'PATCH',
+          body: JSON.stringify(payload)
+        });
+
+        /* facs キャッシュも更新（IIFE スコープでも同じ参照なので反映される） */
+        try {
+          var src = (window.facs && Array.isArray(window.facs)) ? window.facs
+                  : (typeof facs !== 'undefined' ? facs : null);
+          if (src) {
+            for (var i = 0; i < src.length; i++) {
+              if (src[i] && src[i].db_id === dbId) {
+                src[i].architect_id   = archId;
+                src[i].architect_name = archName;
+                src[i].architect_firm = archFirm;
+                break;
+              }
+            }
+          }
+        } catch(e){}
+
+        try {
+          if (typeof window.setArchPanel === 'function') {
+            window.setArchPanel(archId, archName, archFirm);
+          }
+        } catch(e){}
+
+        alert('建築家情報を保存しました。');
+      } catch (e) {
+        console.error('[admin-fix v6] saveArchInfo error', e);
+        alert('保存に失敗しました。\n' + (e && e.message ? e.message : e));
+      }
+    };
+    window.__saveArchInfoFixedV6 = true;
+    console.log('[admin-fix v6] saveArchInfo wrapped');
+  }
+  attachSaveOverrideV6();
+  document.addEventListener('DOMContentLoaded', attachSaveOverrideV6);
+  setTimeout(attachSaveOverrideV6, 500);
+  setTimeout(attachSaveOverrideV6, 1500);
+  setTimeout(attachSaveOverrideV6, 3000);
+
+  /* ── 4) adminMapSearchAddr の検索エラー alert を抑制 ─── */
+  function attachMapSearchOverrideV6(){
+    if (typeof window.adminMapSearchAddr !== 'function') return;
+    if (window.__adminMapSearchAddrV6) return;
+    window.adminMapSearchAddr = function(){
+      var pref   = (document.querySelector('#nfc option:checked') || document.getElementById('nfc') || {}).value
+                || (document.getElementById('fc') || {}).value || '';
+      var city   = ((document.getElementById('f-city') || {}).value || '').trim();
+      var street = ((document.getElementById('nfad')   || {}).value
+                 || (document.getElementById('fad')    || {}).value || '').trim();
+      if (!city && !street) {
+        /* 住所がまだ揃っていない（施設選択直後など）→ 黙って終了 */
+        console.warn('[admin-fix v6] adminMapSearchAddr skipped: address empty');
+        return;
+      }
+      var town = street.split(/[\d\uff10-\uff19]/)[0].trim().replace(/\s+.*$/, '');
+      var base = ([town, city, pref].filter(Boolean).join(' ')).trim();
+      function doSearch(){
+        fetch('https://nominatim.openstreetmap.org/search?q=' + encodeURIComponent(base) + '&format=json&limit=1', {
+          headers: { 'Accept-Language': 'ja', 'User-Agent': 'COWORKMILL/1.0' }
+        }).then(function(r){ return r.json(); }).then(function(res){
+          if (!res || !res.length) {
+            console.warn('[admin-fix v6] address not found:', base);
+            return;
+          }
+          var lat = parseFloat(res[0].lat), lon = parseFloat(res[0].lon);
+          if (window._adminMap) {
+            window._adminMap.setView([lat, lon], 16);
+            window._adminMarker.setLatLng([lat, lon]);
+          } else {
+            window.adminMapInit(lat, lon);
+          }
+          var le = document.getElementById('admin-lat');
+          var lo = document.getElementById('admin-lon');
+          var ld = document.getElementById('admin-lat-disp');
+          var od = document.getElementById('admin-lon-disp');
+          if (le) le.value = lat.toFixed(6);
+          if (lo) lo.value = lon.toFixed(6);
+          if (ld) ld.textContent = lat.toFixed(5);
+          if (od) od.textContent = lon.toFixed(5);
+        }).catch(function(e){
+          /* ネットワーク失敗時はサイレントに終了（東京駅デフォルトのまま） */
+          console.warn('[admin-fix v6] nominatim fetch failed:', e);
+        });
+      }
+      if (!window._adminMap) {
+        var lv = parseFloat((document.getElementById('admin-lat') || {}).value || 0) || 35.6689;
+        var ov = parseFloat((document.getElementById('admin-lon') || {}).value || 0) || 139.7208;
+        window.adminMapInit(lv, ov);
+        setTimeout(doSearch, 800);
+      } else {
+        doSearch();
+      }
+    };
+    window.__adminMapSearchAddrV6 = true;
+    console.log('[admin-fix v6] adminMapSearchAddr wrapped');
+  }
+  attachMapSearchOverrideV6();
+  document.addEventListener('DOMContentLoaded', attachMapSearchOverrideV6);
+  setTimeout(attachMapSearchOverrideV6, 500);
+  setTimeout(attachMapSearchOverrideV6, 1500);
+  setTimeout(attachMapSearchOverrideV6, 3000);
+})();
+</script>
 </body></html>
 <!-- deploy -->
