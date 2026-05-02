@@ -187,6 +187,22 @@ label{font-size:12px;color:var(--fg-3);display:block;margin-bottom:6px}
 #img-modal input[type="text"],#img-modal input[type="url"],#img-modal input[type="file"]{width:100%;padding:10px 12px;font-size:14px;border:1px solid #d0d0d0;border-radius:3px;background:#fff;color:#1a1a1a;font-family:inherit}
 #img-modal input:focus{outline:none;border-color:#1ba85a}
 #img-modal .field{margin-bottom:14px}
+
+.preview-styled{font-family:'Noto Sans JP',-apple-system,sans-serif;font-size:15px;line-height:1.95;color:#1a1a1a;padding:24px 28px!important;background:#fff!important}
+.preview-styled h1{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:500;letter-spacing:.02em;line-height:1.2;margin:32px 0 16px;color:#1a1a1a}
+.preview-styled h2{font-size:24px;font-weight:600;margin:36px 0 14px;color:#1a1a1a;padding-bottom:6px;border-bottom:1px solid #eee}
+.preview-styled h3{font-size:18px;font-weight:600;margin:24px 0 10px;color:#333}
+.preview-styled p{margin:0 0 18px;color:#333}
+.preview-styled blockquote{border-left:3px solid #1ba85a;padding:6px 0 6px 16px;margin:20px 0;color:#555;font-style:italic;background:#fafafa}
+.preview-styled ul,.preview-styled ol{margin:0 0 18px 24px;color:#333}
+.preview-styled li{margin-bottom:6px}
+.preview-styled code{background:#f4f4f4;padding:2px 6px;border-radius:3px;font-size:13px;color:#c026d3}
+.preview-styled pre{background:#1a1a1a;color:#f0f0f0;padding:14px 18px;border-radius:4px;overflow-x:auto;margin:18px 0}
+.preview-styled pre code{background:transparent;color:inherit;padding:0}
+.preview-styled img{max-width:100%;height:auto;display:block;margin:24px auto;border-radius:4px;box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.preview-styled a{color:#2BB5C8;border-bottom:1px solid #2BB5C8}
+.preview-styled hr{border:none;border-top:1px solid #ddd;margin:28px 0}
+.editor-preview-side{background:#fff!important;color:#1a1a1a!important;border-left:1px solid #d0d0d0}
 </style>
 </head>
 <body>
@@ -536,6 +552,9 @@ function showEditor(){
     initialValue: currentArticle.body_md || '',
     spellChecker: false,
     autoDownloadFontAwesome: false,
+      sideBySideFullscreen: false,
+      previewClass: ['editor-preview', 'preview-styled'],
+      renderingConfig: { singleLineBreaks: false, codeSyntaxHighlighting: false },
     toolbar: [
       'bold','italic','strikethrough','|',
       'heading-2','heading-3','|',
@@ -756,14 +775,18 @@ async function deleteArticle(){
 }
 
 function previewArticle(){
-  if (!currentArticle?.slug || !currentArticle?.id) {
-    flash('プレビューには一度保存が必要です', true); return;
+  if (typeof easyMDE === 'undefined' || !easyMDE) {
+    flash('エディタが起動していません', true); return;
   }
-  if (isDirty) {
-    if (!confirm('未保存の変更があります。最後に保存した内容でプレビューします。続行しますか?')) return;
+  // EasyMDE の Side-by-Side プレビューを切り替え
+  if (typeof EasyMDE !== 'undefined' && EasyMDE.toggleSideBySide) {
+    EasyMDE.toggleSideBySide(easyMDE);
+  } else if (easyMDE.toggleSideBySide) {
+    easyMDE.toggleSideBySide();
+  } else {
+    // fallback: toggle preview
+    easyMDE.togglePreview();
   }
-  const url = '/journal/' + encodeURIComponent(currentArticle.slug) + '?preview=1';
-  window.open(url, '_blank', 'noopener');
 }
 
 // =================== 画像挿入 ===================
