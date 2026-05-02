@@ -206,6 +206,9 @@ img{max-width:100%;display:block}
 const SUPABASE_URL = 'https://jakwntemjkwqwaqujffh.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
 
+const isPreview = new URLSearchParams(location.search).get('preview') === '1';
+const previewToken = null;
+
 const CATEGORY_LABELS = {
   'interview': 'インタビュー',
   'trend': 'トレンド',
