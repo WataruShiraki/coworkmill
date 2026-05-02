@@ -3,8 +3,30 @@
 // CWM_JWT_SECRET, runs ownership checks, then writes via service_role.
 // Anon key NEVER has UPDATE/DELETE/INSERT permission on protected tables.
 
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
-import { verify } from "https://deno.land/x/djwt@v3.0.2/mod.ts";
+import { createClient } from "npm:@supabase/supabase-js@2";
+
+// === djwt verify 代替 (Web Crypto API only, no remote deps) ===
+function _b64urlDecode(s: string): Uint8Array {
+  const pad = s.length % 4;
+  const b64 = (s + (pad ? "=".repeat(4 - pad) : "")).replace(/-/g, "+").replace(/_/g, "/");
+  const bin = atob(b64);
+  const out = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+  return out;
+}
+async function verify(jwt: string, key: CryptoKey, _alg?: any): Promise<any> {
+  const parts = jwt.split(".");
+  if (parts.length !== 3) throw new Error("invalid jwt format");
+  const [h, p, s] = parts;
+  const sig = _b64urlDecode(s);
+  const data = new TextEncoder().encode(h + "." + p);
+  const ok = await crypto.subtle.verify({ name: "HMAC", hash: "SHA-256" }, key, sig, data);
+  if (!ok) throw new Error("invalid signature");
+  const payload = JSON.parse(new TextDecoder().decode(_b64urlDecode(p)));
+  if (payload.exp && Date.now() / 1000 > payload.exp) throw new Error("expired");
+  return payload;
+}
+// === end djwt replacement ===
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SUPABASE_SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || Deno.env.get("SUPABASE_SERVICE_KEY") || "";
