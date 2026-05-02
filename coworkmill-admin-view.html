@@ -2719,10 +2719,17 @@ window.moveAdminMapTo = function(anchorId) {
 </script>
 <script>
 /* ============================================================
-   admin-view-fix v3 (added 2026-05-02)
-   v2 missed that facs/cur are <script>-level let globals,
-   not window properties. v3 reads them via typeof checks
-   in the same lexical scope (no IIFE wrap).
+   admin-view-fix v4 (added 2026-05-02)
+   v3 fixed save side. v4 fixes display side.
+
+   Real bug: loadSpacesFromDB / loadSpaceDetail never write
+   architect_id / architect_name / architect_firm into the
+   editor panel. So the user thinks "saved data disappeared
+   on reload" — actually the data is in the DB, the UI just
+   forgot to read it.
+
+   v4 watches the active facility (.fi.active) and refreshes
+   the architect panel from the DB on every facility switch.
    ============================================================ */
 window.__getCurrentDbId = function() {
   try {
@@ -2744,103 +2751,180 @@ window.__getCurrentDbId = function() {
   return null;
 };
 
-window.__attachAdminFix = function() {
+(function(){
   var SB  = 'https://jakwntemjkwqwaqujffh.supabase.co';
   var KEY = 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
   var H = function(){ return { apikey: KEY, Authorization: 'Bearer ' + KEY, 'Content-Type': 'application/json', Prefer: 'return=representation' }; };
 
-  if (typeof window.selectArchitect === 'function' && !window.__selectArchitectFixed) {
-    var origSelect = window.selectArchitect;
-    window.selectArchitect = function(archId) {
-      var ret = origSelect.apply(this, arguments);
-      try {
-        fetch(SB + '/rest/v1/architects?id=eq.' + encodeURIComponent(archId) + '&select=name,firm', {
-          headers: { apikey: KEY, Authorization: 'Bearer ' + KEY }
-        }).then(function(r){ return r.ok ? r.json() : []; }).then(function(data){
-          if (Array.isArray(data) && data[0]) {
-            var ni = document.getElementById('p-arch-name');
-            var fi = document.getElementById('p-arch-firm');
-            if (ni) ni.value = data[0].name || '';
-            if (fi) fi.value = data[0].firm || '';
-            var sel = document.getElementById('p-arch-selected');
-            if (sel) {
-              sel.dataset.archName = data[0].name || '';
-              sel.dataset.archFirm = data[0].firm || '';
-            }
-          }
-        }).catch(function(e){ console.warn('[admin-fix v3] select fill failed', e); });
-      } catch(e){ console.warn('[admin-fix v3] selectArchitect wrap', e); }
-      return ret;
-    };
-    window.__selectArchitectFixed = true;
-    console.log('[admin-fix v3] selectArchitect wrapped');
+  function setArchPanel(archId, archName, archFirm) {
+    var sel = document.getElementById('p-arch-selected');
+    var selName = document.getElementById('p-arch-selected-name');
+    var nameI = document.getElementById('p-arch-name');
+    var firmI = document.getElementById('p-arch-firm');
+    if (archId) {
+      if (sel) {
+        sel.style.display = '';
+        sel.dataset.archId = archId;
+        sel.dataset.archName = archName || '';
+        sel.dataset.archFirm = archFirm || '';
+      }
+      if (selName) selName.textContent = archName || '(名称不明)';
+      if (nameI) nameI.value = archName || '';
+      if (firmI) firmI.value = archFirm || '';
+    } else {
+      if (sel) {
+        sel.style.display = 'none';
+        delete sel.dataset.archId;
+        delete sel.dataset.archName;
+        delete sel.dataset.archFirm;
+      }
+      if (selName) selName.textContent = '';
+      if (nameI) nameI.value = '';
+      if (firmI) firmI.value = '';
+    }
   }
+  window.__setArchPanel = setArchPanel;
 
-  if (typeof window.saveArchInfo === 'function' && !window.__saveArchInfoFixed) {
-    window.saveArchInfo = async function() {
-      try {
-        var dbId = window.__getCurrentDbId();
-        if (!dbId) {
-          alert('施設が選択されていません。施設リストから施設を選んで再度お試しください。');
-          console.warn('[admin-fix v3] no dbId.');
-          return;
-        }
-
-        var sel = document.getElementById('p-arch-selected');
-        var archId   = (sel && sel.dataset && sel.dataset.archId) || null;
-        var archName = ((document.getElementById('p-arch-name') || {}).value || '').trim() || null;
-        var archFirm = ((document.getElementById('p-arch-firm') || {}).value || '').trim() || null;
-
-        if (archId && (!archName || !archFirm)) {
-          try {
-            var r0 = await fetch(SB + '/rest/v1/architects?id=eq.' + encodeURIComponent(archId) + '&select=name,firm', {
-              headers: { apikey: KEY, Authorization: 'Bearer ' + KEY }
-            });
-            if (r0.ok) {
-              var data = await r0.json();
-              if (Array.isArray(data) && data[0]) {
-                if (!archName) archName = data[0].name || null;
-                if (!archFirm) archFirm = data[0].firm || null;
-              }
-            }
-          } catch(e){ console.warn('[admin-fix v3] resolve from architects failed', e); }
-        }
-
-        var payload = { architect_id: archId, architect_name: archName, architect_firm: archFirm };
-        console.log('[admin-fix v3] PATCH', dbId, payload);
-
-        var r = await fetch(SB + '/rest/v1/spaces?id=eq.' + encodeURIComponent(dbId), {
-          method: 'PATCH', headers: H(), body: JSON.stringify(payload)
-        });
-        if (!r.ok) {
-          var errText = await r.text();
-          throw new Error(r.status + ' ' + errText);
-        }
-
+  var refreshSeq = 0;
+  async function refreshArchPanelFromDb(dbId) {
+    if (!dbId) return;
+    var seq = ++refreshSeq;
+    try {
+      var r = await fetch(SB + '/rest/v1/spaces?id=eq.' + encodeURIComponent(dbId) + '&select=architect_id,architect_name,architect_firm', {
+        headers: { apikey: KEY, Authorization: 'Bearer ' + KEY }
+      });
+      if (!r.ok) return;
+      var data = await r.json();
+      // 後発リクエストで上書きされてたらこのリクエストは破棄
+      if (seq !== refreshSeq) return;
+      if (Array.isArray(data) && data[0]) {
+        setArchPanel(data[0].architect_id, data[0].architect_name, data[0].architect_firm);
+        // facs キャッシュも更新
         try {
-          if (typeof facs !== 'undefined' && typeof cur !== 'undefined' && facs[cur]) {
-            facs[cur].architect_id   = archId;
-            facs[cur].architect_name = archName;
-            facs[cur].architect_firm = archFirm;
+          if (typeof facs !== 'undefined' && typeof cur !== 'undefined' && facs[cur] && facs[cur].db_id === dbId) {
+            facs[cur].architect_id   = data[0].architect_id;
+            facs[cur].architect_name = data[0].architect_name;
+            facs[cur].architect_firm = data[0].architect_firm;
           }
         } catch(e){}
-
-        alert('建築家情報を保存しました。');
-      } catch (e) {
-        console.error('[admin-fix v3] saveArchInfo error', e);
-        alert('保存に失敗しました。\n' + (e && e.message ? e.message : e));
       }
-    };
-    window.__saveArchInfoFixed = true;
-    console.log('[admin-fix v3] saveArchInfo wrapped');
+    } catch(e){ console.warn('[admin-fix v4] refreshArchPanelFromDb err', e); }
   }
-};
+  window.__refreshArchPanelFromDb = refreshArchPanelFromDb;
 
-window.__attachAdminFix();
-document.addEventListener('DOMContentLoaded', window.__attachAdminFix);
-setTimeout(window.__attachAdminFix, 500);
-setTimeout(window.__attachAdminFix, 1500);
-setTimeout(window.__attachAdminFix, 3000);
+  var lastDbId = null;
+  function checkActiveFacility() {
+    var dbId = window.__getCurrentDbId();
+    if (dbId && dbId !== lastDbId) {
+      lastDbId = dbId;
+      refreshArchPanelFromDb(dbId);
+    }
+  }
+
+  // MutationObserver: .fi.active の変化を監視
+  var observer = null;
+  function startObserving() {
+    if (observer) return;
+    var target = document.body;
+    observer = new MutationObserver(function() { checkActiveFacility(); });
+    observer.observe(target, { attributes: true, subtree: true, attributeFilter: ['class'] });
+    // 初回も走らせる
+    setTimeout(checkActiveFacility, 100);
+    setTimeout(checkActiveFacility, 800);
+    setTimeout(checkActiveFacility, 2000);
+  }
+
+  if (document.body) startObserving();
+  else document.addEventListener('DOMContentLoaded', startObserving);
+
+  function attachAdminFix() {
+    if (typeof window.selectArchitect === 'function' && !window.__selectArchitectFixed) {
+      var origSelect = window.selectArchitect;
+      window.selectArchitect = function(archId) {
+        var ret = origSelect.apply(this, arguments);
+        try {
+          fetch(SB + '/rest/v1/architects?id=eq.' + encodeURIComponent(archId) + '&select=name,firm', {
+            headers: { apikey: KEY, Authorization: 'Bearer ' + KEY }
+          }).then(function(r){ return r.ok ? r.json() : []; }).then(function(data){
+            if (Array.isArray(data) && data[0]) {
+              var ni = document.getElementById('p-arch-name');
+              var fi = document.getElementById('p-arch-firm');
+              if (ni) ni.value = data[0].name || '';
+              if (fi) fi.value = data[0].firm || '';
+              var sel = document.getElementById('p-arch-selected');
+              if (sel) {
+                sel.dataset.archName = data[0].name || '';
+                sel.dataset.archFirm = data[0].firm || '';
+              }
+            }
+          }).catch(function(){});
+        } catch(e){}
+        return ret;
+      };
+      window.__selectArchitectFixed = true;
+      console.log('[admin-fix v4] selectArchitect wrapped');
+    }
+
+    if (typeof window.saveArchInfo === 'function' && !window.__saveArchInfoFixed) {
+      window.saveArchInfo = async function() {
+        try {
+          var dbId = window.__getCurrentDbId();
+          if (!dbId) {
+            alert('施設が選択されていません。施設リストから施設を選んで再度お試しください。');
+            return;
+          }
+          var sel = document.getElementById('p-arch-selected');
+          var archId   = (sel && sel.dataset && sel.dataset.archId) || null;
+          var archName = ((document.getElementById('p-arch-name') || {}).value || '').trim() || null;
+          var archFirm = ((document.getElementById('p-arch-firm') || {}).value || '').trim() || null;
+          if (archId && (!archName || !archFirm)) {
+            try {
+              var r0 = await fetch(SB + '/rest/v1/architects?id=eq.' + encodeURIComponent(archId) + '&select=name,firm', {
+                headers: { apikey: KEY, Authorization: 'Bearer ' + KEY }
+              });
+              if (r0.ok) {
+                var data = await r0.json();
+                if (Array.isArray(data) && data[0]) {
+                  if (!archName) archName = data[0].name || null;
+                  if (!archFirm) archFirm = data[0].firm || null;
+                }
+              }
+            } catch(e){}
+          }
+          var payload = { architect_id: archId, architect_name: archName, architect_firm: archFirm };
+          console.log('[admin-fix v4] PATCH', dbId, payload);
+          var r = await fetch(SB + '/rest/v1/spaces?id=eq.' + encodeURIComponent(dbId), {
+            method: 'PATCH', headers: H(), body: JSON.stringify(payload)
+          });
+          if (!r.ok) {
+            var errText = await r.text();
+            throw new Error(r.status + ' ' + errText);
+          }
+          try {
+            if (typeof facs !== 'undefined' && typeof cur !== 'undefined' && facs[cur]) {
+              facs[cur].architect_id   = archId;
+              facs[cur].architect_name = archName;
+              facs[cur].architect_firm = archFirm;
+            }
+          } catch(e){}
+          // panel も即時更新(再フェッチ不要)
+          setArchPanel(archId, archName, archFirm);
+          alert('建築家情報を保存しました。');
+        } catch (e) {
+          console.error('[admin-fix v4] saveArchInfo error', e);
+          alert('保存に失敗しました。\n' + (e && e.message ? e.message : e));
+        }
+      };
+      window.__saveArchInfoFixed = true;
+      console.log('[admin-fix v4] saveArchInfo wrapped');
+    }
+  }
+  attachAdminFix();
+  document.addEventListener('DOMContentLoaded', attachAdminFix);
+  setTimeout(attachAdminFix, 500);
+  setTimeout(attachAdminFix, 1500);
+  setTimeout(attachAdminFix, 3000);
+})();
 </script>
 </body></html>
 <!-- deploy -->
