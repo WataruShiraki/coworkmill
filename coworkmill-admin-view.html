@@ -2717,140 +2717,130 @@ window.moveAdminMapTo = function(anchorId) {
   }, 200);
 };
 </script>
-
-
 <script>
 /* ============================================================
-   admin-view-fix v2 (added 2026-05-02)
-   Three real bugs:
-     ① saveArchInfo references undefined window._archMap
-     ② selectArchitect doesn't write picked architect to inputs
-     ③ architect_firm missing from PATCH payload
-   Plus: dbId resolution falls back across multiple sources
-         so "先に施設情報を保存してください。" is no longer a false alarm.
+   admin-view-fix v3 (added 2026-05-02)
+   v2 missed that facs/cur are <script>-level let globals,
+   not window properties. v3 reads them via typeof checks
+   in the same lexical scope (no IIFE wrap).
    ============================================================ */
-(function(){
+window.__getCurrentDbId = function() {
+  try {
+    if (typeof facs !== 'undefined' && typeof cur !== 'undefined') {
+      var f = facs[cur];
+      if (f && f.db_id) return f.db_id;
+    }
+  } catch(e){}
+  try {
+    var active = document.querySelector('.fi.active');
+    if (active) {
+      var m = (active.id || '').match(/^fi-(\d+)$/);
+      if (m && typeof facs !== 'undefined') {
+        var ff = facs[parseInt(m[1], 10)];
+        if (ff && ff.db_id) return ff.db_id;
+      }
+    }
+  } catch(e){}
+  return null;
+};
+
+window.__attachAdminFix = function() {
   var SB  = 'https://jakwntemjkwqwaqujffh.supabase.co';
   var KEY = 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
   var H = function(){ return { apikey: KEY, Authorization: 'Bearer ' + KEY, 'Content-Type': 'application/json', Prefer: 'return=representation' }; };
 
-  function getCurrentDbId() {
-    try {
-      if (window.facs && Array.isArray(window.facs) && typeof window.cur === 'number') {
-        var f = window.facs[window.cur];
-        if (f && f.db_id) return f.db_id;
-      }
-    } catch(e){}
-    try {
-      var active = document.querySelector('.fi.active');
-      if (active) {
-        var id = active.dataset.dbId || active.dataset.id || active.getAttribute('data-id');
-        if (id) return id;
-      }
-    } catch(e){}
-    try {
-      var el = document.getElementById('p-dbid');
-      if (el && el.value) return el.value;
-    } catch(e){}
-    return null;
+  if (typeof window.selectArchitect === 'function' && !window.__selectArchitectFixed) {
+    var origSelect = window.selectArchitect;
+    window.selectArchitect = function(archId) {
+      var ret = origSelect.apply(this, arguments);
+      try {
+        fetch(SB + '/rest/v1/architects?id=eq.' + encodeURIComponent(archId) + '&select=name,firm', {
+          headers: { apikey: KEY, Authorization: 'Bearer ' + KEY }
+        }).then(function(r){ return r.ok ? r.json() : []; }).then(function(data){
+          if (Array.isArray(data) && data[0]) {
+            var ni = document.getElementById('p-arch-name');
+            var fi = document.getElementById('p-arch-firm');
+            if (ni) ni.value = data[0].name || '';
+            if (fi) fi.value = data[0].firm || '';
+            var sel = document.getElementById('p-arch-selected');
+            if (sel) {
+              sel.dataset.archName = data[0].name || '';
+              sel.dataset.archFirm = data[0].firm || '';
+            }
+          }
+        }).catch(function(e){ console.warn('[admin-fix v3] select fill failed', e); });
+      } catch(e){ console.warn('[admin-fix v3] selectArchitect wrap', e); }
+      return ret;
+    };
+    window.__selectArchitectFixed = true;
+    console.log('[admin-fix v3] selectArchitect wrapped');
   }
-  // expose for debugging
-  window.__getCurrentDbId = getCurrentDbId;
 
-  function attachFixes() {
-    if (typeof window.selectArchitect === 'function' && !window.__selectArchitectFixed) {
-      var origSelect = window.selectArchitect;
-      window.selectArchitect = function(archId) {
-        var ret = origSelect.apply(this, arguments);
-        try {
-          fetch(SB + '/rest/v1/architects?id=eq.' + encodeURIComponent(archId) + '&select=name,firm', {
-            headers: { apikey: KEY, Authorization: 'Bearer ' + KEY }
-          }).then(function(r){ return r.ok ? r.json() : []; }).then(function(data){
-            if (Array.isArray(data) && data[0]) {
-              var ni = document.getElementById('p-arch-name');
-              var fi = document.getElementById('p-arch-firm');
-              if (ni) ni.value = data[0].name || '';
-              if (fi) fi.value = data[0].firm || '';
-              var sel = document.getElementById('p-arch-selected');
-              if (sel) {
-                sel.dataset.archName = data[0].name || '';
-                sel.dataset.archFirm = data[0].firm || '';
-              }
-            }
-          }).catch(function(e){ console.warn('[admin-fix] select fill failed', e); });
-        } catch(e){ console.warn('[admin-fix] selectArchitect wrap', e); }
-        return ret;
-      };
-      window.__selectArchitectFixed = true;
-    }
-
-    if (typeof window.saveArchInfo === 'function' && !window.__saveArchInfoFixed) {
-      window.saveArchInfo = async function() {
-        try {
-          var dbId = getCurrentDbId();
-          if (!dbId) {
-            alert('施設が選択されていません。施設リストから施設を選んで再度お試しください。');
-            console.warn('[admin-fix] no dbId. window.cur=', window.cur, 'facs.length=', (window.facs||[]).length);
-            return;
-          }
-
-          var sel = document.getElementById('p-arch-selected');
-          var archId   = (sel && sel.dataset && sel.dataset.archId) || null;
-          var archName = ((document.getElementById('p-arch-name') || {}).value || '').trim() || null;
-          var archFirm = ((document.getElementById('p-arch-firm') || {}).value || '').trim() || null;
-
-          if (archId && (!archName || !archFirm)) {
-            try {
-              var r0 = await fetch(SB + '/rest/v1/architects?id=eq.' + encodeURIComponent(archId) + '&select=name,firm', {
-                headers: { apikey: KEY, Authorization: 'Bearer ' + KEY }
-              });
-              if (r0.ok) {
-                var data = await r0.json();
-                if (Array.isArray(data) && data[0]) {
-                  if (!archName) archName = data[0].name || null;
-                  if (!archFirm) archFirm = data[0].firm || null;
-                }
-              }
-            } catch(e){ console.warn('[admin-fix] resolve from architects failed', e); }
-          }
-
-          var payload = { architect_id: archId, architect_name: archName, architect_firm: archFirm };
-          console.log('[admin-fix] PATCH', dbId, payload);
-
-          var r = await fetch(SB + '/rest/v1/spaces?id=eq.' + encodeURIComponent(dbId), {
-            method: 'PATCH', headers: H(), body: JSON.stringify(payload)
-          });
-          if (!r.ok) {
-            var errText = await r.text();
-            throw new Error(r.status + ' ' + errText);
-          }
-
-          try {
-            if (window.facs && window.facs[window.cur]) {
-              window.facs[window.cur].architect_id   = archId;
-              window.facs[window.cur].architect_name = archName;
-              window.facs[window.cur].architect_firm = archFirm;
-            }
-          } catch(e){}
-
-          alert('建築家情報を保存しました。');
-        } catch (e) {
-          console.error('[admin-fix] saveArchInfo error', e);
-          alert('保存に失敗しました。\n' + (e && e.message ? e.message : e));
+  if (typeof window.saveArchInfo === 'function' && !window.__saveArchInfoFixed) {
+    window.saveArchInfo = async function() {
+      try {
+        var dbId = window.__getCurrentDbId();
+        if (!dbId) {
+          alert('施設が選択されていません。施設リストから施設を選んで再度お試しください。');
+          console.warn('[admin-fix v3] no dbId.');
+          return;
         }
-      };
-      window.__saveArchInfoFixed = true;
-    }
+
+        var sel = document.getElementById('p-arch-selected');
+        var archId   = (sel && sel.dataset && sel.dataset.archId) || null;
+        var archName = ((document.getElementById('p-arch-name') || {}).value || '').trim() || null;
+        var archFirm = ((document.getElementById('p-arch-firm') || {}).value || '').trim() || null;
+
+        if (archId && (!archName || !archFirm)) {
+          try {
+            var r0 = await fetch(SB + '/rest/v1/architects?id=eq.' + encodeURIComponent(archId) + '&select=name,firm', {
+              headers: { apikey: KEY, Authorization: 'Bearer ' + KEY }
+            });
+            if (r0.ok) {
+              var data = await r0.json();
+              if (Array.isArray(data) && data[0]) {
+                if (!archName) archName = data[0].name || null;
+                if (!archFirm) archFirm = data[0].firm || null;
+              }
+            }
+          } catch(e){ console.warn('[admin-fix v3] resolve from architects failed', e); }
+        }
+
+        var payload = { architect_id: archId, architect_name: archName, architect_firm: archFirm };
+        console.log('[admin-fix v3] PATCH', dbId, payload);
+
+        var r = await fetch(SB + '/rest/v1/spaces?id=eq.' + encodeURIComponent(dbId), {
+          method: 'PATCH', headers: H(), body: JSON.stringify(payload)
+        });
+        if (!r.ok) {
+          var errText = await r.text();
+          throw new Error(r.status + ' ' + errText);
+        }
+
+        try {
+          if (typeof facs !== 'undefined' && typeof cur !== 'undefined' && facs[cur]) {
+            facs[cur].architect_id   = archId;
+            facs[cur].architect_name = archName;
+            facs[cur].architect_firm = archFirm;
+          }
+        } catch(e){}
+
+        alert('建築家情報を保存しました。');
+      } catch (e) {
+        console.error('[admin-fix v3] saveArchInfo error', e);
+        alert('保存に失敗しました。\n' + (e && e.message ? e.message : e));
+      }
+    };
+    window.__saveArchInfoFixed = true;
+    console.log('[admin-fix v3] saveArchInfo wrapped');
   }
+};
 
-  // 即時 + DOMContentLoaded + 後発の関数定義に備えてリトライ
-  attachFixes();
-  document.addEventListener('DOMContentLoaded', attachFixes);
-  setTimeout(attachFixes, 500);
-  setTimeout(attachFixes, 1500);
-  setTimeout(attachFixes, 3000);
-})();
+window.__attachAdminFix();
+document.addEventListener('DOMContentLoaded', window.__attachAdminFix);
+setTimeout(window.__attachAdminFix, 500);
+setTimeout(window.__attachAdminFix, 1500);
+setTimeout(window.__attachAdminFix, 3000);
 </script>
-
 </body></html>
 <!-- deploy -->
