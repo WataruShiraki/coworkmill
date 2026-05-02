@@ -620,10 +620,9 @@ loadArticle();
    - Bumps view_count via RPC
    ============================ */
 (function(){
-  if (!window.SUPABASE_URL || !window.SUPABASE_KEY) return;
-  const SB_URL = window.SUPABASE_URL;
-  const SB_KEY = window.SUPABASE_KEY;
-  const CAT = window.CATEGORY_LABELS || {};
+  const SB_URL = (typeof SUPABASE_URL !== 'undefined') ? SUPABASE_URL : 'https://jakwntemjkwqwaqujffh.supabase.co';
+  const SB_KEY = (typeof SUPABASE_KEY !== 'undefined') ? SUPABASE_KEY : 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+  const CAT = (typeof CATEGORY_LABELS !== 'undefined') ? CATEGORY_LABELS : {};
 
   const sidebarHTML = [
     '<div class="j-side-block" id="aside-rank-block" style="display:none">',
