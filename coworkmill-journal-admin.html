@@ -775,18 +775,54 @@ async function deleteArticle(){
 }
 
 function previewArticle(){
-  if (typeof mde === 'undefined' || !mde) {
-    flash('エディタが起動していません', true); return;
+  // 1) 入力フォームから現在の状態をすべて拾う
+  const titleIn = document.getElementById('title');
+  const subtitleIn = document.getElementById('subtitle');
+  const slugIn = document.getElementById('slug');
+  const excerptIn = document.getElementById('excerpt');
+  const heroIn = document.getElementById('hero-image-url');
+  const tagsIn = document.getElementById('tags');
+  const categoryIn = document.getElementById('category');
+  const readingIn = document.getElementById('reading-minutes');
+  
+  const title = (titleIn?.value || '').trim();
+  const slug = (slugIn?.value || '').trim() || 'preview';
+  if (!title) { flash('プレビューにはタイトルが必要です', true); titleIn?.focus(); return; }
+  
+  // 2) 本文(EasyMDE から)
+  const body = (typeof mde !== 'undefined' && mde) ? mde.value() : '';
+  
+  // 3) 記事オブジェクト(article.html の renderArticle 期待形式に合わせる)
+  const previewArticle = {
+    id: currentArticle?.id || 'preview',
+    slug: slug,
+    title: title,
+    subtitle: (subtitleIn?.value || '').trim(),
+    excerpt: (excerptIn?.value || '').trim(),
+    body_md: body,
+    body: body,
+    hero_image_url: (heroIn?.value || '').trim(),
+    category: (categoryIn?.value || 'その他'),
+    tags: (tagsIn?.value || '').split(',').map(t => t.trim()).filter(Boolean),
+    reading_minutes: parseInt(readingIn?.value || '5', 10),
+    status: 'draft',
+    published_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    created_at: currentArticle?.created_at || new Date().toISOString(),
+    author_name: '白木 航',
+    author_user_id: currentArticle?.author_user_id || null
+  };
+  
+  // 4) sessionStorage に書き込んで別タブで開く
+  try {
+    sessionStorage.setItem('cwm_journal_preview', JSON.stringify(previewArticle));
+  } catch(e) {
+    flash('プレビューデータの保存に失敗しました: ' + e.message, true);
+    return;
   }
-  // EasyMDE の Side-by-Side プレビューを切り替え
-  if (typeof EasyMDE !== 'undefined' && EasyMDE.toggleSideBySide) {
-    EasyMDE.toggleSideBySide(mde);
-  } else if (mde.toggleSideBySide) {
-    mde.toggleSideBySide();
-  } else {
-    // fallback: toggle preview
-    mde.togglePreview();
-  }
+  
+  const url = '/journal/' + encodeURIComponent(slug) + '?preview=1';
+  window.open(url, '_blank', 'noopener');
 }
 
 // =================== 画像挿入 ===================
