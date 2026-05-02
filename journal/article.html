@@ -633,9 +633,9 @@ loadArticle();
     '</div>',
     '<a class="j-side-cta" href="/coworkmill-spaces.html">',
       '<img class="j-side-cta-logo" src="/shared/coworkmill-logo.svg" alt="COWORKMILL">',
-      '<div class="j-side-cta-label">Find Your Workspace</div>',
-      '<div class="j-side-cta-h">あなたの街の<br>コワーキングを探す</div>',
-      '<div class="j-side-cta-arrow">全国の施設を見る →</div>',
+      '<div class="j-side-cta-label">Where You Work Matters</div>',
+      '<div class="j-side-cta-h">働く場所が、<br>仕事を変える。</div>',
+      '<div class="j-side-cta-arrow">デザインコワーキングを探す →</div>',
     '</a>',
     '<div class="j-side-block" id="aside-picks-block" style="display:none">',
       '<h4 class="j-side-h">Editor\u0027s Picks</h4>',
@@ -745,12 +745,10 @@ loadArticle();
         if (s.image_main) thumb.style.backgroundImage = "url('" + s.image_main.replace(/'/g, "%27") + "')";
         const meta = document.createElement('div');
         meta.className = 'j-pick-meta';
-        if (idx === 0){
-          const badge = document.createElement('div');
-          badge.className = 'j-pick-badge';
-          badge.textContent = '★ PICK';
-          meta.appendChild(badge);
-        }
+        const badge = document.createElement('div');
+        badge.className = 'j-pick-badge';
+        badge.textContent = '★ PICK';
+        meta.appendChild(badge);
         const name = document.createElement('div');
         name.className = 'j-pick-name';
         name.textContent = s.name;
