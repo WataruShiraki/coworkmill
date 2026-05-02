@@ -157,6 +157,53 @@ img{max-width:100%;display:block}
   .j-nav-links a.j-back-to-main span.full{display:none}
   .j-nav-links a.j-back-to-main span.short{display:inline!important}
 }
+
+/* ============================
+   Right Sidebar Layout (added 2026-05-02)
+   ============================ */
+.j-shell{max-width:1140px;margin:0 auto;padding:60px 32px 80px;display:grid;grid-template-columns:minmax(0,720px) 300px;gap:56px;align-items:start}
+.j-shell > .j-article{max-width:100% !important;margin:0 !important;padding:0 !important}
+.j-aside{display:flex;flex-direction:column;gap:36px;position:sticky;top:80px;align-self:start}
+.j-side-block{border-top:1px solid var(--line);padding-top:20px}
+.j-side-h{font-family:var(--fb);font-style:italic;font-size:14px;font-weight:500;letter-spacing:.04em;color:var(--fg-3);margin:0 0 16px}
+.j-rank-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px}
+.j-rank-item{display:grid;grid-template-columns:28px 60px 1fr;gap:12px;align-items:start;text-decoration:none;color:inherit}
+.j-rank-num{font-family:var(--fb);font-size:22px;font-weight:400;color:var(--fg-3);line-height:1;padding-top:2px}
+.j-rank-thumb{width:60px;height:44px;border-radius:3px;background:var(--bg-3) center/cover}
+.j-rank-meta{min-width:0}
+.j-rank-cat{font-size:10px;letter-spacing:.12em;color:var(--fg-4);text-transform:uppercase;margin-bottom:4px}
+.j-rank-title{font-size:13px;line-height:1.5;color:var(--fg-1);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.j-rank-item:hover .j-rank-title{color:var(--accent)}
+.j-side-cta{display:block;background:linear-gradient(135deg,#6366f1 0%,#8b5cf6 100%);border-radius:6px;padding:24px 22px;color:#fff;text-decoration:none;text-align:center;line-height:1.5}
+.j-side-cta-label{font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.75;margin-bottom:8px}
+.j-side-cta-h{font-size:17px;font-weight:600;margin-bottom:6px}
+.j-side-cta-arrow{display:inline-block;margin-top:10px;font-size:11px;letter-spacing:.06em;opacity:.95;border-top:1px solid rgba(255,255,255,.25);padding-top:10px}
+.j-pick-list{display:flex;flex-direction:column;gap:14px}
+.j-pick-card{display:flex;gap:12px;text-decoration:none;color:inherit;padding:8px;margin:-8px;border-radius:4px;transition:background .15s}
+.j-pick-card:hover{background:var(--bg-2)}
+.j-pick-thumb{flex-shrink:0;width:72px;height:72px;border-radius:4px;background:var(--bg-3) center/cover}
+.j-pick-meta{min-width:0;flex:1}
+.j-pick-name{font-size:13px;font-weight:500;color:var(--fg-1);line-height:1.4;margin-bottom:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.j-pick-area{font-size:11px;color:var(--fg-3)}
+.j-pick-badge{display:inline-block;font-size:9px;letter-spacing:.1em;background:linear-gradient(135deg,#ec4899,#8b5cf6);color:#fff;padding:2px 6px;border-radius:2px;margin-bottom:6px;font-weight:500}
+.j-side-related{display:flex;flex-direction:column;gap:14px}
+.j-side-rel-item{display:flex;gap:12px;text-decoration:none;color:inherit}
+.j-side-rel-thumb{flex-shrink:0;width:72px;height:52px;border-radius:3px;background:var(--bg-3) center/cover}
+.j-side-rel-title{font-size:13px;line-height:1.45;color:var(--fg-1);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.j-side-rel-item:hover .j-side-rel-title{color:var(--accent)}
+.j-banner-list{display:flex;flex-direction:column;gap:10px}
+.j-banner{display:block;padding:18px 16px;border-radius:4px;border:1px solid var(--line);text-decoration:none;background:var(--bg-2);transition:border-color .15s,transform .15s}
+.j-banner:hover{border-color:var(--fg-3);transform:translateY(-1px)}
+.j-banner-name{font-family:var(--fb);font-style:italic;font-size:18px;color:var(--fg-1);letter-spacing:.02em;margin-bottom:4px}
+.j-banner-desc{font-size:11px;color:var(--fg-3);line-height:1.4}
+.j-share{display:flex;gap:8px}
+.j-share a{flex:1;text-align:center;padding:10px 6px;border:1px solid var(--line);border-radius:4px;text-decoration:none;color:var(--fg-2);font-size:11px;letter-spacing:.04em;transition:border-color .15s,color .15s,background .15s;cursor:pointer}
+.j-share a:hover{border-color:var(--fg-3);color:var(--fg-1);background:var(--bg-2)}
+@media (max-width: 980px){
+  .j-shell{grid-template-columns:1fr;gap:60px;padding:36px 18px 56px;max-width:100%}
+  .j-aside{position:static;gap:28px}
+}
+
 </style>
 </head>
 <body>
@@ -564,6 +611,272 @@ async function loadRelated(category, excludeId) {
 }
 
 loadArticle();
+
+
+/* ============================
+   Right Sidebar (added 2026-05-02)
+   - Wraps article with shell + aside post-render
+   - Loads ranking, picks, related via Supabase REST
+   - Bumps view_count via RPC
+   ============================ */
+(function(){
+  if (!window.SUPABASE_URL || !window.SUPABASE_KEY) return;
+  const SB_URL = window.SUPABASE_URL;
+  const SB_KEY = window.SUPABASE_KEY;
+  const CAT = window.CATEGORY_LABELS || {};
+
+  const sidebarHTML = [
+    '<div class="j-side-block" id="aside-rank-block" style="display:none">',
+      '<h4 class="j-side-h">Most Read</h4>',
+      '<ol class="j-rank-list" id="aside-rank-list"></ol>',
+    '</div>',
+    '<a class="j-side-cta" href="/coworkmill-spaces.html">',
+      '<div class="j-side-cta-label">Find Your Workspace</div>',
+      '<div class="j-side-cta-h">あなたの街の<br>コワーキングを探す</div>',
+      '<div class="j-side-cta-arrow">全国の施設を見る →</div>',
+    '</a>',
+    '<div class="j-side-block" id="aside-picks-block" style="display:none">',
+      '<h4 class="j-side-h">Editor\u0027s Picks</h4>',
+      '<div class="j-pick-list" id="aside-picks-list"></div>',
+    '</div>',
+    '<div class="j-side-block" id="aside-related-block" style="display:none">',
+      '<h4 class="j-side-h">Related Stories</h4>',
+      '<div class="j-side-related" id="aside-related-list"></div>',
+    '</div>',
+    '<div class="j-side-block">',
+      '<h4 class="j-side-h">From COWORKMILL</h4>',
+      '<div class="j-banner-list">',
+        '<a class="j-banner" href="https://offml.com" target="_blank" rel="noopener">',
+          '<div class="j-banner-name">OFFICEMILL</div>',
+          '<div class="j-banner-desc">こだわりオフィスデザインの掲載メディア</div>',
+        '</a>',
+        '<a class="j-banner" href="https://cfmill.com" target="_blank" rel="noopener">',
+          '<div class="j-banner-name">CAFEMILL</div>',
+          '<div class="j-banner-desc">居心地のいいカフェだけが、ここにある。</div>',
+        '</a>',
+      '</div>',
+    '</div>',
+    '<div class="j-side-block">',
+      '<h4 class="j-side-h">Share</h4>',
+      '<div class="j-share">',
+        '<a id="aside-share-x" target="_blank" rel="noopener">X</a>',
+        '<a id="aside-share-fb" target="_blank" rel="noopener">Facebook</a>',
+        '<a id="aside-share-copy" href="#">Copy</a>',
+      '</div>',
+    '</div>'
+  ].join('');
+
+  function wrapWithSidebar(article){
+    if (article.parentElement && article.parentElement.classList.contains('j-shell')) return false;
+    const main = document.getElementById('main');
+    if (!main) return false;
+    const shell = document.createElement('div');
+    shell.className = 'j-shell';
+    const aside = document.createElement('aside');
+    aside.className = 'j-aside';
+    aside.innerHTML = sidebarHTML;
+    main.removeChild(article);
+    shell.appendChild(article);
+    shell.appendChild(aside);
+    main.appendChild(shell);
+    return true;
+  }
+
+  async function bumpViewCount(slug){
+    if (!slug) return;
+    try {
+      await fetch(SB_URL + '/rest/v1/rpc/bump_article_view', {
+        method: 'POST',
+        headers: {'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY, 'Content-Type': 'application/json'},
+        body: JSON.stringify({p_slug: slug})
+      });
+    } catch(e){}
+  }
+
+  async function loadRanking(currentSlug){
+    try {
+      const r = await fetch(SB_URL + '/rest/v1/articles?select=slug,title,hero_image,category,view_count&status=eq.live&order=view_count.desc&limit=6', {
+        headers: {'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY}
+      });
+      const data = await r.json();
+      const items = (Array.isArray(data) ? data : []).filter(a => a.slug !== currentSlug).slice(0, 5);
+      if (!items.length) return;
+      const list = document.getElementById('aside-rank-list');
+      if (!list) return;
+      list.innerHTML = '';
+      items.forEach((a, i) => {
+        const item = document.createElement('a');
+        item.className = 'j-rank-item';
+        item.href = '/journal/' + encodeURIComponent(a.slug);
+        const num = document.createElement('div');
+        num.className = 'j-rank-num';
+        num.textContent = String(i + 1).padStart(2, '0');
+        const thumb = document.createElement('div');
+        thumb.className = 'j-rank-thumb';
+        if (a.hero_image) thumb.style.backgroundImage = "url('" + a.hero_image.replace(/'/g, "%27") + "')";
+        const meta = document.createElement('div');
+        meta.className = 'j-rank-meta';
+        const cat = document.createElement('div');
+        cat.className = 'j-rank-cat';
+        cat.textContent = CAT[a.category] || a.category || '';
+        const title = document.createElement('div');
+        title.className = 'j-rank-title';
+        title.textContent = a.title;
+        meta.appendChild(cat); meta.appendChild(title);
+        item.appendChild(num); item.appendChild(thumb); item.appendChild(meta);
+        list.appendChild(item);
+      });
+      document.getElementById('aside-rank-block').style.display = '';
+    } catch(e){ console.warn('ranking failed', e); }
+  }
+
+  async function loadPicks(){
+    try {
+      const r = await fetch(SB_URL + '/rest/v1/spaces?select=id,name,area,prefecture,image_main&status=eq.live&plan=eq.pro&order=created_at.desc&limit=12', {
+        headers: {'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY}
+      });
+      const data = await r.json();
+      const arr = Array.isArray(data) ? data : [];
+      if (!arr.length) return;
+      // shuffle and take 3
+      const shuffled = arr.slice().sort(() => Math.random() - 0.5).slice(0, 3);
+      const list = document.getElementById('aside-picks-list');
+      if (!list) return;
+      list.innerHTML = '';
+      shuffled.forEach((s, idx) => {
+        const card = document.createElement('a');
+        card.className = 'j-pick-card';
+        card.href = '/coworkmill-detail.html?id=' + encodeURIComponent(s.id);
+        const thumb = document.createElement('div');
+        thumb.className = 'j-pick-thumb';
+        if (s.image_main) thumb.style.backgroundImage = "url('" + s.image_main.replace(/'/g, "%27") + "')";
+        const meta = document.createElement('div');
+        meta.className = 'j-pick-meta';
+        if (idx === 0){
+          const badge = document.createElement('div');
+          badge.className = 'j-pick-badge';
+          badge.textContent = '★ PICK';
+          meta.appendChild(badge);
+        }
+        const name = document.createElement('div');
+        name.className = 'j-pick-name';
+        name.textContent = s.name;
+        const area = document.createElement('div');
+        area.className = 'j-pick-area';
+        area.textContent = [s.prefecture, s.area].filter(Boolean).join(' · ');
+        meta.appendChild(name); meta.appendChild(area);
+        card.appendChild(thumb); card.appendChild(meta);
+        list.appendChild(card);
+      });
+      document.getElementById('aside-picks-block').style.display = '';
+    } catch(e){ console.warn('picks failed', e); }
+  }
+
+  async function loadSidebarRelated(currentSlug, category){
+    try {
+      const params = ['select=slug,title,hero_image,category', 'status=eq.live', 'slug=neq.' + encodeURIComponent(currentSlug || ''), 'order=published_at.desc.nullslast', 'limit=4'];
+      if (category) params.splice(2, 0, 'category=eq.' + encodeURIComponent(category));
+      const r = await fetch(SB_URL + '/rest/v1/articles?' + params.join('&'), {
+        headers: {'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY}
+      });
+      const data = await r.json();
+      let items = Array.isArray(data) ? data : [];
+      // fallback: if same-category has none, fetch any live articles
+      if (!items.length && category){
+        const r2 = await fetch(SB_URL + '/rest/v1/articles?select=slug,title,hero_image,category&status=eq.live&slug=neq.' + encodeURIComponent(currentSlug || '') + '&order=published_at.desc.nullslast&limit=3', {
+          headers: {'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY}
+        });
+        items = (await r2.json()) || [];
+      }
+      items = items.slice(0, 3);
+      if (!items.length) return;
+      const list = document.getElementById('aside-related-list');
+      if (!list) return;
+      list.innerHTML = '';
+      items.forEach(a => {
+        const item = document.createElement('a');
+        item.className = 'j-side-rel-item';
+        item.href = '/journal/' + encodeURIComponent(a.slug);
+        const thumb = document.createElement('div');
+        thumb.className = 'j-side-rel-thumb';
+        if (a.hero_image) thumb.style.backgroundImage = "url('" + a.hero_image.replace(/'/g, "%27") + "')";
+        const title = document.createElement('div');
+        title.className = 'j-side-rel-title';
+        title.textContent = a.title;
+        item.appendChild(thumb); item.appendChild(title);
+        list.appendChild(item);
+      });
+      document.getElementById('aside-related-block').style.display = '';
+    } catch(e){ console.warn('related-side failed', e); }
+  }
+
+  function setupShareButtons(article){
+    const url = location.href;
+    const title = (article && article.title) || document.title;
+    const x = document.getElementById('aside-share-x');
+    const fb = document.getElementById('aside-share-fb');
+    const cp = document.getElementById('aside-share-copy');
+    if (x) x.href = 'https://twitter.com/intent/tweet?url=' + encodeURIComponent(url) + '&text=' + encodeURIComponent(title);
+    if (fb) fb.href = 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(url);
+    if (cp){
+      cp.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (navigator.clipboard) navigator.clipboard.writeText(url).catch(() => {});
+        cp.textContent = 'Copied';
+        setTimeout(() => { cp.textContent = 'Copy'; }, 1800);
+      });
+    }
+  }
+
+  function getCurrentSlug(){
+    const m = location.pathname.match(/\/journal\/([^/?#]+)/);
+    if (m) return decodeURIComponent(m[1]);
+    const u = new URL(location.href);
+    return u.searchParams.get('slug') || '';
+  }
+
+  function getCurrentCategory(){
+    const elt = document.querySelector('.j-cat-line');
+    if (elt && elt.dataset && elt.dataset.cat) return elt.dataset.cat;
+    return null;
+  }
+
+  function init(){
+    const main = document.getElementById('main');
+    if (!main) return;
+    let done = false;
+    const run = (article) => {
+      if (done) return;
+      done = true;
+      const wrapped = wrapWithSidebar(article);
+      if (!wrapped) return;
+      const slug = getCurrentSlug();
+      const cat = getCurrentCategory();
+      const articleData = { title: document.title || '' };
+      bumpViewCount(slug);
+      loadRanking(slug);
+      loadPicks();
+      loadSidebarRelated(slug, cat);
+      setupShareButtons(articleData);
+    };
+    const existing = main.querySelector('article.j-article');
+    if (existing){ run(existing); return; }
+    const obs = new MutationObserver(() => {
+      const a = main.querySelector('article.j-article');
+      if (a){ obs.disconnect(); run(a); }
+    });
+    obs.observe(main, { childList: true, subtree: true });
+    // safety timeout
+    setTimeout(() => obs.disconnect(), 15000);
+  }
+
+  if (document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+
 </script>
 </body>
 </html>
