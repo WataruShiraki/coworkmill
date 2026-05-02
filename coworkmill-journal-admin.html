@@ -203,6 +203,12 @@ label{font-size:12px;color:var(--fg-3);display:block;margin-bottom:6px}
 .preview-styled a{color:#2BB5C8;border-bottom:1px solid #2BB5C8}
 .preview-styled hr{border:none;border-top:1px solid #ddd;margin:28px 0}
 .editor-preview-side{background:#fff!important;color:#1a1a1a!important;border-left:1px solid #d0d0d0}
+
+/* ===== エディタ内インライン画像プレビュー ===== */
+.cwm-inline-image-wrap{display:inline-block;vertical-align:middle;margin:6px 0;max-width:100%;line-height:0}
+.cwm-inline-image-wrap img{max-width:100%;max-height:280px;display:block;border-radius:4px;border:1px solid #d0d0d0;background:#f7f7f7;cursor:pointer;transition:border-color .15s}
+.cwm-inline-image-wrap img:hover{border-color:#1ba85a}
+.cwm-inline-image-error{display:inline-block;background:#fff5f5;border:1px solid #fca5a5;border-radius:4px;padding:6px 10px;font-size:11.5px;color:#b91c1c;line-height:1.5;font-family:var(--fd);max-width:100%;word-break:break-all}
 </style>
 </head>
 <body>
@@ -582,6 +588,10 @@ function showEditor(){
   });
   if (mde && mde.codemirror) {
     mde.codemirror.on('change', markDirty);
+    mde.codemirror.on('change', function(){ cwmScheduleInlineImageRefresh(mde.codemirror); });
+    mde.codemirror.on('cursorActivity', function(){ cwmScheduleInlineImageRefresh(mde.codemirror); });
+    // 初回レンダリング: ロード済み記事の本文に含まれる既存画像を即座に表示
+    setTimeout(function(){ cwmRefreshInlineImages(mde.codemirror); }, 80);
   }
 }
 
@@ -774,14 +784,138 @@ async function deleteArticle(){
   }
 }
 
+// =================== エディタ内インライン画像レンダリング ===================
+let _cwmImgRefreshTimer = null;
+function cwmRefreshInlineImages(cm){
+  if (!cm) return;
+  // 既存マーカーを除去 (再レンダリングのため)
+  cm.getAllMarks().forEach(m => { if (m.__cwmInlineImage) m.clear(); });
+  
+  const imgRe = /!\[([^\]\n]*)\]\(([^)\s]+)\)/g;
+  const cur = cm.getCursor();
+  const lineCount = cm.lineCount();
+  
+  for (let lineIdx = 0; lineIdx < lineCount; lineIdx++) {
+    // カーソルがある行は編集中とみなしてスキップ (ソースを編集自由に)
+    if (cur && lineIdx === cur.line) continue;
+    
+    const lineText = cm.getLine(lineIdx);
+    if (!lineText || lineText.indexOf('![') === -1) continue;
+    
+    let match;
+    imgRe.lastIndex = 0;
+    while ((match = imgRe.exec(lineText)) !== null) {
+      const alt = match[1] || '';
+      const url = match[2] || '';
+      // http(s) または data:image スキームのみ許可 (XSS 緩和)
+      if (!/^(https?:|data:image\/)/i.test(url)) continue;
+      
+      const from = { line: lineIdx, ch: match.index };
+      const to = { line: lineIdx, ch: match.index + match[0].length };
+      
+      const wrap = document.createElement('span');
+      wrap.className = 'cwm-inline-image-wrap';
+      const img = document.createElement('img');
+      img.src = url;
+      img.alt = alt;
+      img.title = alt ? (alt + ' — クリックで Markdown 編集に戻す') : '画像 — クリックで Markdown 編集に戻す';
+      img.referrerPolicy = 'no-referrer';
+      img.loading = 'lazy';
+      wrap.appendChild(img);
+      
+      const marker = cm.markText(from, to, {
+        replacedWith: wrap,
+        clearOnEnter: true,
+        atomic: true,
+        handleMouseEvents: false
+      });
+      marker.__cwmInlineImage = true;
+      
+      // 画像クリック → マーカー解除して Markdown ソース編集モードへ
+      img.addEventListener('click', function(){
+        const pos = marker.find();
+        marker.clear();
+        if (pos && pos.to) {
+          cm.setCursor(pos.to);
+          cm.focus();
+        }
+      });
+      
+      // 画像読み込み失敗時はエラーメッセージで置換
+      img.addEventListener('error', function(){
+        if (!wrap.isConnected) return;
+        img.style.display = 'none';
+        const fb = document.createElement('span');
+        fb.className = 'cwm-inline-image-error';
+        const shortUrl = url.length > 80 ? (url.substring(0, 77) + '…') : url;
+        fb.textContent = '画像読み込み失敗: ' + shortUrl;
+        wrap.appendChild(fb);
+      });
+    }
+  }
+}
+
+function cwmScheduleInlineImageRefresh(cm){
+  if (_cwmImgRefreshTimer) clearTimeout(_cwmImgRefreshTimer);
+  _cwmImgRefreshTimer = setTimeout(function(){ cwmRefreshInlineImages(cm); }, 350);
+}
+
 function previewArticle(){
-  if (!currentArticle?.id || !currentArticle?.slug) {
-    flash('プレビューには一度保存が必要です。先にスラッグを入れて保存してください', true); return;
+  if (!mde) { flash('エディタが初期化されていません', true); return; }
+  
+  const titleVal = document.getElementById('ed-title').value.trim();
+  if (!titleVal) {
+    flash('プレビューにはタイトルを入力してください', true);
+    document.getElementById('ed-title').focus();
+    return;
   }
-  if (isDirty) {
-    if (!confirm('未保存の変更があります。最後に保存した内容でプレビューします。続行しますか?(キャンセルして「保存」を押すと最新内容が反映されます)')) return;
+  
+  const slugRaw = document.getElementById('ed-slug').value.trim();
+  const slugVal = slugRaw || slugify(titleVal) || ('preview-' + Date.now());
+  
+  const tagsVal = document.getElementById('ed-tags').value
+    .split(',').map(s => s.trim()).filter(s => s);
+  const bodyMd = mde.value();
+  
+  // EasyMDE 内部の marked で本文を HTML に変換 (画像・装飾を含めてプレビューで描画)
+  let bodyHtml = '';
+  try {
+    if (typeof mde.markdown === 'function') {
+      bodyHtml = mde.markdown(bodyMd);
+    }
+  } catch (e) {
+    console.warn('preview markdown render error:', e);
   }
-  const url = '/journal/article.html?slug=' + encodeURIComponent(currentArticle.slug) + '&preview=1';
+  
+  const previewData = {
+    id: (currentArticle && currentArticle.id) ? currentArticle.id : null,
+    slug: slugVal,
+    title: titleVal,
+    subtitle: document.getElementById('ed-subtitle').value.trim() || null,
+    category: document.getElementById('ed-category').value,
+    status: document.getElementById('ed-status').value,
+    body_md: bodyMd,
+    body_html: bodyHtml,
+    excerpt: document.getElementById('ed-excerpt').value.trim() || null,
+    tags: tagsVal,
+    hero_image: document.getElementById('ed-hero').value.trim() || null,
+    reading_minutes: parseInt(document.getElementById('ed-reading').value, 10) || null,
+    author_name: (writerProfile && writerProfile.display_name) ? writerProfile.display_name : '',
+    author_user_id: (session && session.user) ? session.user.id : null,
+    published_at: (currentArticle && currentArticle.published_at) ? currentArticle.published_at : new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    is_pr: false,
+    pr_disclosure: null
+  };
+  
+  try {
+    localStorage.setItem('cwm_journal_preview', JSON.stringify(previewData));
+  } catch (e) {
+    flash('プレビューデータの保存に失敗しました: ' + (e.message || e), true);
+    return;
+  }
+  
+  const url = '/journal/article.html?slug=' + encodeURIComponent(slugVal) + '&preview=1';
   window.open(url, '_blank', 'noopener');
 }
 
@@ -800,7 +934,11 @@ function openImgModal(){
   if (typeof switchImgTab === 'function') switchImgTab('upload');
 }
 function closeImgModal(){
-  document.getElementById('img-modal').classList.remove('show');
+  const m = document.getElementById('img-modal');
+  if (m) {
+    m.style.display = 'none';
+    m.classList.remove('show');
+  }
   // ファイル input をクリア(次回のために)
   const fileInput = document.getElementById('img-file');
   if (fileInput) fileInput.value = '';
@@ -891,12 +1029,25 @@ async function insertImage(){
       imageUrl = SUPABASE_URL + '/storage/v1/object/public/journal-images/' + path;
     }
     
-    // markdown 挿入
+    // markdown 挿入 (画像は段落として独立させ、エディタ内で即プレビュー描画されるように)
     const md = '![' + alt.replace(/[\[\]]/g, '') + '](' + imageUrl + ')';
     if (typeof mde !== 'undefined' && mde) {
       const cm = mde.codemirror;
-      cm.replaceSelection(md);
+      const cur = cm.getCursor();
+      const lineText = cm.getLine(cur.line) || '';
+      const lineEmpty = lineText.trim() === '';
+      // カーソル前に文字がある場合は前段落と分離
+      const before = (cur.ch > 0 && !lineEmpty) ? '\n\n' : '';
+      // 画像の後に空行を入れて次の段落を書きやすくする (= カーソルが画像行外に移動 = 即レンダリング対象)
+      const after = '\n\n';
+      cm.replaceSelection(before + md + after);
       cm.focus();
+      // インライン画像を即座にレンダリング
+      setTimeout(function(){
+        if (typeof cwmRefreshInlineImages === 'function') {
+          cwmRefreshInlineImages(cm);
+        }
+      }, 50);
     }
     isDirty = true;
     closeImgModal();
