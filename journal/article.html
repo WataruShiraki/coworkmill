@@ -221,6 +221,34 @@ function getSlug() {
 
 async function loadArticle() {
   const slug = getSlug();
+  // === Preview モード ===
+  // journal-admin が sessionStorage 経由で記事データを渡す
+  const _previewParams = new URLSearchParams(location.search);
+  if (_previewParams.get('preview') === '1') {
+    try {
+      const raw = sessionStorage.getItem('cwm_journal_preview');
+      if (!raw) {
+        document.getElementById('main').innerHTML = '<div class="j-back-wrap"><a class="j-back" href="/journal/">← 一覧に戻る</a></div><div class="j-empty">プレビューデータが見つかりません。<br>journal 管理画面の「プレビュー」ボタンから開いてください。</div>';
+        return;
+      }
+      const a = JSON.parse(raw);
+      // 検索エンジンに拾わせない
+      const robotsMeta = document.querySelector('meta[name="robots"]');
+      if (robotsMeta) robotsMeta.setAttribute('content','noindex,nofollow');
+      // プレビューバナー
+      const banner = document.createElement('div');
+      banner.style.cssText = 'position:sticky;top:0;z-index:1000;background:#f59e0b;color:#fff;text-align:center;padding:8px 16px;font-size:13px;font-weight:500;letter-spacing:.04em';
+      banner.textContent = '📝 下書きプレビュー — このページは公開されていません(タブを閉じるとプレビューデータは消えます)';
+      document.body.insertBefore(banner, document.body.firstChild);
+      renderArticle(a);
+      // 関連記事/メディアは preview モードでは取得しない(認証なくても draft の関連は取れない)
+      return;
+    } catch(e) {
+      console.error('preview load error:', e);
+      document.getElementById('main').innerHTML = '<div class="j-back-wrap"><a class="j-back" href="/journal/">← 一覧に戻る</a></div><div class="j-empty">プレビューの読み込みに失敗しました。</div>';
+      return;
+    }
+  }
   if (!slug || !/^[a-z0-9-]+$/.test(slug)) {
     document.getElementById('main').innerHTML = '<div class="j-status">記事が見つかりません<br><br><a href="/journal/">← journal トップに戻る</a></div>';
     return;
