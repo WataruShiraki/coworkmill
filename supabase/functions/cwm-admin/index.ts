@@ -75,7 +75,7 @@ async function writeAuditLog(
   }
 }
 
-Deno.Deno.serve(async (req: Request) => {
+Deno.serve(async (req: Request) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: cors });
 
   // === 一時的な診断エンドポイント === (後で削除)
