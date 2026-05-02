@@ -815,7 +815,7 @@ function previewArticle(){
   
   // 4) sessionStorage に書き込んで別タブで開く
   try {
-    sessionStorage.setItem('cwm_journal_preview', JSON.stringify(previewArticle));
+    localStorage.setItem('cwm_journal_preview', JSON.stringify(previewArticle));
   } catch(e) {
     flash('プレビューデータの保存に失敗しました: ' + e.message, true);
     return;
