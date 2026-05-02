@@ -644,16 +644,7 @@ loadArticle();
     '</div>',
     '<div class="j-side-block">',
       '<h4 class="j-side-h">From COWORKMILL</h4>',
-      '<div class="j-banner-list">',
-        '<a class="j-banner" href="https://offml.com" target="_blank" rel="noopener">',
-          '<div class="j-banner-name">OFFICEMILL</div>',
-          '<div class="j-banner-desc">こだわりオフィスデザインの掲載メディア</div>',
-        '</a>',
-        '<a class="j-banner" href="https://cfmill.com" target="_blank" rel="noopener">',
-          '<div class="j-banner-name">CAFEMILL</div>',
-          '<div class="j-banner-desc">居心地のいいカフェだけが、ここにある。</div>',
-        '</a>',
-      '</div>',
+      '<div class="j-banner-list" id="aside-banners"></div>',
     '</div>',
     '<div class="j-side-block">',
       '<h4 class="j-side-h">Share</h4>',
@@ -840,6 +831,18 @@ loadArticle();
     return null;
   }
 
+  async function loadCrossBanners(){
+    try {
+      const target = document.getElementById('aside-banners');
+      if (!target) return;
+      const [off, caf] = await Promise.all([
+        fetch('/shared/banner-officemill.html').then(r => r.ok ? r.text() : ''),
+        fetch('/shared/banner-cafemill.html').then(r => r.ok ? r.text() : '')
+      ]);
+      target.innerHTML = (off || '') + (caf || '');
+    } catch(e){ console.warn('cross-banner failed', e); }
+  }
+
   function init(){
     const main = document.getElementById('main');
     if (!main) return;
@@ -857,6 +860,7 @@ loadArticle();
       loadPicks();
       loadSidebarRelated(slug, cat);
       setupShareButtons(articleData);
+      loadCrossBanners();
     };
     const existing = main.querySelector('article.j-article');
     if (existing){ run(existing); return; }
