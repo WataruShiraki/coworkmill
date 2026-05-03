@@ -29,7 +29,32 @@ async function verify(jwt: string, key: CryptoKey, _alg?: any): Promise<any> {
 // === end djwt replacement ===
 
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
-const SUPABASE_SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || Deno.env.get("SUPABASE_SERVICE_KEY") || "";
+
+// === 鍵取得: 新形式 SUPABASE_SECRET_KEYS (sb_secret_*) を優先、Legacy JWT を fallback ===
+// Legacy HS256 JWT は revoke 後無効化されるため、新形式優先で安全に移行
+function resolveServiceKey(): string {
+  // 1) 新形式: SUPABASE_SECRET_KEYS = JSON dict, e.g. {"default":"sb_secret_..."}
+  const secretKeysJson = Deno.env.get("SUPABASE_SECRET_KEYS");
+  if (secretKeysJson) {
+    try {
+      const dict = JSON.parse(secretKeysJson);
+      if (dict && typeof dict === "object") {
+        // "default" キー優先、なければ最初の値
+        const v = dict.default ?? Object.values(dict)[0];
+        if (typeof v === "string" && v.length > 0) return v;
+      }
+    } catch (_e) {
+      // JSON parse 失敗は無視して fallback へ
+    }
+  }
+  // 2) 新形式 (個別 env): SUPABASE_SECRET_DEFAULT_KEY
+  const sbSecretDefault = Deno.env.get("SUPABASE_SECRET_DEFAULT_KEY");
+  if (sbSecretDefault) return sbSecretDefault;
+  // 3) Legacy fallback: revoke 前まで動作させる
+  return Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || Deno.env.get("SUPABASE_SERVICE_KEY") || "";
+}
+const SUPABASE_SERVICE_KEY = resolveServiceKey();
+
 const JWT_SECRET = Deno.env.get("CWM_JWT_SECRET")!;
 
 const cors = {
@@ -108,6 +133,9 @@ Deno.serve(async (req: Request) => {
       "SUPABASE_SERVICE_ROLE_KEY",
       "SUPABASE_SERVICE_KEY",
       "SUPABASE_ANON_KEY",
+      "SUPABASE_SECRET_KEYS",
+      "SUPABASE_SECRET_DEFAULT_KEY",
+      "SUPABASE_PUBLISHABLE_KEYS",
       "CWM_JWT_SECRET",
       "SUPABASE_DB_URL"
     ];
@@ -116,6 +144,11 @@ Deno.serve(async (req: Request) => {
       const v = Deno.env.get(n);
       result[n] = v ? ("set, length=" + v.length) : "MISSING";
     }
+    // 解決済み鍵のプレフィックス確認 (sb_secret_* なら新形式、eyJ なら旧JWT)
+    const resolved = SUPABASE_SERVICE_KEY;
+    result["RESOLVED_KEY_PREFIX"] = resolved
+      ? resolved.slice(0, 10) + "..."
+      : "EMPTY";
     return new Response(JSON.stringify(result, null, 2), {
       status: 200,
       headers: { "Content-Type": "application/json", ...cors }
