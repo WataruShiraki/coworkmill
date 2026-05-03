@@ -1090,6 +1090,7 @@ function toggleSpCity(el, city) {
   var pref = params.get('pref');
   var feature = params.get('feature');
   var plan = params.get('plan');
+  var vibe = params.get('vibe');
   window.areaParam = params.get('area');
   window._qParam = params.get('q');
   window._prefParam = params.get('pref');
@@ -1114,11 +1115,18 @@ function toggleSpCity(el, city) {
     var featCb = document.querySelector('[data-feature="'+feature+'"], input[value="'+feature+'"]');
     if(featCb) featCb.click();
   }
+  // vibe: 雰囲気フィルター（ジャーナル記事末からの遷移など）
+  if(vibe) {
+    setTimeout(function(){
+      var sfOpt = document.querySelector('.sf-opt[data-vibe="'+vibe+'"]');
+      if(sfOpt && typeof sfOpt.click === 'function') sfOpt.click();
+    }, 300);
+  }
   // パラメータがあればフィルターを適用
-  if(pref || feature || plan) {
+  if(pref || feature || plan || vibe) {
     setTimeout(function() {
       if(typeof applySpFilters === 'function') applySpFilters();
-    }, 300);
+    }, 600);
   }
 })();
 

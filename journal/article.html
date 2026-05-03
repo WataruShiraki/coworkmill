@@ -206,6 +206,46 @@ img{max-width:100%;display:block}
   .j-aside{position:static;gap:28px}
 }
 
+/* ===== 記事末: 回遊・リコメンドセクション ===== */
+.j-end{margin-top:64px;padding-top:48px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:56px}
+.j-end-block{}
+.j-end-h{font-family:var(--fb);font-style:italic;font-size:24px;font-weight:500;letter-spacing:-.01em;color:var(--fg-1);margin:0 0 6px;line-height:1.2}
+.j-end-sub{font-size:11.5px;color:var(--fg-3);margin:0 0 22px;letter-spacing:.06em;text-transform:uppercase}
+/* spaces grid */
+.j-end-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.j-end-card{display:block;text-decoration:none;color:inherit;background:var(--bg);border:1px solid var(--line);border-radius:6px;overflow:hidden;transition:transform .18s,box-shadow .18s,border-color .18s}
+.j-end-card:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(0,0,0,.06);border-color:var(--fg-3)}
+.j-end-card-thumb{width:100%;aspect-ratio:16/10;background:var(--bg-3) center/cover}
+.j-end-card-meta{padding:14px 16px}
+.j-end-card-name{font-size:14px;font-weight:600;color:var(--fg-1);margin-bottom:4px;line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.j-end-card-area{font-size:11px;color:var(--fg-3);letter-spacing:.02em}
+/* Continue Reading */
+.j-end-cr-hero{display:block;text-decoration:none;color:inherit;margin-bottom:30px}
+.j-end-cr-hero-img{width:100%;aspect-ratio:21/9;background:var(--bg-3) center/cover;border-radius:6px;margin-bottom:14px;transition:transform .25s}
+.j-end-cr-hero:hover .j-end-cr-hero-img{transform:scale(1.005)}
+.j-end-cr-hero-cat{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-3);margin-bottom:6px}
+.j-end-cr-hero-title{font-family:var(--fb);font-size:26px;font-weight:500;line-height:1.3;color:var(--fg-1);margin:0;letter-spacing:-.005em}
+.j-end-cr-hero-excerpt{font-size:13.5px;color:var(--fg-2);line-height:1.65;margin-top:8px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.j-end-cr-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.j-end-cr-item{display:block;text-decoration:none;color:inherit}
+.j-end-cr-item-img{width:100%;aspect-ratio:16/10;background:var(--bg-3) center/cover;border-radius:4px;margin-bottom:10px;transition:transform .2s}
+.j-end-cr-item:hover .j-end-cr-item-img{transform:translateY(-2px)}
+.j-end-cr-item-cat{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--fg-3);margin-bottom:4px}
+.j-end-cr-item-title{font-size:13px;font-weight:500;line-height:1.45;color:var(--fg-1);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+/* Vibe chips */
+.j-end-vibes{display:flex;flex-wrap:wrap;gap:9px}
+.j-end-vibe-chip{display:inline-flex;align-items:center;padding:9px 16px;background:var(--bg);border:1px solid var(--line);border-radius:999px;font-size:12.5px;color:var(--fg-2);text-decoration:none;transition:all .18s;line-height:1}
+.j-end-vibe-chip:hover{background:linear-gradient(135deg,#79F1A4 0%,#2BB5C8 55%,#0a8499 100%);color:#fff;border-color:transparent;transform:translateY(-1px)}
+@media (max-width:680px){
+  .j-end{margin-top:44px;padding-top:32px;gap:42px}
+  .j-end-h{font-size:19px}
+  .j-end-sub{font-size:10.5px;margin-bottom:16px}
+  .j-end-grid{grid-template-columns:1fr;gap:14px}
+  .j-end-cr-grid{grid-template-columns:1fr;gap:18px}
+  .j-end-cr-hero-title{font-size:21px}
+  .j-end-cr-hero-img{aspect-ratio:16/9}
+}
+
 </style>
 </head>
 <body>
@@ -542,6 +582,14 @@ function renderArticle(a) {
   article.appendChild(credits);
   
   main.appendChild(article);
+  
+  /* 記事末: 回遊・リコメンドセクション（非同期で末尾に追加） */
+  if (typeof window.__journalAppendEndSections === 'function') {
+    setTimeout(function(){
+      try { window.__journalAppendEndSections(article, a); }
+      catch(e){ console.warn('[journal-end] append failed', e); }
+    }, 50);
+  }
 }
 
 async function loadMedia(articleId) {
@@ -879,6 +927,292 @@ loadArticle();
   }
 })();
 
+</script>
+<script>
+/* ===== ジャーナル記事末: 回遊・リコメンドセクション ===== */
+(function(){
+  var SB_URL = (typeof SUPABASE_URL !== 'undefined') ? SUPABASE_URL : 'https://jakwntemjkwqwaqujffh.supabase.co';
+  var SB_KEY = (typeof SUPABASE_KEY !== 'undefined') ? SUPABASE_KEY : 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+  var CAT = (typeof CATEGORY_LABELS !== 'undefined') ? CATEGORY_LABELS : {};
+
+  var VIBE_LABELS = {
+    urban:'都市の高層階', machiya:'古民家・町家', nature:'自然・山・海',
+    warehouse:'倉庫・工場跡', hotel:'ホテル併設', gallery:'ミュージアム隣接',
+    station:'駅直結', minimal:'ミニマル・無機質', terrace:'テラス・屋外席',
+    waterside:'川沿い・水辺', green:'緑・植物いっぱい', library:'ライブラリー・書棚',
+    retro:'歴史的建造物・レトロ', hideout:'路地裏・隠れ家', art:'アート・ギャラリー空間',
+    highceiling:'吹き抜け・高天井'
+  };
+
+  function safeUrl(u){
+    try { if (window.cwm && window.cwm.safeUrl) return window.cwm.safeUrl(u); } catch(e){}
+    return u || '';
+  }
+
+  function spaceThumb(s){
+    if (s.image_main) return safeUrl(s.image_main);
+    if (Array.isArray(s.images) && s.images[0]) return safeUrl(s.images[0]);
+    return '';
+  }
+
+  function spaceArea(s){
+    var parts = [];
+    if (s.prefecture) parts.push(s.prefecture);
+    if (s.area) parts.push(s.area);
+    return parts.join(' · ');
+  }
+
+  function makeBlock(title, sub){
+    var block = document.createElement('section');
+    block.className = 'j-end-block';
+    var h = document.createElement('h2');
+    h.className = 'j-end-h';
+    h.textContent = title;
+    block.appendChild(h);
+    if (sub) {
+      var s = document.createElement('div');
+      s.className = 'j-end-sub';
+      s.textContent = sub;
+      block.appendChild(s);
+    }
+    return block;
+  }
+
+  function makeSpaceCard(s){
+    var a = document.createElement('a');
+    a.className = 'j-end-card';
+    a.href = '/coworkmill-detail.html?id=' + encodeURIComponent(s.id);
+    var thumb = document.createElement('div');
+    thumb.className = 'j-end-card-thumb';
+    var img = spaceThumb(s);
+    if (img) thumb.style.backgroundImage = "url('" + img.replace(/'/g, "\\'") + "')";
+    a.appendChild(thumb);
+    var meta = document.createElement('div');
+    meta.className = 'j-end-card-meta';
+    var nm = document.createElement('div');
+    nm.className = 'j-end-card-name';
+    nm.textContent = s.name || '';
+    meta.appendChild(nm);
+    var ar = document.createElement('div');
+    ar.className = 'j-end-card-area';
+    ar.textContent = spaceArea(s);
+    meta.appendChild(ar);
+    a.appendChild(meta);
+    return a;
+  }
+
+  function fetchJson(url){
+    return fetch(url, { headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY } })
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .catch(function(){ return null; });
+  }
+
+  function fetchSpacesByIds(ids){
+    if (!ids || !ids.length) return Promise.resolve([]);
+    var url = SB_URL + '/rest/v1/spaces?id=in.(' + ids.join(',') + ')&status=eq.live&select=id,name,prefecture,area,vibe,image_main,images';
+    return fetchJson(url).then(function(data){
+      if (!Array.isArray(data)) return [];
+      var orderMap = {};
+      ids.forEach(function(id, i){ orderMap[id] = i; });
+      return data.sort(function(a,b){ return (orderMap[a.id]||0) - (orderMap[b.id]||0); });
+    });
+  }
+
+  function loadInThisStory(articleData){
+    var body = articleData.body_html || articleData.body_md || '';
+    var re = /coworkmill-detail\.html\?id=([0-9a-fA-F-]{36})/g;
+    var ids = [];
+    var m;
+    while ((m = re.exec(body)) !== null) {
+      if (ids.indexOf(m[1]) === -1) ids.push(m[1]);
+    }
+    if (!ids.length) return Promise.resolve(null);
+    return fetchSpacesByIds(ids).then(function(spaces){
+      if (!spaces.length) return null;
+      var block = makeBlock('In This Story', 'この記事に登場した施設');
+      var grid = document.createElement('div');
+      grid.className = 'j-end-grid';
+      spaces.slice(0, 6).forEach(function(s){ grid.appendChild(makeSpaceCard(s)); });
+      block.appendChild(grid);
+      return { block: block, spaces: spaces };
+    });
+  }
+
+  function loadYouMightLike(featuredSpaces){
+    var featured = featuredSpaces || [];
+    var excludeIds = featured.map(function(s){ return s.id; });
+
+    var vibeKeys = featured
+      .map(function(s){ return (s.vibe || '').split(','); })
+      .reduce(function(acc, arr){ return acc.concat(arr); }, [])
+      .map(function(v){ return v.trim(); })
+      .filter(Boolean);
+    var uniqVibes = [];
+    vibeKeys.forEach(function(v){ if (uniqVibes.indexOf(v) === -1) uniqVibes.push(v); });
+
+    var url;
+    if (uniqVibes.length) {
+      var orParts = uniqVibes.slice(0, 3).map(function(v){ return 'vibe.ilike.*' + encodeURIComponent(v) + '*'; });
+      url = SB_URL + '/rest/v1/spaces?status=eq.live&select=id,name,prefecture,area,vibe,image_main,images&limit=8&or=(' + orParts.join(',') + ')';
+      if (excludeIds.length) url += '&id=not.in.(' + excludeIds.join(',') + ')';
+    } else {
+      url = SB_URL + '/rest/v1/spaces?status=eq.live&select=id,name,prefecture,area,vibe,image_main,images&limit=6&order=created_at.desc';
+      if (excludeIds.length) url += '&id=not.in.(' + excludeIds.join(',') + ')';
+    }
+
+    return fetchJson(url).then(function(data){
+      if (!Array.isArray(data)) data = [];
+      data = data.filter(function(s){ return excludeIds.indexOf(s.id) === -1; });
+      if (data.length >= 3) {
+        var picked = data.slice(0, 3);
+        var block = makeBlock('You Might Also Like', 'こんな施設もおすすめ');
+        var grid = document.createElement('div');
+        grid.className = 'j-end-grid';
+        picked.forEach(function(s){ grid.appendChild(makeSpaceCard(s)); });
+        block.appendChild(grid);
+        return block;
+      }
+      /* フォールバック: 最新の他施設で埋める */
+      var fbUrl = SB_URL + '/rest/v1/spaces?status=eq.live&select=id,name,prefecture,area,vibe,image_main,images&limit=12&order=created_at.desc';
+      return fetchJson(fbUrl).then(function(all){
+        if (!Array.isArray(all)) all = [];
+        var have = {};
+        excludeIds.forEach(function(id){ have[id] = true; });
+        data.forEach(function(s){ have[s.id] = true; });
+        all.forEach(function(s){
+          if (!have[s.id]) { data.push(s); have[s.id] = true; }
+        });
+        var picked = data.slice(0, 3);
+        if (!picked.length) return null;
+        var block = makeBlock('You Might Also Like', 'こんな施設もおすすめ');
+        var grid = document.createElement('div');
+        grid.className = 'j-end-grid';
+        picked.forEach(function(s){ grid.appendChild(makeSpaceCard(s)); });
+        block.appendChild(grid);
+        return block;
+      });
+    });
+  }
+
+  function loadContinueReading(currentSlug){
+    var url = SB_URL + '/rest/v1/articles?status=eq.live&slug=neq.' + encodeURIComponent(currentSlug || '__none__') + '&select=slug,title,excerpt,hero_image,category&order=published_at.desc&limit=4';
+    return fetchJson(url).then(function(data){
+      if (!Array.isArray(data) || !data.length) return null;
+      var block = makeBlock('Continue Reading', '次に読みたい記事');
+
+      var hero = data[0];
+      var heroA = document.createElement('a');
+      heroA.className = 'j-end-cr-hero';
+      heroA.href = '/journal/' + encodeURIComponent(hero.slug);
+      var heroImg = document.createElement('div');
+      heroImg.className = 'j-end-cr-hero-img';
+      if (hero.hero_image) heroImg.style.backgroundImage = "url('" + safeUrl(hero.hero_image).replace(/'/g, "\\'") + "')";
+      heroA.appendChild(heroImg);
+      if (hero.category) {
+        var cat = document.createElement('div');
+        cat.className = 'j-end-cr-hero-cat';
+        cat.textContent = CAT[hero.category] || hero.category;
+        heroA.appendChild(cat);
+      }
+      var heroTitle = document.createElement('h3');
+      heroTitle.className = 'j-end-cr-hero-title';
+      heroTitle.textContent = hero.title || '';
+      heroA.appendChild(heroTitle);
+      if (hero.excerpt) {
+        var ex = document.createElement('div');
+        ex.className = 'j-end-cr-hero-excerpt';
+        ex.textContent = hero.excerpt;
+        heroA.appendChild(ex);
+      }
+      block.appendChild(heroA);
+
+      if (data.length > 1) {
+        var grid = document.createElement('div');
+        grid.className = 'j-end-cr-grid';
+        data.slice(1, 4).forEach(function(item){
+          var itA = document.createElement('a');
+          itA.className = 'j-end-cr-item';
+          itA.href = '/journal/' + encodeURIComponent(item.slug);
+          var itImg = document.createElement('div');
+          itImg.className = 'j-end-cr-item-img';
+          if (item.hero_image) itImg.style.backgroundImage = "url('" + safeUrl(item.hero_image).replace(/'/g, "\\'") + "')";
+          itA.appendChild(itImg);
+          if (item.category) {
+            var ic = document.createElement('div');
+            ic.className = 'j-end-cr-item-cat';
+            ic.textContent = CAT[item.category] || item.category;
+            itA.appendChild(ic);
+          }
+          var it = document.createElement('div');
+          it.className = 'j-end-cr-item-title';
+          it.textContent = item.title || '';
+          itA.appendChild(it);
+          grid.appendChild(itA);
+        });
+        block.appendChild(grid);
+      }
+      return block;
+    });
+  }
+
+  function loadVibeChips(){
+    var url = SB_URL + '/rest/v1/spaces?status=eq.live&select=vibe&limit=300';
+    return fetchJson(url).then(function(data){
+      if (!Array.isArray(data)) return null;
+      var counts = {};
+      data.forEach(function(d){
+        (d.vibe || '').split(',').forEach(function(v){
+          var k = v.trim();
+          if (!k || !VIBE_LABELS[k]) return;
+          counts[k] = (counts[k] || 0) + 1;
+        });
+      });
+      var sorted = Object.keys(counts).sort(function(a,b){ return counts[b] - counts[a]; }).slice(0, 10);
+      if (!sorted.length) return null;
+      var block = makeBlock('Browse by Vibe', '雰囲気で施設を探す');
+      var wrap = document.createElement('div');
+      wrap.className = 'j-end-vibes';
+      sorted.forEach(function(k){
+        var a = document.createElement('a');
+        a.className = 'j-end-vibe-chip';
+        a.href = '/coworkmill-spaces.html?vibe=' + encodeURIComponent(k);
+        a.textContent = VIBE_LABELS[k];
+        wrap.appendChild(a);
+      });
+      block.appendChild(wrap);
+      return block;
+    });
+  }
+
+  function appendEndSections(articleEl, articleData){
+    if (!articleEl || articleEl.querySelector('.j-end')) return; /* 二重呼び出し防止 */
+    var wrap = document.createElement('div');
+    wrap.className = 'j-end';
+
+    return loadInThisStory(articleData).then(function(its){
+      var featured = [];
+      if (its) {
+        wrap.appendChild(its.block);
+        featured = its.spaces;
+      }
+      return loadYouMightLike(featured);
+    }).then(function(yml){
+      if (yml) wrap.appendChild(yml);
+      return loadContinueReading(articleData.slug);
+    }).then(function(cr){
+      if (cr) wrap.appendChild(cr);
+      return loadVibeChips();
+    }).then(function(vc){
+      if (vc) wrap.appendChild(vc);
+      if (wrap.childElementCount === 0) return;
+      articleEl.appendChild(wrap);
+      console.log('[journal-end] sections appended:', wrap.childElementCount);
+    }).catch(function(e){
+      console.warn('[journal-end] append failed', e);
+    });
+  }
+  window.__journalAppendEndSections = appendEndSections;
+})();
 </script>
 </body>
 </html>
