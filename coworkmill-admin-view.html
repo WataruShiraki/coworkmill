@@ -3646,5 +3646,123 @@ window.moveAdminMapTo = function(anchorId) {
   }
 })();
 </script>
+<script>
+/* ============================================================
+   admin-view-fix v10 (added 2026-05-03)
+   問題: 新規施設追加(addFac)後にビジネスエアポート青山等を選択し
+         建築家情報を開くと、「Ryunosuke Architect（龍之介建築事務所）」
+         のテキストだけが表示され、「✓ 選択済み：」ラベルも「✕ 解除」
+         ボタンも消えていて削除できない。
+
+   原因: addFac() L2022 の `archSel.textContent='';` で
+         <div id="p-arch-selected"> の子要素3つ
+           - <span> ✓ 選択済み：</span>
+           - <span id="p-arch-selected-name"></span>
+           - <button onclick="clearArchSelection()">✕ 解除</button>
+         が全消去される。その後 v7 showStep1Selected は
+         p-arch-selected-name span だけは再構築するが、ラベルspanと
+         解除ボタンは復元しないので、displayText だけが宙に浮いた
+         状態で表示される。
+
+   修正:
+     1) rebuildArchSelectedInner(): p-arch-selected の子要素3点セット
+        (label / name span / 解除ボタン) を確実に揃える関数
+     2) MutationObserver で p-arch-selected の childList を監視:
+        子要素が崩れた瞬間に rebuildArchSelectedInner() を呼ぶ
+        (再帰防止フラグ付き、無限ループしない)
+     3) 初回ロード時にも再構築実行
+   ============================================================ */
+(function(){
+
+  function $id(id){ return document.getElementById(id); }
+
+  var _rebuilding = false;
+  function rebuildArchSelectedInner(){
+    if (_rebuilding) return;
+    var sel = $id('p-arch-selected');
+    if (!sel) return;
+    /* 既に正しい構造（name span + button）があれば何もしない */
+    var hasName = !!$id('p-arch-selected-name');
+    var hasBtn  = !!sel.querySelector('button');
+    /* ラベルspanは「✓ 選択済み：」を含むspan。:first-child の text を見る */
+    var firstSpan = sel.querySelector('span');
+    var hasLabel  = !!(firstSpan && firstSpan.textContent.indexOf('選択済み') !== -1);
+    if (hasName && hasBtn && hasLabel) return;
+
+    _rebuilding = true;
+    try {
+      /* display状態と dataset を保存しておく */
+      var savedDisplay = sel.style.display;
+      var savedArchId  = sel.dataset.archId || '';
+      var savedNameTxt = '';
+      var existingNm = $id('p-arch-selected-name');
+      if (existingNm) savedNameTxt = existingNm.textContent || '';
+      else {
+        /* name span が消えてる場合、div 直下のテキストノードに値が
+           入っている可能性がある（v7 showStep1Selected が appendChild
+           しただけのケースで、テキストは span 内にある） */
+        var leftover = sel.textContent || '';
+        /* 「✓ 選択済み：」を除いたテキストが残っていれば savedNameTxt に */
+        savedNameTxt = leftover.replace(/✓\s*選択済み[：:]\s*/g, '').replace(/✕\s*解除/g, '').trim();
+      }
+      /* 中身を全消去して再構築 */
+      sel.innerHTML = '';
+      var label = document.createElement('span');
+      label.style.cssText = 'color:#166534;font-weight:600';
+      label.textContent = '✓ 選択済み：';
+      sel.appendChild(label);
+      var nm = document.createElement('span');
+      nm.id = 'p-arch-selected-name';
+      nm.textContent = savedNameTxt;
+      sel.appendChild(nm);
+      var btn = document.createElement('button');
+      btn.setAttribute('onclick', 'clearArchSelection()');
+      btn.style.cssText = 'margin-left:8px;font-size:10px;color:var(--g400);background:none;border:none;cursor:pointer';
+      btn.textContent = '✕ 解除';
+      sel.appendChild(btn);
+      /* dataset も復元 */
+      sel.dataset.archId = savedArchId;
+      /* display は触らない（呼び出し元で制御） */
+      console.log('[admin-fix v10] inner rebuilt (savedNameTxt=', savedNameTxt, ')');
+    } finally {
+      _rebuilding = false;
+    }
+  }
+  window.__rebuildArchSelectedInner = rebuildArchSelectedInner;
+
+  /* ── MutationObserver で childList を監視 ──────────────── */
+  function attachInnerWatchV10(){
+    var sel = $id('p-arch-selected');
+    if (!sel) return false;
+    if (sel.__v10watched) return true;
+    sel.__v10watched = true;
+    new MutationObserver(function(){
+      if (_rebuilding) return; /* 自分の再構築中は ignore（無限ループ防止）*/
+      var hasName = !!$id('p-arch-selected-name');
+      var hasBtn  = !!sel.querySelector('button');
+      var firstSpan = sel.querySelector('span');
+      var hasLabel  = !!(firstSpan && firstSpan.textContent.indexOf('選択済み') !== -1);
+      if (!hasName || !hasBtn || !hasLabel) {
+        rebuildArchSelectedInner();
+      }
+    }).observe(sel, { childList: true });
+    /* 初期チェック */
+    rebuildArchSelectedInner();
+    console.log('[admin-fix v10] p-arch-selected inner watcher attached');
+    return true;
+  }
+  if (!attachInnerWatchV10()) {
+    document.addEventListener('DOMContentLoaded', attachInnerWatchV10);
+    setTimeout(attachInnerWatchV10, 500);
+    setTimeout(attachInnerWatchV10, 1500);
+    setTimeout(attachInnerWatchV10, 3000);
+  }
+
+  /* ── 起動時の念押し再構築 ─────────────────────────── */
+  setTimeout(rebuildArchSelectedInner, 100);
+  setTimeout(rebuildArchSelectedInner, 800);
+  setTimeout(rebuildArchSelectedInner, 2000);
+})();
+</script>
 </body></html>
 <!-- deploy -->
