@@ -3342,5 +3342,168 @@ window.moveAdminMapTo = function(anchorId) {
   setTimeout(attachSaveRefreshV7, 4000);
 })();
 </script>
+<script>
+/* ============================================================
+   admin-view-fix v8 (added 2026-05-03)
+   v7 でも新規施設追加時に建築家パネルがクリアされない件が残った。
+
+   原因:
+     addFac()(L1987付近) が swFac() を経由せず独自に施設切替を行うため、
+     v7 の swFac wrap が走らない。さらに addFac() 内 L2022 で
+     `archSel.textContent=''` を実行しており、`<span id="p-arch-selected-name">`
+     子要素が消える。display は block のまま、textContent は空、という
+     中途半端な状態が残り、その後の go('arch') 経路で前画面の値が見える
+     現象になる。
+
+   修正:
+     1) addFac() を wrap：呼び出し前と後の両方で建築家パネルを全クリア
+        (origAddFac 内 L2022 の textContent='' を打ち消すため後にも実施)
+     2) loadArchPanel の dbId 解決を堅牢化：
+        `.fi.on` が存在すれば、その data-db-id が無い時点で「新規施設」と
+        確定し、p-dbid フォールバックは使わない（前の値が残るリスク回避）
+     3) cancelNew() / saveNew() などからも flow が戻ってきた時に確実に
+        正しい状態になるよう、p-arch を開く瞬間にも追加チェック
+   ============================================================ */
+(function(){
+
+  function $id(id){ return document.getElementById(id); }
+
+  /* ── v7 の clearArchPanelAllSafe を使う（無ければインライン版）─── */
+  function clearAllSafe(){
+    if (typeof window.__clearArchPanelAllSafe === 'function') {
+      window.__clearArchPanelAllSafe();
+      return;
+    }
+    /* フォールバック実装（v7 が読み込まれていない場合） */
+    var search = $id('p-arch-search'); if (search) search.value = '';
+    var sel = $id('p-arch-selected');
+    if (sel) { sel.style.display = 'none'; sel.dataset.archId = ''; }
+    var nm = $id('p-arch-selected-name');
+    if (!nm && sel) {
+      /* 子要素が破壊されていたら再構築 */
+      nm = document.createElement('span');
+      nm.id = 'p-arch-selected-name';
+      var label = sel.querySelector('span');
+      if (label && label.nextSibling) sel.insertBefore(nm, label.nextSibling);
+      else sel.appendChild(nm);
+    }
+    if (nm) nm.textContent = '';
+    var results = $id('p-arch-results'); if (results) results.style.display = 'none';
+    var selBox = $id('p-arch-select'); if (selBox) selBox.innerHTML = '';
+    var n2 = $id('p-arch-name'); if (n2) n2.value = '';
+    var f2 = $id('p-arch-firm'); if (f2) f2.value = '';
+  }
+
+  /* ── (1) addFac() を wrap ───────────────────────────── */
+  function attachAddFacWrapV8(){
+    if (typeof window.addFac !== 'function') return;
+    if (window.__addFacFixedV8) return;
+    var origAddFac = window.addFac;
+    window.addFac = function(){
+      /* 切替前クリア */
+      try { clearAllSafe(); } catch(e){ console.warn('[admin-fix v8] pre-clear', e); }
+      var ret = origAddFac.apply(this, arguments);
+      /* origAddFac 内の L2022 textContent='' で子要素が破壊されている可能性が
+         あるので、確実に正しい状態へ復元する */
+      try { clearAllSafe(); } catch(e){ console.warn('[admin-fix v8] post-clear', e); }
+      console.log('[admin-fix v8] addFac wrapped: arch panel cleared');
+      return ret;
+    };
+    window.__addFacFixedV8 = true;
+    console.log('[admin-fix v8] addFac() wrapped');
+  }
+  attachAddFacWrapV8();
+  document.addEventListener('DOMContentLoaded', attachAddFacWrapV8);
+  setTimeout(attachAddFacWrapV8, 500);
+  setTimeout(attachAddFacWrapV8, 1500);
+  setTimeout(attachAddFacWrapV8, 3000);
+
+  /* ── (2) cancelNew / saveNew にもポストクリア ─────────── */
+  function attachNewFlowGuardV8(){
+    if (typeof window.cancelNew === 'function' && !window.__cancelNewFixedV8) {
+      var origCancel = window.cancelNew;
+      window.cancelNew = function(){
+        var ret = origCancel.apply(this, arguments);
+        try { clearAllSafe(); } catch(e){}
+        return ret;
+      };
+      window.__cancelNewFixedV8 = true;
+    }
+  }
+  attachNewFlowGuardV8();
+  document.addEventListener('DOMContentLoaded', attachNewFlowGuardV8);
+  setTimeout(attachNewFlowGuardV8, 500);
+  setTimeout(attachNewFlowGuardV8, 1500);
+  setTimeout(attachNewFlowGuardV8, 3000);
+
+  /* ── (3) p-arch パネルが表示される瞬間にも整合性チェック ── */
+  /* MutationObserver で p-arch の display 変化を監視し、開かれた時に
+     現在の施設が新規(DB未保存)なら強制クリアする。 */
+  function attachPanelWatchV8(){
+    var panel = $id('p-arch');
+    if (!panel) return false;
+    if (panel.__v8watched) return true;
+    panel.__v8watched = true;
+    var lastDisplay = panel.style.display;
+    new MutationObserver(function(){
+      var cur = panel.style.display;
+      if (lastDisplay === 'none' && cur !== 'none') {
+        /* 「none → block」になった瞬間 = panel が開かれた */
+        var on = document.querySelector('#fac-list .fi.on') || document.querySelector('#fac-list .fi.active');
+        var hasDbId = !!(on && on.dataset && on.dataset.dbId);
+        if (!hasDbId) {
+          /* 新規施設（DB未保存）→ 必ず空に */
+          try { clearAllSafe(); } catch(e){}
+          console.log('[admin-fix v8] p-arch opened for new facility: cleared');
+        } else if (typeof window.__loadArchPanel === 'function') {
+          /* 既存施設 → DB から正しい状態を読み直す（v7 と同じ）*/
+          setTimeout(window.__loadArchPanel, 100);
+        }
+      }
+      lastDisplay = cur;
+    }).observe(panel, { attributes: true, attributeFilter: ['style'] });
+    console.log('[admin-fix v8] p-arch panel watcher attached');
+    return true;
+  }
+  if (!attachPanelWatchV8()) {
+    document.addEventListener('DOMContentLoaded', attachPanelWatchV8);
+    setTimeout(attachPanelWatchV8, 500);
+    setTimeout(attachPanelWatchV8, 1500);
+    setTimeout(attachPanelWatchV8, 3000);
+  }
+
+  /* ── (4) 削除ボタン("✕ 解除")を確実に動作させる ─────── */
+  /* clearArchSelection は L1732 で定義されているが、p-arch-selected-name
+     子要素が事前に破壊されていると動作しないことがある。再構築付きで
+     置き換える。 */
+  function attachClearArchV8(){
+    if (window.__clearArchSelectionFixedV8) return;
+    window.clearArchSelection = function(){
+      var sel = $id('p-arch-selected');
+      if (sel) {
+        sel.style.display = 'none';
+        sel.dataset.archId = '';
+      }
+      var nm = $id('p-arch-selected-name');
+      if (!nm && sel) {
+        nm = document.createElement('span');
+        nm.id = 'p-arch-selected-name';
+        var label = sel.querySelector('span');
+        if (label && label.nextSibling) sel.insertBefore(nm, label.nextSibling);
+        else sel.appendChild(nm);
+      }
+      if (nm) nm.textContent = '';
+      var search = $id('p-arch-search'); if (search) search.value = '';
+      var n2 = $id('p-arch-name'); if (n2) n2.value = '';
+      var f2 = $id('p-arch-firm'); if (f2) f2.value = '';
+      var results = $id('p-arch-results'); if (results) results.style.display = 'none';
+      console.log('[admin-fix v8] clearArchSelection executed');
+    };
+    window.__clearArchSelectionFixedV8 = true;
+  }
+  attachClearArchV8();
+  document.addEventListener('DOMContentLoaded', attachClearArchV8);
+})();
+</script>
 </body></html>
 <!-- deploy -->
