@@ -124,6 +124,15 @@ a{text-decoration:none;color:inherit}
 .dz-desc{font-size:11px;color:#dc2626}
 </style>
   <script src="/shared/cwm-security.js" defer></script>
+  <script src="/shared/cwm-ops-auth.js"></script>
+  <script>
+    // 即時実行: ops_token 認証ガード
+    (function () {
+      if (window.cwmOpsAuth && !window.cwmOpsAuth.requireAuth()) {
+        document.documentElement.style.display = 'none';
+      }
+    })();
+  </script>
 </head>
 <body>
 
@@ -169,6 +178,9 @@ a{text-decoration:none;color:inherit}
     <a class="nl" href="coworkmill-journal-admin.html" target="_blank" style="text-decoration:none;display:flex;align-items:center"><span class="ni">📝</span>journal 編集</a>
     <button class="nl" onclick="go('jw',this)"><span class="ni">✍️</span>コラム編集者<span class="nb am hidden" id="nb-jw">0</span></button>
     <button class="nl" onclick="go('ct',this)"><span class="ni">✉️</span>お問い合わせ<span class="nb hidden" id="nb-ct">0</span></button>
+    <div class="nlbl" style="margin-top:14px">設定</div>
+    <button class="nl" onclick="go('ou',this)"><span class="ni">🔑</span>ユーザー管理</button>
+    <button class="nl" onclick="opsLogout()" style="color:rgba(255,255,255,.6)"><span class="ni">🚪</span>ログアウト</button>
   </nav>
   <div class="sb-foot" onclick="location.href='coworkmill.html'">← サイトを見る</div>
 </aside>
@@ -460,58 +472,91 @@ a{text-decoration:none;color:inherit}
   </div>
 </div>
 
+<!-- ===== USER MANAGEMENT (運営) ===== -->
+<div id="p-ou" class="pnl" style="display:none">
+  <div class="sec">
+    <div class="sec-h">
+      <div>
+        <div class="sec-ht">ユーザー管理</div>
+        <div class="sec-hs">運営管理画面にアクセスできるGoogleアカウントを管理します</div>
+      </div>
+    </div>
+
+    <div id="ou-current" style="margin:16px 0;padding:14px 16px;background:#fafafa;border:1px solid var(--g100);border-radius:8px;font-size:12px">読み込み中…</div>
+
+    <div id="ou-invite-box" style="margin-bottom:24px;padding:18px;border:1px solid var(--g100);border-radius:10px;background:#fff;display:none">
+      <div style="font-weight:600;font-size:13px;margin-bottom:10px">＋ 新しいユーザーを招待</div>
+      <div style="display:grid;grid-template-columns:2fr 1fr;gap:10px;margin-bottom:10px">
+        <input id="ou-email" type="email" placeholder="user@example.com" maxlength="254" style="padding:9px 11px;border:1px solid var(--g200);border-radius:6px;font-size:13px;font-family:var(--fb)">
+        <select id="ou-role" style="padding:9px 11px;border:1px solid var(--g200);border-radius:6px;font-size:13px;font-family:var(--fb)">
+          <option value="staff">staff（閲覧・操作のみ）</option>
+          <option value="owner">owner（招待・削除も可能）</option>
+        </select>
+      </div>
+      <input id="ou-notes" type="text" placeholder="備考（任意）" maxlength="200" style="width:100%;padding:9px 11px;border:1px solid var(--g200);border-radius:6px;font-size:13px;font-family:var(--fb);margin-bottom:10px">
+      <button class="bpu" onclick="opsInviteUser()" style="font-size:12px">招待を追加</button>
+      <div style="font-size:11px;color:var(--g400);margin-top:8px">
+        ※ 招待されたメールアドレスでGoogleアカウントを使ってログインできます。<br>
+        ※ ログイン時点でこのリストに存在しないメールアドレスは拒否されます。
+      </div>
+    </div>
+
+    <table class="tbl">
+      <thead>
+        <tr>
+          <th>メールアドレス</th>
+          <th style="width:90px">ロール</th>
+          <th style="width:120px">招待日</th>
+          <th style="width:140px">最終ログイン</th>
+          <th style="width:120px">招待者</th>
+          <th>備考</th>
+          <th style="width:80px"></th>
+        </tr>
+      </thead>
+      <tbody id="ou-tbody"><tr><td colspan="7" class="empty">読み込み中…</td></tr></tbody>
+    </table>
+  </div>
+</div>
+
 <!-- ===== SCRIPT ===== -->
 <script>
-const SERVICE_ROLE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impha3dudGVtamt3cXdhcXVqZmZoIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NDc2OTA2NCwiZXhwIjoyMDkwMzQ1MDY0fQ.ZlnHeVlyCCJ4WjX6BMgQZIxCrQVGz1L-Rnpj-ghbKek';
-
-async function inviteOwner(email) {
-  const res = await fetch('https://jakwntemjkwqwaqujffh.supabase.co/auth/v1/admin/invite', {
-    method: 'POST',
-    headers: {
-      'apikey': SERVICE_ROLE_KEY,
-      'Authorization': 'Bearer ' + SERVICE_ROLE_KEY,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({ email })
-  });
-  const data = await res.json();
-  if (!res.ok) return { ok: false, message: data.msg || '招待に失敗しました' };
-  return { ok: true, message: email + ' に招待メールを送信しました！' };
-}// ─────────────────────────────
-// Supabase config
+// ─────────────────────────────
+// Supabase config (公開鍵のみ。書き込みは全て Edge Function 経由)
 // ─────────────────────────────
 const SB_URL = 'https://jakwntemjkwqwaqujffh.supabase.co';
 const SB_KEY = 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
 
-async function sbGet(path, useServiceRole = false) {
-  const key = useServiceRole ? SERVICE_ROLE_KEY : SB_KEY;
-  const res = await fetch(SB_URL + '/rest/v1/' + path, {
-    headers: { 'apikey': key, 'Authorization': 'Bearer ' + key }
-  });
-  return res.json();
+// 既存呼び出しコードとの互換のためのラッパー関数
+// 内部的には全て cwm-admin Edge Function (target=ops_db) 経由で SERVICE_ROLE_KEY を使用
+async function sbGet(path, _useServiceRole) {
+  // 第2引数 useServiceRole は無視 (常に Edge Function 経由)
+  return await cwmOpsAuth.dbGet(path);
 }
 async function sbPatch(table, filter, body) {
-  const res = await fetch(SB_URL + '/rest/v1/' + table + '?' + filter, {
-    method: 'PATCH',
-    headers: { 'apikey': SERVICE_ROLE_KEY, 'Authorization': 'Bearer ' + SERVICE_ROLE_KEY, 'Content-Type': 'application/json', 'Prefer': 'return=representation' },
-    body: JSON.stringify(body)
-  });
-  return res.json();
+  return await cwmOpsAuth.dbPatch(table, filter, body);
 }
 async function sbPost(table, body) {
-  const res = await fetch(SB_URL + '/rest/v1/' + table, {
-    method: 'POST',
-    headers: { 'apikey': SERVICE_ROLE_KEY, 'Authorization': 'Bearer ' + SERVICE_ROLE_KEY, 'Content-Type': 'application/json', 'Prefer': 'return=representation' },
-    body: JSON.stringify(body)
-  });
-  return res.json();
+  return await cwmOpsAuth.dbPost(table, body);
 }
 async function sbDelete(table, filter) {
-  return fetch(SB_URL + '/rest/v1/' + table + '?' + filter, {
-    method: 'DELETE',
-    headers: { 'apikey': SERVICE_ROLE_KEY, 'Authorization': 'Bearer ' + SERVICE_ROLE_KEY }
-  });
+  return await cwmOpsAuth.dbDelete(table, filter);
 }
+
+// 掲載者向け招待 (Supabase Auth /admin/invite を Edge Function 経由で呼ぶ)
+async function inviteOwner(email) {
+  try {
+    const res = await cwmOpsAuth.authInvite(email);
+    if (!res.ok) {
+      let msg = '招待に失敗しました';
+      try { const d = await res.json(); msg = d.msg || d.error || msg; } catch (_e) {}
+      return { ok: false, message: msg };
+    }
+    return { ok: true, message: email + ' に招待メールを送信しました！' };
+  } catch (e) {
+    return { ok: false, message: (e && e.message) || '招待に失敗しました' };
+  }
+}
+
 
 // sbGet/sbPost/sbPatch helper return values are parsed JSON bodies
 // (arrays or error objects), not Response. Use these helpers to judge
@@ -723,19 +768,11 @@ async function doEditAccount() {
   const no = document.getElementById('ea-note') ? document.getElementById('ea-note').value.trim() || null : null;
   if (!co || !em) { alert('会社名・メールは必須です'); return; }
   try {
-    const res = await fetch(SB_URL + '/rest/v1/rpc/update_account', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'apikey': SERVICE_ROLE_KEY, 'Authorization': 'Bearer ' + SERVICE_ROLE_KEY },
-      body: JSON.stringify({ p_id: id, p_company: co, p_email: em, p_plan: pl, p_password: pa, p_note: no })
-    });
-    if (!res.ok) { const d = await res.json(); throw new Error(d.message || JSON.stringify(d)); }
+    const res = await cwmOpsAuth.dbRpc('update_account', { p_id: id, p_company: co, p_email: em, p_plan: pl, p_password: pa, p_note: no });
+    if (!res.ok) { const d = await res.json().catch(()=>({})); throw new Error(d.message || d.error || JSON.stringify(d)); }
     // ★アカウントのプラン変更に追従して、紐づく全施設のplanも同じ値に揃える
-    const syncRes = await fetch(SB_URL + '/rest/v1/spaces?account_id=eq.' + id, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json', 'apikey': SERVICE_ROLE_KEY, 'Authorization': 'Bearer ' + SERVICE_ROLE_KEY, 'Prefer': 'return=minimal' },
-      body: JSON.stringify({ plan: pl })
-    });
-    if (!syncRes.ok) { const sd = await syncRes.json().catch(()=>({})); console.warn('spaces plan sync failed:', sd); }
+    const syncResult = await cwmOpsAuth.dbPatch('spaces', 'account_id=eq.' + encodeURIComponent(id), { plan: pl });
+    if (syncResult && syncResult.code) { console.warn('spaces plan sync failed:', syncResult); }
     alert('更新しました');
     document.getElementById('m-editac').style.display = 'none';
     loadAccounts();
@@ -997,13 +1034,9 @@ async function doCreateAccount() {
   const no = document.getElementById('na-note') ? document.getElementById('na-note').value.trim() || null : null;
   if (!co || !em || !pa) { alert('会社名・メール・パスワードは必須です'); return; }
   try {
-    const res = await fetch(SB_URL + '/rest/v1/rpc/create_account', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'apikey': SERVICE_ROLE_KEY, 'Authorization': 'Bearer ' + SERVICE_ROLE_KEY },
-      body: JSON.stringify({ p_company: co, p_email: em, p_password: pa, p_plan: pl, p_note: no })
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.message || JSON.stringify(data));
+    const res = await cwmOpsAuth.dbRpc('create_account', { p_company: co, p_email: em, p_password: pa, p_plan: pl, p_note: no });
+    const data = await res.json().catch(()=>({}));
+    if (!res.ok) throw new Error(data.message || data.error || JSON.stringify(data));
     alert('アカウントを作成しました');
     document.getElementById('m-newac').style.display = 'none';
     loadAccounts();
@@ -1022,8 +1055,8 @@ function confirmReply() {
 // ─────────────────────────────
 // Navigation
 // ─────────────────────────────
-const pnls = ['db','rv','sp','ac','ar','jw','ct'];
-const ttlm = {db:'ダッシュボード',rv:'掲載申請の審査',sp:'掲載者・施設管理',ac:'アカウント管理',ar:'建築家管理',jw:'コラム編集者管理',ct:'お問い合わせ管理'};
+const pnls = ['db','rv','sp','ac','ar','jw','ct','ou'];
+const ttlm = {db:'ダッシュボード',rv:'掲載申請の審査',sp:'掲載者・施設管理',ac:'アカウント管理',ar:'建築家管理',jw:'コラム編集者管理',ct:'お問い合わせ管理',ou:'ユーザー管理'};
 function go(id, el) {
   pnls.forEach(p => { const e = document.getElementById('p-'+p); if(e) e.style.display = p===id?'block':'none'; });
   document.querySelectorAll('.nl').forEach(l => l.classList.remove('on'));
@@ -1031,7 +1064,7 @@ function go(id, el) {
   document.getElementById('ttl').textContent = ttlm[id]||id;
 
   // タブ切り替え時に自動ロード
-  const loaders = { sp: loadSpaces, ac: loadAccounts, ar: loadArchitects , jw: loadWriters };
+  const loaders = { sp: loadSpaces, ac: loadAccounts, ar: loadArchitects , jw: loadWriters, ou: loadOpsUsers };
   if (loaders[id]) loaders[id]();
 }
 function openModal(id) { const m=document.getElementById(id); if(m) m.classList.add('open'); }
@@ -1420,6 +1453,119 @@ async function deleteWriter(id, name) {
   const res = await callFnJW('writer', 'delete', { id });
   if (!res || !res.ok) { alert('エラー: ' + (res ? res.error : 'unknown')); return; }
   loadWriters();
+}
+
+// ─────────────────────────────
+// User management (ops_allowed_users)
+// ─────────────────────────────
+async function loadOpsUsers() {
+  const tbody = document.getElementById('ou-tbody');
+  const currentEl = document.getElementById('ou-current');
+  const inviteBox = document.getElementById('ou-invite-box');
+  if (!tbody || !currentEl) return;
+
+  tbody.innerHTML = '<tr><td colspan="7" class="empty">読み込み中…</td></tr>';
+  try {
+    const r = await cwmOpsAuth.call('list');
+    const users = r.users || [];
+    const myEmail = r.current_email;
+    const myRole = r.current_role;
+
+    // 現在のユーザー情報表示
+    currentEl.innerHTML = '';
+    const lbl = document.createElement('span');
+    lbl.style.color = 'var(--g600)';
+    lbl.textContent = '現在のユーザー: ';
+    const emTxt = document.createElement('strong');
+    emTxt.textContent = myEmail || '(不明)';
+    const roleBadge = document.createElement('span');
+    roleBadge.style.cssText = 'margin-left:10px;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;background:' + (myRole === 'owner' ? 'var(--al)' : 'var(--g100)') + ';color:' + (myRole === 'owner' ? 'var(--purple)' : 'var(--g600)');
+    roleBadge.textContent = (myRole === 'owner' ? 'OWNER' : 'STAFF');
+    currentEl.appendChild(lbl); currentEl.appendChild(emTxt); currentEl.appendChild(roleBadge);
+
+    // 招待ボックスは owner のみ表示
+    inviteBox.style.display = (myRole === 'owner') ? 'block' : 'none';
+
+    // テーブル描画
+    tbody.innerHTML = '';
+    if (!users.length) {
+      tbody.innerHTML = '<tr><td colspan="7" class="empty">ユーザーがいません</td></tr>';
+      return;
+    }
+    const fmtDate = (s) => s ? new Date(s).toLocaleString('ja-JP', { year: 'numeric', month: '2-digit', day: '2-digit' }) : '—';
+    const fmtDateTime = (s) => s ? new Date(s).toLocaleString('ja-JP', { month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit' }) : '—';
+    users.forEach(u => {
+      const tr = document.createElement('tr');
+      const cells = [
+        u.email,
+        (u.role === 'owner' ? 'owner' : 'staff'),
+        fmtDate(u.invited_at),
+        fmtDateTime(u.last_login_at),
+        u.invited_by || '—',
+        u.notes || ''
+      ];
+      cells.forEach((v, i) => {
+        const td = document.createElement('td');
+        if (i === 1 && u.role === 'owner') {
+          td.innerHTML = '<span style="padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;background:var(--al);color:var(--purple)">OWNER</span>';
+        } else {
+          td.textContent = v;
+        }
+        tr.appendChild(td);
+      });
+      // 削除ボタン (owner のみ + 自分以外)
+      const tdAct = document.createElement('td');
+      if (myRole === 'owner' && u.email !== myEmail) {
+        const btn = document.createElement('button');
+        btn.className = 'bsm';
+        btn.style.cssText = 'color:var(--rtx);font-size:11px;padding:4px 10px';
+        btn.textContent = '削除';
+        btn.onclick = () => opsDeleteUser(u.email);
+        tdAct.appendChild(btn);
+      }
+      tr.appendChild(tdAct);
+      tbody.appendChild(tr);
+    });
+  } catch (e) {
+    tbody.innerHTML = '<tr><td colspan="7" class="empty">エラー: ' + (e && e.message ? e.message : String(e)) + '</td></tr>';
+  }
+}
+
+async function opsInviteUser() {
+  const emEl = document.getElementById('ou-email');
+  const roleEl = document.getElementById('ou-role');
+  const notesEl = document.getElementById('ou-notes');
+  const email = (emEl.value || '').trim().toLowerCase();
+  const role = roleEl.value === 'owner' ? 'owner' : 'staff';
+  const notes = (notesEl.value || '').trim();
+  if (!email) { alert('メールアドレスを入力してください'); return; }
+  if (!/^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}$/.test(email)) {
+    alert('メールアドレスの形式が正しくありません'); return;
+  }
+  try {
+    await cwmOpsAuth.call('invite', { email, role, notes });
+    emEl.value = ''; notesEl.value = ''; roleEl.value = 'staff';
+    showToast('✓ ユーザーを招待しました');
+    loadOpsUsers();
+  } catch (e) {
+    alert('エラー: ' + (e && e.message ? e.message : String(e)));
+  }
+}
+
+async function opsDeleteUser(email) {
+  if (!confirm(email + ' のアクセス権限を削除しますか?\n対象ユーザーは即座にログイン不可になります。')) return;
+  try {
+    await cwmOpsAuth.call('delete', { email });
+    showToast('✓ 削除しました');
+    loadOpsUsers();
+  } catch (e) {
+    alert('エラー: ' + (e && e.message ? e.message : String(e)));
+  }
+}
+
+async function opsLogout() {
+  if (!confirm('ログアウトしますか?')) return;
+  await cwmOpsAuth.signOut();
 }
 
 </script>

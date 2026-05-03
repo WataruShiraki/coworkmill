@@ -130,9 +130,304 @@ Deno.serve(async (req: Request) => {
     const body = await req.json();
     const { token, target, action, id, data } = body;
 
-    if (!token) return jsonResponse({ error: "認証トークンが必要です" }, 401);
     if (!target) return jsonResponse({ error: "操作対象が指定されていません" }, 400);
     if (!action) return jsonResponse({ error: "操作内容が指定されていません" }, 400);
+
+    // ============================================================
+    // target=ops: 運営管理画面 (admin-ops) 用の認証・ユーザー管理
+    // 別系統のため accounts テーブル経由の認証は通さない
+    // ============================================================
+    if (target === "ops") {
+      const sb = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
+
+      // ----- ops:login : Google経由のSupabase JWT検証 → ops_token発行 -----
+      if (action === "login") {
+        const supabaseJwt = body.supabase_jwt;
+        if (!supabaseJwt) return jsonResponse({ error: "Supabase JWT が必要です" }, 400);
+
+        // Supabase Auth に問い合わせて JWT 検証 + email 取得
+        const userRes = await fetch(SUPABASE_URL + "/auth/v1/user", {
+          headers: {
+            "apikey": SUPABASE_SERVICE_KEY,
+            "Authorization": "Bearer " + supabaseJwt
+          }
+        });
+        if (!userRes.ok) {
+          return jsonResponse({ error: "Google認証情報が無効です（再ログインしてください）" }, 401);
+        }
+        const userInfo = await userRes.json();
+        const email = (userInfo.email || "").toLowerCase().trim();
+        if (!email) return jsonResponse({ error: "メールアドレスが取得できませんでした" }, 401);
+
+        // 簡易レート制限: email単位
+        if (!checkRateLimit("ops:login:" + email)) {
+          return jsonResponse({ error: "短時間に多くのログイン試行が行われました。しばらくお待ちください。" }, 429);
+        }
+
+        // 許可リストに存在するか確認
+        const { data: allowed, error: allowedErr } = await sb
+          .from("ops_allowed_users")
+          .select("email,role")
+          .eq("email", email)
+          .maybeSingle();
+        if (allowedErr) {
+          return jsonResponse({ error: "許可リストの照会に失敗しました" }, 500);
+        }
+        if (!allowed) {
+          return jsonResponse({ error: "このメールアドレスにはアクセス権限がありません。管理者にお問い合わせください。" }, 403);
+        }
+
+        // last_login_at 更新（失敗してもログインは通す）
+        try {
+          await sb.from("ops_allowed_users").update({ last_login_at: new Date().toISOString() }).eq("email", email);
+        } catch (_e) {}
+
+        // ops_token (HMAC-SHA256 JWT) を発行: 8時間有効
+        const now = Math.floor(Date.now() / 1000);
+        const opsPayload = { sub: email, role: allowed.role, kind: "ops", iat: now, exp: now + 8 * 3600 };
+        const header = { alg: "HS256", typ: "JWT" };
+        const b64url = (obj: any) => {
+          const json = typeof obj === "string" ? obj : JSON.stringify(obj);
+          return btoa(json).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+        };
+        const dataPart = b64url(header) + "." + b64url(opsPayload);
+        const key = await getKey(JWT_SECRET);
+        const sig = await crypto.subtle.sign({ name: "HMAC", hash: "SHA-256" }, key, new TextEncoder().encode(dataPart));
+        const sigB64 = btoa(String.fromCharCode(...new Uint8Array(sig))).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+        const opsToken = dataPart + "." + sigB64;
+
+        return jsonResponse({ ok: true, ops_token: opsToken, email, role: allowed.role });
+      }
+
+      // ----- 以降の操作 (list/invite/delete) は ops_token 必須 -----
+      if (!token) return jsonResponse({ error: "認証トークンが必要です" }, 401);
+      let opsPayload: any;
+      try {
+        const key = await getKey(JWT_SECRET);
+        opsPayload = await verify(token, key);
+      } catch (_e) {
+        return jsonResponse({ error: "認証トークンが無効または期限切れです（再ログインしてください）" }, 401);
+      }
+      if (opsPayload.kind !== "ops") {
+        return jsonResponse({ error: "このトークンは運営管理画面用ではありません" }, 401);
+      }
+      const opsEmail = (opsPayload.sub || "").toLowerCase();
+      const opsRole = opsPayload.role;
+      if (!opsEmail) return jsonResponse({ error: "トークンにメールアドレスが含まれていません" }, 401);
+
+      // 念のため、現在も許可リストに存在するか再確認
+      const { data: stillAllowed } = await sb
+        .from("ops_allowed_users").select("email,role").eq("email", opsEmail).maybeSingle();
+      if (!stillAllowed) {
+        return jsonResponse({ error: "アクセス権限が削除されています。再ログインしてください。" }, 403);
+      }
+
+      if (!checkRateLimit("ops:" + opsEmail + ":" + action)) {
+        return jsonResponse({ error: "短時間に多くの操作を行いました。しばらくお待ちください。" }, 429);
+      }
+
+      // ----- ops:list : 許可ユーザー一覧取得 -----
+      if (action === "list") {
+        const { data: list, error } = await sb
+          .from("ops_allowed_users")
+          .select("email,role,invited_by,invited_at,last_login_at,notes")
+          .order("invited_at", { ascending: true });
+        if (error) return jsonResponse({ error: "一覧の取得に失敗しました" }, 500);
+        return jsonResponse({ ok: true, users: list || [], current_email: opsEmail, current_role: opsRole });
+      }
+
+      // ----- ops:invite : 新規招待（owner のみ）-----
+      if (action === "invite") {
+        if (opsRole !== "owner") return jsonResponse({ error: "招待は owner のみ実行できます" }, 403);
+        const inviteEmail = (data?.email || "").toLowerCase().trim();
+        const inviteRole = data?.role === "owner" ? "owner" : "staff";
+        const inviteNotes = (data?.notes || "").substring(0, 500);
+
+        if (!inviteEmail) return jsonResponse({ error: "メールアドレスを指定してください" }, 400);
+        if (!/^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}$/.test(inviteEmail) || inviteEmail.length > 254) {
+          return jsonResponse({ error: "メールアドレスの形式が正しくありません" }, 400);
+        }
+
+        // 既存チェック
+        const { data: exists } = await sb.from("ops_allowed_users").select("email").eq("email", inviteEmail).maybeSingle();
+        if (exists) return jsonResponse({ error: "このメールアドレスは既に登録されています" }, 409);
+
+        const { error: insErr } = await sb.from("ops_allowed_users").insert({
+          email: inviteEmail,
+          role: inviteRole,
+          invited_by: opsEmail,
+          notes: inviteNotes || null
+        });
+        if (insErr) return jsonResponse({ error: "登録に失敗しました: " + insErr.message }, 500);
+
+        try { await writeAuditLog(sb, opsEmail, "ops", "invite", inviteEmail, "ok", "role=" + inviteRole, ip); } catch(_e){}
+        return jsonResponse({ ok: true });
+      }
+
+      // ----- ops:delete : 削除（owner のみ、自分は削除不可、最後の owner も削除不可）-----
+      if (action === "delete") {
+        if (opsRole !== "owner") return jsonResponse({ error: "削除は owner のみ実行できます" }, 403);
+        const targetEmail = (data?.email || "").toLowerCase().trim();
+        if (!targetEmail) return jsonResponse({ error: "削除対象のメールアドレスが指定されていません" }, 400);
+        if (targetEmail === opsEmail) return jsonResponse({ error: "自分自身は削除できません" }, 400);
+
+        // 削除対象を取得して、対象が owner で、かつ owner が他にいるか確認
+        const { data: targetUser } = await sb
+          .from("ops_allowed_users").select("email,role").eq("email", targetEmail).maybeSingle();
+        if (!targetUser) return jsonResponse({ error: "対象のユーザーが見つかりません" }, 404);
+
+        if (targetUser.role === "owner") {
+          const { count } = await sb
+            .from("ops_allowed_users").select("email", { count: "exact", head: true }).eq("role", "owner");
+          if ((count || 0) <= 1) {
+            return jsonResponse({ error: "最後の owner は削除できません" }, 400);
+          }
+        }
+
+        const { error: delErr } = await sb.from("ops_allowed_users").delete().eq("email", targetEmail);
+        if (delErr) return jsonResponse({ error: "削除に失敗しました" }, 500);
+
+        try { await writeAuditLog(sb, opsEmail, "ops", "delete", targetEmail, "ok", null, ip); } catch(_e){}
+        return jsonResponse({ ok: true });
+      }
+
+      return jsonResponse({ error: "不明なアクション: " + action }, 400);
+    }
+
+    // ============================================================
+    // target=ops_db: 運営管理画面用の汎用 DB プロキシ
+    // ops_token を検証し、SERVICE_ROLE_KEY で REST API を中継する
+    // ============================================================
+    if (target === "ops_db") {
+      if (!token) return jsonResponse({ error: "認証トークンが必要です" }, 401);
+      let opsPayload2: any;
+      try {
+        const key = await getKey(JWT_SECRET);
+        opsPayload2 = await verify(token, key);
+      } catch (_e) {
+        return jsonResponse({ error: "認証トークンが無効または期限切れです（再ログインしてください）" }, 401);
+      }
+      if (opsPayload2.kind !== "ops") {
+        return jsonResponse({ error: "このトークンは運営管理画面用ではありません" }, 401);
+      }
+      const opsEmail2 = (opsPayload2.sub || "").toLowerCase();
+      if (!opsEmail2) return jsonResponse({ error: "トークンにメールアドレスが含まれていません" }, 401);
+
+      const sb2 = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
+      // 念のため、現在も許可リストに存在するか再確認
+      const { data: stillAllowed2 } = await sb2
+        .from("ops_allowed_users").select("email").eq("email", opsEmail2).maybeSingle();
+      if (!stillAllowed2) {
+        return jsonResponse({ error: "アクセス権限が削除されています。再ログインしてください。" }, 403);
+      }
+
+      if (!checkRateLimit("ops_db:" + opsEmail2)) {
+        return jsonResponse({ error: "短時間に多くの操作を行いました。しばらくお待ちください。" }, 429);
+      }
+
+      const restBase = SUPABASE_URL + "/rest/v1/";
+      const proxyHeaders: Record<string, string> = {
+        "apikey": SUPABASE_SERVICE_KEY,
+        "Authorization": "Bearer " + SUPABASE_SERVICE_KEY,
+        "Content-Type": "application/json",
+      };
+
+      const d = data || {};
+      // パス整形 (URLインジェクション防止: 先頭スラッシュやプロトコルを禁止)
+      const sanitize = (s: any) => {
+        if (typeof s !== "string") return "";
+        if (s.indexOf("/") === 0 || s.indexOf("://") !== -1) return "";
+        return s;
+      };
+
+      try {
+        if (action === "select") {
+          const path = sanitize(d.path);
+          if (!path) return jsonResponse({ error: "path が無効です" }, 400);
+          const r = await fetch(restBase + path, { headers: proxyHeaders });
+          const text = await r.text();
+          return new Response(text, { status: r.status, headers: { ...cors, "Content-Type": "application/json" } });
+        }
+
+        if (action === "insert") {
+          const table = sanitize(d.table);
+          if (!table) return jsonResponse({ error: "table が無効です" }, 400);
+          const r = await fetch(restBase + table, {
+            method: "POST",
+            headers: { ...proxyHeaders, "Prefer": "return=representation" },
+            body: JSON.stringify(d.body || {})
+          });
+          const text = await r.text();
+          await writeAuditLog(sb2, opsEmail2, "ops_db", "insert", table, r.ok ? "ok" : "error", null, ip);
+          return new Response(text, { status: r.status, headers: { ...cors, "Content-Type": "application/json" } });
+        }
+
+        if (action === "update") {
+          const table = sanitize(d.table);
+          if (!table) return jsonResponse({ error: "table が無効です" }, 400);
+          const filter = typeof d.filter === "string" ? d.filter : "";
+          const r = await fetch(restBase + table + (filter ? "?" + filter : ""), {
+            method: "PATCH",
+            headers: { ...proxyHeaders, "Prefer": "return=representation" },
+            body: JSON.stringify(d.body || {})
+          });
+          const text = await r.text();
+          await writeAuditLog(sb2, opsEmail2, "ops_db", "update", table, r.ok ? "ok" : "error", null, ip);
+          return new Response(text, { status: r.status, headers: { ...cors, "Content-Type": "application/json" } });
+        }
+
+        if (action === "delete") {
+          const table = sanitize(d.table);
+          if (!table) return jsonResponse({ error: "table が無効です" }, 400);
+          const filter = typeof d.filter === "string" ? d.filter : "";
+          if (!filter) return jsonResponse({ error: "filter が必須です（全件削除を防ぐため）" }, 400);
+          const r = await fetch(restBase + table + "?" + filter, {
+            method: "DELETE",
+            headers: proxyHeaders
+          });
+          await writeAuditLog(sb2, opsEmail2, "ops_db", "delete", table, r.ok ? "ok" : "error", filter.substring(0, 200), ip);
+          return jsonResponse({ ok: r.ok, status: r.status }, r.ok ? 200 : r.status);
+        }
+
+        if (action === "rpc") {
+          const rpcName = sanitize(d.rpc);
+          if (!rpcName) return jsonResponse({ error: "rpc が無効です" }, 400);
+          const r = await fetch(restBase + "rpc/" + rpcName, {
+            method: "POST",
+            headers: proxyHeaders,
+            body: JSON.stringify(d.body || {})
+          });
+          const text = await r.text();
+          await writeAuditLog(sb2, opsEmail2, "ops_db", "rpc:" + rpcName, null, r.ok ? "ok" : "error", null, ip);
+          return new Response(text, { status: r.status, headers: { ...cors, "Content-Type": "application/json" } });
+        }
+
+        if (action === "auth_invite") {
+          // Supabase Auth admin/invite (掲載者用 magic link 招待)
+          const inviteEmail2 = (d.email || "").toLowerCase().trim();
+          if (!inviteEmail2 || !/^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}$/.test(inviteEmail2)) {
+            return jsonResponse({ error: "メールアドレスの形式が正しくありません" }, 400);
+          }
+          const r = await fetch(SUPABASE_URL + "/auth/v1/admin/invite", {
+            method: "POST",
+            headers: proxyHeaders,
+            body: JSON.stringify({ email: inviteEmail2 })
+          });
+          const text = await r.text();
+          await writeAuditLog(sb2, opsEmail2, "ops_db", "auth_invite", inviteEmail2, r.ok ? "ok" : "error", null, ip);
+          return new Response(text, { status: r.status, headers: { ...cors, "Content-Type": "application/json" } });
+        }
+
+        return jsonResponse({ error: "不明なアクション: " + action }, 400);
+      } catch (e) {
+        return jsonResponse({ error: "プロキシ処理に失敗しました: " + (e instanceof Error ? e.message : String(e)) }, 500);
+      }
+    }
+
+    // ============================================================
+    // 以降は既存の accounts テーブル経由 (掲載者向け) の処理
+    // ============================================================
+    if (!token) return jsonResponse({ error: "認証トークンが必要です" }, 401);
 
     let payload: any;
     try {
@@ -157,6 +452,7 @@ Deno.serve(async (req: Request) => {
       .from("accounts").select("id,status").eq("id", accountId).single();
     if (acErr || !ac) return jsonResponse({ error: "アカウントが見つかりません" }, 401);
     if (ac.status !== "active") return jsonResponse({ error: "アカウントが無効化されています" }, 403);
+
 
     // ============ voice (利用者の声) ============
     if (target === "voice") {
