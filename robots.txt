@@ -6,6 +6,8 @@ Disallow: /coworkmill-admin-ops.html
 Disallow: /coworkmill-journal-admin.html
 Disallow: /coworkmill-login.html
 Disallow: /coworkmill-login-ops.html
+Disallow: /journal/article.html
+Disallow: /*?preview=
 
 Sitemap: https://coworkmill.vercel.app/sitemap.xml
 Sitemap: https://coworkmill.vercel.app/journal/sitemap.xml

@@ -57,6 +57,10 @@
   ],
   "rewrites": [
     {
+      "source": "/journal/sitemap.xml",
+      "destination": "/api/journal-sitemap"
+    },
+    {
       "source": "/coworkmill-journal.html",
       "destination": "/journal/index.html"
     },
