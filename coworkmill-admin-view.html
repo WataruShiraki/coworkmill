@@ -3505,5 +3505,146 @@ window.moveAdminMapTo = function(anchorId) {
   document.addEventListener('DOMContentLoaded', attachClearArchV8);
 })();
 </script>
+<script>
+/* ============================================================
+   admin-view-fix v9 (added 2026-05-03)
+   v8 の対処をすり抜ける真犯人:
+     L2655-2689 「建築家紐付け解除ボタン表示パッチ」が、
+     サイドバー「建築家情報」クリックの度に setTimeout(300ms) で
+     `.fi.active` を見て dbId を取得→p-arch-selected を強制再描画
+     していた。
+
+   `.fi.active` クラスは renderFacList 時に付与され、その後
+   swFac/addFac は `.on` クラスのみ toggle するため、`.fi.active` は
+   旧施設に**取り残されたまま**。結果として新規施設に切替後でも
+   旧施設(龍之介紐付き)の dbId が取得され、新規パネルに既存施設の
+   建築家情報が描画される現象が発生していた。
+
+   修正:
+     1) 新規施設追加・施設切替時に `.fi.active` を全 .fi.on と同期
+     2) capture phase で「建築家情報」ボタンクリックを横取りし、
+        L2655 handler 起動前に .active を全削除
+     3) p-arch-selected の display 変化を MutationObserver で監視。
+        新規施設(.fi.on に data-db-id 無し)状態で 'flex' or 'block'
+        になったら即座に display:none に戻す（L2655 の書き込みを
+        undo するセーフティネット）
+   ============================================================ */
+(function(){
+
+  function $id(id){ return document.getElementById(id); }
+
+  /* ── (1) `.fi.active` を `.fi.on` と同期する ──────────── */
+  function syncActiveToOn(){
+    document.querySelectorAll('#fac-list .fi').forEach(function(el){
+      var isOn = el.classList.contains('on');
+      el.classList.toggle('active', isOn);
+    });
+  }
+  function clearAllActive(){
+    document.querySelectorAll('#fac-list .fi.active').forEach(function(el){
+      el.classList.remove('active');
+    });
+  }
+  window.__syncActiveToOnV9 = syncActiveToOn;
+  window.__clearAllActiveV9 = clearAllActive;
+
+  /* ── (2) addFac / swFac wrap で active を同期 ─────────── */
+  function attachAddFacGuardV9(){
+    if (typeof window.addFac !== 'function') return;
+    if (window.__addFacFixedV9) return;
+    var orig = window.addFac;
+    window.addFac = function(){
+      var ret = orig.apply(this, arguments);
+      try { syncActiveToOn(); } catch(e){}
+      return ret;
+    };
+    window.__addFacFixedV9 = true;
+    console.log('[admin-fix v9] addFac wrapped: syncActiveToOn');
+  }
+  function attachSwFacGuardV9(){
+    if (typeof window.swFac !== 'function') return;
+    if (window.__swFacFixedV9) return;
+    var orig = window.swFac;
+    window.swFac = function(id){
+      var ret = orig.apply(this, arguments);
+      try { syncActiveToOn(); } catch(e){}
+      return ret;
+    };
+    window.__swFacFixedV9 = true;
+    console.log('[admin-fix v9] swFac wrapped: syncActiveToOn');
+  }
+  attachAddFacGuardV9();
+  attachSwFacGuardV9();
+  document.addEventListener('DOMContentLoaded', function(){
+    attachAddFacGuardV9();
+    attachSwFacGuardV9();
+  });
+  setTimeout(function(){ attachAddFacGuardV9(); attachSwFacGuardV9(); }, 500);
+  setTimeout(function(){ attachAddFacGuardV9(); attachSwFacGuardV9(); }, 1500);
+  setTimeout(function(){ attachAddFacGuardV9(); attachSwFacGuardV9(); }, 3000);
+
+  /* ── (3) capture phase で「建築家情報」クリックを横取り ── */
+  /* L2655 の handler は bubble phase で動くので、capture で先に走る */
+  document.addEventListener('click', function(e){
+    var t = e.target && e.target.closest ? e.target.closest('button, a, .nl, [onclick]') : null;
+    if (!t) return;
+    var txt = (t.textContent || '').trim();
+    if (txt.indexOf('建築家情報') === -1) return;
+    /* 旧施設に残った .active を消去（L2655 が dbId を引けないようにする） */
+    syncActiveToOn();
+    console.log('[admin-fix v9] arch button click intercepted, .active synced');
+  }, true); /* useCapture: true */
+
+  /* ── (4) p-arch-selected の display 監視・抑制 ─────────── */
+  function attachSelectedGuardV9(){
+    var sel = $id('p-arch-selected');
+    if (!sel) return false;
+    if (sel.__v9guarded) return true;
+    sel.__v9guarded = true;
+    new MutationObserver(function(){
+      var d = sel.style.display;
+      if (!d || d === 'none') return;
+      /* 現在の施設が新規(DB未保存)なら強制的に隠す */
+      var on = document.querySelector('#fac-list .fi.on');
+      var hasDbId = !!(on && on.dataset && on.dataset.dbId);
+      if (!hasDbId) {
+        sel.style.display = 'none';
+        sel.dataset.archId = '';
+        var nm = $id('p-arch-selected-name');
+        if (!nm) {
+          /* 子要素が破壊されていたら再構築 */
+          nm = document.createElement('span');
+          nm.id = 'p-arch-selected-name';
+          var label = sel.querySelector('span');
+          if (label && label.nextSibling) sel.insertBefore(nm, label.nextSibling);
+          else sel.appendChild(nm);
+        }
+        nm.textContent = '';
+        console.log('[admin-fix v9] suppressed p-arch-selected for new facility');
+      }
+    }).observe(sel, { attributes: true, attributeFilter: ['style'] });
+    console.log('[admin-fix v9] p-arch-selected display guard attached');
+    return true;
+  }
+  if (!attachSelectedGuardV9()) {
+    document.addEventListener('DOMContentLoaded', attachSelectedGuardV9);
+    setTimeout(attachSelectedGuardV9, 500);
+    setTimeout(attachSelectedGuardV9, 1500);
+    setTimeout(attachSelectedGuardV9, 3000);
+  }
+
+  /* ── (5) 初回ロード後に1度 sync しておく ─────────────── */
+  function initialSync(){
+    setTimeout(syncActiveToOn, 300);
+    setTimeout(syncActiveToOn, 1000);
+    setTimeout(syncActiveToOn, 2500);
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initialSync);
+  } else {
+    initialSync();
+  }
+})();
+</script>
 </body></html>
 <!-- deploy -->
