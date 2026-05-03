@@ -616,6 +616,33 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
 .va-tag-ja{font-size:12px;font-weight:600;color:#2BB5C8;background:rgba(43,181,200,.14);border:0.5px solid rgba(43,181,200,.25);border-radius:5px;padding:3px 8px;display:inline-block}
 .va-tag-en{font-size:9px;color:rgba(43,181,200,.55);margin-left:5px}
 .va-text{font-size:13px;color:#b8c8ca;line-height:1.6}
+
+/* ── Photo Slideshow ── */
+.d-slideshow-section{margin-bottom:48px}
+.d-slideshow-stage{position:relative;width:100%;aspect-ratio:16/9;background:#0d0f12;border-radius:14px;overflow:hidden;box-shadow:0 6px 22px rgba(0,0,0,.18)}
+.d-slideshow-track{position:absolute;inset:0;display:flex;transition:transform .55s cubic-bezier(.65,.05,.36,1)}
+.d-slideshow-slide{flex:0 0 100%;width:100%;height:100%;background-position:center;background-size:cover;background-repeat:no-repeat;background-color:#0d0f12}
+.d-slideshow-arrow{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;background:rgba(0,0,0,.5);border:1px solid rgba(255,255,255,.18);color:#fff;font-size:22px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s,transform .2s;z-index:2;padding:0;font-family:inherit}
+.d-slideshow-arrow:hover{background:rgba(0,0,0,.78);transform:translateY(-50%) scale(1.05)}
+.d-slideshow-arrow.prev{left:14px}
+.d-slideshow-arrow.next{right:14px}
+.d-slideshow-counter{position:absolute;bottom:14px;right:16px;background:rgba(0,0,0,.55);color:#fff;font-size:11px;letter-spacing:.06em;padding:5px 12px;border-radius:999px;backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);z-index:2;font-variant-numeric:tabular-nums}
+.d-slideshow-thumbs{display:flex;gap:8px;margin-top:14px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin;scrollbar-color:rgba(43,181,200,.3) transparent}
+.d-slideshow-thumbs::-webkit-scrollbar{height:5px}
+.d-slideshow-thumbs::-webkit-scrollbar-track{background:transparent}
+.d-slideshow-thumbs::-webkit-scrollbar-thumb{background:rgba(43,181,200,.3);border-radius:3px}
+.d-slideshow-thumb{flex-shrink:0;width:78px;aspect-ratio:16/10;border-radius:6px;background-position:center;background-size:cover;background-color:#0d0f12;cursor:pointer;border:2px solid transparent;opacity:.55;transition:opacity .2s,border-color .2s,transform .15s}
+.d-slideshow-thumb:hover{opacity:.9;transform:translateY(-1px)}
+.d-slideshow-thumb.active{opacity:1;border-color:#2BB5C8}
+@media(max-width:768px){
+  .d-slideshow-stage{aspect-ratio:4/3;border-radius:10px}
+  .d-slideshow-arrow{width:36px;height:36px;font-size:18px}
+  .d-slideshow-arrow.prev{left:8px}
+  .d-slideshow-arrow.next{right:8px}
+  .d-slideshow-counter{bottom:10px;right:10px;font-size:10px;padding:4px 9px}
+  .d-slideshow-thumbs{gap:6px;margin-top:10px}
+  .d-slideshow-thumb{width:62px;border-radius:5px}
+}
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
@@ -756,6 +783,20 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
     </div>
 
     <div class="sec-divider"></div>
+
+    <!-- Photo Slideshow（登録画像が0件の場合はJSで非表示） -->
+    <div class="d-slideshow-section" id="d-slideshow-section" style="display:none">
+      <div class="section-label">写真で見る</div>
+      <div class="d-slideshow-stage">
+        <div class="d-slideshow-track" id="d-slideshow-track"></div>
+        <button class="d-slideshow-arrow prev" id="d-slideshow-prev" type="button" aria-label="前の写真">‹</button>
+        <button class="d-slideshow-arrow next" id="d-slideshow-next" type="button" aria-label="次の写真">›</button>
+        <div class="d-slideshow-counter" id="d-slideshow-counter">1 / 1</div>
+      </div>
+      <div class="d-slideshow-thumbs" id="d-slideshow-thumbs"></div>
+    </div>
+
+    <div class="sec-divider d-slideshow-divider" id="d-slideshow-divider" style="display:none"></div>
 
     <!-- YouTube (任意・URL未登録時はJSで非表示) -->
     <div class="yt-section" id="d-yt-section" style="display:none;margin-bottom:48px">
@@ -1719,6 +1760,10 @@ document.addEventListener('DOMContentLoaded', () => {
           });
         }
         if (allUrls.length > 0) {
+          // Photo Slideshow（— ARCHITECT と動画で見るの間）
+          if (typeof window.__cwmInitSlideshow === 'function') {
+            try { window.__cwmInitSlideshow(allUrls); } catch(e) { console.warn('slideshow init err:', e); }
+          }
           // SP用（全枚）
           const spEl = document.getElementById('gallery-sp');
           if (spEl) spEl.innerHTML = allUrls.map(function(url) {
@@ -2256,4 +2301,84 @@ function renderPlanCards(sp) {
   .btn-contact, #d-website { font-size: 16px !important; padding: 20px 18px !important; }
 }
 </style>
+<script>
+// ── Photo Slideshow ──
+(function(){
+  var imgs=[];var idx=0;var auto=null;var inited=false;
+  function escUrl(u){return String(u).replace(/'/g,"\\'").replace(/"/g,'%22');}
+  function getEls(){
+    return {
+      sect:document.getElementById('d-slideshow-section'),
+      div:document.getElementById('d-slideshow-divider'),
+      track:document.getElementById('d-slideshow-track'),
+      thumbs:document.getElementById('d-slideshow-thumbs'),
+      counter:document.getElementById('d-slideshow-counter'),
+      prev:document.getElementById('d-slideshow-prev'),
+      next:document.getElementById('d-slideshow-next')
+    };
+  }
+  function update(){
+    var els=getEls();if(!els.track)return;
+    els.track.style.transform='translateX(-'+(idx*100)+'%)';
+    if(els.counter)els.counter.textContent=(idx+1)+' / '+imgs.length;
+    var ts=document.querySelectorAll('.d-slideshow-thumb');
+    for(var i=0;i<ts.length;i++){
+      if(i===idx){ts[i].classList.add('active');}
+      else{ts[i].classList.remove('active');}
+    }
+    var act=ts[idx];
+    if(act&&act.scrollIntoView){
+      try{act.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});}catch(e){}
+    }
+  }
+  function go(i){
+    if(!imgs.length)return;
+    idx=((i%imgs.length)+imgs.length)%imgs.length;
+    update();restartAuto();
+  }
+  function startAuto(){
+    if(imgs.length<=1)return;
+    if(auto)clearInterval(auto);
+    auto=setInterval(function(){idx=(idx+1)%imgs.length;update();},5500);
+  }
+  function stopAuto(){if(auto){clearInterval(auto);auto=null;}}
+  function restartAuto(){stopAuto();startAuto();}
+  function bindOnce(){
+    if(inited)return;
+    var els=getEls();
+    if(!els.prev||!els.next)return;
+    els.prev.addEventListener('click',function(){go(idx-1);});
+    els.next.addEventListener('click',function(){go(idx+1);});
+    var stage=document.querySelector('.d-slideshow-stage');
+    if(stage){
+      stage.addEventListener('mouseenter',stopAuto);
+      stage.addEventListener('mouseleave',startAuto);
+    }
+    inited=true;
+  }
+  function init(urls){
+    if(!urls||!urls.length)return;
+    var els=getEls();
+    if(!els.sect||!els.track||!els.thumbs)return;
+    imgs=urls.slice();idx=0;
+    els.sect.style.display='block';
+    if(els.div)els.div.style.display='block';
+    var trackHtml='';
+    var thumbsHtml='';
+    for(var i=0;i<imgs.length;i++){
+      var u=escUrl(imgs[i]);
+      trackHtml+='<div class="d-slideshow-slide" style="background-image:url(\''+u+'\')"></div>';
+      thumbsHtml+='<div class="d-slideshow-thumb'+(i===0?' active':'')+'" data-idx="'+i+'" style="background-image:url(\''+u+'\')"></div>';
+    }
+    els.track.innerHTML=trackHtml;
+    els.thumbs.innerHTML=thumbsHtml;
+    var ts=els.thumbs.querySelectorAll('.d-slideshow-thumb');
+    for(var j=0;j<ts.length;j++){
+      (function(n){ts[n].addEventListener('click',function(){go(n);});})(j);
+    }
+    bindOnce();update();startAuto();
+  }
+  window.__cwmInitSlideshow=init;
+})();
+</script>
 </body></html>
