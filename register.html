@@ -1,410 +1,478 @@
 <!DOCTYPE html>
 <html lang="ja"><head>
 <meta charset="UTF-8">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyBpZD0iX+ODrOOCpOODpOODvF8xIiBkYXRhLW5hbWU9IuODrOOCpOODpOODvF8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjMzOCA0NjIgMTE2IDExNiI+CiAgPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDMwLjIuMSwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDIuMS4xIEJ1aWxkIDEpICAtLT4KICA8ZGVmcz4KICAgIDxzdHlsZT4KICAgICAgLnN0MCB7CiAgICAgICAgZmlsbDogI2ZmZjsKICAgICAgfQoKICAgICAgLnN0MSB7CiAgICAgICAgZmlsbDogdXJsKCNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2KTsKICAgICAgfQogICAgPC9zdHlsZT4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NiIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIzNDkuOSIgeTE9IjQ3Ni4wOSIgeDI9IjQ0OC44NiIgeTI9IjU3MC42MyIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiM4OGM4OTUiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjMTM1N2EwIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCBjbGFzcz0ic3QxIiB4PSIzNDIuMzkiIHk9IjQ2Ni41IiB3aWR0aD0iMTA4IiBoZWlnaHQ9IjEwOCIgcng9IjEyLjI1IiByeT0iMTIuMjUiLz4KICA8Zz4KICAgIDxyZWN0IGNsYXNzPSJzdDAiIHg9IjM4MS42IiB5PSI1MTMuOTMiIHdpZHRoPSIxMy4xMiIgaGVpZ2h0PSIxMy4xMiIvPgogICAgPHJlY3QgY2xhc3M9InN0MCIgeD0iMzgxLjYiIHk9IjUxMy45MyIgd2lkdGg9IjEzLjEyIiBoZWlnaHQ9IjEzLjEyIi8+CiAgICA8cmVjdCBjbGFzcz0ic3QwIiB4PSIzODEuNiIgeT0iNDk4LjE5IiB3aWR0aD0iMTMuMTIiIGhlaWdodD0iMTMuMTIiLz4KICAgIDxwb2x5Z29uIGNsYXNzPSJzdDAiIHBvaW50cz0iMzk0LjcyIDQ5NS41NyAzODEuNiA0OTUuNTcgMzk0LjcyIDQ4Mi40NSAzOTQuNzIgNDk1LjU3Ii8+CiAgICA8cmVjdCBjbGFzcz0ic3QwIiB4PSIzOTcuMzUiIHk9IjQ4Mi40NSIgd2lkdGg9IjEzLjEyIiBoZWlnaHQ9IjEzLjEyIi8+CiAgICA8cmVjdCBjbGFzcz0ic3QwIiB4PSIzODEuNiIgeT0iNTI5LjY4IiB3aWR0aD0iMTMuMTIiIGhlaWdodD0iMTMuMTIiLz4KICAgIDxwb2x5Z29uIGNsYXNzPSJzdDAiIHBvaW50cz0iMzk0LjcyIDU1OC41NCAzODEuNiA1NDUuNDIgMzk0LjcyIDU0NS40MiAzOTQuNzIgNTU4LjU0Ii8+CiAgICA8cmVjdCBjbGFzcz0ic3QwIiB4PSIzOTcuMzUiIHk9IjU0NS40MiIgd2lkdGg9IjEzLjEyIiBoZWlnaHQ9IjEzLjEyIi8+CiAgPC9nPgo8L3N2Zz4=">
-  <link rel="apple-touch-icon" href="https://cowkml.com/ogp.png">
-  <meta name="description" content="COWORKMILLへの施設掲載申請フォーム。Free・Standard・Pro・Enterpriseの4プランから選択。デザイン性の高い施設を厳選掲載。審査通過後すぐに公開できます。掲載無料プランあり。">
-  <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://cowkml.com/register">
-  <!-- OGP -->
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="COWORKMILL — デザインで選ぶコワーキングポータルサイト">
-  <meta property="og:title" content="コワーキングスペースの掲載申請｜無料で始められます — COWORKMILL">
-  <meta property="og:description" content="COWORKMILLへの施設掲載申請フォーム。Free・Standard・Pro・Enterpriseの4プランから選択。デザイン性の高い施設を厳選掲載。審査通過後すぐに公開できます。掲載無料プランあり。">
-  <meta property="og:url" content="https://cowkml.com/register">
-  <meta property="og:image" content="https://cowkml.com/ogp.png">
-  <meta property="og:locale" content="ja_JP">
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="コワーキングスペースの掲載申請｜無料で始められます — COWORKMILL">
-  <meta name="twitter:description" content="COWORKMILLへの施設掲載申請フォーム。Free・Standard・Pro・Enterpriseの4プランから選択。デザイン性の高い施設を厳選掲載。審査通過後すぐに公開できます。掲載無料プランあり。">
-  <meta name="twitter:image" content="https://cowkml.com/ogp.png">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>コワーキングスペースの掲載お申し込み｜無料で始められます — COWORKMILL</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600&amp;family=Noto+Sans+JP:wght@300;400;500&amp;display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="apple-touch-icon" href="https://cowkml.com/ogp.png">
+<meta name="description" content="COWORKMILLは、デザインで選ぶコワーキングを発信するメディア。広告費に頼らず、空間そのものに惚れたユーザーへ届ける。月数件の送客で十分元が取れる料金体系。掲載は無料からスタート可能。">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://cowkml.com/register">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="COWORKMILL — デザインで選ぶコワーキングポータルサイト">
+<meta property="og:title" content="あなたの空間を、"探されるコワーキング"に — COWORKMILL 掲載のご案内">
+<meta property="og:description" content="広告費に頼らず、デザインに共感するユーザーを集める集客プラットフォーム。月数件の送客で元が取れる料金体系で、無料掲載からスタートできます。">
+<meta property="og:url" content="https://cowkml.com/register">
+<meta property="og:image" content="https://cowkml.com/ogp.png">
+<meta property="og:locale" content="ja_JP">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="あなたの空間を、"探されるコワーキング"に — COWORKMILL 掲載のご案内">
+<meta name="twitter:description" content="広告費に頼らず、デザインに共感するユーザーを集める集客プラットフォーム。無料からスタートできます。">
+<meta name="twitter:image" content="https://cowkml.com/ogp.png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>あなたの空間を、"探されるコワーキング"に｜COWORKMILL 掲載のご案内</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--black:#0a0a0a;--white:#fff;--gray-50:#f7f7f7;--gray-100:#efefef;--gray-200:#e0e0e0;--gray-400:#a0a0a0;--gray-600:#606060;--brand-pink:#2BB5C8;--brand-purple:#2BB5C8;--accent-light:#e8f2fb;--font-d:'Montserrat',sans-serif;--font-b:'Noto Sans JP','Montserrat',sans-serif;}
+:root{
+  --bg:#08090c;
+  --bg-soft:#0d0f14;
+  --bg-card:#11141b;
+  --line:rgba(255,255,255,.08);
+  --line-strong:rgba(255,255,255,.14);
+  --text:#fff;
+  --text-soft:rgba(255,255,255,.62);
+  --text-muted:rgba(255,255,255,.42);
+  --accent:#2BB5C8;
+  --accent-soft:#79F1A4;
+  --accent-grad:linear-gradient(135deg,#79F1A4,#2BB5C8);
+  --error:#ff6b6b;
+  --font-d:'Montserrat',sans-serif;
+  --font-b:'Noto Sans JP','Montserrat',sans-serif;
+}
 html{scroll-behavior:smooth}
-body{font-family:var(--font-b);background:var(--white);color:var(--black);-webkit-font-smoothing:antialiased}
-a{text-decoration:none}
-nav{position:fixed;top:0;left:0;right:0;z-index:200;height:56px;display:flex;align-items:center;padding:0 40px;background:rgba(255,255,255,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--gray-100)}
-.nav-logo{font-family:var(--font-d);text-decoration:none;display:inline-flex;align-items:baseline}
-.nav-logo .cw{font-size:15px;font-weight:500;background:linear-gradient(135deg,#79F1A4,#2BB5C8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-.02em}
-.nav-logo .dot{width:4px;height:4px;border-radius:50%;background:linear-gradient(135deg,#79F1A4,#2BB5C8);margin:0 3px 3px;display:inline-block;align-self:flex-end}
-.nav-logo .ml{font-size:15px;font-weight:500;background:linear-gradient(135deg,#3ecf8e,#2BB5C8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-.02em}
-.nav-center{display:flex;gap:32px;margin:0 auto}
-  .nav-center a{font-size:12px;font-weight:400;color:var(--gray-600);text-decoration:none;letter-spacing:.02em;transition:color .15s}
-  .nav-center a:hover{color:var(--black)}
-  .nav-right{margin-left:auto;display:flex;align-items:center;overflow:visible;gap:10px}
-.nav-cta{font-family:var(--font-d);font-size:11px;font-weight:600;padding:8px 16px;background:var(--black);color:#fff;border:none;cursor:pointer;border-radius:6px;letter-spacing:.02em;text-decoration:none;display:inline-block;transition:background .15s}
-.nav-cta:hover{background:#22a3b5}
-.page-wrap{max-width:800px;margin:0 auto;padding:100px 40px 80px}
-.page-eyebrow{font-size:9px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#2BB5C8;margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.page-eyebrow::before{content:'';width:16px;height:1px;background:#2BB5C8}
-.page-title{font-family:var(--font-d);font-size:32px;font-weight:200;letter-spacing:-.03em;margin-bottom:8px}
-.page-date{font-size:11px;color:var(--gray-400);margin-bottom:48px;padding-bottom:48px;border-bottom:1px solid var(--gray-100)}
-h2{font-family:var(--font-d);font-size:14px;font-weight:600;letter-spacing:.02em;margin:40px 0 12px;color:var(--black)}
-p{font-size:13px;line-height:2;color:var(--gray-600);margin-bottom:12px}
-ul{font-size:13px;line-height:2;color:var(--gray-600);padding-left:1.5em;margin-bottom:16px}
-li{margin-bottom:4px}
-footer{background:var(--black);padding:56px 80px 36px;position:relative;overflow:hidden}
-footer::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(255,255,255,.02) 39px,rgba(255,255,255,.02) 40px),repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(255,255,255,.02) 39px,rgba(255,255,255,.02) 40px);pointer-events:none}
-.foot-inner{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:40px;padding-bottom:40px;border-bottom:1px solid rgba(255,255,255,.08);position:relative}
-.foot-logo{font-family:'Montserrat',sans-serif;display:inline-flex;align-items:baseline;margin-bottom:12px}
-.foot-logo .cw,.foot-logo .ml{font-size:18px;font-weight:500;color:#fff;letter-spacing:-.02em}
-.foot-logo .dot{width:4px;height:4px;border-radius:50%;background:linear-gradient(135deg,#79F1A4,#2BB5C8);margin:0 3px 3px;flex-shrink:0;display:inline-block;align-self:flex-end}
-.foot-tagline{font-size:11px;line-height:1.8;color:rgba(255,255,255,.35);margin-bottom:10px}
-.foot-company{font-size:10px;color:rgba(255,255,255,.2);line-height:1.8}
-.foot-col-label{font-family:'Montserrat',sans-serif;font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-bottom:14px}
-.foot-links{display:flex;flex-direction:column;gap:8px}
-.foot-links a{font-size:12px;color:rgba(255,255,255,.5);transition:color .15s}
-.foot-links a:hover{color:#fff}
-.foot-om-desc{font-size:11px;color:rgba(255,255,255,.3);line-height:1.7;margin-bottom:12px}
-.foot-om-btn{font-family:'Montserrat',sans-serif;font-size:10px;font-weight:600;letter-spacing:.04em;padding:7px 14px;border:1px solid rgba(255,255,255,.15);border-radius:4px;color:rgba(255,255,255,.45);display:inline-block;transition:all .2s}
-.foot-om-btn:hover{border-color:rgba(255,255,255,.4);color:#fff}
-.foot-bottom{display:flex;align-items:center;justify-content:space-between;position:relative}
-.foot-bottom>div:first-child{font-size:10px;color:rgba(255,255,255,.2);letter-spacing:.04em}
-.foot-legal{display:flex;gap:20px}
-.foot-legal a{font-size:10px;color:rgba(255,255,255,.2);transition:color .15s}
-.foot-legal a:hover{color:rgba(255,255,255,.5)}
+body{font-family:var(--font-b);background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;line-height:1.7;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+button{font-family:inherit;cursor:pointer}
+img{max-width:100%;display:block}
 
+/* Nav (dark) */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;height:60px;display:flex;align-items:center;padding:0 40px;background:rgba(8,9,12,.75);backdrop-filter:blur(20px) saturate(1.4);-webkit-backdrop-filter:blur(20px) saturate(1.4);border-bottom:1px solid var(--line)}
+.nav-logo{display:inline-flex;align-items:center;filter:invert(1) brightness(1.1)}
+.nav-logo img{height:30px;width:auto;display:block}
+.nav-center{display:flex;gap:28px;margin:0 auto}
+.nav-center a{font-size:11px;font-weight:500;color:var(--text-soft);letter-spacing:.04em;transition:color .15s}
+.nav-center a:hover{color:var(--accent)}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:12px}
+.nav-cta{font-family:var(--font-d);font-size:11px;font-weight:600;padding:9px 18px;background:var(--accent);color:#04212a;border:none;border-radius:6px;letter-spacing:.04em;display:inline-block;transition:all .2s}
+.nav-cta:hover{background:#1da3b5;transform:translateY(-1px)}
 
-/* FOOTER STYLES */
-footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);position:relative;overflow:hidden}
-.foot-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,.08);position:relative}
-.foot-inner{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:40px;padding-bottom:40px;border-bottom:1px solid var(--gray-200)}
-.foot-company{font-size:11px;color:var(--gray-400);line-height:1.8;margin-top:8px}
-.foot-logo{font-family:'Montserrat',sans-serif;display:inline-flex;align-items:baseline;gap:0;line-height:1;margin-bottom:14px}
-.foot-logo .cw{font-size:22px;font-weight:500;color:var(--black);letter-spacing:-.02em}
-.foot-logo .dot{width:5px;height:5px;border-radius:50%;background:linear-gradient(135deg,#79F1A4,#2BB5C8);margin:0 3px 3px;flex-shrink:0;display:inline-block;align-self:flex-end}
-.foot-logo .ml{font-size:22px;font-weight:500;color:var(--black);letter-spacing:-.02em}
-.foot-tagline{font-size:12px;line-height:1.8;color:var(--gray-600);max-width:240px;margin-bottom:24px}
-.foot-col-label{font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gray-400);margin-bottom:16px}
-.foot-links{list-style:none;display:flex;flex-direction:column;gap:9px}
-.foot-links a{font-size:12px;color:var(--gray-600);text-decoration:none;transition:color .15s}
-.foot-links a:hover{color:var(--black)}
-.foot-links a.accent{color:#e8a0a1}
-.foot-bottom{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:rgba(255,255,255,.25)}
-.foot-bottom a{color:rgba(255,255,255,.35);text-decoration:none}
+/* Hero */
+.hero{position:relative;padding:160px 40px 120px;max-width:1200px;margin:0 auto;text-align:center}
+.hero::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:1100px;height:1100px;background:radial-gradient(closest-side,rgba(43,181,200,.18),rgba(121,241,164,.06) 40%,transparent 70%);pointer-events:none;z-index:-1}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-d);font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:32px;padding:8px 16px;border:1px solid rgba(43,181,200,.3);border-radius:100px;background:rgba(43,181,200,.06)}
+.hero-eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent-grad);box-shadow:0 0 12px rgba(43,181,200,.6)}
+.hero h1{font-family:var(--font-d);font-size:72px;font-weight:200;line-height:1.1;letter-spacing:-.04em;margin-bottom:32px}
+.hero h1 .accent{background:var(--accent-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:300;font-style:italic;font-family:'Montserrat',serif}
+.hero p.lede{font-size:17px;line-height:1.85;color:var(--text-soft);max-width:580px;margin:0 auto 48px;font-weight:400}
+.hero-cta-wrap{display:flex;flex-direction:column;align-items:center;gap:18px;margin-bottom:24px}
+.hero-cta{display:inline-flex;align-items:center;gap:12px;font-family:var(--font-d);font-size:14px;font-weight:600;letter-spacing:.04em;padding:18px 36px;background:var(--accent);color:#04212a;border:none;border-radius:10px;transition:all .25s cubic-bezier(0.16,1,0.3,1);box-shadow:0 8px 24px -8px rgba(43,181,200,.5)}
+.hero-cta:hover{background:#1da3b5;transform:translateY(-2px);box-shadow:0 12px 32px -8px rgba(43,181,200,.7)}
+.hero-cta .arrow{transition:transform .25s}
+.hero-cta:hover .arrow{transform:translateX(4px)}
+.hero-bullets{display:flex;flex-wrap:wrap;justify-content:center;gap:20px;font-size:12px;color:var(--text-muted)}
+.hero-bullets span{display:inline-flex;align-items:center;gap:6px}
+.hero-bullets span::before{content:'✓';color:var(--accent-soft);font-weight:700}
 
-@media(max-width:900px){
-  nav{padding:0 20px}
-}
-@media(max-width:600px){
-  nav{padding:0 16px}
-  .nav-cta{font-size:10px;padding:7px 12px;white-space:nowrap}
-  footer{padding:40px 20px 24px}
-  .foot-inner{grid-template-columns:1fr 1fr;gap:24px}
-  .foot-bottom{flex-direction:column;gap:12px;text-align:center}
-}
+/* Section base */
+section.lp{padding:120px 40px;border-top:1px solid var(--line)}
+.lp-inner{max-width:1100px;margin:0 auto}
+.lp-eyebrow{font-family:var(--font-d);font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:16px;display:flex;align-items:center;gap:10px}
+.lp-eyebrow::before{content:'';width:24px;height:1px;background:var(--accent)}
+.lp-title{font-family:var(--font-d);font-size:44px;font-weight:200;line-height:1.2;letter-spacing:-.025em;margin-bottom:18px}
+.lp-title .accent{background:var(--accent-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:300;font-style:italic}
+.lp-lede{font-size:15px;line-height:1.9;color:var(--text-soft);max-width:680px;margin-bottom:56px}
 
+/* Compare table — Google広告 vs COWORKMILL */
+.compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--bg-card)}
+.compare-col{padding:32px 28px}
+.compare-col.left{background:rgba(255,255,255,.02);border-right:1px solid var(--line)}
+.compare-col.right{background:linear-gradient(180deg,rgba(43,181,200,.08),rgba(121,241,164,.04));position:relative}
+.compare-col.right::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent-grad)}
+.compare-h{display:flex;align-items:center;gap:10px;font-family:var(--font-d);font-size:14px;font-weight:600;letter-spacing:.02em;margin-bottom:24px;padding-bottom:18px;border-bottom:1px solid var(--line)}
+.compare-h .badge{font-size:9px;font-weight:700;padding:3px 8px;border-radius:4px;letter-spacing:.05em;background:rgba(255,107,107,.15);color:#ff8585;text-transform:uppercase}
+.compare-h.right .badge{background:rgba(43,181,200,.18);color:var(--accent)}
+.compare-row{display:flex;align-items:flex-start;gap:12px;padding:14px 0;font-size:13px;line-height:1.7;color:var(--text-soft)}
+.compare-row .icon{flex-shrink:0;width:18px;height:18px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;margin-top:2px}
+.compare-col.left .icon{color:var(--text-muted)}
+.compare-col.right .icon{color:var(--accent-soft)}
 
-@media(max-width:900px){
-  nav{padding:0 20px}
-  .page-wrap{padding:80px 24px 60px}
-}
-@media(max-width:600px){
-  nav{padding:0 16px}
-  .nav-cta{font-size:10px;padding:7px 12px;white-space:nowrap}
-  .page-wrap{padding:72px 16px 48px}
-  .page-title{font-size:24px}
-  /* 掲載の流れ: 3列→1列 */
-  .flow-grid{grid-template-columns:1fr !important}
-  /* プランカード: 3列→1列 */
-  .plan-grid{grid-template-columns:1fr !important}
-  /* フォーム: 2列→1列 */
-  .form-row-2{grid-template-columns:1fr !important}
-  /* フォーム入力: タップしやすいサイズに */
-  input,select,textarea{
-    font-size:16px !important;
-    padding:12px 14px !important;
-  }
-  /* 申し込みボタン: 全幅 */
-  .submit-btn{width:100% !important;padding:16px !important}
-  footer{padding:40px 20px 24px}
-  .foot-inner{grid-template-columns:1fr;gap:16px}
-  .foot-bottom{flex-direction:column;gap:12px;text-align:center}
-}
-@media(prefers-color-scheme:dark){
-  input,select,textarea{
-    background:#1e1e1e !important;
-    border-color:#333 !important;
-    color:#f0f0f0 !important;
-  }
-  input::placeholder,textarea::placeholder{color:#555 !important}
-  .form-notice{background:#1e1e1e !important;border-color:#2a2a2a !important}
-}
-/* ── DARK MODE ── */
-@media(prefers-color-scheme:dark){
-  :root{
-    --black:#f0f0f0;
-    --white:#121212;
-    --gray-50:#1a1a1a;
-    --gray-100:#252525;
-    --gray-200:#333;
-    --gray-400:#888;
-    --gray-600:#aaa;
-    --gray-800:#ddd;
-    --accent-light:#0d2a2e;
-  }
-  body{background:#121212;color:#f0f0f0}
-  nav{background:rgba(18,18,18,.97);border-bottom-color:#2a2a2a}
-  .nav-cta{background:#2BB5C8!important;color:#fff!important}
-  .foot-logo .cw,.foot-logo .ml{color:#f0f0f0}
-  .card,.scard,.lcard,.acard,.rcard,.voice-post,.aside-card,.plan-item,.wtag-card{background:#1e1e1e;border-color:#333}
-  .card:hover,.scard:hover{border-color:#2BB5C8}
-  .card-name,.scard-name,.lcard-name,.space-name,.page-title,.plan-name{color:#f0f0f0}
-  .card-desc,.scard-design,.lcard-design,.space-desc,.voice-text{color:#aaa}
-  .card-price strong,.scard-price strong,.lcard-price strong{color:#f0f0f0}
-  footer{background:#1a1a1a}
-  .foot-inner{border-bottom-color:#2a2a2a}
-  .foot-tagline,.foot-company{color:#888}
-  .foot-links a{color:#888}
-  .foot-links a:hover{color:#f0f0f0}
-  .foot-bottom,.foot-bottom a{color:#555}
-  .search-box,.sf-block,.sidebar-filters{background:#1e1e1e;border-color:#333}
-  .search-box input{color:#f0f0f0}
-  .gsp-item,.gpc-item{background:#252525}
-  .om-banner{background:#0d2a2e;border-color:#0e3a40}
-  .om-title{color:#f0f0f0}
-  .hero-search{background:rgba(30,30,30,.97)}
-  .hero-search input{color:#f0f0f0}
-  .aside-card{background:#1e1e1e}
-  .aside-price{color:#f0f0f0}
-  .rcard,.fac-item{background:#1e1e1e;border-color:#333}
-  .vcard-name{color:#f0f0f0}
-  .section-label{color:#666}
-  .sec-divider{background:#2a2a2a}
-  .lang-toggle{background:#252525}
-  .lang-btn.active{background:#333;color:#f0f0f0}
-  .filter-bar,.filter-bar-inner,.alpha-bar{background:#1a1a1a;border-bottom-color:#2a2a2a}
-  .chip{border-color:#333;color:#aaa}
-  .chip:hover,.chip.on{background:#2BB5C8;border-color:#2BB5C8;color:#fff}
-  .voice-item{background:#1e1e1e}
-  .vp-textarea,.vp-nickname{background:#252525;border-color:#333;color:#f0f0f0}
-  .access-val{color:#aaa}
-  .page-header{background:#1a1a1a;border-bottom-color:#2a2a2a}
-  .wtag-card-bar{background:#333}
-  .sb-opt-text,.sb-cnt{color:#888}
-  .sb-group{border-bottom-color:#2a2a2a}
-  .sort-btn{border-color:#333;color:#888;background:#1e1e1e}
-  .pg-btn{border-color:#333;color:#888;background:#1e1e1e}
-  .pg-btn.on{background:#2BB5C8;color:#fff}
-  /* ── register固有ダークモード ── */
-  /* ページ背景・テキスト */
-  h2{color:#f0f0f0}
-  p,li{color:#aaa}
-  label{color:#aaa !important}
-  /* 掲載の流れボックス */
-  .flow-grid div div:last-child{color:#888 !important}
-  /* 01/02/03 番号: opacityを上げる */
-  .flow-grid div div[style*="opacity:.4"]{opacity:.7 !important;color:#a08ccf !important}
-  /* プランカード */
-  .plan-card{background:#1e1e1e !important;border-color:#333 !important}
-  #plan-free,#plan-standard,#plan-pro{background:#1e1e1e !important}
-  .form-section{background:#1e1e1e;border-color:#333}
-  input,select,textarea{background:#252525 !important;border-color:#333 !important;color:#f0f0f0 !important}
-  /* 選択中プラン */
-  #plan-free[style*="brand-purple"]{background:#1a1630 !important}
-  /* プランカード内テキスト */
-  .plan-card div[style*="font-size:22px"]{color:#f0f0f0 !important}
-  .plan-card div[style*="color:var(--gray-200)"]{color:#555 !important}
-  /* フォームコンテナ */
-  div[style*="border:1px solid var(--gray-100);border-radius:12px"]{
-    background:#1a1a1a !important;
-    border-color:#2a2a2a !important;
-  }
-  /* フォーム区切り線 */
-  div[style*="border-top:1px solid var(--gray-100)"]{
-    border-top-color:#2a2a2a !important;
-  }
-  /* 掲載の流れ背景 */
-  div[style*="background:var(--accent-light)"]{
-    background:#1e1a2e !important;
-    border-color:#3a3050 !important;
-  }
-  /* 申し込みボタン */
-  .submit-btn{background:#2BB5C8 !important}
-  /* セキュリティ通知 */
-  .form-notice{background:#1e1e1e !important;border-color:#2a2a2a !important}
-  .form-notice div{color:#666 !important}
-  /* 注記テキスト */
-  p[style*="color:var(--gray-400)"]{color:#555 !important}
+/* Steps */
+.steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.step-card{padding:36px 28px;background:var(--bg-card);border:1px solid var(--line);border-radius:14px;position:relative;transition:all .25s}
+.step-card:hover{border-color:var(--line-strong);transform:translateY(-2px)}
+.step-num{font-family:var(--font-d);font-size:48px;font-weight:200;line-height:1;color:var(--accent);opacity:.55;margin-bottom:18px;letter-spacing:-.04em}
+.step-title{font-family:var(--font-d);font-size:16px;font-weight:600;letter-spacing:.01em;margin-bottom:12px;color:var(--text)}
+.step-desc{font-size:13px;line-height:1.85;color:var(--text-soft)}
+
+/* Plans */
+.plan-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:40px}
+.plan-card{padding:40px 30px;background:var(--bg-card);border:1px solid var(--line);border-radius:16px;display:flex;flex-direction:column;position:relative;transition:all .3s}
+.plan-card.featured{border-color:rgba(43,181,200,.4);background:linear-gradient(180deg,var(--bg-card),rgba(43,181,200,.04))}
+.plan-card.featured::before{content:'';position:absolute;inset:-1px;border-radius:16px;background:var(--accent-grad);z-index:-1;opacity:.4}
+.plan-tag{position:absolute;top:-11px;left:50%;transform:translateX(-50%);font-family:var(--font-d);font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;background:var(--accent);color:#04212a;padding:5px 12px;border-radius:100px}
+.plan-name{font-family:var(--font-d);font-size:18px;font-weight:600;letter-spacing:.02em;margin-bottom:8px}
+.plan-tagline{font-size:11px;color:var(--text-muted);margin-bottom:24px;letter-spacing:.02em}
+.plan-price{font-family:var(--font-d);font-size:36px;font-weight:200;letter-spacing:-.03em;margin-bottom:6px;line-height:1}
+.plan-price .currency{font-size:16px;vertical-align:super;margin-right:2px;opacity:.6}
+.plan-price .period{font-size:13px;font-weight:400;color:var(--text-muted);margin-left:6px}
+.plan-cap{font-size:11px;color:var(--text-muted);margin-bottom:28px;padding-bottom:24px;border-bottom:1px solid var(--line)}
+.plan-feats{list-style:none;flex:1;margin-bottom:28px}
+.plan-feats li{font-size:13px;color:var(--text-soft);padding:7px 0;display:flex;align-items:flex-start;gap:8px;line-height:1.6}
+.plan-feats li::before{content:'✓';color:var(--accent-soft);font-weight:700;flex-shrink:0;margin-top:1px}
+.plan-feats li.disabled{color:var(--text-muted);opacity:.5}
+.plan-feats li.disabled::before{content:'—';color:var(--text-muted)}
+.plan-cta{display:block;text-align:center;font-family:var(--font-d);font-size:12px;font-weight:600;letter-spacing:.04em;padding:13px 20px;border-radius:8px;background:rgba(255,255,255,.05);color:var(--text);border:1px solid var(--line-strong);transition:all .2s}
+.plan-card.featured .plan-cta{background:var(--accent);color:#04212a;border-color:var(--accent)}
+.plan-cta:hover{background:rgba(255,255,255,.1);border-color:var(--accent)}
+.plan-card.featured .plan-cta:hover{background:#1da3b5}
+
+/* Showcase / how it appears */
+.show-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.show-list{display:flex;flex-direction:column;gap:24px}
+.show-item{padding:24px 28px;background:var(--bg-card);border:1px solid var(--line);border-radius:12px;transition:all .25s}
+.show-item:hover{border-color:rgba(43,181,200,.3);transform:translateX(4px)}
+.show-item h3{font-family:var(--font-d);font-size:15px;font-weight:600;letter-spacing:.02em;margin-bottom:8px}
+.show-item p{font-size:13px;color:var(--text-soft);line-height:1.85}
+.show-mock{aspect-ratio:4/5;background:linear-gradient(135deg,#1a1d24,#0d0f14);border:1px solid var(--line);border-radius:14px;padding:24px;position:relative;overflow:hidden}
+.show-mock-img{aspect-ratio:16/10;background:linear-gradient(135deg,rgba(43,181,200,.18),rgba(121,241,164,.05));border-radius:8px;margin-bottom:18px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:10px;color:var(--text-muted);letter-spacing:.1em}
+.show-mock-h{font-family:var(--font-d);font-size:13px;font-weight:600;margin-bottom:6px}
+.show-mock-meta{font-size:10px;color:var(--text-muted);margin-bottom:14px}
+.show-mock-tags{display:flex;flex-wrap:wrap;gap:6px}
+.show-mock-tag{font-size:9px;padding:3px 8px;border-radius:4px;background:rgba(43,181,200,.12);color:var(--accent);letter-spacing:.04em}
+
+/* Existing facilities slider */
+.exist-strip{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:8px;-webkit-overflow-scrolling:touch}
+.exist-strip::-webkit-scrollbar{height:4px}
+.exist-strip::-webkit-scrollbar-track{background:rgba(255,255,255,.04)}
+.exist-strip::-webkit-scrollbar-thumb{background:rgba(43,181,200,.3);border-radius:2px}
+.exist-card{flex:0 0 280px;scroll-snap-align:start;background:var(--bg-card);border:1px solid var(--line);border-radius:12px;overflow:hidden;transition:all .25s}
+.exist-card:hover{border-color:rgba(43,181,200,.3);transform:translateY(-3px)}
+.exist-card .img{aspect-ratio:4/3;background:linear-gradient(135deg,#1a1d24,#0d0f14)}
+.exist-card .img img{width:100%;height:100%;object-fit:cover;display:block}
+.exist-card .body{padding:16px 18px}
+.exist-card .name{font-family:var(--font-d);font-size:13px;font-weight:600;letter-spacing:.01em;margin-bottom:4px}
+.exist-card .meta{font-size:11px;color:var(--text-muted)}
+
+/* FAQ */
+.faq-list{max-width:760px;margin:0 auto}
+.faq-item{border-bottom:1px solid var(--line);padding:24px 0}
+.faq-item:first-child{border-top:1px solid var(--line)}
+.faq-q{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;width:100%;background:transparent;border:none;color:var(--text);text-align:left;font-family:var(--font-b);font-size:15px;font-weight:500;line-height:1.6;padding:0}
+.faq-q .toggle{font-size:18px;color:var(--accent);font-weight:300;flex-shrink:0;transition:transform .25s}
+.faq-item.open .faq-q .toggle{transform:rotate(45deg)}
+.faq-a{display:none;font-size:13px;color:var(--text-soft);line-height:1.95;padding-top:16px}
+.faq-item.open .faq-a{display:block}
+
+/* Final CTA + form */
+.final{padding:120px 40px;background:linear-gradient(180deg,transparent,rgba(43,181,200,.05));border-top:1px solid var(--line);text-align:center}
+.final-inner{max-width:560px;margin:0 auto}
+.final h2{font-family:var(--font-d);font-size:42px;font-weight:200;line-height:1.2;letter-spacing:-.025em;margin-bottom:14px}
+.final h2 .accent{background:var(--accent-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:300;font-style:italic}
+.final p{font-size:14px;color:var(--text-soft);margin-bottom:48px;line-height:1.85}
+.form-card{background:var(--bg-card);border:1px solid var(--line);border-radius:16px;padding:36px 32px;text-align:left}
+.form-row{margin-bottom:18px}
+.form-row.split{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-label{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:600;color:var(--text-soft);margin-bottom:8px;letter-spacing:.02em}
+.form-label .req{font-size:9px;font-weight:700;color:var(--accent);background:rgba(43,181,200,.14);padding:2px 6px;border-radius:3px;letter-spacing:.04em}
+.form-input{width:100%;padding:12px 14px;background:rgba(255,255,255,.03);border:1px solid var(--line-strong);border-radius:8px;color:var(--text);font-family:var(--font-b);font-size:13px;outline:none;transition:all .2s}
+.form-input::placeholder{color:var(--text-muted)}
+.form-input:focus{border-color:var(--accent);background:rgba(43,181,200,.05);box-shadow:0 0 0 3px rgba(43,181,200,.12)}
+.form-input.error{border-color:var(--error)}
+.form-err{font-size:11px;color:var(--error);margin-top:4px;display:none}
+.form-row.has-error .form-err{display:block}
+.form-divider{margin:24px 0 14px;font-size:11px;font-weight:600;color:var(--text-soft);letter-spacing:.02em;display:flex;align-items:center;gap:8px}
+.form-divider::after{content:'';flex:1;height:1px;background:var(--line)}
+.form-note{font-size:11px;color:var(--text-muted);margin-top:14px;line-height:1.7;padding:10px 12px;background:rgba(255,255,255,.02);border-radius:6px}
+.form-submit{width:100%;display:inline-flex;align-items:center;justify-content:center;gap:10px;font-family:var(--font-d);font-size:13px;font-weight:600;letter-spacing:.04em;padding:16px 24px;background:var(--accent);color:#04212a;border:none;border-radius:10px;margin-top:24px;transition:all .25s cubic-bezier(0.16,1,0.3,1);box-shadow:0 6px 18px -6px rgba(43,181,200,.5)}
+.form-submit:hover:not(:disabled){background:#1da3b5;transform:translateY(-1px);box-shadow:0 10px 26px -6px rgba(43,181,200,.7)}
+.form-submit:disabled{opacity:.5;cursor:not-allowed}
+.form-followup{font-size:11px;color:var(--text-muted);text-align:center;margin-top:18px;line-height:1.7}
+
+/* Footer (dark adapt) */
+footer{background:#04050a;padding:64px 40px 36px;border-top:1px solid var(--line);color:var(--text-soft)}
+footer a{color:var(--text-soft);transition:color .15s}
+footer a:hover{color:var(--accent)}
+
+/* Responsive */
+@media (max-width: 900px){
+  nav{padding:0 20px;height:54px}
+  .nav-center{display:none}
+  .hero{padding:120px 24px 80px}
+  .hero h1{font-size:42px;letter-spacing:-.025em}
+  .hero p.lede{font-size:15px}
+  section.lp{padding:80px 24px}
+  .lp-title{font-size:30px}
+  .compare-grid{grid-template-columns:1fr}
+  .compare-col.left{border-right:none;border-bottom:1px solid var(--line)}
+  .steps-grid{grid-template-columns:1fr;gap:14px}
+  .plan-grid{grid-template-columns:1fr;gap:14px}
+  .show-grid{grid-template-columns:1fr;gap:32px}
+  .show-mock{order:-1;max-width:380px;margin:0 auto}
+  .final{padding:80px 24px}
+  .final h2{font-size:30px}
+  .form-card{padding:24px 20px}
+  .form-row.split{grid-template-columns:1fr;gap:0}
+  .form-row.split .form-row{margin-bottom:18px}
+  footer{padding:48px 20px 28px}
 }
 </style>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style id="claude-agent-animation-styles">
-      @keyframes claude-pulse {
-        0% {
-          box-shadow: 
-            inset 0 0 10px rgba(217, 119, 87, 0.5),
-            inset 0 0 20px rgba(217, 119, 87, 0.3),
-            inset 0 0 30px rgba(217, 119, 87, 0.1);
-        }
-        50% {
-          box-shadow: 
-            inset 0 0 15px rgba(217, 119, 87, 0.7),
-            inset 0 0 25px rgba(217, 119, 87, 0.5),
-            inset 0 0 35px rgba(217, 119, 87, 0.2);
-        }
-        100% {
-          box-shadow: 
-            inset 0 0 10px rgba(217, 119, 87, 0.5),
-            inset 0 0 20px rgba(217, 119, 87, 0.3),
-            inset 0 0 30px rgba(217, 119, 87, 0.1);
-        }
-      }
-    </style><style>
-    #plan-free, #plan-standard, #plan-pro { position:relative !important; cursor:default !important; }
-    #plan-free.plan-selected, #plan-standard.plan-selected, #plan-pro.plan-selected {
-      border:2px solid #2BB5C8 !important; background:rgba(43,181,200,0.06) !important;
-    }
-    .cwm-field-wrap { position:relative; }
-    .cwm-input-ok   { border-color:#4ade80 !important; }
-    .cwm-input-err  { border-color:#f87171 !important; }
-    .cwm-err-msg {
-      color:#f87171; font-size:11px; margin-top:5px;
-      display:none; font-family:sans-serif;
-    }
-    .cwm-ok-icon {
-      position:absolute; right:12px; top:50%; transform:translateY(-50%);
-      color:#4ade80; font-size:14px; pointer-events:none;
-    }
-    .submit-btn:disabled {
-      opacity:0.4 !important; cursor:not-allowed !important;
-    }
-  </style><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"COWORKMILL","url":"https://cowkml.com","description":"建築家・デザイン会社が手がけたコワーキングスペースを全国から探せる検索サービス","potentialAction":{"@type":"SearchAction","target":"https://cowkml.com/spaces?q={search_term_string}","query-input":"required name=search_term_string"}}</script>
-  <script src="/shared/cwm-security.js" defer></script>
 </head>
+
 <body>
+
 <nav>
   <a href="/" class="nav-logo"><img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyBpZD0iX+ODrOOCpOODpOODvF8xIiBkYXRhLW5hbWU9IuODrOOCpOODpOODvF8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjIyNyA1MzEgMzgwIDc1Ij4KICA8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMzAuMi4xLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogMi4xLjEgQnVpbGQgMSkgIC0tPgogIDxkZWZzPgogICAgPHN0eWxlPgogICAgICAuc3QwIHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY0OSk7CiAgICAgIH0KCiAgICAgIC5zdDEgewogICAgICAgIGZpbGw6IHVybCgjX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NjQ4KTsKICAgICAgfQoKICAgICAgLnN0MiB7CiAgICAgICAgZmlsbDogdXJsKCNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2NDcpOwogICAgICB9CgogICAgICAuc3QzIHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY0Nik7CiAgICAgIH0KCiAgICAgIC5zdDQgewogICAgICAgIGZpbGw6IHVybCgjX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NjQ1KTsKICAgICAgfQoKICAgICAgLnN0NSB7CiAgICAgICAgZmlsbDogdXJsKCNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2NDQpOwogICAgICB9CgogICAgICAuc3Q2IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY0Myk7CiAgICAgIH0KCiAgICAgIC5zdDcgewogICAgICAgIGZpbGw6IHVybCgjX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NjQyKTsKICAgICAgfQoKICAgICAgLnN0OCB7CiAgICAgICAgZmlsbDogdXJsKCNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2NDEpOwogICAgICB9CgogICAgICAuc3Q5IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY0MCk7CiAgICAgIH0KCiAgICAgIC5zdDEwIHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY5MSk7CiAgICAgIH0KCiAgICAgIC5zdDExIHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY5Myk7CiAgICAgIH0KCiAgICAgIC5zdDEyIHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY5NCk7CiAgICAgIH0KCiAgICAgIC5zdDEzIHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY5OSk7CiAgICAgIH0KCiAgICAgIC5zdDE0IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY2Myk7CiAgICAgIH0KCiAgICAgIC5zdDE1IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY2OCk7CiAgICAgIH0KCiAgICAgIC5zdDE2IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY2Nik7CiAgICAgIH0KCiAgICAgIC5zdDE3IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY2MCk7CiAgICAgIH0KCiAgICAgIC5zdDE4IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY2Nyk7CiAgICAgIH0KCiAgICAgIC5zdDE5IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY2NSk7CiAgICAgIH0KCiAgICAgIC5zdDIwIHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY5NSk7CiAgICAgIH0KCiAgICAgIC5zdDIxIHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY5Mik7CiAgICAgIH0KCiAgICAgIC5zdDIyIHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY5OCk7CiAgICAgIH0KCiAgICAgIC5zdDIzIHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY5MCk7CiAgICAgIH0KCiAgICAgIC5zdDI0IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY5Nik7CiAgICAgIH0KCiAgICAgIC5zdDI1IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY5Nyk7CiAgICAgIH0KCiAgICAgIC5zdDI2IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY3Myk7CiAgICAgIH0KCiAgICAgIC5zdDI3IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY3Mik7CiAgICAgIH0KCiAgICAgIC5zdDI4IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY3MSk7CiAgICAgIH0KCiAgICAgIC5zdDI5IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY3OSk7CiAgICAgIH0KCiAgICAgIC5zdDMwIHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY3MCk7CiAgICAgIH0KCiAgICAgIC5zdDMxIHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY3Nyk7CiAgICAgIH0KCiAgICAgIC5zdDMyIHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY3Nik7CiAgICAgIH0KCiAgICAgIC5zdDMzIHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY3NSk7CiAgICAgIH0KCiAgICAgIC5zdDM0IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY3NCk7CiAgICAgIH0KCiAgICAgIC5zdDM1IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY3OCk7CiAgICAgIH0KCiAgICAgIC5zdDM2IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYyMyk7CiAgICAgIH0KCiAgICAgIC5zdDM3IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYyNyk7CiAgICAgIH0KCiAgICAgIC5zdDM4IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYyOSk7CiAgICAgIH0KCiAgICAgIC5zdDM5IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYyOCk7CiAgICAgIH0KCiAgICAgIC5zdDQwIHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYyNSk7CiAgICAgIH0KCiAgICAgIC5zdDQxIHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYyNik7CiAgICAgIH0KCiAgICAgIC5zdDQyIHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYyNCk7CiAgICAgIH0KCiAgICAgIC5zdDQzIHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY1Myk7CiAgICAgIH0KCiAgICAgIC5zdDQ0IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY1OSk7CiAgICAgIH0KCiAgICAgIC5zdDQ1IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY1Nyk7CiAgICAgIH0KCiAgICAgIC5zdDQ2IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY1NSk7CiAgICAgIH0KCiAgICAgIC5zdDQ3IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY1OCk7CiAgICAgIH0KCiAgICAgIC5zdDQ4IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY1Nik7CiAgICAgIH0KCiAgICAgIC5zdDQ5IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY1NCk7CiAgICAgIH0KCiAgICAgIC5zdDUwIHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYyMCk7CiAgICAgIH0KCiAgICAgIC5zdDUxIHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYyMSk7CiAgICAgIH0KCiAgICAgIC5zdDUyIHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYyMik7CiAgICAgIH0KCiAgICAgIC5zdDUzIHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY4NCk7CiAgICAgIH0KCiAgICAgIC5zdDU0IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY4Myk7CiAgICAgIH0KCiAgICAgIC5zdDU1IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY4Mik7CiAgICAgIH0KCiAgICAgIC5zdDU2IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY4MSk7CiAgICAgIH0KCiAgICAgIC5zdDU3IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY4OSk7CiAgICAgIH0KCiAgICAgIC5zdDU4IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY1MCk7CiAgICAgIH0KCiAgICAgIC5zdDU5IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY1MSk7CiAgICAgIH0KCiAgICAgIC5zdDYwIHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY1Mik7CiAgICAgIH0KCiAgICAgIC5zdDYxIHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYzOSk7CiAgICAgIH0KCiAgICAgIC5zdDYyIHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYzOCk7CiAgICAgIH0KCiAgICAgIC5zdDYzIHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYzNyk7CiAgICAgIH0KCiAgICAgIC5zdDY0IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYzNik7CiAgICAgIH0KCiAgICAgIC5zdDY1IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYzNSk7CiAgICAgIH0KCiAgICAgIC5zdDY2IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYzNCk7CiAgICAgIH0KCiAgICAgIC5zdDY3IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY4OCk7CiAgICAgIH0KCiAgICAgIC5zdDY4IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY4Nyk7CiAgICAgIH0KCiAgICAgIC5zdDY5IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY4Nik7CiAgICAgIH0KCiAgICAgIC5zdDcwIHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY4NSk7CiAgICAgIH0KCiAgICAgIC5zdDcxIHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY4MCk7CiAgICAgIH0KCiAgICAgIC5zdDcyIHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY2NCk7CiAgICAgIH0KCiAgICAgIC5zdDczIHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY2MSk7CiAgICAgIH0KCiAgICAgIC5zdDc0IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY2Mik7CiAgICAgIH0KCiAgICAgIC5zdDc1IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY2OSk7CiAgICAgIH0KCiAgICAgIC5zdDc2IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYzMyk7CiAgICAgIH0KCiAgICAgIC5zdDc3IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYzMik7CiAgICAgIH0KCiAgICAgIC5zdDc4IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYzMSk7CiAgICAgIH0KCiAgICAgIC5zdDc5IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYzMCk7CiAgICAgIH0KCiAgICAgIC5zdDgwIHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYxNSk7CiAgICAgIH0KCiAgICAgIC5zdDgxIHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYxMik7CiAgICAgIH0KCiAgICAgIC5zdDgyIHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYxMCk7CiAgICAgIH0KCiAgICAgIC5zdDgzIHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYxMyk7CiAgICAgIH0KCiAgICAgIC5zdDg0IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYxOCk7CiAgICAgIH0KCiAgICAgIC5zdDg1IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYxNik7CiAgICAgIH0KCiAgICAgIC5zdDg2IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYxOSk7CiAgICAgIH0KCiAgICAgIC5zdDg3IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYxNCk7CiAgICAgIH0KCiAgICAgIC5zdDg4IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYxMSk7CiAgICAgIH0KCiAgICAgIC5zdDg5IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYxNyk7CiAgICAgIH0KCiAgICAgIC5zdDkwIHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYxMDApOwogICAgICB9CgogICAgICAuc3Q5MSB7CiAgICAgICAgZmlsbDogdXJsKCNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2MTAxKTsKICAgICAgfQoKICAgICAgLnN0OTIgewogICAgICAgIGZpbGw6IHVybCgjX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NjEwNSk7CiAgICAgIH0KCiAgICAgIC5zdDkzIHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYxMDQpOwogICAgICB9CgogICAgICAuc3Q5NCB7CiAgICAgICAgZmlsbDogdXJsKCNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2MTAzKTsKICAgICAgfQoKICAgICAgLnN0OTUgewogICAgICAgIGZpbGw6IHVybCgjX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NjEwMik7CiAgICAgIH0KCiAgICAgIC5zdDk2IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYzKTsKICAgICAgfQoKICAgICAgLnN0OTcgewogICAgICAgIGZpbGw6IHVybCgjX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NjkpOwogICAgICB9CgogICAgICAuc3Q5OCB7CiAgICAgICAgZmlsbDogdXJsKCNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Nyk7CiAgICAgIH0KCiAgICAgIC5zdDk5IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY0KTsKICAgICAgfQoKICAgICAgLnN0MTAwIHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY4KTsKICAgICAgfQoKICAgICAgLnN0MTAxIHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY2KTsKICAgICAgfQoKICAgICAgLnN0MTAyIHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY1KTsKICAgICAgfQoKICAgICAgLnN0MTAzIHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYxKTsKICAgICAgfQoKICAgICAgLnN0MTA0IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYyKTsKICAgICAgfQoKICAgICAgLnN0MTA1IHsKICAgICAgICBmaWxsOiB1cmwoI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYpOwogICAgICB9CiAgICA8L3N0eWxlPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2IiBkYXRhLW5hbWU9IuWQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODsyA0NiIgeDE9IjIyOC4yNyIgeTE9IjUwNi4xNiIgeDI9IjcwMS4zNSIgeTI9IjYxOS4wNyIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiM4OGM4OTUiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjMTM1N2EwIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2MSIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIyMzAuOTMiIHkxPSI0OTUuMDMiIHgyPSI3MDQuMDEiIHkyPSI2MDcuOTMiIHhsaW5rOmhyZWY9IiNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Ii8+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYyIiBkYXRhLW5hbWU9IuWQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODsyA0NiIgeDE9IjIzMy41OCIgeTE9IjQ4My45IiB4Mj0iNzA2LjY2IiB5Mj0iNTk2LjgiIHhsaW5rOmhyZWY9IiNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Ii8+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYzIiBkYXRhLW5hbWU9IuWQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODsyA0NiIgeDE9IjIzNC45OSIgeTE9IjQ3OCIgeDI9IjcwOC4wNyIgeTI9IjU5MC45IiB4bGluazpocmVmPSIjX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NiIvPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2NCIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIyMjUuNjEiIHkxPSI1MTcuMjkiIHgyPSI2OTguNjkiIHkyPSI2MzAuMiIgeGxpbms6aHJlZj0iI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYiLz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NjUiIGRhdGEtbmFtZT0i5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzIDQ2IiB4MT0iMjMxLjYzIiB5MT0iNDkyLjA4IiB4Mj0iNzA0LjcxIiB5Mj0iNjA0Ljk5IiB4bGluazpocmVmPSIjX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NiIvPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2NiIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIyMzIuMzMiIHkxPSI0ODkuMTMiIHgyPSI3MDUuNDEiIHkyPSI2MDIuMDQiIHhsaW5rOmhyZWY9IiNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Ii8+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY3IiBkYXRhLW5hbWU9IuWQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODsyA0NiIgeDE9IjIzNS4zOSIgeTE9IjQ3Ni4zMiIgeDI9IjcwOC40NyIgeTI9IjU4OS4yMiIgeGxpbms6aHJlZj0iI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYiLz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NjgiIGRhdGEtbmFtZT0i5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzIDQ2IiB4MT0iMjMwLjM0IiB5MT0iNDk3LjQ4IiB4Mj0iNzAzLjQyIiB5Mj0iNjEwLjM4IiB4bGluazpocmVmPSIjX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NiIvPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2OSIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIyMzMiIHkxPSI0ODYuMzUiIHgyPSI3MDYuMDgiIHkyPSI1OTkuMjUiIHhsaW5rOmhyZWY9IiNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Ii8+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYxMCIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIyMjcuNjkiIHkxPSI1MDguNjEiIHgyPSI3MDAuNzciIHkyPSI2MjEuNTEiIHhsaW5rOmhyZWY9IiNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Ii8+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYxMSIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIyMzQuMDIiIHkxPSI0ODIuMDUiIHgyPSI3MDcuMSIgeTI9IjU5NC45NiIgeGxpbms6aHJlZj0iI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYiLz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NjEyIiBkYXRhLW5hbWU9IuWQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODsyA0NiIgeDE9IjIyOS4yNCIgeTE9IjUwMi4xMSIgeDI9IjcwMi4zMiIgeTI9IjYxNS4wMSIgeGxpbms6aHJlZj0iI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYiLz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NjEzIiBkYXRhLW5hbWU9IuWQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODsyA0NiIgeDE9IjIyOS42OCIgeTE9IjUwMC4yNyIgeDI9IjcwMi43NiIgeTI9IjYxMy4xNyIgeGxpbms6aHJlZj0iI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYiLz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NjE0IiBkYXRhLW5hbWU9IuWQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODsyA0NiIgeDE9IjIyMi45NiIgeTE9IjUyOC40MyIgeDI9IjY5Ni4wNCIgeTI9IjY0MS4zMyIgeGxpbms6aHJlZj0iI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYiLz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NjE1IiBkYXRhLW5hbWU9IuWQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODsyA0NiIgeDE9IjIyNS4wMyIgeTE9IjUxOS43NCIgeDI9IjY5OC4xMSIgeTI9IjYzMi42NCIgeGxpbms6aHJlZj0iI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYiLz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NjE2IiBkYXRhLW5hbWU9IuWQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODsyA0NiIgeDE9IjIxMC4xMSIgeTE9IjU4Mi4yNiIgeDI9IjY4My4xOSIgeTI9IjY5NS4xNiIgeGxpbms6aHJlZj0iI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYiLz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NjE3IiBkYXRhLW5hbWU9IuWQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODsyA0NiIgeDE9IjIxMi4xIiB5MT0iNTczLjkzIiB4Mj0iNjg1LjE4IiB5Mj0iNjg2Ljg0IiB4bGluazpocmVmPSIjX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NiIvPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2MTgiIGRhdGEtbmFtZT0i5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzIDQ2IiB4MT0iMjE0LjcxIiB5MT0iNTYzIiB4Mj0iNjg3Ljc4IiB5Mj0iNjc1LjkxIiB4bGluazpocmVmPSIjX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NiIvPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2MTkiIGRhdGEtbmFtZT0i5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzIDQ2IiB4MT0iMjE3LjMxIiB5MT0iNTUyLjA3IiB4Mj0iNjkwLjM5IiB5Mj0iNjY0Ljk4IiB4bGluazpocmVmPSIjX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NiIvPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2MjAiIGRhdGEtbmFtZT0i5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzIDQ2IiB4MT0iMjIwLjU0IiB5MT0iNTM4LjU0IiB4Mj0iNjkzLjYyIiB5Mj0iNjUxLjQ0IiB4bGluazpocmVmPSIjX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NiIvPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2MjEiIGRhdGEtbmFtZT0i5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzIDQ2IiB4MT0iMjE5LjkiIHkxPSI1NDEuMjQiIHgyPSI2OTIuOTgiIHkyPSI2NTQuMTQiIHhsaW5rOmhyZWY9IiNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Ii8+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYyMiIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIyMDkuNzYiIHkxPSI1ODMuNzQiIHgyPSI2ODIuODQiIHkyPSI2OTYuNjUiIHhsaW5rOmhyZWY9IiNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Ii8+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYyMyIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIyMTEuNzciIHkxPSI1NzUuMyIgeDI9IjY4NC44NSIgeTI9IjY4OC4yIiB4bGluazpocmVmPSIjX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NiIvPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2MjQiIGRhdGEtbmFtZT0i5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzIDQ2IiB4MT0iMjEzLjc2IiB5MT0iNTY2Ljk3IiB4Mj0iNjg2Ljg0IiB5Mj0iNjc5Ljg3IiB4bGluazpocmVmPSIjX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NiIvPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2MjUiIGRhdGEtbmFtZT0i5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzIDQ2IiB4MT0iMjE2LjM3IiB5MT0iNTU2LjA0IiB4Mj0iNjg5LjQ1IiB5Mj0iNjY4Ljk0IiB4bGluazpocmVmPSIjX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NiIvPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2MjYiIGRhdGEtbmFtZT0i5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzIDQ2IiB4MT0iMjE4Ljk4IiB5MT0iNTQ1LjExIiB4Mj0iNjkyLjA2IiB5Mj0iNjU4LjAxIiB4bGluazpocmVmPSIjX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NiIvPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2MjciIGRhdGEtbmFtZT0i5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzIDQ2IiB4MT0iMjIwLjIyIiB5MT0iNTM5LjkiIHgyPSI2OTMuMyIgeTI9IjY1Mi44IiB4bGluazpocmVmPSIjX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NiIvPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2MjgiIGRhdGEtbmFtZT0i5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzIDQ2IiB4MT0iMjE1IiB5MT0iNTYxLjc2IiB4Mj0iNjg4LjA4IiB5Mj0iNjc0LjY2IiB4bGluazpocmVmPSIjX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NiIvPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2MjkiIGRhdGEtbmFtZT0i5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzIDQ2IiB4MT0iMjE3LjYxIiB5MT0iNTUwLjgzIiB4Mj0iNjkwLjY5IiB5Mj0iNjYzLjczIiB4bGluazpocmVmPSIjX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NiIvPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2MzAiIGRhdGEtbmFtZT0i5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzIDQ2IiB4MT0iMjIyLjIiIHkxPSI1MzEuNTgiIHgyPSI2OTUuMjgiIHkyPSI2NDQuNDgiIHhsaW5rOmhyZWY9IiNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Ii8+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYzMSIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIyMjEuNTgiIHkxPSI1MzQuMTgiIHgyPSI2OTQuNjYiIHkyPSI2NDcuMDgiIHhsaW5rOmhyZWY9IiNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Ii8+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYzMiIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIyMjIuNTciIHkxPSI1MzAuMDQiIHgyPSI2OTUuNjUiIHkyPSI2NDIuOTUiIHhsaW5rOmhyZWY9IiNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Ii8+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYzMyIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIyMTEuNDEiIHkxPSI1NzYuODEiIHgyPSI2ODQuNDkiIHkyPSI2ODkuNzEiIHhsaW5rOmhyZWY9IiNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Ii8+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYzNCIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIyMTIuMzkiIHkxPSI1NzIuNjkiIHgyPSI2ODUuNDciIHkyPSI2ODUuNTkiIHhsaW5rOmhyZWY9IiNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Ii8+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYzNSIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIyMTUuMDQiIHkxPSI1NjEuNTgiIHgyPSI2ODguMTIiIHkyPSI2NzQuNDkiIHhsaW5rOmhyZWY9IiNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Ii8+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYzNiIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIyMjMuNjciIHkxPSI1MjUuNDQiIHgyPSI2OTYuNzUiIHkyPSI2MzguMzQiIHhsaW5rOmhyZWY9IiNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Ii8+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYzNyIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIyMjAuOTgiIHkxPSI1MzYuNzIiIHgyPSI2OTQuMDYiIHkyPSI2NDkuNjIiIHhsaW5rOmhyZWY9IiNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Ii8+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYzOCIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIyMTguMzMiIHkxPSI1NDcuODEiIHgyPSI2OTEuNDEiIHkyPSI2NjAuNzIiIHhsaW5rOmhyZWY9IiNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Ii8+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYzOSIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIyMTUuNjgiIHkxPSI1NTguOTEiIHgyPSI2ODguNzYiIHkyPSI2NzEuODEiIHhsaW5rOmhyZWY9IiNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Ii8+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY0MCIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIyMTkuMDUiIHkxPSI1NDQuODEiIHgyPSI2OTIuMTMiIHkyPSI2NTcuNzEiIHhsaW5rOmhyZWY9IiNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Ii8+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY0MSIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIyMTkuNDYiIHkxPSI1NDMuMDciIHgyPSI2OTIuNTQiIHkyPSI2NTUuOTciIHhsaW5rOmhyZWY9IiNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Ii8+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY0MiIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIyMTYuMzUiIHkxPSI1NTYuMTIiIHgyPSI2ODkuNDMiIHkyPSI2NjkuMDIiIHhsaW5rOmhyZWY9IiNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Ii8+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY0MyIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIyMTcuMDMiIHkxPSI1NTMuMjYiIHgyPSI2OTAuMTEiIHkyPSI2NjYuMTYiIHhsaW5rOmhyZWY9IiNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Ii8+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY0NCIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIyMjMiIHkxPSI1MjguMjciIHgyPSI2OTYuMDciIHkyPSI2NDEuMTciIHhsaW5rOmhyZWY9IiNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Ii8+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY0NSIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIyMjAuMzUiIHkxPSI1MzkuMzQiIHgyPSI2OTMuNDMiIHkyPSI2NTIuMjQiIHhsaW5rOmhyZWY9IiNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Ii8+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY0NiIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIyMTcuNzEiIHkxPSI1NTAuNDEiIHgyPSI2OTAuNzkiIHkyPSI2NjMuMzEiIHhsaW5rOmhyZWY9IiNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Ii8+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY0NyIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIyMjUuNjkiIHkxPSI1MTYuOTgiIHgyPSI2OTguNzciIHkyPSI2MjkuODgiIHhsaW5rOmhyZWY9IiNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Ii8+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY0OCIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIyMTMuNjkiIHkxPSI1NjcuMjYiIHgyPSI2ODYuNzciIHkyPSI2ODAuMTYiIHhsaW5rOmhyZWY9IiNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Ii8+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY0OSIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIyMTUuMDQiIHkxPSI1NjEuNiIgeDI9IjY4OC4xMiIgeTI9IjY3NC41IiB4bGluazpocmVmPSIjX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NiIvPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2NTAiIGRhdGEtbmFtZT0i5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzIDQ2IiB4MT0iMjEzLjI4IiB5MT0iNTY4Ljk4IiB4Mj0iNjg2LjM2IiB5Mj0iNjgxLjg4IiB4bGluazpocmVmPSIjX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NiIvPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2NTEiIGRhdGEtbmFtZT0i5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzIDQ2IiB4MT0iMjE0LjYzIiB5MT0iNTYzLjMxIiB4Mj0iNjg3LjcxIiB5Mj0iNjc2LjIyIiB4bGluazpocmVmPSIjX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NiIvPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2NTIiIGRhdGEtbmFtZT0i5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzIDQ2IiB4MT0iMjE2Ljg3IiB5MT0iNTUzLjk1IiB4Mj0iNjg5Ljk1IiB5Mj0iNjY2Ljg1IiB4bGluazpocmVmPSIjX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NiIvPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2NTMiIGRhdGEtbmFtZT0i5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzIDQ2IiB4MT0iMjE4Ljg1IiB5MT0iNTQ1LjYyIiB4Mj0iNjkxLjkzIiB5Mj0iNjU4LjUyIiB4bGluazpocmVmPSIjX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NiIvPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2NTQiIGRhdGEtbmFtZT0i5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzIDQ2IiB4MT0iMjIxLjQ2IiB5MT0iNTM0LjY5IiB4Mj0iNjk0LjU0IiB5Mj0iNjQ3LjU5IiB4bGluazpocmVmPSIjX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NiIvPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2NTUiIGRhdGEtbmFtZT0i5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzIDQ2IiB4MT0iMjI0LjA3IiB5MT0iNTIzLjc2IiB4Mj0iNjk3LjE1IiB5Mj0iNjM2LjY2IiB4bGluazpocmVmPSIjX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NiIvPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2NTYiIGRhdGEtbmFtZT0i5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzIDQ2IiB4MT0iMjI1LjMxIiB5MT0iNTE4LjU1IiB4Mj0iNjk4LjM5IiB5Mj0iNjMxLjQ2IiB4bGluazpocmVmPSIjX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NiIvPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2NTciIGRhdGEtbmFtZT0i5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzIDQ2IiB4MT0iMjIwLjEiIHkxPSI1NDAuNDEiIHgyPSI2OTMuMTgiIHkyPSI2NTMuMzIiIHhsaW5rOmhyZWY9IiNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Ii8+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY1OCIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIyMjIuNzEiIHkxPSI1MjkuNDgiIHgyPSI2OTUuNzgiIHkyPSI2NDIuMzkiIHhsaW5rOmhyZWY9IiNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Ii8+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY1OSIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIyMjcuMyIgeTE9IjUxMC4yMyIgeDI9IjcwMC4zOCIgeTI9IjYyMy4xMyIgeGxpbms6aHJlZj0iI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYiLz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NjYwIiBkYXRhLW5hbWU9IuWQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODsyA0NiIgeDE9IjIyNi42OCIgeTE9IjUxMi44MyIgeDI9IjY5OS43NiIgeTI9IjYyNS43MyIgeGxpbms6aHJlZj0iI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYiLz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NjYxIiBkYXRhLW5hbWU9IuWQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODsyA0NiIgeDE9IjIyNy42NyIgeTE9IjUwOC43IiB4Mj0iNzAwLjc1IiB5Mj0iNjIxLjYiIHhsaW5rOmhyZWY9IiNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Ii8+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY2MiIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIyMTYuNSIgeTE9IjU1NS40NiIgeDI9IjY4OS41OCIgeTI9IjY2OC4zNyIgeGxpbms6aHJlZj0iI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYiLz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NjYzIiBkYXRhLW5hbWU9IuWQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODsyA0NiIgeDE9IjIxNy40OSIgeTE9IjU1MS4zNCIgeDI9IjY5MC41NyIgeTI9IjY2NC4yNCIgeGxpbms6aHJlZj0iI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYiLz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NjY0IiBkYXRhLW5hbWU9IuWQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODsyA0NiIgeDE9IjIyMS4wMyIgeTE9IjUzNi40OSIgeDI9IjY5NC4xMSIgeTI9IjY0OS4zOSIgeGxpbms6aHJlZj0iI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYiLz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NjY1IiBkYXRhLW5hbWU9IuWQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODsyA0NiIgeDE9IjIyMy42NCIgeTE9IjUyNS41NiIgeDI9IjY5Ni43MiIgeTI9IjYzOC40NiIgeGxpbms6aHJlZj0iI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYiLz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NjY2IiBkYXRhLW5hbWU9IuWQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODsyA0NiIgeDE9IjIyNi4yNSIgeTE9IjUxNC42MyIgeDI9IjY5OS4zMyIgeTI9IjYyNy41MyIgeGxpbms6aHJlZj0iI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYiLz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NjY3IiBkYXRhLW5hbWU9IuWQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODsyA0NiIgeDE9IjIyNy40OSIgeTE9IjUwOS40MiIgeDI9IjcwMC41NyIgeTI9IjYyMi4zMiIgeGxpbms6aHJlZj0iI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYiLz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NjY4IiBkYXRhLW5hbWU9IuWQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODsyA0NiIgeDE9IjIyOS40OCIgeTE9IjUwMS4xIiB4Mj0iNzAyLjU2IiB5Mj0iNjE0IiB4bGluazpocmVmPSIjX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NiIvPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2NjkiIGRhdGEtbmFtZT0i5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzIDQ2IiB4MT0iMjI0LjI2IiB5MT0iNTIyLjk2IiB4Mj0iNjk3LjM0IiB5Mj0iNjM1Ljg2IiB4bGluazpocmVmPSIjX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NiIvPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2NzAiIGRhdGEtbmFtZT0i5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzIDQ2IiB4MT0iMjI4Ljg2IiB5MT0iNTAzLjciIHgyPSI3MDEuOTQiIHkyPSI2MTYuNiIgeGxpbms6aHJlZj0iI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYiLz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NjcxIiBkYXRhLW5hbWU9IuWQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODsyA0NiIgeDE9IjIyOS44NSIgeTE9IjQ5OS41NiIgeDI9IjcwMi45MyIgeTI9IjYxMi40NyIgeGxpbms6aHJlZj0iI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYiLz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NjcyIiBkYXRhLW5hbWU9IuWQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODsyA0NiIgeDE9IjIyNC44OSIgeTE9IjUyMC4zNCIgeDI9IjY5Ny45NyIgeTI9IjYzMy4yNSIgeGxpbms6aHJlZj0iI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYiLz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NjczIiBkYXRhLW5hbWU9IuWQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODsyA0NiIgeDE9IjIyMS45MSIgeTE9IjUzMi44IiB4Mj0iNjk0Ljk5IiB5Mj0iNjQ1LjciIHhsaW5rOmhyZWY9IiNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Ii8+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY3NCIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIyMjIuMDEiIHkxPSI1MzIuNDEiIHgyPSI2OTUuMDkiIHkyPSI2NDUuMzEiIHhsaW5rOmhyZWY9IiNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Ii8+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY3NSIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIyMTguNDIiIHkxPSI1NDcuNDIiIHgyPSI2OTEuNSIgeTI9IjY2MC4zMiIgeGxpbms6aHJlZj0iI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYiLz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180Njc2IiBkYXRhLW5hbWU9IuWQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODsyA0NiIgeDE9IjIxOS45MyIgeTE9IjU0MS4xIiB4Mj0iNjkzLjAxIiB5Mj0iNjU0LjAxIiB4bGluazpocmVmPSIjX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NiIvPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2NzciIGRhdGEtbmFtZT0i5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzIDQ2IiB4MT0iMjIzLjU0IiB5MT0iNTI1Ljk3IiB4Mj0iNjk2LjYyIiB5Mj0iNjM4Ljg3IiB4bGluazpocmVmPSIjX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NiIvPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2NzgiIGRhdGEtbmFtZT0i5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzIDQ2IiB4MT0iMjI2LjE1IiB5MT0iNTE1LjA0IiB4Mj0iNjk5LjIzIiB5Mj0iNjI3Ljk0IiB4bGluazpocmVmPSIjX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NiIvPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2NzkiIGRhdGEtbmFtZT0i5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzIDQ2IiB4MT0iMjI4Ljc2IiB5MT0iNTA0LjExIiB4Mj0iNzAxLjg0IiB5Mj0iNjE3LjAxIiB4bGluazpocmVmPSIjX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NiIvPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2ODAiIGRhdGEtbmFtZT0i5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzIDQ2IiB4MT0iMjI2Ljc3IiB5MT0iNTEyLjQ0IiB4Mj0iNjk5Ljg1IiB5Mj0iNjI1LjM0IiB4bGluazpocmVmPSIjX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NiIvPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2ODEiIGRhdGEtbmFtZT0i5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzIDQ2IiB4MT0iMjI0LjQzIiB5MT0iNTIyLjI3IiB4Mj0iNjk3LjUiIHkyPSI2MzUuMTgiIHhsaW5rOmhyZWY9IiNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Ii8+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY4MiIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIyMjQuNTIiIHkxPSI1MjEuODkiIHgyPSI2OTcuNiIgeTI9IjYzNC43OSIgeGxpbms6aHJlZj0iI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYiLz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NjgzIiBkYXRhLW5hbWU9IuWQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODsyA0NiIgeDE9IjIyMC45NCIgeTE9IjUzNi45IiB4Mj0iNjk0LjAyIiB5Mj0iNjQ5LjgiIHhsaW5rOmhyZWY9IiNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Ii8+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY4NCIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIyMjIuNDQiIHkxPSI1MzAuNTgiIHgyPSI2OTUuNTIiIHkyPSI2NDMuNDkiIHhsaW5rOmhyZWY9IiNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Ii8+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY4NSIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIyMzEuMzciIHkxPSI0OTMuMTgiIHgyPSI3MDQuNDUiIHkyPSI2MDYuMDgiIHhsaW5rOmhyZWY9IiNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Ii8+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY4NiIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIyMjkuMzgiIHkxPSI1MDEuNTEiIHgyPSI3MDIuNDYiIHkyPSI2MTQuNDEiIHhsaW5rOmhyZWY9IiNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Ii8+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY4NyIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIyMzIuNjIiIHkxPSI0ODcuOTUiIHgyPSI3MDUuNyIgeTI9IjYwMC44NSIgeGxpbms6aHJlZj0iI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYiLz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180Njg4IiBkYXRhLW5hbWU9IuWQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODsyA0NiIgeDE9IjIzMCIgeTE9IjQ5OC45IiB4Mj0iNzAzLjA4IiB5Mj0iNjExLjgiIHhsaW5rOmhyZWY9IiNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Ii8+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY4OSIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIyMjkuNjUiIHkxPSI1MDAuMzgiIHgyPSI3MDIuNzMiIHkyPSI2MTMuMjgiIHhsaW5rOmhyZWY9IiNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Ii8+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY5MCIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIyMzIuMjYiIHkxPSI0ODkuNDUiIHgyPSI3MDUuMzQiIHkyPSI2MDIuMzUiIHhsaW5rOmhyZWY9IiNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Ii8+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY5MSIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIyMzQuODciIHkxPSI0NzguNTIiIHgyPSI3MDcuOTUiIHkyPSI1OTEuNDIiIHhsaW5rOmhyZWY9IiNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Ii8+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY5MiIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIyMjcuNjYiIHkxPSI1MDguNzMiIHgyPSI3MDAuNzQiIHkyPSI2MjEuNjMiIHhsaW5rOmhyZWY9IiNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Ii8+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY5MyIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIyMzcuNDgiIHkxPSI0NjcuNTkiIHgyPSI3MTAuNTYiIHkyPSI1ODAuNDkiIHhsaW5rOmhyZWY9IiNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Ii8+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY5NCIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIyMjcuMzEiIHkxPSI1MTAuMTkiIHgyPSI3MDAuMzkiIHkyPSI2MjMuMDkiIHhsaW5rOmhyZWY9IiNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Ii8+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY5NSIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIyMjguNjYiIHkxPSI1MDQuNTMiIHgyPSI3MDEuNzQiIHkyPSI2MTcuNDQiIHhsaW5rOmhyZWY9IiNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Ii8+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDY5NiIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIyMzEuMjciIHkxPSI0OTMuNiIgeDI9IjcwNC4zNSIgeTI9IjYwNi41MSIgeGxpbms6aHJlZj0iI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYiLz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180Njk3IiBkYXRhLW5hbWU9IuWQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODsyA0NiIgeDE9IjIzMy44OCIgeTE9IjQ4Mi42NyIgeDI9IjcwNi45NiIgeTI9IjU5NS41OCIgeGxpbms6aHJlZj0iI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYiLz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180Njk4IiBkYXRhLW5hbWU9IuWQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODsyA0NiIgeDE9IjIyNi4wNSIgeTE9IjUxNS40NiIgeDI9IjY5OS4xMyIgeTI9IjYyOC4zNyIgeGxpbms6aHJlZj0iI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYiLz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180Njk5IiBkYXRhLW5hbWU9IuWQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODsyA0NiIgeDE9IjIzNi40OCIgeTE9IjQ3MS43NCIgeDI9IjcwOS41NiIgeTI9IjU4NC42NSIgeGxpbms6aHJlZj0iI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYiLz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NjEwMCIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIyMzEuMDkiIHkxPSI0OTQuMzYiIHgyPSI3MDQuMTciIHkyPSI2MDcuMjciIHhsaW5rOmhyZWY9IiNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Ii8+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYxMDEiIGRhdGEtbmFtZT0i5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzIDQ2IiB4MT0iMjMzLjY5IiB5MT0iNDgzLjQzIiB4Mj0iNzA2Ljc3IiB5Mj0iNTk2LjM0IiB4bGluazpocmVmPSIjX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NiIvPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2MTAyIiBkYXRhLW5hbWU9IuWQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODsyA0NiIgeDE9IjIzNi4zIiB5MT0iNDcyLjUiIHgyPSI3MDkuMzgiIHkyPSI1ODUuNDEiIHhsaW5rOmhyZWY9IiNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Ii8+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9Il/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYxMDMiIGRhdGEtbmFtZT0i5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzIDQ2IiB4MT0iMjI5LjA5IiB5MT0iNTAyLjcyIiB4Mj0iNzAyLjE3IiB5Mj0iNjE1LjYyIiB4bGluazpocmVmPSIjX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NiIvPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2MTA0IiBkYXRhLW5hbWU9IuWQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODsyA0NiIgeDE9IjIzOC45MSIgeTE9IjQ2MS41NyIgeDI9IjcxMS45OSIgeTI9IjU3NC40OCIgeGxpbms6aHJlZj0iI1/lkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7NfNDYiLz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NjEwNSIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIyMjguNzQiIHkxPSI1MDQuMTgiIHgyPSI3MDEuODIiIHkyPSI2MTcuMDgiIHhsaW5rOmhyZWY9IiNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2Ii8+CiAgPC9kZWZzPgogIDxyZWN0IGNsYXNzPSJzdDEwNSIgeD0iNDg0LjExIiB5PSI1NjMuNDkiIHdpZHRoPSI5LjgiIGhlaWdodD0iOS44Ii8+CiAgPHJlY3QgY2xhc3M9InN0MTA1IiB4PSI0ODQuMTEiIHk9IjU2My40OSIgd2lkdGg9IjkuOCIgaGVpZ2h0PSI5LjgiLz4KICA8cmVjdCBjbGFzcz0ic3QxMDMiIHg9IjQ4NC4xMSIgeT0iNTUxLjcyIiB3aWR0aD0iOS44IiBoZWlnaHQ9IjkuODEiLz4KICA8cG9seWdvbiBjbGFzcz0ic3QxMDQiIHBvaW50cz0iNDkzLjkxIDU0OS43NiA0ODQuMTEgNTQ5Ljc2IDQ5My45MSA1MzkuOTYgNDkzLjkxIDU0OS43NiIvPgogIDxwb2x5Z29uIGNsYXNzPSJzdDk2IiBwb2ludHM9IjUyMC4wNiA1NDkuNzYgNTEwLjI2IDU0OS43NiA1MjAuMDYgNTM5Ljk2IDUyMC4wNiA1NDkuNzYiLz4KICA8cmVjdCBjbGFzcz0ic3Q5OSIgeD0iNDg0LjExIiB5PSI1NzUuMjUiIHdpZHRoPSI5LjgiIGhlaWdodD0iOS44MSIvPgogIDxyZWN0IGNsYXNzPSJzdDEwMiIgeD0iNDk3LjE2IiB5PSI1NTEuNzIiIHdpZHRoPSI5LjgxIiBoZWlnaHQ9IjkuODEiLz4KICA8cmVjdCBjbGFzcz0ic3QxMDEiIHg9IjUxMC4yMyIgeT0iNTUxLjcyIiB3aWR0aD0iOS44IiBoZWlnaHQ9IjkuODEiLz4KICA8cG9seWdvbiBjbGFzcz0ic3Q5OCIgcG9pbnRzPSI1MzIuMzggNTQ5Ljc2IDUyMi41OCA1NDkuNzYgNTIyLjU4IDUzOS45NiA1MzIuMzggNTQ5Ljc2Ii8+CiAgPHJlY3QgY2xhc3M9InN0MTAwIiB4PSI1MjIuNTgiIHk9IjU2My40OSIgd2lkdGg9IjkuODEiIGhlaWdodD0iOS44Ii8+CiAgPHJlY3QgY2xhc3M9InN0OTciIHg9IjUyMi41OCIgeT0iNTUxLjcyIiB3aWR0aD0iOS44MSIgaGVpZ2h0PSI5LjgxIi8+CiAgPHJlY3QgY2xhc3M9InN0ODIiIHg9IjUyMi41OCIgeT0iNTc1LjI1IiB3aWR0aD0iOS44MSIgaGVpZ2h0PSI5LjgxIi8+CiAgPHBvbHlnb24gY2xhc3M9InN0ODgiIHBvaW50cz0iNTA2Ljk5IDU0OS43NiA0OTcuMTkgNTQ5Ljc2IDQ5Ny4xOSA1MzkuOTYgNTA2Ljk5IDU0OS43NiIvPgogIDxwb2x5Z29uIGNsYXNzPSJzdDgxIiBwb2ludHM9IjUwNi45NyA1NzMuMjkgNDk3LjE2IDU2My40OSA1MDYuOTcgNTYzLjQ5IDUwNi45NyA1NzMuMjkiLz4KICA8cG9seWdvbiBjbGFzcz0ic3Q4MyIgcG9pbnRzPSI1MTAuMjMgNTczLjI5IDUxMC4yMyA1NjMuNDkgNTIwLjAzIDU2My40OSA1MTAuMjMgNTczLjI5Ii8+CiAgPHJlY3QgY2xhc3M9InN0ODciIHg9IjQ4NC4xMSIgeT0iNTg3LjAyIiB3aWR0aD0iOS44IiBoZWlnaHQ9IjkuODEiLz4KICA8cmVjdCBjbGFzcz0ic3Q4MCIgeD0iNTIyLjU4IiB5PSI1ODcuMDIiIHdpZHRoPSI5LjgxIiBoZWlnaHQ9IjkuODEiLz4KICA8cmVjdCBjbGFzcz0ic3Q4NSIgeD0iMjQ3LjQ1IiB5PSI1ODcuNDkiIHdpZHRoPSI5LjY4IiBoZWlnaHQ9IjkuNjgiLz4KICA8cmVjdCBjbGFzcz0ic3Q4OSIgeD0iMjM1LjkzIiB5PSI1NzUuOTQiIHdpZHRoPSI5LjY4IiBoZWlnaHQ9IjkuNjgiLz4KICA8cmVjdCBjbGFzcz0ic3Q4NCIgeD0iMjM1LjkzIiB5PSI1NjQuMzkiIHdpZHRoPSI5LjY4IiBoZWlnaHQ9IjkuNjgiLz4KICA8cmVjdCBjbGFzcz0ic3Q4NiIgeD0iMjM1LjkzIiB5PSI1NTIuODMiIHdpZHRoPSI5LjY4IiBoZWlnaHQ9IjkuNjgiLz4KICA8cmVjdCBjbGFzcz0ic3Q1MCIgeD0iMjQ3LjQ1IiB5PSI1NDEuMjgiIHdpZHRoPSI5LjY4IiBoZWlnaHQ9IjkuNjgiLz4KICA8cG9seWdvbiBjbGFzcz0ic3Q1MSIgcG9pbnRzPSIyMzUuOTMgNTUxLjAyIDIzNS45MyA1NTEuMDYgMjQ1LjYxIDU1MS4wNiAyNDUuNjEgNTQxLjM4IDI0NS41OCA1NDEuMzggMjM1LjkzIDU1MS4wMiIvPgogIDxwb2x5Z29uIGNsYXNzPSJzdDUyIiBwb2ludHM9IjIzNS45MyA1ODcuNDkgMjM1LjkzIDU4Ny40NiAyNDUuNjEgNTg3LjQ2IDI0NS42MSA1OTcuMTMgMjQ1LjU4IDU5Ny4xMyAyMzUuOTMgNTg3LjQ5Ii8+CiAgPHJlY3QgY2xhc3M9InN0MzYiIHg9IjI3Ni44NiIgeT0iNTg3LjE1IiB3aWR0aD0iOS42OCIgaGVpZ2h0PSI5LjY4Ii8+CiAgPHJlY3QgY2xhc3M9InN0NDIiIHg9IjI2NS4zNCIgeT0iNTc1LjYiIHdpZHRoPSI5LjY4IiBoZWlnaHQ9IjkuNjgiLz4KICA8cmVjdCBjbGFzcz0ic3Q0MCIgeD0iMjY1LjM0IiB5PSI1NjQuMDQiIHdpZHRoPSI5LjY4IiBoZWlnaHQ9IjkuNjgiLz4KICA8cmVjdCBjbGFzcz0ic3Q0MSIgeD0iMjY1LjM0IiB5PSI1NTIuNDkiIHdpZHRoPSI5LjY4IiBoZWlnaHQ9IjkuNjgiLz4KICA8cmVjdCBjbGFzcz0ic3QzNyIgeD0iMjg4LjQxIiB5PSI1NTIuNDkiIHdpZHRoPSI5LjY4IiBoZWlnaHQ9IjkuNjgiLz4KICA8cmVjdCBjbGFzcz0ic3QzOSIgeD0iMjg4LjQxIiB5PSI1NzUuNiIgd2lkdGg9IjkuNjgiIGhlaWdodD0iOS42OCIvPgogIDxyZWN0IGNsYXNzPSJzdDM4IiB4PSIyODguNDEiIHk9IjU2NC4wNCIgd2lkdGg9IjkuNjgiIGhlaWdodD0iOS42OCIvPgogIDxyZWN0IGNsYXNzPSJzdDc5IiB4PSIyNzYuODYiIHk9IjU0MC45NCIgd2lkdGg9IjkuNjgiIGhlaWdodD0iOS42OCIvPgogIDxwb2x5Z29uIGNsYXNzPSJzdDc4IiBwb2ludHM9IjI2NS4zNCA1NTAuNTggMjY1LjM0IDU1MC42MSAyNzUuMDEgNTUwLjYxIDI3NS4wMSA1NDAuOTQgMjc0Ljk4IDU0MC45NCAyNjUuMzQgNTUwLjU4Ii8+CiAgPHBvbHlnb24gY2xhc3M9InN0NzciIHBvaW50cz0iMjk4LjE1IDU1MC41OCAyOTguMTUgNTUwLjYxIDI4OC40OCA1NTAuNjEgMjg4LjQ4IDU0MC45NCAyODguNTEgNTQwLjk0IDI5OC4xNSA1NTAuNTgiLz4KICA8cG9seWdvbiBjbGFzcz0ic3Q3NiIgcG9pbnRzPSIyNjUuMzQgNTg3LjE4IDI2NS4zNCA1ODcuMTUgMjc1LjAxIDU4Ny4xNSAyNzUuMDEgNTk2LjgyIDI3NC45OCA1OTYuODIgMjY1LjM0IDU4Ny4xOCIvPgogIDxwb2x5Z29uIGNsYXNzPSJzdDY2IiBwb2ludHM9IjI5OC4wOSA1ODcuMTggMjk4LjA5IDU4Ny4xNSAyODguNDEgNTg3LjE1IDI4OC40MSA1OTYuODIgMjg4LjQ0IDU5Ni44MiAyOTguMDkgNTg3LjE4Ii8+CiAgPHBvbHlnb24gY2xhc3M9InN0NjUiIHBvaW50cz0iMzQyLjgxIDU4OC4zNCAzNTIuNjEgNTg4LjM0IDM0Mi44MSA1OTguMTUgMzQyLjgxIDU4OC4zNCIvPgogIDxyZWN0IGNsYXNzPSJzdDY0IiB4PSIzMDUuNSIgeT0iNTQxLjI4IiB3aWR0aD0iOS42OCIgaGVpZ2h0PSI5LjY4Ii8+CiAgPHJlY3QgY2xhc3M9InN0NjMiIHg9IjMwNS41IiB5PSI1NTMuMjEiIHdpZHRoPSI5LjY4IiBoZWlnaHQ9IjkuNjgiLz4KICA8cmVjdCBjbGFzcz0ic3Q2MiIgeD0iMzA1LjUiIHk9IjU2NC45NCIgd2lkdGg9IjkuNjgiIGhlaWdodD0iOS42OCIvPgogIDxyZWN0IGNsYXNzPSJzdDYxIiB4PSIzMDUuNSIgeT0iNTc2LjY2IiB3aWR0aD0iOS42OCIgaGVpZ2h0PSI5LjY4Ii8+CiAgPHBvbHlnb24gY2xhc3M9InN0OSIgcG9pbnRzPSIzMTcuOTggNTc0LjM4IDMxNy45OCA1NzQuNDEgMzI3LjY2IDU3NC40MSAzMjcuNjYgNTY0Ljc0IDMyNy42MyA1NjQuNzQgMzE3Ljk4IDU3NC4zOCIvPgogIDxwb2x5Z29uIGNsYXNzPSJzdDgiIHBvaW50cz0iMzQwLjE5IDU3NC4zOCAzNDAuMTkgNTc0LjQxIDMzMC41MiA1NzQuNDEgMzMwLjUyIDU2NC43NCAzMzAuNTUgNTY0Ljc0IDM0MC4xOSA1NzQuMzgiLz4KICA8cmVjdCBjbGFzcz0ic3Q3IiB4PSIzMTcuODciIHk9IjU3Ni42NiIgd2lkdGg9IjkuNjgiIGhlaWdodD0iOS42OCIvPgogIDxyZWN0IGNsYXNzPSJzdDYiIHg9IjMzMC41MiIgeT0iNTc2LjY2IiB3aWR0aD0iOS42OCIgaGVpZ2h0PSI5LjY4Ii8+CiAgPHJlY3QgY2xhc3M9InN0NSIgeD0iMzQyLjk0IiB5PSI1NTMuMjEiIHdpZHRoPSI5LjY4IiBoZWlnaHQ9IjkuNjgiLz4KICA8cmVjdCBjbGFzcz0ic3Q0IiB4PSIzNDIuOTQiIHk9IjU2NC45MSIgd2lkdGg9IjkuNjgiIGhlaWdodD0iOS42OCIvPgogIDxyZWN0IGNsYXNzPSJzdDMiIHg9IjM0Mi45NCIgeT0iNTc2LjYxIiB3aWR0aD0iOS42OCIgaGVpZ2h0PSI5LjY4Ii8+CiAgPHJlY3QgY2xhc3M9InN0MiIgeD0iMzQyLjk0IiB5PSI1NDEuMjgiIHdpZHRoPSI5LjY4IiBoZWlnaHQ9IjkuNjgiLz4KICA8cG9seWdvbiBjbGFzcz0ic3QxIiBwb2ludHM9IjMyNy41NSA1ODguNDcgMzI3LjU1IDU4OC40NCAzMTcuODcgNTg4LjQ0IDMxNy44NyA1OTguMTIgMzE3LjkgNTk4LjEyIDMyNy41NSA1ODguNDciLz4KICA8cG9seWdvbiBjbGFzcz0ic3QwIiBwb2ludHM9IjM1Mi42MSA1ODguNDcgMzUyLjYxIDU4OC40NCAzNDIuOTQgNTg4LjQ0IDM0Mi45NCA1OTguMTIgMzQyLjk3IDU5OC4xMiAzNTIuNjEgNTg4LjQ3Ii8+CiAgPHBvbHlnb24gY2xhc3M9InN0NTgiIHBvaW50cz0iMzA1LjQ2IDU4OC40NyAzMDUuNDYgNTg4LjQ0IDMxNS4xMyA1ODguNDQgMzE1LjEzIDU5OC4xMiAzMTUuMSA1OTguMTIgMzA1LjQ2IDU4OC40NyIvPgogIDxwb2x5Z29uIGNsYXNzPSJzdDU5IiBwb2ludHM9IjMzMC41NCA1ODguNDcgMzMwLjU0IDU4OC40NCAzNDAuMjEgNTg4LjQ0IDM0MC4yMSA1OTguMTIgMzQwLjE4IDU5OC4xMiAzMzAuNTQgNTg4LjQ3Ii8+CiAgPHJlY3QgY2xhc3M9InN0NjAiIHg9IjM3MS40IiB5PSI1ODcuMTUiIHdpZHRoPSI5LjY4IiBoZWlnaHQ9IjkuNjgiLz4KICA8cmVjdCBjbGFzcz0ic3Q0MyIgeD0iMzU5Ljg4IiB5PSI1NzUuNiIgd2lkdGg9IjkuNjgiIGhlaWdodD0iOS42OCIvPgogIDxyZWN0IGNsYXNzPSJzdDQ5IiB4PSIzNTkuODgiIHk9IjU2NC4wNCIgd2lkdGg9IjkuNjgiIGhlaWdodD0iOS42OCIvPgogIDxyZWN0IGNsYXNzPSJzdDQ2IiB4PSIzNTkuODgiIHk9IjU1Mi40OSIgd2lkdGg9IjkuNjgiIGhlaWdodD0iOS42OCIvPgogIDxyZWN0IGNsYXNzPSJzdDQ4IiB4PSIzODIuOTYiIHk9IjU1Mi40OSIgd2lkdGg9IjkuNjgiIGhlaWdodD0iOS42OCIvPgogIDxyZWN0IGNsYXNzPSJzdDQ1IiB4PSIzODIuOTYiIHk9IjU3NS42IiB3aWR0aD0iOS42OCIgaGVpZ2h0PSI5LjY4Ii8+CiAgPHJlY3QgY2xhc3M9InN0NDciIHg9IjM4Mi45NiIgeT0iNTY0LjA0IiB3aWR0aD0iOS42OCIgaGVpZ2h0PSI5LjY4Ii8+CiAgPHJlY3QgY2xhc3M9InN0NDQiIHg9IjM3MS40IiB5PSI1NDAuOTQiIHdpZHRoPSI5LjY4IiBoZWlnaHQ9IjkuNjgiLz4KICA8cG9seWdvbiBjbGFzcz0ic3QxNyIgcG9pbnRzPSIzNTkuODggNTUwLjU4IDM1OS44OCA1NTAuNjEgMzY5LjU2IDU1MC42MSAzNjkuNTYgNTQwLjk0IDM2OS41MyA1NDAuOTQgMzU5Ljg4IDU1MC41OCIvPgogIDxwb2x5Z29uIGNsYXNzPSJzdDczIiBwb2ludHM9IjM5Mi43IDU1MC41OCAzOTIuNyA1NTAuNjEgMzgzLjAyIDU1MC42MSAzODMuMDIgNTQwLjk0IDM4My4wNSA1NDAuOTQgMzkyLjcgNTUwLjU4Ii8+CiAgPHBvbHlnb24gY2xhc3M9InN0NzQiIHBvaW50cz0iMzU5Ljg4IDU4Ny4xOCAzNTkuODggNTg3LjE1IDM2OS41NiA1ODcuMTUgMzY5LjU2IDU5Ni44MiAzNjkuNTMgNTk2LjgyIDM1OS44OCA1ODcuMTgiLz4KICA8cG9seWdvbiBjbGFzcz0ic3QxNCIgcG9pbnRzPSIzOTIuNjMgNTg3LjE4IDM5Mi42MyA1ODcuMTUgMzgyLjk2IDU4Ny4xNSAzODIuOTYgNTk2LjgyIDM4Mi45OSA1OTYuODIgMzkyLjYzIDU4Ny4xOCIvPgogIDxyZWN0IGNsYXNzPSJzdDcyIiB4PSI0MDAuMzQiIHk9IjU3NS42IiB3aWR0aD0iOS42OCIgaGVpZ2h0PSI5LjY4Ii8+CiAgPHJlY3QgY2xhc3M9InN0MTkiIHg9IjQwMC4zNCIgeT0iNTY0LjA0IiB3aWR0aD0iOS42OCIgaGVpZ2h0PSI5LjY4Ii8+CiAgPHJlY3QgY2xhc3M9InN0MTYiIHg9IjQwMC4zNCIgeT0iNTUyLjQ5IiB3aWR0aD0iOS42OCIgaGVpZ2h0PSI5LjY4Ii8+CiAgPHJlY3QgY2xhc3M9InN0MTgiIHg9IjQyMy40MSIgeT0iNTUyLjQ5IiB3aWR0aD0iOS42OCIgaGVpZ2h0PSI5LjY4Ii8+CiAgPHJlY3QgY2xhc3M9InN0MTUiIHg9IjQxMS44NiIgeT0iNTQwLjk0IiB3aWR0aD0iOS42OCIgaGVpZ2h0PSI5LjY4Ii8+CiAgPHJlY3QgY2xhc3M9InN0NzUiIHg9IjQxMS44NiIgeT0iNTY0LjA0IiB3aWR0aD0iOS42OCIgaGVpZ2h0PSI5LjY4Ii8+CiAgPHBvbHlnb24gY2xhc3M9InN0MzAiIHBvaW50cz0iNDAwLjM0IDU1MC41OCA0MDAuMzQgNTUwLjYxIDQxMC4wMSA1NTAuNjEgNDEwLjAxIDU0MC45NCA0MDkuOTggNTQwLjk0IDQwMC4zNCA1NTAuNTgiLz4KICA8cG9seWdvbiBjbGFzcz0ic3QyOCIgcG9pbnRzPSI0MzMuMTUgNTUwLjU4IDQzMy4xNSA1NTAuNjEgNDIzLjQ3IDU1MC42MSA0MjMuNDcgNTQwLjk0IDQyMy41IDU0MC45NCA0MzMuMTUgNTUwLjU4Ii8+CiAgPHBvbHlnb24gY2xhc3M9InN0MjciIHBvaW50cz0iNDIzLjQxIDU2NC4wNCA0MjMuNDEgNTczLjcgNDMzLjA3IDU2NC4wNCA0MjMuNDEgNTY0LjA0Ii8+CiAgPHBvbHlnb24gY2xhc3M9InN0MjYiIHBvaW50cz0iNDIxLjUzIDU4NS4yNyA0MjEuNTMgNTc1LjYgNDExLjg2IDU3NS42IDQxMS44NiA1NzUuNiA0MjEuNTIgNTg1LjI3IDQyMS41MyA1ODUuMjciLz4KICA8cG9seWdvbiBjbGFzcz0ic3QzNCIgcG9pbnRzPSI0MzMgNTg1LjI3IDQyMy40MSA1NzUuNjggNDIzLjQxIDU4NS4yNyA0MzMgNTg1LjI3Ii8+CiAgPHJlY3QgY2xhc3M9InN0MzMiIHg9IjQwMC4zNCIgeT0iNTg3LjE1IiB3aWR0aD0iOS42OCIgaGVpZ2h0PSI5LjY4Ii8+CiAgPHBvbHlnb24gY2xhc3M9InN0MzIiIHBvaW50cz0iNDMzLjA4IDU4Ny4xNSA0MjMuNDMgNTg3LjE1IDQzMy4wOCA1OTYuOCA0MzMuMDggNTg3LjE1Ii8+CiAgPHJlY3QgY2xhc3M9InN0MzEiIHg9IjQ0MS45NCIgeT0iNTc0LjQiIHdpZHRoPSI5LjY4IiBoZWlnaHQ9IjkuNjgiLz4KICA8cmVjdCBjbGFzcz0ic3QzNSIgeD0iNDQxLjk0IiB5PSI1NjIuODUiIHdpZHRoPSI5LjY4IiBoZWlnaHQ9IjkuNjgiLz4KICA8cmVjdCBjbGFzcz0ic3QyOSIgeD0iNDQxLjk0IiB5PSI1NTEuMyIgd2lkdGg9IjkuNjgiIGhlaWdodD0iOS42OCIvPgogIDxyZWN0IGNsYXNzPSJzdDcxIiB4PSI0NTMuNDYiIHk9IjU2Mi44NSIgd2lkdGg9IjkuNjgiIGhlaWdodD0iOS42OCIvPgogIDxwb2x5Z29uIGNsYXNzPSJzdDU2IiBwb2ludHM9IjQ2My4xMyA1ODQuMDggNDYzLjEzIDU3NC40IDQ1My40NiA1NzQuNCA0NTMuNDYgNTc0LjQxIDQ2My4xMiA1ODQuMDggNDYzLjEzIDU4NC4wOCIvPgogIDxwb2x5Z29uIGNsYXNzPSJzdDU1IiBwb2ludHM9IjQ3NC42IDU4NC4wOCA0NjUuMDEgNTc0LjQ5IDQ2NS4wMSA1ODQuMDggNDc0LjYgNTg0LjA4Ii8+CiAgPHJlY3QgY2xhc3M9InN0NTQiIHg9IjQ0MS45NCIgeT0iNTg1Ljk2IiB3aWR0aD0iOS42OCIgaGVpZ2h0PSI5LjY4Ii8+CiAgPHBvbHlnb24gY2xhc3M9InN0NTMiIHBvaW50cz0iNDc0LjY4IDU4NS45NiA0NjUuMDMgNTg1Ljk2IDQ3NC42OCA1OTUuNjEgNDc0LjY4IDU4NS45NiIvPgogIDxyZWN0IGNsYXNzPSJzdDcwIiB4PSI0NDEuOTQiIHk9IjUzOS43NSIgd2lkdGg9IjkuNjgiIGhlaWdodD0iOS42OCIvPgogIDxwb2x5Z29uIGNsYXNzPSJzdDY5IiBwb2ludHM9IjQ1My40NiA1NjAuOTUgNDUzLjQ2IDU2MC45NyA0NjMuMTMgNTYwLjk3IDQ2My4xMyA1NTEuMyA0NjMuMTEgNTUxLjMgNDUzLjQ2IDU2MC45NSIvPgogIDxwb2x5Z29uIGNsYXNzPSJzdDY4IiBwb2ludHM9IjQ2NS4wOCA1NDkuMzkgNDY1LjA4IDU0OS40MiA0NzQuNzUgNTQ5LjQyIDQ3NC43NSA1MzkuNzUgNDc0LjcyIDUzOS43NSA0NjUuMDggNTQ5LjM5Ii8+CiAgPHBvbHlnb24gY2xhc3M9InN0NjciIHBvaW50cz0iNDc0LjY5IDU1MS4zIDQ2NS4wMSA1NTEuMyA0NjUuMDEgNTYwLjk3IDQ2NS4yMiA1NjAuOTcgNDc0LjY5IDU1MS41MSA0NzQuNjkgNTUxLjMiLz4KICA8cmVjdCBjbGFzcz0ic3Q1NyIgeD0iNTYwLjI2IiB5PSI1NzUuNiIgd2lkdGg9IjkuNjgiIGhlaWdodD0iOS42OCIvPgogIDxyZWN0IGNsYXNzPSJzdDIzIiB4PSI1NjAuMjYiIHk9IjU2NC4wNCIgd2lkdGg9IjkuNjgiIGhlaWdodD0iOS42OCIvPgogIDxyZWN0IGNsYXNzPSJzdDEwIiB4PSI1NjAuMjYiIHk9IjU1Mi40OSIgd2lkdGg9IjkuNjgiIGhlaWdodD0iOS42OCIvPgogIDxyZWN0IGNsYXNzPSJzdDIxIiB4PSI1NzEuNjciIHk9IjU4Ny4xNSIgd2lkdGg9IjkuNjgiIGhlaWdodD0iOS42OCIvPgogIDxyZWN0IGNsYXNzPSJzdDExIiB4PSI1NjAuMjYiIHk9IjU0MC45NCIgd2lkdGg9IjkuNjgiIGhlaWdodD0iOS42OCIvPgogIDxwb2x5Z29uIGNsYXNzPSJzdDEyIiBwb2ludHM9IjU2OS45MyA1ODcuMTUgNTYwLjMxIDU4Ny4xNSA1NjkuOTMgNTk2Ljc3IDU2OS45MyA1ODcuMTUiLz4KICA8cmVjdCBjbGFzcz0ic3QyMCIgeD0iNTQxLjg2IiB5PSI1NzUuNiIgd2lkdGg9IjkuNjgiIGhlaWdodD0iOS42OCIvPgogIDxyZWN0IGNsYXNzPSJzdDI0IiB4PSI1NDEuODYiIHk9IjU2NC4wNCIgd2lkdGg9IjkuNjgiIGhlaWdodD0iOS42OCIvPgogIDxyZWN0IGNsYXNzPSJzdDI1IiB4PSI1NDEuODYiIHk9IjU1Mi40OSIgd2lkdGg9IjkuNjgiIGhlaWdodD0iOS42OCIvPgogIDxyZWN0IGNsYXNzPSJzdDIyIiB4PSI1NDEuODYiIHk9IjU4Ny4xNSIgd2lkdGg9IjkuNjgiIGhlaWdodD0iOS42OCIvPgogIDxyZWN0IGNsYXNzPSJzdDEzIiB4PSI1NDEuODYiIHk9IjU0MC45NCIgd2lkdGg9IjkuNjgiIGhlaWdodD0iOS42OCIvPgogIDxyZWN0IGNsYXNzPSJzdDkwIiB4PSI1ODYuODkiIHk9IjU3NS42IiB3aWR0aD0iOS42OCIgaGVpZ2h0PSI5LjY4Ii8+CiAgPHJlY3QgY2xhc3M9InN0OTEiIHg9IjU4Ni44OSIgeT0iNTY0LjA0IiB3aWR0aD0iOS42OCIgaGVpZ2h0PSI5LjY4Ii8+CiAgPHJlY3QgY2xhc3M9InN0OTUiIHg9IjU4Ni44OSIgeT0iNTUyLjQ5IiB3aWR0aD0iOS42OCIgaGVpZ2h0PSI5LjY4Ii8+CiAgPHJlY3QgY2xhc3M9InN0OTQiIHg9IjU5OC4zMSIgeT0iNTg3LjE1IiB3aWR0aD0iOS42OCIgaGVpZ2h0PSI5LjY4Ii8+CiAgPHJlY3QgY2xhc3M9InN0OTMiIHg9IjU4Ni44OSIgeT0iNTQwLjk0IiB3aWR0aD0iOS42OCIgaGVpZ2h0PSI5LjY4Ii8+CiAgPHBvbHlnb24gY2xhc3M9InN0OTIiIHBvaW50cz0iNTk2LjU3IDU4Ny4xNSA1ODYuOTUgNTg3LjE1IDU5Ni41NyA1OTYuNzcgNTk2LjU3IDU4Ny4xNSIvPgo8L3N2Zz4=" alt="COWORKMILL" style="height:32px;width:auto;display:block"></a>
-  <div class="nav-center" style="display:flex;align-items:center;gap:24px;margin:0 auto">
-    <a href="/spaces" style="font-size:11px;font-weight:500;color:var(--gray-600);text-decoration:none;letter-spacing:.02em;transition:color .15s" onmouseover="this.style.color='#2BB5C8'" onmouseout="this.style.color='var(--gray-600)'">コワーキングを探す</a>
-    <a href="/architects" style="font-size:11px;font-weight:500;color:var(--gray-600);text-decoration:none;letter-spacing:.02em;transition:color .15s" onmouseover="this.style.color='#2BB5C8'" onmouseout="this.style.color='var(--gray-600)'">建築家から探す</a>
-    <a href="/photos" style="font-size:11px;font-weight:500;color:var(--gray-600);text-decoration:none;letter-spacing:.02em;transition:color .15s" onmouseover="this.style.color='#2BB5C8'" onmouseout="this.style.color='var(--gray-600)'">写真から探す</a>
+  <div class="nav-center">
+    <a href="/spaces">コワーキングを探す</a>
+    <a href="/architects">建築家から探す</a>
+    <a href="/photos">写真から探す</a>
   </div>
-    <div class="nav-right"><a href="/register" class="nav-cta">コワーキング登録</a></div>
+  <div class="nav-right">
+    <a href="#cta" class="nav-cta">無料で掲載する</a>
+  </div>
 </nav>
 
-<div class="page-wrap">
-  <div class="page-eyebrow">For Spaces</div>
-  <h1 class="page-title">無料ではじめる。<br>成果が出たらアップグレード。</h1>
-  <p class="page-date">まず無料プランで掲載スタート。写真・施設数を増やしたくなったらいつでもアップグレードできます。お申し込み後、最短翌日から掲載開始。</p>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">For Coworking Owners</div>
+  <h1>あなたの空間を、<br><span class="accent">"探されるコワーキング"</span> に。</h1>
+  <p class="lede">広告費に頼って "目立つ" のではなく、<br>デザインに共感するユーザーへ自然に届く。<br>月に数件の送客で十分元が取れる料金体系で、<br>無料掲載からスタートできます。</p>
+  <div class="hero-cta-wrap">
+    <a href="#cta" class="hero-cta">無料で掲載をはじめる <span class="arrow">→</span></a>
+    <div class="hero-bullets">
+      <span>完全無料で開始</span>
+      <span>申請から最短2営業日で公開</span>
+      <span>解約自由</span>
+    </div>
+  </div>
+</section>
 
-  <div style="background:var(--accent-light);border-radius:12px;padding:28px 32px;margin-bottom:40px;border:1px solid rgba(117,97,169,.15)">
-    <div style="font-family:var(--font-d);font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#2BB5C8;margin-bottom:16px">掲載の流れ</div>
-    <div class="flow-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px">
-      <div>
-        <div style="font-family:var(--font-d);font-size:24px;font-weight:200;color:#2BB5C8;margin-bottom:8px;opacity:.4">01</div>
-        <div style="font-size:13px;font-weight:500;margin-bottom:4px">フォームで申し込む</div>
-        <div style="font-size:11px;color:var(--gray-400);line-height:1.7">施設名・URL・担当者メールだけ。1分で完了します。</div>
+<!-- 広告費との違い -->
+<section class="lp">
+  <div class="lp-inner">
+    <div class="lp-eyebrow">Why COWORKMILL</div>
+    <h2 class="lp-title">広告費に頼らない、<span class="accent">指名で選ばれる</span>集客へ。</h2>
+    <p class="lp-lede">広告は "とりあえず目立つ" ことには長けていますが、デザインや空気感を決め手に選ぶユーザーには届きにくい。COWORKMILL は、空間そのものに惚れたユーザーが訪れる場所として設計されています。</p>
+    <div class="compare-grid">
+      <div class="compare-col left">
+        <div class="compare-h">広告費頼みの集客 <span class="badge">よくある悩み</span></div>
+        <div class="compare-row"><span class="icon">×</span>クリック単価が継続的に上がり、止めると流入が消える</div>
+        <div class="compare-row"><span class="icon">×</span>"安さ・近さ" 訴求に流れがちで、デザインが伝わらない</div>
+        <div class="compare-row"><span class="icon">×</span>運用ノウハウやキーワード調整に手間がかかる</div>
+        <div class="compare-row"><span class="icon">×</span>同じ条件で他社と比較され、価格競争に巻き込まれる</div>
       </div>
-      <div>
-        <div style="font-family:var(--font-d);font-size:24px;font-weight:200;color:#2BB5C8;margin-bottom:8px;opacity:.4">02</div>
-        <div style="font-size:13px;font-weight:500;margin-bottom:4px">内容確認・ご連絡</div>
-        <div style="font-size:11px;color:var(--gray-400);line-height:1.7">お申し込み内容を確認のうえ、2〜3営業日以内にご連絡いたします。</div>
-      </div>
-      <div>
-        <div style="font-family:var(--font-d);font-size:24px;font-weight:200;color:#2BB5C8;margin-bottom:8px;opacity:.4">03</div>
-        <div style="font-size:13px;font-weight:500;margin-bottom:4px">顧客が集まる</div>
-        <div style="font-size:11px;color:var(--gray-400);line-height:1.7">管理画面からいつでも情報を更新できます。</div>
+      <div class="compare-col right">
+        <div class="compare-h right">COWORKMILL 経由の集客 <span class="badge">本来あるべき姿</span></div>
+        <div class="compare-row"><span class="icon">✓</span>空間・建築家・写真で選ばれる、指名検索に近い集客</div>
+        <div class="compare-row"><span class="icon">✓</span>掲載するだけで動く。広告運用の知識・時間が不要</div>
+        <div class="compare-row"><span class="icon">✓</span>"集中したい" "商談で使いたい" など目的で出会える</div>
+        <div class="compare-row"><span class="icon">✓</span>月数件の送客で十分元が取れる、シンプルな料金</div>
       </div>
     </div>
   </div>
+</section>
 
-  <!-- Plan comparison -->
-  <div style="margin-bottom:32px">
-    
-    <div class="plan-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:8px">
-
-      <div class="plan-card selected" id="plan-free" style="border:1px solid #2a2a2a;border-radius: 10px; padding: 20px; cursor: default; transition: 0.2s; position: relative;">
-        <div style="font-family:var(--font-d);font-size:10px;font-weight:600;letter-spacing:.1em;color:#2BB5C8;margin-bottom:6px">FREE</div>
-        <div style="font-family:var(--font-d);font-size:22px;font-weight:200;margin-bottom:12px">¥0<span style="font-size:11px;font-weight:400;color:var(--gray-400)">/月</span></div>
-        <div style="display:flex;flex-direction:column;gap:6px">
-          <div style="font-size:11px;color:var(--gray-600);display:flex;gap:6px"><span style="color:#4ade80">✓</span> 画像 1枚まで</div>
-          <div style="font-size:11px;color:var(--gray-600);display:flex;gap:6px"><span style="color:#4ade80">✓</span> 施設 1件まで</div>
-          <div style="font-size:11px;color:var(--gray-600);display:flex;gap:6px"><span style="color:#4ade80">✓</span> 利用者の声</div>
-          <div style="font-size:11px;color:var(--gray-200);display:flex;gap:6px"><span>—</span> 表示バッジ</div>
-          <div style="font-size:11px;color:var(--gray-200);display:flex;gap:6px"><span>—</span> 検索優先表示</div>
+<!-- 掲載するとどう見える -->
+<section class="lp">
+  <div class="lp-inner">
+    <div class="lp-eyebrow">How it looks</div>
+    <h2 class="lp-title">あなたの空間が、<span class="accent">この姿</span>でユーザーに届く。</h2>
+    <p class="lp-lede">テキストでは伝わりきらない空気感を、写真・建築家情報・利用シーンと一緒に見せる詳細ページが用意されます。掲載するだけで、ブランドメディアのような佇まいに。</p>
+    <div class="show-grid">
+      <div class="show-list">
+        <div class="show-item">
+          <h3>空間そのものを語れる詳細ページ</h3>
+          <p>大きな写真、建築家・設計年、雰囲気タグ、料金、利用シーン。一つひとつの要素がブランドの厚みを伝えます。</p>
         </div>
-        
-      </div>
-
-      <div id="plan-standard" style="border:1px solid #2a2a2a;border-radius: 10px; padding: 20px; cursor: default; transition: 0.2s; background: rgba(43, 181, 200, 0.06) !important;">
-        <div style="font-family:var(--font-d);font-size:10px;font-weight:600;letter-spacing:.1em;color:var(--gray-400);margin-bottom:6px">STANDARD</div>
-        <div style="font-family:var(--font-d);font-size:22px;font-weight:200;margin-bottom:12px">¥3,000<span style="font-size:11px;font-weight:400;color:var(--gray-400)"> /月（税抜）</span></div>
-        <div style="display:flex;flex-direction:column;gap:6px">
-          <div style="font-size:11px;color:var(--gray-600);display:flex;gap:6px"><span style="color:#4ade80">✓</span> 画像 20枚まで</div>
-          <div style="font-size:11px;color:var(--gray-600);display:flex;gap:6px"><span style="color:#4ade80">✓</span> 施設 5件まで</div>
-          <div style="font-size:11px;color:var(--gray-600);display:flex;gap:6px"><span style="color:#4ade80">✓</span> 利用者の声</div>
-          <div style="font-size:11px;color:var(--gray-600);display:flex;gap:6px"><span style="color:#4ade80">✓</span> 表示バッジ</div>
-          <div style="font-size:11px;color:var(--gray-200);display:flex;gap:6px"><span>—</span> 検索優先表示</div>
+        <div class="show-item">
+          <h3>建築家・写真・条件で発見される</h3>
+          <p>料金一覧サイトには載らない、デザインや作家名からの導線。"あの建築家のスペースで働きたい" 層に届きます。</p>
+        </div>
+        <div class="show-item">
+          <h3>利用者の声・PICK 紹介で信頼を補強</h3>
+          <p>実際に使った人の声、編集チームによる PICK 表示。掲載しているだけでなく、推されている状態をつくります。</p>
         </div>
       </div>
-
-      <div id="plan-pro" style="border:1px solid #2a2a2a;border-radius: 10px; padding: 20px; cursor: default; transition: 0.2s; position: relative;">
-        <div style="position:absolute;top:10px;right:10px;font-size:9px;font-weight:700;letter-spacing:.12em;padding:3px 10px;background:linear-gradient(135deg,#7BE8FF,#2BB5C8);color:#04212a;border-radius:10px">人気</div>
-        <div style="font-family:var(--font-d);font-size:10px;font-weight:600;letter-spacing:.1em;color:var(--gray-400);margin-bottom:6px">PRO</div>
-        <div style="font-family:var(--font-d);font-size:22px;font-weight:200;margin-bottom:12px">¥8,000<span style="font-size:11px;font-weight:400;color:var(--gray-400)"> /月（税抜）</span></div>
-        <div style="display:flex;flex-direction:column;gap:6px">
-          <div style="font-size:11px;color:var(--gray-600);display:flex;gap:6px"><span style="color:#4ade80">✓</span> 画像 無制限</div>
-          <div style="font-size:11px;color:var(--gray-600);display:flex;gap:6px"><span style="color:#4ade80">✓</span> 施設 20件まで</div>
-          <div style="font-size:11px;color:var(--gray-600);display:flex;gap:6px"><span style="color:#4ade80">✓</span> 利用者の声</div>
-          <div style="font-size:11px;color:var(--gray-600);display:flex;align-items:center;gap:6px"><span style="color:#4ade80">✓</span> PICKバッジ <span style="display:inline-flex;align-items:center;font-family:var(--font-d);font-size:8px;font-weight:700;letter-spacing:.16em;padding:3px 8px;border-radius:3px;background:linear-gradient(135deg,#7BE8FF,#2BB5C8);color:#04212a;text-transform:uppercase">PICK</span></div>
-          <div style="font-size:11px;color:var(--gray-600);display:flex;gap:6px"><span style="color:#4ade80">✓</span> 検索優先表示</div>
+      <div class="show-mock">
+        <div class="show-mock-img">PHOTO</div>
+        <div class="show-mock-h">あなたのコワーキング</div>
+        <div class="show-mock-meta">設計：◯◯建築設計事務所 / 2023</div>
+        <div class="show-mock-tags">
+          <span class="show-mock-tag">集中・執筆</span>
+          <span class="show-mock-tag">商談・ミーティング</span>
+          <span class="show-mock-tag">制作・クリエイティブ</span>
         </div>
-      </div>
-
-    </div>
-    <p style="font-size:11px;color:var(--gray-400);margin:0">※ Freeプランはいつでも無料で始められます。アップグレードはいつでも可能です。</p>
-  </div>
-
-  <div style="border:1px solid var(--gray-100);border-radius:12px;padding:32px">
-    <div style="font-size:14px;font-weight:500;margin-bottom:6px">掲載お申し込みフォーム</div>
-    <div style="font-size:12px;color:var(--gray-400);margin-bottom:24px;line-height:1.7">お申し込み後に管理画面が開放され、詳細情報を自由に編集・公開できます。</div>
-    <div style="display:grid;gap:16px">
-      <div class="form-row-2" style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
-        <div>
-          <label style="font-size:11px;font-weight:600;color:var(--gray-600);display:block;margin-bottom:6px">施設名 <span style="color:var(--brand-pink)">*</span></label>
-          <div class="cwm-field-wrap"><input type="text" placeholder="例：AOYAMA ATELIER" style="width:100%;padding:10px 14px;border:1px solid var(--gray-200);border-radius:6px;font-family:var(--font-b);font-size:13px;outline:none"><span class="cwm-ok-icon" style="display: none;">✓</span></div><div class="cwm-err-msg">施設名を入力してください</div>
-        </div><div style="">
-  <div style="font-size:12px;color:var(--gray-400,#a0a0a0);margin-bottom:8px;display:flex;gap:4px;align-items:center;">
-    会社名・屋号 <span style="color:#f87171;font-size:10px;">*</span>
-  </div>
-  <input type="text" placeholder="例：株式会社〇〇 / フリーランス可" style="width:100%;padding:10px 14px;border:1px solid var(--gray-200);border-radius:6px;font-family:var(--font-b);font-size:13px;outline:none">
-</div>
-        
-      </div>
-      <div>
-        <label style="font-size:11px;font-weight:600;color:var(--gray-600);display:block;margin-bottom:6px">施設URL <span style="color:var(--brand-pink)">*</span></label>
-        <div class="cwm-field-wrap"><input type="url" placeholder="例：https://aoyama-atelier.jp" style="width:100%;padding:10px 14px;border:1px solid var(--gray-200);border-radius:6px;font-family:var(--font-b);font-size:13px;outline:none"><span class="cwm-ok-icon" style="display: none;">✓</span></div><div class="cwm-err-msg">URLは https:// から始まる形式で入力してください</div>
-      </div>
-      <div style="border-top:1px solid var(--gray-100);padding-top:20px;margin-top:4px">
-        <div style="font-size:12px;font-weight:500;margin-bottom:14px;color:var(--gray-600)">担当者情報 <span style="font-size:11px;font-weight:400;color:var(--gray-400)">（ご登録のご案内の送付先・非公開）</span></div>
-        <div class="form-row-2" style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
-          <div>
-            <label style="font-size:11px;font-weight:600;color:var(--gray-600);display:block;margin-bottom:6px">担当者名 <span style="color:var(--brand-pink)">*</span></label>
-            <div class="cwm-field-wrap"><input type="text" placeholder="例：山田 太郎" style="width:100%;padding:10px 14px;border:1px solid var(--gray-200);border-radius:6px;font-family:var(--font-b);font-size:13px;outline:none"><span class="cwm-ok-icon" style="display: none;">✓</span></div><div class="cwm-err-msg">担当者名を入力してください</div>
-          </div>
-          <div>
-            <label style="font-size:11px;font-weight:600;color:var(--gray-600);display:block;margin-bottom:6px">担当者メール <span style="color:var(--brand-pink)">*</span></label>
-            <div class="cwm-field-wrap"><input type="email" placeholder="例：info@example.com" style="width:100%;padding:10px 14px;border:1px solid var(--gray-200);border-radius:6px;font-family:var(--font-b);font-size:13px;outline:none"><span class="cwm-ok-icon" style="display: none;">✓</span></div><div class="cwm-err-msg">正しいメールアドレスを入力してください</div>
-          </div>
-        </div>
-      </div>
-      <div class="form-notice" style="padding:10px 14px;background:var(--gray-50);border-radius:6px;border:1px solid var(--gray-100)">
-        <div style="font-size:11px;color:var(--gray-400);line-height:1.7">🔒 担当者情報は運営チームのみが閲覧します。掲載ページには表示されません。</div>
-      </div>
-      <div style="padding-top:8px">
-        <button class="submit-btn cwm-arrow-link" style="display:inline-flex;align-items:center;gap:10px;font-family:var(--font-d);font-size:13px;font-weight:600;letter-spacing:.04em;padding:14px 40px;background:#2BB5C8;color:#04212a;border:none;border-radius:8px;cursor:pointer;transition:all .25s cubic-bezier(0.16,1,0.3,1);box-shadow:0 4px 14px -4px rgba(43,181,200,.4)" onmouseover="this.style.background='#1a9aad';this.style.transform='translateY(-1px)';this.style.boxShadow='0 8px 22px -4px rgba(43,181,200,.55)'" onmouseout="this.style.background='#2BB5C8';this.style.transform='translateY(0)';this.style.boxShadow='0 4px 14px -4px rgba(43,181,200,.4)'" disabled="">掲載を申し込む <span class="cwm-arrow">→</span></button>
-        <p style="margin-top:12px;font-size:11px;color:var(--gray-400)">通常2営業日以内にご登録のご案内をメールでご連絡します。</p>
       </div>
     </div>
   </div>
-</div>
+</section>
 
+<!-- 3ステップ -->
+<section class="lp">
+  <div class="lp-inner">
+    <div class="lp-eyebrow">How to start</div>
+    <h2 class="lp-title">最短2営業日で、<span class="accent">掲載開始</span>。</h2>
+    <p class="lp-lede">難しい設定はありません。フォームでの申し込み、内容の確認、公開。この3ステップで、あなたの空間が COWORKMILL の詳細ページに並びます。</p>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">01</div>
+        <div class="step-title">フォームで申し込む</div>
+        <div class="step-desc">施設名・施設URL・担当者メールなど、必要最小限の情報だけ。1分で完了します。</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">02</div>
+        <div class="step-title">内容確認・ご連絡</div>
+        <div class="step-desc">運営チームで内容を確認し、最短2営業日以内にメールでご連絡。承認後、管理画面が開放されます。</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">03</div>
+        <div class="step-title">写真・情報を編集して公開</div>
+        <div class="step-desc">管理画面で写真や説明、料金を入力。公開ボタンを押せば、すぐに詳細ページが反映されます。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- プラン -->
+<section class="lp" id="plans">
+  <div class="lp-inner">
+    <div class="lp-eyebrow">Pricing</div>
+    <h2 class="lp-title">無料からはじめて、<br><span class="accent">必要なときだけ</span>アップグレード。</h2>
+    <p class="lp-lede">まずは無料の Free プランから。掲載数を増やしたくなったら Standard、特集枠や手厚い露出が欲しくなったら Pro へ。月単位での切替が可能で、解約も自由です。</p>
+    <div class="plan-grid">
+      <div class="plan-card">
+        <div class="plan-name">Free</div>
+        <div class="plan-tagline">まずはお試しから</div>
+        <div class="plan-price"><span class="currency">¥</span>0<span class="period">/ 月</span></div>
+        <div class="plan-cap">最大3施設まで掲載可能</div>
+        <ul class="plan-feats">
+          <li>詳細ページの基本表示</li>
+          <li>建築家・写真・条件からの導線</li>
+          <li>管理画面での自由編集</li>
+          <li class="disabled">PICK 特集枠</li>
+          <li class="disabled">優先表示・露出強化</li>
+        </ul>
+        <a href="#cta" class="plan-cta">Freeで申し込む →</a>
+      </div>
+      <div class="plan-card featured">
+        <div class="plan-tag">Recommended</div>
+        <div class="plan-name">Standard</div>
+        <div class="plan-tagline">掲載を本格化したい</div>
+        <div class="plan-price"><span class="currency">¥</span>?,???<span class="period">/ 月</span></div>
+        <div class="plan-cap">最大5施設まで掲載可能</div>
+        <ul class="plan-feats">
+          <li>Freeプランの全機能</li>
+          <li>掲載枠の拡大（最大5施設）</li>
+          <li>各種カテゴリで上位露出</li>
+          <li>利用者の声の優先審査</li>
+          <li class="disabled">PICK 特集枠</li>
+        </ul>
+        <a href="#cta" class="plan-cta">Standardで申し込む →</a>
+      </div>
+      <div class="plan-card">
+        <div class="plan-name">Pro</div>
+        <div class="plan-tagline">複数施設を運営する方へ</div>
+        <div class="plan-price"><span class="currency">¥</span>?,???<span class="period">/ 月</span></div>
+        <div class="plan-cap">最大20施設まで掲載可能</div>
+        <ul class="plan-feats">
+          <li>Standardプランの全機能</li>
+          <li>掲載枠の大幅拡大（最大20施設）</li>
+          <li>★ PICK バッジによる特集表示</li>
+          <li>編集チームによる記事・特集</li>
+          <li>専属サポート対応</li>
+        </ul>
+        <a href="#cta" class="plan-cta">Proで申し込む →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 既掲載者 -->
+<section class="lp" id="existing">
+  <div class="lp-inner">
+    <div class="lp-eyebrow">Live on COWORKMILL</div>
+    <h2 class="lp-title">すでに、<span class="accent">こうした空間</span>が掲載中です。</h2>
+    <p class="lp-lede">建築家・写真家とのコラボレーションで生まれた空間が、続々と掲載されています。あなたの施設も、この一覧に並びます。</p>
+    <div class="exist-strip" id="exist-strip">
+      <!-- JS が DB から読み込んでカードを生成 -->
+      <div class="exist-card"><div class="img"></div><div class="body"><div class="name">読み込み中…</div><div class="meta">&nbsp;</div></div></div>
+      <div class="exist-card"><div class="img"></div><div class="body"><div class="name">読み込み中…</div><div class="meta">&nbsp;</div></div></div>
+      <div class="exist-card"><div class="img"></div><div class="body"><div class="name">読み込み中…</div><div class="meta">&nbsp;</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="lp" id="faq">
+  <div class="lp-inner">
+    <div class="lp-eyebrow">FAQ</div>
+    <h2 class="lp-title">よくあるご質問。</h2>
+    <p class="lp-lede">申し込み前に気になる点をまとめました。記載のないご質問は、フォーム送信時にお気軽にご記入ください。</p>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q" type="button">本当に無料で始められますか？追加料金はありませんか？<span class="toggle">＋</span></button>
+        <div class="faq-a">はい、Freeプランは完全無料です。掲載手数料・成果報酬・送客手数料も発生しません。プランを Standard / Pro に切り替えた場合のみ、月額料金が発生します。</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button">審査基準はありますか？どんな施設が掲載対象ですか？<span class="toggle">＋</span></button>
+        <div class="faq-a">建築家やデザイン会社が手がけたコワーキングスペース、ないしはデザインへのこだわりが感じられる空間を中心に掲載しています。応募内容を確認のうえ、掲載判断のご連絡をいたします。</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button">解約はいつでもできますか？<span class="toggle">＋</span></button>
+        <div class="faq-a">はい、いつでも解約可能です。月単位での課金のため、最低契約期間や違約金はありません。</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button">写真や原稿は自分で用意する必要がありますか？<span class="toggle">＋</span></button>
+        <div class="faq-a">はい、まずは管理画面で写真・説明文をご自身で入力いただきます。Pro プランでは編集チームによる取材・記事化のサポートもご相談いただけます。</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button">登録した情報を後から変更できますか？<span class="toggle">＋</span></button>
+        <div class="faq-a">はい、管理画面からいつでも自由に編集・更新できます。料金や営業時間の変更、写真の差し替えも即時反映されます。</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 最終 CTA + form -->
+<section class="final" id="cta">
+  <div class="final-inner">
+    <h2>あなたの空間を、<br><span class="accent">COWORKMILL</span> へ。</h2>
+    <p>まずは無料プランで掲載をスタート。<br>フォーム送信から最短2営業日で公開できます。</p>
+    <div class="form-card">
+      <div class="form-row">
+        <label class="form-label" for="rg-fac-name">施設名 <span class="req">必須</span></label>
+        <input class="form-input" id="rg-fac-name" type="text" placeholder="例：MILLOFFICE 渋谷">
+        <div class="form-err">施設名を入力してください</div>
+      </div>
+      <div class="form-row">
+        <label class="form-label" for="rg-company">会社名・屋号 <span class="req">必須</span></label>
+        <input class="form-input" id="rg-company" type="text" placeholder="例：株式会社ミルパートナーズ">
+        <div class="form-err">会社名・屋号を入力してください</div>
+      </div>
+      <div class="form-row">
+        <label class="form-label" for="rg-fac-url">施設URL <span class="req">必須</span></label>
+        <input class="form-input" id="rg-fac-url" type="url" placeholder="https://example.com">
+        <div class="form-err">施設URLを入力してください</div>
+      </div>
+      <div class="form-divider">担当者情報（ご連絡先・非公開）</div>
+      <div class="form-row split">
+        <div class="form-row" style="margin-bottom:0">
+          <label class="form-label" for="rg-contact-name">担当者名 <span class="req">必須</span></label>
+          <input class="form-input" id="rg-contact-name" type="text" placeholder="例：山田 太郎">
+          <div class="form-err">担当者名を入力してください</div>
+        </div>
+        <div class="form-row" style="margin-bottom:0">
+          <label class="form-label" for="rg-contact-email">担当者メール <span class="req">必須</span></label>
+          <input class="form-input" id="rg-contact-email" type="email" placeholder="taro@example.com">
+          <div class="form-err">有効なメールアドレスを入力してください</div>
+        </div>
+      </div>
+      <div class="form-note">🔒 担当者情報は運営チームのみが閲覧します。掲載ページには表示されません。</div>
+      <button class="form-submit" id="rg-submit" type="button">掲載を申し込む <span>→</span></button>
+      <div class="form-followup">通常2営業日以内にメールでご連絡します。</div>
+    </div>
+  </div>
+</section>
 
 <footer>
   <div class="foot-inner">
@@ -455,29 +523,77 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
     </div>
   
 </footer>
+
 <script>
-function selectPlan(plan) {
-  ['free','standard','pro'].forEach(p => {
-    const el = document.getElementById('plan-'+p);
-    if (!el) return;
-    const badge = el.querySelector('[style*="選択中"]');
-    if (p === plan) {
-      el.style.border = '2px solid #2BB5C8';
-      if (!badge) {
-        const b = document.createElement('div');
-        b.textContent = '選択中';
-        b.setAttribute('style','position:absolute;top:10px;right:10px;font-size:8px;font-weight:600;padding:2px 8px;background:#2BB5C8;color:#000;border-radius:4px;');
-        el.appendChild(b);
+/* FAQ accordion */
+document.querySelectorAll('.faq-q').forEach(function(b){
+  b.addEventListener('click',function(){b.parentElement.classList.toggle('open');});
+});
+
+/* Form validation + submit */
+(function(){
+  var SB_URL='https://jakwntemjkwqwaqujffh.supabase.co';
+  var SB_KEY='sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+  var btn=document.getElementById('rg-submit');
+  if(!btn)return;
+  var fields=[
+    {id:'rg-fac-name',validate:function(v){return v.trim().length>0;}},
+    {id:'rg-company',validate:function(v){return v.trim().length>0;}},
+    {id:'rg-fac-url',validate:function(v){v=v.trim();return /^https?:\/\/.+\..+/.test(v);}},
+    {id:'rg-contact-name',validate:function(v){return v.trim().length>0;}},
+    {id:'rg-contact-email',validate:function(v){return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v.trim());}}
+  ];
+  function setRowError(id,err){var el=document.getElementById(id);if(!el)return;var row=el.closest('.form-row');if(!row)return;if(err){row.classList.add('has-error');el.classList.add('error');}else{row.classList.remove('has-error');el.classList.remove('error');}}
+  fields.forEach(function(f){var el=document.getElementById(f.id);if(!el)return;el.addEventListener('blur',function(){setRowError(f.id,!f.validate(el.value));});el.addEventListener('input',function(){if(el.classList.contains('error'))setRowError(f.id,!f.validate(el.value));});});
+  btn.addEventListener('click',async function(){
+    var allOk=true;
+    fields.forEach(function(f){var el=document.getElementById(f.id);var ok=f.validate(el?el.value:'');setRowError(f.id,!ok);if(!ok)allOk=false;});
+    if(!allOk)return;
+    btn.disabled=true;btn.textContent='送信中...';
+    var payload={
+      name:document.getElementById('rg-fac-name').value.trim(),
+      description:'会社名/屋号: '+document.getElementById('rg-company').value.trim(),
+      official_url:document.getElementById('rg-fac-url').value.trim(),
+      contact_name:document.getElementById('rg-contact-name').value.trim(),
+      contact_email:document.getElementById('rg-contact-email').value.trim(),
+      status:'draft',
+      plan:'free'
+    };
+    try{
+      var res=await fetch(SB_URL+'/rest/v1/spaces',{
+        method:'POST',
+        headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},
+        body:JSON.stringify(payload)
+      });
+      if(res.ok||res.status===201||res.status===204){
+        var card=document.querySelector('.form-card');
+        if(card)card.innerHTML='<div style="text-align:center;padding:24px 8px"><div style="font-family:var(--font-d);font-size:32px;color:var(--accent);margin-bottom:12px">✓</div><div style="font-family:var(--font-d);font-size:18px;font-weight:600;margin-bottom:10px">お申し込みを受け付けました</div><div style="font-size:13px;color:var(--text-soft);line-height:1.85">通常2営業日以内に、ご登録のメールアドレスへご案内をお送りします。<br>ご検討くださり、ありがとうございました。</div></div>';
+      }else{
+        btn.disabled=false;btn.innerHTML='掲載を申し込む <span>→</span>';
+        alert('送信に失敗しました。時間をおいて再度お試しください。');
       }
-    } else {
-      el.style.border = '1px solid #2a2a2a';
-      if (badge) badge.remove();
-    }
+    }catch(e){btn.disabled=false;btn.innerHTML='掲載を申し込む <span>→</span>';alert('通信エラー: '+e.message);}
   });
-  window.selectedPlan = plan;
-}
+})();
+
+/* Existing facilities strip — DB から取得 */
+(async function(){
+  var strip=document.getElementById('exist-strip');
+  if(!strip)return;
+  try{
+    var SB_URL='https://jakwntemjkwqwaqujffh.supabase.co';
+    var SB_KEY='sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+    var res=await fetch(SB_URL+'/rest/v1/spaces?select=id,name,area,prefecture,architect_name,image_main,slug&status=eq.live&order=created_at.desc&limit=12',{headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY}});
+    var data=await res.json();
+    if(!Array.isArray(data)||!data.length){strip.innerHTML='<div style="font-size:12px;color:rgba(255,255,255,.42);padding:20px">まだ掲載準備中の施設がありません</div>';return;}
+    strip.innerHTML=data.map(function(s){
+      var href=s.slug?'/space/'+encodeURIComponent(s.slug):'/detail?id='+encodeURIComponent(s.id);
+      var img=s.image_main?'<img src="'+(s.image_main||'').replace(/"/g,'')+'" loading="lazy" alt="">':'';
+      var meta=[s.area,s.prefecture].filter(Boolean).join(' / ');
+      var arch=s.architect_name?' / '+s.architect_name:'';
+      return '<a class="exist-card" href="'+href+'"><div class="img">'+img+'</div><div class="body"><div class="name">'+(s.name||'').replace(/</g,'&lt;')+'</div><div class="meta">'+meta+arch+'</div></div></a>';
+    }).join('');
+  }catch(e){strip.innerHTML='<div style="font-size:12px;color:rgba(255,255,255,.42);padding:20px">施設一覧の読み込みに失敗しました</div>';}
+})();
 </script>
-<script src="coworkmill-features.js"></script>
-
-
-<div id="claude-agent-glow-border" style="position: fixed; inset: 0px; pointer-events: none; z-index: 2147483646; opacity: 1; transition: opacity 0.3s ease-in-out; animation: 2s ease-in-out 0s infinite normal none running claude-pulse; box-shadow: rgba(217, 119, 87, 0.5) 0px 0px 10px inset, rgba(217, 119, 87, 0.3) 0px 0px 20px inset, rgba(217, 119, 87, 0.1) 0px 0px 30px inset;"></div><div id="claude-agent-glow-border" style="position: fixed; inset: 0px; pointer-events: none; z-index: 2147483646; opacity: 1; transition: opacity 0.3s ease-in-out; animation: 2s ease-in-out 0s infinite normal none running claude-pulse; box-shadow: rgba(217, 119, 87, 0.5) 0px 0px 10px inset, rgba(217, 119, 87, 0.3) 0px 0px 20px inset, rgba(217, 119, 87, 0.1) 0px 0px 30px inset;"></div></body></html>
+</body></html>
