@@ -1282,13 +1282,15 @@ async function saveArchEdit2() {
 
 
 // ============== コラム編集者(journal writer)管理 ==============
+// /ops から呼ぶので ops_token (sessionStorage) + target=writer_admin を使う
+// (旧: localStorage('cwm_token') + target=writer は掲載者JWT専用なので /ops では機能しない)
 const FN_URL_JW = 'https://jakwntemjkwqwaqujffh.supabase.co/functions/v1/cwm-admin';
 
-async function callFnJW(target, action, opts) {
+async function callFnJW(_legacyTarget, action, opts) {
   opts = opts || {};
-  const tk = localStorage.getItem('cwm_token');
+  const tk = sessionStorage.getItem('cwm_ops_token');
   if (!tk) { alert('ログインが必要です'); return null; }
-  const body = { token: tk, target, action };
+  const body = { token: tk, target: 'writer_admin', action: action };
   if (opts.id) body.id = opts.id;
   if (opts.data) body.data = opts.data;
   try {

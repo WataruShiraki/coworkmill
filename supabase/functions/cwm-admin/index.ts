@@ -715,6 +715,201 @@ Deno.serve(async (req: Request) => {
     }
 
     // ============================================================
+    // target=writer_admin: 運営管理画面用のジャーナルライター管理
+    // (target=writer は掲載者JWT専用なので /ops からは使えない。こちらは ops_token で動く)
+    // ============================================================
+    if (target === "writer_admin") {
+      if (!token) return jsonResponse({ error: "認証トークンが必要です" }, 401);
+      let opsPayloadW: any;
+      try {
+        const key = await getKey(JWT_SECRET);
+        opsPayloadW = await verify(token, key);
+      } catch (_e) {
+        return jsonResponse({ error: "認証トークンが無効または期限切れです(再ログインしてください)" }, 401);
+      }
+      if (opsPayloadW.kind !== "ops") {
+        return jsonResponse({ error: "このトークンは運営管理画面用ではありません" }, 401);
+      }
+      const opsEmailW = (opsPayloadW.sub || "").toLowerCase();
+      if (!opsEmailW) return jsonResponse({ error: "トークンにメールアドレスが含まれていません" }, 401);
+
+      const sbW = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
+      const { data: stillAllowedW } = await sbW
+        .from("ops_allowed_users").select("email").eq("email", opsEmailW).maybeSingle();
+      if (!stillAllowedW) {
+        return jsonResponse({ error: "アクセス権限が削除されています。再ログインしてください。" }, 403);
+      }
+
+      if (!checkRateLimit("writer_admin:" + opsEmailW + ":" + action)) {
+        return jsonResponse({ error: "短時間に多くの操作を行いました。しばらくお待ちください。" }, 429);
+      }
+
+      const authHeadersW: Record<string, string> = {
+        "apikey": SUPABASE_SERVICE_KEY,
+        "Authorization": "Bearer " + SUPABASE_SERVICE_KEY,
+        "Content-Type": "application/json",
+      };
+      const emailReW = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+      const dW = data || {};
+
+      try {
+        // -------- writer_admin:list --------
+        if (action === "list") {
+          const { data: writers, error } = await sbW
+            .from("journal_writers")
+            .select("id,user_id,display_name,bio,role,status,created_at,last_login_at")
+            .order("created_at", { ascending: false });
+          if (error) {
+            await writeAuditLog(sbW, opsEmailW, "writer_admin", "list", null, "error", error.message, ip);
+            return jsonResponse({ error: error.message }, 500);
+          }
+          const enriched = [];
+          for (const w of writers || []) {
+            try {
+              const userRes = await fetch(SUPABASE_URL + "/auth/v1/admin/users/" + w.user_id, {
+                headers: authHeadersW
+              });
+              const user = await userRes.json();
+              enriched.push({ ...w, email: user?.email || null });
+            } catch (_e) {
+              enriched.push({ ...w, email: null });
+            }
+          }
+          return jsonResponse({ ok: true, data: enriched });
+        }
+
+        // -------- writer_admin:create --------
+        if (action === "create") {
+          if (!dW.email || typeof dW.email !== "string" || !emailReW.test(dW.email) || dW.email.length > 254) {
+            return jsonResponse({ error: "正しいメールアドレスを入力してください" }, 400);
+          }
+          if (!dW.password || typeof dW.password !== "string" || dW.password.length < 8 || dW.password.length > 200) {
+            return jsonResponse({ error: "パスワードは8〜200文字で入力してください" }, 400);
+          }
+          if (!dW.display_name || typeof dW.display_name !== "string" || dW.display_name.length < 1 || dW.display_name.length > 100) {
+            return jsonResponse({ error: "表示名は1〜100文字で入力してください" }, 400);
+          }
+          if (dW.bio && (typeof dW.bio !== "string" || dW.bio.length > 1000)) {
+            return jsonResponse({ error: "bio は1000文字以内で入力してください" }, 400);
+          }
+          const createRes = await fetch(SUPABASE_URL + "/auth/v1/admin/users", {
+            method: "POST",
+            headers: authHeadersW,
+            body: JSON.stringify({
+              email: dW.email,
+              password: dW.password,
+              email_confirm: true,
+              user_metadata: { display_name: dW.display_name, role: "writer" }
+            })
+          });
+          const created = await createRes.json();
+          if (!createRes.ok || !created.id) {
+            await writeAuditLog(sbW, opsEmailW, "writer_admin", "create", null, "error", created.msg || created.message || "auth create failed", ip);
+            return jsonResponse({ error: created.msg || created.message || "ユーザー作成に失敗しました" }, createRes.status || 500);
+          }
+          const { data: writer, error } = await sbW.from("journal_writers").insert({
+            user_id: created.id,
+            display_name: dW.display_name,
+            bio: dW.bio || null,
+            role: "writer",
+            status: "active",
+            invited_by: opsEmailW
+          }).select().single();
+          if (error) {
+            // ロールバック
+            await fetch(SUPABASE_URL + "/auth/v1/admin/users/" + created.id, {
+              method: "DELETE",
+              headers: authHeadersW
+            }).catch(() => {});
+            await writeAuditLog(sbW, opsEmailW, "writer_admin", "create", null, "error", error.message, ip);
+            return jsonResponse({ error: error.message }, 500);
+          }
+          await writeAuditLog(sbW, opsEmailW, "writer_admin", "create", created.id, "ok", null, ip);
+          return jsonResponse({ ok: true, data: writer });
+        }
+
+        // -------- writer_admin:update --------
+        if (action === "update") {
+          if (!id) return jsonResponse({ error: "id が必要です" }, 400);
+          const updateData: any = {};
+          if (dW.display_name !== undefined) {
+            if (typeof dW.display_name !== "string" || dW.display_name.length < 1 || dW.display_name.length > 100) {
+              return jsonResponse({ error: "表示名は1〜100文字で入力してください" }, 400);
+            }
+            updateData.display_name = dW.display_name;
+          }
+          if (dW.bio !== undefined) {
+            if (dW.bio !== null && (typeof dW.bio !== "string" || dW.bio.length > 1000)) {
+              return jsonResponse({ error: "bio は1000文字以内で入力してください" }, 400);
+            }
+            updateData.bio = dW.bio;
+          }
+          if (dW.status !== undefined) {
+            if (!["active", "suspended"].includes(dW.status)) {
+              return jsonResponse({ error: "status は active か suspended のいずれか" }, 400);
+            }
+            updateData.status = dW.status;
+          }
+          if (Object.keys(updateData).length === 0) {
+            return jsonResponse({ error: "更新するフィールドがありません" }, 400);
+          }
+          const { data: updated, error } = await sbW.from("journal_writers").update(updateData).eq("id", id).select().single();
+          if (error) {
+            await writeAuditLog(sbW, opsEmailW, "writer_admin", "update", id, "error", error.message, ip);
+            return jsonResponse({ error: error.message }, 500);
+          }
+          await writeAuditLog(sbW, opsEmailW, "writer_admin", "update", id, "ok", null, ip);
+          return jsonResponse({ ok: true, data: updated });
+        }
+
+        // -------- writer_admin:reset_password --------
+        if (action === "reset_password") {
+          if (!id) return jsonResponse({ error: "id が必要です" }, 400);
+          if (!dW.new_password || typeof dW.new_password !== "string" || dW.new_password.length < 8 || dW.new_password.length > 200) {
+            return jsonResponse({ error: "新しいパスワードは8〜200文字" }, 400);
+          }
+          const { data: writer, error: wErr } = await sbW.from("journal_writers").select("user_id").eq("id", id).single();
+          if (wErr || !writer) {
+            return jsonResponse({ error: "ライターが見つかりません" }, 404);
+          }
+          const updateRes = await fetch(SUPABASE_URL + "/auth/v1/admin/users/" + writer.user_id, {
+            method: "PUT",
+            headers: authHeadersW,
+            body: JSON.stringify({ password: dW.new_password })
+          });
+          if (!updateRes.ok) {
+            const err = await updateRes.text();
+            await writeAuditLog(sbW, opsEmailW, "writer_admin", "reset_password", id, "error", err.substring(0, 200), ip);
+            return jsonResponse({ error: "パスワード変更に失敗しました" }, 500);
+          }
+          await writeAuditLog(sbW, opsEmailW, "writer_admin", "reset_password", id, "ok", null, ip);
+          return jsonResponse({ ok: true });
+        }
+
+        // -------- writer_admin:delete --------
+        if (action === "delete") {
+          if (!id) return jsonResponse({ error: "id が必要です" }, 400);
+          const { data: writer, error: wErr } = await sbW.from("journal_writers").select("user_id").eq("id", id).single();
+          if (wErr || !writer) {
+            return jsonResponse({ error: "ライターが見つかりません" }, 404);
+          }
+          await sbW.from("articles").update({ author_user_id: null }).eq("author_user_id", writer.user_id);
+          await sbW.from("journal_writers").delete().eq("id", id);
+          await fetch(SUPABASE_URL + "/auth/v1/admin/users/" + writer.user_id, {
+            method: "DELETE",
+            headers: authHeadersW
+          }).catch(() => {});
+          await writeAuditLog(sbW, opsEmailW, "writer_admin", "delete", id, "ok", null, ip);
+          return jsonResponse({ ok: true });
+        }
+
+        return jsonResponse({ error: "不明なアクション: " + action }, 400);
+      } catch (e) {
+        return jsonResponse({ error: "処理に失敗しました: " + (e instanceof Error ? e.message : String(e)) }, 500);
+      }
+    }
+
+    // ============================================================
     // 以降は既存の accounts テーブル経由 (掲載者向け) の処理
     // ============================================================
     if (!token) return jsonResponse({ error: "認証トークンが必要です" }, 401);

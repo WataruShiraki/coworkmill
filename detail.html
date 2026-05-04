@@ -2327,8 +2327,16 @@ function renderPlanCards(sp) {
       else{ts[i].classList.remove('active');}
     }
     var act=ts[idx];
-    if(act&&act.scrollIntoView){
-      try{act.scrollIntoView({behavior:'smooth',block:'nearest',inline:'center'});}catch(e){}
+    if(act&&act.parentElement){
+      // ページ全体を縦スクロールさせず、サムネ帯の横スクロールだけ動かす
+      // (旧: scrollIntoView({block:'nearest'}) は サムネ帯が画面外のとき
+      //  ページ全体が縦スクロールされる副作用があった)
+      try{
+        var parent=act.parentElement;
+        var actLeft=act.offsetLeft;
+        var actWidth=act.offsetWidth;
+        parent.scrollLeft=actLeft-(parent.clientWidth-actWidth)/2;
+      }catch(e){}
     }
   }
   function go(i){

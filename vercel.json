@@ -65,7 +65,15 @@
       "destination": "/journal/index.html"
     },
     {
-      "source": "/journal/:slug((?!index|article).*)",
+      "source": "/journal/index",
+      "destination": "/journal/index.html"
+    },
+    {
+      "source": "/journal/article",
+      "destination": "/journal/article.html"
+    },
+    {
+      "source": "/journal/:slug",
       "destination": "/journal/article.html?slug=:slug"
     }
   ],
