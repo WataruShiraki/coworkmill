@@ -428,6 +428,293 @@ Deno.serve(async (req: Request) => {
     }
 
     // ============================================================
+    // target=accounts_admin: 運営管理画面用のアカウント管理
+    // accounts テーブル(独自JWT認証)と auth.users(Supabase Auth) を同期する
+    // /ops でパスワード変更すると /login(Supabase Auth) と /admin(独自) 両方でログイン可能になる
+    // ============================================================
+    if (target === "accounts_admin") {
+      if (!token) return jsonResponse({ error: "認証トークンが必要です" }, 401);
+      let opsPayloadA: any;
+      try {
+        const key = await getKey(JWT_SECRET);
+        opsPayloadA = await verify(token, key);
+      } catch (_e) {
+        return jsonResponse({ error: "認証トークンが無効または期限切れです(再ログインしてください)" }, 401);
+      }
+      if (opsPayloadA.kind !== "ops") {
+        return jsonResponse({ error: "このトークンは運営管理画面用ではありません" }, 401);
+      }
+      const opsEmailA = (opsPayloadA.sub || "").toLowerCase();
+      if (!opsEmailA) return jsonResponse({ error: "トークンにメールアドレスが含まれていません" }, 401);
+
+      const sbA = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
+      const { data: stillAllowedA } = await sbA
+        .from("ops_allowed_users").select("email").eq("email", opsEmailA).maybeSingle();
+      if (!stillAllowedA) {
+        return jsonResponse({ error: "アクセス権限が削除されています。再ログインしてください。" }, 403);
+      }
+
+      if (!checkRateLimit("accounts_admin:" + opsEmailA + ":" + action)) {
+        return jsonResponse({ error: "短時間に多くの操作を行いました。しばらくお待ちください。" }, 429);
+      }
+
+      const authHeadersA: Record<string, string> = {
+        "apikey": SUPABASE_SERVICE_KEY,
+        "Authorization": "Bearer " + SUPABASE_SERVICE_KEY,
+        "Content-Type": "application/json",
+      };
+      const restBaseA = SUPABASE_URL + "/rest/v1/";
+      const emailReA = /^[A-Za-z0-9._%+\-]+@[A-Za-z0-9.\-]+\.[A-Za-z]{2,}$/;
+
+      // ヘルパー: メールで auth.users を検索 (filter は部分一致なので exact match を JS で確認)
+      const findAuthUserByEmailA = async (email: string): Promise<{ id: string; email: string } | null> => {
+        try {
+          const r = await fetch(SUPABASE_URL + "/auth/v1/admin/users?filter=" + encodeURIComponent(email) + "&per_page=50", {
+            headers: authHeadersA
+          });
+          if (!r.ok) return null;
+          const j = await r.json();
+          const users = j.users || [];
+          const lower = email.toLowerCase();
+          return users.find((u: any) => (u.email || "").toLowerCase() === lower) || null;
+        } catch (_e) {
+          return null;
+        }
+      };
+
+      const dA = data || {};
+
+      try {
+        // -------- accounts_admin:create --------
+        if (action === "create") {
+          const email = ((dA.email || "") + "").toLowerCase().trim();
+          const password = (dA.password || "") + "";
+          const company = ((dA.company || "") + "").trim();
+          const plan = (dA.plan || "free") + "";
+          const note = dA.note ? ((dA.note || "") + "") : null;
+
+          if (!emailReA.test(email) || email.length > 254) {
+            return jsonResponse({ error: "メールアドレスの形式が正しくありません" }, 400);
+          }
+          if (password.length < 8 || password.length > 200) {
+            return jsonResponse({ error: "パスワードは8〜200文字で入力してください" }, 400);
+          }
+          if (!company || company.length > 200) {
+            return jsonResponse({ error: "会社名を入力してください(200文字以内)" }, 400);
+          }
+          if (!["free", "standard", "pro"].includes(plan)) {
+            return jsonResponse({ error: "plan は free/standard/pro のいずれかです" }, 400);
+          }
+
+          // 1) auth.users 既存チェック
+          const existingAuth = await findAuthUserByEmailA(email);
+          if (existingAuth) {
+            await writeAuditLog(sbA, opsEmailA, "accounts_admin", "create", null, "error", "auth user already exists: " + email, ip);
+            return jsonResponse({ error: "このメールアドレスは既に Supabase Auth に登録されています" }, 409);
+          }
+
+          // 2) auth.users を作成 (email_confirm: true で /login 即可能に)
+          const authCreateRes = await fetch(SUPABASE_URL + "/auth/v1/admin/users", {
+            method: "POST",
+            headers: authHeadersA,
+            body: JSON.stringify({ email, password, email_confirm: true })
+          });
+          const authCreated = await authCreateRes.json().catch(() => ({}));
+          if (!authCreateRes.ok || !authCreated.id) {
+            const errMsg = authCreated.msg || authCreated.message || authCreated.error_description || ("HTTP " + authCreateRes.status);
+            await writeAuditLog(sbA, opsEmailA, "accounts_admin", "create", null, "error", "auth create failed: " + (errMsg + "").substring(0, 200), ip);
+            return jsonResponse({ error: "Supabase Auth ユーザー作成に失敗しました: " + errMsg }, 500);
+          }
+
+          // 3) accounts に挿入 (既存 RPC を使用 → password ハッシュ化等の既存ロジックを活かす)
+          const rpcRes = await fetch(restBaseA + "rpc/create_account", {
+            method: "POST",
+            headers: authHeadersA,
+            body: JSON.stringify({
+              p_company: company,
+              p_email: email,
+              p_password: password,
+              p_plan: plan,
+              p_note: note
+            })
+          });
+          const rpcText = await rpcRes.text();
+          if (!rpcRes.ok) {
+            // ロールバック: auth.users を削除
+            await fetch(SUPABASE_URL + "/auth/v1/admin/users/" + authCreated.id, {
+              method: "DELETE",
+              headers: authHeadersA
+            }).catch(() => {});
+            await writeAuditLog(sbA, opsEmailA, "accounts_admin", "create", null, "error", "accounts insert failed (rolled back auth): " + rpcText.substring(0, 200), ip);
+            return jsonResponse({ error: "accounts テーブル作成に失敗しました: " + rpcText.substring(0, 200) }, 500);
+          }
+
+          await writeAuditLog(sbA, opsEmailA, "accounts_admin", "create", email, "ok", null, ip);
+          return jsonResponse({ ok: true, auth_id: authCreated.id, accounts_result: rpcText });
+        }
+
+        // -------- accounts_admin:update --------
+        if (action === "update") {
+          const id = (dA.id || "") + "";
+          if (!id) return jsonResponse({ error: "id が必要です" }, 400);
+
+          const company = dA.company !== undefined ? ((dA.company || "") + "").trim() : null;
+          const newEmailRaw = dA.email !== undefined ? ((dA.email || "") + "").toLowerCase().trim() : null;
+          const password = dA.password ? ((dA.password || "") + "") : "";
+          const plan = dA.plan !== undefined ? ((dA.plan || "") + "") : null;
+          const note = dA.note !== undefined ? (dA.note ? ((dA.note || "") + "") : null) : null;
+
+          if (newEmailRaw !== null && newEmailRaw && (!emailReA.test(newEmailRaw) || newEmailRaw.length > 254)) {
+            return jsonResponse({ error: "メールアドレスの形式が正しくありません" }, 400);
+          }
+          if (password && (password.length < 8 || password.length > 200)) {
+            return jsonResponse({ error: "パスワードは8〜200文字で入力してください" }, 400);
+          }
+          if (plan && !["free", "standard", "pro"].includes(plan)) {
+            return jsonResponse({ error: "plan は free/standard/pro のいずれかです" }, 400);
+          }
+
+          // 現在の accounts を取得 (旧 email を取得するため)
+          const curRes = await fetch(restBaseA + "accounts?id=eq." + encodeURIComponent(id) + "&select=email", {
+            headers: authHeadersA
+          });
+          const curData = await curRes.json().catch(() => []);
+          if (!Array.isArray(curData) || curData.length === 0) {
+            return jsonResponse({ error: "対象のアカウントが見つかりません" }, 404);
+          }
+          const oldEmail = ((curData[0].email || "") + "").toLowerCase();
+          const targetEmail = newEmailRaw || oldEmail;
+
+          // 1) accounts を更新 (既存 RPC)
+          const rpcRes = await fetch(restBaseA + "rpc/update_account", {
+            method: "POST",
+            headers: authHeadersA,
+            body: JSON.stringify({
+              p_id: id,
+              p_company: company,
+              p_email: newEmailRaw,
+              p_plan: plan,
+              p_password: password || null,
+              p_note: note
+            })
+          });
+          const rpcText = await rpcRes.text();
+          if (!rpcRes.ok) {
+            await writeAuditLog(sbA, opsEmailA, "accounts_admin", "update", id, "error", "accounts update failed: " + rpcText.substring(0, 200), ip);
+            return jsonResponse({ error: "accounts テーブル更新に失敗しました: " + rpcText.substring(0, 200) }, 500);
+          }
+
+          // 2) auth.users を同期
+          // 旧 email でユーザーを探す
+          const authUser = await findAuthUserByEmailA(oldEmail);
+          let authSyncWarning: string | null = null;
+
+          if (authUser) {
+            // 既存ユーザーを更新
+            const authBody: any = {};
+            if (newEmailRaw && newEmailRaw !== oldEmail) {
+              authBody.email = newEmailRaw;
+              authBody.email_confirm = true;
+            }
+            if (password) {
+              authBody.password = password;
+            }
+            if (Object.keys(authBody).length > 0) {
+              const upRes = await fetch(SUPABASE_URL + "/auth/v1/admin/users/" + authUser.id, {
+                method: "PUT",
+                headers: authHeadersA,
+                body: JSON.stringify(authBody)
+              });
+              if (!upRes.ok) {
+                const errText = await upRes.text();
+                authSyncWarning = "Supabase Auth 更新に失敗しました: " + errText.substring(0, 200);
+              }
+            }
+          } else {
+            // auth.users に存在しない (旧来のレガシーアカウント等)
+            // password がある場合のみ新規作成する
+            if (password) {
+              const authCreateRes = await fetch(SUPABASE_URL + "/auth/v1/admin/users", {
+                method: "POST",
+                headers: authHeadersA,
+                body: JSON.stringify({ email: targetEmail, password, email_confirm: true })
+              });
+              if (!authCreateRes.ok) {
+                const errText = await authCreateRes.text();
+                authSyncWarning = "Supabase Auth ユーザー作成に失敗しました: " + errText.substring(0, 200);
+              }
+            } else {
+              authSyncWarning = "Supabase Auth に該当ユーザーが存在しません。/login でログイン可能にするにはパスワードを設定して再保存してください。";
+            }
+          }
+
+          if (authSyncWarning) {
+            await writeAuditLog(sbA, opsEmailA, "accounts_admin", "update", id, "error", "auth sync: " + authSyncWarning.substring(0, 200), ip);
+            return jsonResponse({ ok: true, warning: authSyncWarning });
+          }
+
+          await writeAuditLog(sbA, opsEmailA, "accounts_admin", "update", id, "ok", null, ip);
+          return jsonResponse({ ok: true });
+        }
+
+        // -------- accounts_admin:delete --------
+        if (action === "delete") {
+          const id = (dA.id || "") + "";
+          if (!id) return jsonResponse({ error: "id が必要です" }, 400);
+
+          // 現在の accounts を取得 (email 取得のため)
+          const curRes = await fetch(restBaseA + "accounts?id=eq." + encodeURIComponent(id) + "&select=email", {
+            headers: authHeadersA
+          });
+          const curData = await curRes.json().catch(() => []);
+          if (!Array.isArray(curData) || curData.length === 0) {
+            return jsonResponse({ error: "対象のアカウントが見つかりません" }, 404);
+          }
+          const targetEmailDel = ((curData[0].email || "") + "").toLowerCase();
+
+          // 1) accounts を削除
+          const delRes = await fetch(restBaseA + "accounts?id=eq." + encodeURIComponent(id), {
+            method: "DELETE",
+            headers: authHeadersA
+          });
+          if (!delRes.ok) {
+            const errText = await delRes.text();
+            await writeAuditLog(sbA, opsEmailA, "accounts_admin", "delete", id, "error", "accounts delete failed: " + errText.substring(0, 200), ip);
+            return jsonResponse({ error: "accounts テーブル削除に失敗しました: " + errText.substring(0, 200) }, 500);
+          }
+
+          // 2) auth.users を削除 (見つからなくてもエラーにしない)
+          let authDelWarning: string | null = null;
+          if (targetEmailDel) {
+            const authUserDel = await findAuthUserByEmailA(targetEmailDel);
+            if (authUserDel) {
+              const aDelRes = await fetch(SUPABASE_URL + "/auth/v1/admin/users/" + authUserDel.id, {
+                method: "DELETE",
+                headers: authHeadersA
+              });
+              if (!aDelRes.ok) {
+                const errText = await aDelRes.text();
+                authDelWarning = "Supabase Auth ユーザー削除に失敗しました: " + errText.substring(0, 200);
+              }
+            }
+          }
+
+          if (authDelWarning) {
+            await writeAuditLog(sbA, opsEmailA, "accounts_admin", "delete", id, "error", "auth sync: " + authDelWarning.substring(0, 200), ip);
+            return jsonResponse({ ok: true, warning: authDelWarning });
+          }
+
+          await writeAuditLog(sbA, opsEmailA, "accounts_admin", "delete", id, "ok", null, ip);
+          return jsonResponse({ ok: true });
+        }
+
+        return jsonResponse({ error: "不明なアクション: " + action }, 400);
+      } catch (e) {
+        return jsonResponse({ error: "処理に失敗しました: " + (e instanceof Error ? e.message : String(e)) }, 500);
+      }
+    }
+
+    // ============================================================
     // 以降は既存の accounts テーブル経由 (掲載者向け) の処理
     // ============================================================
     if (!token) return jsonResponse({ error: "認証トークンが必要です" }, 401);

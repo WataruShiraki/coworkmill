@@ -11,7 +11,7 @@
   var SB_URL = 'https://jakwntemjkwqwaqujffh.supabase.co';
   var SB_KEY = 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
   var FN_URL = SB_URL + '/functions/v1/cwm-admin';
-  var LOGIN_PAGE = 'coworkmill-login-ops.html';
+  var LOGIN_PAGE = 'ops-login.html';
 
   function getToken() { return sessionStorage.getItem('cwm_ops_token'); }
   function getEmail() { return sessionStorage.getItem('cwm_ops_email'); }
@@ -150,6 +150,45 @@
   }
 
   /**
+   * accounts_admin (target) 呼び出し
+   * 掲載者アカウントを accounts テーブル + auth.users 両方で同期管理する
+   * @param {'create'|'update'|'delete'} action
+   * @param {object} payload - action ごとのデータ
+   * @returns {Promise<object>} - 成功時 { ok: true, ...} / 失敗時 throw
+   */
+  async function accountsAdmin(action, payload) {
+    var token = getToken();
+    if (!token) {
+      redirectToLogin();
+      throw new Error('認証トークンがありません');
+    }
+    var res;
+    try {
+      res = await fetch(FN_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SB_KEY,
+          'Authorization': 'Bearer ' + SB_KEY
+        },
+        body: JSON.stringify({ token: token, target: 'accounts_admin', action: action, data: payload || {} })
+      });
+    } catch (e) {
+      throw new Error('ネットワークエラー: ' + (e && e.message ? e.message : String(e)));
+    }
+    var json;
+    try { json = await res.json(); } catch (_e) { json = {}; }
+    if (res.status === 401) {
+      redirectToLogin();
+      throw new Error(json.error || '認証が切れました。再ログインしてください。');
+    }
+    if (!res.ok) {
+      throw new Error(json.error || ('リクエスト失敗 (HTTP ' + res.status + ')'));
+    }
+    return json;
+  }
+
+  /**
    * ログアウト: ops_token + Supabase auth 両方をクリアしてログインへ
    */
   async function signOut() {
@@ -177,6 +216,7 @@
     dbPatch: dbPatch,
     dbDelete: dbDelete,
     dbRpc: dbRpc,
-    authInvite: authInvite
+    authInvite: authInvite,
+    accountsAdmin: accountsAdmin
   };
 })();

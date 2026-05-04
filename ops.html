@@ -768,26 +768,37 @@ async function doEditAccount() {
   const no = document.getElementById('ea-note') ? document.getElementById('ea-note').value.trim() || null : null;
   if (!co || !em) { alert('会社名・メールは必須です'); return; }
   try {
-    const res = await cwmOpsAuth.dbRpc('update_account', { p_id: id, p_company: co, p_email: em, p_plan: pl, p_password: pa, p_note: no });
-    if (!res.ok) { const d = await res.json().catch(()=>({})); throw new Error(d.message || d.error || JSON.stringify(d)); }
+    // accounts テーブル + Supabase Auth (auth.users) を同期更新
+    const result = await cwmOpsAuth.accountsAdmin('update', {
+      id: id,
+      company: co,
+      email: em,
+      plan: pl,
+      password: pa || undefined,
+      note: no
+    });
     // ★アカウントのプラン変更に追従して、紐づく全施設のplanも同じ値に揃える
     const syncResult = await cwmOpsAuth.dbPatch('spaces', 'account_id=eq.' + encodeURIComponent(id), { plan: pl });
     if (syncResult && syncResult.code) { console.warn('spaces plan sync failed:', syncResult); }
-    alert('更新しました');
+    if (result && result.warning) {
+      alert('更新しましたが警告があります:\n' + result.warning);
+    } else {
+      alert('更新しました');
+    }
     document.getElementById('m-editac').style.display = 'none';
     loadAccounts();
   } catch(e) { alert('エラー: ' + e.message); }
 }
 async function deleteAccount(id) {
-  if (!confirm('このアカウントを削除しますか？')) return;
+  if (!confirm('このアカウントを削除しますか？\n(accounts テーブルと Supabase Auth の両方から削除されます)')) return;
   try {
-    const res = await sbDelete('accounts', 'id=eq.' + id);
-    if (res.ok) {
-      alert('削除しました');
-      loadAccounts();
+    const result = await cwmOpsAuth.accountsAdmin('delete', { id: id });
+    if (result && result.warning) {
+      alert('削除しましたが警告があります:\n' + result.warning);
     } else {
-      alert('削除に失敗しました');
+      alert('削除しました');
     }
+    loadAccounts();
   } catch(e) { alert('エラー: ' + e.message); }
 }
 
@@ -1034,10 +1045,15 @@ async function doCreateAccount() {
   const no = document.getElementById('na-note') ? document.getElementById('na-note').value.trim() || null : null;
   if (!co || !em || !pa) { alert('会社名・メール・パスワードは必須です'); return; }
   try {
-    const res = await cwmOpsAuth.dbRpc('create_account', { p_company: co, p_email: em, p_password: pa, p_plan: pl, p_note: no });
-    const data = await res.json().catch(()=>({}));
-    if (!res.ok) throw new Error(data.message || data.error || JSON.stringify(data));
-    alert('アカウントを作成しました');
+    // accounts テーブル + Supabase Auth (auth.users) を同期作成
+    await cwmOpsAuth.accountsAdmin('create', {
+      company: co,
+      email: em,
+      password: pa,
+      plan: pl,
+      note: no
+    });
+    alert('アカウントを作成しました\n(/login と /admin の両方でログイン可能です)');
     document.getElementById('m-newac').style.display = 'none';
     loadAccounts();
   } catch(e) { alert('エラー: ' + e.message); }
