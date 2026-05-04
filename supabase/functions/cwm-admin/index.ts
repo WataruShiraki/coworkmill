@@ -349,7 +349,7 @@ Deno.serve(async (req: Request) => {
           if (!path) return jsonResponse({ error: "path が無効です" }, 400);
           const r = await fetch(restBase + path, { headers: proxyHeaders });
           const text = await r.text();
-          return new Response(text, { status: r.status, headers: { ...cors, "Content-Type": "application/json" } });
+          return new Response((r.status === 204 || r.status === 205 || r.status === 304) ? null : text, { status: r.status, headers: { ...cors, "Content-Type": "application/json" } });
         }
 
         if (action === "insert") {
@@ -362,7 +362,7 @@ Deno.serve(async (req: Request) => {
           });
           const text = await r.text();
           await writeAuditLog(sb2, opsEmail2, "ops_db", "insert", table, r.ok ? "ok" : "error", null, ip);
-          return new Response(text, { status: r.status, headers: { ...cors, "Content-Type": "application/json" } });
+          return new Response((r.status === 204 || r.status === 205 || r.status === 304) ? null : text, { status: r.status, headers: { ...cors, "Content-Type": "application/json" } });
         }
 
         if (action === "update") {
@@ -376,7 +376,7 @@ Deno.serve(async (req: Request) => {
           });
           const text = await r.text();
           await writeAuditLog(sb2, opsEmail2, "ops_db", "update", table, r.ok ? "ok" : "error", null, ip);
-          return new Response(text, { status: r.status, headers: { ...cors, "Content-Type": "application/json" } });
+          return new Response((r.status === 204 || r.status === 205 || r.status === 304) ? null : text, { status: r.status, headers: { ...cors, "Content-Type": "application/json" } });
         }
 
         if (action === "delete") {
@@ -402,7 +402,7 @@ Deno.serve(async (req: Request) => {
           });
           const text = await r.text();
           await writeAuditLog(sb2, opsEmail2, "ops_db", "rpc:" + rpcName, null, r.ok ? "ok" : "error", null, ip);
-          return new Response(text, { status: r.status, headers: { ...cors, "Content-Type": "application/json" } });
+          return new Response((r.status === 204 || r.status === 205 || r.status === 304) ? null : text, { status: r.status, headers: { ...cors, "Content-Type": "application/json" } });
         }
 
         if (action === "auth_invite") {
@@ -418,7 +418,7 @@ Deno.serve(async (req: Request) => {
           });
           const text = await r.text();
           await writeAuditLog(sb2, opsEmail2, "ops_db", "auth_invite", inviteEmail2, r.ok ? "ok" : "error", null, ip);
-          return new Response(text, { status: r.status, headers: { ...cors, "Content-Type": "application/json" } });
+          return new Response((r.status === 204 || r.status === 205 || r.status === 304) ? null : text, { status: r.status, headers: { ...cors, "Content-Type": "application/json" } });
         }
 
         return jsonResponse({ error: "不明なアクション: " + action }, 400);
