@@ -148,7 +148,7 @@ a{text-decoration:none;color:inherit}
 <!-- ===== SIDEBAR ===== -->
 <aside class="sb">
   <div class="sb-logo">
-    <a href="coworkmill.html" style="display:block;margin-bottom:6px">
+    <a href="/" style="display:block;margin-bottom:6px">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="227 531 380 75" style="height:22px;width:auto;filter:brightness(0) invert(1)">
         <defs>
           <linearGradient id="lg-sb" x1="228.27" y1="506.16" x2="701.35" y2="619.07" gradientUnits="userSpaceOnUse">
@@ -182,7 +182,7 @@ a{text-decoration:none;color:inherit}
     <button class="nl" onclick="go('ou',this)"><span class="ni">🔑</span>ユーザー管理</button>
     <button class="nl" onclick="opsLogout()" style="color:rgba(255,255,255,.6)"><span class="ni">🚪</span>ログアウト</button>
   </nav>
-  <div class="sb-foot" onclick="location.href='coworkmill.html'">← サイトを見る</div>
+  <div class="sb-foot" onclick="location.href='/'">← サイトを見る</div>
 </aside>
 
 <!-- ===== MAIN ===== -->
@@ -720,7 +720,7 @@ function makeSpRow(d) {
     if (_sbOk(r)) { showToast('プランを変更しました'); loadSpaces(); } else { alert('変更失敗: ' + _sbErr(r)); this.value=''; }
   });
   const bView = document.createElement('button'); bView.className='bsm'; bView.textContent='詳細 ↗';
-  bView.addEventListener('click', () => window.open('coworkmill-detail.html?id='+d.id));
+  bView.addEventListener('click', () => window.open('/detail?id='+d.id));
   br.appendChild(sel); br.appendChild(bView);
   // 非公開ボタン
   const bHide = document.createElement('button');
@@ -952,7 +952,7 @@ function makeArchRow(a) {
   urlBtn.style.cssText = 'font-size:11px;padding:3px 9px;border-radius:4px;border:1px solid #2BB5C8;background:transparent;color:#2BB5C8;cursor:pointer;margin-right:4px';
   urlBtn.title = '建築家登録フォームURLをコピー';
   urlBtn.addEventListener('click', () => {
-    const url = location.origin + '/coworkmill-architect-form.html?id=' + a.id;
+    const url = location.origin + '/architect-form?id=' + a.id;
     navigator.clipboard.writeText(url).then(() => showToast('フォームURLをコピーしました'));
   });
   tdBtn.appendChild(urlBtn);

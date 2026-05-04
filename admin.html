@@ -451,7 +451,7 @@ function resetVibeUI(){
       <span>⏏</span> ログアウト
     </button>
   </div>
-  <div class="sb-foot" onclick="location.href='coworkmill.html'">← COWORKMILLを見る</div>
+  <div class="sb-foot" onclick="location.href='/'">← COWORKMILLを見る</div>
 </aside>
 
 <div class="main">
@@ -459,7 +459,7 @@ function resetVibeUI(){
     <div class="tb-ttl" id="ttl">施設情報の編集</div>
     <span class="tbs live" id="tbs">掲載中</span>
     <div class="tb-r" id="tbr">
-      <button class="bol" onclick="window.open('coworkmill-detail.html')">プレビュー →</button>
+      <button class="bol" onclick="window.open('/detail')">プレビュー →</button>
       <button class="bsv" id="savebtn" onclick="doSave()">変更を保存</button>
     </div>
   </div>
@@ -696,7 +696,7 @@ function resetVibeUI(){
 
     
     <div style="display:flex;justify-content:center;gap:8px;padding:4px 0 8px">
-      <button class="bol" onclick="window.open('coworkmill-detail.html')">プレビュー →</button>
+      <button class="bol" onclick="window.open('/detail')">プレビュー →</button>
       <button class="bsv" id="savebtn-bottom" onclick="doSave()">変更を保存</button>
     </div>
 </div>
@@ -919,7 +919,7 @@ function resetVibeUI(){
       <div style="font-size:11px;color:var(--g400);text-align:center;margin-top:12px;">Freeプランは5枚まで掲載可</div>
       <div id="photo-publish-btn" style="display:none;margin-top:24px;text-align:center;">
         <div style="display:flex;gap:10px;justify-content:center;">
-          <button style="padding:12px 24px;font-size:12px;font-weight:500;color:var(--g600);background:#fff;border:1px solid var(--g200);border-radius:8px;cursor:pointer;" onclick="window.open('coworkmill-detail.html')">
+          <button style="padding:12px 24px;font-size:12px;font-weight:500;color:var(--g600);background:#fff;border:1px solid var(--g200);border-radius:8px;cursor:pointer;" onclick="window.open('/detail')">
             プレビュー →
           </button>
           <button style="padding:12px 32px;font-size:13px;font-weight:600;color:#fff;background:linear-gradient(135deg,#f97316,#ea580c);border:none;border-radius:8px;cursor:pointer;letter-spacing:.04em;" onclick="pubFac()">
@@ -1681,7 +1681,7 @@ const archData = [
   {st:'none',       nm:'', org:'', updated:''},
 ];
 
-function openArchPage(){ window.open('coworkmill-architect.html'); }
+function openArchPage(){ window.open('/architect'); }
 
 
 // 建築家検索・選択
@@ -1973,9 +1973,9 @@ function swFac(id) {
   if(f.st==='draft') {
     tbr.innerHTML = '<button class="bol" style="color:#ef4444;border-color:#ef4444;" onclick="deleteFac()">🗑 削除</button><button class="bsv" onclick="doSave()">変更を保存</button><button class="bpb" style="background:linear-gradient(135deg,#f97316,#ea580c);border-color:#f97316;color:#fff;font-weight:700" onclick="pubFac()">🚀 公開する</button>';
   } else if(f.st==='live') {
-    tbr.innerHTML = '<button class="bol" style="color:#ef4444;border-color:#ef4444;" onclick="deleteFac()">🗑 削除</button><button class="bol" onclick="window.open(\'coworkmill-detail.html\')">プレビュー →</button><button class="bsv" id="savebtn" onclick="doSave()">変更を保存</button><button class="bol" style="color:#ef4444;border-color:#ef4444;" onclick="unpubFac()">⏸ 非公開にする</button>';
+    tbr.innerHTML = '<button class="bol" style="color:#ef4444;border-color:#ef4444;" onclick="deleteFac()">🗑 削除</button><button class="bol" onclick="window.open(\'/detail\')">プレビュー →</button><button class="bsv" id="savebtn" onclick="doSave()">変更を保存</button><button class="bol" style="color:#ef4444;border-color:#ef4444;" onclick="unpubFac()">⏸ 非公開にする</button>';
   } else {
-    tbr.innerHTML = '<button class="bol" style="color:#ef4444;border-color:#ef4444;" onclick="deleteFac()">🗑 削除</button><button class="bol" onclick="window.open(\'coworkmill-detail.html\')">プレビュー →</button><button class="bsv" id="savebtn" onclick="doSave()">変更を保存</button>';
+    tbr.innerHTML = '<button class="bol" style="color:#ef4444;border-color:#ef4444;" onclick="deleteFac()">🗑 削除</button><button class="bol" onclick="window.open(\'/detail\')">プレビュー →</button><button class="bsv" id="savebtn" onclick="doSave()">変更を保存</button>';
   }
   renderDash(f.dash);
   const curP = document.querySelector('[id^="p-"]:not([style*="none"])');

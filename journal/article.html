@@ -292,7 +292,7 @@ img{max-width:100%;display:block}
       <span class="j-brand-label">journal</span>
     </a>
     <nav class="j-nav-links">
-      <a href="/coworkmill.html" class="j-back-to-main"><span class="full">← COWORKMILL TOP</span><span class="short" style="display:none">← TOP</span></a>
+      <a href="/" class="j-back-to-main"><span class="full">← COWORKMILL TOP</span><span class="short" style="display:none">← TOP</span></a>
     </nav>
   </div>
 </header>
@@ -316,9 +316,9 @@ img{max-width:100%;display:block}
     <div class="j-foot-cols">
       <div class="j-foot-col">
         <div class="j-foot-col-h">Explore</div>
-        <a href="/coworkmill-spaces.html">コワーキングを探す</a>
-        <a href="/coworkmill-architects.html">建築家から探す</a>
-        <a href="/coworkmill-photos.html">写真から探す</a>
+        <a href="/spaces">コワーキングを探す</a>
+        <a href="/architects">建築家から探す</a>
+        <a href="/photos">写真から探す</a>
       </div>
       <div class="j-foot-col">
         <div class="j-foot-col-h">Journal</div>
@@ -329,8 +329,8 @@ img{max-width:100%;display:block}
       </div>
       <div class="j-foot-col">
         <div class="j-foot-col-h">COWORKMILL</div>
-        <a href="/coworkmill.html">トップへ戻る</a>
-        <a href="/coworkmill-contact.html">お問い合わせ</a>
+        <a href="/">トップへ戻る</a>
+        <a href="/contact">お問い合わせ</a>
         <a href="https://lily-p.com" target="_blank" rel="noopener noreferrer">運営会社</a>
       </div>
     </div>
@@ -338,8 +338,8 @@ img{max-width:100%;display:block}
   <div class="j-foot-bottom">
     <div class="j-foot-copy">© 2026 COWORKMILL journal — Edited by Lily Partners LLC.</div>
     <div class="j-foot-bottom-links">
-      <a href="/coworkmill-privacy.html">プライバシーポリシー</a>
-      <a href="/coworkmill-terms.html">利用規約</a>
+      <a href="/privacy">プライバシーポリシー</a>
+      <a href="/terms">利用規約</a>
     </div>
   </div>
 </footer>
@@ -795,7 +795,7 @@ loadArticle();
       '<h4 class="j-side-h">Most Read</h4>',
       '<ol class="j-rank-list" id="aside-rank-list"></ol>',
     '</div>',
-    '<a class="j-side-cta" href="/coworkmill-spaces.html">',
+    '<a class="j-side-cta" href="/spaces">',
       '<img class="j-side-cta-logo" src="/shared/coworkmill-logo.svg" alt="COWORKMILL">',
       '<div class="j-side-cta-label">Where You Work Matters</div>',
       '<div class="j-side-cta-h">働く場所が、<br>仕事を変える。</div>',
@@ -901,7 +901,7 @@ loadArticle();
       arr.forEach((s, idx) => {
         const card = document.createElement('a');
         card.className = 'j-pick-card';
-        card.href = '/coworkmill-detail.html?id=' + encodeURIComponent(s.id);
+        card.href = '/detail?id=' + encodeURIComponent(s.id);
         const thumb = document.createElement('div');
         thumb.className = 'j-pick-thumb';
         if (s.image_main) thumb.style.backgroundImage = "url('" + s.image_main.replace(/'/g, "%27") + "')";
@@ -1097,7 +1097,7 @@ loadArticle();
   function makeSpaceCard(s){
     var a = document.createElement('a');
     a.className = 'j-end-card';
-    a.href = '/coworkmill-detail.html?id=' + encodeURIComponent(s.id);
+    a.href = '/detail?id=' + encodeURIComponent(s.id);
     var thumb = document.createElement('div');
     thumb.className = 'j-end-card-thumb';
     var img = spaceThumb(s);
@@ -1291,7 +1291,7 @@ loadArticle();
       sorted.forEach(function(k){
         var a = document.createElement('a');
         a.className = 'j-end-vibe-chip';
-        a.href = '/coworkmill-spaces.html?vibe=' + encodeURIComponent(k);
+        a.href = '/spaces?vibe=' + encodeURIComponent(k);
         a.textContent = VIBE_LABELS[k];
         wrap.appendChild(a);
       });

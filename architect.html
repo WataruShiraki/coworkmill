@@ -68,13 +68,13 @@ a{color:inherit;text-decoration:none;}
 </head>
 <body>
 <nav class="global-nav">
-<a href="coworkmill.html" class="global-nav-logo"><img src="coworkmill_logo2.svg" alt="COWORKMILL" onerror="this.style.display='none'"></a>
+<a href="/" class="global-nav-logo"><img src="coworkmill_logo2.svg" alt="COWORKMILL" onerror="this.style.display='none'"></a>
 <div class="global-nav-links">
-<a href="coworkmill-spaces.html">コワーキングを探す</a>
-<a href="coworkmill-architects.html">建築家から探す</a>
-<a href="coworkmill-photos.html">写真から探す</a>
+<a href="/spaces">コワーキングを探す</a>
+<a href="/architects">建築家から探す</a>
+<a href="/photos">写真から探す</a>
     <a href="/journal/">ジャーナル</a>
-<a href="coworkmill-register.html" class="global-nav-cta">コワーキング登録</a>
+<a href="/register" class="global-nav-cta">コワーキング登録</a>
 </div>
 </nav>
 <main class="arch-main" id="root"><div class="loading">読み込み中…</div></main>
@@ -99,11 +99,11 @@ a{color:inherit;text-decoration:none;}
 <p>デザイン性で厳選されたコワーキングを、<br>仕事タイプや建築家で探そう。</p>
 <p class="brand-name">Lily Partners LLC</p>
 </div>
-<div class="global-footer-col"><h4>探す</h4><a href="coworkmill-spaces.html">コワーキングを探す</a><a href="coworkmill-architects.html">建築家から探す</a><a href="coworkmill-photos.html">写真から探す</a></div>
-<div class="global-footer-col"><h4>掃載・運営</h4><a href="coworkmill-register.html">コワーキング登録</a><a href="coworkmill-contact.html">お問い合わせ</a><a href="https://lily-p.com" target="_blank" rel="noopener noreferrer">運営会社</a></div>
+<div class="global-footer-col"><h4>探す</h4><a href="/spaces">コワーキングを探す</a><a href="/architects">建築家から探す</a><a href="/photos">写真から探す</a></div>
+<div class="global-footer-col"><h4>掃載・運営</h4><a href="/register">コワーキング登録</a><a href="/contact">お問い合わせ</a><a href="https://lily-p.com" target="_blank" rel="noopener noreferrer">運営会社</a></div>
 <div class="global-footer-col"><h4>関連サービス</h4><a href="https://offml.com" target="_blank">OFFICEMILLへ →</a><a href="https://cafemill.com" target="_blank">CAFEMILLへ →</a></div>
 </div>
-<div class="global-footer-bottom"><p class="global-footer-copy">© 2026 Lily Partners LLC</p><div class="global-footer-bottom-links"><a href="coworkmill-privacy.html">プライバシーポリシー</a><a href="coworkmill-terms.html">利用規約</a><a href="coworkmill-tokushoho.html">特商法表記</a></div></div>
+<div class="global-footer-bottom"><p class="global-footer-copy">© 2026 Lily Partners LLC</p><div class="global-footer-bottom-links"><a href="/privacy">プライバシーポリシー</a><a href="/terms">利用規約</a><a href="/tokushoho">特商法表記</a></div></div>
 </footer>
 <script>
 (function(){
@@ -133,7 +133,7 @@ var spaces=await sr.json();
 var cards="";
 if(Array.isArray(spaces)&&spaces.length){for(var i=0;i<spaces.length;i++){var sp=spaces[i],ph="";
 try{var lr=await fetch(S+"/storage/v1/object/list/space-images",{method:"POST",headers:{"apikey":K,"Authorization":"Bearer "+K,"Content-Type":"application/json"},body:JSON.stringify({prefix:sp.id+"/",limit:1})});var fs=await lr.json();if(Array.isArray(fs)&&fs.length)ph=S+"/storage/v1/object/public/space-images/"+sp.id+"/"+fs[0].name;}catch(e2){}
-cards+='<a href="coworkmill-detail.html?id='+sp.id+'" class="space-card">'+(ph?'<img class="space-card-img" src="'+ph+'" loading="lazy">':'<div class="space-card-img"></div>')+'<div class="space-card-body"><div class="space-card-name">'+sp.name+'</div><div class="space-card-area">'+sp.area+'</div></div></a>';}}
+cards+='<a href="/detail?id='+sp.id+'" class="space-card">'+(ph?'<img class="space-card-img" src="'+ph+'" loading="lazy">':'<div class="space-card-img"></div>')+'<div class="space-card-body"><div class="space-card-name">'+sp.name+'</div><div class="space-card-area">'+sp.area+'</div></div></a>';}}
 var nameJa=(a.firm&&a.firm!==a.name_en)?a.firm:(a.name||"");
 var nameEn=a.name_en||"";
 document.getElementById("root").innerHTML='<div class="arch-hero">'+(a.portrait_url?'<img class="arch-portrait" src="'+a.portrait_url+'" alt="'+nameEn+'">':"")+'<div class="arch-info"><div class="arch-label">Architect</div>'+(nameJa&&nameJa!==nameEn?'<div class="arch-name-ja">'+nameJa+"</div>":"")+'<div class="arch-name-en">'+nameEn+'</div>'+(a.bio?'<div class="arch-bio">'+a.bio+"</div>":"")+'<button class="arch-contact-btn" id="cbtn">✉️ '+nameEn+'にお問い合わせ</button></div></div>'+(cards?'<div class="arch-works-title">手がけたコワーキングスペース — '+spaces.length+' 件</div><div class="arch-works-grid">'+cards+"</div>":"");

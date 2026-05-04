@@ -43,7 +43,7 @@ a{text-decoration:none;color:inherit}
 <body>
 <div class="wrap">
   <div style="text-align:center;margin-bottom:32px">
-    <a href="coworkmill.html">
+    <a href="/">
       <img src="coworkmill_logo2.svg" alt="COWORKMILL" style="height:28px;width:auto">
     </a>
   </div>
@@ -68,7 +68,7 @@ a{text-decoration:none;color:inherit}
     <button class="btn" id="loginBtn" onclick="login()">ログイン</button>
   </div>
 
-  <div class="back">施設掲載のご申請は<a href="coworkmill-register.html">こちら</a></div>
+  <div class="back">施設掲載のご申請は<a href="/register">こちら</a></div>
 </div>
 
 <script>
@@ -79,7 +79,7 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 // すでにログイン済みなら管理画面へ
 (async () => {
   const { data: { session } } = await supabaseClient.auth.getSession();
-  if (session) location.href = 'coworkmill-admin-view.html';
+  if (session) location.href = '/admin';
 })();
 
 async function login() {
@@ -131,7 +131,7 @@ async function login() {
     return;
   }
 
-  location.href = 'coworkmill-admin-view.html';
+  location.href = '/admin';
 }
 
 async function resetPassword() {
@@ -149,7 +149,7 @@ async function resetPassword() {
   }
 
   const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-    redirectTo: location.origin + '/coworkmill-admin-view.html'
+    redirectTo: location.origin + '/admin'
   });
 
   if (error) {

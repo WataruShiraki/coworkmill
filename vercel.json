@@ -61,12 +61,13 @@
       "destination": "/api/journal-sitemap"
     },
     {
-      "source": "/coworkmill-journal.html",
+      "source": "/coworkmill-journal",
       "destination": "/journal/index.html"
     },
     {
       "source": "/journal/:slug((?!index|article).*)",
       "destination": "/journal/article.html?slug=:slug"
     }
-  ]
+  ],
+  "cleanUrls": true
 }
