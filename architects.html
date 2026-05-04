@@ -1,48 +1,12 @@
-
-<script>
-document.addEventListener("DOMContentLoaded",function(){
-function fix(){
-  document.querySelectorAll(".acard-portrait").forEach(function(img){
-    img.style.setProperty("filter","none","important");
-  });
-}
-fix();
-new MutationObserver(fix).observe(document.body||document.documentElement,{childList:true,subtree:true});
-});
-if(document.readyState!=="loading"){
-  document.querySelectorAll(".acard-portrait").forEach(function(img){
-    img.style.setProperty("filter","none","important");
-  });
-  new MutationObserver(function(){
-    document.querySelectorAll(".acard-portrait").forEach(function(img){
-      img.style.setProperty("filter","none","important");
-    });
-  }).observe(document.body||document.documentElement,{childList:true,subtree:true});
-}
-</script>
-<style>.acard-portrait{filter:grayscale(0%)!important;}</style>
-<script>
-(function(){
-// target="_blank" を全削除
-document.querySelectorAll('a[target="_blank"]').forEach(function(a){a.removeAttribute("target");});
-// MutationObserverで動的生成後も対応
-var obs=new MutationObserver(function(){
-  document.querySelectorAll('a[target="_blank"]').forEach(function(a){a.removeAttribute("target");});
-});
-obs.observe(document.body,{childList:true,subtree:true});
-})();
-</script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
+  <meta charset="UTF-8">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyBpZD0iX+ODrOOCpOODpOODvF8xIiBkYXRhLW5hbWU9IuODrOOCpOODpOODvF8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2ZXJzaW9uPSIxLjEiIHZpZXdCb3g9IjMzOCA0NjIgMTE2IDExNiI+CiAgPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDMwLjIuMSwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDIuMS4xIEJ1aWxkIDEpICAtLT4KICA8ZGVmcz4KICAgIDxzdHlsZT4KICAgICAgLnN0MCB7CiAgICAgICAgZmlsbDogI2ZmZjsKICAgICAgfQoKICAgICAgLnN0MSB7CiAgICAgICAgZmlsbDogdXJsKCNf5ZCN56ew5pyq6Kit5a6a44Kw44Op44OH44O844K344On44OzXzQ2KTsKICAgICAgfQogICAgPC9zdHlsZT4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iX+WQjeensOacquioreWumuOCsOODqeODh+ODvOOCt+ODp+ODs180NiIgZGF0YS1uYW1lPSLlkI3np7DmnKroqK3lrprjgrDjg6njg4fjg7zjgrfjg6fjg7MgNDYiIHgxPSIzNDkuOSIgeTE9IjQ3Ni4wOSIgeDI9IjQ0OC44NiIgeTI9IjU3MC42MyIgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiM4OGM4OTUiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjMTM1N2EwIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogIDwvZGVmcz4KICA8cmVjdCBjbGFzcz0ic3QxIiB4PSIzNDIuMzkiIHk9IjQ2Ni41IiB3aWR0aD0iMTA4IiBoZWlnaHQ9IjEwOCIgcng9IjEyLjI1IiByeT0iMTIuMjUiLz4KICA8Zz4KICAgIDxyZWN0IGNsYXNzPSJzdDAiIHg9IjM4MS42IiB5PSI1MTMuOTMiIHdpZHRoPSIxMy4xMiIgaGVpZ2h0PSIxMy4xMiIvPgogICAgPHJlY3QgY2xhc3M9InN0MCIgeD0iMzgxLjYiIHk9IjUxMy45MyIgd2lkdGg9IjEzLjEyIiBoZWlnaHQ9IjEzLjEyIi8+CiAgICA8cmVjdCBjbGFzcz0ic3QwIiB4PSIzODEuNiIgeT0iNDk4LjE5IiB3aWR0aD0iMTMuMTIiIGhlaWdodD0iMTMuMTIiLz4KICAgIDxwb2x5Z29uIGNsYXNzPSJzdDAiIHBvaW50cz0iMzk0LjcyIDQ5NS41NyAzODEuNiA0OTUuNTcgMzk0LjcyIDQ4Mi40NSAzOTQuNzIgNDk1LjU3Ii8+CiAgICA8cmVjdCBjbGFzcz0ic3QwIiB4PSIzOTcuMzUiIHk9IjQ4Mi40NSIgd2lkdGg9IjEzLjEyIiBoZWlnaHQ9IjEzLjEyIi8+CiAgICA8cmVjdCBjbGFzcz0ic3QwIiB4PSIzODEuNiIgeT0iNTI5LjY4IiB3aWR0aD0iMTMuMTIiIGhlaWdodD0iMTMuMTIiLz4KICAgIDxwb2x5Z29uIGNsYXNzPSJzdDAiIHBvaW50cz0iMzk0LjcyIDU1OC41NCAzODEuNiA1NDUuNDIgMzk0LjcyIDU0NS40MiAzOTQuNzIgNTU4LjU0Ii8+CiAgICA8cmVjdCBjbGFzcz0ic3QwIiB4PSIzOTcuMzUiIHk9IjU0NS40MiIgd2lkdGg9IjEzLjEyIiBoZWlnaHQ9IjEzLjEyIi8+CiAgPC9nPgo8L3N2Zz4=">
   <link rel="apple-touch-icon" href="https://cowkml.com/ogp.png">
   <meta name="description" content="COWORKMILLに掲載されているコワーキングスペースを手がけた建築家・デザイン会社の一覧。空間の作り手から、あなたにぴったりの場所を見つけよう。">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://cowkml.com/architects">
-<style>.acard-portrait,.acard-portrait img{filter:none!important;-webkit-filter:none!important;}</style>
-<script>document.addEventListener("DOMContentLoaded",function(){function fix(){document.querySelectorAll("a[target='_blank']").forEach(function(a){a.removeAttribute("target");});}fix();new MutationObserver(fix).observe(document.body||document.documentElement,{childList:true,subtree:true});});if(document.readyState!=="loading"){document.querySelectorAll("a[target='_blank']").forEach(function(a){a.removeAttribute("target");});new MutationObserver(function(){document.querySelectorAll("a[target='_blank']").forEach(function(a){a.removeAttribute("target");});}).observe(document.body||document.documentElement,{childList:true,subtree:true});}</script>
-  <!-- OGP -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="COWORKMILL — デザインで選ぶコワーキングポータルサイト">
   <meta property="og:title" content="建築家・デザイン事務所から探す｜34組が参加 — COWORKMILL">
@@ -50,253 +14,147 @@ obs.observe(document.body,{childList:true,subtree:true});
   <meta property="og:url" content="https://cowkml.com/architects">
   <meta property="og:image" content="https://cowkml.com/ogp.png">
   <meta property="og:locale" content="ja_JP">
-  <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="建築家・デザイン事務所から探す｜34組が参加 — COWORKMILL">
   <meta name="twitter:description" content="COWORKMILLに掲載されているコワーキングスペースを手がけた建築家・デザイン会社の一覧。空間の作り手から、あなたにぴったりの場所を見つけよう。">
   <meta name="twitter:image" content="https://cowkml.com/ogp.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>建築家・デザイン事務所から探す｜34組が参加 — COWORKMILL</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+  <title>建築家・デザイン事務所から探す｜34組が参加 — COWORKMILL</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --black:#0a0a0a;--white:#fff;--gray-50:#f8f8f6;--gray-100:#efefef;
-  --gray-200:#e0e0e0;--gray-400:#a0a0a0;--gray-600:#606060;
-  --brand-pink:#2BB5C8;--brand-purple:#2BB5C8;--accent-light:#e8f2fb;
-  --font-d:'Montserrat',sans-serif;--font-b:'Noto Sans JP','Montserrat',sans-serif;
+  --bg:#f8f8f6;
+  --bg-card:#ffffff;
+  --black:#0a0a0a;
+  --gray-50:#f8f8f6;
+  --gray-100:#efefef;
+  --gray-200:#e0e0e0;
+  --gray-300:#cccccc;
+  --gray-400:#a0a0a0;
+  --gray-500:#808080;
+  --gray-600:#606060;
+  --teal:#2BB5C8;
+  --teal-soft:#E5F5F8;
+  --accent-grad:linear-gradient(135deg,#79F1A4,#2BB5C8);
+  --font-d:'Montserrat',-apple-system,sans-serif;
+  --font-b:'Noto Sans JP','Montserrat',-apple-system,sans-serif;
 }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:var(--font-b);background:var(--gray-50);color:var(--black);-webkit-font-smoothing:antialiased}
+body{font-family:var(--font-b);background:var(--bg);color:var(--black);-webkit-font-smoothing:antialiased;line-height:1.6}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
 
 /* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:200;height:56px;display:flex;align-items:center;padding:0 40px;background:rgba(248,248,246,.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--gray-100)}
-.nav-logo{font-family:var(--font-d);text-decoration:none;display:inline-flex;align-items:baseline}
-.nav-logo .cw{font-size:15px;font-weight:500;background:linear-gradient(135deg,#79F1A4,#2BB5C8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-.02em}
-.nav-logo .dot{width:4px;height:4px;border-radius:50%;background:linear-gradient(135deg,#79F1A4,#2BB5C8);margin:0 3px 3px;display:inline-block;align-self:flex-end}
-.nav-logo .ml{font-size:15px;font-weight:500;background:linear-gradient(135deg,#3ecf8e,#2BB5C8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-.02em}
-.nav-center{display:flex;gap:32px;margin:0 auto}
-  .nav-center a{font-size:12px;font-weight:400;color:var(--gray-600);text-decoration:none;letter-spacing:.02em;transition:color .15s}
-  .nav-center a:hover{color:var(--black)}
-  .nav-right{margin-left:auto;display:flex;align-items:center;overflow:visible;gap:10px}
-.nav-cta{font-family:var(--font-d);font-size:11px;font-weight:600;padding:8px 16px;background:var(--black);color:#fff;border:none;cursor:pointer;border-radius:6px;letter-spacing:.02em;text-decoration:none;display:inline-block;transition:background .15s}
-.nav-cta:hover{background:#22a3b5}
+nav{position:fixed;top:0;left:0;right:0;z-index:200;height:56px;display:flex;align-items:center;padding:0 32px;background:rgba(248,248,246,.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--gray-100)}
+.nav-logo{display:inline-flex;align-items:center}
+.nav-center{display:flex;gap:28px;margin:0 auto}
+.nav-center a{font-size:12.5px;font-weight:400;color:var(--gray-600);transition:color .15s}
+.nav-center a:hover{color:var(--black)}
+.nav-right{margin-left:auto}
+.nav-cta{font-family:var(--font-d);font-size:11px;font-weight:600;padding:8px 16px;background:var(--black);color:#fff;border-radius:6px;letter-spacing:.02em;display:inline-block;transition:background .15s}
+.nav-cta:hover{background:var(--teal)}
+@media (max-width:760px){
+  nav{padding:0 16px;height:52px}
+  .nav-center{gap:16px}
+  .nav-center a{font-size:11px}
+  .nav-cta{font-size:10px;padding:7px 12px}
+}
 
 /* PAGE HEADER */
-.page-header{margin-top:56px;padding:56px 64px 40px;background:var(--white);border-bottom:1px solid var(--gray-100)}
-.page-header-inner{max-width:1100px;margin:0 auto;display:flex;align-items:flex-end;justify-content:space-between}
-.page-title{font-family:var(--font-d);font-size:36px;font-weight:200;letter-spacing:-.03em;color:var(--black);margin-bottom:6px}
-.page-sub{font-size:12px;color:var(--gray-400);line-height:1.7}
-.page-count{font-family:var(--font-d);font-size:13px;font-weight:300;color:var(--gray-400);text-align:right}
-.page-count strong{font-size:32px;font-weight:200;color:var(--black);display:block;letter-spacing:-.03em;line-height:1}
+.page-header{margin-top:56px;padding:56px 32px 36px;background:#fff;border-bottom:1px solid var(--gray-100)}
+.page-header-inner{max-width:1200px;margin:0 auto;display:flex;align-items:flex-end;justify-content:space-between;gap:32px;flex-wrap:wrap}
+.page-title{font-family:var(--font-d);font-size:38px;font-weight:200;letter-spacing:-.03em;color:var(--black);margin-bottom:8px}
+.page-title .accent{color:var(--teal)}
+.page-sub{font-size:13px;color:var(--gray-500);line-height:1.7;max-width:560px}
+.page-count{font-family:var(--font-d);font-size:13px;font-weight:300;color:var(--gray-400);text-align:right;line-height:1}
+.page-count strong{font-size:34px;font-weight:200;color:var(--black);display:block;letter-spacing:-.03em;margin-bottom:6px}
+@media (max-width:760px){
+  .page-header{margin-top:52px;padding:32px 20px 24px}
+  .page-title{font-size:26px}
+  .page-sub{font-size:12px}
+  .page-count{text-align:left}
+  .page-count strong{font-size:28px}
+}
 
-/* ALPHABET INDEX */
-.alpha-bar{background:var(--white);border-bottom:1px solid var(--gray-100);padding:12px 64px;position:sticky;top:56px;z-index:100}
-.alpha-inner{max-width:1100px;margin:0 auto;display:flex;gap:4px;flex-wrap:wrap}
-.alpha-btn{width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:11px;font-weight:500;border:1px solid var(--gray-200);border-radius:4px;cursor:pointer;color:var(--gray-400);background:none;transition:all .15s;text-decoration:none}
+/* ALPHABET BAR */
+.alpha-bar{background:#fff;border-bottom:1px solid var(--gray-100);padding:12px 32px;position:sticky;top:56px;z-index:100;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.alpha-inner{max-width:1200px;margin:0 auto;display:flex;gap:5px;flex-wrap:wrap}
+.alpha-btn{min-width:30px;height:30px;padding:0 6px;display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:11px;font-weight:500;border:1px solid var(--gray-200);border-radius:4px;color:var(--gray-400);background:none;transition:all .15s}
 .alpha-btn:hover{border-color:var(--black);color:var(--black)}
-.alpha-btn.active{background:var(--black);border-color:var(--black);color:#fff}
 .alpha-btn.disabled{opacity:.25;pointer-events:none}
-
-/* CONTENT */
-.content{max-width:1100px;margin:0 auto;padding:48px 64px 80px}
-
-/* SECTION */
-.alpha-section{margin-bottom:64px}
-.alpha-section-head{display:flex;align-items:center;gap:16px;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--gray-100)}
-.alpha-letter{font-family:var(--font-d);font-size:32px;font-weight:200;color:var(--gray-200);line-height:1;width:40px;flex-shrink:0}
-.alpha-firm-count{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--gray-400)}
-
-/* ARCHITECT CARD */
-.acard:hover /* BODY */
-.acard-style{font-size:10px;color:rgba(255,255,255,.38);letter-spacing:.04em;line-height:1.5}
-.acard-origin{font-size:9px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#2BB5C8}
-.acard:hover /* responsive */
-
-/* FOOTER STYLES */
-footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);position:relative;overflow:hidden}
-.foot-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:48px;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,.08);position:relative}
-.foot-inner{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:48px;margin-bottom:40px;padding-bottom:40px;border-bottom:1px solid var(--gray-200)}
-.foot-company{font-size:11px;color:var(--gray-400);line-height:1.8;margin-top:8px}
-.foot-logo{font-family:'Montserrat',sans-serif;display:inline-flex;align-items:baseline;gap:0;line-height:1;margin-bottom:14px}
-.foot-logo .cw{font-size:22px;font-weight:500;color:var(--black);letter-spacing:-.02em}
-.foot-logo .dot{width:5px;height:5px;border-radius:50%;background:linear-gradient(135deg,#79F1A4,#2BB5C8);margin:0 3px 3px;flex-shrink:0;display:inline-block;align-self:flex-end}
-.foot-logo .ml{font-size:22px;font-weight:500;color:var(--black);letter-spacing:-.02em}
-.foot-tagline{font-size:12px;line-height:1.8;color:var(--gray-600);max-width:240px;margin-bottom:24px}
-.foot-col-label{font-family:var(--font-display);font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gray-400);margin-bottom:16px}
-.foot-links{list-style:none;display:flex;flex-direction:column;gap:9px}
-.foot-links a{font-size:12px;color:var(--gray-600);text-decoration:none;transition:color .15s}
-.foot-links a:hover{color:var(--black)}
-.foot-links a.accent{color:#e8a0a1}
-.foot-bottom{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:rgba(255,255,255,.25)}
-.foot-bottom a{color:rgba(255,255,255,.35);text-decoration:none}
-
-
-
-@media(max-width:900px){
-  nav{padding:0 20px}
-  .page-header{padding:40px 32px 28px}
-  .page-header-inner{flex-direction:column;align-items:flex-start;gap:12px}
-  .alpha-bar{padding:12px 32px}
-  .content{padding:40px 32px 60px}
-  .foot-top{grid-template-columns:1fr 1fr}
-  .foot-inner{grid-template-columns:1fr 1fr;gap:24px}
+@media (max-width:760px){
+  .alpha-bar{top:52px;padding:10px 16px}
+  .alpha-inner{flex-wrap:nowrap;overflow-x:auto;padding-bottom:2px}
+  .alpha-btn{min-width:28px;height:28px;flex-shrink:0;font-size:10.5px}
 }
-@media(max-width:600px){
-  nav{padding:0 12px}
-  .nav-cta{font-size:10px;padding:7px 12px;white-space:nowrap}
-  .page-header{padding:28px 16px 16px}
-  .page-title{font-size:22px}
-  .page-sub{font-size:11px;line-height:1.7}
-  /* alpha-bar: 横スクロール */
-  .alpha-bar{padding:8px 16px;overflow-x:auto;-webkit-overflow-scrolling:touch}
-  .alpha-bar::-webkit-scrollbar{display:none}
-  .alpha-inner{flex-wrap:nowrap;gap:4px}
-  .alpha-btn{width:28px;height:28px;font-size:9px;flex-shrink:0}
-  /* cards */
-  .content{padding:24px 16px 48px}
+
+/* MAIN CONTENT */
+.content{max-width:1200px;margin:0 auto;padding:48px 32px 80px}
+.alpha-section{margin-bottom:56px}
+.alpha-section-head{display:flex;align-items:baseline;gap:18px;margin-bottom:24px;padding-bottom:14px;border-bottom:1px solid var(--gray-100)}
+.alpha-letter{font-family:var(--font-d);font-size:42px;font-weight:200;color:var(--gray-300);line-height:1;letter-spacing:-.04em}
+.alpha-firm-count{font-family:var(--font-d);font-size:11px;font-weight:500;letter-spacing:.1em;color:var(--gray-400);text-transform:uppercase}
+@media (max-width:760px){
+  .content{padding:32px 16px 60px}
   .alpha-section{margin-bottom:40px}
-  /* SP: カードレイアウト調整 */
-  .page-count{display:none}
-  .acard-portrait-wrap,.acard-portrait-placeholder-wrap{height:320px}
-  .acard-style{display:none}
-  /* footer */
-  footer{padding:40px 20px 24px}
-  .foot-inner{grid-template-columns:1fr;gap:16px}
-  .foot-bottom{flex-direction:column;gap:12px;text-align:center}
+  .alpha-section-head{gap:12px;margin-bottom:18px}
+  .alpha-letter{font-size:32px}
 }
 
-
-@media(max-width:600px){
-  .acard:active{border-color:#2BB5C8}
+/* GRID */
+.arch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px}
+@media (max-width:560px){
+  .arch-grid{grid-template-columns:1fr;gap:14px}
 }
 
-/* ── DARK MODE ── */
-@media(prefers-color-scheme:dark){
-  :root{
-    --black:#f0f0f0;
-    --white:#121212;
-    --gray-50:#1a1a1a;
-    --gray-100:#252525;
-    --gray-200:#333;
-    --gray-400:#888;
-    --gray-600:#aaa;
-    --gray-800:#ddd;
-    --accent-light:#0d2a2e;
-  }
-  body{background:#121212;color:#f0f0f0}
-  nav{background:rgba(18,18,18,.97);border-bottom-color:#2a2a2a}
-  .nav-cta{background:#2BB5C8!important;color:#fff!important}
-  .foot-logo .cw,.foot-logo .ml{color:#f0f0f0}
-  .card,.scard,.lcard,.rcard,.voice-post,.aside-card,.plan-item,.wtag-card{background:#1e1e1e;border-color:#333}
-  .card:hover,.scard:hover{border-color:#2BB5C8}
-  .card-name,.scard-name,.lcard-name,.space-name,.page-title,.plan-name{color:#f0f0f0}
-  .card-desc,.scard-design,.lcard-design,.space-desc,.voice-text{color:#aaa}
-  .card-price strong,.scard-price strong,.lcard-price strong{color:#f0f0f0}
-  footer{background:#1a1a1a}
-  .foot-inner{border-bottom-color:#2a2a2a}
-  .foot-tagline,.foot-company{color:#888}
-  .foot-links a{color:#888}
-  .foot-links a:hover{color:#f0f0f0}
-  .foot-bottom,.foot-bottom a{color:#555}
-  .search-box,.sf-block,.sidebar-filters{background:#1e1e1e;border-color:#333}
-  .search-box input{color:#f0f0f0}
-  .gsp-item,.gpc-item{background:#252525}
-  .om-banner{background:#0d2a2e;border-color:#0e3a40}
-  .om-title{color:#f0f0f0}
-  .hero-search{background:rgba(30,30,30,.97)}
-  .hero-search input{color:#f0f0f0}
-  .aside-card{background:#1e1e1e}
-  .aside-price{color:#f0f0f0}
-  .rcard,.fac-item{background:#1e1e1e;border-color:#333}
-  .vcard-name{color:#f0f0f0}
-  .section-label{color:#666}
-  .sec-divider{background:#2a2a2a}
-  .lang-toggle{background:#252525}
-  .lang-btn.active{background:#333;color:#f0f0f0}
-  .filter-bar,.filter-bar-inner,.alpha-bar{background:#1a1a1a;border-bottom-color:#2a2a2a}
-  .chip{border-color:#333;color:#aaa}
-  .chip:hover,.chip.on{background:#2BB5C8;border-color:#2BB5C8;color:#fff}
-  .voice-item{background:#1e1e1e}
-  .vp-textarea,.vp-nickname{background:#252525;border-color:#333;color:#f0f0f0}
-  .access-val{color:#aaa}
-  .page-header{background:#1a1a1a;border-bottom-color:#2a2a2a}
-  .alpha-section-head{border-bottom-color:#2a2a2a}
-  .alpha-letter{color:#333}
-  .alpha-btn{border-color:#333;color:#666;background:#1e1e1e}
-  .alpha-btn:hover{border-color:#f0f0f0;color:#f0f0f0}
-  .alpha-btn.active{background:#f0f0f0;border-color:#f0f0f0;color:#121212}
-  .wtag-card-bar{background:#333}
-  .sb-opt-text,.sb-cnt{color:#888}
-  .sb-group{border-bottom-color:#2a2a2a}
-  .sort-btn{border-color:#333;color:#888;background:#1e1e1e}
-  .pg-btn{border-color:#333;color:#888;background:#1e1e1e}
-  .pg-btn.on{background:#2BB5C8;color:#fff}
+/* CARD */
+.acard{display:flex;flex-direction:column;background:var(--bg-card);border:1px solid var(--gray-100);border-radius:12px;overflow:hidden;transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease;color:inherit}
+.acard:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(10,10,10,.07);border-color:rgba(43,181,200,.4)}
 
-}
-.acard-portrait-init{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:2.5rem;font-weight:700;color:#2BB5C8;background:#0a1f22}
+/* Card head: avatar + name */
+.acard-head{display:flex;align-items:center;gap:14px;padding:16px 18px;border-bottom:1px solid var(--gray-100)}
+.acard-avatar{width:60px;height:60px;border-radius:10px;flex-shrink:0;overflow:hidden;background:var(--gray-100);position:relative;display:flex;align-items:center;justify-content:center}
+.acard-avatar img{width:100%;height:100%;display:block}
+.acard-avatar.is-portrait img{object-fit:cover}
+.acard-avatar.is-logo{background:#fff;padding:6px;border:1px solid var(--gray-100)}
+.acard-avatar.is-logo img{object-fit:contain;width:100%;height:100%}
+.acard-avatar.is-init{background:linear-gradient(135deg,#E5F5F8,#F4FBFC)}
+.acard-avatar-init{font-family:var(--font-d);font-size:22px;font-weight:500;color:var(--teal);letter-spacing:.02em}
 
-.acard{display:flex;background:#0f0f0f;border-radius:10px;overflow:hidden;text-decoration:none;color:inherit;border:1px solid #1a1a1a;transition:border-color .2s,transform .2s;margin-bottom:12px}
-.acard:hover{border-color:#2BB5C8;transform:translateY(-2px)}
-.acard-portrait-wrap{width:100px;flex-shrink:0;overflow:hidden;background:#0a0a0a}
-.acard-portrait{width:100%;height:100%;object-fit:cover;filter:grayscale(100%);transition:filter .3s;display:block;min-height:120px}
-.acard:hover .acard-portrait{filter:grayscale(0%)}
-.acard-body{flex:1;padding:14px 16px;display:flex;flex-direction:column;justify-content:center;min-width:0}
-.acard-name{font-size:13px;font-weight:600;color:#f0f0f0;letter-spacing:.02em}
-.acard-firm{font-size:10px;color:#2BB5C8;margin-top:3px;letter-spacing:.03em}
-.acard-bio{font-size:10px;color:#666;margin-top:6px;line-height:1.5;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
-.acard-works{display:flex;gap:4px;margin-top:8px;flex-wrap:wrap}
-.acard-work{width:52px;height:36px;border-radius:4px;overflow:hidden;flex-shrink:0;background:#111}
-.acard-work img{width:100%;height:100%;object-fit:cover;filter:grayscale(60%);transition:filter .2s}
-.acard:hover .acard-work img{filter:grayscale(0%)}
-.acard-work-name{font-size:8px;color:#444;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:52px}
-.acard-foot{display:flex;align-items:center;padding:0 14px;flex-shrink:0}
-.acard-arrow{font-size:16px;color:#333;transition:color .2s}
-.acard:hover .acard-arrow{color:#2BB5C8}
-.arch-grid{display:flex;flex-direction:column}
-.acard-space-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}.acard-space-tag{font-size:9px;color:#888;background:#1a1a1a;border:0.5px solid #2a2a2a;border-radius:3px;padding:2px 7px;white-space:nowrap}
+.acard-meta{min-width:0;flex:1}
+.acard-name{font-size:15px;font-weight:600;color:var(--black);line-height:1.35;letter-spacing:.005em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.acard-name-en{font-family:var(--font-d);font-size:11px;font-weight:300;color:var(--gray-400);margin-top:3px;letter-spacing:.03em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-style:italic}
+.acard-firm{font-family:var(--font-d);font-size:9.5px;font-weight:600;color:var(--teal);margin-top:6px;letter-spacing:.1em;text-transform:uppercase;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* Card works (case studies thumbnails) */
+.acard-works{display:grid;gap:3px;padding:3px}
+.acard-works.count-3{grid-template-columns:repeat(3,1fr)}
+.acard-works.count-2{grid-template-columns:repeat(2,1fr)}
+.acard-works.count-1{grid-template-columns:1fr}
+.acard-works.count-0{display:none}
+
+.acard-work{position:relative;aspect-ratio:4/3;background:var(--gray-100);overflow:hidden;border-radius:6px}
+.acard-works.count-1 .acard-work{aspect-ratio:16/10}
+.acard-work img{width:100%;height:100%;object-fit:cover;filter:saturate(.85);transition:filter .35s,transform .5s}
+.acard:hover .acard-work img{filter:saturate(1.05);transform:scale(1.04)}
+.acard-work-name{position:absolute;left:0;right:0;bottom:0;padding:8px 9px 7px;font-size:10px;font-weight:500;color:#fff;background:linear-gradient(rgba(0,0,0,0),rgba(0,0,0,.62) 60%);letter-spacing:.02em;line-height:1.25;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-shadow:0 1px 2px rgba(0,0,0,.3)}
+
+/* Card foot */
+.acard-foot{display:flex;align-items:center;justify-content:space-between;padding:11px 18px 13px;border-top:1px solid var(--gray-100)}
+.acard-foot-text{font-family:var(--font-d);font-size:10.5px;letter-spacing:.06em;color:var(--gray-500)}
+.acard-foot-text strong{color:var(--black);font-weight:600;margin-right:3px}
+.acard-arrow{font-family:var(--font-d);font-size:14px;color:var(--gray-300);transition:color .2s,transform .2s}
+.acard:hover .acard-arrow{color:var(--teal);transform:translateX(4px)}
+
+/* Empty / loading state */
+.arch-loading{padding:48px 16px;text-align:center;color:var(--gray-400);font-size:13px}
+.arch-empty-cases{padding:18px;text-align:center;color:var(--gray-400);font-size:11px;background:var(--gray-50);font-family:var(--font-d);letter-spacing:.04em}
+
+/* Footer adjustments */
+footer{margin-top:0}
 </style>
-<style>
-.arch-grid{display:flex!important;flex-direction:column!important;gap:10px!important;grid-template-columns:unset!important}
-.acard{display:flex!important;align-items:stretch!important;background:#0f0f0f!important;border-radius:10px!important;overflow:hidden!important;text-decoration:none!important;border:1px solid #1a1a1a!important;min-height:110px!important;transition:border-color .2s,transform .15s!important}
-.acard:hover{border-color:#2BB5C8!important;transform:translateY(-2px)!important}
-.acard-portrait-wrap{width:120px!important;flex-shrink:0!important;overflow:hidden!important}
-.acard-portrait{width:100%!important;height:100%!important;object-fit:cover!important;filter:grayscale(100%)!important;display:block!important;min-height:110px!important;aspect-ratio:unset!important}
-.acard:hover .acard-portrait{filter:grayscale(0%)!important}
-.acard-body{flex:1!important;padding:14px 18px!important;display:flex!important;flex-direction:column!important;justify-content:center!important;order:1!important}
-.acard-name{font-size:14px!important;color:#f0f0f0!important;font-weight:600!important}
-.acard-firm{font-size:10px!important;color:#2BB5C8!important;margin-top:3px!important}
-.acard-bio{font-size:11px!important;color:#666!important;margin-top:6px!important;line-height:1.5!important}
-.acard-works{display:flex!important;flex-direction:row!important;gap:6px!important;align-items:center!important;padding:10px 14px!important;flex-shrink:0!important;order:2!important}
-.acard-work{display:none!important}
-.acard-work-thumb{width:100px!important;height:75px!important;border-radius:6px!important;overflow:hidden!important;flex-shrink:0!important}
-.acard-work-thumb img{width:100%!important;height:100%!important;object-fit:cover!important;filter:grayscale(40%)!important;display:block!important}
-.acard:hover .acard-work-thumb img{filter:grayscale(0%)!important}
-.acard-foot,.acard-origin,.acard-arrow{display:none!important}
-</style>
-<style>
-@media(max-width:768px){
-  .arch-editorial{padding:0}
-  .arch-ed-head{padding:24px 16px}
-  .arch-hero-h{font-size:28px}
-  .arch-count-num{font-size:32px}
-  .arch-ed-footer{padding:24px 16px}
-  .arch-grid{gap:8px!important}
-  .acard{flex-direction:column!important;min-height:unset!important}
-  .acard-portrait-wrap{width:100%!important;height:180px!important;order:0!important}
-  .acard-portrait{min-height:180px!important;height:180px!important}
-  .acard-body{order:1!important;padding:12px 14px!important}
-  .acard-works{order:2!important;padding:8px 14px 12px!important;flex-wrap:wrap!important}
-  .acard-work-thumb{width:70px!important;height:52px!important}
-  .acard-space-tags{flex-wrap:wrap}
-  .alpha-section{padding:0 12px}
-  .alpha-nav{padding:12px 4px;gap:4px;flex-wrap:wrap}
-  .arch-alpha-link{font-size:10px}
-}
-</style>
-
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"COWORKMILL","url":"https://cowkml.com","description":"建築家・デザイン会社が手がけたコワーキングスペースを全国から探せる検索サービス","potentialAction":{"@type":"SearchAction","target":"https://cowkml.com/spaces?q={search_term_string}","query-input":"required name=search_term_string"}}</script>
 </head>
 <body>
 
@@ -313,13 +171,14 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
   </div>
 </nav>
 
+
 <div class="page-header">
   <div class="page-header-inner">
     <div>
-      <h1 class="page-title">建築家から <span style="color:#2BB5C8">探す</span></h1>
-      <div class="page-sub">COWORKMILLに掲載されているコワーキングスペースを手がけた建築家・デザイン会社の一覧。<br>空間の作り手から、あなたにぴったりの場所を見つけよう。</div>
+      <h1 class="page-title">建築家から <span class="accent">探す</span></h1>
+      <p class="page-sub">COWORKMILL に掲載されているコワーキングスペースを手がけた建築家・デザイン会社の一覧。<br>空間の作り手から、あなたにぴったりの場所を見つけよう。</p>
     </div>
-    <div class="page-count"><strong>0</strong>Architects & Firms</div>
+    <div class="page-count"><strong id="arch-count">0</strong>Architects &amp; Firms</div>
   </div>
 </div>
 
@@ -327,189 +186,11 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
   <div class="alpha-inner" id="alpha-index"></div>
 </div>
 
-<div class="content" id="arch-content"></div>
+<main class="content" id="arch-content">
+  <div class="arch-loading">読み込み中…</div>
+</main>
 
-<script>
-const KUMA_PHOTO = 'data:image/png;base64,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';
 
-const architects = [];
-
-// DB から取得して既存エンジンで再描画
-(async function() {
-  try {
-    const SB='https://jakwntemjkwqwaqujffh.supabase.co', KEY='sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
-    const res = await fetch(SB+'/rest/v1/architects?select=id,name,name_en,firm,url,bio,portrait_url&order=name.asc',{headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}});
-    const data = await res.json();
-    if(!data||!data.length) return;
-
-    // 施設情報（画像付き）取得
-    const spRes = await fetch(SB+'/rest/v1/spaces?select=architect_id,id,name,image_main&status=eq.live&architect_id=not.is.null',{headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}});
-    const spData = await spRes.json();
-    const spCount={};
-    const spImages={};
-    (spData||[]).forEach(s=>{
-      spCount[s.architect_id]=(spCount[s.architect_id]||0)+1;
-      if(!spImages[s.architect_id]) spImages[s.architect_id]=[];
-      if(s.image_main) spImages[s.architect_id].push(s.image_main);
-    });
-
-    // 既存の group.firms 形式に変換
-    const grouped={};
-    data.forEach(a=>{
-      const initial=(a.name_en||a.name||'?')[0].toUpperCase();
-      const letter=/^[A-Z]$/.test(initial)?initial:'#';
-      if(!grouped[letter]) grouped[letter]=[];
-      const cnt=spCount[a.id]||0;
-      grouped[letter].push({
-        id: a.id,
-        name: a.name||a.name_en||'',
-        name_en: a.name_en||'',
-        href: a.url||'#',
-        origin: a.firm||'',
-        bio: a.bio||'',
-        portrait_url: a.portrait_url||'',
-        works: cnt>0?['手がけた施設 '+cnt+'件']:[]
-      });
-    });
-
-    // アーキテクト数更新(strong を直接更新)
-    const cntStrong=document.querySelector('.page-count strong');
-    if(cntStrong) cntStrong.textContent=data.length;
-    const cntEl=document.querySelector('.arch-count');
-    if(cntEl) cntEl.textContent=data.length;
-
-    // 既存 contentEl をクリア
-    const contentEl2=document.getElementById('arch-content');
-    if(!contentEl2) return;
-    contentEl2.innerHTML='';
-
-    // 既存のカードHTML生成ロジックを再現
-    Object.keys(grouped).sort().forEach(letter=>{
-      const firms=grouped[letter];
-      const sec=document.createElement('div');
-      sec.className='alpha-section';
-      sec.id='section-'+letter;
-      const head=`<div class="alpha-section-head">
-    <div class="alpha-letter">${letter}</div>
-    <div class="alpha-firm-count">${firms.length} FIRM${firms.length>1?'S':''}</div>
-  </div>`;
-      const cards=firms.map(firm=>{
-        const initials=(firm.name||'?').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
-        const portraitArea=firm.portrait_url
-          ?'<div class="acard-portrait-wrap"><img class="acard-portrait" src="'+firm.portrait_url+'" alt="'+firm.name+'"></div>'
-          :'<div class="acard-portrait-wrap"><div class="acard-portrait-init">'+initials+'</div></div>';
-        const imgs=firm.spaceImages||[];
-        const workItems=[0,1,2].map(i=>{
-          const img=imgs[i];
-          return img
-            ?'<div class="acard-work" style="background-image:url('+img+')"></div>'
-            :'<div class="acard-work"></div>';
-        }).join('');
-        return `<a class="acard" href="/architect?id=${encodeURIComponent(firm.id)}" target="_blank" rel="noopener">
-      ${portraitArea}
-      <div class="acard-works">${workItems}</div>
-      <div class="acard-body">
-        <div class="acard-name">${cwm.esc(firm.name)}</div>
-        <div class="acard-firm">${firm.origin}</div>
-        ${firm.bio?'<div class="acard-bio">'+cwm.esc(firm.bio)+'</div>':''}
-      </div>
-      <div class="acard-foot">
-        <div class="acard-origin">${firm.origin}</div>
-        <div class="acard-arrow">→</div>
-      </div>
-    </a>`;
-      }).join('');
-      sec.innerHTML=head+`
-<div class="arch-grid">${cards}</div>`;
-      contentEl2.appendChild(sec);
-    });
-
-    // アルファベットインデックス更新
-    const letters=Object.keys(grouped);
-    document.querySelectorAll('.alpha-btn').forEach(btn=>{
-      const l=btn.textContent.trim();
-      btn.classList.toggle('disabled',!letters.includes(l));
-      if(letters.includes(l)){btn.href='#section-'+l; btn.addEventListener('click',()=>{document.getElementById('section-'+l)?.scrollIntoView({behavior:'smooth'});});}
-    });
-  } catch(e){console.error('arch load:',e);}
-})();
-
-// Build alphabet index
-const letters = architects.map(a => a.letter);
-const allLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ#'.split('');
-const alphaEl = document.getElementById('alpha-index');
-allLetters.forEach(l => {
-  const btn = document.createElement('a');
-  btn.className = 'alpha-btn' + (letters.includes(l) ? '' : ' disabled');
-  btn.textContent = l;
-  if (letters.includes(l)) {
-    btn.href = '#section-' + l;
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.alpha-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-    });
-  }
-  alphaEl.appendChild(btn);
-});
-
-// Build content
-const contentEl = document.getElementById('arch-content');
-architects.forEach(group => {
-  const sec = document.createElement('div');
-  sec.className = 'alpha-section';
-  sec.id = 'section-' + group.letter;
-
-  const head = `<div class="alpha-section-head">
-    <div class="alpha-letter">${group.letter}</div>
-    <div class="alpha-firm-count">${group.firms.length} FIRM${group.firms.length > 1 ? 'S' : ''}</div>
-  </div>`;
-
-  const cards = group.firms.map(firm => {
-    const initials = firm.name.split(' ').map(w=>w[0]).slice(0,2).join('');
-    const portraitArea = firm.portrait === 'KUMA'
-      ? `<div class="acard-portrait-wrap"><img class="acard-portrait-img" src="${KUMA_PHOTO}" alt="${cwm.escAttr(firm.name)}" style="width:100%;height:100%;object-fit:cover;object-position:center top"><div class="acard-portrait-overlay"></div><div class="acard-portrait-badge">Architect</div><div class="acard-portrait-cnt">${cwm.esc(firm.spaces)} space${firm.spaces>1?'s':''}</div></div>`
-      : firm.portraitUrl
-        ? `<div class="acard-portrait-wrap"><img class="acard-portrait-img" src="${cwm.safeUrl(firm.portraitUrl)}" alt="${cwm.escAttr(firm.name)}" style="width:100%;height:100%;object-fit:cover;object-position:center top;filter:grayscale(20%)"><div class="acard-portrait-overlay"></div><div class="acard-portrait-badge">Architect</div><div class="acard-portrait-cnt">${cwm.esc(firm.spaces)} space${firm.spaces>1?'s':''}</div></div>`
-        : `<div class="acard-portrait-placeholder-wrap"><div class="acard-portrait-initials">${cwm.esc(initials)}</div><div class="acard-portrait-badge" style="position:absolute;top:12px;left:12px">Architect</div><div class="acard-portrait-cnt" style="position:absolute;bottom:12px;right:12px">${cwm.esc(firm.spaces)} space${firm.spaces>1?'s':''}</div></div>`;
-
-    const works = firm.photos.map(p => p
-      ? `<div class="acard-work" style="background-image:url('${p}')"></div>`
-      : `<div class="acard-work"></div>`
-    ).join('');
-
-    return `<a class="acard" href="${firm.href}">
-      ${portraitArea}
-      <div class="acard-works">${works}</div>
-      <div class="acard-body">
-        <div class="acard-name">${cwm.esc(firm.name)}</div>
-        <div class="acard-firm">${firm.firm}</div>
-        <div class="acard-style">${firm.style||''}</div>
-        <div class="acard-foot">
-          <div class="acard-origin">${firm.origin}</div>
-          <div class="acard-arrow">→</div>
-        </div>
-      </div>
-    </a>`;
-  }).join('');
-
-  sec.innerHTML = head + `<div class="arch-grid">${cards}</div>`;
-  contentEl.appendChild(sec);
-});
-
-// Scroll spy
-const sections = document.querySelectorAll('.alpha-section');
-const obs = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      const l = e.target.id.replace('section-', '');
-      document.querySelectorAll('.alpha-btn').forEach(b => {
-        b.classList.toggle('active', b.textContent === l);
-      });
-    }
-  });
-}, {rootMargin:'-20% 0px -70% 0px'});
-sections.forEach(s => obs.observe(s));
-</script>
 <footer>
   <div class="foot-inner">
     <div>
@@ -559,172 +240,265 @@ sections.forEach(s => obs.observe(s));
     </div>
   </div>
 </footer>
+
 <script src="coworkmill-features.js"></script>
 <script>
+
 (function(){
-  async function injectSpacePhotos(){
-    var cards = document.querySelectorAll('a.acard[href*="/architect"]');
-    if(!cards.length){ setTimeout(injectSpacePhotos, 500); return; }
-    for(var i=0;i<cards.length;i++){
-      var card = cards[i];
-      var href = card.getAttribute('href')||'';
-      var m = href.match(/id=([a-f0-9-]+)/);
-      if(!m) continue;
-      var archId = m[1];
-      var worksEl = card.querySelector('.acard-works');
-      if(!worksEl) continue;
-      try{
-        var sr = await fetch('https://jakwntemjkwqwaqujffh.supabase.co/rest/v1/spaces?select=id,name&architect_id=eq.'+archId+'&status=eq.live',
-          {headers:{'apikey':'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ','Authorization':'Bearer sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ'}});
-        var spaces = await sr.json();
-        if(!Array.isArray(spaces)||!spaces.length) continue;
-        worksEl.innerHTML='';
-        for(var j=0;j<spaces.length&&j<3;j++){
-          var sp = spaces[j];
-          var lr = await fetch('https://jakwntemjkwqwaqujffh.supabase.co/storage/v1/object/list/space-images',{
-            method:'POST',
-            headers:{'apikey':'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ','Authorization':'Bearer sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ','Content-Type':'application/json'},
-            body:JSON.stringify({prefix:sp.id+'/',limit:1})
-          });
-          var files = await lr.json();
-          if(!Array.isArray(files)||!files.length) continue;
-          var url = 'https://jakwntemjkwqwaqujffh.supabase.co/storage/v1/object/public/space-images/'+sp.id+'/'+files[0].name;
-          var wrap = document.createElement('div');
-          wrap.style.cssText='display:flex;flex-direction:column;align-items:center';
-          var img = document.createElement('img');
-          img.src = url;
-          img.style.cssText='width:52px;height:36px;object-fit:cover;border-radius:4px;filter:grayscale(60%);transition:filter .2s;display:block';
-          img.onerror = function(){this.parentElement.style.display='none';};
-          var nm = document.createElement('div');
-          nm.style.cssText='font-size:7px;color:#444;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:52px;text-align:center';
-          nm.textContent = sp.name;
-          wrap.appendChild(img);
-          wrap.appendChild(nm);
-          worksEl.appendChild(wrap);
-        }
-      }catch(e){}
+  'use strict';
+  var SB = 'https://jakwntemjkwqwaqujffh.supabase.co';
+  var KEY = 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+  var HDR = { apikey: KEY, Authorization: 'Bearer ' + KEY };
+
+  function esc(s){ return (s==null?'':String(s)).replace(/[&<>"']/g, function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+  }); }
+
+  function fetchJSON(url){
+    return fetch(url, { headers: HDR }).then(function(r){ return r.json(); });
+  }
+
+  /**
+   * Detect whether an image is a "portrait" (taller than wide) or a
+   * "logo / square" (close to square or wider). Logos get a white background
+   * with padding (object-fit:contain). Portraits fill the frame (cover).
+   */
+  function classifyAvatar(img, wrap){
+    var w = img.naturalWidth || 1;
+    var h = img.naturalHeight || 1;
+    var ratio = w / h;
+    if (ratio < 0.92) {
+      wrap.classList.add('is-portrait');
+    } else {
+      wrap.classList.add('is-logo');
     }
   }
-  window.addEventListener('load', function(){ setTimeout(injectSpacePhotos, 800); });
+
+  function renderAvatar(arch){
+    var wrap = document.createElement('div');
+    wrap.className = 'acard-avatar';
+    if (arch.portrait_url) {
+      var img = document.createElement('img');
+      img.alt = arch.name || arch.name_en || '';
+      img.loading = 'lazy';
+      img.onload = function(){ classifyAvatar(this, wrap); };
+      img.onerror = function(){
+        wrap.innerHTML = '';
+        wrap.classList.remove('is-portrait','is-logo');
+        wrap.classList.add('is-init');
+        var ini = document.createElement('div');
+        ini.className = 'acard-avatar-init';
+        ini.textContent = ((arch.name_en || arch.name || '?').trim()[0] || '?').toUpperCase();
+        wrap.appendChild(ini);
+      };
+      img.src = arch.portrait_url;
+      wrap.appendChild(img);
+    } else {
+      wrap.classList.add('is-init');
+      var ini = document.createElement('div');
+      ini.className = 'acard-avatar-init';
+      ini.textContent = ((arch.name_en || arch.name || '?').trim()[0] || '?').toUpperCase();
+      wrap.appendChild(ini);
+    }
+    return wrap;
+  }
+
+  function renderCard(arch, spaces){
+    var a = document.createElement('a');
+    a.className = 'acard';
+    a.href = '/architect?id=' + encodeURIComponent(arch.id);
+
+    // Head
+    var head = document.createElement('div');
+    head.className = 'acard-head';
+    head.appendChild(renderAvatar(arch));
+
+    var meta = document.createElement('div');
+    meta.className = 'acard-meta';
+    var nameJa = arch.name || arch.name_en || '';
+    var nameEn = arch.name_en || '';
+    var firm = arch.firm || '';
+    var nameDiv = document.createElement('div');
+    nameDiv.className = 'acard-name';
+    nameDiv.textContent = nameJa;
+    meta.appendChild(nameDiv);
+    if (nameEn && nameEn !== nameJa) {
+      var enDiv = document.createElement('div');
+      enDiv.className = 'acard-name-en';
+      enDiv.textContent = nameEn;
+      meta.appendChild(enDiv);
+    }
+    if (firm && firm !== nameJa) {
+      var firmDiv = document.createElement('div');
+      firmDiv.className = 'acard-firm';
+      firmDiv.textContent = firm;
+      meta.appendChild(firmDiv);
+    }
+    head.appendChild(meta);
+    a.appendChild(head);
+
+    // Works (case studies)
+    var showSpaces = (spaces || []).slice(0, 3);
+    var works = document.createElement('div');
+    works.className = 'acard-works count-' + showSpaces.length;
+    if (showSpaces.length === 0) {
+      var empty = document.createElement('div');
+      empty.className = 'arch-empty-cases';
+      empty.textContent = 'CASE STUDIES — coming soon';
+      a.appendChild(empty);
+    } else {
+      showSpaces.forEach(function(sp){
+        var w = document.createElement('div');
+        w.className = 'acard-work';
+        if (sp.image_main) {
+          var img = document.createElement('img');
+          img.src = sp.image_main;
+          img.alt = sp.name || '';
+          img.loading = 'lazy';
+          img.onerror = function(){ this.style.display = 'none'; };
+          w.appendChild(img);
+        }
+        if (sp.name) {
+          var lbl = document.createElement('div');
+          lbl.className = 'acard-work-name';
+          lbl.textContent = sp.name;
+          w.appendChild(lbl);
+        }
+        works.appendChild(w);
+      });
+      a.appendChild(works);
+    }
+
+    // Foot
+    var foot = document.createElement('div');
+    foot.className = 'acard-foot';
+    var ft = document.createElement('div');
+    ft.className = 'acard-foot-text';
+    var n = (spaces || []).length;
+    if (n > 0) {
+      ft.innerHTML = '<strong>' + n + '</strong> 件の事例';
+    } else {
+      ft.textContent = '掲載準備中';
+    }
+    foot.appendChild(ft);
+    var arrow = document.createElement('div');
+    arrow.className = 'acard-arrow';
+    arrow.textContent = '→';
+    foot.appendChild(arrow);
+    a.appendChild(foot);
+
+    return a;
+  }
+
+  function groupByLetter(architects){
+    var groups = {};
+    architects.forEach(function(a){
+      var src = (a.name_en || a.name || '?').trim();
+      var initial = src ? src[0].toUpperCase() : '#';
+      var letter = /^[A-Z]$/.test(initial) ? initial : '#';
+      if (!groups[letter]) groups[letter] = [];
+      groups[letter].push(a);
+    });
+    return groups;
+  }
+
+  function buildAlphaIndex(activeLetters){
+    var bar = document.getElementById('alpha-index');
+    if (!bar) return;
+    bar.innerHTML = '';
+    var letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ#'.split('');
+    letters.forEach(function(L){
+      var btn = document.createElement('a');
+      btn.className = 'alpha-btn' + (activeLetters.indexOf(L) === -1 ? ' disabled' : '');
+      btn.textContent = L;
+      if (activeLetters.indexOf(L) !== -1) {
+        btn.href = '#section-' + L;
+        btn.addEventListener('click', function(ev){
+          ev.preventDefault();
+          var t = document.getElementById('section-' + L);
+          if (t) t.scrollIntoView({ behavior:'smooth', block:'start' });
+        });
+      }
+      bar.appendChild(btn);
+    });
+  }
+
+  async function load(){
+    var content = document.getElementById('arch-content');
+    if (!content) return;
+    try {
+      var [archs, spaces] = await Promise.all([
+        fetchJSON(SB + '/rest/v1/architects?select=id,name,name_en,firm,url,bio,portrait_url&order=name.asc'),
+        fetchJSON(SB + '/rest/v1/spaces?select=architect_id,id,name,image_main&status=eq.live&architect_id=not.is.null')
+      ]);
+      if (!Array.isArray(archs) || !archs.length) {
+        content.innerHTML = '<div class="arch-loading">建築家データがありません</div>';
+        return;
+      }
+      // Group spaces by architect_id
+      var spacesByArch = {};
+      (Array.isArray(spaces) ? spaces : []).forEach(function(sp){
+        var key = sp.architect_id;
+        if (!spacesByArch[key]) spacesByArch[key] = [];
+        spacesByArch[key].push(sp);
+      });
+
+      // Update count
+      var cntEl = document.getElementById('arch-count');
+      if (cntEl) cntEl.textContent = archs.length;
+
+      // Group by letter
+      var groups = groupByLetter(archs);
+      var sortedLetters = Object.keys(groups).sort(function(a,b){
+        if (a === '#') return 1;
+        if (b === '#') return -1;
+        return a < b ? -1 : 1;
+      });
+
+      buildAlphaIndex(sortedLetters);
+
+      // Render
+      content.innerHTML = '';
+      sortedLetters.forEach(function(L){
+        var sec = document.createElement('section');
+        sec.className = 'alpha-section';
+        sec.id = 'section-' + L;
+        var firms = groups[L];
+
+        var head = document.createElement('div');
+        head.className = 'alpha-section-head';
+        var letter = document.createElement('div');
+        letter.className = 'alpha-letter';
+        letter.textContent = L;
+        head.appendChild(letter);
+        var cnt = document.createElement('div');
+        cnt.className = 'alpha-firm-count';
+        cnt.textContent = firms.length + ' Firm' + (firms.length > 1 ? 's' : '');
+        head.appendChild(cnt);
+        sec.appendChild(head);
+
+        var grid = document.createElement('div');
+        grid.className = 'arch-grid';
+        firms.forEach(function(arch){
+          grid.appendChild(renderCard(arch, spacesByArch[arch.id] || []));
+        });
+        sec.appendChild(grid);
+
+        content.appendChild(sec);
+      });
+    } catch (e) {
+      console.error('architects load failed', e);
+      content.innerHTML = '<div class="arch-loading">読み込みに失敗しました。少し時間をおいて再読込してください。</div>';
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', load);
+  } else {
+    load();
+  }
 })();
+
 </script>
-
-
-<script>(function(){async function go(){var cc=document.querySelectorAll('a.acard[href*="id="]');if(!cc.length){setTimeout(go,300);return;}for(var c of cc){var m=(c.getAttribute('href')||'').match(/id=([\w-]+)/);if(!m)continue;var n=c.querySelector('.acard-name'),f=c.querySelector('.acard-firm');if(n&&f&&n.textContent.trim()===f.textContent.trim())f.style.display='none';var w=c.querySelector('.acard-works'),bio=c.querySelector('.acard-bio');if(!w)continue;w.innerHTML='';try{var r=await fetch('https://jakwntemjkwqwaqujffh.supabase.co/rest/v1/spaces?select=id,name&architect_id=eq.'+m[1]+'&status=eq.live',{headers:{'apikey':'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ','Authorization':'Bearer sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ'}});var sp=await r.json();if(!Array.isArray(sp)||!sp.length)continue;if(bio&&!c.querySelector('.acard-space-tags')){var td=document.createElement('div');td.className='acard-space-tags';sp.forEach(function(s){var t=document.createElement('span');t.className='acard-space-tag';t.textContent=s.name;td.appendChild(t);});bio.insertAdjacentElement('afterend',td);}for(var i=0;i<Math.min(sp.length,3);i++){var s=sp[i];var lr=await fetch('https://jakwntemjkwqwaqujffh.supabase.co/storage/v1/object/list/space-images',{method:'POST',headers:{'apikey':'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ','Authorization':'Bearer sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ','Content-Type':'application/json'},body:JSON.stringify({prefix:s.id+'/',limit:1})});var fl=await lr.json();if(!Array.isArray(fl)||!fl.length)continue;var d=document.createElement('div');d.className='acard-work-thumb';var img=document.createElement('img');img.src='https://jakwntemjkwqwaqujffh.supabase.co/storage/v1/object/public/space-images/'+s.id+'/'+fl[0].name;img.style.cssText='width:100%;height:100%;object-fit:cover;display:block';img.onerror=function(){this.closest('.acard-work-thumb').remove();};d.appendChild(img);w.appendChild(d);}}catch(e){}}}// カウンター更新
-    fetch('https://jakwntemjkwqwaqujffh.supabase.co/rest/v1/architects?select=id',{headers:{'apikey':'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ','Authorization':'Bearer sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ'}})
-    .then(function(r){return r.json();}).then(function(a){
-      var el=document.querySelector('.arch-count,[class*="count"]');
-      if(el&&Array.isArray(a)) el.textContent=a.length;
-    }).catch(function(){});
-    window.addEventListener('load',function(){setTimeout(go,200);});})();</script>
-
-<style>
-/* === 建築家事例施設サムネ マガジンスタイル(2026/04/29) === */
-.acard {
-  background: linear-gradient(135deg, #0f0f0f 0%, #141414 100%) !important;
-  box-shadow: 0 1px 3px rgba(0,0,0,.4), 0 0 0 1px rgba(255,255,255,.04) !important;
-  border: 1px solid rgba(255,255,255,.06) !important;
-  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease !important;
-}
-.acard:hover {
-  transform: translateY(-2px) !important;
-  box-shadow: 0 8px 24px rgba(0,0,0,.5), 0 0 0 1px rgba(43,181,200,.4) !important;
-  border-color: rgba(43,181,200,.3) !important;
-}
-.acard-works {
-  display: grid !important;
-  grid-template-columns: 1.5fr 1fr 1fr !important;
-  grid-template-rows: 1fr 1fr !important;
-  gap: 6px !important;
-  padding: 14px !important;
-  width: 380px !important;
-  height: 160px !important;
-  flex-shrink: 0 !important;
-  align-items: stretch !important;
-}
-.acard-work-thumb {
-  width: 100% !important;
-  height: 100% !important;
-  border-radius: 8px !important;
-  overflow: hidden !important;
-  position: relative !important;
-  background: #1a1a1a !important;
-  box-shadow: 0 2px 6px rgba(0,0,0,.3) !important;
-  transition: transform .25s ease, box-shadow .25s ease !important;
-}
-.acard-work-thumb:nth-child(1) {
-  grid-row: 1 / 3 !important;
-  grid-column: 1 / 2 !important;
-}
-.acard-work-thumb:nth-child(2) { grid-row: 1; grid-column: 2; }
-.acard-work-thumb:nth-child(3) { grid-row: 1; grid-column: 3; }
-.acard-work-thumb:nth-child(4) { grid-row: 2; grid-column: 2; }
-.acard-work-thumb:nth-child(5) { grid-row: 2; grid-column: 3; }
-.acard-work-thumb:nth-child(n+6) { display: none !important; }
-.acard-work-thumb img {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
-  filter: grayscale(20%) brightness(.92) !important;
-  transition: filter .3s ease, transform .4s ease !important;
-}
-.acard:hover .acard-work-thumb img {
-  filter: grayscale(0%) brightness(1) !important;
-}
-.acard-work-thumb:hover img {
-  transform: scale(1.05) !important;
-}
-.acard-work-thumb::after {
-  content: '' !important;
-  position: absolute !important;
-  inset: 0 !important;
-  background: linear-gradient(180deg, transparent 60%, rgba(0,0,0,.4) 100%) !important;
-  pointer-events: none !important;
-  opacity: 0 !important;
-  transition: opacity .3s ease !important;
-}
-.acard:hover .acard-work-thumb::after { opacity: 1 !important; }
-
-/* +5 等の追加件数バッジ用 */
-.acard-work-more {
-  width: 100% !important; height: 100% !important;
-  border-radius: 8px !important;
-  background: rgba(43,181,200,.08) !important;
-  border: 1px dashed rgba(43,181,200,.3) !important;
-  display: flex !important; align-items: center !important; justify-content: center !important;
-  font-size: 13px !important; font-weight: 600 !important;
-  color: #2BB5C8 !important;
-}
-
-/* レスポンシブ - SP では grid 解除して横スクロール */
-@media (max-width: 768px) {
-  .acard-works {
-    width: 100% !important;
-    height: auto !important;
-    display: flex !important;
-    grid-template-columns: none !important;
-    grid-template-rows: none !important;
-    overflow-x: auto !important;
-    flex-wrap: nowrap !important;
-    -webkit-overflow-scrolling: touch !important;
-    padding: 10px 14px !important;
-  }
-  .acard-work-thumb {
-    width: 110px !important;
-    height: 82px !important;
-    flex-shrink: 0 !important;
-  }
-  .acard-work-thumb:nth-child(1) {
-    grid-row: auto !important;
-    grid-column: auto !important;
-    width: 110px !important;
-  }
-  .acard-work-thumb:nth-child(n+6) { display: block !important; }
-}
-</style>
-<link rel="stylesheet" href="/shared/sp-nav.css">
-<script src="/shared/sp-nav.js" defer></script>
-  <script src="/shared/cwm-security.js" defer></script>
-
 </body>
 </html>
