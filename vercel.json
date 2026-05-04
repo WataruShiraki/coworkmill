@@ -62,19 +62,11 @@
     },
     {
       "source": "/coworkmill-journal",
-      "destination": "/journal/index.html"
-    },
-    {
-      "source": "/journal/index",
-      "destination": "/journal/index.html"
-    },
-    {
-      "source": "/journal/article",
-      "destination": "/journal/article.html"
+      "destination": "/journal"
     },
     {
       "source": "/journal/:slug",
-      "destination": "/journal/article.html?slug=:slug"
+      "destination": "/journal/article?slug=:slug"
     }
   ],
   "cleanUrls": true

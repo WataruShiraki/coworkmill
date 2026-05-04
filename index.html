@@ -126,6 +126,8 @@ try{
 var r=await fetch(S+"/rest/v1/architects?select=id,name,name_en,firm,portrait_url",{headers:{"apikey":K,"Authorization":"Bearer "+K}});
 var archs=await r.json();
 if(!Array.isArray(archs)||!archs.length)return;
+// ランダム順表示 (Fisher-Yates shuffle) - 全建築家に平等な露出と偶発的な出会いを提供
+for(var s=archs.length-1;s>0;s--){var rj=Math.floor(Math.random()*(s+1));var tmp=archs[s];archs[s]=archs[rj];archs[rj]=tmp;}
 var grid=document.createElement("div");
 grid.className="arch-new-grid";
 for(var i=0;i<archs.length;i++){
