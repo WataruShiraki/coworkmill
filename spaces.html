@@ -913,7 +913,7 @@ let allSpaces = [];
 
 async function loadSpaces() {
   try {
-    const res = await fetch(SUPABASE_URL_SP + '/rest/v1/spaces?select=id,name,area,prefecture,plan,status,image_main,images,description,workstyle_tags,architect_name,architect_firm,vibe,price_dropin,price_dropin_hour,price_dropin_day,price_monthly_amount,price_monthly_max,facilities,created_at&status=eq.live' + (window.areaParam ? '&area=eq.' + encodeURIComponent(window.areaParam) : '') + '&order=created_at.desc', {
+    const res = await fetch(SUPABASE_URL_SP + '/rest/v1/spaces?select=id,name,area,prefecture,plan,status,image_main,images,description,workstyle_tags,architect_name,architect_firm,vibe,price_dropin,price_dropin_hour,price_dropin_day,price_monthly_amount,price_monthly_max,facilities,created_at,slug&status=eq.live' + (window.areaParam ? '&area=eq.' + encodeURIComponent(window.areaParam) : '') + '&order=created_at.desc', {
       headers: { 'apikey': SUPABASE_KEY_SP, 'Authorization': 'Bearer ' + SUPABASE_KEY_SP }
     });
     const data = await res.json();
@@ -955,7 +955,7 @@ function makeCard(d, i, type) {
   const city = (d.area ? d.area + ' / ' : '') + pref;
   const img = d.image_main || '';
   const isPick = d.plan === 'pro';
-  const href = '/detail?id=' + encodeURIComponent(d.id);
+  const href = d.slug ? '/space/' + encodeURIComponent(d.slug) : '/detail?id=' + encodeURIComponent(d.id);
   var _ph=d.price_dropin_hour,_pd=d.price_dropin_day,_pm=d.price_monthly_amount,_pmx=d.price_monthly_max;
   const price = (function(){
     if(_ph) return '¥' + _ph.toLocaleString('ja-JP') + ' / 時間〜';

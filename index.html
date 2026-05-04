@@ -956,7 +956,7 @@ const TOP_PREF_MAP={'北海道':'HOKKAIDO','青森県':'AOMORI','岩手県':'IWA
 async function loadTopData() {
 
   try {
-    const res = await fetch(SUPABASE_URL_TOP + '/rest/v1/spaces?select=id,name,area,prefecture,plan,status,image_main,architect_name,architect_id&status=eq.live&plan=eq.pro&order=created_at.desc', {
+    const res = await fetch(SUPABASE_URL_TOP + '/rest/v1/spaces?select=id,name,area,prefecture,plan,status,image_main,architect_name,architect_id,slug&status=eq.live&plan=eq.pro&order=created_at.desc', {
       headers: { 'apikey': SUPABASE_KEY_TOP, 'Authorization': 'Bearer ' + SUPABASE_KEY_TOP }
     });
     const spaces = await res.json();
@@ -1008,7 +1008,7 @@ async function loadTopData() {
         const city = (s.area ? s.area + ' / ' : '') + pref;
         const img = s.image_main || '';
         const isPick = s.plan === 'pro';
-        return '<a class="card" href="/detail?id=' + encodeURIComponent(s.id) + '" data-arch-id="' + cwm.escAttr(s.architect_id||'') + '" style="animation-delay:' + (i*0.08) + 's">' +
+        return '<a class="card" href="' + (s.slug ? '/space/' + encodeURIComponent(s.slug) : '/detail?id=' + encodeURIComponent(s.id)) + '" data-arch-id="' + cwm.escAttr(s.architect_id||'') + '" style="animation-delay:' + (i*0.08) + 's">' +
           '<div class="card-img" style="' + (img ? 'background-image:url(\'' + cwm.safeUrl(img) + '\')' : 'background:#1a1a2e') + '">' +
           (isPick ? '<span class="pick-badge">PICK</span>' : '') +
           '</div>' +
@@ -1026,10 +1026,10 @@ async function loadTopData() {
     if (heroTiles && live.length > 0) {
       const doubled = [...live, ...live];
       heroTiles.innerHTML = doubled.map(s =>
-        '<div class="hero-tile" data-id="' + cwm.escAttr(s.id) + '">' + cwm.esc(s.name || '') + '</div>'
+        '<div class="hero-tile" data-id="' + cwm.escAttr(s.id) + '" data-slug="' + cwm.escAttr(s.slug || '') + '">' + cwm.esc(s.name || '') + '</div>'
       ).join('');
       heroTiles.querySelectorAll('.hero-tile[data-id]').forEach(function(el){
-        el.addEventListener('click', function(){ location.href = '/detail?id=' + encodeURIComponent(el.dataset.id); });
+        el.addEventListener('click', function(){ location.href = el.dataset.slug ? '/space/' + encodeURIComponent(el.dataset.slug) : '/detail?id=' + encodeURIComponent(el.dataset.id); });
       });
     }
 
@@ -1059,7 +1059,7 @@ async function loadTopData() {
         const city = (s.area ? s.area + ' / ' : '') + pref;
         const img = s.image_main || '';
         const vibes = Array.isArray(s.vibe) ? s.vibe : (s.vibe ? [s.vibe] : []);
-        return '<a class="gcard" data-arch-id="' + cwm.escAttr(s.architect_id||'') + '" href="/detail?id=' + encodeURIComponent(s.id) + '">' +
+        return '<a class="gcard" data-arch-id="' + cwm.escAttr(s.architect_id||'') + '" href="' + (s.slug ? '/space/' + encodeURIComponent(s.slug) : '/detail?id=' + encodeURIComponent(s.id)) + '">' +
           '<div class="gcard-img" style="' + (img ? 'background-image:url(\'' + cwm.safeUrl(img) + '\')' : 'background:#1a1a2e') + '"></div>' +
           '<div class="gcard-body">' +
             '<div class="gcard-city">' + cwm.esc(city) + '</div>' +
@@ -1078,7 +1078,7 @@ async function loadTopData() {
       const shuffled = [...withImg].sort(() => Math.random() - 0.5).slice(0, 8);
       shuffled.forEach(s => {
         const a = document.createElement('a');
-        a.href = '/detail?id=' + s.id;
+        a.href = s.slug ? '/space/' + encodeURIComponent(s.slug) : '/detail?id=' + s.id;
         a.title = s.name;
         a.style.cssText = 'display:block;aspect-ratio:1/1;border-radius:8px;overflow:hidden;background:#111;position:relative;cursor:pointer';
         a.innerHTML = '<div style="position:absolute;inset:0;background:url(\'' + cwm.safeUrl(s.image_main) + '\') center/cover;transition:transform .4s"></div>' +

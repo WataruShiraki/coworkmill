@@ -525,6 +525,7 @@ function resetVibeUI(){
       <div class="sec-h"><div><div class="sec-ht">基本情報</div></div></div>
       <div class="sec-b">
         <div class="fr full"><div class="fg"><div class="fl">施設名<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><input class="fin" id="fn" value=""></div></div>
+        <div class="fr full"><div class="fg"><div class="fl">URL用スラッグ <span style="font-size:10px;color:var(--g400);font-weight:400;margin-left:4px">（公開URLの最後の部分。英小文字・数字・ハイフン）</span></div><input class="fin" id="fslug" placeholder="例：business-airport-aoyama" pattern="[a-z0-9-]+" autocomplete="off" value=""><div id="fslug-preview" style="font-size:11px;color:var(--g400);margin-top:6px;font-family:monospace"></div></div></div>
         <div class="fr"><div class="fg"><div class="fl">都道府県<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><select class="fin" id="fc" style="cursor:pointer"><option value="">選択してください</option><option value="北海道">北海道</option><option value="青森県">青森県</option><option value="岩手県">岩手県</option><option value="宮城県">宮城県</option><option value="秋田県">秋田県</option><option value="山形県">山形県</option><option value="福島県">福島県</option><option value="茨城県">茨城県</option><option value="栃木県">栃木県</option><option value="群馬県">群馬県</option><option value="埼玉県">埼玉県</option><option value="千葉県">千葉県</option><option value="東京都">東京都</option><option value="神奈川県">神奈川県</option><option value="新潟県">新潟県</option><option value="富山県">富山県</option><option value="石川県">石川県</option><option value="福井県">福井県</option><option value="山梨県">山梨県</option><option value="長野県">長野県</option><option value="岐阜県">岐阜県</option><option value="静岡県">静岡県</option><option value="愛知県">愛知県</option><option value="三重県">三重県</option><option value="滋賀県">滋賀県</option><option value="京都府">京都府</option><option value="大阪府">大阪府</option><option value="兵庫県">兵庫県</option><option value="奈良県">奈良県</option><option value="和歌山県">和歌山県</option><option value="鳥取県">鳥取県</option><option value="島根県">島根県</option><option value="岡山県">岡山県</option><option value="広島県">広島県</option><option value="山口県">山口県</option><option value="徳島県">徳島県</option><option value="香川県">香川県</option><option value="愛媛県">愛媛県</option><option value="高知県">高知県</option><option value="福岡県">福岡県</option><option value="佐賀県">佐賀県</option><option value="長崎県">長崎県</option><option value="熊本県">熊本県</option><option value="大分県">大分県</option><option value="宮崎県">宮崎県</option><option value="鹿児島県">鹿児島県</option><option value="沖縄県">沖縄県</option></select></div></div>
         <div class="fr"><div class="fg"><div class="fl">市区町村<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><input class="fin" id="f-city" placeholder="例）港区" value=""></div></div>
         <div class="fr full"><div class="fg"><div class="fl">町名・番地<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><input class="fin" id="fad" placeholder="例：1-1-1 ミルビル4F（番地・建物名）" value=""></div></div>
@@ -727,6 +728,7 @@ function resetVibeUI(){
       <div class="sec-h"><div><div class="sec-ht">基本情報（新規施設）</div></div></div>
       <div class="sec-b">
         <div class="fr full"><div class="fg"><div class="fl">施設名<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><input class="fin" id="nfn" placeholder="例：MILLOFFICE 渋谷"></div></div>
+        <div class="fr full"><div class="fg"><div class="fl">URL用スラッグ <span style="font-size:10px;color:var(--g400);font-weight:400;margin-left:4px">（公開URLの最後の部分。英小文字・数字・ハイフンのみ）</span></div><input class="fin" id="nfslug" placeholder="例：milloffice-shibuya" pattern="[a-z0-9-]+" autocomplete="off"><div id="nfslug-preview" style="font-size:11px;color:var(--g400);margin-top:6px;font-family:monospace"></div></div></div>
         <div class="fr"><div class="fg"><div class="fl">都道府県<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><select class="fin" id="nfc" style="cursor:pointer"><option value="">選択してください</option><option value="北海道">北海道</option><option value="青森県">青森県</option><option value="岩手県">岩手県</option><option value="宮城県">宮城県</option><option value="秋田県">秋田県</option><option value="山形県">山形県</option><option value="福島県">福島県</option><option value="茨城県">茨城県</option><option value="栃木県">栃木県</option><option value="群馬県">群馬県</option><option value="埼玉県">埼玉県</option><option value="千葉県">千葉県</option><option value="東京都">東京都</option><option value="神奈川県">神奈川県</option><option value="新潟県">新潟県</option><option value="富山県">富山県</option><option value="石川県">石川県</option><option value="福井県">福井県</option><option value="山梨県">山梨県</option><option value="長野県">長野県</option><option value="岐阜県">岐阜県</option><option value="静岡県">静岡県</option><option value="愛知県">愛知県</option><option value="三重県">三重県</option><option value="滋賀県">滋賀県</option><option value="京都府">京都府</option><option value="大阪府">大阪府</option><option value="兵庫県">兵庫県</option><option value="奈良県">奈良県</option><option value="和歌山県">和歌山県</option><option value="鳥取県">鳥取県</option><option value="島根県">島根県</option><option value="岡山県">岡山県</option><option value="広島県">広島県</option><option value="山口県">山口県</option><option value="徳島県">徳島県</option><option value="香川県">香川県</option><option value="愛媛県">愛媛県</option><option value="高知県">高知県</option><option value="福岡県">福岡県</option><option value="佐賀県">佐賀県</option><option value="長崎県">長崎県</option><option value="熊本県">熊本県</option><option value="大分県">大分県</option><option value="宮崎県">宮崎県</option><option value="鹿児島県">鹿児島県</option><option value="沖縄県">沖縄県</option></select></div><div class="fg"><div class="fl">市区町村<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><input class="fin" id="nf-city" placeholder="例：渋谷区"></div></div>
         <div class="fr full"><div class="fg"><div class="fl">町名・番地<span style="font-size:9px;font-weight:600;color:#ef4444;background:#fef2f2;padding:2px 5px;border-radius:3px;margin-left:4px;letter-spacing:.02em;">必須</span></div><input class="fin" id="nfad" placeholder="例：1-1-1 ミルビル4F"></div></div>
         <div id="addr-map-anchor-new"></div>
@@ -1504,6 +1506,7 @@ function collectFormData() {
     smoking:         g('nf-smoking', 'smoking'),
     contact_name:    g('nf-contact-name'),
     contact_email:   g('nf-contact-email'),
+    slug:            (function(){var s=g('nfslug','fslug');if(!s)return null;return s.toLowerCase().replace(/[^a-z0-9-]/g,'').replace(/-+/g,'-').replace(/^-|-$/g,'')||null;})(),
   };
 }
 
@@ -1573,6 +1576,9 @@ async function loadSpaceDetail(f) {
     const d = rows[0];
     const sv = (id, val) => { const el = document.getElementById(id); if(el && val) el.value = val; };
     sv('fn',   d.name);
+    sv('fslug', d.slug);
+    // 公開URLプレビュー更新
+    (function(){var el=document.getElementById('fslug-preview');if(el)el.textContent=d.slug?'公開URL: cowkml.com/space/'+d.slug:'スラッグ未設定（保存後に自動設定可能）';})();
     sv('fc',   d.prefecture);
     sv('fa',   d.area);
     (function(){var a=d.address||'';var m=a.match(/^(.+?[\u90fd\u9053\u5e9c\u770c])(.+?[\u5e02\u533a\u753a\u6751\u90e1])(.*)/);if(m){sv('f-city',m[2].trim());sv('fad',m[3].trim());}else{sv('f-city','');sv('fad',a);}})();
@@ -3762,6 +3768,45 @@ window.moveAdminMapTo = function(anchorId) {
   setTimeout(rebuildArchSelectedInner, 100);
   setTimeout(rebuildArchSelectedInner, 800);
   setTimeout(rebuildArchSelectedInner, 2000);
+})();
+
+/* ── slug auto-format & URL preview ───────────────── */
+(function(){
+  function sanitize(s){return (s||'').toLowerCase().replace(/\s+/g,'-').replace(/[^a-z0-9-]/g,'').replace(/-+/g,'-').replace(/^-|-$/g,'');}
+  function updatePreview(slugId, previewId){
+    var ip=document.getElementById(slugId);var pv=document.getElementById(previewId);
+    if(!ip||!pv)return;
+    var v=sanitize(ip.value);
+    pv.textContent=v?'公開URL: cowkml.com/space/'+v:'スラッグ未設定';
+    pv.style.color=v?'var(--g400)':'#94a3b8';
+  }
+  function bindSlug(slugId, previewId){
+    var ip=document.getElementById(slugId);if(!ip)return;
+    ip.addEventListener('input',function(){updatePreview(slugId,previewId);});
+    ip.addEventListener('blur',function(){var v=sanitize(ip.value);if(v!==ip.value)ip.value=v;updatePreview(slugId,previewId);});
+    updatePreview(slugId,previewId);
+  }
+  /* 名称が ASCII の場合のみ slug を自動サジェスト（空のときに限る） */
+  function bindNameToSlug(nameId, slugId, previewId){
+    var nm=document.getElementById(nameId);var sl=document.getElementById(slugId);
+    if(!nm||!sl)return;
+    nm.addEventListener('input',function(){
+      if(sl.value)return; /* 既に入力されてれば自動上書きしない */
+      var v=nm.value||'';
+      /* ASCII のみ自動 slug 化（日本語は空のまま手入力に委ねる） */
+      if(/^[\x20-\x7E]+$/.test(v)){
+        sl.value=sanitize(v);
+        updatePreview(slugId,previewId);
+      }
+    });
+  }
+  function init(){
+    bindSlug('fslug','fslug-preview');
+    bindSlug('nfslug','nfslug-preview');
+    bindNameToSlug('nfn','nfslug','nfslug-preview');
+    bindNameToSlug('fn','fslug','fslug-preview');
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
 </script>
 </body></html>

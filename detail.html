@@ -997,8 +997,8 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
         </div>
       </div>
       </div>
-      <button class="btn-contact" id="d-website" style="display:none" onclick="(function(){var u=document.getElementById('cwm-official-url')?.value;var sid=new URLSearchParams(window.location.search).get('id');if(sid){fetch(CWM_SB_URL+'/rest/v1/click_logs',{method:'POST',headers:{'apikey':CWM_SB_KEY,'Authorization':'Bearer '+CWM_SB_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({space_id:sid,event:'reserve_click'})}).catch(function(){});}if(u&amp;&amp;u!=='#')window.open(u,'_blank');else alert('公式サイトが未設定です。オペレーターにお問い合わせください');})();">公式サイトで空き確認・予約</button>
-      <a href="https://instagram.com/aoyama_atelier" target="_blank" rel="noopener" class="btn-instagram" id="d-instagram" onclick="(function(){var sid=new URLSearchParams(window.location.search).get('id');if(sid){fetch(CWM_SB_URL+'/rest/v1/click_logs',{method:'POST',headers:{'apikey':CWM_SB_KEY,'Authorization':'Bearer '+CWM_SB_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({space_id:sid,event:'instagram_click'})}).catch(function(){});}})();">
+      <button class="btn-contact" id="d-website" style="display:none" onclick="(function(){var u=document.getElementById('cwm-official-url')?.value;var sid=window._currentSpaceId||new URLSearchParams(window.location.search).get('id');if(sid){fetch(CWM_SB_URL+'/rest/v1/click_logs',{method:'POST',headers:{'apikey':CWM_SB_KEY,'Authorization':'Bearer '+CWM_SB_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({space_id:sid,event:'reserve_click'})}).catch(function(){});}if(u&amp;&amp;u!=='#')window.open(u,'_blank');else alert('公式サイトが未設定です。オペレーターにお問い合わせください');})();">公式サイトで空き確認・予約</button>
+      <a href="https://instagram.com/aoyama_atelier" target="_blank" rel="noopener" class="btn-instagram" id="d-instagram" onclick="(function(){var sid=window._currentSpaceId||new URLSearchParams(window.location.search).get('id');if(sid){fetch(CWM_SB_URL+'/rest/v1/click_logs',{method:'POST',headers:{'apikey':CWM_SB_KEY,'Authorization':'Bearer '+CWM_SB_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({space_id:sid,event:'instagram_click'})}).catch(function(){});}})();">
         <span class="btn-ig-icon">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
         </span>
@@ -1551,7 +1551,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const CWM_SB_KEY = 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
 
   const params = new URLSearchParams(window.location.search);
-  const spaceId = params.get('id');
+  let spaceId = params.get('id');
   const slugParam = params.get('slug');
   if (!spaceId && !slugParam) return;
 
@@ -1602,6 +1602,28 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!rows || !rows[0]) return;
       const d = rows[0];
       window._currentSpaceId = d.id;
+      spaceId = d.id; // slug 経由アクセス時も spaceId を実際の ID にバインドして以降のクエリを動作させる
+
+      // SEOフレンドリーURL: id経由で来てslugがあれば、URLバーを /space/{slug} に書き換え
+      // canonical も /space/{slug} に統一して検索エンジンに正規URLを伝える
+      if (d.slug && (!slugParam || slugParam !== d.slug)) {
+        try {
+          const newPath = '/space/' + encodeURIComponent(d.slug);
+          if (location.pathname + location.search !== newPath) {
+            history.replaceState(null, '', newPath);
+          }
+        } catch (_e) {}
+      }
+      try {
+        let canon = document.querySelector('link[rel="canonical"]');
+        if (!canon) {
+          canon = document.createElement('link');
+          canon.rel = 'canonical';
+          document.head.appendChild(canon);
+        }
+        canon.href = 'https://cowkml.com/space/' + encodeURIComponent(d.slug || '');
+        if (!d.slug) canon.href = 'https://cowkml.com/detail?id=' + encodeURIComponent(d.id);
+      } catch (_e) {}
 
       const area = d.area || '';
       const pref = PREF_MAP[d.prefecture] || (d.prefecture || '').replace(/都|道|府|県/, '').toUpperCase();
@@ -1821,7 +1843,7 @@ document.addEventListener('DOMContentLoaded', () => {
                       // PLAYING (1) の時かつ未送信ならカウント
                       if (e.data === 1 && !window._ytPlayCounted) {
                         window._ytPlayCounted = true;
-                        var sid = new URLSearchParams(window.location.search).get('id');
+                        var sid = (window._currentSpaceId||new URLSearchParams(window.location.search).get('id'));
                         if (sid) {
                           fetch(CWM_SB_URL + '/rest/v1/click_logs', {
                             method: 'POST',
@@ -1934,7 +1956,7 @@ var _mapDone=false;
 function showMap(lat,lon,addr){if(_mapDone||typeof L==='undefined')return;_mapDone=true;var lk=document.getElementById('cwm-map-link');if(lk)lk.href='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(addr||String(lat)+','+lon);var map=L.map('cwm-lmap',{zoomControl:true,scrollWheelZoom:false}).setView([lat,lon],16);L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'© OpenStreetMap',maxZoom:19}).addTo(map);var ic=L.divIcon({className:'',html:'<div style="width:14px;height:14px;background:#2BB5C8;border:2px solid #fff;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,.4)"><\/div>',iconSize:[14,14],iconAnchor:[7,7]});L.marker([lat,lon],{icon:ic}).addTo(map);[200,500,1000,2000,3000].forEach(function(t){setTimeout(function(){if(map)map.invalidateSize();},t);});if(typeof ResizeObserver!=='undefined'){var ro=new ResizeObserver(function(){if(map)map.invalidateSize();});ro.observe(document.getElementById('cwm-lmap'));}}
 function tryMap(){
   if(_mapDone)return;
-  var sid=new URLSearchParams(window.location.search).get('id');
+  var sid=(window._currentSpaceId||new URLSearchParams(window.location.search).get('id'));
   if(!sid)return;
   fetch(CWM_SB_URL+'/rest/v1/spaces?id=eq.'+sid+'&select=name,latitude,longitude,address,official_url,facilities,price_dropin_day,price_dropin_hour,price_monthly_amount,price_monthly_max,price_note,has_meeting_room,meeting_capacity',
     {headers:{'apikey':CWM_SB_KEY,'Authorization':'Bearer '+CWM_SB_KEY}})
@@ -1972,9 +1994,9 @@ function tryMap(){
 }
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function fmt(d){try{return new Date(d).toLocaleDateString('ja-JP');}catch(e){return '';}}
-function lVoices(){var sid=new URLSearchParams(window.location.search).get('id');if(!sid)return;fetch(CWM_SB_URL+'/rest/v1/voices?space_id=eq.'+sid+'&status=eq.approved&order=submitted_at.desc',{headers:{'apikey':CWM_SB_KEY,'Authorization':'Bearer '+CWM_SB_KEY}}).then(function(r){return r.json();}).then(function(data){var list=document.querySelector('.voices-list');if(!list)return;list.innerHTML='';if(!data||!data.length){list.innerHTML='<p style="font-size:12px;color:rgba(255,255,255,.3);padding:8px 0">まだ応援メッセージがありません<\/p>';return;}data.forEach(function(v){var c=document.createElement('div');c.className='cwm-voice-card';c.innerHTML=(v.workstyle?'<span class="cwm-voice-tag">'+esc(v.workstyle)+'<\/span><br>':'')+'<div class="cwm-voice-msg">'+esc(v.message)+'<\/div>'+'<div class="cwm-voice-footer"><span class="cwm-voice-nick">'+esc(v.nickname||'匿名')+'<\/span><span class="cwm-voice-date">'+fmt(v.submitted_at)+'<\/span><\/div>';list.appendChild(c);});}).catch(function(){});}
+function lVoices(){var sid=(window._currentSpaceId||new URLSearchParams(window.location.search).get('id'));if(!sid)return;fetch(CWM_SB_URL+'/rest/v1/voices?space_id=eq.'+sid+'&status=eq.approved&order=submitted_at.desc',{headers:{'apikey':CWM_SB_KEY,'Authorization':'Bearer '+CWM_SB_KEY}}).then(function(r){return r.json();}).then(function(data){var list=document.querySelector('.voices-list');if(!list)return;list.innerHTML='';if(!data||!data.length){list.innerHTML='<p style="font-size:12px;color:rgba(255,255,255,.3);padding:8px 0">まだ応援メッセージがありません<\/p>';return;}data.forEach(function(v){var c=document.createElement('div');c.className='cwm-voice-card';c.innerHTML=(v.workstyle?'<span class="cwm-voice-tag">'+esc(v.workstyle)+'<\/span><br>':'')+'<div class="cwm-voice-msg">'+esc(v.message)+'<\/div>'+'<div class="cwm-voice-footer"><span class="cwm-voice-nick">'+esc(v.nickname||'匿名')+'<\/span><span class="cwm-voice-date">'+fmt(v.submitted_at)+'<\/span><\/div>';list.appendChild(c);});}).catch(function(){});}
 window.openVoicesModal=async function(){var ol=document.getElementById('vm-overlay'),vml=document.getElementById('vm-list'),vll=document.getElementById('vm-loading'),tl=document.getElementById('vm-title');if(!ol)return;ol.style.display='block';vml.innerHTML='';vll.style.display='block';var sid=window._currentSpaceId;if(!sid){vll.textContent='エラー';return;}try{var r=await fetch(CWM_SB_URL+'/rest/v1/voices?space_id=eq.'+sid+'&status=eq.approved&select=*&order=submitted_at.desc',{headers:{'apikey':CWM_SB_KEY,'Authorization':'Bearer '+CWM_SB_KEY}});var all=await r.json();vll.style.display='none';if(!all||!all.length){vml.innerHTML='<p style="padding:24px;text-align:center;color:#555;font-size:13px">まだ投稿がありません</p>';return;}if(tl)tl.textContent='利用者の声（'+all.length+'件）';vml.innerHTML=all.map(function(v){var ini=(v.nickname||'?')[0].toUpperCase();var ws=v.workstyle?'<span style="font-size:10px;font-weight:600;background:rgba(43,181,200,.18);color:#2BB5C8;padding:2px 8px;border-radius:4px;margin-right:6px">'+(function(){var M={'Deep Work':'没頭・集中','Ideation':'企画・発想','Client Meeting':'商談・接客','Remote Call':'オンライン会議','Creative Work':'制作・クリエイティブ','Strategy':'戦略・意思決定','Learning':'学習・インプット'};var ja=M[v.workstyle]||v.workstyle;return ja+'<span style="font-size:9px;opacity:0.65;margin-left:5px;font-weight:400">('+v.workstyle+')</span>';})()+'</span>':'';var nick=v.nickname?'<span style="font-size:11px;color:#5a8a8e">'+v.nickname+'</span>':'';var dt=v.submitted_at?'<span style="font-size:10px;color:#333;margin-left:auto">'+v.submitted_at.substring(0,10)+'</span>':'';var msg=v.message?'<div style="font-size:13px;color:#c0d0d2;line-height:1.6;margin-top:6px">'+cwm.escMultiline(v.message)+'</div>':'';return '<div style="display:flex;gap:12px;padding:14px 0;border-bottom:0.5px solid #1a1a1a"><div style="width:34px;height:34px;border-radius:50%;background:#1a3a3e;color:#2BB5C8;font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;flex-shrink:0">'+ini+'</div><div style="flex:1;min-width:0"><div style="display:flex;align-items:center;flex-wrap:wrap;gap:4px">'+ws+nick+dt+'</div>'+msg+'</div></div>';}).join('');} catch(e){vll.textContent='読み込みエラー';}};
-window.submitVoice=function(){var sid=new URLSearchParams(window.location.search).get('id');if(!sid)return;var nick=(document.getElementById('vp-nick')?.value||'').trim();var msg=(document.getElementById('vp-text')?.value||'').trim();var ws=(document.getElementById('vp-selected-tag')?.textContent||'').trim();if(!ws){alert('「どの仕事で使いましたか？」を選んでください');return;}if(!msg){alert('メッセージを入力してください');return;}var btn=document.querySelector('.vp-submit');if(btn){btn.disabled=true;btn.textContent='送信中...';}fetch(CWM_SB_URL+'/rest/v1/voices',{method:'POST',headers:{'apikey':CWM_SB_KEY,'Authorization':'Bearer '+CWM_SB_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({space_id:sid,nickname:nick||null,message:msg,workstyle:ws,status:'pending',submitted_at:new Date().toISOString()})}).then(function(r){if(btn){btn.disabled=false;btn.textContent='応援する →';}if(r.ok){document.getElementById('vp-nick').value='';document.getElementById('vp-text').value='';document.getElementById('vp-selected-tag').textContent='';document.querySelectorAll('.vp-tag').forEach(function(t){t.classList.remove('on');});var s1=document.getElementById('vp-step1'),s3=document.getElementById('vp-step3');if(s1)s1.style.display='none';if(s3)s3.style.display='block';}}).catch(function(){alert('通信エラー');if(btn){btn.disabled=false;btn.textContent='応援する →';}});};
+window.submitVoice=function(){var sid=(window._currentSpaceId||new URLSearchParams(window.location.search).get('id'));if(!sid)return;var nick=(document.getElementById('vp-nick')?.value||'').trim();var msg=(document.getElementById('vp-text')?.value||'').trim();var ws=(document.getElementById('vp-selected-tag')?.textContent||'').trim();if(!ws){alert('「どの仕事で使いましたか？」を選んでください');return;}if(!msg){alert('メッセージを入力してください');return;}var btn=document.querySelector('.vp-submit');if(btn){btn.disabled=true;btn.textContent='送信中...';}fetch(CWM_SB_URL+'/rest/v1/voices',{method:'POST',headers:{'apikey':CWM_SB_KEY,'Authorization':'Bearer '+CWM_SB_KEY,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify({space_id:sid,nickname:nick||null,message:msg,workstyle:ws,status:'pending',submitted_at:new Date().toISOString()})}).then(function(r){if(btn){btn.disabled=false;btn.textContent='応援する →';}if(r.ok){document.getElementById('vp-nick').value='';document.getElementById('vp-text').value='';document.getElementById('vp-selected-tag').textContent='';document.querySelectorAll('.vp-tag').forEach(function(t){t.classList.remove('on');});var s1=document.getElementById('vp-step1'),s3=document.getElementById('vp-step3');if(s1)s1.style.display='none';if(s3)s3.style.display='block';}}).catch(function(){alert('通信エラー');if(btn){btn.disabled=false;btn.textContent='応援する →';}});};
 var obs=new MutationObserver(function(){iGal();iTitle();rSec();});
 function start(){var pc=document.querySelector('.gallery-pc');if(pc)obs.observe(pc,{childList:true});var as=document.querySelector('.detail-aside');if(as)obs.observe(as,{childList:true,subtree:true});var dm=document.querySelector('.detail-main');if(dm)obs.observe(dm,{childList:true,subtree:true});iGal();iTitle();rSec();lVoices();[400,800,1500,2500,4000].forEach(function(t){setTimeout(tryMap,t);});}
 if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',start);}else{start();}
@@ -2113,7 +2135,7 @@ function renderPlanCards(sp) {
     var img=s.image_main?'background-image:url('+s.image_main+');background-size:cover;background-position:center':'background:#222';
     var pref=(s.area||s.prefecture||'').replace(/[都道府県]$/,'');
     var price=s.price_dropin_hour?'¥'+Number(s.price_dropin_hour).toLocaleString('ja-JP')+' /時間〜':'料金は公式サイトにて';
-    var href=s.slug?'/detail?slug='+encodeURIComponent(s.slug):'/detail?id='+encodeURIComponent(s.id);
+    var href=s.slug?'/space/'+encodeURIComponent(s.slug):'/detail?id='+encodeURIComponent(s.id);
     return '<a class="rcard" href="'+href+'">'+
       '<div style="height:160px;'+img+'"></div>'+
       '<div style="padding:14px 16px">'+
@@ -2188,7 +2210,7 @@ function renderPlanCards(sp) {
 <div id="vm-overlay" onclick="if(event.target===this)this.style.display='none'" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:9999;overflow-y:auto"><div style="max-width:560px;margin:48px auto 40px;background:#111;border-radius:16px;overflow:hidden;border:0.5px solid #1e1e1e"><div style="display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:0.5px solid #1e1e1e"><span id="vm-title" style="font-size:15px;font-weight:500;color:#e8e8e8">利用者の声</span><button onclick="document.getElementById('vm-overlay').style.display='none'" style="background:none;border:none;color:#555;font-size:22px;cursor:pointer;padding:0 4px;line-height:1">&times;</button></div><div id="vm-list" style="padding:0 24px 8px"></div><div id="vm-loading" style="text-align:center;padding:24px;color:#555;font-size:13px">読み込み中...</div></div></div>
 
 <script>(function(){
-  var id = new URLSearchParams(location.search).get("id");
+  var id = (window._currentSpaceId||new URLSearchParams(location.search).get("id"));
   if(!id) return;
   var BASE = "https://cowkml.com/detail";
   var pageUrl = BASE + "?id=" + id;

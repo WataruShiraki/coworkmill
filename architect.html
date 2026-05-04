@@ -128,12 +128,12 @@ var a=(await ar.json())[0];
 if(!a){document.getElementById("root").innerHTML='<div class="loading">建築家が見つかりません</div>';return;}
 document.title=(a.name_en||a.name)+"が手がけたコワーキングスペース — COWORKMILL";
 document.getElementById("mtitle").textContent=(a.name_en||a.name)+"にお問い合わせ";
-var sr=await fetch(S+"/rest/v1/spaces?select=id,name,area&architect_id=eq."+id+"&status=eq.live",{headers:{"apikey":K,"Authorization":"Bearer "+K}});
+var sr=await fetch(S+"/rest/v1/spaces?select=id,name,area,slug&architect_id=eq."+id+"&status=eq.live",{headers:{"apikey":K,"Authorization":"Bearer "+K}});
 var spaces=await sr.json();
 var cards="";
 if(Array.isArray(spaces)&&spaces.length){for(var i=0;i<spaces.length;i++){var sp=spaces[i],ph="";
 try{var lr=await fetch(S+"/storage/v1/object/list/space-images",{method:"POST",headers:{"apikey":K,"Authorization":"Bearer "+K,"Content-Type":"application/json"},body:JSON.stringify({prefix:sp.id+"/",limit:1})});var fs=await lr.json();if(Array.isArray(fs)&&fs.length)ph=S+"/storage/v1/object/public/space-images/"+sp.id+"/"+fs[0].name;}catch(e2){}
-cards+='<a href="/detail?id='+sp.id+'" class="space-card">'+(ph?'<img class="space-card-img" src="'+ph+'" loading="lazy">':'<div class="space-card-img"></div>')+'<div class="space-card-body"><div class="space-card-name">'+sp.name+'</div><div class="space-card-area">'+sp.area+'</div></div></a>';}}
+cards+='<a href="'+(sp.slug?'/space/'+encodeURIComponent(sp.slug):'/detail?id='+sp.id)+'" class="space-card">'+(ph?'<img class="space-card-img" src="'+ph+'" loading="lazy">':'<div class="space-card-img"></div>')+'<div class="space-card-body"><div class="space-card-name">'+sp.name+'</div><div class="space-card-area">'+sp.area+'</div></div></a>';}}
 var nameJa=(a.firm&&a.firm!==a.name_en)?a.firm:(a.name||"");
 var nameEn=a.name_en||"";
 document.getElementById("root").innerHTML='<div class="arch-hero">'+(a.portrait_url?'<img class="arch-portrait" src="'+a.portrait_url+'" alt="'+nameEn+'">':"")+'<div class="arch-info"><div class="arch-label">Architect</div>'+(nameJa&&nameJa!==nameEn?'<div class="arch-name-ja">'+nameJa+"</div>":"")+'<div class="arch-name-en">'+nameEn+'</div>'+(a.bio?'<div class="arch-bio">'+a.bio+"</div>":"")+'<button class="arch-contact-btn" id="cbtn">✉️ '+nameEn+'にお問い合わせ</button></div></div>'+(cards?'<div class="arch-works-title">手がけたコワーキングスペース — '+spaces.length+' 件</div><div class="arch-works-grid">'+cards+"</div>":"");

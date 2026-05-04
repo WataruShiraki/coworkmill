@@ -273,7 +273,7 @@ let currentArea = 'all';
 async function loadPhotos() {
   try {
     // space_imagesとspacesをJOINして取得
-    const res = await fetch(SUPABASE_URL + '/rest/v1/space_images?select=url,spaces(id,name,area,prefecture,architect_name,vibe,status)&order=created_at.desc', {
+    const res = await fetch(SUPABASE_URL + '/rest/v1/space_images?select=url,spaces(id,name,area,prefecture,architect_name,vibe,status,slug)&order=created_at.desc', {
       headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY }
     });
     const data = await res.json();
@@ -292,7 +292,7 @@ async function loadPhotos() {
           name: s.name || '',
           design: s.architect_name || '',
           tags: Array.isArray(s.vibe) ? s.vibe : (s.vibe ? [s.vibe] : []),
-          href: '/detail?id=' + s.id,
+          href: s.slug ? '/space/' + encodeURIComponent(s.slug) : '/detail?id=' + s.id,
           img: d.url
         };
       });

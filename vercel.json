@@ -67,6 +67,10 @@
     {
       "source": "/journal/:slug",
       "destination": "/journal/article?slug=:slug"
+    },
+    {
+      "source": "/space/:slug",
+      "destination": "/detail?slug=:slug"
     }
   ],
   "cleanUrls": true
