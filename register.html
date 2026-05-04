@@ -116,22 +116,51 @@ section.lp{padding:120px 40px;border-top:1px solid var(--line);position:relative
 .compare-col.right .icon{background:rgba(136,200,149,.15);color:var(--accent-soft)}
 
 /* ========== Showcase (this section is the redesigned 掲載するとどう見える) ========== */
-.show-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:60px;align-items:center}
-.show-image{position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--line);aspect-ratio:5/4;background:linear-gradient(135deg,#1a1d24,#0d0f14)}
-.show-image img{width:100%;height:100%;object-fit:cover;display:block}
-.show-image::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(8,9,12,.55) 100%);pointer-events:none}
-.show-image-tag{position:absolute;left:18px;bottom:18px;font-family:var(--font-d);font-size:10px;font-weight:600;letter-spacing:.1em;color:#fff;background:rgba(0,0,0,.55);backdrop-filter:blur(10px);padding:8px 14px;border-radius:6px;border:1px solid rgba(255,255,255,.18);text-transform:uppercase}
-.show-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding-top:32px;margin-top:32px;border-top:1px solid var(--line)}
-.show-stat{text-align:left}
-.show-stat-num{font-family:var(--font-d);font-size:32px;font-weight:200;letter-spacing:-.03em;background:var(--accent-grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:6px}
-.show-stat-label{font-size:10px;color:var(--text-muted);letter-spacing:.05em;line-height:1.5}
-.show-feature-list{display:flex;flex-direction:column;gap:18px}
-.show-feature{display:flex;gap:16px;padding:20px 22px;background:var(--bg-card);border:1px solid var(--line);border-radius:12px;transition:all .25s}
-.show-feature:hover{border-color:rgba(19,87,160,.3);background:var(--bg-elev)}
-.show-feature-icon{flex-shrink:0;width:44px;height:44px;border-radius:10px;background:linear-gradient(135deg,rgba(136,200,149,.12),rgba(19,87,160,.18));display:flex;align-items:center;justify-content:center;color:var(--accent)}
-.show-feature-icon svg{width:22px;height:22px}
-.show-feature-body h3{font-family:var(--font-d);font-size:14px;font-weight:600;letter-spacing:.01em;margin-bottom:6px;color:var(--text)}
-.show-feature-body p{font-size:12.5px;color:var(--text-soft);line-height:1.7}
+/* ========== Showcase mockup hero (top of section) ========== */
+.show-mockup{position:relative;border-radius:20px;overflow:hidden;background:linear-gradient(180deg,#0d0f14,#08090c);border:1px solid var(--line-strong);box-shadow:0 30px 80px -20px rgba(0,0,0,.6),0 0 60px -20px rgba(19,87,160,.15);max-width:1000px;margin:0 auto 80px;transform:perspective(2000px) rotateX(2deg);transition:transform .6s cubic-bezier(0.16,1,0.3,1)}
+.show-mockup:hover{transform:perspective(2000px) rotateX(0deg) translateY(-4px)}
+.show-mockup-bar{display:flex;align-items:center;gap:8px;padding:12px 18px;background:rgba(255,255,255,.02);border-bottom:1px solid var(--line)}
+.show-mockup-dots{display:flex;gap:6px}
+.show-mockup-dots span{width:11px;height:11px;border-radius:50%;background:rgba(255,255,255,.12)}
+.show-mockup-dots span:nth-child(1){background:#ff5f57}
+.show-mockup-dots span:nth-child(2){background:#ffbd2e}
+.show-mockup-dots span:nth-child(3){background:#28c940}
+.show-mockup-url{flex:1;text-align:center;font-family:var(--font-d);font-size:11px;color:var(--text-muted);letter-spacing:.02em;background:rgba(255,255,255,.03);padding:5px 12px;border-radius:6px;border:1px solid var(--line);max-width:380px;margin:0 auto}
+.show-mockup-url .accent-dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--accent-soft);margin-right:6px;vertical-align:middle}
+.show-mockup-body{display:grid;grid-template-columns:1.4fr 1fr;gap:0;min-height:440px}
+.show-mockup-photo{position:relative;background:linear-gradient(135deg,#1a1d24,#0d0f14);overflow:hidden}
+.show-mockup-photo img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease}
+.show-mockup:hover .show-mockup-photo img{transform:scale(1.04)}
+.show-mockup-photo::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(8,9,12,0) 60%,rgba(8,9,12,.5) 100%);pointer-events:none}
+.show-mockup-badge{position:absolute;top:18px;left:18px;display:inline-flex;align-items:center;gap:6px;font-family:var(--font-d);font-size:10px;font-weight:700;letter-spacing:.12em;color:#fff;background:linear-gradient(135deg,#fbbf24,#f59e0b);padding:7px 12px;border-radius:6px;text-transform:uppercase;box-shadow:0 8px 20px -6px rgba(245,158,11,.55)}
+.show-mockup-badge::before{content:'★';font-size:11px}
+.show-mockup-info{padding:36px 38px;display:flex;flex-direction:column;gap:18px;background:var(--bg-card)}
+.show-mockup-loc{font-family:var(--font-d);font-size:10px;font-weight:600;color:var(--accent-soft);letter-spacing:.18em;text-transform:uppercase;display:flex;align-items:center;gap:8px}
+.show-mockup-loc::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent-soft);box-shadow:0 0 10px rgba(136,200,149,.6)}
+.show-mockup-name{font-family:var(--font-d);font-size:24px;font-weight:300;letter-spacing:-.02em;line-height:1.25;color:var(--text)}
+.show-mockup-arch{font-size:12px;color:var(--text-muted);line-height:1.7}
+.show-mockup-arch strong{color:var(--text-soft);font-weight:500}
+.show-mockup-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.show-mockup-tag{font-size:10.5px;font-weight:500;color:var(--text-soft);background:rgba(255,255,255,.04);padding:5px 10px;border-radius:100px;border:1px solid var(--line);letter-spacing:.02em}
+.show-mockup-tag.feat{background:linear-gradient(135deg,rgba(136,200,149,.12),rgba(19,87,160,.18));border-color:rgba(19,87,160,.25);color:var(--accent-soft)}
+.show-mockup-meta{display:flex;align-items:center;gap:14px;padding-top:16px;margin-top:auto;border-top:1px solid var(--line)}
+.show-mockup-meta-stat{display:flex;flex-direction:column;gap:3px}
+.show-mockup-meta-num{font-family:var(--font-d);font-size:18px;font-weight:300;color:var(--text);letter-spacing:-.02em}
+.show-mockup-meta-lbl{font-size:9px;color:var(--text-muted);letter-spacing:.1em;text-transform:uppercase}
+.show-mockup-meta-divider{width:1px;height:28px;background:var(--line)}
+
+/* ========== Showcase 2x2 grid ========== */
+.show-grid-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+.show-feature{position:relative;display:flex;flex-direction:column;gap:14px;padding:32px 28px;background:var(--bg-card);border:1px solid var(--line);border-radius:16px;transition:all .35s cubic-bezier(0.16,1,0.3,1);overflow:hidden}
+.show-feature::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(136,200,149,.06),rgba(19,87,160,.08));opacity:0;transition:opacity .35s}
+.show-feature:hover{border-color:rgba(19,87,160,.4);transform:translateY(-3px);background:var(--bg-elev)}
+.show-feature:hover::before{opacity:1}
+.show-feature>*{position:relative;z-index:1}
+.show-feature-icon{flex-shrink:0;width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,rgba(136,200,149,.18),rgba(19,87,160,.22));display:flex;align-items:center;justify-content:center;color:var(--accent-soft);transition:transform .35s cubic-bezier(0.16,1,0.3,1)}
+.show-feature:hover .show-feature-icon{transform:scale(1.08) rotate(-3deg)}
+.show-feature-icon svg{width:24px;height:24px}
+.show-feature-body h3{font-family:var(--font-d);font-size:16px;font-weight:600;letter-spacing:.01em;margin-bottom:8px;color:var(--text);line-height:1.4}
+.show-feature-body p{font-size:13px;color:var(--text-soft);line-height:1.85}
 
 /* ========== Steps ========== */
 .steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
@@ -236,7 +265,15 @@ footer{background:#0a1628;padding:64px 80px 40px;color:#fff;position:relative;ov
   .compare-grid{grid-template-columns:1fr}
   .compare-col{padding:28px 22px}
   .compare-col.left{border-right:none;border-bottom:1px solid var(--line)}
-  .show-grid{grid-template-columns:1fr;gap:36px}
+  .show-mockup{transform:none;margin-bottom:48px}
+  .show-mockup:hover{transform:translateY(-2px)}
+  .show-mockup-body{grid-template-columns:1fr;min-height:auto}
+  .show-mockup-photo{aspect-ratio:5/4}
+  .show-mockup-info{padding:24px 22px;gap:14px}
+  .show-mockup-name{font-size:20px}
+  .show-mockup-meta{flex-wrap:wrap;gap:12px}
+  .show-mockup-url{font-size:10px;max-width:none}
+  .show-grid-cards{grid-template-columns:1fr;gap:14px}
   .show-stats{margin-top:24px;padding-top:24px}
   .show-stat-num{font-size:24px}
   .steps-grid{grid-template-columns:1fr;gap:14px}
@@ -314,53 +351,91 @@ footer{background:#0a1628;padding:64px 80px 40px;color:#fff;position:relative;ov
   </div>
 </section>
 
-<!-- 掲載するとどう見える (REDESIGNED) -->
+<!-- 掲載するとどう見える (FULLY REDESIGNED - actual page mockup) -->
 <section class="lp">
   <div class="lp-inner">
     <div class="lp-eyebrow">How it looks</div>
-    <h2 class="lp-title">掲載されたあなたの施設は、<br><span class="accent">こんな届き方</span>をします。</h2>
-    <p class="lp-lede">単なる一覧サイトの一行ではなく、空間そのものを語れる詳細ページが用意されます。建築家・写真・利用シーンといった、本来訴求したい情報を整然と並べる場所です。</p>
-    <div class="show-grid">
-      <div class="show-image">
-        <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=900&q=80" alt="掲載イメージ" loading="lazy">
-        <div class="show-image-tag">Live on COWORKMILL</div>
+    <h2 class="lp-title">掲載されると、<br>こんな<span class="accent">"佇まい"</span>になります。</h2>
+    <p class="lp-lede">料金一覧サイトに埋もれる一行ではなく、空間そのものを語れる詳細ページ。建築家・写真・利用シーンが整然と並ぶ "ブランドメディアのような掲載体験" を、無料プランから手に入れられます。</p>
+    
+    <!-- Browser-style mockup of an actual COWORKMILL detail page -->
+    <div class="show-mockup">
+      <div class="show-mockup-bar">
+        <div class="show-mockup-dots"><span></span><span></span><span></span></div>
+        <div class="show-mockup-url"><span class="accent-dot"></span>cowkml.com / space / your-space</div>
+        <div style="width:54px"></div>
       </div>
-      <div class="show-feature-list">
-        <div class="show-feature">
-          <div class="show-feature-icon">
-            <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+      <div class="show-mockup-body">
+        <div class="show-mockup-photo">
+          <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=900&q=80" alt="施設の掲載イメージ" loading="lazy">
+          <div class="show-mockup-badge">PICK</div>
+        </div>
+        <div class="show-mockup-info">
+          <div class="show-mockup-loc">Tokyo / Shibuya</div>
+          <div class="show-mockup-name">あなたの空間が、<br>ここに並びます。</div>
+          <div class="show-mockup-arch">設計：<strong>◯◯ 建築設計事務所</strong> / 2024<br>写真：<strong>◯◯ Photography</strong></div>
+          <div class="show-mockup-tags">
+            <span class="show-mockup-tag feat">集中・執筆</span>
+            <span class="show-mockup-tag feat">商談・ミーティング</span>
+            <span class="show-mockup-tag">制作・クリエイティブ</span>
+            <span class="show-mockup-tag">アイデア・ブレスト</span>
           </div>
-          <div class="show-feature-body">
-            <h3>大きな写真とギャラリー</h3>
-            <p>1施設につき最大50枚まで掲載可能。空間の雰囲気を一枚で伝え切れない時の "あと一押し" が効きます。</p>
+          <div class="show-mockup-meta">
+            <div class="show-mockup-meta-stat">
+              <div class="show-mockup-meta-num">50<span style="font-size:11px;opacity:.5;margin-left:2px">枚</span></div>
+              <div class="show-mockup-meta-lbl">Photos</div>
+            </div>
+            <div class="show-mockup-meta-divider"></div>
+            <div class="show-mockup-meta-stat">
+              <div class="show-mockup-meta-num">9.2<span style="font-size:11px;opacity:.5;margin-left:2px">/10</span></div>
+              <div class="show-mockup-meta-lbl">Voice Score</div>
+            </div>
+            <div class="show-mockup-meta-divider"></div>
+            <div class="show-mockup-meta-stat">
+              <div class="show-mockup-meta-num">12<span style="font-size:11px;opacity:.5;margin-left:2px">件</span></div>
+              <div class="show-mockup-meta-lbl">Reviews</div>
+            </div>
           </div>
         </div>
-        <div class="show-feature">
-          <div class="show-feature-icon">
-            <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
-          </div>
-          <div class="show-feature-body">
-            <h3>建築家・設計者の紹介</h3>
-            <p>「あの建築家が手がけた空間で働きたい」と検索する層に届く導線。料金一覧サイトでは絶対に出会えない訴求です。</p>
-          </div>
+      </div>
+    </div>
+    
+    <!-- 2x2 feature grid -->
+    <div class="show-grid-cards">
+      <div class="show-feature">
+        <div class="show-feature-icon">
+          <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
         </div>
-        <div class="show-feature">
-          <div class="show-feature-icon">
-            <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-          </div>
-          <div class="show-feature-body">
-            <h3>利用者の声・ワークスタイルタグ</h3>
-            <p>"集中・執筆" "商談・ミーティング" など、目的で施設を探すユーザーの検索結果に並びます。声の掲載は審査の上で公開。</p>
-          </div>
+        <div class="show-feature-body">
+          <h3>大きな写真とギャラリー</h3>
+          <p>1施設につき最大50枚まで掲載可能。空間の雰囲気を一枚で伝え切れない時の "あと一押し" が効きます。</p>
         </div>
-        <div class="show-feature">
-          <div class="show-feature-icon">
-            <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          </div>
-          <div class="show-feature-body">
-            <h3>★ PICK 特集枠（Pro）</h3>
-            <p>編集チームが厳選した施設に表示される PICK バッジ。一覧でも詳細でも目立ち、ブランド認知の押し上げに直結します。</p>
-          </div>
+      </div>
+      <div class="show-feature">
+        <div class="show-feature-icon">
+          <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
+        </div>
+        <div class="show-feature-body">
+          <h3>建築家・設計者の紹介</h3>
+          <p>「あの建築家が手がけた空間で働きたい」と検索する層に届く、料金一覧サイトでは出会えない訴求軸。</p>
+        </div>
+      </div>
+      <div class="show-feature">
+        <div class="show-feature-icon">
+          <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <div class="show-feature-body">
+          <h3>利用者の声・ワークスタイルタグ</h3>
+          <p>"集中・執筆" "商談・ミーティング" など、目的で施設を探すユーザーの検索結果にも並びます。</p>
+        </div>
+      </div>
+      <div class="show-feature">
+        <div class="show-feature-icon">
+          <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <div class="show-feature-body">
+          <h3>★ PICK 特集枠（Pro）</h3>
+          <p>編集チームが厳選した施設だけが纏える PICK バッジ。一覧でも詳細でも目立ち、ブランド認知の押し上げに直結します。</p>
         </div>
       </div>
     </div>
