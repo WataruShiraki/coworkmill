@@ -760,8 +760,23 @@ document.querySelectorAll('.faq-q').forEach(function(b){
         body:JSON.stringify(payload)
       });
       if(res.ok||res.status===201||res.status===204){
+        // 受付確認メール送信 (Edge Function 経由 / Resend)。
+        // 失敗してもユーザー体験は壊さない (運営側はSupabaseのspacesテーブルから把握可能)
+        try{
+          fetch(SB_URL+'/functions/v1/cwm-inquiry',{
+            method:'POST',
+            headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json'},
+            body:JSON.stringify({
+              facilityName:document.getElementById('rg-fac-name').value.trim(),
+              companyName:document.getElementById('rg-company').value.trim(),
+              facilityUrl:document.getElementById('rg-fac-url').value.trim(),
+              contactName:document.getElementById('rg-contact-name').value.trim(),
+              contactEmail:document.getElementById('rg-contact-email').value.trim()
+            })
+          }).catch(function(){/* メール失敗時もユーザー体験は維持 */});
+        }catch(_e){/* ignore */}
         var card=document.querySelector('.form-card');
-        if(card)card.innerHTML='<div style="text-align:center;padding:24px 8px"><div style="font-family:var(--font-d);font-size:36px;color:var(--accent);margin-bottom:14px">✓</div><div style="font-family:var(--font-d);font-size:18px;font-weight:600;margin-bottom:10px">お申し込みを受け付けました</div><div style="font-size:13.5px;color:var(--text-soft);line-height:1.85">通常1営業日以内に、ご登録のメールアドレスへご案内をお送りします。<br>ご検討くださり、ありがとうございました。</div></div>';
+        if(card)card.innerHTML='<div style="text-align:center;padding:24px 8px"><div style="font-family:var(--font-d);font-size:36px;color:var(--accent);margin-bottom:14px">✓</div><div style="font-family:var(--font-d);font-size:18px;font-weight:600;margin-bottom:10px">お申し込みを受け付けました</div><div style="font-size:13.5px;color:var(--text-soft);line-height:1.85">ご登録のメールアドレスに受付確認メールをお送りしました。<br>通常1営業日以内に、運営チームよりご案内を差し上げます。<br><br>ご検討くださり、ありがとうございました。</div></div>';
       }else{
         btn.disabled=false;btn.innerHTML='掲載を申し込む（無料） <span class="arrow">→</span>';
         alert('送信に失敗しました。時間をおいて再度お試しください。');
