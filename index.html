@@ -996,6 +996,30 @@ async function loadTopData() {
       if (statArchs) statArchs.textContent = archs.size;
     });
 
+    // architect_name が欠けているがarchitect_idがある施設について、
+    // architectsテーブルから建築家名を取得して補完（spacesテーブルのデータ不整合に対応）
+    const missingArchIds = Array.from(new Set(
+      live.filter(s => !s.architect_name && s.architect_id).map(s => s.architect_id)
+    ));
+    if (missingArchIds.length > 0) {
+      try {
+        const idList = missingArchIds.map(id => '"' + id + '"').join(',');
+        const archRes = await fetch(SUPABASE_URL_TOP + '/rest/v1/architects?select=id,name&id=in.(' + missingArchIds.join(',') + ')', {
+          headers: { 'apikey': SUPABASE_KEY_TOP, 'Authorization': 'Bearer ' + SUPABASE_KEY_TOP }
+        });
+        const archs = await archRes.json();
+        if (Array.isArray(archs)) {
+          const archMap = {};
+          archs.forEach(a => { archMap[a.id] = a.name; });
+          live.forEach(s => {
+            if (!s.architect_name && s.architect_id && archMap[s.architect_id]) {
+              s.architect_name = archMap[s.architect_id];
+            }
+          });
+        }
+      } catch (e) { /* 補完失敗時は元のフィールドのまま */ }
+    }
+
     // PICK UP
     const pickupList = document.getElementById('pickup-list');
     if (pickupList) {
