@@ -210,25 +210,25 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
   <h1 class="page-title">お問い合わせ</h1>
   <p class="page-date">ご質問・ご要望・掲載に関するお問い合わせは下記フォームよりお送りください。通常2営業日以内にご返信いたします。</p>
 
-  <div style="border:1px solid var(--gray-100);border-radius:12px;padding:32px">
+  <div class="contact-card" style="border:1px solid var(--gray-100);border-radius:12px;padding:32px">
     <div style="display:grid;gap:16px">
       <div class="form-name-row" style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
         <div>
           <label style="font-size:11px;font-weight:600;color:var(--gray-600);display:block;margin-bottom:6px">お名前 <span style="color:var(--brand-pink)">*</span></label>
-          <input type="text" placeholder="例：山田 太郎" style="width:100%;padding:10px 14px;border:1px solid var(--gray-200);border-radius:6px;font-family:var(--font-b);font-size:13px;outline:none">
+          <input id="cf-name" type="text" placeholder="例：山田 太郎" style="width:100%;padding:10px 14px;border:1px solid var(--gray-200);border-radius:6px;font-family:var(--font-b);font-size:13px;outline:none">
         </div>
         <div>
           <label style="font-size:11px;font-weight:600;color:var(--gray-600);display:block;margin-bottom:6px">会社名・施設名</label>
-          <input type="text" placeholder="例：株式会社〇〇" style="width:100%;padding:10px 14px;border:1px solid var(--gray-200);border-radius:6px;font-family:var(--font-b);font-size:13px;outline:none">
+          <input id="cf-company" type="text" placeholder="例：株式会社〇〇" style="width:100%;padding:10px 14px;border:1px solid var(--gray-200);border-radius:6px;font-family:var(--font-b);font-size:13px;outline:none">
         </div>
       </div>
       <div>
         <label style="font-size:11px;font-weight:600;color:var(--gray-600);display:block;margin-bottom:6px">メールアドレス <span style="color:var(--brand-pink)">*</span></label>
-        <input type="email" placeholder="例：info@example.com" style="width:100%;padding:10px 14px;border:1px solid var(--gray-200);border-radius:6px;font-family:var(--font-b);font-size:13px;outline:none">
+        <input id="cf-email" type="email" placeholder="例：info@example.com" style="width:100%;padding:10px 14px;border:1px solid var(--gray-200);border-radius:6px;font-family:var(--font-b);font-size:13px;outline:none">
       </div>
       <div>
         <label style="font-size:11px;font-weight:600;color:var(--gray-600);display:block;margin-bottom:6px">お問い合わせ種別 <span style="color:var(--brand-pink)">*</span></label>
-        <select style="width:100%;padding:10px 14px;border:1px solid var(--gray-200);border-radius:6px;font-family:var(--font-b);font-size:13px;outline:none;background:var(--white)">
+        <select id="cf-type" style="width:100%;padding:10px 14px;border:1px solid var(--gray-200);border-radius:6px;font-family:var(--font-b);font-size:13px;outline:none;background:var(--white)">
           <option value="">選択してください</option>
           <option>掲載に関するお問い合わせ</option>
           <option>掲載内容の修正・削除</option>
@@ -238,14 +238,92 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
       </div>
       <div>
         <label style="font-size:11px;font-weight:600;color:var(--gray-600);display:block;margin-bottom:6px">お問い合わせ内容 <span style="color:var(--brand-pink)">*</span></label>
-        <textarea placeholder="お問い合わせ内容をご記入ください" style="width:100%;padding:10px 14px;border:1px solid var(--gray-200);border-radius:6px;font-family:var(--font-b);font-size:13px;outline:none;resize:vertical;min-height:140px"></textarea>
+        <textarea id="cf-message" placeholder="お問い合わせ内容をご記入ください" style="width:100%;padding:10px 14px;border:1px solid var(--gray-200);border-radius:6px;font-family:var(--font-b);font-size:13px;outline:none;resize:vertical;min-height:140px"></textarea>
       </div>
+      <div style="display:flex;align-items:flex-start;gap:10px;padding:14px 16px;background:var(--gray-50);border-radius:8px">
+        <input id="cf-agree" type="checkbox" style="margin-top:3px;width:16px;height:16px;cursor:pointer;flex-shrink:0;accent-color:#2BB5C8">
+        <label for="cf-agree" style="font-size:12px;color:var(--gray-600);line-height:1.7;cursor:pointer">
+          <a href="/terms" target="_blank" rel="noopener" style="color:#2BB5C8;text-decoration:underline">利用規約</a>および<a href="/privacy" target="_blank" rel="noopener" style="color:#2BB5C8;text-decoration:underline">プライバシーポリシー</a>に同意のうえ送信します
+        </label>
+      </div>
+      <div id="cf-error" style="display:none;font-size:12px;color:#d92d20;padding:10px 14px;background:#fef3f2;border:1px solid #fda29b;border-radius:6px"></div>
       <div style="padding-top:8px">
-        <button class="cwm-arrow-link" style="display:inline-flex;align-items:center;gap:10px;font-family:var(--font-d);font-size:13px;font-weight:600;letter-spacing:.04em;padding:14px 40px;background:#2BB5C8;color:#04212a;border:none;border-radius:8px;cursor:pointer;transition:all .25s cubic-bezier(0.16,1,0.3,1);box-shadow:0 4px 14px -4px rgba(43,181,200,.4)" onmouseover="this.style.background='#1a9aad';this.style.transform='translateY(-1px)';this.style.boxShadow='0 8px 22px -4px rgba(43,181,200,.55)'" onmouseout="this.style.background='#2BB5C8';this.style.transform='translateY(0)';this.style.boxShadow='0 4px 14px -4px rgba(43,181,200,.4)'">送信する <span class="cwm-arrow">→</span></button>
+        <button id="cf-submit" class="cwm-arrow-link" style="display:inline-flex;align-items:center;gap:10px;font-family:var(--font-d);font-size:13px;font-weight:600;letter-spacing:.04em;padding:14px 40px;background:#2BB5C8;color:#04212a;border:none;border-radius:8px;cursor:pointer;transition:all .25s cubic-bezier(0.16,1,0.3,1);box-shadow:0 4px 14px -4px rgba(43,181,200,.4)" onmouseover="this.style.background='#1a9aad';this.style.transform='translateY(-1px)';this.style.boxShadow='0 8px 22px -4px rgba(43,181,200,.55)'" onmouseout="this.style.background='#2BB5C8';this.style.transform='translateY(0)';this.style.boxShadow='0 4px 14px -4px rgba(43,181,200,.4)'">送信する <span class="cwm-arrow">→</span></button>
       </div>
     </div>
   </div>
 </div>
+
+<script>
+(function(){
+  var SB_URL='https://jakwntemjkwqwaqujffh.supabase.co';
+  var SB_KEY='sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+  var btn=document.getElementById('cf-submit');
+  var errBox=document.getElementById('cf-error');
+  if(!btn)return;
+
+  function showError(msg){
+    if(!errBox)return;
+    errBox.textContent=msg;
+    errBox.style.display='block';
+    errBox.scrollIntoView({behavior:'smooth',block:'center'});
+  }
+  function clearError(){if(errBox)errBox.style.display='none';}
+
+  function isEmail(v){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test((v||'').trim());}
+
+  btn.addEventListener('click',async function(){
+    clearError();
+    var name=(document.getElementById('cf-name').value||'').trim();
+    var company=(document.getElementById('cf-company').value||'').trim();
+    var email=(document.getElementById('cf-email').value||'').trim();
+    var type=(document.getElementById('cf-type').value||'').trim();
+    var message=(document.getElementById('cf-message').value||'').trim();
+    var agreed=document.getElementById('cf-agree').checked;
+
+    if(!name){showError('お名前を入力してください。');return;}
+    if(!isEmail(email)){showError('メールアドレスの形式が正しくありません。');return;}
+    if(!type){showError('お問い合わせ種別を選択してください。');return;}
+    if(!message){showError('お問い合わせ内容を入力してください。');return;}
+    if(!agreed){showError('利用規約・プライバシーポリシーへの同意が必要です。');return;}
+
+    btn.disabled=true;
+    var origLabel=btn.innerHTML;
+    btn.textContent='送信中...';
+
+    try{
+      var res=await fetch(SB_URL+'/functions/v1/cwm-inquiry',{
+        method:'POST',
+        headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json'},
+        body:JSON.stringify({
+          type:'contact',
+          contactName:name,
+          companyName:company,
+          contactEmail:email,
+          inquiryType:type,
+          message:message
+        })
+      });
+      var json=null;
+      try{json=await res.json();}catch(_){}
+      if(res.ok&&json&&json.ok){
+        var card=document.querySelector('.contact-card');
+        if(card)card.innerHTML='<div style="text-align:center;padding:32px 8px"><div style="font-family:var(--font-d);font-size:36px;color:#2BB5C8;margin-bottom:14px">✓</div><div style="font-family:var(--font-d);font-size:18px;font-weight:600;margin-bottom:10px">お問い合わせを受け付けました</div><div style="font-size:13.5px;color:var(--gray-600);line-height:1.85">ご登録のメールアドレスに受付確認メールをお送りしました。<br>通常2営業日以内に運営チームよりご返信を差し上げます。<br><br>ありがとうございました。</div></div>';
+        window.scrollTo({top:0,behavior:'smooth'});
+      }else{
+        btn.disabled=false;
+        btn.innerHTML=origLabel;
+        var msg=(json&&json.error)?json.error:'送信に失敗しました。時間をおいて再度お試しください。';
+        showError(msg);
+      }
+    }catch(e){
+      btn.disabled=false;
+      btn.innerHTML=origLabel;
+      showError('通信エラーが発生しました: '+e.message);
+    }
+  });
+})();
+</script>
 
 <footer>
   <div class="foot-inner">

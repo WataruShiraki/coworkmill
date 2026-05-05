@@ -663,6 +663,12 @@ footer{background:#0a1628;padding:64px 80px 40px;color:#fff;position:relative;ov
         </div>
       </div>
       <div class="form-note">🔒 担当者情報は運営チームのみが閲覧します。掲載ページには表示されません。</div>
+      <div class="form-agree" style="display:flex;align-items:flex-start;gap:10px;margin:18px 0 14px;padding:14px 16px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:8px">
+        <input id="rg-agree" type="checkbox" style="margin-top:3px;width:16px;height:16px;cursor:pointer;flex-shrink:0;accent-color:#88c895">
+        <label for="rg-agree" style="font-size:12px;color:rgba(255,255,255,.65);line-height:1.7;cursor:pointer">
+          <a href="/terms" target="_blank" rel="noopener" style="color:#88c895;text-decoration:underline">利用規約</a>および<a href="/privacy" target="_blank" rel="noopener" style="color:#88c895;text-decoration:underline">プライバシーポリシー</a>に同意のうえ申し込みます
+        </label>
+      </div>
       <button class="form-submit" id="rg-submit" type="button">掲載を申し込む（無料） <span class="arrow">→</span></button>
       <div class="form-followup">通常1営業日以内にメールでご連絡します。</div>
     </div>
@@ -743,6 +749,8 @@ document.querySelectorAll('.faq-q').forEach(function(b){
     var allOk=true;
     fields.forEach(function(f){var el=document.getElementById(f.id);var ok=f.validate(el?el.value:'');setRowError(f.id,!ok);if(!ok)allOk=false;});
     if(!allOk)return;
+    var agree=document.getElementById('rg-agree');
+    if(agree && !agree.checked){alert('利用規約・プライバシーポリシーへの同意が必要です。');return;}
     btn.disabled=true;btn.textContent='送信中...';
     var payload={
       name:document.getElementById('rg-fac-name').value.trim(),
@@ -767,6 +775,7 @@ document.querySelectorAll('.faq-q').forEach(function(b){
             method:'POST',
             headers:{'apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Content-Type':'application/json'},
             body:JSON.stringify({
+              type:'register',
               facilityName:document.getElementById('rg-fac-name').value.trim(),
               companyName:document.getElementById('rg-company').value.trim(),
               facilityUrl:document.getElementById('rg-fac-url').value.trim(),
