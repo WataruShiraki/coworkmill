@@ -33,11 +33,11 @@
     inner.className = 'cwm-mob-nav-inner';
     
     var links = [
-      { href: 'coworkmill.html', text: 'トップ' },
-      { href: 'coworkmill-spaces.html', text: 'コワーキングを探す' },
-      { href: 'coworkmill-architects.html', text: '建築家から探す' },
-      { href: 'coworkmill-photos.html', text: '写真から探す' },
-      { href: 'coworkmill-register.html', text: 'コワーキング登録', cta: true }
+      { href: '/', text: 'トップ' },
+      { href: '/spaces', text: 'コワーキングを探す' },
+      { href: '/architects', text: '建築家から探す' },
+      { href: '/photos', text: '写真から探す' },
+      { href: '/register', text: 'コワーキング登録', cta: true }
     ];
     
     links.forEach(function(l){
