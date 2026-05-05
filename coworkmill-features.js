@@ -172,7 +172,7 @@
         newBtn.textContent='✓ 送信完了'; newBtn.style.background='#4ade80'; newBtn.style.color='#000';
         const success=document.createElement('div');
         success.style.cssText='position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.88);display:flex;align-items:center;justify-content:center;z-index:9999;';
-        success.innerHTML=`<div style="background:#111;border:1px solid #2a2a2a;border-radius:16px;padding:48px 40px;text-align:center;max-width:400px;margin:20px;"><div style="font-size:48px;margin-bottom:20px;">✓</div><h2 style="color:#fff;font-size:20px;margin-bottom:12px;font-family:sans-serif;">お申し込みを受け付けました</h2><p style="color:#888;font-size:13px;line-height:1.8;margin-bottom:28px;font-family:sans-serif;">お申し込み内容を確認のうえ、<br>2〜3営業日以内にご連絡いたします。</p><a href="coworkmill.html" style="display:inline-block;padding:12px 28px;background:linear-gradient(135deg,#79F1A4,#2BB5C8);border-radius:8px;color:#000;text-decoration:none;font-size:13px;font-weight:600;font-family:sans-serif;">トップへ戻る</a></div>`;
+        success.innerHTML=`<div style="background:#111;border:1px solid #2a2a2a;border-radius:16px;padding:48px 40px;text-align:center;max-width:400px;margin:20px;"><div style="font-size:48px;margin-bottom:20px;">✓</div><h2 style="color:#fff;font-size:20px;margin-bottom:12px;font-family:sans-serif;">お申し込みを受け付けました</h2><p style="color:#888;font-size:13px;line-height:1.8;margin-bottom:28px;font-family:sans-serif;">お申し込み内容を確認のうえ、<br>2〜3営業日以内にご連絡いたします。</p><a href="/" style="display:inline-block;padding:12px 28px;background:linear-gradient(135deg,#79F1A4,#2BB5C8);border-radius:8px;color:#000;text-decoration:none;font-size:13px;font-weight:600;font-family:sans-serif;">トップへ戻る</a></div>`;
         document.body.appendChild(success);
       };
     });
@@ -227,7 +227,7 @@
     if (!navRight || navRight.querySelector('.cm-fav-nav')) return;
     var btn = document.createElement('a');
     btn.className = 'cm-fav-nav';
-    btn.href = 'coworkmill-favorites.html';
+    btn.href = '/favorites';
     btn.title = 'お気に入り';
     btn.setAttribute('aria-label', 'お気に入り一覧');
     btn.style.cssText = 'position:relative;width:36px;height:36px;border-radius:8px;border:1px solid var(--gray-200,#2a2a2a);background:var(--white,transparent);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;text-decoration:none;color:var(--gray-600,rgba(255,255,255,.7));flex-shrink:0;overflow:visible;margin-right:8px';
@@ -529,7 +529,7 @@
         p.style.cssText = 'color:#888;font-size:13px;line-height:1.8;margin-bottom:28px;font-family:sans-serif;';
         p.textContent = '内容を確認のうえ、2～3営業日以内にご返信いたします。';
         var a = document.createElement('a');
-        a.href = 'coworkmill.html';
+        a.href = '/';
         a.style.cssText = 'display:inline-block;padding:12px 28px;background:linear-gradient(135deg,#79F1A4,#2BB5C8);border-radius:8px;color:#000;text-decoration:none;font-size:13px;font-weight:600;font-family:sans-serif;';
         a.textContent = 'トップへ戻る';
         inner.appendChild(checkDiv); inner.appendChild(h2); inner.appendChild(p); inner.appendChild(a);
