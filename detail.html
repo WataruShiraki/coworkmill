@@ -1552,7 +1552,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const params = new URLSearchParams(window.location.search);
   let spaceId = params.get('id');
-  const slugParam = params.get('slug');
+  // Vercel rewrite: /space/foo → detail.html (server-side rewrite, browser URL stays /space/foo)
+  // location.search is empty in that case → also parse pathname for slug
+  let slugParam = params.get('slug');
+  if (!slugParam) {
+    const pathMatch = window.location.pathname.match(/^\/space\/([^\/?#]+)/);
+    if (pathMatch) slugParam = decodeURIComponent(pathMatch[1]);
+  }
   if (!spaceId && !slugParam) return;
 
   const PREF_MAP = {
