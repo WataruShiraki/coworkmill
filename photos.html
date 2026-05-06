@@ -325,7 +325,7 @@ function renderGrid(items) {
         <div class="photo-city">${cwm.esc(p.city)}</div>
         <div class="photo-name">${cwm.esc(p.name)}</div>
         ${p.design ? `<div class="photo-design">Design by <span>${cwm.esc(p.design)}</span></div>` : ''}
-        ${p.tags.length ? `<div class="photo-wtags">${p.tags.map(t => `<span class="photo-wtag">${cwm.esc(t)}</span>`).join('')}</div>` : ''}
+        <!-- workstyle_tags はユーザー投票機能の整備後に表示予定 -->
       </div>
     </a>
   `).join('');
