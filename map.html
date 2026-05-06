@@ -704,7 +704,7 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
       maxZoom:19
     }).addTo(map);
 
-    fetch(SUPABASE+'/rest/v1/spaces?select=id,slug,name,nearest_station,prefecture,city,image_main,latitude,longitude&status=eq.live',{
+    fetch(SUPABASE+'/rest/v1/spaces?select=id,slug,name,nearest_station,prefecture,image_main,latitude,longitude&status=eq.live',{
       headers:{apikey:KEY,Authorization:'Bearer '+KEY}
     })
     .then(function(r){return r.json();})
@@ -737,7 +737,7 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
         var lon=s._lon||s.longitude;
         bounds.push([lat,lon]);
         var img=s.image_main||'';
-        var loc=[s.prefecture,s.city,s.nearest_station].filter(Boolean).join(' / ');
+        var loc=[s.prefecture,s.nearest_station].filter(Boolean).join(' / ');
         var popup=
           (img?'<img class="cwm-popup-img" src="'+esc(img)+'" alt="'+esc(s.name)+'" loading="lazy">':'')
           +'<div class="cwm-popup-name">'+esc(s.name)+'</div>'
