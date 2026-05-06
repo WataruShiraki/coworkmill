@@ -129,8 +129,52 @@ async function updateSpaceFromSubscription(sub: any, opts: { active: boolean }):
   if (!r.ok) {
     const txt = await r.text();
     console.error("[webhook] failed to update space", space_id, r.status, txt);
-  } else {
-    console.log("[webhook] space updated", space_id, "→", updateBody.plan, "(", sub.status, ")");
+    return;
+  }
+  console.log("[webhook] space updated", space_id, "→", updateBody.plan, "(", sub.status, ")");
+
+  // ===== account.plan を再計算 =====
+  // metadata から account_id を取得 (なければ space から取得)
+  let accountId: string | null = sub?.metadata?.account_id || null;
+  if (!accountId) {
+    try {
+      const spR = await sbFetch(`/spaces?id=eq.${encodeURIComponent(space_id)}&select=account_id`);
+      const sps = await spR.json();
+      if (Array.isArray(sps) && sps.length > 0) accountId = sps[0].account_id;
+    } catch {}
+  }
+  if (!accountId) {
+    console.warn("[webhook] could not resolve account_id for space", space_id);
+    return;
+  }
+
+  // その account の全 spaces の plan を取得 → 最上位を計算
+  try {
+    const allR = await sbFetch(`/spaces?account_id=eq.${encodeURIComponent(accountId)}&select=plan`);
+    const all = await allR.json();
+    if (!Array.isArray(all)) {
+      console.warn("[webhook] failed to list spaces for account", accountId);
+      return;
+    }
+    const rank = (p: string): number => p === "pro" ? 3 : p === "standard" ? 2 : 1;
+    let topPlan: "free" | "standard" | "pro" = "free";
+    for (const s of all) {
+      const p = (s.plan || "free") as "free" | "standard" | "pro";
+      if (rank(p) > rank(topPlan)) topPlan = p;
+    }
+    const accR = await sbFetch(`/accounts?id=eq.${encodeURIComponent(accountId)}`, {
+      method: "PATCH",
+      headers: { "Prefer": "return=minimal" },
+      body: JSON.stringify({ plan: topPlan }),
+    });
+    if (!accR.ok) {
+      const txt = await accR.text();
+      console.error("[webhook] failed to update account.plan", accountId, accR.status, txt);
+    } else {
+      console.log("[webhook] account.plan updated", accountId, "→", topPlan);
+    }
+  } catch (e) {
+    console.error("[webhook] error recalculating account.plan", e);
   }
 }
 
