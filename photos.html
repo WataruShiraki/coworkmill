@@ -324,7 +324,7 @@ function renderGrid(items) {
       <div class="photo-info">
         <div class="photo-city">${cwm.esc(p.city)}</div>
         <div class="photo-name">${cwm.esc(p.name)}</div>
-        <div class="photo-design">Design by <span>${cwm.esc(p.design)}</span></div>
+        ${p.design ? `<div class="photo-design">Design by <span>${cwm.esc(p.design)}</span></div>` : ''}
         <div class="photo-wtags">${p.tags.map(t => `<span class="photo-wtag">${t}</span>`).join('')}</div>
       </div>
     </a>
