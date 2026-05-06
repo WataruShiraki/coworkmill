@@ -876,21 +876,30 @@ footer{background:#0a1628;padding:64px 80px 40px;color:#fff;position:relative;ov
   
 </section>
 
-<!-- LIST VIEW -->
+<!-- NEW ARRIVALS (新着4施設) -->
+<section class="gallery-sec" id="spaces-new">
+  <div class="gallery-head">
+    <div>
+      <div class="gallery-eyebrow">New Arrivals</div>
+      <h2 class="gallery-title">新着 <span>一覧</span></h2>
+    </div>
+    <a href="/spaces" class="sec-link">すべて見る →</a>
+  </div>
+
+  <div class="gallery-grid" id="gallery-grid-new"></div>
+</section>
+
+<!-- LIST VIEW (ランダム4施設) -->
 <section class="gallery-sec" id="spaces-list">
   <div class="gallery-head">
     <div>
       <div class="gallery-eyebrow">All Spaces</div>
-      <h2 class="gallery-title">全コワーキング <span>一覧</span></h2>
+      <h2 class="gallery-title">コワーキング <span>一覧</span></h2>
     </div>
     <a href="/spaces" class="sec-link">すべて見る →</a>
   </div>
 
   <div class="gallery-grid" id="gallery-grid"></div>
-  
-
-
-
 </section>
 
 <!-- ARCHITECT EDITORIAL -->
@@ -956,7 +965,7 @@ const TOP_PREF_MAP={'北海道':'HOKKAIDO','青森県':'AOMORI','岩手県':'IWA
 async function loadTopData() {
 
   try {
-    const res = await fetch(SUPABASE_URL_TOP + '/rest/v1/spaces?select=id,name,area,prefecture,plan,status,image_main,architect_name,architect_id,slug&status=eq.live&plan=eq.pro&order=created_at.desc', {
+    const res = await fetch(SUPABASE_URL_TOP + '/rest/v1/spaces?select=id,name,area,prefecture,plan,status,image_main,architect_name,architect_id,slug,created_at&status=eq.live&plan=eq.pro&order=created_at.desc', {
       headers: { 'apikey': SUPABASE_KEY_TOP, 'Authorization': 'Bearer ' + SUPABASE_KEY_TOP }
     });
     const spaces = await res.json();
@@ -1075,22 +1084,32 @@ async function loadTopData() {
       }).join('');
     }
 
-    // 全コワーキング一覧
+    // カード生成ヘルパー
+    const buildGcard = function(s) {
+      const pref = TOP_PREF_MAP[s.prefecture] || (s.prefecture||'').replace(/[都道府県]/,'').toUpperCase();
+      const city = (s.area ? s.area + ' / ' : '') + pref;
+      const img = s.image_main || '';
+      return '<a class="gcard" data-arch-id="' + cwm.escAttr(s.architect_id||'') + '" href="' + (s.slug ? '/space/' + encodeURIComponent(s.slug) : '/detail?id=' + encodeURIComponent(s.id)) + '">' +
+        '<div class="gcard-img" style="' + (img ? 'background-image:url(\'' + cwm.safeUrl(img) + '\')' : 'background:#1a1a2e') + '"></div>' +
+        '<div class="gcard-body">' +
+          '<div class="gcard-city">' + cwm.esc(city) + '</div>' +
+          '<div class="gcard-name">' + cwm.esc(s.name||'') + '</div>' +
+        (s.architect_name ? '<div class="gcard-arch">Design by ' + cwm.esc(s.architect_name) + '</div>' : '') +
+        '</div></a>';
+    };
+
+    // 新着 4施設（DB側で created_at desc 済み）
+    const galleryGridNew = document.getElementById('gallery-grid-new');
+    if (galleryGridNew && live.length > 0) {
+      const newest = live.slice(0, 4);
+      galleryGridNew.innerHTML = newest.map(buildGcard).join('');
+    }
+
+    // コワーキング一覧 ランダム 4施設
     const galleryGrid = document.getElementById('gallery-grid') || document.querySelector('.gallery-grid');
     if (galleryGrid && live.length > 0) {
-      galleryGrid.innerHTML = live.map(function(s) {
-        const pref = TOP_PREF_MAP[s.prefecture] || (s.prefecture||'').replace(/[都道府県]/,'').toUpperCase();
-        const city = (s.area ? s.area + ' / ' : '') + pref;
-        const img = s.image_main || '';
-        const vibes = Array.isArray(s.vibe) ? s.vibe : (s.vibe ? [s.vibe] : []);
-        return '<a class="gcard" data-arch-id="' + cwm.escAttr(s.architect_id||'') + '" href="' + (s.slug ? '/space/' + encodeURIComponent(s.slug) : '/detail?id=' + encodeURIComponent(s.id)) + '">' +
-          '<div class="gcard-img" style="' + (img ? 'background-image:url(\'' + cwm.safeUrl(img) + '\')' : 'background:#1a1a2e') + '"></div>' +
-          '<div class="gcard-body">' +
-            '<div class="gcard-city">' + cwm.esc(city) + '</div>' +
-            '<div class="gcard-name">' + cwm.esc(s.name||'') + '</div>' +
-          (s.architect_name ? '<div class="gcard-arch">Design by ' + cwm.esc(s.architect_name) + '</div>' : '') +
-          '</div></a>';
-      }).join('');
+      const shuffledAll = [...live].sort(function(){ return Math.random() - 0.5; }).slice(0, 4);
+      galleryGrid.innerHTML = shuffledAll.map(buildGcard).join('');
       const gfCount = document.querySelector('.gf-count');
       if (gfCount) gfCount.textContent = live.length + '件';
     }
