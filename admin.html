@@ -2629,23 +2629,13 @@ function showVibeToast() {
     var token = localStorage.getItem('cwm_token');
     if (!token) { alert('再ログインしてください'); location.reload(); return; }
 
-    // 選択中の施設を取得
+    // 選択中の施設を取得 (.fi の data-db-id 属性から直接取得 = 確実)
     var space_id = null;
     try {
-      // getActiveDbId は Promise を返す
-      space_id = await new Promise(function(resolve, reject){
-        var allFis = Array.from(document.querySelectorAll('#fac-list .fi'));
-        var activeFi = document.querySelector('#fac-list .fi.on') || document.querySelector('#fac-list .fi.active') || allFis[0];
-        var idx = allFis.indexOf(activeFi);
-        if (idx < 0 && allFis.length > 0) idx = 0;
-        if (idx < 0) { reject('no fi'); return; }
-        fetch(SB + '/rest/v1/spaces?select=id&order=created_at.asc', {
-          headers: { 'apikey': KEY, 'Authorization': 'Bearer ' + KEY }
-        })
-        .then(function(r){ return r.json(); })
-        .then(function(sp){ resolve(sp && sp[idx] ? sp[idx].id : null); })
-        .catch(reject);
-      });
+      var activeFi = document.querySelector('#fac-list .fi.on') || document.querySelector('#fac-list .fi.active') || document.querySelector('#fac-list .fi');
+      if (!activeFi) throw new Error('no facility selected');
+      space_id = activeFi.dataset.dbId || activeFi.getAttribute('data-db-id');
+      if (!space_id) throw new Error('no dbId on facility element');
     } catch (e) {
       alert('施設が見つかりません。先に施設を登録してください。');
       return;
