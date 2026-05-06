@@ -190,7 +190,7 @@ Deno.serve(async (req: Request) => {
       "subscription_data[metadata][space_id]": space_id,
       "subscription_data[metadata][plan]": plan,
       // 日本のクレカ決済に必要な3DSecure設定
-      payment_method_types: "card",
+      "payment_method_types[0]": "card",
       locale: "ja",
     });
 
