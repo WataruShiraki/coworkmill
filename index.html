@@ -1124,9 +1124,23 @@ async function loadTopData() {
         a.href = s.slug ? '/space/' + encodeURIComponent(s.slug) : '/detail?id=' + s.id;
         a.title = s.name;
         a.style.cssText = 'display:block;aspect-ratio:4/3;border-radius:10px;overflow:hidden;background:#111;position:relative;cursor:pointer';
-        a.innerHTML = '<div style="position:absolute;inset:0;background:url(\'' + cwm.safeUrl(s.image_main) + '\') center/cover;transition:transform .5s"></div>';
-        a.addEventListener('mouseenter', () => a.querySelector('div').style.transform = 'scale(1.05)');
-        a.addEventListener('mouseleave', () => a.querySelector('div').style.transform = 'scale(1)');
+        a.innerHTML = '<div class="thumb-img" style="position:absolute;inset:0;background:url(\'' + cwm.safeUrl(s.image_main) + '\') center/cover;transition:transform .5s"></div>' +
+          '<div class="thumb-overlay" style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.75) 0%,rgba(0,0,0,.35) 50%,transparent 100%);opacity:0;transition:opacity .3s;pointer-events:none"></div>' +
+          '<div class="thumb-name" style="position:absolute;bottom:0;left:0;right:0;padding:14px 14px 12px;color:#fff;font-size:13px;font-weight:600;line-height:1.4;letter-spacing:.02em;opacity:0;transform:translateY(8px);transition:opacity .3s,transform .3s;pointer-events:none">' + cwm.esc(s.name||'') + '</div>';
+        a.addEventListener('mouseenter', () => {
+          a.querySelector('.thumb-img').style.transform = 'scale(1.05)';
+          a.querySelector('.thumb-overlay').style.opacity = '1';
+          const nm = a.querySelector('.thumb-name');
+          nm.style.opacity = '1';
+          nm.style.transform = 'translateY(0)';
+        });
+        a.addEventListener('mouseleave', () => {
+          a.querySelector('.thumb-img').style.transform = 'scale(1)';
+          a.querySelector('.thumb-overlay').style.opacity = '0';
+          const nm = a.querySelector('.thumb-name');
+          nm.style.opacity = '0';
+          nm.style.transform = 'translateY(8px)';
+        });
         thumbGrid.appendChild(a);
       });
     }
