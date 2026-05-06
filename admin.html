@@ -2658,6 +2658,10 @@ function showVibeToast() {
       if (res.ok && json && json.url) {
         // Stripe Checkout に遷移
         location.href = json.url;
+      } else if (res.ok && json && json.updated) {
+        // プラン変更（既存サブスクのアップグレード）成功
+        alert('🎉 プラン変更が完了しました！\n\nプラン情報の反映には数秒かかる場合があります。ページが自動で再読み込みされます。');
+        setTimeout(function(){ location.reload(); }, 800);
       } else if (res.status === 401) {
         alert('認証エラー: 再ログインしてください');
         localStorage.removeItem('cwm_token');

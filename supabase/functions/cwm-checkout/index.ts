@@ -141,13 +141,58 @@ Deno.serve(async (req: Request) => {
     if (ac.status !== "active") return jsonResponse({ error: "アカウントが無効化されています" }, 403);
 
     // 2. space 取得 + 所有確認
-    const spR = await sbFetch(`/spaces?id=eq.${encodeURIComponent(space_id)}&select=id,name,account_id,plan,status,stripe_subscription_id`);
+    const spR = await sbFetch(`/spaces?id=eq.${encodeURIComponent(space_id)}&select=id,name,account_id,plan,status,stripe_subscription_id,stripe_price_id`);
     const sps = await spR.json();
     if (!Array.isArray(sps) || sps.length === 0) return jsonResponse({ error: "施設が見つかりません" }, 404);
     const sp = sps[0];
     if (sp.account_id !== accountId) return jsonResponse({ error: "この施設の所有者ではありません" }, 403);
-    if (sp.stripe_subscription_id) return jsonResponse({ error: "既にサブスクリプションが設定されています" }, 400);
 
+    const newPriceId = plan === "standard" ? STRIPE_PRICE_STANDARD : STRIPE_PRICE_PRO;
+    if (!newPriceId) return jsonResponse({ error: `STRIPE_PRICE_${plan.toUpperCase()} not set` }, 500);
+
+    // 既にサブスクがある場合は subscription update でプラン変更
+    if (sp.stripe_subscription_id) {
+      if (sp.stripe_price_id === newPriceId) {
+        return jsonResponse({ error: "既にこのプランをご利用中です" }, 400);
+      }
+      // 既存 subscription の item.id を取得
+      const subR = await fetch(`https://api.stripe.com/v1/subscriptions/${sp.stripe_subscription_id}`, {
+        headers: { "Authorization": "Basic " + btoa(STRIPE_SECRET_KEY + ":") },
+      });
+      const sub = await subR.json();
+      if (!subR.ok) {
+        console.error("[cwm-checkout] failed to fetch subscription", sub);
+        return jsonResponse({ error: "サブスクリプション情報の取得に失敗しました" }, 500);
+      }
+      const itemId = sub?.items?.data?.[0]?.id;
+      if (!itemId) return jsonResponse({ error: "サブスクリプションのアイテムが見つかりません" }, 500);
+
+      // PATCH /subscriptions/:id with new price (proration)
+      const updR = await fetch(`https://api.stripe.com/v1/subscriptions/${sp.stripe_subscription_id}`, {
+        method: "POST",
+        headers: {
+          "Authorization": "Basic " + btoa(STRIPE_SECRET_KEY + ":"),
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({
+          "items[0][id]": itemId,
+          "items[0][price]": newPriceId,
+          "proration_behavior": "create_prorations",
+          "metadata[account_id]": accountId,
+          "metadata[space_id]": space_id,
+          "metadata[plan]": plan,
+        }).toString(),
+      });
+      const updJson = await updR.json();
+      if (!updR.ok) {
+        console.error("[cwm-checkout] subscription update failed", updJson);
+        return jsonResponse({ error: "プラン変更に失敗しました: " + (updJson?.error?.message || "unknown") }, 500);
+      }
+      // webhookで自動的にDBが更新されるので、ここでは success レスポンスのみ
+      return jsonResponse({ ok: true, updated: true, message: "プラン変更が完了しました" });
+    }
+
+    // === 新規サブスク: Checkout Session 作成 ===
     // 3. Stripe Customer を検索 or 作成
     let stripeCustomerId: string;
     const cuR = await sbFetch(`/stripe_customers?account_id=eq.${encodeURIComponent(accountId)}&select=stripe_customer_id`);
@@ -173,13 +218,10 @@ Deno.serve(async (req: Request) => {
     }
 
     // 4. Checkout Session 作成
-    const priceId = plan === "standard" ? STRIPE_PRICE_STANDARD : STRIPE_PRICE_PRO;
-    if (!priceId) return jsonResponse({ error: `STRIPE_PRICE_${plan.toUpperCase()} not set` }, 500);
-
     const session = await stripePost("/checkout/sessions", {
       mode: "subscription",
       customer: stripeCustomerId,
-      "line_items[0][price]": priceId,
+      "line_items[0][price]": newPriceId,
       "line_items[0][quantity]": "1",
       success_url: `${SITE_URL}/admin?checkout=success&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${SITE_URL}/admin?checkout=cancel`,
@@ -189,7 +231,6 @@ Deno.serve(async (req: Request) => {
       "subscription_data[metadata][account_id]": accountId,
       "subscription_data[metadata][space_id]": space_id,
       "subscription_data[metadata][plan]": plan,
-      // 日本のクレカ決済に必要な3DSecure設定
       "payment_method_types[0]": "card",
       locale: "ja",
     });
