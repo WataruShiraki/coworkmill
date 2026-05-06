@@ -1358,9 +1358,10 @@ function doSpSearch(){
   .then(function(archs){
     if(!Array.isArray(archs))return;
     archs.forEach(function(a){if(a.id&&a.name_en)window._archNameMap[a.id]=a.name_en;});
+    document.querySelectorAll('.gcard-arch').forEach(function(sp){
       var card=sp.closest('[data-arch-id]');
       if(card&&card.dataset.archId&&window._archNameMap[card.dataset.archId]){
-        sp.textContent=window._archNameMap[card.dataset.archId];
+        sp.textContent='Design by '+window._archNameMap[card.dataset.archId];
       }
     });
   }).catch(function(){});
@@ -1376,6 +1377,7 @@ function doSpSearch(){
     document.querySelectorAll('.gcard').forEach(function(el){
       el.style.setProperty('color','inherit','important');
     });
+    document.querySelectorAll('.gcard-city').forEach(function(el){
       el.style.setProperty('color','#aaaaaa','important');
       el.style.setProperty('font-size','9px','important');
       el.style.setProperty('font-weight','400','important');
