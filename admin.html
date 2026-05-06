@@ -1132,12 +1132,23 @@ window.updatePlanCards = function() {
       if (i === idx) {
         btn.textContent = '利用中'; btn.classList.add('dis'); btn.disabled = true;
       } else if (i < idx) {
-        btn.textContent = 'ダウングレード'; btn.classList.add('dis'); btn.disabled = true;
+        // ダウングレード
+        if (i === 0) {
+          // → Free: 解約フロー (Customer Portal経由)
+          btn.textContent = '解約する';
+          btn.classList.add('std');
+          btn.onclick = function(){ window.cwmDowngradeToFree && window.cwmDowngradeToFree(); };
+        } else {
+          // Pro → Standard など: subscription update でプラン変更
+          btn.textContent = planNames[i] + 'にダウングレード';
+          btn.classList.add('std');
+          btn.onclick = (function(p){ return function(){ window.cwmChangePlan && window.cwmChangePlan(p.toLowerCase(), true); }; })(planNames[i]);
+        }
       } else {
         btn.textContent = planNames[i] + 'にアップグレード';
         if (i === 2) btn.classList.add('pro');
         else btn.classList.add('std');
-        btn.onclick = (function(p){ return function(){ window.cwmUpgradePlan && window.cwmUpgradePlan(p.toLowerCase()); }; })(planNames[i]);
+        btn.onclick = (function(p){ return function(){ window.cwmChangePlan && window.cwmChangePlan(p.toLowerCase(), false); }; })(planNames[i]);
       }
     }
   });
@@ -2623,31 +2634,35 @@ function showVibeToast() {
   function makeCard(v,isPending){var card=document.createElement('div');card.style.cssText='background:#fff;border:1px solid #e8ecf0;border-radius:10px;padding:16px 18px;margin-bottom:10px';var hdr=document.createElement('div');hdr.style.cssText='display:flex;align-items:baseline;gap:10px;margin-bottom:6px';var nm=document.createElement('span');nm.style.cssText='font-size:14px;font-weight:700;color:#1a1a1a';nm.textContent=v.nickname||'\u533f\u540d';var dt=document.createElement('span');dt.style.cssText='font-size:11px;color:#aaa';dt.textContent=(v.submitted_at||'').substring(0,10);hdr.appendChild(nm);hdr.appendChild(dt);var wsRow=null;if(v.workstyle){wsRow=document.createElement('div');wsRow.style.cssText='margin-bottom:8px';var tag=document.createElement('span');var col=wsColor(v.workstyle);tag.style.cssText='display:inline-block;font-size:11px;font-weight:600;padding:3px 10px;border-radius:10px;line-height:1.5;color:'+col+';background:'+col+'1A;border:1px solid '+col+'33';var en=v.workstyle.replace(/[　-鿿＀-￯]+.*/g,'').trim();var jaInStr=v.workstyle.replace(/^[^\u3040-\u9FFF\uFF00-\uFFEF]*/,'').trim();var ja=jaInStr||(WS_JA[en]||'');if(en&&ja){tag.innerHTML=en+'<br><span style=\"font-size:10px;font-weight:400;opacity:.85\">'+ja+'<\/span>';}else{tag.textContent=v.workstyle;}wsRow.appendChild(tag);}var msg=document.createElement('p');msg.style.cssText='font-size:13px;color:#333;line-height:1.65;margin:0 0 12px';msg.textContent=v.message||'';var actions=document.createElement('div');actions.style.cssText='display:flex;gap:8px;justify-content:flex-end;border-top:1px solid #f0f0f0;padding-top:10px';if(isPending){var ap=document.createElement('button');ap.style.cssText='padding:6px 16px;background:#2BB5C8;color:#fff;border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer';ap.textContent='\u627f\u8a8d\u3057\u3066\u516c\u958b';ap.onclick=function(){window.approveVoice&&window.approveVoice(v.id);};actions.appendChild(ap);}var dl=document.createElement('button');dl.style.cssText='padding:6px 14px;background:#fff;color:#999;border:1px solid #e0e0e0;border-radius:6px;font-size:12px;cursor:pointer';dl.textContent='\u524a\u9664';dl.onmouseenter=function(){this.style.borderColor='#e53e3e';this.style.color='#e53e3e';};dl.onmouseleave=function(){this.style.borderColor='#e0e0e0';this.style.color='#999';};dl.onclick=function(){window.deleteVoice&&window.deleteVoice(v.id);};actions.appendChild(dl);card.appendChild(hdr);if(wsRow)card.appendChild(wsRow);card.appendChild(msg);card.appendChild(actions);return card;}
   function emptyState(text){var d=document.createElement('div');d.style.cssText='text-align:center;padding:28px 0;color:#c0c0c0;font-size:13px';d.textContent=text;return d;}
   window.loadAdminVoices=function(){var pel=document.getElementById('voice-pending-list');var ael=document.getElementById('voice-approved-list');var btxt=document.getElementById('voice-bar-txt');var bdot=document.querySelector('.sdot');getActiveDbId().then(function(dbId){if(!dbId)throw 'no dbId';return fetch(SB+'/rest/v1/voices?space_id=eq.'+dbId+'&order=submitted_at.desc',{headers:{'apikey':KEY,'Authorization':'Bearer '+KEY}}).then(function(r){return r.json();}).then(function(data){var pending=(data||[]).filter(function(v){return v.status==='pending';});var approved=(data||[]).filter(function(v){return v.status==='approved';});if(btxt)btxt.textContent=pending.length?'\u65b0\u7740 '+pending.length+'\u4ef6':'\u65b0\u7740\u306a\u3057';if(bdot)bdot.className='sdot'+(pending.length?'':' gray');if(pel){pel.innerHTML='';if(!pending.length)pel.appendChild(emptyState('\u627f\u8a8d\u5f85\u3061\u306e\u58f0\u306f\u3042\u308a\u307e\u305b\u3093'));else pending.forEach(function(v){pel.appendChild(makeCard(v,true));});}if(ael){ael.innerHTML='';if(!approved.length)ael.appendChild(emptyState('\u307e\u3060\u516c\u958b\u4e2d\u306e\u58f0\u304c\u3042\u308a\u307e\u305b\u3093'));else approved.forEach(function(v){ael.appendChild(makeCard(v,false));});}if(window.updateVoiceBadge)window.updateVoiceBadge();});}).catch(function(){if(pel)pel.innerHTML='<div style="text-align:center;padding:28px;color:#ccc;font-size:13px">\u65bd\u8a2d\u3092\u9078\u629e\u3057\u3066\u304f\u3060\u3055\u3044<\/div>';});};
-  // ===== Stripe Checkout: アップグレード処理 =====
-  window.cwmUpgradePlan = async function(plan) {
+  // ===== Stripe: プラン変更 (アップグレード・ダウングレード両方対応) =====
+  window.cwmChangePlan = async function(plan, isDowngrade) {
     if (plan !== 'standard' && plan !== 'pro') return;
     var token = localStorage.getItem('cwm_token');
     if (!token) { alert('再ログインしてください'); location.reload(); return; }
 
-    // 選択中の施設を取得 (.fi の data-db-id 属性から直接取得 = 確実)
+    // 選択中の施設を data-db-id から直接取得
     var space_id = null;
     try {
       var activeFi = document.querySelector('#fac-list .fi.on') || document.querySelector('#fac-list .fi.active') || document.querySelector('#fac-list .fi');
       if (!activeFi) throw new Error('no facility selected');
       space_id = activeFi.dataset.dbId || activeFi.getAttribute('data-db-id');
-      if (!space_id) throw new Error('no dbId on facility element');
+      if (!space_id) throw new Error('no dbId');
     } catch (e) {
       alert('施設が見つかりません。先に施設を登録してください。');
       return;
     }
-    if (!space_id) {
-      alert('施設が見つかりません。先に施設を登録してください。');
-      return;
-    }
 
-    // 確認
     var label = plan === 'pro' ? 'Pro (¥9,800/月)' : 'Standard (¥3,000/月)';
-    if (!confirm(label + ' プランへアップグレードします。\n\n決済画面に進みますがよろしいですか？')) return;
+    var msg;
+    if (isDowngrade) {
+      msg = label + ' プランへ変更します。\n\n' +
+        '・現プラン未使用分の日割り料金がクレジットされ、次回以降の請求で相殺されます\n' +
+        '・即座に新プランの内容に切り替わります\n\n' +
+        '続行しますか？';
+    } else {
+      msg = label + ' プランへアップグレードします。\n\n決済画面に進みますがよろしいですか？';
+    }
+    if (!confirm(msg)) return;
 
     try {
       var res = await fetch(SB + '/functions/v1/cwm-checkout', {
@@ -2657,10 +2672,8 @@ function showVibeToast() {
       });
       var json = await res.json();
       if (res.ok && json && json.url) {
-        // Stripe Checkout に遷移
         location.href = json.url;
       } else if (res.ok && json && json.updated) {
-        // プラン変更（既存サブスクのアップグレード）成功
         alert('🎉 プラン変更が完了しました！\n\nプラン情報の反映には数秒かかる場合があります。ページが自動で再読み込みされます。');
         setTimeout(function(){ location.reload(); }, 800);
       } else if (res.status === 401) {
@@ -2668,10 +2681,29 @@ function showVibeToast() {
         localStorage.removeItem('cwm_token');
         location.reload();
       } else {
-        alert('決済画面の準備に失敗しました: ' + (json && json.error ? json.error : 'unknown'));
+        alert('プラン変更に失敗しました: ' + (json && json.error ? json.error : 'unknown'));
       }
     } catch (e) {
       alert('通信エラーが発生しました: ' + e.message);
+    }
+  };
+
+  // ===== 後方互換: 旧名で呼ばれてもアップグレードとして動く =====
+  window.cwmUpgradePlan = function(plan) { return window.cwmChangePlan(plan, false); };
+
+  // ===== Free へのダウングレード = 解約 (Customer Portal経由) =====
+  window.cwmDowngradeToFree = function() {
+    var msg = '🛑 サブスクリプションを解約します。\n\n' +
+      '・解約は Stripe の管理画面で行います\n' +
+      '・課金期間の末日までは現在のプランをご利用いただけます\n' +
+      '・期間終了後に自動的に Free プランに切り替わります\n' +
+      '・期日まで返金は発生しません\n\n' +
+      '解約画面に進みますか？';
+    if (!confirm(msg)) return;
+    if (typeof window.cwmOpenPortal === 'function') {
+      window.cwmOpenPortal();
+    } else {
+      alert('解約画面の準備ができていません。少し待ってから再度お試しください。');
     }
   };
 
