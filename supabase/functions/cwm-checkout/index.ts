@@ -134,7 +134,7 @@ Deno.serve(async (req: Request) => {
 
   try {
     // 1. account 取得 (email用)
-    const acR = await sbFetch(`/accounts?id=eq.${encodeURIComponent(accountId)}&select=id,email,name,status`);
+    const acR = await sbFetch(`/accounts?id=eq.${encodeURIComponent(accountId)}&select=id,email,company,status`);
     const acs = await acR.json();
     if (!Array.isArray(acs) || acs.length === 0) return jsonResponse({ error: "アカウントが見つかりません" }, 404);
     const ac = acs[0];
@@ -157,7 +157,7 @@ Deno.serve(async (req: Request) => {
     } else {
       const customer = await stripePost("/customers", {
         email: ac.email || "",
-        name: ac.name || "",
+        name: ac.company || "",
         "metadata[account_id]": accountId,
       });
       stripeCustomerId = customer.id;
