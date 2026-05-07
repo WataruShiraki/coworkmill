@@ -596,19 +596,19 @@ async function loadSpaces() {
     if (!Array.isArray(data)) return;
     allSpaces = data;
 
-    const liveSpaces  = data.filter(d => d.status === 'live');
-    const draftSpaces = data.filter(d => d.status !== 'live' && d.status !== 'rejected');
+    const liveSpaces    = data.filter(d => d.status === 'live');
+    const pendingSpaces = data.filter(d => d.status === 'pending');
 
     // Dashboard counters
     document.getElementById('db-live').textContent = liveSpaces.length;
-    document.getElementById('db-live-sub').textContent = '公開中 ' + liveSpaces.length + ' / 審査待ち ' + draftSpaces.length;
-    document.getElementById('db-pending').textContent = draftSpaces.length;
+    document.getElementById('db-live-sub').textContent = '公開中 ' + liveSpaces.length + ' / 審査待ち ' + pendingSpaces.length;
+    document.getElementById('db-pending').textContent = pendingSpaces.length;
 
     // Sidebar badge
-    setBadge('nb-rv', draftSpaces.length);
+    setBadge('nb-rv', pendingSpaces.length);
 
     // Review badge
-    document.getElementById('rv-badge').textContent = draftSpaces.length + '件 審査待ち';
+    document.getElementById('rv-badge').textContent = pendingSpaces.length + '件 審査待ち';
 
     // sp-status
     document.getElementById('sp-status-label').textContent = '公開中 ' + liveSpaces.length + ' 件';
@@ -616,7 +616,7 @@ async function loadSpaces() {
     // Dashboard: latest 3 pending
     const dbRvTbody = document.getElementById('db-rv-tbody');
     dbRvTbody.innerHTML = '';
-    const latest = draftSpaces.slice(0,3);
+    const latest = pendingSpaces.slice(0,3);
     if (latest.length === 0) {
       dbRvTbody.innerHTML = '<tr><td colspan="5" class="empty">審査待ちの施設はありません</td></tr>';
     } else {
@@ -626,10 +626,10 @@ async function loadSpaces() {
     // Review table: all pending
     const rvTbody = document.getElementById('rv-tbody');
     rvTbody.innerHTML = '';
-    if (draftSpaces.length === 0) {
+    if (pendingSpaces.length === 0) {
       rvTbody.innerHTML = '<tr><td colspan="7" class="empty">審査待ちの施設はありません</td></tr>';
     } else {
-      draftSpaces.forEach(d => rvTbody.appendChild(makeRvRow(d)));
+      pendingSpaces.forEach(d => rvTbody.appendChild(makeRvRow(d)));
     }
 
     // Spaces table: all spaces
@@ -664,7 +664,7 @@ function makeRvRow(d) {
   const tr = document.createElement('tr');
   tr.className = 'hov';
   const area = (d.area || '') + (d.prefecture ? '/' + d.prefecture.replace(/[都道府県]/,'') : '');
-  const tdName = document.createElement('td'); tdName.innerHTML = '<div style="display:flex;align-items:center;gap:8px">' + (a.portrait_url ? '<div style="width:32px;height:32px;border-radius:50%;overflow:hidden;flex-shrink:0"><img src="' + a.portrait_url + '" style="width:100%;height:100%;object-fit:cover" onerror="this.parentElement.innerHTML=(a.firm||a.name||\'?\')[0]"></div>' : '<div style="width:32px;height:32px;border-radius:50%;background:#1a2a2e;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#2BB5C8">' + (a.firm||a.name||'?')[0] + '</div>') + '<div><strong>' + (a.name||'\u2014') + '</strong>' + (a.name_en ? '<div style="font-size:10px;color:var(--g400)">' + a.name_en + '</div>' : '') + '</div></div>';
+  const tdName = document.createElement('td'); tdName.innerHTML = '<strong>' + (d.name||'—') + '</strong>';
   const tdArea = document.createElement('td'); tdArea.style.cssText='font-size:11px;color:var(--g600)'; tdArea.textContent = area||'—';
   const tdContact = document.createElement('td');
   tdContact.innerHTML = `<div style="font-size:11px">${d.contact_name||'—'}</div><div style="font-size:10px;color:var(--g400)">${d.contact_email||''}</div>`;
@@ -687,8 +687,8 @@ function makeSpRow(d) {
   const tr = document.createElement('tr');
   tr.className = 'hov';
   const area = (d.area || '') + (d.prefecture ? '/' + d.prefecture.replace(/[都道府県]/,'') : '');
-  const statusMap = { live:'掲載中', draft:'審査待ち', rejected:'却下' };
-  const statusClassMap = { live:'lv', draft:'new', rejected:'rjt' };
+  const statusMap = { live:'掲載中', pending:'審査待ち', draft:'下書き', rejected:'却下' };
+  const statusClassMap = { live:'lv', pending:'new', draft:'dr', rejected:'rjt' };
   const st = d.status || 'draft';
   const tdName = document.createElement('td'); tdName.innerHTML = '<div style="display:flex;align-items:center;gap:8px">'
     + '<div style="width:32px;height:32px;border-radius:50%;overflow:hidden;background:#1a2a2e;flex-shrink:0;font-size:12px;font-weight:700;color:#2BB5C8;display:flex;align-items:center;justify-content:center">'

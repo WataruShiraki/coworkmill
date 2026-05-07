@@ -43,9 +43,13 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
 .fi-ic{width:28px;height:28px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;color:#fff;flex-shrink:0}
 .fn{font-size:10px;font-weight:500;color:#fff}
 .fs{font-size:8px;color:rgba(255,255,255,.4);display:flex;align-items:center;gap:3px;margin-top:2px}
-.fs.live::before,.fs.draft::before{content:'';width:4px;height:4px;border-radius:50%;display:inline-block}
+.fs.live::before,.fs.draft::before,.fs.pending::before,.fs.rejected::before{content:'';width:4px;height:4px;border-radius:50%;display:inline-block}
 .fs.live::before{background:#4ade80}
 .fs.draft::before{background:#f59e0b}
+.fs.pending::before{background:#3b82f6}
+.fs.rejected::before{background:#ef4444}
+.fs.pending{color:#3b82f6}
+.fs.rejected{color:#ef4444}
 .fi.locked{opacity:.5}
 .fi.locked .fn{color:rgba(255,255,255,.4)}
 .lock-badge{font-size:8px;margin-left:auto;color:rgba(255,255,255,.3)}
@@ -68,6 +72,8 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
 .tbs{font-size:9px;font-weight:600;padding:3px 10px;border-radius:10px}
 .tbs.live{background:#f0fdf4;color:#166534;border:1px solid #bbf7d0}
 .tbs.draft{background:#fefce8;color:#854d0e;border:1px solid #fde047}
+.tbs.pending{background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe}
+.tbs.rejected{background:#fef2f2;color:#991b1b;border:1px solid #fecaca}
 .tb-r{margin-left:auto;display:flex;gap:8px}
 .bol{font-family:var(--fd);font-size:10px;font-weight:600;letter-spacing:.04em;padding:6px 12px;border:1px solid var(--g200);border-radius:5px;background:none;cursor:pointer;color:var(--g600);transition:all .15s}
 .bol:hover{border-color:var(--black);color:var(--black)}
@@ -1608,7 +1614,7 @@ async function loadSpacesFromDB() {
         facs.push({
           id: i, db_id: row.id, nm, ic,
           bg: 'linear-gradient(135deg,#374151,#6b7280)',
-          st: row.status === 'live' ? 'live' : 'draft',
+          st: row.status === 'live' ? 'live' : (row.status === 'pending' ? 'pending' : (row.status === 'rejected' ? 'rejected' : 'draft')),
           plan: row.plan || 'free',
           has_photos: !!(row.image_main || (row.images && row.images.length > 0)),
           dash: {v:'—',c:'—',vo:'0',t:'—',tc:'',bars:[]}
@@ -1741,7 +1747,7 @@ function renderFacList() {
     li.className = 'fi' + (i === cur ? ' active' : '');
     li.id = 'fi-' + i;
     li.onclick = () => swFac(i);
-    li.innerHTML = `<div class="fi-ic" style="background:${f.bg}">${f.ic}</div><div class="fi-info"><div class="fn">${f.nm}</div><div class="fs ${f.st === 'live' ? 'live' : ''}">${f.st === 'live' ? '● 掲載中' : '● 下書き'}</div></div>`;
+    li.innerHTML = `<div class="fi-ic" style="background:${f.bg}">${f.ic}</div><div class="fi-info"><div class="fn">${f.nm}</div><div class="fs ${f.st}">${f.st === 'live' ? '● 掲載中' : f.st === 'pending' ? '● 審査中' : f.st === 'rejected' ? '● 却下' : '● 下書き'}</div></div>`;
     ul.appendChild(li);
   });
 }
@@ -2028,16 +2034,18 @@ function swFac(id) {
     document.querySelector('.content').prepend(banner);
   }
   const st = document.getElementById('tbs');
-  st.textContent = f.st==='live' ? '掲載中' : f.st==='locked' ? '非公開' : '下書き';
+  st.textContent = f.st==='live' ? '掲載中' : f.st==='pending' ? '審査中' : f.st==='rejected' ? '却下' : f.st==='locked' ? '非公開' : '下書き';
   st.className = 'tbs ' + (f.st==='locked' ? 'draft' : f.st);
   document.getElementById('ban-ic').textContent = f.ic;
   document.getElementById('ban-ic').style.background = f.bg;
   document.getElementById('ban-nm').textContent = f.nm + ' を編集中';
   const bst = document.getElementById('ban-st');
-  bst.textContent = f.st==='live' ? '掲載中' : f.st==='locked' ? '非公開' : '下書き';
+  bst.textContent = f.st==='live' ? '掲載中' : f.st==='pending' ? '審査中' : f.st==='rejected' ? '却下' : f.st==='locked' ? '非公開' : '下書き';
   bst.className = 'tbs ' + (f.st==='locked' ? 'draft' : f.st);
   const bar = document.getElementById('info-bar');
   if(f.st==='live') bar.innerHTML = '<div class="sdot green"></div><div class="st"><strong>掲載中</strong></div>';
+  else if(f.st==='pending') bar.innerHTML = '<div class="sdot" style="background:#3b82f6"></div><div class="st"><strong>審査中</strong> — 運営が内容を確認しています。通常1営業日以内に公開されます。</div>';
+  else if(f.st==='rejected') bar.innerHTML = '<div class="sdot" style="background:#ef4444"></div><div class="st"><strong>却下</strong> — 修正後、再度「公開する」を押してください。</div>';
   else if(f.st==='locked') bar.innerHTML = '<div class="sdot" style="background:#a0a0a0"></div><div class="st"><strong>非公開</strong> — Standardプランにアップグレードすると再公開できます</div>';
   else bar.innerHTML = '<div class="sdot amber"></div><div class="st"><strong>下書き</strong> — 情報を入力して内容を保存してください。</div>';
   // 地図セクションを既存編集パネルへ戻す
@@ -2046,7 +2054,11 @@ function swFac(id) {
   loadSpaceDetail(f);
   const tbr = document.getElementById('tbr');
   if(f.st==='draft') {
-    tbr.innerHTML = '<button class="bol" style="color:#ef4444;border-color:#ef4444;" onclick="deleteFac()">🗑 削除</button><button class="bsv" onclick="doSave()">変更を保存</button><button class="bpb" style="background:linear-gradient(135deg,#f97316,#ea580c);border-color:#f97316;color:#fff;font-weight:700" onclick="pubFac()">🚀 公開する</button>';
+    tbr.innerHTML = '<button class="bol" style="color:#ef4444;border-color:#ef4444;" onclick="deleteFac()">🗑 削除</button><button class="bsv" onclick="doSave()">変更を保存</button><button class="bpb" style="background:linear-gradient(135deg,#f97316,#ea580c);border-color:#f97316;color:#fff;font-weight:700" onclick="pubFac()">🚀 公開申請する</button>';
+  } else if(f.st==='pending') {
+    tbr.innerHTML = '<button class="bol" style="color:#666;border-color:#d4d4d4;" onclick="cancelPubFac()">↩ 申請を取り下げる</button><button class="bsv" onclick="doSave()">変更を保存</button>';
+  } else if(f.st==='rejected') {
+    tbr.innerHTML = '<button class="bol" style="color:#ef4444;border-color:#ef4444;" onclick="deleteFac()">🗑 削除</button><button class="bsv" onclick="doSave()">変更を保存</button><button class="bpb" style="background:linear-gradient(135deg,#f97316,#ea580c);border-color:#f97316;color:#fff;font-weight:700" onclick="pubFac()">🚀 再申請する</button>';
   } else if(f.st==='live') {
     tbr.innerHTML = '<button class="bol" style="color:#ef4444;border-color:#ef4444;" onclick="deleteFac()">🗑 削除</button><button class="bol" onclick="window.open(\'/detail\')">プレビュー →</button><button class="bsv" id="savebtn" onclick="doSave()">変更を保存</button><button class="bol" style="color:#ef4444;border-color:#ef4444;" onclick="unpubFac()">⏸ 非公開にする</button>';
   } else {
@@ -2198,6 +2210,25 @@ async function deleteFac() {
   }
 }
 
+async function cancelPubFac() {
+  const dbId = facs[cur] ? facs[cur].db_id : null;
+  if (!dbId) return;
+  if (!confirm('公開申請を取り下げますか？\n下書き状態に戻ります。')) return;
+  try {
+    await sbFetch('/rest/v1/spaces?id=eq.' + dbId, {
+      method: 'PATCH',
+      body: JSON.stringify({ status: 'draft' })
+    });
+    facs[cur].st = 'draft';
+    const item = document.getElementById('fi-' + cur);
+    if (item) { const fs = item.querySelector('.fs'); fs.className = 'fs'; fs.textContent = '● 下書き'; }
+    swFac(cur);
+    alert('申請を取り下げました。下書き状態に戻りました。');
+  } catch(e) {
+    alert('エラー: ' + toJapaneseError(e));
+  }
+}
+
 async function unpubFac() {
   if (!confirm('この施設を非公開にしますか？\nサイト上から非表示になります。')) return;
   const dbId = facs[cur] ? facs[cur].db_id : null;
@@ -2220,17 +2251,17 @@ async function unpubFac() {
 async function pubFac() {
   const dbId = facs[cur] ? facs[cur].db_id : null;
   if (!dbId) { alert('先に施設情報を保存してください。'); return; }
-  if (!confirm('この施設を公開しますか？')) return;
+  if (!confirm('この施設の公開を申請しますか？\n\n運営による確認後、公開されます。')) return;
   try {
     await sbFetch('/rest/v1/spaces?id=eq.' + dbId, {
       method: 'PATCH',
-      body: JSON.stringify({ status: 'live' })
+      body: JSON.stringify({ status: 'pending' })
     });
-    facs[cur].st = 'live';
+    facs[cur].st = 'pending';
     const item = document.getElementById('fi-' + cur);
-    if (item) { const fs = item.querySelector('.fs'); fs.className = 'fs live'; fs.textContent = '● 掲載中'; }
+    if (item) { const fs = item.querySelector('.fs'); fs.className = 'fs pending'; fs.textContent = '● 審査中'; }
     swFac(cur);
-    alert('公開しました！');
+    alert('公開申請を送信しました！\n運営による確認後、公開されます（通常1営業日以内）。');
   } catch(e) {
     alert('エラー: ' + toJapaneseError(e));
   }
