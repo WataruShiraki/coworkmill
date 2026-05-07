@@ -148,7 +148,7 @@ function buildRegisterApplicantEmail(d: RegisterPayload): { subject: string; htm
 <div style="font-family:'Montserrat',sans-serif;font-size:13px;font-weight:600;color:#fff;margin-bottom:8px;letter-spacing:.06em">COWORKMILL</div>
 <div>デザインで選ぶコワーキング掲載メディア</div>
 <div style="margin-top:8px"><a href="${SITE_URL}" style="color:rgba(255,255,255,.55);text-decoration:none">${SITE_URL}</a></div>
-<div style="margin-top:12px;color:rgba(255,255,255,.4);font-size:10px">運営: Lily Partners LLC</div>
+<div style="margin-top:12px;color:rgba(255,255,255,.4);font-size:10px">運営: Lily Partners, Inc.</div>
 </td></tr>
 </table>
 </td></tr></table>
@@ -174,7 +174,7 @@ ${ADMIN_EMAIL} までお気軽にお問い合わせください。
 COWORKMILL
 デザインで選ぶコワーキング掲載メディア
 ${SITE_URL}
-運営: Lily Partners LLC`;
+運営: Lily Partners, Inc.`;
 
   return { subject, html, text };
 }
@@ -268,7 +268,7 @@ function buildContactApplicantEmail(d: ContactPayload): { subject: string; html:
 <div style="font-family:'Montserrat',sans-serif;font-size:13px;font-weight:600;color:#fff;margin-bottom:8px;letter-spacing:.06em">COWORKMILL</div>
 <div>デザインで選ぶコワーキング掲載メディア</div>
 <div style="margin-top:8px"><a href="${SITE_URL}" style="color:rgba(255,255,255,.55);text-decoration:none">${SITE_URL}</a></div>
-<div style="margin-top:12px;color:rgba(255,255,255,.4);font-size:10px">運営: Lily Partners LLC</div>
+<div style="margin-top:12px;color:rgba(255,255,255,.4);font-size:10px">運営: Lily Partners, Inc.</div>
 </td></tr>
 </table>
 </td></tr></table>
@@ -295,7 +295,7 @@ ${ADMIN_EMAIL} までお寄せください。
 COWORKMILL
 デザインで選ぶコワーキング掲載メディア
 ${SITE_URL}
-運営: Lily Partners LLC`;
+運営: Lily Partners, Inc.`;
 
   return { subject, html, text };
 }
