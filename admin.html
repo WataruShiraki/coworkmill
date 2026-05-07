@@ -958,6 +958,14 @@ function resetVibeUI(){
 
   <!-- ARCH -->
   <div id="p-arch" style="display:none">
+    <!-- Free プランロック -->
+    <div id="p-arch-lock" style="display:none;background:linear-gradient(135deg,#fef9e7 0%,#fde68a 100%);border:1px solid #fcd34d;border-radius:12px;padding:36px 32px;margin-bottom:16px;text-align:center">
+      <div style="font-size:36px;margin-bottom:12px;line-height:1">🏛</div>
+      <h3 style="font-size:17px;font-weight:700;color:#78350f;margin:0 0 10px;letter-spacing:.01em">建築家情報は Standard プランからご利用いただけます</h3>
+      <p style="font-size:12px;color:#92400e;line-height:1.8;margin:0 auto 22px;max-width:480px">COWORKMILL の特徴は「建築家から空間を選べる」検索体験です。Standard 以上のプランで、施設に建築家情報を登録でき、建築家詳細ページや施設詳細ページに掲載されます。</p>
+      <button class="bsv" style="padding:10px 20px;font-size:12px" onclick="go('plan', document.querySelectorAll('.nl')[6])">プランを見る →</button>
+    </div>
+    <div id="p-arch-content">
     <div class="sec">
       <div class="sec-h"><div><div class="sec-ht">建築家情報</div><div class="sec-hs">施設をデザインした建築家をCOWORKMILLに登録されている建築家から選択、または新規情報を入力してください</div></div></div>
       <div class="sec-b">
@@ -996,6 +1004,7 @@ function resetVibeUI(){
     <div class="tbr" style="margin-top:16px">
       <button class="bsv" onclick="saveArchInfo()">保存する</button>
     </div>
+  </div>
   </div>
 
   <!-- COMPANY -->
@@ -1206,6 +1215,32 @@ function getMaxSpaces(plan, override) {
   return plan === 'pro' ? 20 : plan === 'standard' ? 5 : 1;
 }
 
+// 建築家情報タブ：Free プランのときはロック画面を表示
+function setupArchLock(plan) {
+  var p = plan || (JSON.parse(localStorage.getItem('cwm_account')||'{}').plan) || 'free';
+  var isFree = (p === 'free');
+  var lock = document.getElementById('p-arch-lock');
+  var content = document.getElementById('p-arch-content');
+  if (lock) lock.style.display = isFree ? 'block' : 'none';
+  if (content) content.style.display = isFree ? 'none' : '';
+  // サイドバーの建築家ボタンに鍵バッジ
+  var archBtn = Array.from(document.querySelectorAll('.nl')).find(function(b){
+    return (b.getAttribute('onclick')||'').indexOf("go('arch'") !== -1;
+  });
+  if (archBtn) {
+    var existing = archBtn.querySelector('.arch-lock-badge');
+    if (isFree && !existing) {
+      var sp = document.createElement('span');
+      sp.className = 'arch-lock-badge';
+      sp.style.cssText = 'margin-left:auto;font-size:9px;background:#444;color:#aaa;padding:2px 6px;border-radius:3px;font-weight:500';
+      sp.textContent = '🔒';
+      archBtn.appendChild(sp);
+    } else if (!isFree && existing) {
+      existing.remove();
+    }
+  }
+}
+
 function updateAddBtn() {
   const btn = document.querySelector('.add-btn');
   if (!btn) return;
@@ -1214,6 +1249,7 @@ function updateAddBtn() {
   const _acctSync = JSON.parse(localStorage.getItem('cwm_account')||'{}');
   const plan = _acctSync.plan || 'free';
   const limit = getMaxSpaces(plan, _acctSync.override_max_spaces);
+  setupArchLock(plan);
   const registeredCount = facs.filter(f => f.db_id).length;
   // DBからアカウントの最新planを取得して反映
   (async () => {
@@ -1233,12 +1269,14 @@ function updateAddBtn() {
           // プランウィジェットを更新
           const _limit = getMaxSpaces(_freshPlan, _freshOverride);
           updatePlanWidget(_freshPlan, registeredCount, _limit);
+          setupArchLock(_freshPlan);
         }
       } catch(e) {
         // フォールバック: キャッシュから
         const _fp = _acct.plan||'free';
         const _limit = getMaxSpaces(_fp, _acct.override_max_spaces);
         updatePlanWidget(_fp, registeredCount, _limit);
+        setupArchLock(_fp);
       }
     }
   })();
@@ -1265,7 +1303,7 @@ async function handlePhotoUpload(input) {
   // 写真上限はアカウントレベルのplanで判定(施設毎ではなく企業毎)
   const _acct = JSON.parse(localStorage.getItem('cwm_account')||'{}');
   const plan = _acct.plan || 'free';
-  const photoLimit = plan === 'free' ? 5 : plan === 'standard' ? 20 : 50;
+  const photoLimit = plan === 'free' ? 3 : plan === 'standard' ? 20 : 50;
   const currentImgs = await sbFetch('/rest/v1/space_images?space_id=eq.' + dbId + '&select=id');
   const currentCount = currentImgs ? currentImgs.length : 0;
   const remaining = photoLimit - currentCount;
@@ -1327,7 +1365,7 @@ async function loadPhotos(dbId) {
     const _acct = JSON.parse(localStorage.getItem('cwm_account')||'{}');
     const pl = _acct.plan || 'free';
     if (facs[cur]) facs[cur].plan = pl;
-    const lim = pl === 'free' ? 5 : pl === 'standard' ? 20 : 50;
+    const lim = pl === 'free' ? 3 : pl === 'standard' ? 20 : 50;
     const cnt = imgs ? imgs.length : 0;
     const planNote = document.getElementById('photo-plan-note');
     if (planNote) {

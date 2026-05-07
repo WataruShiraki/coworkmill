@@ -1607,6 +1607,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const rows = await res.json();
       if (!rows || !rows[0]) return;
       const d = rows[0];
+      // Free プランの施設は建築家情報を非表示（有料機能）
+      if ((d.plan || 'free') === 'free') {
+        d.architect_name = null;
+        d.architect_id = null;
+      }
       window._currentSpaceId = d.id;
       spaceId = d.id; // slug 経由アクセス時も spaceId を実際の ID にバインドして以降のクエリを動作させる
 
