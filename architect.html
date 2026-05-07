@@ -117,7 +117,7 @@ document.getElementById("ms").onclick=async function(){
 var n=document.getElementById("cn").value.trim(),e=document.getElementById("ce").value.trim(),b=document.getElementById("cb").value.trim(),t=document.getElementById("ck").value;
 if(!n||!e||!b){document.getElementById("er").style.display="block";return;}
 document.getElementById("er").style.display="none";
-try{await fetch("https://formspree.io/f/xzzpjywb",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({name:n,email:e,_replyto:e,_subject:"[COWORKMILL] "+t,message:document.getElementById("mtitle").textContent+"\n"+t+"\n"+n+"\n"+e+"\n"+b})});}catch(x){}
+try{await fetch(S+"/functions/v1/cwm-architect-inquiry",{method:"POST",headers:{"Content-Type":"application/json","apikey":K,"Authorization":"Bearer "+K},body:JSON.stringify({architect_id:id,name:n,email:e,type:t,message:b})});}catch(x){}
 document.getElementById("mform").style.display="none";document.getElementById("mok").style.display="block";
 };
 if(!id){document.getElementById("root").innerHTML='<div class="loading">建築家が見つかりません</div>';return;}
