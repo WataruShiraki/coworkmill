@@ -1200,6 +1200,12 @@ window.updatePlanWidget=function(plan,usedCount,maxCount){
   }
   
 
+// プラン別の施設上限を返す（override_max_spaces が優先）
+function getMaxSpaces(plan, override) {
+  if (override != null && Number(override) > 0) return Number(override);
+  return plan === 'pro' ? 20 : plan === 'standard' ? 5 : 1;
+}
+
 function updateAddBtn() {
   const btn = document.querySelector('.add-btn');
   if (!btn) return;
@@ -1207,7 +1213,7 @@ function updateAddBtn() {
   // (非同期の最新値取得は下のIIFEで行う、ここはキャッシュ即座値)
   const _acctSync = JSON.parse(localStorage.getItem('cwm_account')||'{}');
   const plan = _acctSync.plan || 'free';
-  const limit = plan === 'pro' ? 20 : plan === 'standard' ? 5 : 1;
+  const limit = getMaxSpaces(plan, _acctSync.override_max_spaces);
   const registeredCount = facs.filter(f => f.db_id).length;
   // DBからアカウントの最新planを取得して反映
   (async () => {
@@ -1215,21 +1221,23 @@ function updateAddBtn() {
     const _id = _acct.id;
     if (_id) {
       try {
-        const _res = await sbFetch('/rest/v1/accounts?id=eq.' + _id + '&select=plan');
+        const _res = await sbFetch('/rest/v1/accounts?id=eq.' + _id + '&select=plan,override_max_spaces');
         const _data = await _res.json();
         if (Array.isArray(_data) && _data[0]) {
           const _freshPlan = _data[0].plan || 'free';
+          const _freshOverride = _data[0].override_max_spaces;
           // localStorageを最新planで更新
           _acct.plan = _freshPlan;
+          _acct.override_max_spaces = _freshOverride;
           localStorage.setItem('cwm_account', JSON.stringify(_acct));
           // プランウィジェットを更新
-          const _limit = _freshPlan==='pro'?20:_freshPlan==='standard'?5:1;
+          const _limit = getMaxSpaces(_freshPlan, _freshOverride);
           updatePlanWidget(_freshPlan, registeredCount, _limit);
         }
       } catch(e) {
         // フォールバック: キャッシュから
         const _fp = _acct.plan||'free';
-        const _limit = _fp==='pro'?20:_fp==='standard'?5:1;
+        const _limit = getMaxSpaces(_fp, _acct.override_max_spaces);
         updatePlanWidget(_fp, registeredCount, _limit);
       }
     }

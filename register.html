@@ -240,6 +240,14 @@ section.lp{padding:120px 40px;border-top:1px solid var(--line);position:relative
 .step-desc{font-size:13px;line-height:1.85;color:var(--text-soft)}
 
 /* ========== Plans ========== */
+.enterprise-banner{margin-top:24px;padding:28px 32px;background:var(--bg-card);border:1px dashed var(--line-strong);border-radius:16px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.enterprise-content{flex:1;min-width:280px}
+.enterprise-eyebrow{font-family:var(--font-d);font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.enterprise-title{font-family:var(--font-d);font-size:18px;font-weight:600;letter-spacing:.01em;color:var(--text);margin:0 0 8px}
+.enterprise-desc{font-size:13px;line-height:1.7;color:var(--text-mute);margin:0}
+.enterprise-cta{flex-shrink:0;display:inline-block;font-family:var(--font-d);font-size:12px;font-weight:600;letter-spacing:.04em;padding:13px 24px;border-radius:8px;background:rgba(255,255,255,.05);color:var(--text);border:1px solid var(--line-strong);text-decoration:none;transition:all .2s;white-space:nowrap}
+.enterprise-cta:hover{background:rgba(255,255,255,.1);border-color:var(--accent);color:var(--accent)}
+@media(max-width:760px){.enterprise-banner{flex-direction:column;align-items:stretch;padding:24px 20px;text-align:left}.enterprise-cta{text-align:center}}
 .plan-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:40px;align-items:stretch}
 .plan-card{padding:38px 28px;background:var(--bg-card);border:1px solid var(--line);border-radius:16px;display:flex;flex-direction:column;position:relative;transition:all .3s}
 .plan-card:hover{transform:translateY(-2px)}
@@ -590,6 +598,14 @@ footer{background:#0a1628;padding:64px 80px 40px;color:#fff;position:relative;ov
         <a href="#cta" class="plan-cta">Proで申し込む →</a>
       </div>
     </div>
+    <div class="enterprise-banner" id="enterprise">
+      <div class="enterprise-content">
+        <div class="enterprise-eyebrow">Enterprise</div>
+        <h3 class="enterprise-title">20施設以上の掲載をご検討の方へ</h3>
+        <p class="enterprise-desc">Pro プランの上限（20施設）を超える掲載や、独自要件（API連携・優先サポート・年額契約・請求書払いなど）が必要な場合は、お気軽にご相談ください。施設数や運用体制に応じて個別にご提案いたします。</p>
+      </div>
+      <a href="/contact" class="enterprise-cta">お問い合わせ →</a>
+    </div>
   </div>
 </section>
 
@@ -619,6 +635,10 @@ footer{background:#0a1628;padding:64px 80px 40px;color:#fff;position:relative;ov
       <div class="faq-item">
         <button class="faq-q" type="button">登録した情報を後から変更できますか？<span class="toggle">＋</span></button>
         <div class="faq-a">はい、管理画面からいつでも自由に編集・更新できます。料金や営業時間の変更、写真の差し替えも即時反映されます。</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button">20施設以上を掲載したい場合は？<span class="toggle">＋</span></button>
+        <div class="faq-a">Pro プランの上限（20施設）を超える掲載をご希望の場合は、Enterprise 個別契約にてご対応いたします。<a href="/contact" style="color:var(--accent);text-decoration:underline">お問い合わせフォーム</a>よりご相談ください。施設数・運用体制に応じて個別にご提案いたします。</div>
       </div>
       <div class="faq-item">
         <button class="faq-q" type="button">プランの切り替えはいつでもできますか？<span class="toggle">＋</span></button>
