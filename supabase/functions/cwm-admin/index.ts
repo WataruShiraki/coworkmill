@@ -939,6 +939,81 @@ Deno.serve(async (req: Request) => {
     if (ac.status !== "active") return jsonResponse({ error: "アカウントが無効化されています" }, 403);
 
 
+    // ============ account_self (施設運営者本人のアカウント情報変更) ============
+    if (target === "account_self") {
+      const dS = data || {};
+
+      // -------- account_self:change_password --------
+      if (action === "change_password") {
+        const oldPass = (dS.old_password || "") + "";
+        const newPass = (dS.new_password || "") + "";
+        if (!oldPass || !newPass) {
+          return jsonResponse({ error: "現在のパスワードと新しいパスワードを入力してください" }, 400);
+        }
+        if (newPass.length < 8 || newPass.length > 200) {
+          return jsonResponse({ error: "新しいパスワードは8〜200文字で入力してください" }, 400);
+        }
+        if (oldPass === newPass) {
+          return jsonResponse({ error: "新しいパスワードは現在のパスワードと異なるものにしてください" }, 400);
+        }
+        const { data: rpcRes, error: rpcErr } = await sb.rpc("change_account_password", {
+          p_account_id: accountId,
+          p_old_pass: oldPass,
+          p_new_pass: newPass
+        });
+        if (rpcErr) {
+          await writeAuditLog(sb, accountId, target, action, null, "error", rpcErr.message, ip);
+          return jsonResponse({ error: "パスワード変更に失敗しました" }, 500);
+        }
+        const r = rpcRes as { ok?: boolean; error?: string };
+        if (!r?.ok) {
+          await writeAuditLog(sb, accountId, target, action, null, "denied", r?.error || "unknown", ip);
+          if (r?.error === "invalid current password") {
+            return jsonResponse({ error: "現在のパスワードが正しくありません" }, 401);
+          }
+          return jsonResponse({ error: r?.error || "パスワード変更に失敗しました" }, 400);
+        }
+        await writeAuditLog(sb, accountId, target, action, null, "ok", null, ip);
+        return jsonResponse({ ok: true });
+      }
+
+      // -------- account_self:change_email --------
+      if (action === "change_email") {
+        const oldPass = (dS.old_password || "") + "";
+        const newEmail = ((dS.new_email || "") + "").toLowerCase().trim();
+        if (!oldPass || !newEmail) {
+          return jsonResponse({ error: "現在のパスワードと新しいメールアドレスを入力してください" }, 400);
+        }
+        if (newEmail.length > 254 || !/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(newEmail)) {
+          return jsonResponse({ error: "メールアドレスの形式が正しくありません" }, 400);
+        }
+        const { data: rpcRes, error: rpcErr } = await sb.rpc("change_account_email", {
+          p_account_id: accountId,
+          p_old_pass: oldPass,
+          p_new_email: newEmail
+        });
+        if (rpcErr) {
+          await writeAuditLog(sb, accountId, target, action, null, "error", rpcErr.message, ip);
+          return jsonResponse({ error: "メールアドレス変更に失敗しました" }, 500);
+        }
+        const r = rpcRes as { ok?: boolean; error?: string };
+        if (!r?.ok) {
+          await writeAuditLog(sb, accountId, target, action, null, "denied", r?.error || "unknown", ip);
+          if (r?.error === "invalid current password") {
+            return jsonResponse({ error: "現在のパスワードが正しくありません" }, 401);
+          }
+          if (r?.error === "email already in use") {
+            return jsonResponse({ error: "このメールアドレスは既に他のアカウントで使用されています" }, 409);
+          }
+          return jsonResponse({ error: r?.error || "メールアドレス変更に失敗しました" }, 400);
+        }
+        await writeAuditLog(sb, accountId, target, action, null, "ok", null, ip);
+        return jsonResponse({ ok: true });
+      }
+
+      return jsonResponse({ error: "account_self では change_password または change_email を指定してください" }, 400);
+    }
+
     // ============ voice (利用者の声) ============
     if (target === "voice") {
       if (!id) return jsonResponse({ error: "voice IDが必要です" }, 400);
