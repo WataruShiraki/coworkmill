@@ -6,7 +6,7 @@ export const config = { runtime: 'edge' };
 
 const SUPABASE_URL = 'https://jakwntemjkwqwaqujffh.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
-const SITE = 'https://coworkmill.vercel.app';
+const SITE = 'https://cowkml.com';
 
 const STATIC_URLS = [
   { loc: SITE + '/journal/', changefreq: 'daily', priority: '0.9' }
