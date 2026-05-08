@@ -84,7 +84,7 @@ a{color:inherit;text-decoration:none;}
 <h1 id="mtitle" style="font-size:inherit;font-weight:inherit;margin:0;padding:0;line-height:inherit"></h1>
 <label>お名前 *</label><input type="text" id="cn">
 <label>メール *</label><input type="email" id="ce">
-<label>種類</label><select id="ck"><option>設計相談</option><option>施工相談</option><option>コワーキング設計</option><option>その他</option></select>
+<label>タイトル *</label><input type="text" id="ck" placeholder="例: 〇〇カフェの内装相談" maxlength="50">
 <label>内容 *</label><textarea id="cb"></textarea>
 <p class="err" id="er">必須項目を入力してください</p>
 <div class="modal-btns"><button class="btn-cancel" id="mc">キャンセル</button><button class="btn-submit" id="ms">送信する</button></div>
@@ -114,8 +114,8 @@ function closeModal(){modal.classList.remove("open");}
 document.getElementById("mc").onclick=closeModal;
 document.getElementById("mcl").onclick=function(){closeModal();document.getElementById("mok").style.display="none";document.getElementById("mform").style.display="block";};
 document.getElementById("ms").onclick=async function(){
-var n=document.getElementById("cn").value.trim(),e=document.getElementById("ce").value.trim(),b=document.getElementById("cb").value.trim(),t=document.getElementById("ck").value;
-if(!n||!e||!b){document.getElementById("er").style.display="block";return;}
+var n=document.getElementById("cn").value.trim(),e=document.getElementById("ce").value.trim(),b=document.getElementById("cb").value.trim(),t=document.getElementById("ck").value.trim();
+if(!n||!e||!b||!t){document.getElementById("er").style.display="block";return;}
 document.getElementById("er").style.display="none";
 try{await fetch(S+"/functions/v1/cwm-architect-inquiry",{method:"POST",headers:{"Content-Type":"application/json","apikey":K,"Authorization":"Bearer "+K},body:JSON.stringify({architect_id:id,name:n,email:e,type:t,message:b})});}catch(x){}
 document.getElementById("mform").style.display="none";document.getElementById("mok").style.display="block";
