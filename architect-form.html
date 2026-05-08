@@ -1,13 +1,4 @@
-<div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid rgba(255,255,255,.08)">
-            <div id="af-portrait-preview" style="width:72px;height:72px;border-radius:50%;background:#1a2a2e;flex-shrink:0;display:flex;align-items:center;justify-content:center;overflow:hidden;color:#2BB5C8;font-size:24px;font-weight:700">?</div>
-            <div style="flex:1">
-              <div style="font-size:13px;color:rgba(255,255,255,.7);margin-bottom:6px">ポートレート写真（任意）</div>
-              <input type="file" id="af-portrait-file" accept="image/*" style="display:none">
-              <button type="button" onclick="document.getElementById('af-portrait-file').click()" style="font-size:12px;padding:6px 14px;border:1px solid rgba(255,255,255,.3);border-radius:5px;background:transparent;color:rgba(255,255,255,.8);cursor:pointer">画像を選択</button>
-              <div style="font-size:10px;color:rgba(255,255,255,.35);margin-top:6px">JPG／PNG・5MB以下</div>
-            </div>
-          </div>
-          <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
 <!-- Google tag (gtag.js) -->
@@ -120,7 +111,17 @@ nav{height:56px;display:flex;align-items:center;padding:0 40px;background:var(--
   <meta name="description" content="COWORKMILLへの建築家・デザイン事務所情報登録フォーム。">
   <meta name="robots" content="noindex, nofollow">
   <script src="/shared/cwm-security.js" defer></script>
-</head>
+
+<div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid rgba(255,255,255,.08)">
+            <div id="af-portrait-preview" style="width:72px;height:72px;border-radius:50%;background:#1a2a2e;flex-shrink:0;display:flex;align-items:center;justify-content:center;overflow:hidden;color:#2BB5C8;font-size:24px;font-weight:700">?</div>
+            <div style="flex:1">
+              <div style="font-size:13px;color:rgba(255,255,255,.7);margin-bottom:6px">ポートレート写真（任意）</div>
+              <input type="file" id="af-portrait-file" accept="image/*" style="display:none">
+              <button type="button" onclick="document.getElementById('af-portrait-file').click()" style="font-size:12px;padding:6px 14px;border:1px solid rgba(255,255,255,.3);border-radius:5px;background:transparent;color:rgba(255,255,255,.8);cursor:pointer">画像を選択</button>
+              <div style="font-size:10px;color:rgba(255,255,255,.35);margin-top:6px">JPG／PNG・5MB以下</div>
+            </div>
+          </div>
+          </head>
 <body>
 
 <nav>
