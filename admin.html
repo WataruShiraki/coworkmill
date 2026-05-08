@@ -356,11 +356,15 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
   // アプリ表示
   function showApp(sess) {
     window._cwmAccountId = sess.id; // 施設追加・編集時に使用
+    window._cwmCurrentEmail = sess.email; // メアド変更時に参照
     document.getElementById('login-screen').style.display = 'none';
     document.body.style.overflow = '';
     // ヘッダーにログイン情報を表示
     const header = document.querySelector('.header-title, .admin-header, #header-company');
     if (header) header.textContent = sess.company;
+    // ログイン情報セクションのメアド表示
+    const accEmailDisplay = document.getElementById('acc-email-display');
+    if (accEmailDisplay) accEmailDisplay.value = sess.email || '';
   }
 
   // 初期化
@@ -1038,7 +1042,22 @@ function resetVibeUI(){
     <div class="sec">
       <div class="sec-h"><div><div class="sec-ht">ログイン情報</div></div></div>
       <div class="sec-b">
-        <div class="fr"><div class="fg"><div class="fl">メールアドレス</div><input class="fin" value="" readonly="" style="background:var(--g50);color:var(--g400)"></div><div class="fg"><div class="fl">パスワード</div><button class="bol" style="margin-top:5px">パスワードを変更</button></div></div>
+        <div class="fr">
+          <div class="fg">
+            <div class="fl">メールアドレス</div>
+            <div style="display:flex;gap:8px;align-items:stretch">
+              <input id="acc-email-display" class="fin" value="" readonly="" style="background:var(--g50);color:var(--g600);flex:1">
+              <button class="bol" type="button" onclick="openChangeEmailModal()" style="white-space:nowrap">変更</button>
+            </div>
+          </div>
+          <div class="fg">
+            <div class="fl">パスワード</div>
+            <div style="display:flex;gap:8px;align-items:stretch">
+              <input class="fin" value="••••••••••" readonly="" style="background:var(--g50);color:var(--g400);flex:1">
+              <button class="bol" type="button" onclick="openChangePasswordModal()" style="white-space:nowrap">変更</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="stripe-row">
@@ -4045,5 +4064,181 @@ window.moveAdminMapTo = function(anchorId) {
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
 </script>
+
+<!-- ===== ログイン情報変更モーダル ===== -->
+<style>
+.cwm-acc-modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9999;display:none;align-items:center;justify-content:center;padding:20px}
+.cwm-acc-modal-bg.open{display:flex}
+.cwm-acc-modal{background:#fff;border-radius:14px;padding:28px;max-width:440px;width:100%;color:#222;box-shadow:0 24px 60px rgba(0,0,0,.3)}
+.cwm-acc-modal h3{font-size:16px;font-weight:700;margin:0 0 6px;letter-spacing:-.01em}
+.cwm-acc-modal .desc{font-size:12px;color:#666;margin-bottom:18px;line-height:1.6}
+.cwm-acc-modal .field{margin-bottom:14px}
+.cwm-acc-modal .field label{display:block;font-size:11px;font-weight:600;color:#666;margin-bottom:5px;letter-spacing:.02em}
+.cwm-acc-modal .field input{width:100%;box-sizing:border-box;border:1px solid #ddd;border-radius:7px;padding:10px 12px;font-size:13px;color:#222;outline:none;transition:border-color .15s}
+.cwm-acc-modal .field input:focus{border-color:#2BB5C8}
+.cwm-acc-modal .err{font-size:11px;color:#c33;margin-top:8px;min-height:14px}
+.cwm-acc-modal .actions{display:flex;gap:10px;margin-top:18px}
+.cwm-acc-modal .actions button{flex:1;padding:11px;border-radius:7px;border:1px solid #ddd;background:#fff;color:#666;font-size:12px;font-weight:600;cursor:pointer}
+.cwm-acc-modal .actions button.primary{background:#2BB5C8;border-color:#2BB5C8;color:#fff}
+.cwm-acc-modal .actions button.primary:hover{background:#22a3b4}
+.cwm-acc-modal .actions button:disabled{opacity:.5;cursor:not-allowed}
+</style>
+
+<!-- パスワード変更モーダル -->
+<div class="cwm-acc-modal-bg" id="cwm-pwm-bg">
+  <div class="cwm-acc-modal">
+    <h3>🔑 パスワードを変更</h3>
+    <div class="desc">セキュリティのため、現在のパスワードと新しいパスワードを入力してください。</div>
+    <div class="field">
+      <label>現在のパスワード</label>
+      <input type="password" id="cwm-pwm-old" autocomplete="current-password">
+    </div>
+    <div class="field">
+      <label>新しいパスワード（8文字以上）</label>
+      <input type="password" id="cwm-pwm-new" autocomplete="new-password">
+    </div>
+    <div class="field">
+      <label>新しいパスワード（確認）</label>
+      <input type="password" id="cwm-pwm-confirm" autocomplete="new-password">
+    </div>
+    <div class="err" id="cwm-pwm-err"></div>
+    <div class="actions">
+      <button type="button" onclick="closeChangePasswordModal()">キャンセル</button>
+      <button type="button" class="primary" id="cwm-pwm-submit" onclick="submitChangePassword()">変更する</button>
+    </div>
+  </div>
+</div>
+
+<!-- メールアドレス変更モーダル -->
+<div class="cwm-acc-modal-bg" id="cwm-emm-bg">
+  <div class="cwm-acc-modal">
+    <h3>✉️ メールアドレスを変更</h3>
+    <div class="desc">セキュリティのため、現在のパスワードと新しいメールアドレスを入力してください。<br>変更後は次回から新しいメールアドレスでログインしてください。</div>
+    <div class="field">
+      <label>現在のパスワード</label>
+      <input type="password" id="cwm-emm-pass" autocomplete="current-password">
+    </div>
+    <div class="field">
+      <label>新しいメールアドレス</label>
+      <input type="email" id="cwm-emm-new" autocomplete="email">
+    </div>
+    <div class="err" id="cwm-emm-err"></div>
+    <div class="actions">
+      <button type="button" onclick="closeChangeEmailModal()">キャンセル</button>
+      <button type="button" class="primary" id="cwm-emm-submit" onclick="submitChangeEmail()">変更する</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  const SB_URL = 'https://jakwntemjkwqwaqujffh.supabase.co';
+  
+  function getToken(){ return localStorage.getItem('cwm_token'); }
+  
+  // ===== パスワード変更 =====
+  window.openChangePasswordModal = function(){
+    document.getElementById('cwm-pwm-old').value = '';
+    document.getElementById('cwm-pwm-new').value = '';
+    document.getElementById('cwm-pwm-confirm').value = '';
+    document.getElementById('cwm-pwm-err').textContent = '';
+    document.getElementById('cwm-pwm-bg').classList.add('open');
+    setTimeout(function(){ document.getElementById('cwm-pwm-old').focus(); }, 100);
+  };
+  window.closeChangePasswordModal = function(){
+    document.getElementById('cwm-pwm-bg').classList.remove('open');
+  };
+  window.submitChangePassword = async function(){
+    const oldPass = document.getElementById('cwm-pwm-old').value;
+    const newPass = document.getElementById('cwm-pwm-new').value;
+    const confirmPass = document.getElementById('cwm-pwm-confirm').value;
+    const errEl = document.getElementById('cwm-pwm-err');
+    const btn = document.getElementById('cwm-pwm-submit');
+    errEl.textContent = '';
+    if(!oldPass || !newPass){ errEl.textContent = '全ての項目を入力してください'; return; }
+    if(newPass.length < 8 || newPass.length > 200){ errEl.textContent = '新しいパスワードは8〜200文字で入力してください'; return; }
+    if(newPass !== confirmPass){ errEl.textContent = '新しいパスワードが一致しません'; return; }
+    if(oldPass === newPass){ errEl.textContent = '新しいパスワードは現在のパスワードと異なるものにしてください'; return; }
+    btn.disabled = true; btn.textContent = '変更中...';
+    try {
+      const r = await fetch(SB_URL + '/functions/v1/cwm-admin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          token: getToken(),
+          target: 'account_self',
+          action: 'change_password',
+          data: { old_password: oldPass, new_password: newPass }
+        })
+      });
+      const d = await r.json();
+      if(!r.ok || d.error) throw new Error(d.error || 'パスワード変更に失敗しました');
+      alert('パスワードを変更しました');
+      closeChangePasswordModal();
+    } catch(e){
+      errEl.textContent = e.message;
+    } finally {
+      btn.disabled = false; btn.textContent = '変更する';
+    }
+  };
+  
+  // ===== メールアドレス変更 =====
+  window.openChangeEmailModal = function(){
+    document.getElementById('cwm-emm-pass').value = '';
+    document.getElementById('cwm-emm-new').value = '';
+    document.getElementById('cwm-emm-err').textContent = '';
+    document.getElementById('cwm-emm-bg').classList.add('open');
+    setTimeout(function(){ document.getElementById('cwm-emm-pass').focus(); }, 100);
+  };
+  window.closeChangeEmailModal = function(){
+    document.getElementById('cwm-emm-bg').classList.remove('open');
+  };
+  window.submitChangeEmail = async function(){
+    const oldPass = document.getElementById('cwm-emm-pass').value;
+    const newEmail = document.getElementById('cwm-emm-new').value.trim();
+    const errEl = document.getElementById('cwm-emm-err');
+    const btn = document.getElementById('cwm-emm-submit');
+    errEl.textContent = '';
+    if(!oldPass || !newEmail){ errEl.textContent = '全ての項目を入力してください'; return; }
+    if(!/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(newEmail)){ errEl.textContent = 'メールアドレスの形式が正しくありません'; return; }
+    if(newEmail.toLowerCase() === (window._cwmCurrentEmail || '').toLowerCase()){ errEl.textContent = '現在のメールアドレスと同じです'; return; }
+    btn.disabled = true; btn.textContent = '変更中...';
+    try {
+      const r = await fetch(SB_URL + '/functions/v1/cwm-admin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          token: getToken(),
+          target: 'account_self',
+          action: 'change_email',
+          data: { old_password: oldPass, new_email: newEmail }
+        })
+      });
+      const d = await r.json();
+      if(!r.ok || d.error) throw new Error(d.error || 'メールアドレス変更に失敗しました');
+      // localStorage 更新
+      try {
+        const acc = JSON.parse(localStorage.getItem('cwm_account') || '{}');
+        acc.email = newEmail.toLowerCase();
+        localStorage.setItem('cwm_account', JSON.stringify(acc));
+        const inp = document.getElementById('acc-email-display');
+        if(inp) inp.value = acc.email;
+        window._cwmCurrentEmail = acc.email;
+      } catch(e){}
+      alert('メールアドレスを変更しました。次回ログイン時から新しいメールアドレスをご利用ください。');
+      closeChangeEmailModal();
+    } catch(e){
+      errEl.textContent = e.message;
+    } finally {
+      btn.disabled = false; btn.textContent = '変更する';
+    }
+  };
+  
+  // 背景クリックで閉じる
+  document.getElementById('cwm-pwm-bg')?.addEventListener('click', function(e){ if(e.target === this) closeChangePasswordModal(); });
+  document.getElementById('cwm-emm-bg')?.addEventListener('click', function(e){ if(e.target === this) closeChangeEmailModal(); });
+})();
+</script>
+
 </body></html>
 <!-- deploy -->
