@@ -1014,6 +1014,98 @@ Deno.serve(async (req: Request) => {
       return jsonResponse({ error: "account_self では change_password または change_email を指定してください" }, 400);
     }
 
+    // ============ account_managers (Owner: 担当者管理) ============
+    if (target === "account_managers") {
+      const dM = data || {};
+
+      // Owner権限チェック (manager は担当者管理不可)
+      if (payload.kind && payload.kind !== "owner") {
+        return jsonResponse({ error: "担当者管理は管理者(Owner)のみ実行可能です" }, 403);
+      }
+
+      // -------- list --------
+      if (action === "list") {
+        const { data: list, error } = await sb
+          .from("account_managers")
+          .select("id, email, display_name, role, status, created_at, last_login_at")
+          .eq("account_id", accountId)
+          .order("created_at", { ascending: false });
+        if (error) {
+          await writeAuditLog(sb, accountId, target, action, null, "error", error.message, ip);
+          return jsonResponse({ error: "担当者一覧の取得に失敗しました" }, 500);
+        }
+        return jsonResponse({ ok: true, managers: list || [] });
+      }
+
+      // -------- create --------
+      if (action === "create") {
+        const mEmail = ((dM.email || "") + "").toLowerCase().trim();
+        const mPass = (dM.password || "") + "";
+        const mDisplayName = dM.display_name ? (((dM.display_name || "") + "").trim() || null) : null;
+        const mRole = ((dM.role || "manager") + "") as string;
+
+        if (!mEmail || !mPass) {
+          return jsonResponse({ error: "メールアドレスとパスワードは必須です" }, 400);
+        }
+        if (mPass.length < 8 || mPass.length > 200) {
+          return jsonResponse({ error: "パスワードは8〜200文字で入力してください" }, 400);
+        }
+        if (!["manager", "viewer"].includes(mRole)) {
+          return jsonResponse({ error: "権限は manager / viewer のいずれかで指定してください" }, 400);
+        }
+
+        const { data: rpcRes, error: rpcErr } = await sb.rpc("create_account_manager", {
+          p_account_id: accountId,
+          p_email: mEmail,
+          p_password: mPass,
+          p_display_name: mDisplayName,
+          p_role: mRole
+        });
+        if (rpcErr) {
+          await writeAuditLog(sb, accountId, target, action, null, "error", rpcErr.message, ip);
+          return jsonResponse({ error: "担当者作成に失敗しました" }, 500);
+        }
+        const r = rpcRes as { ok?: boolean; error?: string; id?: string };
+        if (!r?.ok) {
+          const errorMap: Record<string, string> = {
+            "invalid email format": "メールアドレスの形式が正しくありません",
+            "password must be 8-200 chars": "パスワードは8〜200文字で入力してください",
+            "invalid role": "権限の指定が正しくありません",
+            "account not found": "アカウントが見つかりません",
+            "email already in use": "このメールアドレスは既に使用されています"
+          };
+          await writeAuditLog(sb, accountId, target, action, null, "denied", r?.error || "unknown", ip);
+          return jsonResponse({ error: errorMap[r?.error || ""] || r?.error || "担当者作成に失敗しました" }, 400);
+        }
+        await writeAuditLog(sb, accountId, target, action, r.id || null, "ok", null, ip);
+        return jsonResponse({ ok: true, id: r.id });
+      }
+
+      // -------- delete --------
+      if (action === "delete") {
+        const managerId = ((dM.manager_id || "") + "").trim();
+        if (!managerId) return jsonResponse({ error: "manager_id が必要です" }, 400);
+
+        const { data: rpcRes, error: rpcErr } = await sb.rpc("delete_account_manager", {
+          p_account_id: accountId,
+          p_manager_id: managerId
+        });
+        if (rpcErr) {
+          await writeAuditLog(sb, accountId, target, action, managerId, "error", rpcErr.message, ip);
+          return jsonResponse({ error: "担当者削除に失敗しました" }, 500);
+        }
+        const r = rpcRes as { ok?: boolean; error?: string };
+        if (!r?.ok) {
+          await writeAuditLog(sb, accountId, target, action, managerId, "denied", r?.error || "unknown", ip);
+          return jsonResponse({ error: r?.error === "manager not found in this account" ? "対象の担当者が見つかりません" : r?.error || "担当者削除に失敗しました" }, 400);
+        }
+        await writeAuditLog(sb, accountId, target, action, managerId, "ok", null, ip);
+        return jsonResponse({ ok: true });
+      }
+
+      return jsonResponse({ error: "account_managers では list / create / delete を指定してください" }, 400);
+    }
+
     // ============ voice (利用者の声) ============
     if (target === "voice") {
       if (!id) return jsonResponse({ error: "voice IDが必要です" }, 400);
