@@ -1,165 +1,4 @@
-<link rel="icon" href="coworkmill_icon.svg" type="image/svg+xml">
-
-<script>(function(){document.querySelectorAll('link[rel*="icon"]').forEach(function(l){l.remove();});var f=document.createElement("link");f.rel="icon";f.type="image/svg+xml";f.href="coworkmill_icon.svg";document.head.appendChild(f);})();</script>
-<script>
-(function(){
-function setSPGrid(){
-  var g=document.querySelector(".arch-new-grid");
-  if(!g)return;
-  if(window.innerWidth<=768){
-    g.style.setProperty("grid-template-columns","repeat(2,1fr)","important");
-    g.style.setProperty("gap","10px","important");
-  }else{
-    g.style.removeProperty("grid-template-columns");
-    g.style.removeProperty("gap");
-  }
-}
-setSPGrid();
-window.addEventListener("resize",setSPGrid);
-// 建築家カード生成後にも実行
-var sec=document.getElementById("architect-story");
-if(sec)new MutationObserver(setSPGrid).observe(sec,{childList:true,subtree:true});
-setTimeout(setSPGrid,2000);
-})();
-</script>
-<style>
-@media(max-width:768px){
-.arch-new-grid{grid-template-columns:repeat(2,1fr)!important;gap:10px!important;}
-.arch-new-name{font-size:12px!important;}
-.arch-new-firm{font-size:11px!important;}
-.arch-new-cnt{font-size:10px!important;}
-.arch-new-thumb{height:32px!important;}
-}
-</style>
-<style>
-@media(max-width:768px){
-.arch-new-grid{grid-template-columns:repeat(2,1fr)!important;gap:10px!important;}
-.arch-new-name{font-size:12px!important;}
-.arch-new-firm{font-size:11px!important;}
-.arch-new-cnt{font-size:10px!important;}
-.arch-new-thumb{height:32px!important;}
-}
-</style>
-<script>
-(function(){
-var S="https://jakwntemjkwqwaqujffh.supabase.co",K="sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ";
-function patchJaName(){
-  document.querySelectorAll(".arch-new-card").forEach(function(card){
-    var nameEl=card.querySelector(".arch-new-name");
-    var firmEl=card.querySelector(".arch-new-firm");
-    if(!nameEl||!firmEl)return;
-    if(firmEl.dataset.patched)return;
-    firmEl.dataset.patched="1";
-    var nameEn=nameEl.textContent.trim();
-    var firm=firmEl.textContent.trim();
-    // firmがname_enと同じ→日本語名をAPI取得して表示
-    if(firm===nameEn||!firm){
-      var href=card.href||card.getAttribute("href")||"";
-      var m=href.match(/id=([a-f0-9-]+)/);
-      if(!m)return;
-      fetch(S+"/rest/v1/architects?select=name&id=eq."+m[1],{headers:{"apikey":K,"Authorization":"Bearer "+K}})
-        .then(function(r){return r.json();})
-        .then(function(data){
-          if(data&&data[0]&&data[0].name){
-            firmEl.textContent=data[0].name;
-            firmEl.style.display="";
-          }
-        }).catch(function(){});
-    }
-  });
-}
-// MutationObserverで動的生成後も対応
-var sec=document.getElementById("architect-story");
-if(sec)new MutationObserver(patchJaName).observe(sec,{childList:true,subtree:true});
-setTimeout(patchJaName,2000);
-setTimeout(patchJaName,5000);
-})();
-</script>
-<script>(function(){var s=document.createElement("style");s.textContent=".acard-portrait{filter:none!important;transition:none!important;}";(document.head||document.documentElement).appendChild(s);})();</script>
-<script>
-(function(){
-function fixFirm(){
-  document.querySelectorAll(".arch-new-card").forEach(function(card){
-    var nameEl=card.querySelector(".arch-new-name");
-    var firmEl=card.querySelector(".arch-new-firm");
-    if(!nameEl||!firmEl)return;
-    var name=nameEl.textContent.trim();
-    var firm=firmEl.textContent.trim();
-    if(firm&&firm===name)firmEl.style.display="none";
-  });
-}
-var obs=new MutationObserver(fixFirm);
-var sec=document.getElementById("architect-story");
-if(sec)obs.observe(sec,{childList:true,subtree:true});
-setTimeout(fixFirm,3000);
-})();
-</script>
-<style>
-.arch-new-grid{grid-template-columns:repeat(5,1fr)!important;}
-.arch-new-empty-txt{display:none!important;}
-</style>
-<style>
-.arch-new-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;}
-.arch-new-card{background:#191919;border-radius:12px;overflow:hidden;border:1px solid #282828;padding:12px;display:flex;flex-direction:column;gap:10px;cursor:pointer;transition:border-color .2s;text-decoration:none;}
-.arch-new-card:hover{border-color:#2BB5C8;}
-.arch-new-portrait{width:100%;aspect-ratio:1/1;border-radius:8px;overflow:hidden;background:#252525;flex-shrink:0;}
-.arch-new-portrait img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block;}
-.arch-new-thumbs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;}
-.arch-new-thumb{height:40px;border-radius:4px;object-fit:cover;background:#252525;width:100%;display:block;}
-.arch-new-info{padding:2px 0 2px;}
-.arch-new-name{font-size:14px;font-weight:700;color:#efefef;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.arch-new-firm{font-size:12px;color:#555;margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.arch-new-cnt{font-size:11px;color:#444;}
-.arch-new-empty{border-radius:12px;border:1px dashed #282828;background:#111;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;min-height:200px;}
-.arch-new-empty-icon{width:28px;height:28px;border-radius:50%;border:1.5px solid #2a2a2a;display:flex;align-items:center;justify-content:center;}
-.arch-new-empty-txt{font-size:12px;color:#2e2e2e;text-align:center;line-height:1.6;}
-</style>
-<script>
-(function(){
-var S="https://jakwntemjkwqwaqujffh.supabase.co",K="sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ";
-async function buildArchGrid(){
-var sec=document.getElementById("architect-story");
-if(!sec)return;
-var container=sec.children[1];
-if(!container)return;
-try{
-var r=await fetch(S+"/rest/v1/architects?select=id,name,name_en,firm,portrait_url",{headers:{"apikey":K,"Authorization":"Bearer "+K}});
-var archs=await r.json();
-if(!Array.isArray(archs)||!archs.length)return;
-// ランダム順表示 (Fisher-Yates shuffle) - 全建築家に平等な露出と偶発的な出会いを提供
-for(var s=archs.length-1;s>0;s--){var rj=Math.floor(Math.random()*(s+1));var tmp=archs[s];archs[s]=archs[rj];archs[rj]=tmp;}
-var grid=document.createElement("div");
-grid.className="arch-new-grid";
-for(var i=0;i<archs.length;i++){
-var a=archs[i];
-var card=document.createElement("a");
-card.className="arch-new-card";
-card.href="/architect?id="+a.id;
-var ph='<div class="arch-new-portrait" style="background:#222;display:flex;align-items:flex-end;justify-content:center;overflow:hidden;"><div style="width:70%;display:flex;flex-direction:column;align-items:center;"><div style="width:40%;aspect-ratio:1/1;border-radius:50%;background:#3a3a3a;margin-bottom:-1px;"></div><div style="width:80%;height:40%;background:#313131;border-radius:6px 6px 0 0;"></div></div></div>';
-var portraitHtml=a.portrait_url?'<div class="arch-new-portrait"><img src="'+a.portrait_url+'" alt="'+(a.name||'建築家')+'のポートレート" loading="lazy"></div>':ph;
-var sr=await fetch(S+"/rest/v1/spaces?select=id&architect_id=eq."+a.id+"&status=eq.live&limit=3",{headers:{"apikey":K,"Authorization":"Bearer "+K}});
-var spaces=await sr.json();
-var thumbsHtml="";
-if(Array.isArray(spaces)){for(var j=0;j<Math.min(spaces.length,3);j++){try{var lr=await fetch(S+"/storage/v1/object/list/space-images",{method:"POST",headers:{"apikey":K,"Authorization":"Bearer "+K,"Content-Type":"application/json"},body:JSON.stringify({prefix:spaces[j].id+"/",limit:1})});var files=await lr.json();if(Array.isArray(files)&&files.length){thumbsHtml+='<img class="arch-new-thumb" src="'+S+"/storage/v1/object/public/space-images/"+spaces[j].id+"/"+files[0].name+'" alt="'+(spaces[j].name||'コワーキング施設')+'の写真" loading="lazy">'}else{thumbsHtml+='<div class="arch-new-thumb"></div>';}}catch(e){thumbsHtml+='<div class="arch-new-thumb"></div>';}}}
-while((thumbsHtml.match(/arch-new-thumb/g)||[]).length<3)thumbsHtml+='<div class="arch-new-thumb"></div>';
-var cnt=Array.isArray(spaces)?spaces.length:0;
-card.innerHTML=portraitHtml+'<div class="arch-new-thumbs">'+thumbsHtml+"</div>"+'<div class="arch-new-info"><div class="arch-new-name">'+cwm.esc(a.name_en||a.name||"")+'</div><div class="arch-new-firm">'+cwm.esc(a.firm||"")+'</div><div class="arch-new-cnt">'+( cnt>0?"スペース "+cnt+"件":"")+"</div></div>";
-grid.appendChild(card);
-}
-var empty=Math.max(0,4-archs.length);
-for(var k=0;k<empty;k++){var e=document.createElement("div");e.className="arch-new-empty";e.innerHTML='<div class="arch-new-empty-icon"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><line x1="6" y1="1" x2="6" y2="11" stroke="#383838" stroke-width="1.5" stroke-linecap="round"/><line x1="1" y1="6" x2="11" y2="6" stroke="#383838" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="arch-new-empty-txt">建築家を<br>募集中</div>';grid.appendChild(e);}
-container.innerHTML="";
-container.appendChild(grid);
-}catch(e){console.error(e);}
-}
-if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",buildArchGrid);}else{buildArchGrid();}
-})();
-</script>
-<style>
-.arch-portrait-card{width:120px!important;max-width:120px!important;}
-.arch-portrait-card img{width:120px!important;height:120px!important;border-radius:50%!important;object-fit:cover!important;}
-</style>
-<script>(function(){var S="https://jakwntemjkwqwaqujffh.supabase.co",K="sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ";var st=document.createElement("style");st.textContent='.arch-portrait-img{width:80px!important;height:80px!important;border-radius:50%!important;object-fit:cover!important;}.arch-portrait-card{display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:10px!important;}.arch-space-thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;width:100%;border-radius:6px;overflow:hidden;margin-top:4px;}.arch-space-thumb{height:64px;object-fit:cover;width:100%;display:block;background:#1a1a1a;}.arch-space-count{font-size:11px;color:#888;margin-top:6px;}';document.head.appendChild(st);async function run(){var r=await fetch(S+"/rest/v1/architects?select=id,name_en",{headers:{"apikey":K,"Authorization":"Bearer "+K}});var archs=await r.json();var cards=document.querySelectorAll(".arch-portrait-card");for(var i=0;i<Math.min(cards.length,archs.length);i++){var card=cards[i],arch=archs[i];if(card.querySelector(".arch-space-thumbs"))continue;var sr=await fetch(S+"/rest/v1/spaces?select=id,name&architect_id=eq."+arch.id+"&status=eq.live&limit=3",{headers:{"apikey":K,"Authorization":"Bearer "+K}});var spaces=await sr.json();if(!Array.isArray(spaces)||!spaces.length)continue;var cnt=document.createElement("div");cnt.className="arch-space-count";cnt.textContent=spaces.length+"件のスペース";card.appendChild(cnt);var photos=[];for(var pi=0;pi<spaces.length;pi++){try{var lr=await fetch(S+"/storage/v1/object/list/space-images",{method:"POST",headers:{"apikey":K,"Authorization":"Bearer "+K,"Content-Type":"application/json"},body:JSON.stringify({prefix:spaces[pi].id+"/",limit:1})});var files=await lr.json();if(Array.isArray(files)&&files.length)photos.push(S+"/storage/v1/object/public/space-images/"+spaces[pi].id+"/"+files[0].name);}catch(e){}}if(!photos.length)continue;var grid=document.createElement("div");grid.className="arch-space-thumbs";photos.forEach(function(url){var img=document.createElement("img");img.className="arch-space-thumb";img.src=url;img.loading="lazy";grid.appendChild(img);});card.appendChild(grid);}}if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",run);}else{run();}})();</script><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ja"><head>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-P6CZCM6K18"></script>
@@ -728,7 +567,169 @@ footer{background:#0a1628;padding:64px 80px 40px;color:#fff;position:relative;ov
 </style>
 
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"COWORKMILLとはどんなサービスですか？","acceptedAnswer":{"@type":"Answer","text":"COWORKMILLは、建築家・デザイン会社が手がけたコワーキングスペースを専門に掲載する検索サービスです。仕事タイプ（Deep Work・Creative・Meetingなど）や建築家、場所の特徴（高層階・古民家・水辺など）で絞り込んで理想の空間を見つけられます。"}},{"@type":"Question","name":"どうやってコワーキングスペースを探せますか？","acceptedAnswer":{"@type":"Answer","text":"エリア・駅名での検索のほか、仕事タイプ（集中作業・ブレスト・商談など）、設計した建築家・デザイン事務所、場所の雰囲気（倉庫跡・テラス・緑いっぱいなど）でも絞り込めます。写真一覧から直感的に探すこともできます。"}},{"@type":"Question","name":"掲載はどうすれば申し込めますか？","acceptedAnswer":{"@type":"Answer","text":"掲載申し込みページから無料でご申請いただけます。Free・Standard・Proの3プランをご用意しており、審査通過後に掲載が開始されます。"}}]}</script>
-</head>
+
+<link rel="icon" href="coworkmill_icon.svg" type="image/svg+xml">
+
+<script>(function(){document.querySelectorAll('link[rel*="icon"]').forEach(function(l){l.remove();});var f=document.createElement("link");f.rel="icon";f.type="image/svg+xml";f.href="coworkmill_icon.svg";document.head.appendChild(f);})();</script>
+<script>
+(function(){
+function setSPGrid(){
+  var g=document.querySelector(".arch-new-grid");
+  if(!g)return;
+  if(window.innerWidth<=768){
+    g.style.setProperty("grid-template-columns","repeat(2,1fr)","important");
+    g.style.setProperty("gap","10px","important");
+  }else{
+    g.style.removeProperty("grid-template-columns");
+    g.style.removeProperty("gap");
+  }
+}
+setSPGrid();
+window.addEventListener("resize",setSPGrid);
+// 建築家カード生成後にも実行
+var sec=document.getElementById("architect-story");
+if(sec)new MutationObserver(setSPGrid).observe(sec,{childList:true,subtree:true});
+setTimeout(setSPGrid,2000);
+})();
+</script>
+<style>
+@media(max-width:768px){
+.arch-new-grid{grid-template-columns:repeat(2,1fr)!important;gap:10px!important;}
+.arch-new-name{font-size:12px!important;}
+.arch-new-firm{font-size:11px!important;}
+.arch-new-cnt{font-size:10px!important;}
+.arch-new-thumb{height:32px!important;}
+}
+</style>
+<style>
+@media(max-width:768px){
+.arch-new-grid{grid-template-columns:repeat(2,1fr)!important;gap:10px!important;}
+.arch-new-name{font-size:12px!important;}
+.arch-new-firm{font-size:11px!important;}
+.arch-new-cnt{font-size:10px!important;}
+.arch-new-thumb{height:32px!important;}
+}
+</style>
+<script>
+(function(){
+var S="https://jakwntemjkwqwaqujffh.supabase.co",K="sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ";
+function patchJaName(){
+  document.querySelectorAll(".arch-new-card").forEach(function(card){
+    var nameEl=card.querySelector(".arch-new-name");
+    var firmEl=card.querySelector(".arch-new-firm");
+    if(!nameEl||!firmEl)return;
+    if(firmEl.dataset.patched)return;
+    firmEl.dataset.patched="1";
+    var nameEn=nameEl.textContent.trim();
+    var firm=firmEl.textContent.trim();
+    // firmがname_enと同じ→日本語名をAPI取得して表示
+    if(firm===nameEn||!firm){
+      var href=card.href||card.getAttribute("href")||"";
+      var m=href.match(/id=([a-f0-9-]+)/);
+      if(!m)return;
+      fetch(S+"/rest/v1/architects?select=name&id=eq."+m[1],{headers:{"apikey":K,"Authorization":"Bearer "+K}})
+        .then(function(r){return r.json();})
+        .then(function(data){
+          if(data&&data[0]&&data[0].name){
+            firmEl.textContent=data[0].name;
+            firmEl.style.display="";
+          }
+        }).catch(function(){});
+    }
+  });
+}
+// MutationObserverで動的生成後も対応
+var sec=document.getElementById("architect-story");
+if(sec)new MutationObserver(patchJaName).observe(sec,{childList:true,subtree:true});
+setTimeout(patchJaName,2000);
+setTimeout(patchJaName,5000);
+})();
+</script>
+<script>(function(){var s=document.createElement("style");s.textContent=".acard-portrait{filter:none!important;transition:none!important;}";(document.head||document.documentElement).appendChild(s);})();</script>
+<script>
+(function(){
+function fixFirm(){
+  document.querySelectorAll(".arch-new-card").forEach(function(card){
+    var nameEl=card.querySelector(".arch-new-name");
+    var firmEl=card.querySelector(".arch-new-firm");
+    if(!nameEl||!firmEl)return;
+    var name=nameEl.textContent.trim();
+    var firm=firmEl.textContent.trim();
+    if(firm&&firm===name)firmEl.style.display="none";
+  });
+}
+var obs=new MutationObserver(fixFirm);
+var sec=document.getElementById("architect-story");
+if(sec)obs.observe(sec,{childList:true,subtree:true});
+setTimeout(fixFirm,3000);
+})();
+</script>
+<style>
+.arch-new-grid{grid-template-columns:repeat(5,1fr)!important;}
+.arch-new-empty-txt{display:none!important;}
+</style>
+<style>
+.arch-new-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;}
+.arch-new-card{background:#191919;border-radius:12px;overflow:hidden;border:1px solid #282828;padding:12px;display:flex;flex-direction:column;gap:10px;cursor:pointer;transition:border-color .2s;text-decoration:none;}
+.arch-new-card:hover{border-color:#2BB5C8;}
+.arch-new-portrait{width:100%;aspect-ratio:1/1;border-radius:8px;overflow:hidden;background:#252525;flex-shrink:0;}
+.arch-new-portrait img{width:100%;height:100%;object-fit:cover;object-position:top center;display:block;}
+.arch-new-thumbs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;}
+.arch-new-thumb{height:40px;border-radius:4px;object-fit:cover;background:#252525;width:100%;display:block;}
+.arch-new-info{padding:2px 0 2px;}
+.arch-new-name{font-size:14px;font-weight:700;color:#efefef;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.arch-new-firm{font-size:12px;color:#555;margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.arch-new-cnt{font-size:11px;color:#444;}
+.arch-new-empty{border-radius:12px;border:1px dashed #282828;background:#111;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;min-height:200px;}
+.arch-new-empty-icon{width:28px;height:28px;border-radius:50%;border:1.5px solid #2a2a2a;display:flex;align-items:center;justify-content:center;}
+.arch-new-empty-txt{font-size:12px;color:#2e2e2e;text-align:center;line-height:1.6;}
+</style>
+<script>
+(function(){
+var S="https://jakwntemjkwqwaqujffh.supabase.co",K="sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ";
+async function buildArchGrid(){
+var sec=document.getElementById("architect-story");
+if(!sec)return;
+var container=sec.children[1];
+if(!container)return;
+try{
+var r=await fetch(S+"/rest/v1/architects?select=id,name,name_en,firm,portrait_url",{headers:{"apikey":K,"Authorization":"Bearer "+K}});
+var archs=await r.json();
+if(!Array.isArray(archs)||!archs.length)return;
+// ランダム順表示 (Fisher-Yates shuffle) - 全建築家に平等な露出と偶発的な出会いを提供
+for(var s=archs.length-1;s>0;s--){var rj=Math.floor(Math.random()*(s+1));var tmp=archs[s];archs[s]=archs[rj];archs[rj]=tmp;}
+var grid=document.createElement("div");
+grid.className="arch-new-grid";
+for(var i=0;i<archs.length;i++){
+var a=archs[i];
+var card=document.createElement("a");
+card.className="arch-new-card";
+card.href="/architect?id="+a.id;
+var ph='<div class="arch-new-portrait" style="background:#222;display:flex;align-items:flex-end;justify-content:center;overflow:hidden;"><div style="width:70%;display:flex;flex-direction:column;align-items:center;"><div style="width:40%;aspect-ratio:1/1;border-radius:50%;background:#3a3a3a;margin-bottom:-1px;"></div><div style="width:80%;height:40%;background:#313131;border-radius:6px 6px 0 0;"></div></div></div>';
+var portraitHtml=a.portrait_url?'<div class="arch-new-portrait"><img src="'+a.portrait_url+'" alt="'+(a.name||'建築家')+'のポートレート" loading="lazy"></div>':ph;
+var sr=await fetch(S+"/rest/v1/spaces?select=id&architect_id=eq."+a.id+"&status=eq.live&limit=3",{headers:{"apikey":K,"Authorization":"Bearer "+K}});
+var spaces=await sr.json();
+var thumbsHtml="";
+if(Array.isArray(spaces)){for(var j=0;j<Math.min(spaces.length,3);j++){try{var lr=await fetch(S+"/storage/v1/object/list/space-images",{method:"POST",headers:{"apikey":K,"Authorization":"Bearer "+K,"Content-Type":"application/json"},body:JSON.stringify({prefix:spaces[j].id+"/",limit:1})});var files=await lr.json();if(Array.isArray(files)&&files.length){thumbsHtml+='<img class="arch-new-thumb" src="'+S+"/storage/v1/object/public/space-images/"+spaces[j].id+"/"+files[0].name+'" alt="'+(spaces[j].name||'コワーキング施設')+'の写真" loading="lazy">'}else{thumbsHtml+='<div class="arch-new-thumb"></div>';}}catch(e){thumbsHtml+='<div class="arch-new-thumb"></div>';}}}
+while((thumbsHtml.match(/arch-new-thumb/g)||[]).length<3)thumbsHtml+='<div class="arch-new-thumb"></div>';
+var cnt=Array.isArray(spaces)?spaces.length:0;
+card.innerHTML=portraitHtml+'<div class="arch-new-thumbs">'+thumbsHtml+"</div>"+'<div class="arch-new-info"><div class="arch-new-name">'+cwm.esc(a.name_en||a.name||"")+'</div><div class="arch-new-firm">'+cwm.esc(a.firm||"")+'</div><div class="arch-new-cnt">'+( cnt>0?"スペース "+cnt+"件":"")+"</div></div>";
+grid.appendChild(card);
+}
+var empty=Math.max(0,4-archs.length);
+for(var k=0;k<empty;k++){var e=document.createElement("div");e.className="arch-new-empty";e.innerHTML='<div class="arch-new-empty-icon"><svg width="12" height="12" viewBox="0 0 12 12" fill="none"><line x1="6" y1="1" x2="6" y2="11" stroke="#383838" stroke-width="1.5" stroke-linecap="round"/><line x1="1" y1="6" x2="11" y2="6" stroke="#383838" stroke-width="1.5" stroke-linecap="round"/></svg></div><div class="arch-new-empty-txt">建築家を<br>募集中</div>';grid.appendChild(e);}
+container.innerHTML="";
+container.appendChild(grid);
+}catch(e){console.error(e);}
+}
+if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",buildArchGrid);}else{buildArchGrid();}
+})();
+</script>
+<style>
+.arch-portrait-card{width:120px!important;max-width:120px!important;}
+.arch-portrait-card img{width:120px!important;height:120px!important;border-radius:50%!important;object-fit:cover!important;}
+</style>
+<script>(function(){var S="https://jakwntemjkwqwaqujffh.supabase.co",K="sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ";var st=document.createElement("style");st.textContent='.arch-portrait-img{width:80px!important;height:80px!important;border-radius:50%!important;object-fit:cover!important;}.arch-portrait-card{display:flex!important;flex-direction:column!important;align-items:flex-start!important;gap:10px!important;}.arch-space-thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;width:100%;border-radius:6px;overflow:hidden;margin-top:4px;}.arch-space-thumb{height:64px;object-fit:cover;width:100%;display:block;background:#1a1a1a;}.arch-space-count{font-size:11px;color:#888;margin-top:6px;}';document.head.appendChild(st);async function run(){var r=await fetch(S+"/rest/v1/architects?select=id,name_en",{headers:{"apikey":K,"Authorization":"Bearer "+K}});var archs=await r.json();var cards=document.querySelectorAll(".arch-portrait-card");for(var i=0;i<Math.min(cards.length,archs.length);i++){var card=cards[i],arch=archs[i];if(card.querySelector(".arch-space-thumbs"))continue;var sr=await fetch(S+"/rest/v1/spaces?select=id,name&architect_id=eq."+arch.id+"&status=eq.live&limit=3",{headers:{"apikey":K,"Authorization":"Bearer "+K}});var spaces=await sr.json();if(!Array.isArray(spaces)||!spaces.length)continue;var cnt=document.createElement("div");cnt.className="arch-space-count";cnt.textContent=spaces.length+"件のスペース";card.appendChild(cnt);var photos=[];for(var pi=0;pi<spaces.length;pi++){try{var lr=await fetch(S+"/storage/v1/object/list/space-images",{method:"POST",headers:{"apikey":K,"Authorization":"Bearer "+K,"Content-Type":"application/json"},body:JSON.stringify({prefix:spaces[pi].id+"/",limit:1})});var files=await lr.json();if(Array.isArray(files)&&files.length)photos.push(S+"/storage/v1/object/public/space-images/"+spaces[pi].id+"/"+files[0].name);}catch(e){}}if(!photos.length)continue;var grid=document.createElement("div");grid.className="arch-space-thumbs";photos.forEach(function(url){var img=document.createElement("img");img.className="arch-space-thumb";img.src=url;img.loading="lazy";grid.appendChild(img);});card.appendChild(grid);}}if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",run);}else{run();}})();</script></head>
 <body>
 
 <!-- NAV -->
