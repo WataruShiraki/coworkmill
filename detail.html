@@ -928,6 +928,7 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
         <div class="access-row">
           <span class="access-label">住所</span>
           <span class="access-val" id="d-address">—</span>
+          <a id="d-address-gmaps" href="#" target="_blank" rel="noopener" style="display:none;font-size:11px;color:#2BB5C8;text-decoration:none;margin-left:8px;letter-spacing:.02em;white-space:nowrap">→ Googleマップで開く</a>
         </div>
         <div class="access-row">
           <span class="access-label">アクセス</span>
@@ -1712,6 +1713,14 @@ document.addEventListener('DOMContentLoaded', () => {
       // アクセス情報
       const addrEl = document.getElementById('d-address');
       if (addrEl) { var addr = d.address || ''; if (d.prefecture && addr.startsWith(d.prefecture)) { addrEl.textContent = addr || '—'; } else { addrEl.textContent = (d.prefecture || '') + addr || '—'; } }
+      const addrGmaps = document.getElementById('d-address-gmaps');
+      if (addrGmaps) {
+        var fullAddr = (d.prefecture && d.address && !d.address.startsWith(d.prefecture)) ? (d.prefecture + d.address) : (d.address || '');
+        if (fullAddr) {
+          addrGmaps.href = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(fullAddr);
+          addrGmaps.style.display = 'inline';
+        }
+      }
       const stationEl = document.getElementById('d-station');
       if (stationEl) {
         var stLine = d.nearest_line || '';
