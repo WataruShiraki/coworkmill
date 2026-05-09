@@ -9,17 +9,17 @@
 <meta property="og:site_name" content="COWORKMILL journal">
 <meta id="og-title" property="og:title" content="COWORKMILL journal">
 <meta id="og-desc" property="og:description" content="デザイン性に優れたコワーキングを、取材・トレンド・選び方で伝える編集メディア。">
-<meta id="og-img" property="og:image" content="https://coworkmill.vercel.app/ogp.png">
-<meta id="og-url" property="og:url" content="https://coworkmill.vercel.app/journal/">
+<meta id="og-img" property="og:image" content="https://cowkml.com/ogp.png">
+<meta id="og-url" property="og:url" content="https://cowkml.com/journal/">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@coworkmill">
 <meta name="twitter:title" content="COWORKMILL journal">
 <meta name="twitter:description" content="デザインコワーキングの取材・選び方・トレンドを伝える編集メディア。">
-<meta name="twitter:image" content="https://coworkmill.vercel.app/ogp.png">
-<link id="canonical-link" rel="canonical" href="https://coworkmill.vercel.app/journal/">
+<meta name="twitter:image" content="https://cowkml.com/ogp.png">
+<link id="canonical-link" rel="canonical" href="https://cowkml.com/journal/">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta property="og:locale" content="ja_JP">
-<meta property="article:publisher" content="https://coworkmill.vercel.app/">
+<meta property="article:publisher" content="https://cowkml.com/">
 <link rel="icon" href="/coworkmill_icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/coworkmill_icon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -479,7 +479,7 @@ function renderArticle(a) {
   document.getElementById('meta-desc').content = a.meta_description || a.excerpt || '';
   document.getElementById('og-title').content = a.title;
   document.getElementById('og-desc').content = a.excerpt || '';
-  document.getElementById('og-img').content = a.og_image || a.hero_image || 'https://coworkmill.vercel.app/ogp.png';
+  document.getElementById('og-img').content = a.og_image || a.hero_image || 'https://cowkml.com/ogp.png';
   document.getElementById('og-url').content = location.href;
   // Twitter card も同期
   const twTitle = document.querySelector('meta[name="twitter:title"]');
@@ -487,11 +487,11 @@ function renderArticle(a) {
   const twImg = document.querySelector('meta[name="twitter:image"]');
   if (twTitle) twTitle.content = a.title;
   if (twDesc) twDesc.content = a.excerpt || '';
-  if (twImg) twImg.content = a.og_image || a.hero_image || 'https://coworkmill.vercel.app/ogp.png';
+  if (twImg) twImg.content = a.og_image || a.hero_image || 'https://cowkml.com/ogp.png';
   // canonical も /journal/[slug]/ の正規 URL に
   const canonicalEl = document.getElementById('canonical-link');
   if (canonicalEl) {
-    canonicalEl.href = 'https://coworkmill.vercel.app/journal/' + encodeURIComponent(a.slug);
+    canonicalEl.href = 'https://cowkml.com/journal/' + encodeURIComponent(a.slug);
   }
   // article specific meta
   const articleMeta = document.createElement('meta');
@@ -513,13 +513,13 @@ function renderArticle(a) {
     });
   }
   
-  const articleUrl = 'https://coworkmill.vercel.app/journal/' + encodeURIComponent(a.slug);
+  const articleUrl = 'https://cowkml.com/journal/' + encodeURIComponent(a.slug);
   const ld = {
     "@context": "https://schema.org",
     "@type": "Article",
     "headline": a.title,
     "description": a.excerpt || a.meta_description || '',
-    "image": a.hero_image ? [a.hero_image] : ['https://coworkmill.vercel.app/ogp.png'],
+    "image": a.hero_image ? [a.hero_image] : ['https://cowkml.com/ogp.png'],
     "datePublished": a.published_at,
     "dateModified": a.updated_at || a.published_at,
     "author": { "@type": "Person", "name": a.author_name || 'COWORKMILL journal 編集部' },
@@ -528,7 +528,7 @@ function renderArticle(a) {
       "name": "COWORKMILL journal",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://coworkmill.vercel.app/shared/coworkmill-logo.svg"
+        "url": "https://cowkml.com/shared/coworkmill-logo.svg"
       }
     },
     "mainEntityOfPage": {
@@ -538,7 +538,7 @@ function renderArticle(a) {
     "isPartOf": {
       "@type": "Blog",
       "name": "COWORKMILL journal",
-      "url": "https://coworkmill.vercel.app/journal/"
+      "url": "https://cowkml.com/journal/"
     }
   };
   const ldEl = document.createElement('script');
@@ -548,15 +548,15 @@ function renderArticle(a) {
 
   // BreadcrumbList: ホーム > journal > （カテゴリ） > 記事
   const crumbs = [
-    { "@type": "ListItem", "position": 1, "name": "COWORKMILL", "item": "https://coworkmill.vercel.app/" },
-    { "@type": "ListItem", "position": 2, "name": "journal", "item": "https://coworkmill.vercel.app/journal/" }
+    { "@type": "ListItem", "position": 1, "name": "COWORKMILL", "item": "https://cowkml.com/" },
+    { "@type": "ListItem", "position": 2, "name": "journal", "item": "https://cowkml.com/journal/" }
   ];
   if (a.category && CATEGORY_LABELS[a.category]) {
     crumbs.push({
       "@type": "ListItem",
       "position": 3,
       "name": CATEGORY_LABELS[a.category],
-      "item": "https://coworkmill.vercel.app/journal/?cat=" + encodeURIComponent(a.category)
+      "item": "https://cowkml.com/journal/?cat=" + encodeURIComponent(a.category)
     });
     crumbs.push({ "@type": "ListItem", "position": 4, "name": a.title });
   } else {
