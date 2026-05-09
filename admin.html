@@ -2216,14 +2216,11 @@ function swFac(id) {
   loadSpaceDetail(f);
   const tbr = document.getElementById('tbr');
   if(f.st==='draft') {
-    tbr.innerHTML = '<button class="bol" style="color:#ef4444;border-color:#ef4444;" onclick="deleteFac()">🗑 削除</button><button class="bol" onclick="previewSpace()">プレビュー →</button><button class="bsv" onclick="doSave()">変更を保存</button><button class="bpb" style="background:linear-gradient(135deg,#f97316,#ea580c);border-color:#f97316;color:#fff;font-weight:700" onclick="pubFac()">🚀 公開申請する</button>';
-  } else if(f.st==='pending') {
-    tbr.innerHTML = '<button class="bol" style="color:#666;border-color:#d4d4d4;" onclick="cancelPubFac()">↩ 申請を取り下げる</button><button class="bol" onclick="previewSpace()">プレビュー →</button><button class="bsv" onclick="doSave()">変更を保存</button>';
-  } else if(f.st==='rejected') {
-    tbr.innerHTML = '<button class="bol" style="color:#ef4444;border-color:#ef4444;" onclick="deleteFac()">🗑 削除</button><button class="bol" onclick="previewSpace()">プレビュー →</button><button class="bsv" onclick="doSave()">変更を保存</button><button class="bpb" style="background:linear-gradient(135deg,#f97316,#ea580c);border-color:#f97316;color:#fff;font-weight:700" onclick="pubFac()">🚀 再申請する</button>';
+    tbr.innerHTML = '<button class="bol" style="color:#ef4444;border-color:#ef4444;" onclick="deleteFac()">🗑 削除</button><button class="bol" onclick="previewSpace()">プレビュー →</button><button class="bsv" onclick="doSave()">変更を保存</button><button class="bpb" style="background:linear-gradient(135deg,#f97316,#ea580c);border-color:#f97316;color:#fff;font-weight:700" onclick="pubFac()">🚀 公開する</button>';
   } else if(f.st==='live') {
     tbr.innerHTML = '<button class="bol" style="color:#ef4444;border-color:#ef4444;" onclick="deleteFac()">🗑 削除</button><button class="bol" onclick="previewSpace()">プレビュー →</button><button class="bsv" id="savebtn" onclick="doSave()">変更を保存</button><button class="bol" style="color:#ef4444;border-color:#ef4444;" onclick="unpubFac()">⏸ 非公開にする</button>';
   } else {
+    // pending / rejected / その他: フォールバック (基本的にここには来ない)
     tbr.innerHTML = '<button class="bol" style="color:#ef4444;border-color:#ef4444;" onclick="deleteFac()">🗑 削除</button><button class="bol" onclick="previewSpace()">プレビュー →</button><button class="bsv" id="savebtn" onclick="doSave()">変更を保存</button>';
   }
   renderDash(f.dash);
@@ -2413,17 +2410,17 @@ async function unpubFac() {
 async function pubFac() {
   const dbId = facs[cur] ? facs[cur].db_id : null;
   if (!dbId) { alert('先に施設情報を保存してください。'); return; }
-  if (!confirm('この施設の公開を申請しますか？\n\n運営による確認後、公開されます。')) return;
+  if (!confirm('この施設を公開しますか？\n\nCOWORKMILLのサイト上に掲載されます。')) return;
   try {
     await sbFetch('/rest/v1/spaces?id=eq.' + dbId, {
       method: 'PATCH',
-      body: JSON.stringify({ status: 'pending' })
+      body: JSON.stringify({ status: 'live' })
     });
-    facs[cur].st = 'pending';
+    facs[cur].st = 'live';
     const item = document.getElementById('fi-' + cur);
-    if (item) { const fs = item.querySelector('.fs'); fs.className = 'fs pending'; fs.textContent = '● 審査中'; }
+    if (item) { const fs = item.querySelector('.fs'); fs.className = 'fs live'; fs.textContent = '● 掲載中'; }
     swFac(cur);
-    alert('公開申請を送信しました！\n運営による確認後、公開されます（通常1営業日以内）。');
+    alert('🎉 公開しました！\nCOWORKMILLのサイト上で閲覧できるようになりました。');
   } catch(e) {
     alert('エラー: ' + toJapaneseError(e));
   }
