@@ -1603,17 +1603,111 @@ document.addEventListener('DOMContentLoaded', () => {
     office_conbini: {icon:'🏪', name:'オフィスコンビニ'},
   };
 
+  // ===== プレビュー機能ヘルパー =====
+  function showPreviewBanner(d) {
+    const statusLabel = ({
+      'live': '掲載中',
+      'draft': '下書き',
+      'pending': '審査待ち',
+      'rejected': '却下',
+      'paused': '一時停止'
+    })[d.status] || d.status || '';
+    const banner = document.createElement('div');
+    banner.id = 'cwm-preview-banner';
+    banner.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:99999;background:linear-gradient(135deg,#f59e0b,#ea580c);color:#fff;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 4px 14px rgba(0,0,0,.18);font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif;font-size:13px;line-height:1.5;flex-wrap:wrap';
+    banner.innerHTML = 
+      '<div style="display:flex;align-items:center;gap:10px;flex:1;min-width:240px">' +
+        '<div style="font-size:18px">📝</div>' +
+        '<div>' +
+          '<div style="font-weight:700;font-size:13px">プレビュー表示中</div>' +
+          '<div style="font-size:11px;opacity:.95;margin-top:2px">この施設は <strong>' + statusLabel + '</strong> です。 一般のユーザーには表示されません。</div>' +
+        '</div>' +
+      '</div>' +
+      '<div style="display:flex;gap:8px;flex-wrap:wrap">' +
+        '<button onclick="window.close()" style="background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);color:#fff;padding:7px 14px;border-radius:6px;font-size:12px;cursor:pointer;font-weight:600">タブを閉じる</button>' +
+        '<a href="/admin" style="background:#fff;color:#ea580c;padding:7px 14px;border-radius:6px;font-size:12px;text-decoration:none;font-weight:600">管理画面に戻る →</a>' +
+      '</div>';
+    document.body.appendChild(banner);
+    // ページ上部のオフセット (バナー分)
+    const offset = banner.offsetHeight;
+    document.body.style.paddingTop = offset + 'px';
+  }
+
+  function showPreviewError(msg) {
+    document.body.innerHTML =
+      '<div style="display:flex;align-items:center;justify-content:center;min-height:100vh;background:#fafafa;font-family:-apple-system,BlinkMacSystemFont,\'Hiragino Sans\',\'Yu Gothic\',sans-serif;padding:24px">' +
+        '<div style="background:#fff;border-radius:12px;padding:32px;max-width:480px;text-align:center;box-shadow:0 4px 14px rgba(0,0,0,.06)">' +
+          '<div style="font-size:48px;margin-bottom:16px">🔒</div>' +
+          '<h1 style="font-size:18px;margin:0 0 12px;color:#222">プレビューを表示できません</h1>' +
+          '<p style="font-size:14px;color:#666;margin:0 0 20px;line-height:1.7">' + msg + '</p>' +
+          '<a href="/admin" style="display:inline-block;padding:12px 28px;background:#2BB5C8;color:#fff;text-decoration:none;border-radius:8px;font-size:14px;font-weight:600">管理画面に移動</a>' +
+        '</div>' +
+      '</div>';
+  }
+
   async function loadSpace() {
     try {
-      const res = await fetch(CWM_SB_URL + '/rest/v1/spaces?' + (slugParam ? 'slug=eq.'+encodeURIComponent(slugParam) : 'id=eq.'+spaceId) + '&select=*', {
-        headers: {
-          'apikey': CWM_SB_KEY,
-          'Authorization': 'Bearer ' + CWM_SB_KEY
+      // ===== プレビューモード判定 =====
+      const isPreviewMode = new URLSearchParams(window.location.search).get('preview') === '1';
+      let d = null;
+      let previewImages = null;
+      let previewVoices = null;
+      
+      if (isPreviewMode) {
+        // 認証トークンを localStorage から取得 (cwm_token = 掲載者用 / cwm_ops_token = 運営用)
+        const cwmToken = localStorage.getItem('cwm_token');
+        const opsToken = sessionStorage.getItem('cwm_ops_token');
+        const useToken = cwmToken || opsToken;
+        
+        if (!useToken) {
+          showPreviewError('プレビューを表示するには、 /admin または /ops でログインしてください。');
+          return;
         }
-      });
-      const rows = await res.json();
-      if (!rows || !rows[0]) return;
-      const d = rows[0];
+        
+        // cwm-admin の preview endpoint 経由で取得
+        const slugOrId = slugParam || spaceId;
+        const reqBody = slugParam ? { slug: slugParam } : { space_id: spaceId };
+        
+        const res = await fetch(CWM_SB_URL + '/functions/v1/cwm-admin', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'apikey': CWM_SB_KEY, 'Authorization': 'Bearer ' + CWM_SB_KEY },
+          body: JSON.stringify({ token: useToken, target: 'preview', action: 'get_space', data: reqBody })
+        });
+        
+        if (!res.ok) {
+          let msg = 'プレビュー取得に失敗しました';
+          try { const e = await res.json(); msg = e.error || msg; } catch(_e){}
+          showPreviewError(msg);
+          return;
+        }
+        const j = await res.json();
+        if (!j || !j.ok) {
+          showPreviewError(j?.error || 'プレビュー取得に失敗しました');
+          return;
+        }
+        d = j.space;
+        previewImages = j.images || [];
+        previewVoices = j.voices || [];
+        // プレビューバナーを表示
+        showPreviewBanner(d);
+      } else {
+        // 通常モード: REST API で公開済みデータを取得
+        const res = await fetch(CWM_SB_URL + '/rest/v1/spaces?' + (slugParam ? 'slug=eq.'+encodeURIComponent(slugParam) : 'id=eq.'+spaceId) + '&select=*', {
+          headers: {
+            'apikey': CWM_SB_KEY,
+            'Authorization': 'Bearer ' + CWM_SB_KEY
+          }
+        });
+        const rows = await res.json();
+        if (!rows || !rows[0]) return;
+        d = rows[0];
+      }
+      
+      if (!d) return;
+      
+      // 以降は共通処理 (preview/通常 両対応)
+      window._previewImages = previewImages;
+      window._previewVoices = previewVoices;
       // Free プランの施設は建築家情報を非表示（有料機能）
       if ((d.plan || 'free') === 'free') {
         d.architect_name = null;
@@ -1795,10 +1889,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // ギャラリー（space_imagesテーブルから取得）
       try {
-        const imgRes = await fetch(CWM_SB_URL + '/rest/v1/space_images?space_id=eq.' + spaceId + '&select=url&order=display_order.asc', {
-          headers: { 'apikey': CWM_SB_KEY, 'Authorization': 'Bearer ' + CWM_SB_KEY }
-        });
-        const imgs = await imgRes.json();
+        let imgs;
+        if (window._previewImages !== null && window._previewImages !== undefined) {
+          // プレビューモード: cwm-admin から既に取得済み
+          imgs = window._previewImages;
+        } else {
+          const imgRes = await fetch(CWM_SB_URL + '/rest/v1/space_images?space_id=eq.' + spaceId + '&select=url&order=display_order.asc', {
+            headers: { 'apikey': CWM_SB_KEY, 'Authorization': 'Bearer ' + CWM_SB_KEY }
+          });
+          imgs = await imgRes.json();
+        }
         const allUrls = [];
         // image_main を先頭に
         if (d.image_main) allUrls.push(d.image_main);

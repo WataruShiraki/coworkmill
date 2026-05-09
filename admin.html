@@ -497,7 +497,7 @@ function resetVibeUI(){
     <div class="tb-ttl" id="ttl">施設情報の編集</div>
     <span class="tbs live" id="tbs">掲載中</span>
     <div class="tb-r" id="tbr">
-      <button class="bol" onclick="window.open('/detail')">プレビュー →</button>
+      <button class="bol" onclick="previewSpace()">プレビュー →</button>
       <button class="bsv" id="savebtn" onclick="doSave()">変更を保存</button>
     </div>
   </div>
@@ -736,7 +736,7 @@ function resetVibeUI(){
 
     
     <div style="display:flex;justify-content:center;gap:8px;padding:4px 0 8px">
-      <button class="bol" onclick="window.open('/detail')">プレビュー →</button>
+      <button class="bol" onclick="previewSpace()">プレビュー →</button>
       <button class="bsv" id="savebtn-bottom" onclick="doSave()">変更を保存</button>
     </div>
 </div>
@@ -960,7 +960,7 @@ function resetVibeUI(){
       <div style="font-size:11px;color:var(--g400);text-align:center;margin-top:12px;">Freeプランは3枚まで掲載可</div>
       <div id="photo-publish-btn" style="display:none;margin-top:24px;text-align:center;">
         <div style="display:flex;gap:10px;justify-content:center;">
-          <button style="padding:12px 24px;font-size:12px;font-weight:500;color:var(--g600);background:#fff;border:1px solid var(--g200);border-radius:8px;cursor:pointer;" onclick="window.open('/detail')">
+          <button style="padding:12px 24px;font-size:12px;font-weight:500;color:var(--g600);background:#fff;border:1px solid var(--g200);border-radius:8px;cursor:pointer;" onclick="previewSpace()">
             プレビュー →
           </button>
           <button style="padding:12px 32px;font-size:13px;font-weight:600;color:#fff;background:linear-gradient(135deg,#f97316,#ea580c);border:none;border-radius:8px;cursor:pointer;letter-spacing:.04em;" onclick="pubFac()">
@@ -1541,6 +1541,40 @@ async function setMainPhoto(url, dbId) {
   // 互換性保持のため残置 (もう呼ばれない)
   await sbFetch('/rest/v1/spaces?id=eq.' + dbId, { method: 'PATCH', body: JSON.stringify({ image_main: url }) });
   await loadPhotos(dbId);
+}
+
+// ─────────────────────────────
+// プレビュー機能
+// ─────────────────────────────
+function previewSpace() {
+  // 現在編集中の施設を取得
+  const fac = facs && facs[cur];
+  if (!fac || !fac.id) {
+    alert('プレビューしたい施設を選んでください');
+    return;
+  }
+  
+  // 入力中の施設名・スラッグを優先 (まだ未保存の編集中状態でも対応)
+  const slugInput = document.getElementById('f-slug');
+  let slug = (slugInput && slugInput.value.trim()) || fac.slug || '';
+  
+  if (!slug) {
+    alert('プレビューを表示するにはまず「URL用スラッグ」 を設定して保存してください');
+    return;
+  }
+  
+  // status 確認 (公開中なら通常URL、 そうでなければプレビューモード)
+  const status = fac.status || '';
+  let url;
+  if (status === 'live') {
+    // 公開中 → 普通の公開URL
+    url = '/space/' + encodeURIComponent(slug);
+  } else {
+    // 下書き/審査中/却下/一時停止 → プレビューモード
+    url = '/space/' + encodeURIComponent(slug) + '?preview=1';
+  }
+  
+  window.open(url, '_blank', 'noopener');
 }
 
 async function deletePhoto(imgId, url, dbId) {

@@ -1231,6 +1231,80 @@ Deno.serve(async (req: Request) => {
     }
 
     // ============================================================
+    // target=preview: 掲載者が自分の施設をプレビュー表示する用
+    // (公開ステータスに関係なく取得可能、 ただし自分のaccountのspaceのみ)
+    // ============================================================
+    if (target === "preview") {
+      if (!token) return jsonResponse({ error: "認証トークンが必要です" }, 401);
+      let payloadP: any;
+      try {
+        const key = await getKey(JWT_SECRET);
+        payloadP = await verify(token, key);
+      } catch (_e) {
+        return jsonResponse({ error: "認証トークンが無効または期限切れです" }, 401);
+      }
+      // ownerまたはmanager (自account配下のspaceのみ閲覧可)、 opsトークンでも可
+      const sbP = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
+      const dP: any = data || {};
+
+      if (action === "get_space") {
+        const slug = ((dP.slug || "") + "").trim();
+        const spaceId = ((dP.space_id || "") + "").trim();
+        if (!slug && !spaceId) return jsonResponse({ error: "slug または space_id が必要です" }, 400);
+
+        // 取得 (status関係なし)
+        const q = sbP.from("spaces").select("*").limit(1);
+        const { data: spaces, error: spErr } = slug
+          ? await q.eq("slug", slug)
+          : await q.eq("id", spaceId);
+        if (spErr) return jsonResponse({ error: "取得に失敗しました" }, 500);
+        if (!spaces || spaces.length === 0) return jsonResponse({ error: "施設が見つかりません" }, 404);
+        const space = spaces[0];
+
+        // 権限チェック: ops は全て閲覧可能、 owner/manager は自分のaccountのみ
+        if (payloadP.kind === "ops") {
+          // ops_allowed_users にいるか確認 (古いトークン無効化のため)
+          const { data: ok } = await sbP.from("ops_allowed_users").select("email").eq("email", (payloadP.sub || "").toLowerCase()).maybeSingle();
+          if (!ok) return jsonResponse({ error: "運営権限が無効化されています" }, 403);
+        } else if (payloadP.kind === "owner") {
+          if (space.account_id !== payloadP.account_id) {
+            return jsonResponse({ error: "この施設の閲覧権限がありません" }, 403);
+          }
+        } else if (payloadP.kind === "manager") {
+          if (space.account_id !== payloadP.account_id) {
+            return jsonResponse({ error: "この施設の閲覧権限がありません" }, 403);
+          }
+        } else {
+          return jsonResponse({ error: "不正なトークンです" }, 401);
+        }
+
+        // 関連データも取得 (画像 + 利用者の声 approved + 同area候補等)
+        const { data: images } = await sbP
+          .from("space_images")
+          .select("id,url,display_order")
+          .eq("space_id", space.id)
+          .order("display_order", { ascending: true });
+
+        const { data: voices } = await sbP
+          .from("voices")
+          .select("*")
+          .eq("space_id", space.id)
+          .eq("status", "approved")
+          .order("submitted_at", { ascending: false })
+          .limit(100);
+
+        return jsonResponse({
+          ok: true,
+          space,
+          images: images || [],
+          voices: voices || []
+        });
+      }
+
+      return jsonResponse({ error: "preview では get_space を指定してください" }, 400);
+    }
+
+    // ============================================================
     // target=writer_admin: 運営管理画面用のジャーナルライター管理
     // (target=writer は掲載者JWT専用なので /ops からは使えない。こちらは ops_token で動く)
     // ============================================================
