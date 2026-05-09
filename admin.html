@@ -1558,20 +1558,23 @@ function previewSpace() {
   const slugInput = document.getElementById('f-slug');
   let slug = (slugInput && slugInput.value.trim()) || fac.slug || '';
   
-  if (!slug) {
-    alert('プレビューを表示するにはまず「URL用スラッグ」 を設定して保存してください');
-    return;
-  }
-  
   // status 確認 (公開中なら通常URL、 そうでなければプレビューモード)
   const status = fac.status || '';
   let url;
-  if (status === 'live') {
-    // 公開中 → 普通の公開URL
-    url = '/space/' + encodeURIComponent(slug);
+  if (slug) {
+    // slug が設定されているケース: SEOフレンドリーURL
+    if (status === 'live') {
+      url = '/space/' + encodeURIComponent(slug);
+    } else {
+      url = '/space/' + encodeURIComponent(slug) + '?preview=1';
+    }
   } else {
-    // 下書き/審査中/却下/一時停止 → プレビューモード
-    url = '/space/' + encodeURIComponent(slug) + '?preview=1';
+    // slug 未設定でも id ベースでプレビュー可能 (フォールバック)
+    if (status === 'live') {
+      url = '/detail?id=' + encodeURIComponent(fac.id);
+    } else {
+      url = '/detail?id=' + encodeURIComponent(fac.id) + '&preview=1';
+    }
   }
   
   window.open(url, '_blank', 'noopener');
@@ -2220,9 +2223,9 @@ function swFac(id) {
   } else if(f.st==='rejected') {
     tbr.innerHTML = '<button class="bol" style="color:#ef4444;border-color:#ef4444;" onclick="deleteFac()">🗑 削除</button><button class="bsv" onclick="doSave()">変更を保存</button><button class="bpb" style="background:linear-gradient(135deg,#f97316,#ea580c);border-color:#f97316;color:#fff;font-weight:700" onclick="pubFac()">🚀 再申請する</button>';
   } else if(f.st==='live') {
-    tbr.innerHTML = '<button class="bol" style="color:#ef4444;border-color:#ef4444;" onclick="deleteFac()">🗑 削除</button><button class="bol" onclick="window.open(\'/detail\')">プレビュー →</button><button class="bsv" id="savebtn" onclick="doSave()">変更を保存</button><button class="bol" style="color:#ef4444;border-color:#ef4444;" onclick="unpubFac()">⏸ 非公開にする</button>';
+    tbr.innerHTML = '<button class="bol" style="color:#ef4444;border-color:#ef4444;" onclick="deleteFac()">🗑 削除</button><button class="bol" onclick="previewSpace()">プレビュー →</button><button class="bsv" id="savebtn" onclick="doSave()">変更を保存</button><button class="bol" style="color:#ef4444;border-color:#ef4444;" onclick="unpubFac()">⏸ 非公開にする</button>';
   } else {
-    tbr.innerHTML = '<button class="bol" style="color:#ef4444;border-color:#ef4444;" onclick="deleteFac()">🗑 削除</button><button class="bol" onclick="window.open(\'/detail\')">プレビュー →</button><button class="bsv" id="savebtn" onclick="doSave()">変更を保存</button>';
+    tbr.innerHTML = '<button class="bol" style="color:#ef4444;border-color:#ef4444;" onclick="deleteFac()">🗑 削除</button><button class="bol" onclick="previewSpace()">プレビュー →</button><button class="bsv" id="savebtn" onclick="doSave()">変更を保存</button>';
   }
   renderDash(f.dash);
   const curP = document.querySelector('[id^="p-"]:not([style*="none"])');
