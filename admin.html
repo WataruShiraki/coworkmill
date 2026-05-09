@@ -1549,32 +1549,31 @@ async function setMainPhoto(url, dbId) {
 function previewSpace() {
   // 現在編集中の施設を取得
   const fac = facs && facs[cur];
-  if (!fac || !fac.id) {
+  if (!fac || !fac.db_id) {
     alert('プレビューしたい施設を選んでください');
     return;
   }
   
-  // 入力中の施設名・スラッグを優先 (まだ未保存の編集中状態でも対応)
+  // 入力中のスラッグを優先 (まだ未保存の編集中状態でも対応)
   const slugInput = document.getElementById('f-slug');
-  let slug = (slugInput && slugInput.value.trim()) || fac.slug || '';
+  const slug = (slugInput && slugInput.value.trim()) || '';
   
-  // status 確認 (公開中なら通常URL、 そうでなければプレビューモード)
-  const status = fac.status || '';
+  // facのstatus は 'st' フィールド (DBの id と区別するため独自命名)
+  // facの実際のDB UUID は 'db_id' (id は内部index)
+  const status = fac.st || '';
+  const dbId = fac.db_id;
+  
   let url;
   if (slug) {
     // slug が設定されているケース: SEOフレンドリーURL
-    if (status === 'live') {
-      url = '/space/' + encodeURIComponent(slug);
-    } else {
-      url = '/space/' + encodeURIComponent(slug) + '?preview=1';
-    }
+    url = (status === 'live') 
+      ? '/space/' + encodeURIComponent(slug)
+      : '/space/' + encodeURIComponent(slug) + '?preview=1';
   } else {
-    // slug 未設定でも id ベースでプレビュー可能 (フォールバック)
-    if (status === 'live') {
-      url = '/detail?id=' + encodeURIComponent(fac.id);
-    } else {
-      url = '/detail?id=' + encodeURIComponent(fac.id) + '&preview=1';
-    }
+    // slug 未設定でも UUIDベースでプレビュー可能
+    url = (status === 'live') 
+      ? '/detail?id=' + encodeURIComponent(dbId)
+      : '/detail?id=' + encodeURIComponent(dbId) + '&preview=1';
   }
   
   window.open(url, '_blank', 'noopener');
