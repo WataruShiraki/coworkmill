@@ -317,7 +317,7 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
     }
     btn.textContent = 'ログイン中...'; btn.disabled = true; errEl.style.display = 'none';
     try {
-      const res = await fetch('https://jakwntemjkwqwaqujffh.supabase.co/functions/v1/cwm-auth', {
+      const res = await fetch('https://jakwntemjkwqwaqujffh.supabase.co/functions/v1/cwm-login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: 'login', email, password: pass })
@@ -356,15 +356,28 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
   // アプリ表示
   function showApp(sess) {
     window._cwmAccountId = sess.id; // 施設追加・編集時に使用
-    window._cwmCurrentEmail = sess.email; // メアド変更時に参照
+    window._cwmCurrentEmail = sess.manager_email || sess.email; // メアド変更時に参照
+    window._cwmKind = sess.kind || 'owner';
+    window._cwmManagerId = sess.manager_id || null;
+    window._cwmManagerRole = sess.manager_role || null;
     document.getElementById('login-screen').style.display = 'none';
     document.body.style.overflow = '';
     // ヘッダーにログイン情報を表示
     const header = document.querySelector('.header-title, .admin-header, #header-company');
     if (header) header.textContent = sess.company;
-    // ログイン情報セクションのメアド表示
+    // ログイン情報セクションのメアド表示 (managerなら自分のメアド)
     const accEmailDisplay = document.getElementById('acc-email-display');
-    if (accEmailDisplay) accEmailDisplay.value = sess.email || '';
+    if (accEmailDisplay) accEmailDisplay.value = sess.manager_email || sess.email || '';
+    // 担当者管理セクション: Ownerのみ表示
+    const managersSection = document.getElementById('cwm-managers-section');
+    if (managersSection) {
+      if ((sess.kind || 'owner') === 'owner') {
+        managersSection.style.display = '';
+        if (typeof window.loadManagersList === 'function') window.loadManagersList();
+      } else {
+        managersSection.style.display = 'none';
+      }
+    }
   }
 
   // 初期化
@@ -1063,6 +1076,17 @@ function resetVibeUI(){
     <div class="stripe-row">
       <div><div style="font-size:12px;font-weight:500;margin-bottom:3px">お支払い・解約の管理</div><div style="font-size:11px;color:var(--g400)">クレジットカードの変更・解約・請求履歴はこちら</div></div>
       <button class="bol" onclick="stripePortal()">🔒 Stripeポータルへ →</button>
+    </div>
+
+    <!-- 担当者管理セクション (Ownerのみ表示) -->
+    <div class="sec" id="cwm-managers-section" style="display:none;margin-top:24px">
+      <div class="sec-h">
+        <div><div class="sec-ht">担当者管理</div><div style="font-size:11px;color:var(--g400);margin-top:3px">複数の担当者で同じ管理画面にログインできます</div></div>
+        <button class="bol" type="button" onclick="openAddManagerModal()" style="background:var(--brand);color:#fff;border-color:var(--brand)">+ 担当者を追加</button>
+      </div>
+      <div class="sec-b">
+        <div id="cwm-managers-list" style="font-size:13px;color:var(--g400);padding:12px 0">読み込み中...</div>
+      </div>
     </div>
   </div>
 
@@ -4237,6 +4261,154 @@ window.moveAdminMapTo = function(anchorId) {
   // 背景クリックで閉じる
   document.getElementById('cwm-pwm-bg')?.addEventListener('click', function(e){ if(e.target === this) closeChangePasswordModal(); });
   document.getElementById('cwm-emm-bg')?.addEventListener('click', function(e){ if(e.target === this) closeChangeEmailModal(); });
+})();
+</script>
+
+<!-- ===== 担当者管理モーダル ===== -->
+<div class="cwm-acc-modal-bg" id="cwm-mgr-bg">
+  <div class="cwm-acc-modal">
+    <h3>👥 担当者を追加</h3>
+    <div class="desc">追加された担当者は、 同じ管理画面にログインして施設情報の編集ができます。</div>
+    <div class="field">
+      <label>担当者の名前 (任意)</label>
+      <input type="text" id="cwm-mgr-name" placeholder="例) 山田太郎" maxlength="60">
+    </div>
+    <div class="field">
+      <label>メールアドレス</label>
+      <input type="email" id="cwm-mgr-email" autocomplete="off" placeholder="example@company.jp">
+    </div>
+    <div class="field">
+      <label>初期パスワード (8文字以上)</label>
+      <input type="text" id="cwm-mgr-pass" autocomplete="off" placeholder="8文字以上で入力">
+    </div>
+    <div class="field">
+      <label>権限</label>
+      <select id="cwm-mgr-role" style="width:100%;box-sizing:border-box;border:1px solid #ddd;border-radius:7px;padding:10px 12px;font-size:13px;color:#222;outline:none;background:#fff">
+        <option value="manager">編集可 (manager)</option>
+        <option value="viewer">閲覧のみ (viewer)</option>
+      </select>
+    </div>
+    <div class="err" id="cwm-mgr-err"></div>
+    <div class="actions">
+      <button type="button" onclick="closeAddManagerModal()">キャンセル</button>
+      <button type="button" class="primary" id="cwm-mgr-submit" onclick="submitAddManager()">追加する</button>
+    </div>
+  </div>
+</div>
+
+<style>
+.cwm-mgr-list-item{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border:1px solid var(--g100);border-radius:8px;margin-bottom:8px;background:#fff}
+.cwm-mgr-list-item-info{flex:1;min-width:0}
+.cwm-mgr-list-item-name{font-size:13px;font-weight:600;color:var(--g700);margin-bottom:3px}
+.cwm-mgr-list-item-email{font-size:11px;color:var(--g500);word-break:break-all}
+.cwm-mgr-list-item-meta{font-size:10px;color:var(--g400);margin-top:3px}
+.cwm-mgr-role-badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600;letter-spacing:.04em;margin-right:8px}
+.cwm-mgr-role-manager{background:#e0f7fa;color:#00838f}
+.cwm-mgr-role-viewer{background:#f5f5f5;color:#666}
+.cwm-mgr-list-item button{padding:6px 12px;font-size:11px;border:1px solid #e0e0e0;border-radius:6px;background:#fff;color:#999;cursor:pointer;margin-left:10px;flex-shrink:0}
+.cwm-mgr-list-item button:hover{border-color:#c33;color:#c33}
+.cwm-mgr-list-empty{padding:20px;text-align:center;color:var(--g400);font-size:12px;border:1px dashed var(--g100);border-radius:8px}
+</style>
+
+<script>
+(function(){
+  const SB_URL = 'https://jakwntemjkwqwaqujffh.supabase.co';
+  function getToken(){ return localStorage.getItem('cwm_token'); }
+
+  async function callAdmin(target, action, data){
+    const r = await fetch(SB_URL + '/functions/v1/cwm-admin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token: getToken(), target, action, data: data || {} })
+    });
+    const d = await r.json().catch(() => ({}));
+    if (!r.ok || d.error) throw new Error(d.error || ('HTTP ' + r.status));
+    return d;
+  }
+
+  // ===== 担当者一覧の読み込み =====
+  window.loadManagersList = async function(){
+    const list = document.getElementById('cwm-managers-list');
+    if (!list) return;
+    list.innerHTML = '<div style="padding:12px 0;color:var(--g400)">読み込み中...</div>';
+    try {
+      const d = await callAdmin('account_managers', 'list');
+      const managers = d.managers || [];
+      if (managers.length === 0) {
+        list.innerHTML = '<div class="cwm-mgr-list-empty">担当者はまだ登録されていません。<br>「+ 担当者を追加」ボタンから追加できます。</div>';
+        return;
+      }
+      list.innerHTML = managers.map(m => {
+        const roleClass = m.role === 'viewer' ? 'cwm-mgr-role-viewer' : 'cwm-mgr-role-manager';
+        const roleLabel = m.role === 'viewer' ? '閲覧のみ' : '編集可';
+        const dispName = (m.display_name || '').replace(/[<>&"']/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'})[c]) || '<span style="color:var(--g400)">(名前未設定)</span>';
+        const safeEmail = (m.email || '').replace(/[<>&"']/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'})[c]);
+        const lastLogin = m.last_login_at ? new Date(m.last_login_at).toLocaleDateString('ja-JP') + ' に最終ログイン' : '未ログイン';
+        return '<div class="cwm-mgr-list-item">' +
+          '<div class="cwm-mgr-list-item-info">' +
+            '<div class="cwm-mgr-list-item-name"><span class="cwm-mgr-role-badge ' + roleClass + '">' + roleLabel + '</span>' + dispName + '</div>' +
+            '<div class="cwm-mgr-list-item-email">' + safeEmail + '</div>' +
+            '<div class="cwm-mgr-list-item-meta">' + lastLogin + '</div>' +
+          '</div>' +
+          '<button type="button" onclick="deleteManager(\'' + m.id + '\', \'' + safeEmail + '\')">削除</button>' +
+        '</div>';
+      }).join('');
+    } catch(e) {
+      list.innerHTML = '<div style="padding:12px 0;color:#c33">読み込みに失敗しました: ' + (e.message || '') + '</div>';
+    }
+  };
+
+  // ===== 担当者追加モーダル =====
+  window.openAddManagerModal = function(){
+    document.getElementById('cwm-mgr-name').value = '';
+    document.getElementById('cwm-mgr-email').value = '';
+    document.getElementById('cwm-mgr-pass').value = '';
+    document.getElementById('cwm-mgr-role').value = 'manager';
+    document.getElementById('cwm-mgr-err').textContent = '';
+    document.getElementById('cwm-mgr-bg').classList.add('open');
+    setTimeout(function(){ document.getElementById('cwm-mgr-name').focus(); }, 100);
+  };
+  window.closeAddManagerModal = function(){
+    document.getElementById('cwm-mgr-bg').classList.remove('open');
+  };
+  window.submitAddManager = async function(){
+    const name = document.getElementById('cwm-mgr-name').value.trim();
+    const email = document.getElementById('cwm-mgr-email').value.trim();
+    const pass = document.getElementById('cwm-mgr-pass').value;
+    const role = document.getElementById('cwm-mgr-role').value;
+    const errEl = document.getElementById('cwm-mgr-err');
+    const btn = document.getElementById('cwm-mgr-submit');
+    errEl.textContent = '';
+    if (!email || !pass) { errEl.textContent = 'メールアドレスとパスワードは必須です'; return; }
+    if (pass.length < 8 || pass.length > 200) { errEl.textContent = 'パスワードは8〜200文字で入力してください'; return; }
+    btn.disabled = true; btn.textContent = '追加中...';
+    try {
+      await callAdmin('account_managers', 'create', {
+        email: email, password: pass, display_name: name || null, role: role
+      });
+      alert('担当者を追加しました。\nメール: ' + email + '\nこのメールアドレスとパスワードでログインできます。');
+      closeAddManagerModal();
+      window.loadManagersList();
+    } catch(e) {
+      errEl.textContent = e.message;
+    } finally {
+      btn.disabled = false; btn.textContent = '追加する';
+    }
+  };
+
+  // ===== 担当者削除 =====
+  window.deleteManager = async function(id, emailLabel){
+    if (!confirm('担当者「' + (emailLabel || id) + '」を削除しますか?\nこの担当者はログインできなくなります。')) return;
+    try {
+      await callAdmin('account_managers', 'delete', { manager_id: id });
+      window.loadManagersList();
+    } catch(e) {
+      alert('削除に失敗しました: ' + e.message);
+    }
+  };
+
+  // 背景クリックで閉じる
+  document.getElementById('cwm-mgr-bg')?.addEventListener('click', function(e){ if(e.target === this) closeAddManagerModal(); });
 })();
 </script>
 
