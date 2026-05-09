@@ -229,6 +229,10 @@
       try { return await r.json(); } catch (_e) { return { ok: r.ok }; }
     },
     /** お問い合わせ管理: 一覧取得 */
+    async updateSpaceMemo(spaceId, memo) {
+      return await this._call('ops_db', 'update_space_memo', { space_id: spaceId, memo: memo });
+    },
+
     inquiriesList: async function () {
       var token = getToken();
       if (!token) { redirectToLogin(); throw new Error('認証トークンがありません'); }
