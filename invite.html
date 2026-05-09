@@ -136,9 +136,9 @@ function renderForm(info){
   const isOwner = info.kind === 'owner';
   const roleLabel = isOwner ? '管理者 (Owner)' : (info.role === 'viewer' ? '閲覧のみ' : '編集可');
   const roleClass = isOwner ? 'role-manager' : (info.role === 'viewer' ? 'role-viewer' : 'role-manager');
-  const headlineText = isOwner ? '掲載が承認されました 🎉' : 'パスワードを設定';
+  const headlineText = isOwner ? '掲載準備が整いました ✨' : 'パスワードを設定';
   const subText = isOwner
-    ? '掲載審査が承認されました。 下記のパスワードを設定すると、 管理画面で施設情報の編集ができるようになります。'
+    ? 'ぜひ御社の施設を多くの方にご覧いただければ幸いです。 下記のパスワードを設定すると、 管理画面で施設情報や写真の編集ができるようになります。'
     : '下記のパスワードを設定すると、 ログインして利用を開始できます。';
   card.innerHTML = '<div class="brand"><span class="brand-dot"></span>COWORKMILL</div>' +
     '<h1>' + headlineText + '</h1>' +

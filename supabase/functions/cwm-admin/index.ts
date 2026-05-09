@@ -148,11 +148,12 @@ async function sendOwnerApprovalEmail(
   const inviteUrl = `${SITE_URL}/invite?t=${encodeURIComponent(token)}`;
   const publicUrl = spaceSlug ? `${SITE_URL}/space/${encodeURIComponent(spaceSlug)}` : SITE_URL;
   const safeName = applicantName ? applicantName : "ご担当者";
-  const subject = `【COWORKMILL】掲載審査が承認されました - ${spaceName}`;
+  const subject = `【COWORKMILL】${spaceName} の掲載準備が整いました ✨`;
   const text = `${safeName} 様
 
-このたびは COWORKMILL への掲載申請をいただき、 ありがとうございました。
-ご申請の施設「${spaceName}」 が掲載審査に通過しましたのでお知らせいたします。
+このたびは COWORKMILL への施設掲載をご検討いただき、 誠にありがとうございます。
+ご申請の施設「${spaceName}」 を掲載いただけることになりました。
+ぜひ御社の素敵な施設を、 多くの方にご覧いただければ幸いです。
 
 ▼ 公開ページ
 ${publicUrl}
@@ -160,10 +161,13 @@ ${publicUrl}
 ▼ 管理画面のパスワードを設定する (有効期限: 7日間)
 ${inviteUrl}
 
-パスワード設定後、 下記のURLからログインして施設情報の編集・写真追加などをご利用いただけます。
-${SITE_URL}/admin
+パスワード設定後、 ${SITE_URL}/admin からログインして、
+施設情報や写真の編集などをご利用いただけます。
 
-ご質問等ございましたら、 お気軽にお問い合わせください。
+掲載内容や運用についてご不明点・ご相談などございましたら、
+お気軽に info@offml.com までご連絡ください。
+
+今後ともどうぞよろしくお願いいたします。
 
 ----
 COWORKMILL（コワークミル）
@@ -171,19 +175,21 @@ ${SITE_URL}
 `;
   const html = `<!DOCTYPE html>
 <html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>${subject}</title></head>
-<body style="margin:0;padding:0;background:#fafafa;font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Yu Gothic',sans-serif;color:#333">
+<body style="margin:0;padding:0;background:#fafafa;font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Yu Gothic',sans-serif;color:#333;line-height:1.7">
 <div style="max-width:560px;margin:auto;padding:24px;background:#fff">
-<h2 style="color:#2BB5C8;font-size:18px;margin:0 0 16px">🎉 掲載審査が承認されました</h2>
+<h2 style="color:#2BB5C8;font-size:18px;margin:0 0 16px">✨ ${spaceName} の掲載準備が整いました</h2>
 <p>${safeName} 様</p>
-<p>このたびは COWORKMILL への掲載申請をいただき、 ありがとうございました。<br>ご申請の施設 <strong>「${spaceName}」</strong> が掲載審査に通過しました。</p>
+<p>このたびは COWORKMILL への施設掲載をご検討いただき、 誠にありがとうございます。<br>ご申請の施設 <strong>「${spaceName}」</strong> を掲載いただけることになりました。<br>ぜひ御社の素敵な施設を、 多くの方にご覧いただければ幸いです。</p>
 <p style="margin:24px 0"><a href="${publicUrl}" style="color:#2BB5C8">▼ 公開ページを確認する</a><br><span style="font-size:11px;color:#888;word-break:break-all">${publicUrl}</span></p>
 <p style="text-align:center;margin:32px 0">
   <a href="${inviteUrl}" style="display:inline-block;padding:14px 32px;background:#2BB5C8;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600">管理画面のパスワードを設定する</a>
 </p>
 <p style="font-size:12px;color:#888">またはこのリンクをコピー: <br><span style="word-break:break-all">${inviteUrl}</span></p>
-<p style="font-size:12px;color:#888">パスワード設定後、 <a href="${SITE_URL}/admin">${SITE_URL}/admin</a> からログインしてご利用いただけます。</p>
+<p style="font-size:13px">パスワード設定後、 <a href="${SITE_URL}/admin">${SITE_URL}/admin</a> からログインして、 施設情報や写真の編集などをご利用いただけます。</p>
 <hr style="border:none;border-top:1px solid #eee;margin:24px 0">
-<p style="font-size:11px;color:#888">※ リンクの有効期限は 7日間 です。<br>※ ご質問等ございましたら、 お気軽にお問い合わせください。</p>
+<p style="font-size:13px;color:#444">掲載内容や運用についてご不明点・ご相談などございましたら、 お気軽に <a href="mailto:info@offml.com" style="color:#2BB5C8">info@offml.com</a> までご連絡ください。</p>
+<p style="font-size:13px;color:#444">今後ともどうぞよろしくお願いいたします。</p>
+<p style="font-size:11px;color:#888;margin-top:24px">※ パスワード設定リンクの有効期限は 7日間 です。</p>
 <p style="font-size:11px;color:#888">— COWORKMILL（コワークミル）</p>
 </div>
 </body></html>`;
@@ -218,17 +224,23 @@ async function sendOwnerApprovalNotice(
   if (!RESEND_API_KEY) return { ok: false, error: "RESEND_API_KEY not configured" };
   const publicUrl = spaceSlug ? `${SITE_URL}/space/${encodeURIComponent(spaceSlug)}` : SITE_URL;
   const safeName = applicantName ? applicantName : "ご担当者";
-  const subject = `【COWORKMILL】掲載審査が承認されました - ${spaceName}`;
+  const subject = `【COWORKMILL】${spaceName} の掲載準備が整いました ✨`;
   const text = `${safeName} 様
 
-このたびは COWORKMILL への掲載申請をいただき、 ありがとうございました。
-ご申請の施設「${spaceName}」 が掲載審査に通過しましたのでお知らせいたします。
+このたびは COWORKMILL への施設掲載をご検討いただき、 ありがとうございます。
+ご申請の施設「${spaceName}」 を掲載いただけることになりました。
+ぜひ御社の素敵な施設を、 多くの方にご覧いただければ幸いです。
 
 ▼ 公開ページ
 ${publicUrl}
 
-施設情報の編集等は、 既存の管理画面からご利用ください。
+施設情報の編集は、 既存の管理画面からご利用いただけます。
 ${SITE_URL}/admin
+
+掲載内容や運用についてご不明点・ご相談などございましたら、
+お気軽に info@offml.com までご連絡ください。
+
+今後ともどうぞよろしくお願いいたします。
 
 ----
 COWORKMILL（コワークミル）
@@ -236,15 +248,17 @@ ${SITE_URL}
 `;
   const html = `<!DOCTYPE html>
 <html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>${subject}</title></head>
-<body style="margin:0;padding:0;background:#fafafa;font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Yu Gothic',sans-serif;color:#333">
+<body style="margin:0;padding:0;background:#fafafa;font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Yu Gothic',sans-serif;color:#333;line-height:1.7">
 <div style="max-width:560px;margin:auto;padding:24px;background:#fff">
-<h2 style="color:#2BB5C8;font-size:18px;margin:0 0 16px">🎉 掲載審査が承認されました</h2>
+<h2 style="color:#2BB5C8;font-size:18px;margin:0 0 16px">✨ ${spaceName} の掲載準備が整いました</h2>
 <p>${safeName} 様</p>
-<p>ご申請の施設 <strong>「${spaceName}」</strong> が掲載審査に通過しました。</p>
+<p>このたびは COWORKMILL への施設掲載をご検討いただき、 ありがとうございます。<br>ご申請の施設 <strong>「${spaceName}」</strong> を掲載いただけることになりました。<br>ぜひ御社の素敵な施設を、 多くの方にご覧いただければ幸いです。</p>
 <p style="margin:24px 0"><a href="${publicUrl}" style="color:#2BB5C8">▼ 公開ページを確認する</a></p>
-<p>施設情報の編集等は、 既存の管理画面からご利用ください。<br><a href="${SITE_URL}/admin">${SITE_URL}/admin</a></p>
+<p style="font-size:13px">施設情報の編集は、 既存の管理画面からご利用いただけます。<br><a href="${SITE_URL}/admin">${SITE_URL}/admin</a></p>
 <hr style="border:none;border-top:1px solid #eee;margin:24px 0">
-<p style="font-size:11px;color:#888">— COWORKMILL（コワークミル）</p>
+<p style="font-size:13px;color:#444">掲載内容や運用についてご不明点・ご相談などございましたら、 お気軽に <a href="mailto:info@offml.com" style="color:#2BB5C8">info@offml.com</a> までご連絡ください。</p>
+<p style="font-size:13px;color:#444">今後ともどうぞよろしくお願いいたします。</p>
+<p style="font-size:11px;color:#888;margin-top:24px">— COWORKMILL（コワークミル）</p>
 </div>
 </body></html>`;
   try {
