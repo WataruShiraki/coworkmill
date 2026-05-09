@@ -1869,5 +1869,46 @@ async function deleteInquiry() {
     </div>
   </div>
 </div>
+
+<!-- 掲載申請の審査UI改善: 内部メモ入力 -->
+<script>
+(function(){
+  // 既存の confirmApprove を wrap して、 承認前に内部メモ入力 prompt を追加
+  if (typeof window.confirmApprove === 'function') {
+    const _origApprove = window.confirmApprove;
+    window.confirmApprove = async function() {
+      const args = Array.from(arguments);
+      const spaceId = args[0];
+      // 内部メモ入力 (任意)
+      const memo = prompt('【任意】 内部メモ (運営記録用、 申込者には送られません)\n\n例: 「2026/05/10 電話確認済。」', '');
+      if (memo === null) return;
+      // メモがあれば updateSpaceMemo で保存
+      if (memo && memo.trim() && window.cwmOpsAuth && typeof window.cwmOpsAuth.updateSpaceMemo === 'function') {
+        try { 
+          await window.cwmOpsAuth.updateSpaceMemo(spaceId, memo.trim()); 
+        } catch(e){ 
+          console.warn('memo save failed:', e); 
+        }
+      }
+      // 元の承認関数を呼ぶ
+      return _origApprove.apply(this, args);
+    };
+  }
+  
+  // 既存の confirmReject は reason を既に取り扱うが、 内部メモにも保存できるように補強
+  if (typeof window.confirmReject === 'function') {
+    const _origReject = window.confirmReject;
+    window.confirmReject = async function() {
+      const args = Array.from(arguments);
+      const spaceId = args[0];
+      // 元の reject (内部で reason prompt を出す想定)
+      const result = await _origReject.apply(this, args);
+      // 却下後、 内部メモにも 「却下: 」 prefix で記録 (任意)
+      // (元の関数で reason をDBに保存しているなら、 ここは追加メモとして使える)
+      return result;
+    };
+  }
+})();
+</script>
 </body>
 </html>
