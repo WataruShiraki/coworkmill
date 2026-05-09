@@ -235,9 +235,12 @@ async function sendOwnerApprovalNotice(
 施設の確認が取れましたので、 ご掲載に向けた準備にお進みいただけます。
 
 ▼ 掲載開始までの流れ
-1. ${SITE_URL}/admin にログイン
+1. ${SITE_URL}/admin に既存のID・パスワードでログイン
+   (このメールアドレスは既に COWORKMILL のアカウントとして登録されています)
 2. 該当施設を選択して写真の追加や情報編集
 3. 内容が整いましたら「🚀 公開する」 ボタンで掲載開始
+
+※ パスワードをお忘れの場合は、 ログイン画面の「パスワードをお忘れですか？」 からリセットできます。
 
 掲載内容や運用についてご不明点・ご相談などございましたら、
 お気軽に info@offml.com までご連絡ください。
@@ -258,11 +261,12 @@ ${SITE_URL}
 <div style="background:#f7fdfd;border:1px solid #b8e3e8;border-radius:8px;padding:16px 20px;margin:20px 0">
   <div style="font-weight:700;font-size:13px;color:#2BB5C8;margin-bottom:8px">📋 掲載開始までの流れ</div>
   <ol style="margin:0;padding-left:24px;font-size:13px;line-height:1.9">
-    <li><a href="${SITE_URL}/admin" style="color:#2BB5C8">${SITE_URL}/admin</a> にログイン</li>
+    <li><a href="${SITE_URL}/admin" style="color:#2BB5C8">${SITE_URL}/admin</a> に <strong>既存のID・パスワード</strong> でログイン<br><span style="font-size:11px;color:#888;display:block;margin-top:2px">(このメールアドレスは既に COWORKMILL のアカウントとして登録されています)</span></li>
     <li>該当施設を選択して写真の追加や情報編集</li>
     <li>内容が整いましたら <strong>「🚀 公開する」</strong> ボタンで掲載開始</li>
   </ol>
 </div>
+<p style="font-size:11px;color:#888;margin:0 0 8px">※ パスワードをお忘れの場合は、 ログイン画面の「パスワードをお忘れですか？」 からリセットできます。</p>
 <hr style="border:none;border-top:1px solid #eee;margin:24px 0">
 <p style="font-size:13px;color:#444">掲載内容や運用についてご不明点・ご相談などございましたら、 お気軽に <a href="mailto:info@offml.com" style="color:#2BB5C8">info@offml.com</a> までご連絡ください。</p>
 <p style="font-size:13px;color:#444">今後ともどうぞよろしくお願いいたします。</p>
