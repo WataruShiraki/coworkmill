@@ -138,7 +138,7 @@ function renderForm(info){
   const roleClass = isOwner ? 'role-manager' : (info.role === 'viewer' ? 'role-viewer' : 'role-manager');
   const headlineText = isOwner ? '掲載準備が整いました ✨' : 'パスワードを設定';
   const subText = isOwner
-    ? 'ぜひ御社の施設を多くの方にご覧いただければ幸いです。 下記のパスワードを設定すると、 管理画面で施設情報や写真の編集ができるようになります。'
+    ? '施設の確認が取れましたので、 ぜひご掲載のほどよろしくお願い申し上げます。 下記のパスワードを設定すると、 管理画面で施設情報や写真の編集ができるようになります。'
     : '下記のパスワードを設定すると、 ログインして利用を開始できます。';
   card.innerHTML = '<div class="brand"><span class="brand-dot"></span>COWORKMILL</div>' +
     '<h1>' + headlineText + '</h1>' +

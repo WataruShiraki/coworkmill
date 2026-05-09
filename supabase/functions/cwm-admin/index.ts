@@ -152,8 +152,8 @@ async function sendOwnerApprovalEmail(
   const text = `${safeName} 様
 
 このたびは COWORKMILL への施設掲載をご検討いただき、 誠にありがとうございます。
-ご申請の施設「${spaceName}」 を掲載いただけることになりました。
-ぜひ御社の素敵な施設を、 多くの方にご覧いただければ幸いです。
+施設の確認が取れましたので、 ぜひご掲載のほどよろしくお願い申し上げます。
+御社の素敵な施設を、 多くの方にご覧いただければ幸いです。
 
 ▼ 公開ページ
 ${publicUrl}
@@ -179,7 +179,7 @@ ${SITE_URL}
 <div style="max-width:560px;margin:auto;padding:24px;background:#fff">
 <h2 style="color:#2BB5C8;font-size:18px;margin:0 0 16px">✨ ${spaceName} の掲載準備が整いました</h2>
 <p>${safeName} 様</p>
-<p>このたびは COWORKMILL への施設掲載をご検討いただき、 誠にありがとうございます。<br>ご申請の施設 <strong>「${spaceName}」</strong> を掲載いただけることになりました。<br>ぜひ御社の素敵な施設を、 多くの方にご覧いただければ幸いです。</p>
+<p>このたびは COWORKMILL への施設掲載をご検討いただき、 誠にありがとうございます。<br>施設の確認が取れましたので、 ぜひご掲載のほどよろしくお願い申し上げます。<br>御社の素敵な施設を、 多くの方にご覧いただければ幸いです。</p>
 <p style="margin:24px 0"><a href="${publicUrl}" style="color:#2BB5C8">▼ 公開ページを確認する</a><br><span style="font-size:11px;color:#888;word-break:break-all">${publicUrl}</span></p>
 <p style="text-align:center;margin:32px 0">
   <a href="${inviteUrl}" style="display:inline-block;padding:14px 32px;background:#2BB5C8;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600">管理画面のパスワードを設定する</a>
@@ -228,8 +228,8 @@ async function sendOwnerApprovalNotice(
   const text = `${safeName} 様
 
 このたびは COWORKMILL への施設掲載をご検討いただき、 ありがとうございます。
-ご申請の施設「${spaceName}」 を掲載いただけることになりました。
-ぜひ御社の素敵な施設を、 多くの方にご覧いただければ幸いです。
+施設の確認が取れましたので、 ぜひご掲載のほどよろしくお願い申し上げます。
+御社の素敵な施設を、 多くの方にご覧いただければ幸いです。
 
 ▼ 公開ページ
 ${publicUrl}
@@ -252,7 +252,7 @@ ${SITE_URL}
 <div style="max-width:560px;margin:auto;padding:24px;background:#fff">
 <h2 style="color:#2BB5C8;font-size:18px;margin:0 0 16px">✨ ${spaceName} の掲載準備が整いました</h2>
 <p>${safeName} 様</p>
-<p>このたびは COWORKMILL への施設掲載をご検討いただき、 ありがとうございます。<br>ご申請の施設 <strong>「${spaceName}」</strong> を掲載いただけることになりました。<br>ぜひ御社の素敵な施設を、 多くの方にご覧いただければ幸いです。</p>
+<p>このたびは COWORKMILL への施設掲載をご検討いただき、 ありがとうございます。<br>施設の確認が取れましたので、 ぜひご掲載のほどよろしくお願い申し上げます。<br>御社の素敵な施設を、 多くの方にご覧いただければ幸いです。</p>
 <p style="margin:24px 0"><a href="${publicUrl}" style="color:#2BB5C8">▼ 公開ページを確認する</a></p>
 <p style="font-size:13px">施設情報の編集は、 既存の管理画面からご利用いただけます。<br><a href="${SITE_URL}/admin">${SITE_URL}/admin</a></p>
 <hr style="border:none;border-top:1px solid #eee;margin:24px 0">
