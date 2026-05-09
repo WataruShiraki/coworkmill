@@ -1208,6 +1208,37 @@ Deno.serve(async (req: Request) => {
         return jsonResponse({ ok: true });
       }
 
+      // -------- change_role (権限変更) --------
+      if (action === "change_role") {
+        const managerId = ((dM.manager_id || "") + "").trim();
+        const newRole = ((dM.role || "") + "").trim();
+        if (!managerId) return jsonResponse({ error: "manager_id が必要です" }, 400);
+        if (!["manager", "viewer"].includes(newRole)) {
+          return jsonResponse({ error: "権限は manager / viewer のいずれかで指定してください" }, 400);
+        }
+
+        const { data: rpcRes, error: rpcErr } = await sb.rpc("change_manager_role", {
+          p_account_id: accountId,
+          p_manager_id: managerId,
+          p_new_role: newRole
+        });
+        if (rpcErr) {
+          await writeAuditLog(sb, accountId, target, action, managerId, "error", rpcErr.message, ip);
+          return jsonResponse({ error: "権限変更に失敗しました" }, 500);
+        }
+        const r = rpcRes as { ok?: boolean; error?: string; unchanged?: boolean };
+        if (!r?.ok) {
+          const errorMap: Record<string, string> = {
+            "invalid role": "権限の指定が正しくありません",
+            "manager not found in this account": "対象の担当者が見つかりません"
+          };
+          await writeAuditLog(sb, accountId, target, action, managerId, "denied", r?.error || "unknown", ip);
+          return jsonResponse({ error: errorMap[r?.error || ""] || r?.error || "権限変更に失敗しました" }, 400);
+        }
+        await writeAuditLog(sb, accountId, target, action, managerId, r.unchanged ? "no_change" : "ok", null, ip);
+        return jsonResponse({ ok: true, unchanged: !!r.unchanged });
+      }
+
       // -------- delete --------
       if (action === "delete") {
         const managerId = ((dM.manager_id || "") + "").trim();
@@ -1230,7 +1261,7 @@ Deno.serve(async (req: Request) => {
         return jsonResponse({ ok: true });
       }
 
-      return jsonResponse({ error: "account_managers では list / create / resend_invite / delete を指定してください" }, 400);
+      return jsonResponse({ error: "account_managers では list / create / resend_invite / change_role / delete を指定してください" }, 400);
     }
 
     // ============ voice (利用者の声) ============

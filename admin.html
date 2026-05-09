@@ -4301,6 +4301,10 @@ window.moveAdminMapTo = function(anchorId) {
 .cwm-mgr-role-badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600;letter-spacing:.04em}
 .cwm-mgr-role-manager{background:#e0f7fa;color:#00838f}
 .cwm-mgr-role-viewer{background:#f5f5f5;color:#666}
+.cwm-mgr-role-select{padding:2px 22px 2px 8px;border-radius:10px;font-size:10px;font-weight:600;letter-spacing:.04em;border:none;cursor:pointer;outline:none;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5' viewBox='0 0 8 5'%3E%3Cpath fill='%23666' d='M4 5L0 0h8z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 6px center;font-family:inherit}
+.cwm-mgr-role-select-manager{background-color:#e0f7fa;color:#00838f}
+.cwm-mgr-role-select-viewer{background-color:#f5f5f5;color:#666}
+.cwm-mgr-role-select:hover{filter:brightness(0.95)}
 .cwm-mgr-status-badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600;letter-spacing:.04em}
 .cwm-mgr-status-pending{background:#fff3e0;color:#e65100}
 .cwm-mgr-status-suspended{background:#fce4ec;color:#c2185b}
@@ -4346,21 +4350,30 @@ window.moveAdminMapTo = function(anchorId) {
         const safeEmail = (m.email || '').replace(/[<>&"']/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'})[c]);
 
         let metaText, statusBadge, resendBtn = '';
+        // pending 中は role は固定表示 (招待中はまだ意味のある操作不可)
+        let roleDisplay;
         if (m.status === 'pending') {
           metaText = '招待メール送信済み (パスワード未設定)';
           statusBadge = '<span class="cwm-mgr-status-badge cwm-mgr-status-pending">招待中</span>';
           resendBtn = '<button type="button" onclick="resendInvite(\'' + m.id + '\', \'' + safeEmail + '\')" class="cwm-mgr-resend-btn">招待メール再送</button>';
+          roleDisplay = '<span class="cwm-mgr-role-badge ' + roleClass + '">' + roleLabel + '</span>';
         } else if (m.status === 'suspended') {
           metaText = '一時停止中';
           statusBadge = '<span class="cwm-mgr-status-badge cwm-mgr-status-suspended">停止</span>';
+          roleDisplay = '<span class="cwm-mgr-role-badge ' + roleClass + '">' + roleLabel + '</span>';
         } else {
           metaText = m.last_login_at ? new Date(m.last_login_at).toLocaleDateString('ja-JP') + ' に最終ログイン' : '未ログイン';
           statusBadge = '';
+          // active な担当者は権限変更プルダウン表示
+          roleDisplay = '<select class="cwm-mgr-role-select cwm-mgr-role-select-' + m.role + '" data-current="' + m.role + '" data-id="' + m.id + '" data-email="' + safeEmail + '" onchange="changeManagerRole(this)">' +
+            '<option value="manager"' + (m.role === 'manager' ? ' selected' : '') + '>編集可</option>' +
+            '<option value="viewer"' + (m.role === 'viewer' ? ' selected' : '') + '>閲覧のみ</option>' +
+          '</select>';
         }
 
         return '<div class="cwm-mgr-list-item">' +
           '<div class="cwm-mgr-list-item-info">' +
-            '<div class="cwm-mgr-list-item-name"><span class="cwm-mgr-role-badge ' + roleClass + '">' + roleLabel + '</span>' + statusBadge + dispName + '</div>' +
+            '<div class="cwm-mgr-list-item-name">' + roleDisplay + statusBadge + dispName + '</div>' +
             '<div class="cwm-mgr-list-item-email">' + safeEmail + '</div>' +
             '<div class="cwm-mgr-list-item-meta">' + metaText + '</div>' +
           '</div>' +
@@ -4423,6 +4436,29 @@ window.moveAdminMapTo = function(anchorId) {
       window.loadManagersList();
     } catch(e) {
       alert('再送に失敗しました: ' + e.message);
+    }
+  };
+
+  // ===== 担当者の権限変更 =====
+  window.changeManagerRole = async function(selectEl){
+    const id = selectEl.dataset.id;
+    const emailLabel = selectEl.dataset.email;
+    const oldRole = selectEl.dataset.current;
+    const newRole = selectEl.value;
+    if (oldRole === newRole) return;
+    const newLabel = newRole === 'viewer' ? '閲覧のみ' : '編集可';
+    if (!confirm('「' + emailLabel + '」 の権限を「' + newLabel + '」 に変更しますか?')) {
+      // キャンセル時は元に戻す
+      selectEl.value = oldRole;
+      return;
+    }
+    try {
+      await callAdmin('account_managers', 'change_role', { manager_id: id, role: newRole });
+      // 成功 → list再読み込み (data-current更新のため)
+      window.loadManagersList();
+    } catch(e) {
+      alert('権限変更に失敗しました: ' + e.message);
+      selectEl.value = oldRole;
     }
   };
 
