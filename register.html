@@ -841,6 +841,7 @@ document.querySelectorAll('.faq-q').forEach(function(b){
     var payload={
       name:document.getElementById('rg-fac-name').value.trim(),
       description:'会社名/屋号: '+document.getElementById('rg-company').value.trim(),
+      contact_company:(document.getElementById('rg-company').value||'').trim(),
       official_url:document.getElementById('rg-fac-url').value.trim(),
       contact_name:document.getElementById('rg-contact-name').value.trim(),
       contact_email:document.getElementById('rg-contact-email').value.trim(),
