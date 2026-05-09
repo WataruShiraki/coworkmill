@@ -86,19 +86,29 @@ ${inviteUrl}
 COWORKMILL（コワークミル）
 ${SITE_URL}
 `;
-  const html = `<div style="font-family:sans-serif;max-width:560px;margin:auto;padding:24px;color:#333">
+  const html = `<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>${subject}</title>
+</head>
+<body style="margin:0;padding:0;background:#fafafa;font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Yu Gothic',sans-serif;color:#333">
+<div style="max-width:560px;margin:auto;padding:24px;background:#fff">
 <h2 style="color:#2BB5C8;font-size:18px;margin:0 0 16px">COWORKMILL 管理画面への招待</h2>
 <p>${safeName} 様</p>
 <p><strong>${company}</strong> の管理画面にあなたを <strong>${roleLabel}</strong> 担当者として招待しました。</p>
 <p>下記のボタンから <strong>7日以内</strong> にパスワードを設定してご利用を開始してください。</p>
 <p style="text-align:center;margin:32px 0">
-  <a href="${inviteUrl}" style="display:inline-block;padding:14px 32px;background:#2BB5C8;color:#fff;text-decoration:none;border-radius:6px;font-weight:600">パスワードを設定する</a>
+  <a href="${inviteUrl}" style="display:inline-block;padding:14px 32px;background:#2BB5C8;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600">パスワードを設定する</a>
 </p>
 <p style="font-size:12px;color:#888">またはこのリンクをコピー: <br><span style="word-break:break-all">${inviteUrl}</span></p>
 <hr style="border:none;border-top:1px solid #eee;margin:24px 0">
 <p style="font-size:11px;color:#888">※ このメールに心当たりがない場合は破棄してください。<br>※ リンクの有効期限は 7日間 です。</p>
 <p style="font-size:11px;color:#888">— COWORKMILL（コワークミル）</p>
-</div>`;
+</div>
+</body>
+</html>`;
   try {
     const r = await fetch("https://api.resend.com/emails", {
       method: "POST",
@@ -107,11 +117,11 @@ ${SITE_URL}
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: INVITE_FROM_EMAIL,
-        to: toEmail,
+        from: `COWORKMILL <${INVITE_FROM_EMAIL}>`,
+        to: [toEmail],
         subject,
-        text,
         html,
+        text,
       }),
     });
     if (!r.ok) {
