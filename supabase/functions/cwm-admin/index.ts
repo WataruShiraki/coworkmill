@@ -56,6 +56,75 @@ function resolveServiceKey(): string {
 const SUPABASE_SERVICE_KEY = resolveServiceKey();
 
 const JWT_SECRET = Deno.env.get("CWM_JWT_SECRET")!;
+const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY") || "";
+const INVITE_FROM_EMAIL = Deno.env.get("INQUIRY_FROM_EMAIL") || "onboarding@resend.dev";
+const SITE_URL = Deno.env.get("SITE_URL") || "https://cowkml.com";
+
+// 招待メール送信
+async function sendInviteEmail(toEmail: string, displayName: string | null, company: string, role: string, token: string): Promise<{ ok: boolean; error?: string }> {
+  if (!RESEND_API_KEY) {
+    console.error("[cwm-admin] RESEND_API_KEY not configured");
+    return { ok: false, error: "RESEND_API_KEY not configured" };
+  }
+  const inviteUrl = `${SITE_URL}/invite?t=${encodeURIComponent(token)}`;
+  const safeName = displayName ? displayName : "ご担当者";
+  const roleLabel = role === "viewer" ? "閲覧のみ" : "編集可";
+  const subject = `【COWORKMILL】${company} から管理画面への招待が届いています`;
+  const text = `${safeName} 様
+
+${company} の管理画面にあなたを ${roleLabel} 担当者として招待しました。
+
+下記のリンクから 7日以内 にパスワードを設定してご利用を開始してください。
+
+▼ パスワード設定リンク
+${inviteUrl}
+
+※ このメールに心当たりがない場合は、 このメールを破棄してください。
+※ リンクの有効期限は 7日間 です。 期限切れの場合は招待元に再送を依頼してください。
+
+----
+COWORKMILL（コワークミル）
+${SITE_URL}
+`;
+  const html = `<div style="font-family:sans-serif;max-width:560px;margin:auto;padding:24px;color:#333">
+<h2 style="color:#2BB5C8;font-size:18px;margin:0 0 16px">COWORKMILL 管理画面への招待</h2>
+<p>${safeName} 様</p>
+<p><strong>${company}</strong> の管理画面にあなたを <strong>${roleLabel}</strong> 担当者として招待しました。</p>
+<p>下記のボタンから <strong>7日以内</strong> にパスワードを設定してご利用を開始してください。</p>
+<p style="text-align:center;margin:32px 0">
+  <a href="${inviteUrl}" style="display:inline-block;padding:14px 32px;background:#2BB5C8;color:#fff;text-decoration:none;border-radius:6px;font-weight:600">パスワードを設定する</a>
+</p>
+<p style="font-size:12px;color:#888">またはこのリンクをコピー: <br><span style="word-break:break-all">${inviteUrl}</span></p>
+<hr style="border:none;border-top:1px solid #eee;margin:24px 0">
+<p style="font-size:11px;color:#888">※ このメールに心当たりがない場合は破棄してください。<br>※ リンクの有効期限は 7日間 です。</p>
+<p style="font-size:11px;color:#888">— COWORKMILL（コワークミル）</p>
+</div>`;
+  try {
+    const r = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${RESEND_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        from: INVITE_FROM_EMAIL,
+        to: toEmail,
+        subject,
+        text,
+        html,
+      }),
+    });
+    if (!r.ok) {
+      const errText = await r.text().catch(() => "");
+      console.error("[cwm-admin] Resend error:", r.status, errText);
+      return { ok: false, error: `email send failed (${r.status})` };
+    }
+    return { ok: true };
+  } catch (e) {
+    console.error("[cwm-admin] sendInviteEmail exception:", e);
+    return { ok: false, error: "email send exception" };
+  }
+}
 
 const cors = {
   "Access-Control-Allow-Origin": "*",
@@ -1037,48 +1106,96 @@ Deno.serve(async (req: Request) => {
         return jsonResponse({ ok: true, managers: list || [] });
       }
 
-      // -------- create --------
+      // -------- create (招待メール送信) --------
       if (action === "create") {
         const mEmail = ((dM.email || "") + "").toLowerCase().trim();
-        const mPass = (dM.password || "") + "";
         const mDisplayName = dM.display_name ? (((dM.display_name || "") + "").trim() || null) : null;
         const mRole = ((dM.role || "manager") + "") as string;
 
-        if (!mEmail || !mPass) {
-          return jsonResponse({ error: "メールアドレスとパスワードは必須です" }, 400);
-        }
-        if (mPass.length < 8 || mPass.length > 200) {
-          return jsonResponse({ error: "パスワードは8〜200文字で入力してください" }, 400);
+        if (!mEmail) {
+          return jsonResponse({ error: "メールアドレスは必須です" }, 400);
         }
         if (!["manager", "viewer"].includes(mRole)) {
           return jsonResponse({ error: "権限は manager / viewer のいずれかで指定してください" }, 400);
         }
 
-        const { data: rpcRes, error: rpcErr } = await sb.rpc("create_account_manager", {
+        // 招待レコード作成（pending status, token発行）
+        const { data: rpcRes, error: rpcErr } = await sb.rpc("create_account_manager_invite", {
           p_account_id: accountId,
           p_email: mEmail,
-          p_password: mPass,
           p_display_name: mDisplayName,
           p_role: mRole
         });
         if (rpcErr) {
           await writeAuditLog(sb, accountId, target, action, null, "error", rpcErr.message, ip);
-          return jsonResponse({ error: "担当者作成に失敗しました" }, 500);
+          return jsonResponse({ error: "招待の作成に失敗しました" }, 500);
         }
-        const r = rpcRes as { ok?: boolean; error?: string; id?: string };
+        const r = rpcRes as { ok?: boolean; error?: string; id?: string; invite_token?: string };
         if (!r?.ok) {
           const errorMap: Record<string, string> = {
             "invalid email format": "メールアドレスの形式が正しくありません",
-            "password must be 8-200 chars": "パスワードは8〜200文字で入力してください",
             "invalid role": "権限の指定が正しくありません",
             "account not found": "アカウントが見つかりません",
             "email already in use": "このメールアドレスは既に使用されています"
           };
           await writeAuditLog(sb, accountId, target, action, null, "denied", r?.error || "unknown", ip);
-          return jsonResponse({ error: errorMap[r?.error || ""] || r?.error || "担当者作成に失敗しました" }, 400);
+          return jsonResponse({ error: errorMap[r?.error || ""] || r?.error || "招待の作成に失敗しました" }, 400);
         }
-        await writeAuditLog(sb, accountId, target, action, r.id || null, "ok", null, ip);
+
+        // company名取得 (メール本文用)
+        const { data: acc } = await sb.from("accounts").select("company").eq("id", accountId).single();
+        const company = (acc?.company || "管理者") as string;
+
+        // 招待メール送信
+        const mailRes = await sendInviteEmail(mEmail, mDisplayName, company, mRole, r.invite_token!);
+
+        await writeAuditLog(sb, accountId, target, action, r.id || null, mailRes.ok ? "ok" : "mail_failed", mailRes.ok ? null : mailRes.error || null, ip);
+
+        if (!mailRes.ok) {
+          return jsonResponse({
+            ok: true,
+            id: r.id,
+            mail_warning: "招待は作成されましたが、メール送信に失敗しました。一覧の「招待メール再送」ボタンから再送してください。"
+          });
+        }
         return jsonResponse({ ok: true, id: r.id });
+      }
+
+      // -------- resend_invite (招待メール再送) --------
+      if (action === "resend_invite") {
+        const managerId = ((dM.manager_id || "") + "").trim();
+        if (!managerId) return jsonResponse({ error: "manager_id が必要です" }, 400);
+
+        // token再生成
+        const { data: rpcRes, error: rpcErr } = await sb.rpc("regenerate_manager_invite", {
+          p_account_id: accountId,
+          p_manager_id: managerId
+        });
+        if (rpcErr) {
+          await writeAuditLog(sb, accountId, target, action, managerId, "error", rpcErr.message, ip);
+          return jsonResponse({ error: "再送に失敗しました" }, 500);
+        }
+        const r = rpcRes as { ok?: boolean; error?: string; invite_token?: string; email?: string; display_name?: string | null; role?: string };
+        if (!r?.ok) {
+          const errorMap: Record<string, string> = {
+            "manager not found in this account": "対象の担当者が見つかりません",
+            "manager already activated": "この担当者は既にパスワード設定済みです"
+          };
+          await writeAuditLog(sb, accountId, target, action, managerId, "denied", r?.error || "unknown", ip);
+          return jsonResponse({ error: errorMap[r?.error || ""] || r?.error || "再送に失敗しました" }, 400);
+        }
+
+        const { data: acc } = await sb.from("accounts").select("company").eq("id", accountId).single();
+        const company = (acc?.company || "管理者") as string;
+
+        const mailRes = await sendInviteEmail(r.email!, r.display_name || null, company, r.role || "manager", r.invite_token!);
+
+        await writeAuditLog(sb, accountId, target, action, managerId, mailRes.ok ? "ok" : "mail_failed", mailRes.ok ? null : mailRes.error || null, ip);
+
+        if (!mailRes.ok) {
+          return jsonResponse({ error: "メール送信に失敗しました。RESEND_API_KEYを確認してください。" }, 500);
+        }
+        return jsonResponse({ ok: true });
       }
 
       // -------- delete --------
@@ -1103,7 +1220,7 @@ Deno.serve(async (req: Request) => {
         return jsonResponse({ ok: true });
       }
 
-      return jsonResponse({ error: "account_managers では list / create / delete を指定してください" }, 400);
+      return jsonResponse({ error: "account_managers では list / create / resend_invite / delete を指定してください" }, 400);
     }
 
     // ============ voice (利用者の声) ============

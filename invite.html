@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<title>担当者招待 — COWORKMILL</title>
+<link rel="icon" href="coworkmill_icon.svg" type="image/svg+xml">
+<style>
+:root {
+  --brand: #2BB5C8;
+  --brand-dark: #22a3b4;
+  --bg: #fafafa;
+  --white: #fff;
+  --g100: #f0f0f0;
+  --g200: #e0e0e0;
+  --g300: #cfcfcf;
+  --g400: #a0a0a0;
+  --g500: #707070;
+  --g600: #444;
+  --g700: #222;
+  --error: #d32f2f;
+  --success: #2e7d32;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;padding:0;background:var(--bg);
+  font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Yu Gothic",sans-serif;
+  color:var(--g700);min-height:100vh;display:flex;align-items:center;justify-content:center;
+  padding:20px;
+}
+.card{
+  background:var(--white);border-radius:16px;padding:36px 32px;
+  width:100%;max-width:440px;box-shadow:0 8px 30px rgba(0,0,0,.08);
+}
+.brand{
+  display:flex;align-items:center;gap:8px;margin-bottom:28px;
+  font-weight:700;font-size:14px;letter-spacing:.04em;color:var(--g700);
+}
+.brand-dot{width:8px;height:8px;border-radius:50%;background:var(--brand)}
+h1{font-size:18px;font-weight:700;margin:0 0 6px;letter-spacing:-.01em}
+.lead{font-size:13px;color:var(--g500);line-height:1.7;margin:0 0 24px}
+.invite-info{
+  background:#f0fafa;border:1px solid #cce8ec;border-radius:10px;
+  padding:16px;margin-bottom:24px;font-size:13px;line-height:1.7;
+}
+.invite-info-row{display:flex;gap:12px;margin-bottom:6px}
+.invite-info-row:last-child{margin-bottom:0}
+.invite-info-label{color:var(--g500);min-width:80px;font-size:11px;font-weight:600}
+.invite-info-val{color:var(--g700);flex:1;word-break:break-all}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:11px;font-weight:600;color:var(--g500);margin-bottom:6px;letter-spacing:.02em}
+.field input{
+  width:100%;border:1px solid var(--g200);border-radius:8px;
+  padding:11px 13px;font-size:14px;color:var(--g700);outline:none;
+  transition:border-color .15s;font-family:inherit;
+}
+.field input:focus{border-color:var(--brand)}
+.btn{
+  width:100%;padding:13px;border:none;border-radius:8px;
+  background:var(--brand);color:var(--white);font-size:14px;font-weight:600;
+  cursor:pointer;transition:background .15s;letter-spacing:.04em;
+  font-family:inherit;
+}
+.btn:hover:not(:disabled){background:var(--brand-dark)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.err{font-size:12px;color:var(--error);margin-top:10px;min-height:16px;line-height:1.5}
+.loading{text-align:center;padding:40px 0;color:var(--g400);font-size:13px}
+.success{text-align:center;padding:24px 0}
+.success-icon{font-size:48px;margin-bottom:12px}
+.success-title{font-size:16px;font-weight:700;margin-bottom:8px}
+.success-desc{font-size:13px;color:var(--g500);line-height:1.7;margin-bottom:20px}
+.success-btn{
+  display:inline-block;padding:11px 24px;background:var(--brand);color:var(--white);
+  text-decoration:none;border-radius:8px;font-size:13px;font-weight:600;letter-spacing:.04em;
+}
+.error-box{
+  background:#fef2f2;border:1px solid #fecaca;border-radius:10px;
+  padding:16px;font-size:13px;color:var(--error);line-height:1.7;
+}
+.role-badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600;letter-spacing:.04em}
+.role-manager{background:#e0f7fa;color:#00838f}
+.role-viewer{background:#f5f5f5;color:#666}
+</style>
+</head>
+<body>
+<div class="card" id="card">
+  <div class="brand"><span class="brand-dot"></span>COWORKMILL</div>
+  <div class="loading" id="loading">招待リンクを確認しています...</div>
+</div>
+
+<script>
+(function(){
+const SB_URL = 'https://jakwntemjkwqwaqujffh.supabase.co';
+const card = document.getElementById('card');
+
+function getToken(){
+  const params = new URLSearchParams(location.search);
+  return params.get('t') || '';
+}
+
+async function verifyToken(token){
+  const r = await fetch(SB_URL + '/functions/v1/cwm-invite', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({action:'verify', token})
+  });
+  const d = await r.json().catch(()=>({}));
+  if(!r.ok || d.error) throw new Error(d.error || 'invalid');
+  return d;
+}
+
+async function acceptInvite(token, password){
+  const r = await fetch(SB_URL + '/functions/v1/cwm-invite', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({action:'accept', token, password})
+  });
+  const d = await r.json().catch(()=>({}));
+  if(!r.ok || d.error) throw new Error(d.error || 'failed');
+  return d;
+}
+
+function escapeHtml(s){
+  return (s||'').replace(/[<>&"']/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'})[c]);
+}
+
+function renderError(msg){
+  card.innerHTML = '<div class="brand"><span class="brand-dot"></span>COWORKMILL</div>' +
+    '<h1>招待リンクを確認できませんでした</h1>' +
+    '<div class="error-box">' + escapeHtml(msg) + '</div>' +
+    '<p style="font-size:12px;color:#999;margin-top:24px;text-align:center">招待元の管理者に確認をお願いします。</p>';
+}
+
+function renderForm(info){
+  const roleLabel = info.role === 'viewer' ? '閲覧のみ' : '編集可';
+  const roleClass = info.role === 'viewer' ? 'role-viewer' : 'role-manager';
+  card.innerHTML = '<div class="brand"><span class="brand-dot"></span>COWORKMILL</div>' +
+    '<h1>パスワードを設定</h1>' +
+    '<p class="lead">下記のパスワードを設定すると、 ログインして利用を開始できます。</p>' +
+    '<div class="invite-info">' +
+      '<div class="invite-info-row"><div class="invite-info-label">会社</div><div class="invite-info-val">' + escapeHtml(info.company) + '</div></div>' +
+      '<div class="invite-info-row"><div class="invite-info-label">メアド</div><div class="invite-info-val">' + escapeHtml(info.email) + '</div></div>' +
+      '<div class="invite-info-row"><div class="invite-info-label">権限</div><div class="invite-info-val"><span class="role-badge ' + roleClass + '">' + roleLabel + '</span></div></div>' +
+    '</div>' +
+    '<div class="field"><label>新しいパスワード (8文字以上)</label><input type="password" id="p1" autocomplete="new-password"></div>' +
+    '<div class="field"><label>新しいパスワード (確認)</label><input type="password" id="p2" autocomplete="new-password"></div>' +
+    '<div class="err" id="err"></div>' +
+    '<button class="btn" id="submit">パスワードを設定して開始</button>';
+  
+  const p1 = document.getElementById('p1');
+  const p2 = document.getElementById('p2');
+  const errEl = document.getElementById('err');
+  const btn = document.getElementById('submit');
+  
+  setTimeout(()=>p1.focus(),100);
+  
+  async function submit(){
+    errEl.textContent = '';
+    if(!p1.value || !p2.value){ errEl.textContent = 'パスワードを2回入力してください'; return; }
+    if(p1.value.length < 8){ errEl.textContent = 'パスワードは8文字以上で入力してください'; return; }
+    if(p1.value !== p2.value){ errEl.textContent = 'パスワードが一致しません'; return; }
+    btn.disabled = true; btn.textContent = '設定中...';
+    try {
+      await acceptInvite(getToken(), p1.value);
+      renderSuccess();
+    } catch(e){
+      errEl.textContent = e.message || 'エラーが発生しました';
+      btn.disabled = false; btn.textContent = 'パスワードを設定して開始';
+    }
+  }
+  btn.addEventListener('click', submit);
+  p2.addEventListener('keydown', e => { if(e.key === 'Enter') submit(); });
+  p1.addEventListener('keydown', e => { if(e.key === 'Enter') p2.focus(); });
+}
+
+function renderSuccess(){
+  card.innerHTML = '<div class="brand"><span class="brand-dot"></span>COWORKMILL</div>' +
+    '<div class="success">' +
+      '<div class="success-icon">✅</div>' +
+      '<div class="success-title">パスワードを設定しました</div>' +
+      '<div class="success-desc">ログイン画面から、 設定したメールアドレスとパスワードで利用を開始してください。</div>' +
+      '<a href="/admin" class="success-btn">ログイン画面へ →</a>' +
+    '</div>';
+}
+
+async function init(){
+  const token = getToken();
+  if(!token){
+    renderError('招待リンクが無効です。 メールに記載されたリンクを正しくクリックしてください。');
+    return;
+  }
+  try {
+    const info = await verifyToken(token);
+    renderForm(info);
+  } catch(e){
+    renderError(e.message || '招待の検証に失敗しました');
+  }
+}
+init();
+})();
+</script>
+</body>
+</html>

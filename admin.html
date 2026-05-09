@@ -4267,8 +4267,8 @@ window.moveAdminMapTo = function(anchorId) {
 <!-- ===== 担当者管理モーダル ===== -->
 <div class="cwm-acc-modal-bg" id="cwm-mgr-bg">
   <div class="cwm-acc-modal">
-    <h3>👥 担当者を追加</h3>
-    <div class="desc">追加された担当者は、 同じ管理画面にログインして施設情報の編集ができます。</div>
+    <h3>👥 担当者を招待</h3>
+    <div class="desc">招待メールを送信します。 受け取った担当者がメール内のリンクから自分でパスワードを設定して利用を開始します。<br>有効期限は <strong>7日間</strong> です。</div>
     <div class="field">
       <label>担当者の名前 (任意)</label>
       <input type="text" id="cwm-mgr-name" placeholder="例) 山田太郎" maxlength="60">
@@ -4276,10 +4276,6 @@ window.moveAdminMapTo = function(anchorId) {
     <div class="field">
       <label>メールアドレス</label>
       <input type="email" id="cwm-mgr-email" autocomplete="off" placeholder="example@company.jp">
-    </div>
-    <div class="field">
-      <label>初期パスワード (8文字以上)</label>
-      <input type="text" id="cwm-mgr-pass" autocomplete="off" placeholder="8文字以上で入力">
     </div>
     <div class="field">
       <label>権限</label>
@@ -4291,22 +4287,27 @@ window.moveAdminMapTo = function(anchorId) {
     <div class="err" id="cwm-mgr-err"></div>
     <div class="actions">
       <button type="button" onclick="closeAddManagerModal()">キャンセル</button>
-      <button type="button" class="primary" id="cwm-mgr-submit" onclick="submitAddManager()">追加する</button>
+      <button type="button" class="primary" id="cwm-mgr-submit" onclick="submitAddManager()">招待メールを送信</button>
     </div>
   </div>
 </div>
 
 <style>
-.cwm-mgr-list-item{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border:1px solid var(--g100);border-radius:8px;margin-bottom:8px;background:#fff}
+.cwm-mgr-list-item{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border:1px solid var(--g100);border-radius:8px;margin-bottom:8px;background:#fff;gap:10px}
 .cwm-mgr-list-item-info{flex:1;min-width:0}
-.cwm-mgr-list-item-name{font-size:13px;font-weight:600;color:var(--g700);margin-bottom:3px}
+.cwm-mgr-list-item-name{font-size:13px;font-weight:600;color:var(--g700);margin-bottom:3px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .cwm-mgr-list-item-email{font-size:11px;color:var(--g500);word-break:break-all}
 .cwm-mgr-list-item-meta{font-size:10px;color:var(--g400);margin-top:3px}
-.cwm-mgr-role-badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600;letter-spacing:.04em;margin-right:8px}
+.cwm-mgr-role-badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600;letter-spacing:.04em}
 .cwm-mgr-role-manager{background:#e0f7fa;color:#00838f}
 .cwm-mgr-role-viewer{background:#f5f5f5;color:#666}
-.cwm-mgr-list-item button{padding:6px 12px;font-size:11px;border:1px solid #e0e0e0;border-radius:6px;background:#fff;color:#999;cursor:pointer;margin-left:10px;flex-shrink:0}
+.cwm-mgr-status-badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600;letter-spacing:.04em}
+.cwm-mgr-status-pending{background:#fff3e0;color:#e65100}
+.cwm-mgr-status-suspended{background:#fce4ec;color:#c2185b}
+.cwm-mgr-list-item button{padding:6px 12px;font-size:11px;border:1px solid #e0e0e0;border-radius:6px;background:#fff;color:#999;cursor:pointer;flex-shrink:0;white-space:nowrap}
 .cwm-mgr-list-item button:hover{border-color:#c33;color:#c33}
+.cwm-mgr-list-item button.cwm-mgr-resend-btn{border-color:#2BB5C8;color:#2BB5C8;background:#fff}
+.cwm-mgr-list-item button.cwm-mgr-resend-btn:hover{background:#2BB5C8;color:#fff}
 .cwm-mgr-list-empty{padding:20px;text-align:center;color:var(--g400);font-size:12px;border:1px dashed var(--g100);border-radius:8px}
 </style>
 
@@ -4335,7 +4336,7 @@ window.moveAdminMapTo = function(anchorId) {
       const d = await callAdmin('account_managers', 'list');
       const managers = d.managers || [];
       if (managers.length === 0) {
-        list.innerHTML = '<div class="cwm-mgr-list-empty">担当者はまだ登録されていません。<br>「+ 担当者を追加」ボタンから追加できます。</div>';
+        list.innerHTML = '<div class="cwm-mgr-list-empty">担当者はまだ登録されていません。<br>「+ 担当者を追加」ボタンから招待を送信できます。</div>';
         return;
       }
       list.innerHTML = managers.map(m => {
@@ -4343,14 +4344,30 @@ window.moveAdminMapTo = function(anchorId) {
         const roleLabel = m.role === 'viewer' ? '閲覧のみ' : '編集可';
         const dispName = (m.display_name || '').replace(/[<>&"']/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'})[c]) || '<span style="color:var(--g400)">(名前未設定)</span>';
         const safeEmail = (m.email || '').replace(/[<>&"']/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'})[c]);
-        const lastLogin = m.last_login_at ? new Date(m.last_login_at).toLocaleDateString('ja-JP') + ' に最終ログイン' : '未ログイン';
+
+        let metaText, statusBadge, resendBtn = '';
+        if (m.status === 'pending') {
+          metaText = '招待メール送信済み (パスワード未設定)';
+          statusBadge = '<span class="cwm-mgr-status-badge cwm-mgr-status-pending">招待中</span>';
+          resendBtn = '<button type="button" onclick="resendInvite(\'' + m.id + '\', \'' + safeEmail + '\')" class="cwm-mgr-resend-btn">招待メール再送</button>';
+        } else if (m.status === 'suspended') {
+          metaText = '一時停止中';
+          statusBadge = '<span class="cwm-mgr-status-badge cwm-mgr-status-suspended">停止</span>';
+        } else {
+          metaText = m.last_login_at ? new Date(m.last_login_at).toLocaleDateString('ja-JP') + ' に最終ログイン' : '未ログイン';
+          statusBadge = '';
+        }
+
         return '<div class="cwm-mgr-list-item">' +
           '<div class="cwm-mgr-list-item-info">' +
-            '<div class="cwm-mgr-list-item-name"><span class="cwm-mgr-role-badge ' + roleClass + '">' + roleLabel + '</span>' + dispName + '</div>' +
+            '<div class="cwm-mgr-list-item-name"><span class="cwm-mgr-role-badge ' + roleClass + '">' + roleLabel + '</span>' + statusBadge + dispName + '</div>' +
             '<div class="cwm-mgr-list-item-email">' + safeEmail + '</div>' +
-            '<div class="cwm-mgr-list-item-meta">' + lastLogin + '</div>' +
+            '<div class="cwm-mgr-list-item-meta">' + metaText + '</div>' +
           '</div>' +
-          '<button type="button" onclick="deleteManager(\'' + m.id + '\', \'' + safeEmail + '\')">削除</button>' +
+          '<div style="display:flex;gap:6px;flex-shrink:0">' +
+            resendBtn +
+            '<button type="button" onclick="deleteManager(\'' + m.id + '\', \'' + safeEmail + '\')">削除</button>' +
+          '</div>' +
         '</div>';
       }).join('');
     } catch(e) {
@@ -4362,7 +4379,6 @@ window.moveAdminMapTo = function(anchorId) {
   window.openAddManagerModal = function(){
     document.getElementById('cwm-mgr-name').value = '';
     document.getElementById('cwm-mgr-email').value = '';
-    document.getElementById('cwm-mgr-pass').value = '';
     document.getElementById('cwm-mgr-role').value = 'manager';
     document.getElementById('cwm-mgr-err').textContent = '';
     document.getElementById('cwm-mgr-bg').classList.add('open');
@@ -4374,25 +4390,39 @@ window.moveAdminMapTo = function(anchorId) {
   window.submitAddManager = async function(){
     const name = document.getElementById('cwm-mgr-name').value.trim();
     const email = document.getElementById('cwm-mgr-email').value.trim();
-    const pass = document.getElementById('cwm-mgr-pass').value;
     const role = document.getElementById('cwm-mgr-role').value;
     const errEl = document.getElementById('cwm-mgr-err');
     const btn = document.getElementById('cwm-mgr-submit');
     errEl.textContent = '';
-    if (!email || !pass) { errEl.textContent = 'メールアドレスとパスワードは必須です'; return; }
-    if (pass.length < 8 || pass.length > 200) { errEl.textContent = 'パスワードは8〜200文字で入力してください'; return; }
-    btn.disabled = true; btn.textContent = '追加中...';
+    if (!email) { errEl.textContent = 'メールアドレスを入力してください'; return; }
+    btn.disabled = true; btn.textContent = '送信中...';
     try {
-      await callAdmin('account_managers', 'create', {
-        email: email, password: pass, display_name: name || null, role: role
+      const res = await callAdmin('account_managers', 'create', {
+        email: email, display_name: name || null, role: role
       });
-      alert('担当者を追加しました。\nメール: ' + email + '\nこのメールアドレスとパスワードでログインできます。');
+      if (res.mail_warning) {
+        alert('招待は作成されましたが、 メール送信に失敗しました。\n一覧の「招待メール再送」ボタンから再送してください。');
+      } else {
+        alert('招待メールを送信しました。\n宛先: ' + email + '\n受信した担当者がリンクからパスワードを設定するとログインできるようになります。');
+      }
       closeAddManagerModal();
       window.loadManagersList();
     } catch(e) {
       errEl.textContent = e.message;
     } finally {
-      btn.disabled = false; btn.textContent = '追加する';
+      btn.disabled = false; btn.textContent = '招待メールを送信';
+    }
+  };
+
+  // ===== 招待メール再送 =====
+  window.resendInvite = async function(id, emailLabel){
+    if (!confirm('「' + (emailLabel || id) + '」 に招待メールを再送しますか?\n（既存の招待リンクは無効化されます）')) return;
+    try {
+      await callAdmin('account_managers', 'resend_invite', { manager_id: id });
+      alert('招待メールを再送しました。');
+      window.loadManagersList();
+    } catch(e) {
+      alert('再送に失敗しました: ' + e.message);
     }
   };
 
