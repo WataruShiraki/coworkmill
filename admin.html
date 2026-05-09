@@ -125,13 +125,13 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
 .ftg{width:13px;height:13px;border-radius:3px;border:1.5px solid var(--g200);margin-left:auto;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#fff}
 .fo.on .ftg{background:var(--purple);border-color:var(--purple)}
 .pg{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.pw{aspect-ratio:4/3;border-radius:7px;overflow:hidden;position:relative;cursor:pointer;background:#f5f5f5;transition:box-shadow .15s,transform .15s}
-.pw:hover .phandle{opacity:1}
-.pw .phandle{opacity:.65;transition:opacity .15s,background .15s}
-.pw .phandle:hover{background:#fff !important;color:#333 !important}
-.pw .phandle:active{cursor:grabbing}
-.pw-dragging{opacity:.4}
-.pw-drag-active{box-shadow:0 8px 24px rgba(0,0,0,.18);transform:scale(1.04);z-index:10}
+.pw{aspect-ratio:4/3;border-radius:7px;overflow:hidden;position:relative;background:#f5f5f5;transition:box-shadow .15s,transform .15s,opacity .15s;user-select:none;-webkit-user-select:none;touch-action:none}
+.pw:hover{box-shadow:0 4px 12px rgba(0,0,0,.12)}
+.pw:hover .phandle{background:#2BB5C8 !important;color:#fff !important;transform:scale(1.1)}
+.pw .phandle{transition:all .15s}
+.pw-dragging{opacity:.3 !important}
+.pw-chosen{box-shadow:0 8px 24px rgba(43,181,200,.35) !important;transform:scale(1.05) !important;z-index:100}
+.pw-drag-active{box-shadow:0 12px 32px rgba(0,0,0,.25) !important;transform:rotate(2deg);cursor:grabbing !important}
 .pw img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
 .pw:hover img{transform:scale(1.05)}
 .pov{position:absolute;inset:0;background:rgba(0,0,0,.45);opacity:0;transition:opacity .2s;display:flex;align-items:center;justify-content:center;gap:6px}
@@ -980,6 +980,10 @@ function resetVibeUI(){
         <div style="border:2px dashed var(--g200);border-radius:8px;padding:14px;text-align:center;font-size:11px;color:var(--g400);margin-bottom:12px;cursor:pointer;transition:all .2s;" onclick="document.getElementById('photo-upload-input').click()" ondragover="event.preventDefault();this.style.borderColor='#2BB5C8';this.style.background='rgba(43,181,200,.06)';" ondragleave="this.style.borderColor='var(--g200)';this.style.background='';" ondrop="event.preventDefault();this.style.borderColor='var(--g200)';this.style.background='';handlePhotoUpload({files:event.dataTransfer.files});">
           ここにドラッグ＆ドロップ、またはクリックして追加
         </div>
+        <div id="photo-reorder-hint" style="display:none;background:linear-gradient(135deg,#fef3c7,#fde68a);border:1px solid #f59e0b;border-radius:8px;padding:12px 14px;margin-bottom:12px;font-size:12px;color:#78350f;line-height:1.6">
+          <strong style="font-size:13px">💡 写真の順番を変えられます</strong><br>
+          写真を <strong>ドラッグ</strong> して順番を入れ替えてください。 <strong>「#1 表紙」</strong> がサイト上のメイン画像になります。
+        </div>
         <div id="photo-grid" class="pg"></div>
         <div id="photo-empty-msg" style="display:none;text-align:center;padding:24px;color:var(--g400);font-size:12px;">まだ写真がありません</div>
       </div>
@@ -1383,6 +1387,10 @@ async function handlePhotoUpload(input) {
   const STORAGE_URL = SUPABASE_URL + '/storage/v1/object/space-images/';
   let uploaded = 0;
   const isFirst = currentCount === 0;
+  
+  // 既存の最大display_orderを取得 (アップロード後に末尾に追加するため)
+  const existingMax = await sbFetch('/rest/v1/space_images?space_id=eq.' + dbId + '&select=display_order&order=display_order.desc&limit=1');
+  let nextOrder = (existingMax && existingMax[0]) ? (existingMax[0].display_order + 1) : 0;
 
   for (const file of filesToUpload) {
     const ext = file.name.split('.').pop().toLowerCase();
@@ -1395,9 +1403,9 @@ async function handlePhotoUpload(input) {
       });
       if (!upRes.ok) { console.warn('upload failed', await upRes.text()); continue; }
       const publicUrl = SUPABASE_URL + '/storage/v1/object/public/space-images/' + path;
-      // 既存の最大 display_order + 1 を取得して末尾に追加
-      const orderInsert = currentCount + uploaded;
-      await sbFetch('/rest/v1/space_images', { method: 'POST', body: JSON.stringify({ space_id: dbId, url: publicUrl, display_order: orderInsert }) });
+      // 末尾に追加 (既存の最大display_order + 1)
+      await sbFetch('/rest/v1/space_images', { method: 'POST', body: JSON.stringify({ space_id: dbId, url: publicUrl, display_order: nextOrder }) });
+      nextOrder++;
       if (uploaded === 0 && isFirst) {
         await sbFetch('/rest/v1/spaces?id=eq.' + dbId, { method: 'PATCH', body: JSON.stringify({ image_main: publicUrl }) });
       }
@@ -1456,16 +1464,20 @@ async function loadPhotos(dbId) {
     if (emptyMsg) emptyMsg.style.display = 'none';
     if (photoEmpty) photoEmpty.style.display = 'none';
     if (photoContent) photoContent.style.display = 'block';
+    // 並び替えヒントを表示 (写真2枚以上ある時)
+    const hint = document.getElementById('photo-reorder-hint');
+    if (hint) hint.style.display = imgs.length >= 2 ? 'block' : 'none';
     imgs.forEach((img, i) => {
       const isCover = i === 0;
       const div = document.createElement('div');
       div.className = 'pw';
       div.dataset.imageId = img.id;
-      div.innerHTML = '<img src="' + img.url + '" alt="" draggable="false">' +
-        '<div class="pmn" style="background:' + (isCover ? '#2BB5C8' : 'rgba(0,0,0,.55)') + '">' + (isCover ? '#1 表紙' : '#' + (i+1)) + '</div>' +
-        '<div class="phandle" title="ドラッグして順番変更" style="position:absolute;top:8px;right:8px;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.95);display:flex;align-items:center;justify-content:center;cursor:grab;font-size:16px;color:#666;box-shadow:0 1px 3px rgba(0,0,0,.15)">⋮⋮</div>' +
+      div.style.cursor = 'grab';
+      div.innerHTML = '<img src="' + img.url + '" alt="" draggable="false" style="pointer-events:none">' +
+        '<div class="pmn" style="background:' + (isCover ? '#2BB5C8' : 'rgba(0,0,0,.65)') + ';font-size:10px;padding:4px 8px;font-weight:700;letter-spacing:.04em">' + (isCover ? '#1 表紙' : '#' + (i+1)) + '</div>' +
+        '<div class="phandle" title="ドラッグして順番変更" style="position:absolute;top:8px;right:8px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.95);display:flex;align-items:center;justify-content:center;font-size:14px;color:#444;box-shadow:0 2px 6px rgba(0,0,0,.2);font-weight:700;line-height:1;letter-spacing:-2px;pointer-events:none">⋮⋮</div>' +
         '<div class="pov">' +
-        '<button class="pact" onclick="deletePhoto(\'' + img.id + '\',\'' + img.url + '\',\'' + dbId + '\')">削除</button>' +
+        '<button class="pact" onclick="event.stopPropagation();deletePhoto(\'' + img.id + '\',\'' + img.url + '\',\'' + dbId + '\')">削除</button>' +
         '</div>';
       grid.appendChild(div);
     });
@@ -1474,18 +1486,23 @@ async function loadPhotos(dbId) {
     if (window._photoSortable) { try{window._photoSortable.destroy();}catch(_e){} }
     if (window.Sortable) {
       window._photoSortable = window.Sortable.create(grid, {
-        animation: 180,
-        handle: '.phandle',
+        animation: 200,
         ghostClass: 'pw-dragging',
+        chosenClass: 'pw-chosen',
         dragClass: 'pw-drag-active',
-        delay: 80,
+        delay: 100,
         delayOnTouchOnly: true,
-        touchStartThreshold: 4,
-        onEnd: async function() {
+        touchStartThreshold: 5,
+        forceFallback: false,
+        onStart: function(evt) { evt.item.style.cursor = 'grabbing'; },
+        onEnd: async function(evt) {
+          evt.item.style.cursor = 'grab';
           const newOrder = Array.from(grid.children).map(el => el.dataset.imageId);
           await savePhotosOrder(dbId, newOrder);
         }
       });
+    } else {
+      console.warn('[loadPhotos] window.Sortable is not loaded');
     }
   } catch(e) { console.warn('loadPhotos error:', e); }
 }
