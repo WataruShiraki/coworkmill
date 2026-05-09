@@ -1275,11 +1275,15 @@ Deno.serve(async (req: Request) => {
           const { data: ok } = await sbP.from("ops_allowed_users").select("email").eq("email", (payloadP.sub || "").toLowerCase()).maybeSingle();
           if (!ok) return jsonResponse({ error: "運営権限が無効化されています" }, 403);
         } else if (payloadP.kind === "owner") {
-          if (space.account_id !== payloadP.account_id) {
+          // cwm-login (Owner) は payload に { id: account_id, kind: 'owner' } を入れる
+          const accountIdFromToken = payloadP.account_id || payloadP.id;
+          if (space.account_id !== accountIdFromToken) {
             return jsonResponse({ error: "この施設の閲覧権限がありません" }, 403);
           }
         } else if (payloadP.kind === "manager") {
-          if (space.account_id !== payloadP.account_id) {
+          // managerトークンは account_id を直接持つ
+          const accountIdFromToken = payloadP.account_id || payloadP.id;
+          if (space.account_id !== accountIdFromToken) {
             return jsonResponse({ error: "この施設の閲覧権限がありません" }, 403);
           }
         } else {
