@@ -1672,11 +1672,12 @@ async function loadInquiries() {
       const messageSnip = (x.message||'').substring(0, 50) + ((x.message||'').length > 50 ? '...' : '');
       const stLabel = _inqStatusMap[x.status] || x.status;
       const stCls = _inqStatusClass[x.status] || 'new';
+      const memoSnip = x.ops_memo ? '<div style="margin-top:4px;padding:4px 8px;background:#fffbeb;border-left:2px solid #f59e0b;font-size:11px;color:#92400e;border-radius:3px;max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="'+_esc(x.ops_memo)+'">📝 '+_esc(x.ops_memo.substring(0,40))+(x.ops_memo.length>40?'...':'')+'</div>' : '';
       return '<tr style="cursor:pointer" onclick="openInquiryModal(\''+x.id+'\')">' +
         '<td>'+(_inqTypeIcon[x.type]||'')+' '+_esc(x.inquiry_type||x.type)+'</td>' +
         '<td>'+_esc(x.contact_name||'-')+(x.company_name?'<br><span style="font-size:11px;color:#888">'+_esc(x.company_name)+'</span>':'')+'</td>' +
         '<td>'+_esc(x.contact_email||'-')+'</td>' +
-        '<td style="max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+_esc(messageSnip)+'</td>' +
+        '<td style="max-width:300px"><div style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+_esc(messageSnip)+'</div>'+memoSnip+'</td>' +
         '<td>'+dtStr+'</td>' +
         '<td><span class="st '+stCls+'">'+stLabel+'</span></td>' +
         '<td><button class="bsm">詳細</button></td>' +
