@@ -2216,11 +2216,11 @@ function swFac(id) {
   loadSpaceDetail(f);
   const tbr = document.getElementById('tbr');
   if(f.st==='draft') {
-    tbr.innerHTML = '<button class="bol" style="color:#ef4444;border-color:#ef4444;" onclick="deleteFac()">🗑 削除</button><button class="bsv" onclick="doSave()">変更を保存</button><button class="bpb" style="background:linear-gradient(135deg,#f97316,#ea580c);border-color:#f97316;color:#fff;font-weight:700" onclick="pubFac()">🚀 公開申請する</button>';
+    tbr.innerHTML = '<button class="bol" style="color:#ef4444;border-color:#ef4444;" onclick="deleteFac()">🗑 削除</button><button class="bol" onclick="previewSpace()">プレビュー →</button><button class="bsv" onclick="doSave()">変更を保存</button><button class="bpb" style="background:linear-gradient(135deg,#f97316,#ea580c);border-color:#f97316;color:#fff;font-weight:700" onclick="pubFac()">🚀 公開申請する</button>';
   } else if(f.st==='pending') {
-    tbr.innerHTML = '<button class="bol" style="color:#666;border-color:#d4d4d4;" onclick="cancelPubFac()">↩ 申請を取り下げる</button><button class="bsv" onclick="doSave()">変更を保存</button>';
+    tbr.innerHTML = '<button class="bol" style="color:#666;border-color:#d4d4d4;" onclick="cancelPubFac()">↩ 申請を取り下げる</button><button class="bol" onclick="previewSpace()">プレビュー →</button><button class="bsv" onclick="doSave()">変更を保存</button>';
   } else if(f.st==='rejected') {
-    tbr.innerHTML = '<button class="bol" style="color:#ef4444;border-color:#ef4444;" onclick="deleteFac()">🗑 削除</button><button class="bsv" onclick="doSave()">変更を保存</button><button class="bpb" style="background:linear-gradient(135deg,#f97316,#ea580c);border-color:#f97316;color:#fff;font-weight:700" onclick="pubFac()">🚀 再申請する</button>';
+    tbr.innerHTML = '<button class="bol" style="color:#ef4444;border-color:#ef4444;" onclick="deleteFac()">🗑 削除</button><button class="bol" onclick="previewSpace()">プレビュー →</button><button class="bsv" onclick="doSave()">変更を保存</button><button class="bpb" style="background:linear-gradient(135deg,#f97316,#ea580c);border-color:#f97316;color:#fff;font-weight:700" onclick="pubFac()">🚀 再申請する</button>';
   } else if(f.st==='live') {
     tbr.innerHTML = '<button class="bol" style="color:#ef4444;border-color:#ef4444;" onclick="deleteFac()">🗑 削除</button><button class="bol" onclick="previewSpace()">プレビュー →</button><button class="bsv" id="savebtn" onclick="doSave()">変更を保存</button><button class="bol" style="color:#ef4444;border-color:#ef4444;" onclick="unpubFac()">⏸ 非公開にする</button>';
   } else {
