@@ -152,17 +152,15 @@ async function sendOwnerApprovalEmail(
   const text = `${safeName} 様
 
 このたびは COWORKMILL への施設掲載をご検討いただき、 誠にありがとうございます。
-施設の確認が取れましたので、 ぜひご掲載のほどよろしくお願い申し上げます。
-御社の素敵な施設を、 多くの方にご覧いただければ幸いです。
+施設の確認が取れましたので、 ご掲載に向けた準備にお進みいただけます。
 
-▼ 公開ページ
-${publicUrl}
+▼ 掲載開始までの流れ
+1. 下のリンクから管理画面のパスワードを設定
+2. 管理画面で写真の追加や情報編集
+3. 内容が整いましたら「🚀 公開する」 ボタンで掲載開始
 
 ▼ 管理画面のパスワードを設定する (有効期限: 7日間)
 ${inviteUrl}
-
-パスワード設定後、 ${SITE_URL}/admin からログインして、
-施設情報や写真の編集などをご利用いただけます。
 
 掲載内容や運用についてご不明点・ご相談などございましたら、
 お気軽に info@offml.com までご連絡ください。
@@ -179,18 +177,24 @@ ${SITE_URL}
 <div style="max-width:560px;margin:auto;padding:24px;background:#fff">
 <h2 style="color:#2BB5C8;font-size:18px;margin:0 0 16px">✨ ${spaceName} の掲載準備が整いました</h2>
 <p>${safeName} 様</p>
-<p>このたびは COWORKMILL への施設掲載をご検討いただき、 誠にありがとうございます。<br>施設の確認が取れましたので、 ぜひご掲載のほどよろしくお願い申し上げます。<br>御社の素敵な施設を、 多くの方にご覧いただければ幸いです。</p>
-<p style="margin:24px 0"><a href="${publicUrl}" style="color:#2BB5C8">▼ 公開ページを確認する</a><br><span style="font-size:11px;color:#888;word-break:break-all">${publicUrl}</span></p>
+<p>このたびは COWORKMILL への施設掲載をご検討いただき、 誠にありがとうございます。<br>施設の確認が取れましたので、 ご掲載に向けた準備にお進みいただけます。</p>
+<div style="background:#f7fdfd;border:1px solid #b8e3e8;border-radius:8px;padding:16px 20px;margin:20px 0">
+  <div style="font-weight:700;font-size:13px;color:#2BB5C8;margin-bottom:8px">📋 掲載開始までの流れ</div>
+  <ol style="margin:0;padding-left:24px;font-size:13px;line-height:1.9">
+    <li>下のリンクから管理画面のパスワードを設定</li>
+    <li>管理画面で写真の追加や情報編集</li>
+    <li>内容が整いましたら <strong>「🚀 公開する」</strong> ボタンで掲載開始</li>
+  </ol>
+</div>
 <p style="text-align:center;margin:32px 0">
   <a href="${inviteUrl}" style="display:inline-block;padding:14px 32px;background:#2BB5C8;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600">管理画面のパスワードを設定する</a>
 </p>
 <p style="font-size:12px;color:#888">またはこのリンクをコピー: <br><span style="word-break:break-all">${inviteUrl}</span></p>
-<p style="font-size:13px">パスワード設定後、 <a href="${SITE_URL}/admin">${SITE_URL}/admin</a> からログインして、 施設情報や写真の編集などをご利用いただけます。</p>
+<p style="font-size:11px;color:#888;margin-top:8px">※ パスワード設定リンクの有効期限は 7日間 です。</p>
 <hr style="border:none;border-top:1px solid #eee;margin:24px 0">
 <p style="font-size:13px;color:#444">掲載内容や運用についてご不明点・ご相談などございましたら、 お気軽に <a href="mailto:info@offml.com" style="color:#2BB5C8">info@offml.com</a> までご連絡ください。</p>
 <p style="font-size:13px;color:#444">今後ともどうぞよろしくお願いいたします。</p>
-<p style="font-size:11px;color:#888;margin-top:24px">※ パスワード設定リンクの有効期限は 7日間 です。</p>
-<p style="font-size:11px;color:#888">— COWORKMILL（コワークミル）</p>
+<p style="font-size:11px;color:#888;margin-top:24px">— COWORKMILL（コワークミル）</p>
 </div>
 </body></html>`;
   try {
@@ -228,14 +232,12 @@ async function sendOwnerApprovalNotice(
   const text = `${safeName} 様
 
 このたびは COWORKMILL への施設掲載をご検討いただき、 ありがとうございます。
-施設の確認が取れましたので、 ぜひご掲載のほどよろしくお願い申し上げます。
-御社の素敵な施設を、 多くの方にご覧いただければ幸いです。
+施設の確認が取れましたので、 ご掲載に向けた準備にお進みいただけます。
 
-▼ 公開ページ
-${publicUrl}
-
-施設情報の編集は、 既存の管理画面からご利用いただけます。
-${SITE_URL}/admin
+▼ 掲載開始までの流れ
+1. ${SITE_URL}/admin にログイン
+2. 該当施設を選択して写真の追加や情報編集
+3. 内容が整いましたら「🚀 公開する」 ボタンで掲載開始
 
 掲載内容や運用についてご不明点・ご相談などございましたら、
 お気軽に info@offml.com までご連絡ください。
@@ -252,9 +254,15 @@ ${SITE_URL}
 <div style="max-width:560px;margin:auto;padding:24px;background:#fff">
 <h2 style="color:#2BB5C8;font-size:18px;margin:0 0 16px">✨ ${spaceName} の掲載準備が整いました</h2>
 <p>${safeName} 様</p>
-<p>このたびは COWORKMILL への施設掲載をご検討いただき、 ありがとうございます。<br>施設の確認が取れましたので、 ぜひご掲載のほどよろしくお願い申し上げます。<br>御社の素敵な施設を、 多くの方にご覧いただければ幸いです。</p>
-<p style="margin:24px 0"><a href="${publicUrl}" style="color:#2BB5C8">▼ 公開ページを確認する</a></p>
-<p style="font-size:13px">施設情報の編集は、 既存の管理画面からご利用いただけます。<br><a href="${SITE_URL}/admin">${SITE_URL}/admin</a></p>
+<p>このたびは COWORKMILL への施設掲載をご検討いただき、 ありがとうございます。<br>施設の確認が取れましたので、 ご掲載に向けた準備にお進みいただけます。</p>
+<div style="background:#f7fdfd;border:1px solid #b8e3e8;border-radius:8px;padding:16px 20px;margin:20px 0">
+  <div style="font-weight:700;font-size:13px;color:#2BB5C8;margin-bottom:8px">📋 掲載開始までの流れ</div>
+  <ol style="margin:0;padding-left:24px;font-size:13px;line-height:1.9">
+    <li><a href="${SITE_URL}/admin" style="color:#2BB5C8">${SITE_URL}/admin</a> にログイン</li>
+    <li>該当施設を選択して写真の追加や情報編集</li>
+    <li>内容が整いましたら <strong>「🚀 公開する」</strong> ボタンで掲載開始</li>
+  </ol>
+</div>
 <hr style="border:none;border-top:1px solid #eee;margin:24px 0">
 <p style="font-size:13px;color:#444">掲載内容や運用についてご不明点・ご相談などございましたら、 お気軽に <a href="mailto:info@offml.com" style="color:#2BB5C8">info@offml.com</a> までご連絡ください。</p>
 <p style="font-size:13px;color:#444">今後ともどうぞよろしくお願いいたします。</p>
