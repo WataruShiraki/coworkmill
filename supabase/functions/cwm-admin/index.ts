@@ -136,6 +136,138 @@ ${SITE_URL}
   }
 }
 
+// 施設承認 + 招待メール送信 (新規account作成時)
+async function sendOwnerApprovalEmail(
+  toEmail: string,
+  applicantName: string | null,
+  spaceName: string,
+  spaceSlug: string,
+  token: string
+): Promise<{ ok: boolean; error?: string }> {
+  if (!RESEND_API_KEY) return { ok: false, error: "RESEND_API_KEY not configured" };
+  const inviteUrl = `${SITE_URL}/invite?t=${encodeURIComponent(token)}`;
+  const publicUrl = spaceSlug ? `${SITE_URL}/space/${encodeURIComponent(spaceSlug)}` : SITE_URL;
+  const safeName = applicantName ? applicantName : "ご担当者";
+  const subject = `【COWORKMILL】掲載審査が承認されました - ${spaceName}`;
+  const text = `${safeName} 様
+
+このたびは COWORKMILL への掲載申請をいただき、 ありがとうございました。
+ご申請の施設「${spaceName}」 が掲載審査に通過しましたのでお知らせいたします。
+
+▼ 公開ページ
+${publicUrl}
+
+▼ 管理画面のパスワードを設定する (有効期限: 7日間)
+${inviteUrl}
+
+パスワード設定後、 下記のURLからログインして施設情報の編集・写真追加などをご利用いただけます。
+${SITE_URL}/admin
+
+ご質問等ございましたら、 お気軽にお問い合わせください。
+
+----
+COWORKMILL（コワークミル）
+${SITE_URL}
+`;
+  const html = `<!DOCTYPE html>
+<html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>${subject}</title></head>
+<body style="margin:0;padding:0;background:#fafafa;font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Yu Gothic',sans-serif;color:#333">
+<div style="max-width:560px;margin:auto;padding:24px;background:#fff">
+<h2 style="color:#2BB5C8;font-size:18px;margin:0 0 16px">🎉 掲載審査が承認されました</h2>
+<p>${safeName} 様</p>
+<p>このたびは COWORKMILL への掲載申請をいただき、 ありがとうございました。<br>ご申請の施設 <strong>「${spaceName}」</strong> が掲載審査に通過しました。</p>
+<p style="margin:24px 0"><a href="${publicUrl}" style="color:#2BB5C8">▼ 公開ページを確認する</a><br><span style="font-size:11px;color:#888;word-break:break-all">${publicUrl}</span></p>
+<p style="text-align:center;margin:32px 0">
+  <a href="${inviteUrl}" style="display:inline-block;padding:14px 32px;background:#2BB5C8;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:600">管理画面のパスワードを設定する</a>
+</p>
+<p style="font-size:12px;color:#888">またはこのリンクをコピー: <br><span style="word-break:break-all">${inviteUrl}</span></p>
+<p style="font-size:12px;color:#888">パスワード設定後、 <a href="${SITE_URL}/admin">${SITE_URL}/admin</a> からログインしてご利用いただけます。</p>
+<hr style="border:none;border-top:1px solid #eee;margin:24px 0">
+<p style="font-size:11px;color:#888">※ リンクの有効期限は 7日間 です。<br>※ ご質問等ございましたら、 お気軽にお問い合わせください。</p>
+<p style="font-size:11px;color:#888">— COWORKMILL（コワークミル）</p>
+</div>
+</body></html>`;
+  try {
+    const r = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { "Authorization": `Bearer ${RESEND_API_KEY}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        from: `COWORKMILL <${INVITE_FROM_EMAIL}>`,
+        to: [toEmail], subject, html, text
+      }),
+    });
+    if (!r.ok) {
+      const errText = await r.text().catch(() => "");
+      console.error("[cwm-admin] sendOwnerApprovalEmail Resend error:", r.status, errText);
+      return { ok: false, error: `email send failed (${r.status})` };
+    }
+    return { ok: true };
+  } catch (e) {
+    console.error("[cwm-admin] sendOwnerApprovalEmail exception:", e);
+    return { ok: false, error: "email send exception" };
+  }
+}
+
+// 施設承認 通知のみ (既存account/既にパス設定済み)
+async function sendOwnerApprovalNotice(
+  toEmail: string,
+  applicantName: string | null,
+  spaceName: string,
+  spaceSlug: string
+): Promise<{ ok: boolean; error?: string }> {
+  if (!RESEND_API_KEY) return { ok: false, error: "RESEND_API_KEY not configured" };
+  const publicUrl = spaceSlug ? `${SITE_URL}/space/${encodeURIComponent(spaceSlug)}` : SITE_URL;
+  const safeName = applicantName ? applicantName : "ご担当者";
+  const subject = `【COWORKMILL】掲載審査が承認されました - ${spaceName}`;
+  const text = `${safeName} 様
+
+このたびは COWORKMILL への掲載申請をいただき、 ありがとうございました。
+ご申請の施設「${spaceName}」 が掲載審査に通過しましたのでお知らせいたします。
+
+▼ 公開ページ
+${publicUrl}
+
+施設情報の編集等は、 既存の管理画面からご利用ください。
+${SITE_URL}/admin
+
+----
+COWORKMILL（コワークミル）
+${SITE_URL}
+`;
+  const html = `<!DOCTYPE html>
+<html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>${subject}</title></head>
+<body style="margin:0;padding:0;background:#fafafa;font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Yu Gothic',sans-serif;color:#333">
+<div style="max-width:560px;margin:auto;padding:24px;background:#fff">
+<h2 style="color:#2BB5C8;font-size:18px;margin:0 0 16px">🎉 掲載審査が承認されました</h2>
+<p>${safeName} 様</p>
+<p>ご申請の施設 <strong>「${spaceName}」</strong> が掲載審査に通過しました。</p>
+<p style="margin:24px 0"><a href="${publicUrl}" style="color:#2BB5C8">▼ 公開ページを確認する</a></p>
+<p>施設情報の編集等は、 既存の管理画面からご利用ください。<br><a href="${SITE_URL}/admin">${SITE_URL}/admin</a></p>
+<hr style="border:none;border-top:1px solid #eee;margin:24px 0">
+<p style="font-size:11px;color:#888">— COWORKMILL（コワークミル）</p>
+</div>
+</body></html>`;
+  try {
+    const r = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { "Authorization": `Bearer ${RESEND_API_KEY}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        from: `COWORKMILL <${INVITE_FROM_EMAIL}>`,
+        to: [toEmail], subject, html, text
+      }),
+    });
+    if (!r.ok) {
+      const errText = await r.text().catch(() => "");
+      console.error("[cwm-admin] sendOwnerApprovalNotice Resend error:", r.status, errText);
+      return { ok: false, error: `email send failed (${r.status})` };
+    }
+    return { ok: true };
+  } catch (e) {
+    console.error("[cwm-admin] sendOwnerApprovalNotice exception:", e);
+    return { ok: false, error: "email send exception" };
+  }
+}
+
 const cors = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
@@ -498,6 +630,72 @@ Deno.serve(async (req: Request) => {
           const text = await r.text();
           await writeAuditLog(sb2, opsEmail2, "ops_db", "auth_invite", inviteEmail2, r.ok ? "ok" : "error", null, ip);
           return new Response((r.status === 204 || r.status === 205 || r.status === 304) ? null : text, { status: r.status, headers: { ...cors, "Content-Type": "application/json" } });
+        }
+
+        // ============ approve_space (施設承認 + 招待メール送信) ============
+        if (action === "approve_space") {
+          const spaceId = ((d.space_id || "") + "").trim();
+          if (!spaceId) return jsonResponse({ error: "space_id が必要です" }, 400);
+
+          // RPC実行: spaces承認 + accounts作成/紐づけ + 招待token発行
+          const { data: rpcRes, error: rpcErr } = await sb2.rpc("approve_space_with_invite", {
+            p_space_id: spaceId
+          });
+          if (rpcErr) {
+            await writeAuditLog(sb2, opsEmail2, "ops_db", "approve_space", spaceId, "error", rpcErr.message, ip);
+            return jsonResponse({ error: "承認処理に失敗しました: " + rpcErr.message }, 500);
+          }
+          const r = rpcRes as {
+            ok?: boolean;
+            error?: string;
+            space_id?: string;
+            space_name?: string;
+            space_slug?: string;
+            applicant_email?: string;
+            applicant_name?: string | null;
+            account_id?: string;
+            invite_token?: string | null;
+            is_new_account?: boolean;
+          };
+          if (!r?.ok) {
+            await writeAuditLog(sb2, opsEmail2, "ops_db", "approve_space", spaceId, "denied", r?.error || "unknown", ip);
+            const errorMap: Record<string, string> = {
+              "space not found": "施設が見つかりません",
+              "no contact_email": "申込者のメールアドレスが未設定です"
+            };
+            return jsonResponse({ error: errorMap[r?.error || ""] || r?.error || "承認に失敗しました" }, 400);
+          }
+
+          // 招待メール送信 (新規招待 or 再発行の場合のみ)
+          let mailResult: { ok: boolean; error?: string } = { ok: true };
+          if (r.is_new_account && r.invite_token && r.applicant_email) {
+            mailResult = await sendOwnerApprovalEmail(
+              r.applicant_email,
+              r.applicant_name || null,
+              r.space_name || "ご申請の施設",
+              r.space_slug || "",
+              r.invite_token
+            );
+          } else if (r.applicant_email) {
+            // 既存accountの場合: 「掲載しました」 通知のみ
+            mailResult = await sendOwnerApprovalNotice(
+              r.applicant_email,
+              r.applicant_name || null,
+              r.space_name || "ご申請の施設",
+              r.space_slug || ""
+            );
+          }
+
+          await writeAuditLog(sb2, opsEmail2, "ops_db", "approve_space", spaceId, mailResult.ok ? "ok" : "mail_failed", mailResult.ok ? null : (mailResult.error || null), ip);
+
+          return jsonResponse({
+            ok: true,
+            space_id: r.space_id,
+            account_id: r.account_id,
+            is_new_account: r.is_new_account,
+            mail_sent: mailResult.ok,
+            mail_warning: mailResult.ok ? null : "施設は承認されましたが、 通知メールの送信に失敗しました"
+          });
         }
 
         return jsonResponse({ error: "不明なアクション: " + action }, 400);

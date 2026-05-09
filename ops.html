@@ -876,11 +876,23 @@ async function loadAccounts() {
 
 async function confirmApprove() {
   if (!pendingSpaceId) return;
-  const r = await sbPatch('spaces','id=eq.'+pendingSpaceId,{status:'live'});
   closeModal('m-ap');
-  if (_sbOk(r)) { showToast('✅ 承認しました'); loadSpaces(); }
-  else alert('承認に失敗しました: ' + _sbErr(r));
-  pendingSpaceId=null;
+  showToast('承認処理中...');
+  try {
+    const r = await cwmOpsAuth.approveSpace(pendingSpaceId);
+    if (r && r.ok) {
+      let msg = '✅ 承認 + 招待メール送信完了';
+      if (r.is_new_account === false) msg = '✅ 承認しました（既存アカウントに通知）';
+      if (r.mail_warning) msg = '⚠️ 承認はOK、 メール送信失敗';
+      showToast(msg);
+      loadSpaces();
+    } else {
+      alert('承認に失敗しました: ' + (r && r.error ? r.error : '不明なエラー'));
+    }
+  } catch (e) {
+    alert('承認に失敗しました: ' + (e && e.message ? e.message : e));
+  }
+  pendingSpaceId = null;
 }
 async function confirmReject() {
   if (!pendingSpaceId) return;

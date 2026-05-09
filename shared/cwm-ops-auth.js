@@ -217,6 +217,11 @@
     dbDelete: dbDelete,
     dbRpc: dbRpc,
     authInvite: authInvite,
-    accountsAdmin: accountsAdmin
+    accountsAdmin: accountsAdmin,
+    /** 施設承認 + 招待メール自動送信 */
+    approveSpace: async function (spaceId) {
+      var r = await _opsDb('approve_space', { space_id: spaceId });
+      try { return await r.json(); } catch (_e) { return { ok: r.ok }; }
+    }
   };
 })();

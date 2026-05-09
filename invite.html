@@ -133,11 +133,16 @@ function renderError(msg){
 }
 
 function renderForm(info){
-  const roleLabel = info.role === 'viewer' ? '閲覧のみ' : '編集可';
-  const roleClass = info.role === 'viewer' ? 'role-viewer' : 'role-manager';
+  const isOwner = info.kind === 'owner';
+  const roleLabel = isOwner ? '管理者 (Owner)' : (info.role === 'viewer' ? '閲覧のみ' : '編集可');
+  const roleClass = isOwner ? 'role-manager' : (info.role === 'viewer' ? 'role-viewer' : 'role-manager');
+  const headlineText = isOwner ? '掲載が承認されました 🎉' : 'パスワードを設定';
+  const subText = isOwner
+    ? '掲載審査が承認されました。 下記のパスワードを設定すると、 管理画面で施設情報の編集ができるようになります。'
+    : '下記のパスワードを設定すると、 ログインして利用を開始できます。';
   card.innerHTML = '<div class="brand"><span class="brand-dot"></span>COWORKMILL</div>' +
-    '<h1>パスワードを設定</h1>' +
-    '<p class="lead">下記のパスワードを設定すると、 ログインして利用を開始できます。</p>' +
+    '<h1>' + headlineText + '</h1>' +
+    '<p class="lead">' + subText + '</p>' +
     '<div class="invite-info">' +
       '<div class="invite-info-row"><div class="invite-info-label">会社</div><div class="invite-info-val">' + escapeHtml(info.company) + '</div></div>' +
       '<div class="invite-info-row"><div class="invite-info-label">メアド</div><div class="invite-info-val">' + escapeHtml(info.email) + '</div></div>' +
