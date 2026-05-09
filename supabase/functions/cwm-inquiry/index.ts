@@ -5,11 +5,30 @@
 // それぞれ Resend経由で2通送信:
 //   1. 申込者/問い合わせ者宛て: 受付確認メール (自動返信)
 //   2. 運営宛て (info@offml.com): 通知メール
+// type='contact'の場合、 inquiriesテーブルにも保存する (運営管理画面で履歴確認用)
+
+import { createClient } from "npm:@supabase/supabase-js@2";
 
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY") || "";
 const FROM_EMAIL = Deno.env.get("INQUIRY_FROM_EMAIL") || "onboarding@resend.dev";
 const ADMIN_EMAIL = Deno.env.get("INQUIRY_ADMIN_EMAIL") || "info@offml.com";
 const SITE_URL = Deno.env.get("SITE_URL") || "https://cowkml.com";
+
+const SUPABASE_URL = Deno.env.get("SUPABASE_URL") || "";
+function resolveServiceKey(): string {
+  const secretKeysJson = Deno.env.get("SUPABASE_SECRET_KEYS");
+  if (secretKeysJson) {
+    try {
+      const dict = JSON.parse(secretKeysJson);
+      if (dict && typeof dict === "object") {
+        const v = dict.default ?? Object.values(dict)[0];
+        if (typeof v === "string" && v.length > 0) return v;
+      }
+    } catch (_e) {}
+  }
+  return Deno.env.get("SUPABASE_SECRET_DEFAULT_KEY") || Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || "";
+}
+const SUPABASE_SERVICE_KEY = resolveServiceKey();
 
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
@@ -420,6 +439,33 @@ Deno.serve(async (req: Request) => {
 
   const data = v.data;
   const ts = new Date();
+
+  // ===== contact のみ: inquiriesテーブルに保存 (履歴管理用) =====
+  if (data.type === "contact" && SUPABASE_URL && SUPABASE_SERVICE_KEY) {
+    try {
+      const sb = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
+      const ip = req.headers.get("x-forwarded-for") || req.headers.get("cf-connecting-ip") || null;
+      const ua = req.headers.get("user-agent") || null;
+      const { error } = await sb.from("inquiries").insert({
+        type: "contact",
+        contact_name: data.contactName,
+        company_name: data.companyName,
+        contact_email: data.contactEmail,
+        inquiry_type: data.inquiryType,
+        message: data.message,
+        status: "pending",
+        ip,
+        user_agent: ua ? ua.substring(0, 500) : null,
+        received_at: ts.toISOString()
+      });
+      if (error) {
+        console.error("[cwm-inquiry] inquiries insert error:", error);
+        // DB保存失敗してもメール送信は続行 (運営の見落としリスク回避)
+      }
+    } catch (e) {
+      console.error("[cwm-inquiry] inquiries insert exception:", e);
+    }
+  }
 
   let applicant: { subject: string; html: string; text: string };
   let admin: { subject: string; html: string; text: string };

@@ -836,6 +836,114 @@ Deno.serve(async (req: Request) => {
     }
 
     // ============================================================
+    // target=inquiries: お問い合わせ管理 (運営管理画面用)
+    // list / update_status / update_memo / delete
+    // ============================================================
+    if (target === "inquiries") {
+      if (!token) return jsonResponse({ error: "認証トークンが必要です" }, 401);
+      let opsPayloadI: any;
+      try {
+        const key = await getKey(JWT_SECRET);
+        opsPayloadI = await verify(token, key);
+      } catch (_e) {
+        return jsonResponse({ error: "認証トークンが無効または期限切れです(再ログインしてください)" }, 401);
+      }
+      if (opsPayloadI.kind !== "ops") {
+        return jsonResponse({ error: "このトークンは運営管理画面用ではありません" }, 401);
+      }
+      const opsEmailI = (opsPayloadI.sub || "").toLowerCase();
+      if (!opsEmailI) return jsonResponse({ error: "トークンにメールアドレスが含まれていません" }, 401);
+
+      const sbI = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
+      const { data: stillAllowedI } = await sbI
+        .from("ops_allowed_users").select("email").eq("email", opsEmailI).maybeSingle();
+      if (!stillAllowedI) {
+        return jsonResponse({ error: "運営権限が無効化されています" }, 403);
+      }
+
+      const dI: any = data || {};
+
+      // -------- list --------
+      if (action === "list") {
+        const { data: rows, error } = await sbI
+          .from("inquiries")
+          .select("*")
+          .order("received_at", { ascending: false })
+          .limit(500);
+        if (error) {
+          await writeAuditLog(sbI, opsEmailI, "inquiries", "list", null, "error", error.message, ip);
+          return jsonResponse({ error: "一覧取得に失敗しました" }, 500);
+        }
+        return jsonResponse({ ok: true, rows: rows || [] });
+      }
+
+      // -------- update_status --------
+      if (action === "update_status") {
+        const inquiryId = ((dI.inquiry_id || "") + "").trim();
+        const newStatus = ((dI.status || "") + "").trim();
+        if (!inquiryId) return jsonResponse({ error: "inquiry_id が必要です" }, 400);
+        if (!["pending", "in_progress", "resolved"].includes(newStatus)) {
+          return jsonResponse({ error: "status は pending / in_progress / resolved のいずれかで指定してください" }, 400);
+        }
+
+        const { data: rpcRes, error: rpcErr } = await sbI.rpc("update_inquiry_status", {
+          p_inquiry_id: inquiryId,
+          p_new_status: newStatus,
+          p_handled_by: opsEmailI
+        });
+        if (rpcErr) {
+          await writeAuditLog(sbI, opsEmailI, "inquiries", "update_status", inquiryId, "error", rpcErr.message, ip);
+          return jsonResponse({ error: "ステータス変更に失敗しました" }, 500);
+        }
+        const r = rpcRes as { ok?: boolean; error?: string };
+        if (!r?.ok) {
+          await writeAuditLog(sbI, opsEmailI, "inquiries", "update_status", inquiryId, "denied", r?.error || "unknown", ip);
+          return jsonResponse({ error: r?.error || "ステータス変更に失敗しました" }, 400);
+        }
+        await writeAuditLog(sbI, opsEmailI, "inquiries", "update_status", inquiryId, "ok", null, ip);
+        return jsonResponse({ ok: true });
+      }
+
+      // -------- update_memo --------
+      if (action === "update_memo") {
+        const inquiryId = ((dI.inquiry_id || "") + "").trim();
+        const memo = ((dI.memo || "") + "");
+        if (!inquiryId) return jsonResponse({ error: "inquiry_id が必要です" }, 400);
+        if (memo.length > 5000) {
+          return jsonResponse({ error: "メモは5000文字以内で入力してください" }, 400);
+        }
+
+        const { data: rpcRes, error: rpcErr } = await sbI.rpc("update_inquiry_memo", {
+          p_inquiry_id: inquiryId,
+          p_memo: memo
+        });
+        if (rpcErr) {
+          await writeAuditLog(sbI, opsEmailI, "inquiries", "update_memo", inquiryId, "error", rpcErr.message, ip);
+          return jsonResponse({ error: "メモ更新に失敗しました" }, 500);
+        }
+        const r = rpcRes as { ok?: boolean; error?: string };
+        if (!r?.ok) return jsonResponse({ error: r?.error || "メモ更新に失敗しました" }, 400);
+        await writeAuditLog(sbI, opsEmailI, "inquiries", "update_memo", inquiryId, "ok", null, ip);
+        return jsonResponse({ ok: true });
+      }
+
+      // -------- delete --------
+      if (action === "delete") {
+        const inquiryId = ((dI.inquiry_id || "") + "").trim();
+        if (!inquiryId) return jsonResponse({ error: "inquiry_id が必要です" }, 400);
+        const { error } = await sbI.from("inquiries").delete().eq("id", inquiryId);
+        if (error) {
+          await writeAuditLog(sbI, opsEmailI, "inquiries", "delete", inquiryId, "error", error.message, ip);
+          return jsonResponse({ error: "削除に失敗しました" }, 500);
+        }
+        await writeAuditLog(sbI, opsEmailI, "inquiries", "delete", inquiryId, "ok", null, ip);
+        return jsonResponse({ ok: true });
+      }
+
+      return jsonResponse({ error: "inquiries では list / update_status / update_memo / delete を指定してください" }, 400);
+    }
+
+    // ============================================================
     // target=accounts_admin: 運営管理画面用のアカウント管理
     // accounts テーブル(独自JWT認証)と auth.users(Supabase Auth) を同期する
     // /ops でパスワード変更すると /login(Supabase Auth) と /admin(独自) 両方でログイン可能になる

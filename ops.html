@@ -468,6 +468,19 @@ a{text-decoration:none;color:inherit}
   </div>
 </div>
 
+<!-- お問い合わせ詳細モーダル -->
+<div class="modal-bg" id="m-inq">
+  <div class="modal" style="max-width:600px">
+    <div class="modal-ttl">お問い合わせ詳細</div>
+    <div class="modal-body"></div>
+    <div class="modal-foot">
+      <button class="bsm" onclick="deleteInquiry()" style="margin-right:auto;color:#c33">削除</button>
+      <button class="bsm" onclick="closeModal('m-inq')">閉じる</button>
+      <button class="bap" onclick="saveInquiryChanges()">保存</button>
+    </div>
+  </div>
+</div>
+
 <!-- 却下モーダル -->
 <div class="modal-bg" id="m-rj">
   <div class="modal">
@@ -1112,7 +1125,7 @@ function go(id, el) {
   document.getElementById('ttl').textContent = ttlm[id]||id;
 
   // タブ切り替え時に自動ロード
-  const loaders = { sp: loadSpaces, ac: loadAccounts, ar: loadArchitects , jw: loadWriters, ou: loadOpsUsers };
+  const loaders = { sp: loadSpaces, ac: loadAccounts, ar: loadArchitects , jw: loadWriters, ou: loadOpsUsers, ct: loadInquiries };
   if (loaders[id]) loaders[id]();
 }
 function openModal(id) { const m=document.getElementById(id); if(m) m.classList.add('open'); }
@@ -1167,6 +1180,7 @@ function showToast(msg) {
 document.addEventListener('DOMContentLoaded', () => {
   loadSpaces();
   loadArchitects();
+  loadInquiries(); // ダッシュボードの未対応カウント表示用
 });
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -1616,6 +1630,160 @@ async function opsDeleteUser(email) {
 async function opsLogout() {
   if (!confirm('ログアウトしますか?')) return;
   await cwmOpsAuth.signOut();
+}
+
+// ─────────────────────────────
+// お問い合わせ管理
+// ─────────────────────────────
+let _inquiriesCache = [];
+const _inqStatusMap = { pending:'未対応', in_progress:'対応中', resolved:'対応済み' };
+const _inqStatusClass = { pending:'rjt', in_progress:'new', resolved:'lv' };
+const _inqTypeIcon = { contact:'✉️' };
+
+function _esc(s){ return String(s||'').replace(/[<>&"']/g, c => ({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;',"'":'&#39;'})[c]); }
+
+async function loadInquiries() {
+  const tbody = document.getElementById('ct-tbody');
+  if (!tbody) return;
+  tbody.innerHTML = '<tr><td colspan="7" class="empty">読み込み中...</td></tr>';
+  try {
+    const r = await cwmOpsAuth.inquiriesList();
+    if (!r || !r.ok) {
+      tbody.innerHTML = '<tr><td colspan="7" class="empty">読み込みに失敗しました</td></tr>';
+      return;
+    }
+    _inquiriesCache = r.rows || [];
+    if (_inquiriesCache.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="7" class="empty">お問い合わせはありません</td></tr>';
+      document.getElementById('ct-badge').textContent = '0件 未対応';
+      return;
+    }
+    const pendingCount = _inquiriesCache.filter(x => x.status === 'pending').length;
+    document.getElementById('ct-badge').textContent = pendingCount + '件 未対応';
+    const nb = document.getElementById('nb-ct');
+    if (nb) {
+      if (pendingCount > 0) { nb.textContent = pendingCount; nb.classList.remove('hidden'); }
+      else nb.classList.add('hidden');
+    }
+
+    tbody.innerHTML = _inquiriesCache.map(x => {
+      const dt = new Date(x.received_at);
+      const dtStr = dt.toLocaleDateString('ja-JP') + ' ' + dt.toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit'});
+      const messageSnip = (x.message||'').substring(0, 50) + ((x.message||'').length > 50 ? '...' : '');
+      const stLabel = _inqStatusMap[x.status] || x.status;
+      const stCls = _inqStatusClass[x.status] || 'new';
+      return '<tr style="cursor:pointer" onclick="openInquiryModal(\''+x.id+'\')">' +
+        '<td>'+(_inqTypeIcon[x.type]||'')+' '+_esc(x.inquiry_type||x.type)+'</td>' +
+        '<td>'+_esc(x.contact_name||'-')+(x.company_name?'<br><span style="font-size:11px;color:#888">'+_esc(x.company_name)+'</span>':'')+'</td>' +
+        '<td>'+_esc(x.contact_email||'-')+'</td>' +
+        '<td style="max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+_esc(messageSnip)+'</td>' +
+        '<td>'+dtStr+'</td>' +
+        '<td><span class="st '+stCls+'">'+stLabel+'</span></td>' +
+        '<td><button class="bsm">詳細</button></td>' +
+      '</tr>';
+    }).join('');
+
+    // ダッシュボードの「未対応お問い合わせ」 も更新
+    updateDashboardInquiries();
+  } catch (e) {
+    tbody.innerHTML = '<tr><td colspan="7" class="empty">エラー: '+_esc(e.message||e)+'</td></tr>';
+  }
+}
+
+function updateDashboardInquiries() {
+  const dbTbody = document.getElementById('db-ct-tbody');
+  const dbCount = document.getElementById('db-contact');
+  const pending = (_inquiriesCache||[]).filter(x => x.status === 'pending').slice(0, 5);
+  if (dbCount) dbCount.textContent = (_inquiriesCache||[]).filter(x => x.status === 'pending').length;
+  if (!dbTbody) return;
+  if (pending.length === 0) {
+    dbTbody.innerHTML = '<tr><td colspan="3" class="empty">なし</td></tr>';
+    return;
+  }
+  dbTbody.innerHTML = pending.map(x => {
+    const dt = new Date(x.received_at);
+    const dtStr = dt.toLocaleDateString('ja-JP') + ' ' + dt.toLocaleTimeString('ja-JP',{hour:'2-digit',minute:'2-digit'});
+    const snip = (x.message||'').substring(0, 30) + ((x.message||'').length > 30 ? '...' : '');
+    return '<tr style="cursor:pointer" onclick="openInquiryModal(\''+x.id+'\')">' +
+      '<td>'+_esc(x.inquiry_type||x.type)+'</td>' +
+      '<td>'+_esc(snip)+'</td>' +
+      '<td>'+dtStr+'</td>' +
+    '</tr>';
+  }).join('');
+}
+
+function openInquiryModal(id) {
+  const x = _inquiriesCache.find(r => r.id === id);
+  if (!x) return;
+  const dt = new Date(x.received_at);
+  const dtStr = dt.toLocaleDateString('ja-JP') + ' ' + dt.toLocaleTimeString('ja-JP');
+  const stOpts = ['pending','in_progress','resolved'].map(s => 
+    '<option value="'+s+'"'+(x.status===s?' selected':'')+'>'+_inqStatusMap[s]+'</option>'
+  ).join('');
+
+  const modal = document.getElementById('m-inq');
+  modal.querySelector('.modal-body').innerHTML = 
+    '<div style="display:grid;gap:12px">' +
+      '<div><div style="font-size:11px;color:#888;margin-bottom:4px">受信日時</div><div>'+dtStr+'</div></div>' +
+      '<div><div style="font-size:11px;color:#888;margin-bottom:4px">種別</div><div>'+_esc(x.inquiry_type||x.type)+'</div></div>' +
+      '<div><div style="font-size:11px;color:#888;margin-bottom:4px">お名前</div><div>'+_esc(x.contact_name||'-')+'</div></div>' +
+      (x.company_name ? '<div><div style="font-size:11px;color:#888;margin-bottom:4px">会社名</div><div>'+_esc(x.company_name)+'</div></div>' : '') +
+      '<div><div style="font-size:11px;color:#888;margin-bottom:4px">メール</div><div><a href="mailto:'+_esc(x.contact_email)+'" style="color:var(--ac)">'+_esc(x.contact_email||'-')+'</a></div></div>' +
+      '<div><div style="font-size:11px;color:#888;margin-bottom:4px">お問い合わせ内容</div><div style="background:#f5f5f5;padding:12px;border-radius:6px;white-space:pre-wrap;font-size:13px">'+_esc(x.message||'')+'</div></div>' +
+      '<div><div style="font-size:11px;color:#888;margin-bottom:4px">ステータス</div>' +
+        '<select id="m-inq-status" style="padding:6px 10px;border-radius:4px;border:1px solid #ccc;font-size:13px">'+stOpts+'</select>' +
+        (x.handled_by ? '<div style="font-size:11px;color:#888;margin-top:4px">担当者: '+_esc(x.handled_by)+'</div>' : '') +
+      '</div>' +
+      '<div><div style="font-size:11px;color:#888;margin-bottom:4px">内部メモ (申込者には見えません)</div>' +
+        '<textarea id="m-inq-memo" style="width:100%;min-height:80px;padding:8px;border-radius:4px;border:1px solid #ccc;font-family:inherit;font-size:13px;resize:vertical">'+_esc(x.ops_memo||'')+'</textarea>' +
+      '</div>' +
+    '</div>';
+  modal.dataset.inquiryId = id;
+  openModal('m-inq');
+}
+
+async function saveInquiryChanges() {
+  const modal = document.getElementById('m-inq');
+  const id = modal.dataset.inquiryId;
+  if (!id) return;
+  const newStatus = document.getElementById('m-inq-status').value;
+  const newMemo = document.getElementById('m-inq-memo').value;
+  const x = _inquiriesCache.find(r => r.id === id);
+  if (!x) { closeModal('m-inq'); return; }
+  
+  let changed = false;
+  try {
+    if (newStatus !== x.status) {
+      const r1 = await cwmOpsAuth.inquiryUpdateStatus(id, newStatus);
+      if (!r1 || !r1.ok) { alert('ステータス変更失敗: ' + (r1?.error || '')); return; }
+      changed = true;
+    }
+    if ((newMemo||'') !== (x.ops_memo||'')) {
+      const r2 = await cwmOpsAuth.inquiryUpdateMemo(id, newMemo);
+      if (!r2 || !r2.ok) { alert('メモ更新失敗: ' + (r2?.error || '')); return; }
+      changed = true;
+    }
+    closeModal('m-inq');
+    if (changed) { showToast('✅ 保存しました'); loadInquiries(); }
+  } catch (e) {
+    alert('保存に失敗: ' + (e.message || e));
+  }
+}
+
+async function deleteInquiry() {
+  const modal = document.getElementById('m-inq');
+  const id = modal.dataset.inquiryId;
+  if (!id) return;
+  if (!confirm('このお問い合わせを完全に削除しますか? (元に戻せません)')) return;
+  try {
+    const r = await cwmOpsAuth.inquiryDelete(id);
+    if (!r || !r.ok) { alert('削除失敗: ' + (r?.error || '')); return; }
+    closeModal('m-inq');
+    showToast('削除しました');
+    loadInquiries();
+  } catch (e) {
+    alert('削除に失敗: ' + (e.message || e));
+  }
 }
 
 </script>

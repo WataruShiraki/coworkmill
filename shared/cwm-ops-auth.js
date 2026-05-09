@@ -227,6 +227,54 @@
     rejectSpace: async function (spaceId, rejectReason) {
       var r = await _opsDb('reject_space', { space_id: spaceId, reject_reason: rejectReason || null });
       try { return await r.json(); } catch (_e) { return { ok: r.ok }; }
+    },
+    /** お問い合わせ管理: 一覧取得 */
+    inquiriesList: async function () {
+      var token = getToken();
+      if (!token) { redirectToLogin(); throw new Error('認証トークンがありません'); }
+      var res = await fetch(FN_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY },
+        body: JSON.stringify({ token: token, target: 'inquiries', action: 'list' })
+      });
+      if (res.status === 401) { redirectToLogin(); throw new Error('認証が切れました。再ログインしてください。'); }
+      try { return await res.json(); } catch (_e) { return null; }
+    },
+    /** お問い合わせ管理: ステータス変更 */
+    inquiryUpdateStatus: async function (inquiryId, status) {
+      var token = getToken();
+      if (!token) { redirectToLogin(); throw new Error('認証トークンがありません'); }
+      var res = await fetch(FN_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY },
+        body: JSON.stringify({ token: token, target: 'inquiries', action: 'update_status', data: { inquiry_id: inquiryId, status: status } })
+      });
+      if (res.status === 401) { redirectToLogin(); throw new Error('認証が切れました。再ログインしてください。'); }
+      try { return await res.json(); } catch (_e) { return null; }
+    },
+    /** お問い合わせ管理: メモ更新 */
+    inquiryUpdateMemo: async function (inquiryId, memo) {
+      var token = getToken();
+      if (!token) { redirectToLogin(); throw new Error('認証トークンがありません'); }
+      var res = await fetch(FN_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY },
+        body: JSON.stringify({ token: token, target: 'inquiries', action: 'update_memo', data: { inquiry_id: inquiryId, memo: memo } })
+      });
+      if (res.status === 401) { redirectToLogin(); throw new Error('認証が切れました。再ログインしてください。'); }
+      try { return await res.json(); } catch (_e) { return null; }
+    },
+    /** お問い合わせ管理: 削除 */
+    inquiryDelete: async function (inquiryId) {
+      var token = getToken();
+      if (!token) { redirectToLogin(); throw new Error('認証トークンがありません'); }
+      var res = await fetch(FN_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY },
+        body: JSON.stringify({ token: token, target: 'inquiries', action: 'delete', data: { inquiry_id: inquiryId } })
+      });
+      if (res.status === 401) { redirectToLogin(); throw new Error('認証が切れました。再ログインしてください。'); }
+      try { return await res.json(); } catch (_e) { return null; }
     }
   };
 })();
