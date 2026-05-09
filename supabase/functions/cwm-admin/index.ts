@@ -760,21 +760,13 @@ Deno.serve(async (req: Request) => {
 
           // 招待メール送信 (新規招待 or 再発行の場合のみ)
           let mailResult: { ok: boolean; error?: string } = { ok: true };
-          if (r.is_new_account && r.invite_token && r.applicant_email) {
+          if (r.invite_token && r.applicant_email) {
             mailResult = await sendOwnerApprovalEmail(
               r.applicant_email,
               r.applicant_name || null,
               r.space_name || "ご申請の施設",
               r.space_slug || "",
               r.invite_token
-            );
-          } else if (r.applicant_email) {
-            // 既存accountの場合: 「掲載しました」 通知のみ
-            mailResult = await sendOwnerApprovalNotice(
-              r.applicant_email,
-              r.applicant_name || null,
-              r.space_name || "ご申請の施設",
-              r.space_slug || ""
             );
           }
 
@@ -840,6 +832,18 @@ Deno.serve(async (req: Request) => {
             mail_warning: mailResult.ok ? null : "却下処理は完了しましたが、 通知メールの送信に失敗しました"
           });
         }
+
+        // ===== update_space_memo: 運営内部メモを更新 =====
+        if (action === "update_space_memo") {
+          const spaceId = ((data || {}).space_id || "").toString();
+          const memo = ((data || {}).memo ?? "").toString();
+          if (!spaceId) return jsonResponse({ error: "space_id is required" }, 400);
+          const sbu = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
+          const { error } = await sbu.rpc("update_space_ops_memo", { p_space_id: spaceId, p_memo: memo });
+          if (error) return jsonResponse({ error: error.message }, 500);
+          return jsonResponse({ ok: true });
+        }
+
 
         return jsonResponse({ error: "不明なアクション: " + action }, 400);
       } catch (e) {
