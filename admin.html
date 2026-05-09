@@ -1909,7 +1909,7 @@ function renderFacList() {
     li.className = 'fi' + (i === cur ? ' active' : '');
     li.id = 'fi-' + i;
     li.onclick = () => swFac(i);
-    li.innerHTML = `<div class="fi-ic" style="background:${f.bg}">${f.ic}</div><div class="fi-info"><div class="fn">${f.nm}</div><div class="fs ${f.st}">${f.st === 'live' ? '● 掲載中' : f.st === 'pending' ? '● 審査中' : f.st === 'rejected' ? '● 却下' : '● 下書き'}</div></div>`;
+    li.innerHTML = `<div class="fi-ic" style="background:${f.bg}">${f.ic}</div><div class="fi-info"><div class="fn">${f.nm}</div><div class="fs ${f.st === 'live' ? 'live' : 'draft'}">${f.st === 'live' ? '● 掲載中' : '● 下書き'}</div></div>`;
     ul.appendChild(li);
   });
 }
@@ -2196,19 +2196,16 @@ function swFac(id) {
     document.querySelector('.content').prepend(banner);
   }
   const st = document.getElementById('tbs');
-  st.textContent = f.st==='live' ? '掲載中' : f.st==='pending' ? '審査中' : f.st==='rejected' ? '却下' : f.st==='locked' ? '非公開' : '下書き';
+  st.textContent = f.st==='live' ? '掲載中' : '下書き';
   st.className = 'tbs ' + (f.st==='locked' ? 'draft' : f.st);
   document.getElementById('ban-ic').textContent = f.ic;
   document.getElementById('ban-ic').style.background = f.bg;
   document.getElementById('ban-nm').textContent = f.nm + ' を編集中';
   const bst = document.getElementById('ban-st');
-  bst.textContent = f.st==='live' ? '掲載中' : f.st==='pending' ? '審査中' : f.st==='rejected' ? '却下' : f.st==='locked' ? '非公開' : '下書き';
+  bst.textContent = f.st==='live' ? '掲載中' : '下書き';
   bst.className = 'tbs ' + (f.st==='locked' ? 'draft' : f.st);
   const bar = document.getElementById('info-bar');
   if(f.st==='live') bar.innerHTML = '<div class="sdot green"></div><div class="st"><strong>掲載中</strong></div>';
-  else if(f.st==='pending') bar.innerHTML = '<div class="sdot" style="background:#3b82f6"></div><div class="st"><strong>審査中</strong> — 運営が内容を確認しています。通常1営業日以内に公開されます。</div>';
-  else if(f.st==='rejected') bar.innerHTML = '<div class="sdot" style="background:#ef4444"></div><div class="st"><strong>却下</strong> — 修正後、再度「公開する」を押してください。</div>';
-  else if(f.st==='locked') bar.innerHTML = '<div class="sdot" style="background:#a0a0a0"></div><div class="st"><strong>非公開</strong> — Standardプランにアップグレードすると再公開できます</div>';
   else bar.innerHTML = '<div class="sdot amber"></div><div class="st"><strong>下書き</strong> — 情報を入力して内容を保存してください。</div>';
   // 地図セクションを既存編集パネルへ戻す
   if(typeof window.moveAdminMapTo === 'function') window.moveAdminMapTo('addr-map-anchor-info');
