@@ -282,6 +282,72 @@ ${SITE_URL}
   }
 }
 
+// 施設却下 通知メール (LINE公式風の淡々とした文面)
+async function sendOwnerRejectEmail(
+  toEmail: string,
+  applicantName: string | null
+): Promise<{ ok: boolean; error?: string }> {
+  if (!RESEND_API_KEY) return { ok: false, error: "RESEND_API_KEY not configured" };
+  const safeName = applicantName ? applicantName : "ご担当者";
+  const subject = `【COWORKMILL】掲載お申込みの審査結果のご案内`;
+  const text = `${safeName} 様
+
+このたびは COWORKMILL への掲載をお申込みいただき、 誠にありがとうございました。
+お申込みいただきました内容の審査が完了いたしましたのでご案内申し上げます。
+
+▼ 審査結果
+審査結果: 非承認
+理由: 弊社の掲載基準に抵触するため
+
+ご申請いただきました施設の掲載は、 今回見送らせていただきます。
+なお、 審査内容や個別のご質問につきましては、 回答を差し控えさせていただいております。
+何卒ご了承いただけますようお願い申し上げます。
+
+----
+COWORKMILL（コワークミル）
+${SITE_URL}
+
+※ 本メールは送信専用アドレスから配信されております。
+　ご返信いただいても内容を確認できませんので、 予めご了承ください。
+`;
+  const html = `<!DOCTYPE html>
+<html lang="ja"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>${subject}</title></head>
+<body style="margin:0;padding:0;background:#fafafa;font-family:-apple-system,BlinkMacSystemFont,'Hiragino Sans','Yu Gothic',sans-serif;color:#333;line-height:1.7">
+<div style="max-width:560px;margin:auto;padding:24px;background:#fff">
+<h2 style="color:#333;font-size:17px;margin:0 0 16px;border-bottom:1px solid #eee;padding-bottom:12px">掲載お申込みの審査結果のご案内</h2>
+<p>${safeName} 様</p>
+<p>このたびは COWORKMILL への掲載をお申込みいただき、 誠にありがとうございました。<br>お申込みいただきました内容の審査が完了いたしましたのでご案内申し上げます。</p>
+<div style="margin:24px 0;padding:16px;background:#f7f7f7;border-radius:6px">
+  <div style="font-size:13px;color:#666;margin-bottom:8px">▼ 審査結果</div>
+  <div style="font-size:14px;line-height:2"><strong>審査結果:</strong> 非承認<br><strong>理由:</strong> 弊社の掲載基準に抵触するため</div>
+</div>
+<p>ご申請いただきました施設の掲載は、 今回見送らせていただきます。<br>なお、 審査内容や個別のご質問につきましては、 回答を差し控えさせていただいております。<br>何卒ご了承いただけますようお願い申し上げます。</p>
+<hr style="border:none;border-top:1px solid #eee;margin:24px 0">
+<p style="font-size:11px;color:#888">COWORKMILL（コワークミル）<br><a href="${SITE_URL}" style="color:#888">${SITE_URL}</a></p>
+<p style="font-size:11px;color:#aaa;margin-top:16px">※ 本メールは送信専用アドレスから配信されております。<br>　ご返信いただいても内容を確認できませんので、 予めご了承ください。</p>
+</div>
+</body></html>`;
+  try {
+    const r = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { "Authorization": `Bearer ${RESEND_API_KEY}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        from: `COWORKMILL <${INVITE_FROM_EMAIL}>`,
+        to: [toEmail], subject, html, text
+      }),
+    });
+    if (!r.ok) {
+      const errText = await r.text().catch(() => "");
+      console.error("[cwm-admin] sendOwnerRejectEmail Resend error:", r.status, errText);
+      return { ok: false, error: `email send failed (${r.status})` };
+    }
+    return { ok: true };
+  } catch (e) {
+    console.error("[cwm-admin] sendOwnerRejectEmail exception:", e);
+    return { ok: false, error: "email send exception" };
+  }
+}
+
 const cors = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
@@ -709,6 +775,57 @@ Deno.serve(async (req: Request) => {
             is_new_account: r.is_new_account,
             mail_sent: mailResult.ok,
             mail_warning: mailResult.ok ? null : "施設は承認されましたが、 通知メールの送信に失敗しました"
+          });
+        }
+
+        // ============ reject_space (施設却下 + 通知メール送信) ============
+        if (action === "reject_space") {
+          const spaceId = ((d.space_id || "") + "").trim();
+          const rejectReason = ((d.reject_reason || "") + "").trim();
+          if (!spaceId) return jsonResponse({ error: "space_id が必要です" }, 400);
+
+          const { data: rpcRes, error: rpcErr } = await sb2.rpc("reject_space_with_email", {
+            p_space_id: spaceId,
+            p_reject_reason: rejectReason || null
+          });
+          if (rpcErr) {
+            await writeAuditLog(sb2, opsEmail2, "ops_db", "reject_space", spaceId, "error", rpcErr.message, ip);
+            return jsonResponse({ error: "却下処理に失敗しました: " + rpcErr.message }, 500);
+          }
+          const r = rpcRes as {
+            ok?: boolean;
+            error?: string;
+            space_id?: string;
+            applicant_email?: string;
+            applicant_name?: string | null;
+            has_email?: boolean;
+          };
+          if (!r?.ok) {
+            await writeAuditLog(sb2, opsEmail2, "ops_db", "reject_space", spaceId, "denied", r?.error || "unknown", ip);
+            const errorMap: Record<string, string> = {
+              "space not found": "施設が見つかりません",
+              "already rejected": "既に却下済みです",
+              "cannot reject a live space": "公開済みの施設は却下できません (一旦非公開にしてください)"
+            };
+            return jsonResponse({ error: errorMap[r?.error || ""] || r?.error || "却下に失敗しました" }, 400);
+          }
+
+          // 通知メール送信 (contact_emailがある場合のみ)
+          let mailResult: { ok: boolean; error?: string } = { ok: true };
+          if (r.has_email && r.applicant_email) {
+            mailResult = await sendOwnerRejectEmail(
+              r.applicant_email,
+              r.applicant_name || null
+            );
+          }
+
+          await writeAuditLog(sb2, opsEmail2, "ops_db", "reject_space", spaceId, mailResult.ok ? "ok" : "mail_failed", mailResult.ok ? null : (mailResult.error || null), ip);
+
+          return jsonResponse({
+            ok: true,
+            space_id: r.space_id,
+            mail_sent: mailResult.ok,
+            mail_warning: mailResult.ok ? null : "却下処理は完了しましたが、 通知メールの送信に失敗しました"
           });
         }
 

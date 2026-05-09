@@ -222,6 +222,11 @@
     approveSpace: async function (spaceId) {
       var r = await _opsDb('approve_space', { space_id: spaceId });
       try { return await r.json(); } catch (_e) { return { ok: r.ok }; }
+    },
+    /** 施設却下 + 通知メール自動送信 */
+    rejectSpace: async function (spaceId, rejectReason) {
+      var r = await _opsDb('reject_space', { space_id: spaceId, reject_reason: rejectReason || null });
+      try { return await r.json(); } catch (_e) { return { ok: r.ok }; }
     }
   };
 })();

@@ -896,12 +896,25 @@ async function confirmApprove() {
 }
 async function confirmReject() {
   if (!pendingSpaceId) return;
-  const r = await sbPatch('spaces','id=eq.'+pendingSpaceId,{status:'rejected'});
+  const reasonInput = document.getElementById('m-rj-r');
+  const rejectReason = reasonInput ? reasonInput.value.trim() : '';
   closeModal('m-rj');
-  document.getElementById('m-rj-r').value='';
-  if (_sbOk(r)) { showToast('却下しました'); loadSpaces(); }
-  else alert('却下に失敗しました: ' + _sbErr(r));
-  pendingSpaceId=null;
+  if (reasonInput) reasonInput.value='';
+  showToast('却下処理中...');
+  try {
+    const r = await cwmOpsAuth.rejectSpace(pendingSpaceId, rejectReason);
+    if (r && r.ok) {
+      let msg = '却下しました（通知メール送信済み）';
+      if (r.mail_sent === false) msg = '⚠️ 却下はOK、 メール送信失敗';
+      showToast(msg);
+      loadSpaces();
+    } else {
+      alert('却下に失敗しました: ' + (r && r.error ? r.error : '不明なエラー'));
+    }
+  } catch (e) {
+    alert('却下に失敗しました: ' + (e && e.message ? e.message : e));
+  }
+  pendingSpaceId = null;
 }
 
 // ─────────────────────────────
