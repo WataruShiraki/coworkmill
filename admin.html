@@ -125,7 +125,13 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
 .ftg{width:13px;height:13px;border-radius:3px;border:1.5px solid var(--g200);margin-left:auto;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#fff}
 .fo.on .ftg{background:var(--purple);border-color:var(--purple)}
 .pg{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.pw{aspect-ratio:4/3;border-radius:7px;overflow:hidden;position:relative;cursor:pointer}
+.pw{aspect-ratio:4/3;border-radius:7px;overflow:hidden;position:relative;cursor:pointer;background:#f5f5f5;transition:box-shadow .15s,transform .15s}
+.pw:hover .phandle{opacity:1}
+.pw .phandle{opacity:.65;transition:opacity .15s,background .15s}
+.pw .phandle:hover{background:#fff !important;color:#333 !important}
+.pw .phandle:active{cursor:grabbing}
+.pw-dragging{opacity:.4}
+.pw-drag-active{box-shadow:0 8px 24px rgba(0,0,0,.18);transform:scale(1.04);z-index:10}
 .pw img{width:100%;height:100%;object-fit:cover;transition:transform .3s}
 .pw:hover img{transform:scale(1.05)}
 .pov{position:absolute;inset:0;background:rgba(0,0,0,.45);opacity:0;transition:opacity .2s;display:flex;align-items:center;justify-content:center;gap:6px}
@@ -237,6 +243,7 @@ html,body{height:100%;font-family:var(--fb);background:var(--g50);color:var(--bl
   <meta name="robots" content="noindex, nofollow">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
 <style>
 .an-card{background:var(--g900,#111);border:1px solid var(--g700,#333);border-radius:12px;padding:24px 28px;transition:border-color .2s}.an-card:hover{border-color:var(--g500,#555)}
 .an-label{font-size:11px;color:var(--g400,#888);letter-spacing:.05em;text-transform:uppercase;margin-bottom:4px;display:flex;align-items:center;gap:6px}
@@ -1096,7 +1103,7 @@ function resetVibeUI(){
       <div class="sec-h"><div class="sec-ht">掲載ステータス</div></div>
       <div class="sec-b" style="display:flex;flex-direction:column;gap:10px">
         <div style="display:flex;align-items:center;gap:14px;padding:14px;border:1.5px solid #4ade80;border-radius:8px;background:#f0fdf4;cursor:pointer"><div style="width:10px;height:10px;border-radius:50%;background:#4ade80;flex-shrink:0"></div><div><div style="font-size:12px;font-weight:500">公開中</div><div style="font-size:10px;color:var(--g400);margin-top:2px">COWORKMILLに掲載されています</div></div></div>
-        <div style="display:flex;align-items:center;gap:14px;padding:14px;border:1px solid var(--g200);border-radius:8px;cursor:pointer"><div style="width:10px;height:10px;border-radius:50%;background:#f59e0b;flex-shrink:0"></div><div><div style="font-size:12px;font-weight:500">一時停止</div><div style="font-size:10px;color:var(--g400);margin-top:2px">掲載を一時的に非表示にします</div></div></div>
+        <div style="display:flex;align-items:center;gap:14px;padding:14px;border:1px solid var(--g200);border-radius:8px;cursor:pointer"><div style="width:10px;height:10px;border-radius:50%;background:#f59e0b;flex-shrink:0"></div><div><div style="font-size:12px;font-weight:500">一時停止</div><div style="font-size:10px;color:var(--g400);margin-top:2px">登録しているすべての施設の掲載を一時的に非表示にします</div></div></div>
       </div>
     </div>
   </div>
@@ -1388,7 +1395,9 @@ async function handlePhotoUpload(input) {
       });
       if (!upRes.ok) { console.warn('upload failed', await upRes.text()); continue; }
       const publicUrl = SUPABASE_URL + '/storage/v1/object/public/space-images/' + path;
-      await sbFetch('/rest/v1/space_images', { method: 'POST', body: JSON.stringify({ space_id: dbId, url: publicUrl }) });
+      // 既存の最大 display_order + 1 を取得して末尾に追加
+      const orderInsert = currentCount + uploaded;
+      await sbFetch('/rest/v1/space_images', { method: 'POST', body: JSON.stringify({ space_id: dbId, url: publicUrl, display_order: orderInsert }) });
       if (uploaded === 0 && isFirst) {
         await sbFetch('/rest/v1/spaces?id=eq.' + dbId, { method: 'PATCH', body: JSON.stringify({ image_main: publicUrl }) });
       }
@@ -1415,10 +1424,7 @@ async function loadPhotos(dbId) {
   const photoContent = document.getElementById('photo-content');
   if (!grid) return;
   try {
-    const imgs = await sbFetch('/rest/v1/space_images?space_id=eq.' + dbId + '&select=id,url&order=created_at.asc');
-    const spaceData = await sbFetch('/rest/v1/spaces?id=eq.' + dbId + '&select=image_main,plan');
-    const mainUrl = spaceData && spaceData[0] ? spaceData[0].image_main : null;
-    // 写真上限はアカウントレベルのplanで判定
+    const imgs = await sbFetch('/rest/v1/space_images?space_id=eq.' + dbId + '&select=id,url,display_order&order=display_order.asc');
     const _acct = JSON.parse(localStorage.getItem('cwm_account')||'{}');
     const pl = _acct.plan || 'free';
     if (facs[cur]) facs[cur].plan = pl;
@@ -1443,27 +1449,79 @@ async function loadPhotos(dbId) {
       if (emptyMsg) emptyMsg.style.display = 'block';
       if (photoEmpty) { photoEmpty.style.display = 'block'; }
       if (photoContent) photoContent.style.display = 'none';
+      // Sortable インスタンスがあれば破棄
+      if (window._photoSortable) { try{window._photoSortable.destroy();}catch(_e){} window._photoSortable = null; }
       return;
     }
     if (emptyMsg) emptyMsg.style.display = 'none';
     if (photoEmpty) photoEmpty.style.display = 'none';
     if (photoContent) photoContent.style.display = 'block';
-    imgs.forEach(img => {
-      const isMain = img.url === mainUrl;
+    imgs.forEach((img, i) => {
+      const isCover = i === 0;
       const div = document.createElement('div');
       div.className = 'pw';
-      div.innerHTML = '<img src="' + img.url + '" alt="">' +
-        (isMain ? '<div class="pmn">メイン</div>' : '') +
+      div.dataset.imageId = img.id;
+      div.innerHTML = '<img src="' + img.url + '" alt="" draggable="false">' +
+        '<div class="pmn" style="background:' + (isCover ? '#2BB5C8' : 'rgba(0,0,0,.55)') + '">' + (isCover ? '#1 表紙' : '#' + (i+1)) + '</div>' +
+        '<div class="phandle" title="ドラッグして順番変更" style="position:absolute;top:8px;right:8px;width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.95);display:flex;align-items:center;justify-content:center;cursor:grab;font-size:16px;color:#666;box-shadow:0 1px 3px rgba(0,0,0,.15)">⋮⋮</div>' +
         '<div class="pov">' +
-        (!isMain ? '<button class="pact" onclick="setMainPhoto(\'' + img.url + '\',\'' + dbId + '\')">メインに</button>' : '') +
         '<button class="pact" onclick="deletePhoto(\'' + img.id + '\',\'' + img.url + '\',\'' + dbId + '\')">削除</button>' +
         '</div>';
       grid.appendChild(div);
     });
+
+    // Sortable 初期化 (旧インスタンスは破棄)
+    if (window._photoSortable) { try{window._photoSortable.destroy();}catch(_e){} }
+    if (window.Sortable) {
+      window._photoSortable = window.Sortable.create(grid, {
+        animation: 180,
+        handle: '.phandle',
+        ghostClass: 'pw-dragging',
+        dragClass: 'pw-drag-active',
+        delay: 80,
+        delayOnTouchOnly: true,
+        touchStartThreshold: 4,
+        onEnd: async function() {
+          const newOrder = Array.from(grid.children).map(el => el.dataset.imageId);
+          await savePhotosOrder(dbId, newOrder);
+        }
+      });
+    }
   } catch(e) { console.warn('loadPhotos error:', e); }
 }
 
+async function savePhotosOrder(dbId, imageIds) {
+  if (!imageIds || imageIds.length === 0) return;
+  try {
+    const r = await sbFetch('/rest/v1/rpc/update_space_images_order', {
+      method: 'POST',
+      body: JSON.stringify({ p_space_id: dbId, p_image_ids: imageIds })
+    });
+    if (r && r.ok) {
+      // #N と表紙バッジを再描画 (DOM更新のみ。 サーバ再フェッチは不要)
+      const grid = document.getElementById('photo-grid');
+      if (grid) {
+        Array.from(grid.children).forEach((el, i) => {
+          const badge = el.querySelector('.pmn');
+          if (badge) {
+            badge.style.background = i === 0 ? '#2BB5C8' : 'rgba(0,0,0,.55)';
+            badge.textContent = i === 0 ? '#1 表紙' : '#' + (i + 1);
+          }
+        });
+      }
+    } else {
+      alert('順番の保存に失敗しました: ' + (r && r.error ? r.error : ''));
+      await loadPhotos(dbId);
+    }
+  } catch (e) {
+    alert('順番の保存に失敗しました: ' + (e.message || e));
+    await loadPhotos(dbId);
+  }
+}
+
+// 旧 setMainPhoto は廃止 (先頭=表紙にドラッグで指定する仕様に変更)
 async function setMainPhoto(url, dbId) {
+  // 互換性保持のため残置 (もう呼ばれない)
   await sbFetch('/rest/v1/spaces?id=eq.' + dbId, { method: 'PATCH', body: JSON.stringify({ image_main: url }) });
   await loadPhotos(dbId);
 }

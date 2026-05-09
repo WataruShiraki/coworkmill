@@ -1795,7 +1795,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // ギャラリー（space_imagesテーブルから取得）
       try {
-        const imgRes = await fetch(CWM_SB_URL + '/rest/v1/space_images?space_id=eq.' + spaceId + '&select=url&order=created_at.asc', {
+        const imgRes = await fetch(CWM_SB_URL + '/rest/v1/space_images?space_id=eq.' + spaceId + '&select=url&order=display_order.asc', {
           headers: { 'apikey': CWM_SB_KEY, 'Authorization': 'Bearer ' + CWM_SB_KEY }
         });
         const imgs = await imgRes.json();
