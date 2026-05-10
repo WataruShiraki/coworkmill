@@ -353,8 +353,8 @@ a{text-decoration:none;color:inherit}
       </select>
     </div>
     <table class="tbl">
-      <thead><tr><th>日時</th><th>アクション</th><th>施設名</th><th>会社名</th><th>メアド</th><th>却下理由 / メモ</th><th>担当者</th></tr></thead>
-      <tbody id="rh-tbody"><tr><td colspan="7" class="empty">読み込み中...</td></tr></tbody>
+      <thead><tr><th>日時</th><th>アクション</th><th>施設名</th><th>会社名</th><th>メアド</th><th>却下理由 / メモ</th><th>担当者</th><th></th></tr></thead>
+      <tbody id="rh-tbody"><tr><td colspan="8" class="empty">読み込み中...</td></tr></tbody>
     </table>
   </div>
 </div>
@@ -1856,7 +1856,7 @@ function renderReviewHistory() {
     });
   }
   if (rows.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="7" class="empty">該当する履歴はありません</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="8" class="empty">該当する履歴はありません</td></tr>';
     return;
   }
   tbody.innerHTML = rows.map(h => {
@@ -1870,8 +1870,9 @@ function renderReviewHistory() {
       + (h.ops_memo ? '<div style="font-size:11px;color:#92400e;background:#fffbeb;padding:3px 6px;border-radius:3px;border-left:2px solid #f59e0b">📝 '+_esc(h.ops_memo).slice(0,120)+(h.ops_memo.length>120?'...':'')+'</div>' : '')
       + '</div>'
       : '<span style="color:#bbb">—</span>';
-    const clickable = h.space_id ? 'style="cursor:pointer" onclick="window.openPnDetail(\''+h.space_id+'\')"' : '';
-    return '<tr class="hov" '+clickable+'>'
+    const clickAttr = h.space_id ? 'style="cursor:pointer" onclick="if(!event.target.closest(\'.rh-del\'))window.openPnDetail(\''+h.space_id+'\')"' : '';
+    const delBtn = '<button class="rh-del" onclick="event.stopPropagation();deleteReviewHistory('+h.id+', \''+_esc(h.space_name||'').replace(/'/g,"\\'")+'\')" style="background:#fff;border:1px solid #fecaca;color:#dc2626;border-radius:4px;padding:3px 8px;font-size:11px;cursor:pointer" title="この履歴を削除">🗑</button>';
+    return '<tr class="hov" '+clickAttr+'>'
       + '<td style="font-size:11px;color:var(--g600);white-space:nowrap">'+_esc(dtStr)+'</td>'
       + '<td>'+actionBdg+'</td>'
       + '<td><strong style="font-size:13px">'+_esc(h.space_name||'—')+'</strong></td>'
@@ -1879,8 +1880,33 @@ function renderReviewHistory() {
       + '<td style="font-size:11px;color:var(--g600)">'+_esc(h.contact_email||'—')+'</td>'
       + '<td>'+memo+'</td>'
       + '<td style="font-size:11px;color:var(--g600)">'+_esc(h.reviewer_email||'—')+'</td>'
+      + '<td>'+delBtn+'</td>'
       + '</tr>';
   }).join('');
+}
+
+async function deleteReviewHistory(id, spaceName) {
+  if (!confirm('この履歴を削除しますか？\n\n施設名: ' + (spaceName || '—') + '\nID: ' + id + '\n\nこの操作は取り消せません。')) return;
+  try {
+    const opsToken = sessionStorage.getItem('cwm_ops_token');
+    if (!opsToken) { alert('ログインが切れています。再ログインしてください。'); return; }
+    const SB_URL = 'https://jakwntemjkwqwaqujffh.supabase.co';
+    const SB_KEY = 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+    const r = await fetch(SB_URL + '/functions/v1/cwm-admin', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY },
+      body: JSON.stringify({ token: opsToken, target: 'ops_db', action: 'delete_review_history', data: { id: id } })
+    });
+    const j = await r.json();
+    if (!r.ok || !j.ok) {
+      alert('削除に失敗しました: ' + (j?.error || ('HTTP ' + r.status)));
+      return;
+    }
+    showToast('履歴を削除しました');
+    loadReviewHistory();
+  } catch (e) {
+    alert('エラー: ' + (e.message || e));
+  }
 }
 
 </script>
