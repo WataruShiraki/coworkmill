@@ -758,6 +758,19 @@ Deno.serve(async (req: Request) => {
             return jsonResponse({ error: errorMap[r?.error || ""] || r?.error || "承認に失敗しました" }, 400);
           }
 
+          // 履歴を space_review_history に記録 (失敗してもメイン処理は続行)
+          try {
+            await sb2.rpc("log_space_review", {
+              p_space_id: spaceId,
+              p_action: "approve",
+              p_reason: null,
+              p_ops_memo: null,
+              p_reviewer_email: opsEmail2 || null
+            });
+          } catch (_logErr) {
+            // 履歴記録の失敗はメインフローを止めない
+          }
+
           // 招待メール送信 (新規招待 or 再発行の場合のみ)
           let mailResult: { ok: boolean; error?: string } = { ok: true };
           if (r.invite_token && r.applicant_email) {
@@ -812,6 +825,19 @@ Deno.serve(async (req: Request) => {
               "cannot reject a live space": "公開済みの施設は却下できません (一旦非公開にしてください)"
             };
             return jsonResponse({ error: errorMap[r?.error || ""] || r?.error || "却下に失敗しました" }, 400);
+          }
+
+          // 履歴を space_review_history に記録 (失敗してもメイン処理は続行)
+          try {
+            await sb2.rpc("log_space_review", {
+              p_space_id: spaceId,
+              p_action: "reject",
+              p_reason: rejectReason || null,
+              p_ops_memo: null,
+              p_reviewer_email: opsEmail2 || null
+            });
+          } catch (_logErr) {
+            // 履歴記録の失敗はメインフローを止めない
           }
 
           // 通知メール送信 (contact_emailがある場合のみ)
