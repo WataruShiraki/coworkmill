@@ -180,6 +180,7 @@ a{text-decoration:none;color:inherit}
     <div class="nlbl">メイン</div>
     <button class="nl on" onclick="go('db',this)"><span class="ni">📊</span>ダッシュボード</button>
     <button class="nl" onclick="go('rv',this)"><span class="ni">📋</span>掲載申請の審査<span class="nb hidden" id="nb-rv">0</span></button>
+    <button class="nl" onclick="go('rh',this)"><span class="ni">🗂</span>審査履歴</button>
     <button class="nl" onclick="go('sp',this)"><span class="ni">🏢</span>掲載者・施設管理</button>
     <button class="nl" onclick="go('ac',this)"><span class="ni">👤</span>アカウント管理</button>
     <button class="nl" onclick="go('ar',this)"><span class="ni">🏛</span>建築家管理<span class="nb am hidden" id="nb-ar">0</span></button>
@@ -333,6 +334,28 @@ a{text-decoration:none;color:inherit}
       <button onclick="closeWriterModal()" style="padding:10px 18px;background:transparent;border:1px solid #333;border-radius:5px;color:#ccc;cursor:pointer;font-size:13px">キャンセル</button>
       <button id="wf-submit-btn" onclick="submitNewWriter()" style="padding:10px 24px;background:linear-gradient(135deg,#79F1A4,#2BB5C8);color:#000;border:none;border-radius:5px;cursor:pointer;font-weight:600;font-size:13px">追加してパスワード発行</button>
     </div>
+  </div>
+</div>
+
+<!-- ===== 審査履歴 ===== -->
+<div id="p-rh" style="display:none">
+  <div class="sec">
+    <div class="sec-h">
+      <div><div class="sec-ht">審査履歴</div><div class="sec-hs">過去に承認・却下したすべての申込（行クリックで詳細）</div></div>
+      <span style="font-size:10px;font-weight:600;padding:4px 12px;background:#f4f4f5;border-radius:4px;color:#52525b" id="rh-badge">0件</span>
+    </div>
+    <div class="sr">
+      <input class="si" id="rh-search" placeholder="施設名・会社名・メアドで検索..." oninput="filterReviewHistory()">
+      <select class="fs" id="rh-filter" onchange="filterReviewHistory()">
+        <option value="">すべて</option>
+        <option value="approve">承認のみ</option>
+        <option value="reject">却下のみ</option>
+      </select>
+    </div>
+    <table class="tbl">
+      <thead><tr><th>日時</th><th>アクション</th><th>施設名</th><th>会社名</th><th>メアド</th><th>却下理由 / メモ</th><th>担当者</th></tr></thead>
+      <tbody id="rh-tbody"><tr><td colspan="7" class="empty">読み込み中...</td></tr></tbody>
+    </table>
   </div>
 </div>
 
@@ -1117,8 +1140,8 @@ function confirmReply() {
 // ─────────────────────────────
 // Navigation
 // ─────────────────────────────
-const pnls = ['db','rv','sp','ac','ar','jw','ct','ou'];
-const ttlm = {db:'ダッシュボード',rv:'掲載申請の審査',sp:'掲載者・施設管理',ac:'アカウント管理',ar:'建築家管理',jw:'コラム編集者管理',ct:'お問い合わせ管理',ou:'ユーザー管理'};
+const pnls = ['db','rv','rh','sp','ac','ar','jw','ct','ou'];
+const ttlm = {db:'ダッシュボード',rv:'掲載申請の審査',rh:'審査履歴',sp:'掲載者・施設管理',ac:'アカウント管理',ar:'建築家管理',jw:'コラム編集者管理',ct:'お問い合わせ管理',ou:'ユーザー管理'};
 function go(id, el) {
   pnls.forEach(p => { const e = document.getElementById('p-'+p); if(e) e.style.display = p===id?'block':'none'; });
   document.querySelectorAll('.nl').forEach(l => l.classList.remove('on'));
@@ -1126,7 +1149,7 @@ function go(id, el) {
   document.getElementById('ttl').textContent = ttlm[id]||id;
 
   // タブ切り替え時に自動ロード
-  const loaders = { sp: loadSpaces, ac: loadAccounts, ar: loadArchitects , jw: loadWriters, ou: loadOpsUsers, ct: loadInquiries };
+  const loaders = { sp: loadSpaces, ac: loadAccounts, ar: loadArchitects , jw: loadWriters, ou: loadOpsUsers, ct: loadInquiries, rh: loadReviewHistory };
   if (loaders[id]) loaders[id]();
 }
 function openModal(id) { const m=document.getElementById(id); if(m) m.classList.add('open'); }
@@ -1786,6 +1809,78 @@ async function deleteInquiry() {
   } catch (e) {
     alert('削除に失敗: ' + (e.message || e));
   }
+}
+
+// ============ 審査履歴 ============
+let _rhAll = [];
+
+async function loadReviewHistory() {
+  const tbody = document.getElementById('rh-tbody');
+  if (!tbody) return;
+  tbody.innerHTML = '<tr><td colspan="7" class="empty">読み込み中...</td></tr>';
+  try {
+    const SB_URL = 'https://jakwntemjkwqwaqujffh.supabase.co';
+    const SB_KEY = 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+    const r = await fetch(SB_URL + '/rest/v1/space_review_history?select=*&order=reviewed_at.desc&limit=500', {
+      headers: { 'apikey': SB_KEY, 'Authorization': 'Bearer ' + SB_KEY }
+    });
+    if (!r.ok) {
+      const t = await r.text().catch(()=>r.statusText);
+      tbody.innerHTML = '<tr><td colspan="7" class="empty" style="color:#ef4444">取得失敗 ('+r.status+'): '+_esc(t.slice(0,200))+'</td></tr>';
+      return;
+    }
+    const data = await r.json();
+    _rhAll = Array.isArray(data) ? data : [];
+    document.getElementById('rh-badge').textContent = _rhAll.length + '件';
+    renderReviewHistory();
+  } catch (e) {
+    tbody.innerHTML = '<tr><td colspan="7" class="empty" style="color:#ef4444">エラー: '+_esc(e.message||String(e))+'</td></tr>';
+  }
+}
+
+function filterReviewHistory() {
+  renderReviewHistory();
+}
+
+function renderReviewHistory() {
+  const tbody = document.getElementById('rh-tbody');
+  if (!tbody) return;
+  const q = (document.getElementById('rh-search')?.value || '').trim().toLowerCase();
+  const f = document.getElementById('rh-filter')?.value || '';
+  let rows = _rhAll;
+  if (f) rows = rows.filter(h => h.action === f);
+  if (q) {
+    rows = rows.filter(h => {
+      const blob = ((h.space_name||'') + ' ' + (h.contact_company||'') + ' ' + (h.contact_email||'') + ' ' + (h.reason||'') + ' ' + (h.ops_memo||'') + ' ' + (h.reviewer_email||'')).toLowerCase();
+      return blob.includes(q);
+    });
+  }
+  if (rows.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" class="empty">該当する履歴はありません</td></tr>';
+    return;
+  }
+  tbody.innerHTML = rows.map(h => {
+    const dt = h.reviewed_at ? new Date(h.reviewed_at) : null;
+    const dtStr = dt ? (dt.getFullYear() + '/' + String(dt.getMonth()+1).padStart(2,'0') + '/' + String(dt.getDate()).padStart(2,'0') + ' ' + String(dt.getHours()).padStart(2,'0') + ':' + String(dt.getMinutes()).padStart(2,'0')) : '—';
+    const actionBdg = h.action === 'approve'
+      ? '<span style="background:#d1fae5;color:#065f46;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">承認</span>'
+      : '<span style="background:#fee2e2;color:#991b1b;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600">却下</span>';
+    const memo = (h.reason || h.ops_memo) ? '<div style="max-width:280px;line-height:1.5">'
+      + (h.reason ? '<div style="font-size:11px;color:#7f1d1d;background:#fef2f2;padding:3px 6px;border-radius:3px;border-left:2px solid #ef4444;margin-bottom:3px">却下: '+_esc(h.reason).slice(0,120)+(h.reason.length>120?'...':'')+'</div>' : '')
+      + (h.ops_memo ? '<div style="font-size:11px;color:#92400e;background:#fffbeb;padding:3px 6px;border-radius:3px;border-left:2px solid #f59e0b">📝 '+_esc(h.ops_memo).slice(0,120)+(h.ops_memo.length>120?'...':'')+'</div>' : '')
+      + '</div>'
+      : '<span style="color:#bbb">—</span>';
+    const clickable = h.space_id ? 'style="cursor:pointer" onclick="window.openPnDetail(\''+h.space_id+'\')"' : '';
+    return '<tr class="hov" '+clickable+'>'
+      + '<td style="font-size:11px;color:var(--g600);white-space:nowrap">'+_esc(dtStr)+'</td>'
+      + '<td>'+actionBdg+'</td>'
+      + '<td><strong style="font-size:13px">'+_esc(h.space_name||'—')+'</strong></td>'
+      + '<td style="font-size:12px">'+_esc(h.contact_company||'—')+'</td>'
+      + '<td style="font-size:11px;color:var(--g600)">'+_esc(h.contact_email||'—')+'</td>'
+      + '<td>'+memo+'</td>'
+      + '<td style="font-size:11px;color:var(--g600)">'+_esc(h.reviewer_email||'—')+'</td>'
+      + '</tr>';
+  }).join('');
 }
 
 </script>
