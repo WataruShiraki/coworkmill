@@ -870,6 +870,19 @@ Deno.serve(async (req: Request) => {
           return jsonResponse({ ok: true });
         }
 
+        // ===== delete_review_history: 審査履歴を1件削除 =====
+        if (action === "delete_review_history") {
+          const historyId = Number((data || {}).id || 0);
+          if (!historyId) return jsonResponse({ error: "id が必要です" }, 400);
+          const { error } = await sb2.from("space_review_history").delete().eq("id", historyId);
+          if (error) {
+            await writeAuditLog(sb2, opsEmail2, "ops_db", "delete_review_history", String(historyId), "error", error.message, ip);
+            return jsonResponse({ error: "履歴削除に失敗しました: " + error.message }, 500);
+          }
+          await writeAuditLog(sb2, opsEmail2, "ops_db", "delete_review_history", String(historyId), "ok", null, ip);
+          return jsonResponse({ ok: true });
+        }
+
 
         return jsonResponse({ error: "不明なアクション: " + action }, 400);
       } catch (e) {
