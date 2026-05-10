@@ -1910,5 +1910,258 @@ async function deleteInquiry() {
   }
 })();
 </script>
+
+<!-- ==================== 掲載申請の詳細モーダル ==================== -->
+<style>
+  #pn-detail-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.6); z-index:9999; align-items:center; justify-content:center; padding:20px; backdrop-filter:blur(4px); }
+  #pn-detail-overlay.show { display:flex; animation:pnFadeIn .15s ease-out; }
+  @keyframes pnFadeIn { from{opacity:0} to{opacity:1} }
+  #pn-detail-modal { background:#fff; border-radius:12px; max-width:720px; width:100%; max-height:90vh; overflow-y:auto; box-shadow:0 20px 60px rgba(0,0,0,.25); }
+  .pnd-header { padding:18px 24px; border-bottom:1px solid #eee; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; background:#fff; z-index:1; }
+  .pnd-title { font-size:16px; font-weight:700; color:#222; margin:0; }
+  .pnd-close { background:none; border:none; font-size:24px; cursor:pointer; color:#888; line-height:1; padding:0 4px; }
+  .pnd-close:hover { color:#222; }
+  .pnd-body { padding:20px 24px; }
+  .pnd-section { margin-bottom:20px; }
+  .pnd-section-title { font-size:11px; font-weight:700; color:#2BB5C8; text-transform:uppercase; letter-spacing:.05em; margin:0 0 10px; }
+  .pnd-row { display:grid; grid-template-columns:120px 1fr; gap:8px 12px; padding:8px 0; border-bottom:1px solid #f3f3f3; font-size:13px; align-items:start; }
+  .pnd-row:last-child { border-bottom:none; }
+  .pnd-label { color:#888; font-weight:500; }
+  .pnd-value { color:#222; word-break:break-word; }
+  .pnd-value a { color:#2BB5C8; text-decoration:none; }
+  .pnd-value a:hover { text-decoration:underline; }
+  .pnd-status-badge { display:inline-block; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:600; }
+  .pnd-status-pending { background:#fef3c7; color:#92400e; }
+  .pnd-status-draft { background:#e0e7ff; color:#4338ca; }
+  .pnd-status-live { background:#d1fae5; color:#065f46; }
+  .pnd-status-rejected { background:#fee2e2; color:#991b1b; }
+  .pnd-memo-area { width:100%; min-height:80px; padding:10px; border:1px solid #ddd; border-radius:6px; font-size:13px; font-family:inherit; resize:vertical; box-sizing:border-box; }
+  .pnd-memo-area:focus { outline:none; border-color:#2BB5C8; }
+  .pnd-reject-reason { background:#fef2f2; border-left:3px solid #ef4444; padding:10px 12px; border-radius:4px; font-size:12px; color:#7f1d1d; line-height:1.6; }
+  .pnd-actions { padding:14px 24px; border-top:1px solid #eee; display:flex; gap:8px; justify-content:flex-end; flex-wrap:wrap; position:sticky; bottom:0; background:#fff; }
+  .pnd-btn { padding:8px 16px; border-radius:6px; font-size:13px; font-weight:600; cursor:pointer; border:1px solid transparent; }
+  .pnd-btn-memo { background:#fff; border-color:#ddd; color:#444; }
+  .pnd-btn-memo:hover { background:#f5f5f5; }
+  .pnd-btn-approve { background:#10b981; color:#fff; }
+  .pnd-btn-approve:hover { background:#059669; }
+  .pnd-btn-reject { background:#fff; border-color:#ef4444; color:#ef4444; }
+  .pnd-btn-reject:hover { background:#fef2f2; }
+  table.tbl tbody tr[data-pn-space-id] { cursor:pointer; transition:background .12s; }
+  table.tbl tbody tr[data-pn-space-id]:hover { background:#f7fdfd !important; }
+  .pn-row-meta { font-size:11px; color:#666; margin-top:2px; line-height:1.4; }
+  .pn-row-meta a { color:#2BB5C8; text-decoration:none; }
+  .pn-memo-snippet { display:inline-block; background:#fffbeb; border-left:2px solid #f59e0b; padding:2px 6px; border-radius:3px; font-size:11px; color:#92400e; max-width:240px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; vertical-align:middle; }
+</style>
+
+<div id="pn-detail-overlay" onclick="if(event.target===this)closePnDetail()">
+  <div id="pn-detail-modal" onclick="event.stopPropagation()">
+    <div class="pnd-header">
+      <h3 class="pnd-title" id="pnd-title">施設詳細</h3>
+      <button class="pnd-close" onclick="closePnDetail()" aria-label="閉じる">×</button>
+    </div>
+    <div class="pnd-body" id="pnd-body">読み込み中...</div>
+    <div class="pnd-actions" id="pnd-actions"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  let _pnCurrent = null;  // 現在開いている詳細データ
+
+  window.closePnDetail = function() {
+    document.getElementById('pn-detail-overlay').classList.remove('show');
+    _pnCurrent = null;
+  };
+
+  const STATUS_LABELS = {
+    pending: '審査待ち', draft: '下書き', live: '掲載中', rejected: '却下', paused: '一時停止'
+  };
+
+  function escHtml(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+  function fmtDate(s) {
+    if (!s) return '—';
+    const d = new Date(s);
+    if (isNaN(d)) return s;
+    return d.toLocaleString('ja-JP', {year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit'});
+  }
+
+  window.openPnDetail = async function(spaceId) {
+    const overlay = document.getElementById('pn-detail-overlay');
+    const body = document.getElementById('pnd-body');
+    const actions = document.getElementById('pnd-actions');
+    body.innerHTML = '<div style="padding:40px;text-align:center;color:#888">読み込み中...</div>';
+    actions.innerHTML = '';
+    overlay.classList.add('show');
+
+    try {
+      // cwm-admin の preview endpoint で全情報取得 (ops_token使用)
+      const opsToken = sessionStorage.getItem('cwm_ops_token');
+      if (!opsToken) { body.innerHTML = '<p style="color:#ef4444">ログインしていません</p>'; return; }
+      const SB_URL = 'https://jakwntemjkwqwaqujffh.supabase.co';
+      const SB_KEY = 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+      const r = await fetch(SB_URL + '/functions/v1/cwm-admin', {
+        method:'POST',
+        headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY},
+        body: JSON.stringify({ token: opsToken, target:'preview', action:'get_space', data:{ space_id: spaceId } })
+      });
+      const j = await r.json();
+      if (!j.ok) { body.innerHTML = '<p style="color:#ef4444">'+escHtml(j.error || '取得失敗')+'</p>'; return; }
+      const sp = j.space;
+      _pnCurrent = { id: spaceId, space: sp, name: sp.name };
+
+      // タイトル
+      document.getElementById('pnd-title').textContent = sp.name + ' の詳細';
+
+      const stCls = 'pnd-status-' + (sp.status || 'pending');
+      const stLabel = STATUS_LABELS[sp.status] || sp.status || '—';
+
+      // 本体
+      let html = '';
+      html += '<div class="pnd-section"><div class="pnd-section-title">基本情報</div>';
+      html += '<div class="pnd-row"><div class="pnd-label">ステータス</div><div class="pnd-value"><span class="pnd-status-badge '+stCls+'">'+escHtml(stLabel)+'</span></div></div>';
+      html += '<div class="pnd-row"><div class="pnd-label">施設名</div><div class="pnd-value">'+escHtml(sp.name||'—')+'</div></div>';
+      html += '<div class="pnd-row"><div class="pnd-label">会社名</div><div class="pnd-value">'+(sp.contact_company ? escHtml(sp.contact_company) : '<span style="color:#bbb">未入力</span>')+'</div></div>';
+      html += '<div class="pnd-row"><div class="pnd-label">公式URL</div><div class="pnd-value">'+(sp.official_url ? '<a href="'+escHtml(sp.official_url)+'" target="_blank" rel="noopener">'+escHtml(sp.official_url)+' ↗</a>' : '<span style="color:#bbb">未入力</span>')+'</div></div>';
+      html += '<div class="pnd-row"><div class="pnd-label">エリア</div><div class="pnd-value">'+escHtml((sp.prefecture||'')+' '+(sp.area||'')||'—')+'</div></div>';
+      html += '<div class="pnd-row"><div class="pnd-label">住所</div><div class="pnd-value">'+escHtml(sp.address||'—')+'</div></div>';
+      html += '<div class="pnd-row"><div class="pnd-label">プラン</div><div class="pnd-value">'+escHtml((sp.plan||'free').toUpperCase())+'</div></div>';
+      html += '</div>';
+
+      html += '<div class="pnd-section"><div class="pnd-section-title">申込者情報</div>';
+      html += '<div class="pnd-row"><div class="pnd-label">担当者</div><div class="pnd-value">'+escHtml(sp.contact_name||'—')+'</div></div>';
+      html += '<div class="pnd-row"><div class="pnd-label">メールアドレス</div><div class="pnd-value">'+(sp.contact_email ? '<a href="mailto:'+escHtml(sp.contact_email)+'">'+escHtml(sp.contact_email)+'</a>' : '—')+'</div></div>';
+      html += '<div class="pnd-row"><div class="pnd-label">登録日時</div><div class="pnd-value">'+escHtml(fmtDate(sp.created_at))+'</div></div>';
+      html += '</div>';
+
+      // 却下理由 (rejected の場合)
+      if (sp.status === 'rejected' && sp.reject_reason) {
+        html += '<div class="pnd-section"><div class="pnd-section-title" style="color:#ef4444">却下理由</div>';
+        html += '<div class="pnd-reject-reason">'+escHtml(sp.reject_reason).replace(/\n/g,'<br>')+'</div>';
+        if (sp.rejected_at) html += '<div style="font-size:11px;color:#888;margin-top:6px">却下日時: '+escHtml(fmtDate(sp.rejected_at))+'</div>';
+        html += '</div>';
+      }
+
+      // 内部メモ編集
+      html += '<div class="pnd-section"><div class="pnd-section-title">運営内部メモ <span style="font-weight:400;text-transform:none;color:#888;font-size:10px">(申込者には見えません)</span></div>';
+      html += '<textarea class="pnd-memo-area" id="pnd-memo" placeholder="メモを入力 (例: 2026/05/10 電話確認済。 写真の追加待ち。)">'+escHtml(sp.ops_memo||'')+'</textarea>';
+      html += '</div>';
+
+      body.innerHTML = html;
+
+      // アクションボタン
+      let actionHtml = '<button class="pnd-btn pnd-btn-memo" onclick="savePnMemo()">📝 メモを保存</button>';
+      if (sp.status === 'pending') {
+        actionHtml += '<button class="pnd-btn pnd-btn-reject" onclick="rejectFromPnModal()">却下</button>';
+        actionHtml += '<button class="pnd-btn pnd-btn-approve" onclick="approveFromPnModal()">✅ 承認</button>';
+      } else if (sp.status === 'rejected') {
+        actionHtml += '<button class="pnd-btn pnd-btn-approve" onclick="approveFromPnModal()">↩ やはり承認する</button>';
+      }
+      actions.innerHTML = actionHtml;
+    } catch(e) {
+      body.innerHTML = '<p style="color:#ef4444">エラー: '+escHtml(e.message||e)+'</p>';
+    }
+  };
+
+  window.savePnMemo = async function() {
+    if (!_pnCurrent) return;
+    const memo = (document.getElementById('pnd-memo')?.value || '').trim();
+    try {
+      if (window.cwmOpsAuth && typeof window.cwmOpsAuth.updateSpaceMemo === 'function') {
+        const r = await window.cwmOpsAuth.updateSpaceMemo(_pnCurrent.id, memo);
+        if (r && (r.ok || !r.error)) {
+          // ボタンに「保存済み」 一時表示
+          const btn = document.querySelector('.pnd-btn-memo');
+          if (btn) {
+            const orig = btn.innerHTML;
+            btn.innerHTML = '✓ 保存しました';
+            btn.style.background = '#d1fae5';
+            btn.style.borderColor = '#10b981';
+            btn.style.color = '#065f46';
+            setTimeout(()=>{ btn.innerHTML=orig; btn.style.background=''; btn.style.borderColor=''; btn.style.color=''; }, 2000);
+          }
+          // テーブルに反映するため、 行のメモ表示も更新
+          const tr = document.querySelector('tr[data-pn-space-id="'+_pnCurrent.id+'"]');
+          if (tr) {
+            const meta = tr.querySelector('.pn-row-meta');
+            if (meta) {
+              const memoEl = meta.querySelector('.pn-memo-snippet');
+              if (memo) {
+                if (memoEl) memoEl.textContent = '📝 ' + memo.substring(0,40) + (memo.length>40?'...':'');
+                else meta.innerHTML += ' <span class="pn-memo-snippet">📝 '+memo.substring(0,40)+(memo.length>40?'...':'')+'</span>';
+              } else if (memoEl) {
+                memoEl.remove();
+              }
+            }
+          }
+        } else {
+          alert('保存に失敗: ' + (r?.error || 'unknown'));
+        }
+      } else {
+        alert('updateSpaceMemo が利用できません');
+      }
+    } catch(e) { alert('エラー: ' + (e.message||e)); }
+  };
+
+  window.approveFromPnModal = async function() {
+    if (!_pnCurrent) return;
+    // メモが書かれていれば、 承認前に自動保存
+    const memo = (document.getElementById('pnd-memo')?.value || '').trim();
+    if (memo && window.cwmOpsAuth && window.cwmOpsAuth.updateSpaceMemo) {
+      try { await window.cwmOpsAuth.updateSpaceMemo(_pnCurrent.id, memo); } catch(_e){}
+    }
+    closePnDetail();
+    if (typeof window.confirmApprove === 'function') {
+      // 既存の confirmApprove を呼ぶ (内部メモpromptが追加で出るが、 既に保存済みなのでスキップしても良い)
+      window.confirmApprove(_pnCurrent.id, _pnCurrent.name);
+    }
+  };
+
+  window.rejectFromPnModal = async function() {
+    if (!_pnCurrent) return;
+    const memo = (document.getElementById('pnd-memo')?.value || '').trim();
+    if (memo && window.cwmOpsAuth && window.cwmOpsAuth.updateSpaceMemo) {
+      try { await window.cwmOpsAuth.updateSpaceMemo(_pnCurrent.id, memo); } catch(_e){}
+    }
+    closePnDetail();
+    if (typeof window.confirmReject === 'function') {
+      window.confirmReject(_pnCurrent.id, _pnCurrent.name);
+    }
+  };
+
+  // ============ MutationObserver で table 行を拡張 ============
+  function decoratePendingRow(tr) {
+    if (tr.dataset.pnSpaceId) return;
+    // confirmApprove(<id>) を含むボタンを探す
+    const btn = tr.querySelector('button[onclick*="confirmApprove"]');
+    if (!btn) return;
+    const m = btn.getAttribute('onclick').match(/confirmApprove\s*\(\s*['"]([^'"]+)['"]/);
+    if (!m) return;
+    const spaceId = m[1];
+    tr.dataset.pnSpaceId = spaceId;
+    
+    // セル内に詳細情報を併記する処理は spaces 詳細を取って入れる必要がある。
+    // ここでは「クリックで詳細」 の動作だけ付与
+    
+    // 行クリックで詳細モーダル (ボタン以外)
+    tr.addEventListener('click', (e) => {
+      if (e.target.closest('button')) return;
+      window.openPnDetail(spaceId);
+    });
+  }
+
+  function scanTables() {
+    document.querySelectorAll('table.tbl tbody tr').forEach(decoratePendingRow);
+  }
+
+  // 初期スキャン + 監視
+  document.addEventListener('DOMContentLoaded', scanTables);
+  scanTables();  // 既にDOMがあれば即座
+  
+  const obs = new MutationObserver(() => scanTables());
+  obs.observe(document.body, { childList: true, subtree: true });
+})();
+</script>
 </body>
 </html>
