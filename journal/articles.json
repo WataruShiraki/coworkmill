@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0",
+  "updated_at": "2026-05-10",
+  "categories": {
+    "area": "エリアガイド",
+    "workstyle": "用途・働き方",
+    "theme": "デザイン・テーマ",
+    "interview": "インタビュー",
+    "trend": "トレンド・コラム"
+  },
+  "articles": [
+    {
+      "slug": "gotanda-design-coworking-2026",
+      "title": "五反田駅から徒歩圏 デザインで選ぶコワーキング 5選｜2026年最新",
+      "excerpt": "五反田って働く街？ーー実際に通ってみると印象が変わる。デザイン軸で選ぶ五反田の駅近コワーキング5施設を、自分の使い方とセットで紹介する。",
+      "category": "area",
+      "tags": ["五反田", "東京", "デザイン", "山手線"],
+      "writer": "coffee-bucho",
+      "hero_image": "/journal/gotanda-design-coworking-2026/hero.jpg",
+      "published_at": "2026-05-10",
+      "updated_at": "2026-05-10",
+      "reading_minutes": 8,
+      "is_pr": false,
+      "status": "live"
+    }
+  ]
+}
