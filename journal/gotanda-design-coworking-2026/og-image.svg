@@ -1,7 +1,7 @@
 <svg viewBox="0 0 1200 675" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
   <defs>
     <style>
-      @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&family=Noto+Sans+JP:wght@400;500;700&display=swap');
+      @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&amp;family=Noto+Sans+JP:wght@400;500;700&amp;display=swap');
     </style>
     <radialGradient id="rust" cx="78%" cy="20%" r="55%">
       <stop offset="0%" stop-color="#A0533C" stop-opacity="0.32"/>
