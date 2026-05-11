@@ -30,6 +30,8 @@ th { background: #1a1a1a; position: sticky; top: 0; font-weight: 700; text-align
 th.tag-th { writing-mode: vertical-rl; text-orientation: mixed; text-align: center; min-width: 32px; height: 110px; padding: 8px 4px; }
 th.url-th { min-width: 80px; max-width: 80px; text-align: center; }
 th.memo-th { min-width: 160px; }
+th.area-th { min-width: 140px; }
+th.del-th { min-width: 40px; text-align: center; }
 td.tag-cell { text-align: center; padding: 4px 0; min-width: 32px; }
 td.tag-cell input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; accent-color: #79F1A4; }
 td.text-cell input { background: transparent; border: 1px solid transparent; color: #f0f0f0; padding: 4px 8px; width: 100%; font-size: 12px; font-family: inherit; }
@@ -42,6 +44,11 @@ td input:hover { border-color: #333; }
 td input:focus { border-color: #79F1A4; outline: none; background: #1a1a1a; }
 td.url-cell a { color: #79F1A4; text-decoration: none; font-size: 14px; }
 td.url-cell .url-wrap { display: flex; gap: 4px; align-items: center; }
+td.area-cell select { background: #1a1a1a; border: 1px solid #333; color: #f0f0f0; padding: 4px 8px; font-size: 12px; min-width: 140px; border-radius: 4px; cursor: pointer; font-family: inherit; }
+td.area-cell select:focus { border-color: #79F1A4; outline: none; }
+td.del-cell { text-align: center; padding: 4px 0; min-width: 40px; }
+.del-btn { background: transparent; border: 1px solid #444; color: #888; cursor: pointer; padding: 4px 8px; border-radius: 4px; font-size: 14px; transition: all 0.15s; }
+.del-btn:hover { background: #c84a4a; color: #fff; border-color: #c84a4a; }
 tr.candidate { background: rgba(121, 241, 164, 0.06); }
 tr:hover { background: rgba(255, 255, 255, 0.03); }
 .empty { padding: 60px 40px; text-align: center; color: #666; }
@@ -53,13 +60,14 @@ tr:hover { background: rgba(255, 255, 255, 0.03); }
 <div class="container">
   <div class="header">
     <h1>施設マスタ</h1>
-    <p>雰囲気タグで絞り込むと、 5件以上ヒット時に「記事化候補」マークが出ます。 メモ欄は「サウナ」「ペット可」など自由ワード。 検索でも引っかかります。 編集は即保存（Supabase）。</p>
+    <p>雰囲気タグで絞り込むと、 5件以上ヒット時に「記事化候補」マークが出ます。 メモ欄は「サウナ」「ペット可」など自由ワード。 検索でも引っかかります。 編集は即保存（Supabase）。 削除は論理削除（status=archived）です。</p>
   </div>
   <div class="filter-bar">
-    <input type="search" class="search-input" placeholder="🔍 ブランド・施設名・駅・メモで検索（例: サウナ, 渋谷駅）" id="search">
+    <input type="search" class="search-input" placeholder="🔍 ブランド・施設名・駅・エリア・メモで検索（例: サウナ, 仙台エリア）" id="search">
     <select class="sort-select" id="sort">
       <option value="brand">ブランド順</option>
       <option value="name">あいうえお順（施設名）</option>
+      <option value="area">エリア順</option>
       <option value="updated">最近編集順</option>
     </select>
     <button class="add-btn" id="add-btn">+ 新規施設追加</button>
@@ -81,6 +89,17 @@ const URL_FIELDS = [
   { key: 'youtube_url', label: 'YT', icon: '🎬' },
   { key: 'twitter_url', label: 'X', icon: '𝕏' }
 ];
+const REGION_AREAS = [
+  '渋谷エリア','新宿エリア','池袋エリア','銀座・有楽町エリア',
+  '丸の内・大手町エリア','六本木エリア','五反田・品川エリア',
+  '恵比寿・中目黒エリア','表参道・青山エリア','秋葉原・神田エリア',
+  '上野・浅草エリア','多摩エリア',
+  '横浜エリア','川崎エリア','鎌倉・湘南エリア',
+  'さいたまエリア','千葉エリア','軽井沢エリア',
+  '札幌エリア','仙台エリア','金沢エリア','名古屋エリア',
+  '京都エリア','大阪エリア','神戸エリア','広島エリア',
+  '福岡エリア','沖縄エリア','その他'
+];
 let allSpaces = [];
 let activeFilters = new Set();
 let searchQuery = '';
@@ -90,7 +109,9 @@ function showSave() { const el = document.getElementById('save-indicator'); el.c
 async function loadSpaces() {
   const r = await fetch(SUPABASE_URL + '/rest/v1/spaces?select=*&limit=500', { headers: HEADERS });
   if (!r.ok) { document.getElementById('hit-count').textContent = '❌ 読み込み失敗: ' + r.status; return; }
-  allSpaces = await r.json();
+  const all = await r.json();
+  // 論理削除（status='archived'）を除外
+  allSpaces = all.filter(s => s.status !== 'archived');
 }
 function renderTagFilters() {
   const wrap = document.getElementById('tag-filters');
@@ -104,7 +125,7 @@ function renderTagFilters() {
   }
 }
 function renderThead() {
-  let h = '<th>ブランド</th><th>施設店名</th><th>最寄駅</th><th class="memo-th">📝 メモ</th>';
+  let h = '<th class="del-th">🗑️</th><th>ブランド</th><th>施設店名</th><th>最寄駅</th><th class="area-th">🗾 エリア</th><th class="memo-th">📝 メモ</th>';
   for (const u of URL_FIELDS) h += '<th class="url-th">' + u.icon + ' ' + u.label + '</th>';
   h += TAGS.map(t => '<th class="tag-th">' + esc(t) + '</th>').join('');
   document.getElementById('thead-row').innerHTML = h;
@@ -117,6 +138,7 @@ function filtered() {
       (s.brand || '').toLowerCase().includes(q) ||
       (s.name || '').toLowerCase().includes(q) ||
       (s.nearest_station || '').toLowerCase().includes(q) ||
+      (s.region_area || '').toLowerCase().includes(q) ||
       (s.tag_notes || '').toLowerCase().includes(q)
     );
   }
@@ -130,18 +152,20 @@ function filtered() {
   list = [...list];
   if (sortMode === 'brand') { list.sort((a, b) => { const ba = (a.brand || 'ｚｚ').localeCompare(b.brand || 'ｚｚ', 'ja'); if (ba !== 0) return ba; return (a.name || '').localeCompare(b.name || '', 'ja'); }); }
   else if (sortMode === 'name') { list.sort((a, b) => (a.name || '').localeCompare(b.name || '', 'ja')); }
+  else if (sortMode === 'area') { list.sort((a, b) => { const ba = (a.region_area || 'ｚｚ').localeCompare(b.region_area || 'ｚｚ', 'ja'); if (ba !== 0) return ba; return (a.name || '').localeCompare(b.name || '', 'ja'); }); }
   else if (sortMode === 'updated') { list.sort((a, b) => (b.updated_at || '').localeCompare(a.updated_at || '')); }
   return list;
 }
 function updateHitCount() {
   const list = filtered();
   const hitEl = document.getElementById('hit-count');
-  const hasMemoSearch = searchQuery && allSpaces.some(s => (s.tag_notes || '').toLowerCase().includes(searchQuery.toLowerCase()));
-  if (list.length >= 5 && (activeFilters.size > 0 || hasMemoSearch)) {
-    const label = activeFilters.size > 0 ? Array.from(activeFilters).join(' × ') : 'メモ:' + searchQuery;
+  const q = (searchQuery || '').toLowerCase();
+  const hasMemoOrAreaSearch = q && allSpaces.some(s => ((s.tag_notes || '') + (s.region_area || '')).toLowerCase().includes(q));
+  if (list.length >= 5 && (activeFilters.size > 0 || hasMemoOrAreaSearch)) {
+    const label = activeFilters.size > 0 ? Array.from(activeFilters).join(' × ') : '検索:' + searchQuery;
     hitEl.innerHTML = '🎉 ' + list.length + '件ヒット — 「' + esc(label) + '」' + list.length + '選で記事化候補です！';
     hitEl.classList.add('candidate');
-  } else if (activeFilters.size > 0 || hasMemoSearch) {
+  } else if (activeFilters.size > 0 || hasMemoOrAreaSearch) {
     hitEl.textContent = list.length + ' 件（5件以上で記事化候補マーク）/ 全 ' + allSpaces.length + ' 施設';
     hitEl.classList.remove('candidate');
   } else {
@@ -155,21 +179,30 @@ function urlCellHtml(s, field) {
   const linkBtn = hasVal ? '<a href="' + esc(val) + '" target="_blank" rel="noopener" title="開く">🔗</a>' : '';
   return '<td class="url-cell text-cell"><div class="url-wrap"><input value="' + esc(val) + '" data-id="' + s.id + '" data-field="' + field + '" placeholder="URL">' + linkBtn + '</div></td>';
 }
+function areaCellHtml(s) {
+  let opts = '<option value="">（未設定）</option>';
+  const cur = s.region_area || '';
+  for (const a of REGION_AREAS) opts += '<option value="' + esc(a) + '"' + (a === cur ? ' selected' : '') + '>' + esc(a) + '</option>';
+  return '<td class="area-cell"><select data-id="' + s.id + '" data-field="region_area">' + opts + '</select></td>';
+}
 function render() {
   const list = filtered();
   updateHitCount();
   const tbody = document.getElementById('tbody');
   tbody.innerHTML = '';
-  const colCount = 4 + URL_FIELDS.length + TAGS.length;
+  const colCount = 6 + URL_FIELDS.length + TAGS.length;
   if (list.length === 0) { tbody.innerHTML = '<tr><td colspan="' + colCount + '" class="empty">該当する施設がありません</td></tr>'; return; }
-  const hasMemoSearch = searchQuery && allSpaces.some(s => (s.tag_notes || '').toLowerCase().includes(searchQuery.toLowerCase()));
-  const isCand = (activeFilters.size > 0 || hasMemoSearch) && list.length >= 5;
+  const q = (searchQuery || '').toLowerCase();
+  const hasMemoOrAreaSearch = q && allSpaces.some(s => ((s.tag_notes || '') + (s.region_area || '')).toLowerCase().includes(q));
+  const isCand = (activeFilters.size > 0 || hasMemoOrAreaSearch) && list.length >= 5;
   for (const s of list) {
     const tr = document.createElement('tr');
     if (isCand) tr.className = 'candidate';
-    let h = '<td class="text-cell brand-cell"><input value="' + esc(s.brand) + '" data-id="' + s.id + '" data-field="brand" placeholder="ブランド"></td>' +
+    let h = '<td class="del-cell"><button class="del-btn" data-id="' + s.id + '" data-name="' + esc(s.name) + '" title="削除（archived化）">🗑️</button></td>' +
+      '<td class="text-cell brand-cell"><input value="' + esc(s.brand) + '" data-id="' + s.id + '" data-field="brand" placeholder="ブランド"></td>' +
       '<td class="text-cell name-cell"><input value="' + esc(s.name) + '" data-id="' + s.id + '" data-field="name"></td>' +
       '<td class="text-cell station-cell"><input value="' + esc(s.nearest_station) + '" data-id="' + s.id + '" data-field="nearest_station" placeholder="駅"></td>' +
+      areaCellHtml(s) +
       '<td class="text-cell memo-cell"><input value="' + esc(s.tag_notes) + '" data-id="' + s.id + '" data-field="tag_notes" placeholder="例: サウナ, ペット可"></td>';
     for (const u of URL_FIELDS) h += urlCellHtml(s, u.key);
     for (const t of TAGS) { const c = (s.atmosphere_tags || []).includes(t); h += '<td class="tag-cell"><input type="checkbox" data-id="' + s.id + '" data-tag="' + esc(t) + '"' + (c ? ' checked' : '') + '></td>'; }
@@ -182,6 +215,8 @@ function bindHandlers() {
   const tbody = document.getElementById('tbody');
   tbody.querySelectorAll('input[type="checkbox"]').forEach(cb => { cb.onchange = () => onTagToggle(cb.dataset.id, cb.dataset.tag, cb.checked); });
   tbody.querySelectorAll('input:not([type="checkbox"])').forEach(inp => { let t; inp.oninput = () => { clearTimeout(t); t = setTimeout(() => onFieldEdit(inp.dataset.id, inp.dataset.field, inp.value), 700); }; });
+  tbody.querySelectorAll('select').forEach(sel => { sel.onchange = () => onFieldEdit(sel.dataset.id, sel.dataset.field, sel.value); });
+  tbody.querySelectorAll('.del-btn').forEach(btn => { btn.onclick = () => onDelete(btn.dataset.id, btn.dataset.name); });
 }
 async function onTagToggle(id, tag, ck) {
   const s = allSpaces.find(x => x.id === id);
@@ -199,7 +234,15 @@ async function onFieldEdit(id, field, val) {
   s[field] = val;
   await fetch(SUPABASE_URL + '/rest/v1/spaces?id=eq.' + id, { method: 'PATCH', headers: HEADERS, body: JSON.stringify({ [field]: val || null }) });
   showSave();
-  if (field === 'tag_notes') updateHitCount();
+  if (field === 'tag_notes' || field === 'region_area') updateHitCount();
+}
+async function onDelete(id, name) {
+  if (!confirm('「' + name + '」を削除しますか？\n（status=archived にする論理削除です。 DBには残ります。）')) return;
+  const r = await fetch(SUPABASE_URL + '/rest/v1/spaces?id=eq.' + id, { method: 'PATCH', headers: HEADERS, body: JSON.stringify({ status: 'archived' }) });
+  if (!r.ok) { alert('削除失敗: ' + r.status + ' — ' + await r.text()); return; }
+  allSpaces = allSpaces.filter(x => x.id !== id);
+  render();
+  showSave();
 }
 document.getElementById('search').oninput = (e) => { searchQuery = e.target.value; render(); };
 document.getElementById('sort').onchange = (e) => { sortMode = e.target.value; render(); };
