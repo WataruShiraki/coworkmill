@@ -1208,7 +1208,7 @@ function filterSidebar(){
   var activeFacs=[];Array.from(document.querySelectorAll('.sf-opt.on[data-fac], .sp-vibe-btn.on[data-fac]')).forEach(function(el){var f=el.getAttribute('data-fac');if(f&&activeFacs.indexOf(f)===-1)activeFacs.push(f);});
   var activeVibes=Array.from(document.querySelectorAll('.sf-opt.on[data-vibe]')).map(function(e){return e.getAttribute('data-vibe')||'';}).filter(Boolean);
   var activeChips=Array.from(document.querySelectorAll('.chip.on')).map(function(c){return c.dataset.work;}).filter(Boolean);
-  var q=(document.querySelector('.sp-search-input')?document.querySelector('.sp-search-input').value:'').toLowerCase().trim();
+  var q=(document.querySelector('.sp-search-input')?document.querySelector('.sp-search-input').value:'').toLowerCase().trim().replace(/魏$/,'');
   var visible=0;
   document.querySelectorAll('.scard').forEach(function(card){
     var name=(card.dataset.name||'').toLowerCase();
