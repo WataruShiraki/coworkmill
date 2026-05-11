@@ -29,12 +29,14 @@ th, td { padding: 6px 8px; border-bottom: 1px solid #2a2a2a; border-right: 1px s
 th { background: #1a1a1a; position: sticky; top: 0; font-weight: 700; text-align: left; font-size: 11px; color: #aaa; z-index: 2; }
 th.tag-th { writing-mode: vertical-rl; text-orientation: mixed; text-align: center; min-width: 32px; height: 110px; padding: 8px 4px; }
 th.url-th { min-width: 80px; max-width: 80px; text-align: center; }
+th.memo-th { min-width: 160px; }
 td.tag-cell { text-align: center; padding: 4px 0; min-width: 32px; }
 td.tag-cell input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; accent-color: #79F1A4; }
 td.text-cell input { background: transparent; border: 1px solid transparent; color: #f0f0f0; padding: 4px 8px; width: 100%; font-size: 12px; font-family: inherit; }
 td.brand-cell input { min-width: 100px; }
 td.name-cell input { min-width: 200px; }
 td.station-cell input { min-width: 100px; }
+td.memo-cell input { min-width: 160px; max-width: 240px; font-size: 12px; color: #ffd97a; }
 td.url-cell input { min-width: 120px; max-width: 200px; font-size: 11px; color: #aaa; }
 td input:hover { border-color: #333; }
 td input:focus { border-color: #79F1A4; outline: none; background: #1a1a1a; }
@@ -51,10 +53,10 @@ tr:hover { background: rgba(255, 255, 255, 0.03); }
 <div class="container">
   <div class="header">
     <h1>施設マスタ</h1>
-    <p>雰囲気タグで絞り込むと、 5件以上ヒット時に「記事化候補」マークが出ます。 編集は即保存（Supabase）です。</p>
+    <p>雰囲気タグで絞り込むと、 5件以上ヒット時に「記事化候補」マークが出ます。 メモ欄は「サウナ」「ペット可」など自由ワード。 検索でも引っかかります。 編集は即保存（Supabase）。</p>
   </div>
   <div class="filter-bar">
-    <input type="search" class="search-input" placeholder="🔍 ブランド・施設名・駅で検索" id="search">
+    <input type="search" class="search-input" placeholder="🔍 ブランド・施設名・駅・メモで検索（例: サウナ, 渋谷駅）" id="search">
     <select class="sort-select" id="sort">
       <option value="brand">ブランド順</option>
       <option value="name">あいうえお順（施設名）</option>
@@ -86,7 +88,7 @@ let sortMode = 'brand';
 function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
 function showSave() { const el = document.getElementById('save-indicator'); el.classList.add('show'); clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove('show'), 1200); }
 async function loadSpaces() {
-  const r = await fetch(SUPABASE_URL + '/rest/v1/spaces?select=id,name,brand,nearest_station,atmosphere_tags,status,official_url,instagram,ig_post_url,youtube_url,twitter_url,updated_at&limit=500', { headers: HEADERS });
+  const r = await fetch(SUPABASE_URL + '/rest/v1/spaces?select=id,name,brand,nearest_station,atmosphere_tags,tag_notes,status,official_url,instagram,ig_post_url,youtube_url,twitter_url,updated_at&limit=500', { headers: HEADERS });
   if (!r.ok) { document.getElementById('hit-count').textContent = '❌ 読み込み失敗: ' + r.status; return; }
   allSpaces = await r.json();
 }
@@ -102,15 +104,29 @@ function renderTagFilters() {
   }
 }
 function renderThead() {
-  let h = '<th>ブランド</th><th>施設店名</th><th>最寄駅</th>';
+  let h = '<th>ブランド</th><th>施設店名</th><th>最寄駅</th><th class="memo-th">📝 メモ</th>';
   for (const u of URL_FIELDS) h += '<th class="url-th">' + u.icon + ' ' + u.label + '</th>';
   h += TAGS.map(t => '<th class="tag-th">' + esc(t) + '</th>').join('');
   document.getElementById('thead-row').innerHTML = h;
 }
 function filtered() {
   let list = allSpaces;
-  if (searchQuery) { const q = searchQuery.toLowerCase(); list = list.filter(s => (s.brand || '').toLowerCase().includes(q) || (s.name || '').toLowerCase().includes(q) || (s.nearest_station || '').toLowerCase().includes(q)); }
-  if (activeFilters.size > 0) { list = list.filter(s => { const tags = s.atmosphere_tags || []; for (const t of activeFilters) if (!tags.includes(t)) return false; return true; }); }
+  if (searchQuery) {
+    const q = searchQuery.toLowerCase();
+    list = list.filter(s =>
+      (s.brand || '').toLowerCase().includes(q) ||
+      (s.name || '').toLowerCase().includes(q) ||
+      (s.nearest_station || '').toLowerCase().includes(q) ||
+      (s.tag_notes || '').toLowerCase().includes(q)
+    );
+  }
+  if (activeFilters.size > 0) {
+    list = list.filter(s => {
+      const tags = s.atmosphere_tags || [];
+      for (const t of activeFilters) if (!tags.includes(t)) return false;
+      return true;
+    });
+  }
   list = [...list];
   if (sortMode === 'brand') { list.sort((a, b) => { const ba = (a.brand || 'ｚｚ').localeCompare(b.brand || 'ｚｚ', 'ja'); if (ba !== 0) return ba; return (a.name || '').localeCompare(b.name || '', 'ja'); }); }
   else if (sortMode === 'name') { list.sort((a, b) => (a.name || '').localeCompare(b.name || '', 'ja')); }
@@ -120,11 +136,12 @@ function filtered() {
 function updateHitCount() {
   const list = filtered();
   const hitEl = document.getElementById('hit-count');
-  if (list.length >= 5 && activeFilters.size > 0) {
-    const tl = Array.from(activeFilters).join(' × ');
-    hitEl.innerHTML = '🎉 ' + list.length + '件ヒット — 「' + esc(tl) + '」' + list.length + '選で記事化候補です！';
+  const hasMemoSearch = searchQuery && allSpaces.some(s => (s.tag_notes || '').toLowerCase().includes(searchQuery.toLowerCase()));
+  if (list.length >= 5 && (activeFilters.size > 0 || hasMemoSearch)) {
+    const label = activeFilters.size > 0 ? Array.from(activeFilters).join(' × ') : 'メモ:' + searchQuery;
+    hitEl.innerHTML = '🎉 ' + list.length + '件ヒット — 「' + esc(label) + '」' + list.length + '選で記事化候補です！';
     hitEl.classList.add('candidate');
-  } else if (activeFilters.size > 0) {
+  } else if (activeFilters.size > 0 || hasMemoSearch) {
     hitEl.textContent = list.length + ' 件（5件以上で記事化候補マーク）/ 全 ' + allSpaces.length + ' 施設';
     hitEl.classList.remove('candidate');
   } else {
@@ -143,15 +160,17 @@ function render() {
   updateHitCount();
   const tbody = document.getElementById('tbody');
   tbody.innerHTML = '';
-  const colCount = 3 + URL_FIELDS.length + TAGS.length;
+  const colCount = 4 + URL_FIELDS.length + TAGS.length;
   if (list.length === 0) { tbody.innerHTML = '<tr><td colspan="' + colCount + '" class="empty">該当する施設がありません</td></tr>'; return; }
-  const isCand = activeFilters.size > 0 && list.length >= 5;
+  const hasMemoSearch = searchQuery && allSpaces.some(s => (s.tag_notes || '').toLowerCase().includes(searchQuery.toLowerCase()));
+  const isCand = (activeFilters.size > 0 || hasMemoSearch) && list.length >= 5;
   for (const s of list) {
     const tr = document.createElement('tr');
     if (isCand) tr.className = 'candidate';
     let h = '<td class="text-cell brand-cell"><input value="' + esc(s.brand) + '" data-id="' + s.id + '" data-field="brand" placeholder="ブランド"></td>' +
       '<td class="text-cell name-cell"><input value="' + esc(s.name) + '" data-id="' + s.id + '" data-field="name"></td>' +
-      '<td class="text-cell station-cell"><input value="' + esc(s.nearest_station) + '" data-id="' + s.id + '" data-field="nearest_station" placeholder="駅"></td>';
+      '<td class="text-cell station-cell"><input value="' + esc(s.nearest_station) + '" data-id="' + s.id + '" data-field="nearest_station" placeholder="駅"></td>' +
+      '<td class="text-cell memo-cell"><input value="' + esc(s.tag_notes) + '" data-id="' + s.id + '" data-field="tag_notes" placeholder="例: サウナ, ペット可"></td>';
     for (const u of URL_FIELDS) h += urlCellHtml(s, u.key);
     for (const t of TAGS) { const c = (s.atmosphere_tags || []).includes(t); h += '<td class="tag-cell"><input type="checkbox" data-id="' + s.id + '" data-tag="' + esc(t) + '"' + (c ? ' checked' : '') + '></td>'; }
     tr.innerHTML = h;
@@ -180,6 +199,7 @@ async function onFieldEdit(id, field, val) {
   s[field] = val;
   await fetch(SUPABASE_URL + '/rest/v1/spaces?id=eq.' + id, { method: 'PATCH', headers: HEADERS, body: JSON.stringify({ [field]: val || null }) });
   showSave();
+  if (field === 'tag_notes') updateHitCount();
 }
 document.getElementById('search').oninput = (e) => { searchQuery = e.target.value; render(); };
 document.getElementById('sort').onchange = (e) => { sortMode = e.target.value; render(); };
