@@ -17,10 +17,12 @@ a{color:inherit;text-decoration:none}
 .header{padding:18px 20px;border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(18,18,18,.95);backdrop-filter:blur(10px);z-index:100}
 .header-inner{max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:14px;align-items:center;justify-content:space-between}
 .h-eyebrow{font-family:var(--fb);font-style:italic;font-size:12px;color:var(--fg-4);letter-spacing:.05em;margin-bottom:2px}
-h1{font-size:18px;font-weight:700}
+h1{font-size:18px;font-weight:700;display:flex;align-items:center;gap:8px}
+.cloud-badge{font-family:var(--fb);font-style:italic;font-size:11px;color:var(--teal);background:rgba(121,241,164,.1);border:1px solid var(--teal);padding:2px 8px;border-radius:999px;letter-spacing:.05em}
 .h-actions{display:flex;gap:10px;flex-wrap:wrap}
 .btn{padding:9px 16px;border:1px solid var(--line-2);background:var(--bg-2);color:var(--fg);font-size:13px;border-radius:6px;cursor:pointer;transition:all .2s;font-family:var(--fd);display:inline-flex;align-items:center;gap:6px}
 .btn:hover{border-color:var(--teal);color:var(--teal)}
+.btn:disabled{opacity:.5;cursor:wait}
 .btn-primary{background:linear-gradient(135deg,#79F1A4,#0E5CAD);border-color:transparent;color:#fff;font-weight:600}
 .btn-primary:hover{background:linear-gradient(135deg,#92F5B6,#2070C0);color:#fff;transform:translateY(-1px);box-shadow:0 4px 12px rgba(14,92,173,.3)}
 .info-bar{max-width:1100px;margin:20px auto 0;padding:16px 20px;background:var(--bg-2);border-left:2px solid var(--teal);border-radius:4px;font-size:12.5px;color:var(--fg-3);line-height:1.85}
@@ -31,9 +33,10 @@ h1{font-size:18px;font-weight:700}
 .search:focus{outline:none;border-color:var(--teal)}
 .count{font-family:var(--fb);font-style:italic;font-size:13px;color:var(--fg-3)}
 .grid{display:grid;gap:12px;grid-template-columns:1fr}
-.card{background:var(--bg-2);border:1px solid var(--line);border-radius:8px;padding:18px;transition:border-color .2s}
+.card{background:var(--bg-2);border:1px solid var(--line);border-radius:8px;padding:18px;transition:border-color .2s;position:relative}
 .card:focus-within{border-color:#2BB5C8}
 .card.done{border-color:var(--teal);background:linear-gradient(135deg,rgba(121,241,164,.04),rgba(14,92,173,.04))}
+.card.syncing{opacity:.7}
 .card-head{display:flex;gap:10px;align-items:flex-start;margin-bottom:14px}
 .card-num{font-family:var(--fb);font-style:italic;font-size:13px;color:var(--fg-4);min-width:32px;padding-top:8px}
 .card-name{flex:1;font-size:16px;font-weight:600;color:var(--fg);padding:6px 10px;background:var(--bg-3);border:1px dashed transparent;border-radius:4px;min-height:36px;line-height:1.5;word-break:auto-phrase}
@@ -63,8 +66,12 @@ h1{font-size:18px;font-weight:700}
 .note-input:empty::before{content:'メモ・気付いたこと';color:var(--fg-4);font-style:italic}
 .save-status{font-family:var(--fb);font-style:italic;font-size:11px;color:var(--teal);position:fixed;bottom:20px;right:20px;background:var(--bg-2);padding:10px 16px;border-radius:999px;opacity:0;transition:opacity .3s;pointer-events:none;border:1px solid var(--teal);z-index:200}
 .save-status.show{opacity:1}
-.empty{text-align:center;padding:60px 20px;color:var(--fg-4)}
-.ftr{max-width:1100px;margin:40px auto 0;padding:24px 20px 24px;border-top:1px solid var(--line);font-size:11.5px;color:var(--fg-4);display:flex;gap:16px;flex-wrap:wrap;justify-content:space-between}
+.save-status.error{color:#e74c3c;border-color:#e74c3c}
+.empty,.loading{text-align:center;padding:60px 20px;color:var(--fg-4)}
+.loading-spinner{display:inline-block;width:32px;height:32px;border:3px solid var(--line);border-top-color:var(--teal);border-radius:50%;animation:spin 1s linear infinite;margin-bottom:14px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.error-banner{max-width:1100px;margin:20px auto 0;padding:14px 20px;background:rgba(231,76,60,.1);border:1px solid #e74c3c;border-radius:6px;color:#ff8c7a;font-size:13px}
+.ftr{max-width:1100px;margin:40px auto 0;padding:24px 20px;border-top:1px solid var(--line);font-size:11.5px;color:var(--fg-4);display:flex;gap:16px;flex-wrap:wrap;justify-content:space-between}
 .ftr a{color:var(--fg-3)}
 .ftr a:hover{color:var(--teal)}
 @media(max-width:600px){.header{padding:14px}h1{font-size:15px}.btn{padding:7px 12px;font-size:12px}.main{padding:16px 12px 60px}.card{padding:14px}.card-meta{grid-template-columns:1fr 1fr}.info-bar{margin:16px 12px 0;font-size:12px}}
@@ -76,138 +83,309 @@ h1{font-size:18px;font-weight:700}
   <div class="header-inner">
     <div>
       <div class="h-eyebrow">COWORKMILL journal · 内部ツール</div>
-      <h1>📋 記事ネタプール</h1>
+      <h1>📋 記事ネタプール <span class="cloud-badge">☁ Cloud Sync</span></h1>
     </div>
     <div class="h-actions">
-      <button class="btn" onclick="exportCSV()">📥 CSV書き出し</button>
+      <button class="btn" onclick="manualRefresh()" id="btn-refresh">🔄 更新</button>
+      <button class="btn" onclick="exportCSV()">📥 CSV</button>
       <button class="btn btn-primary" onclick="addFacility()">+ 施設追加</button>
     </div>
   </div>
 </header>
 
 <div class="info-bar">
-  <b>使い方：</b>各カードのフィールドをタップして編集 → 自動保存。 スマホでも使えます。<br>
+  <b>使い方：</b>各カードのフィールドをタップして編集 → 自動保存（クラウド）。 スマホ・PC どこから入力しても同じデータが見えます。<br>
   <b>InstagramのURLの取り方：</b>Instagram投稿を開く → 右上「⋯」 → 「リンクをコピー」 → 該当施設のIG投稿URL欄に貼り付け。
 </div>
+
+<div id="error-banner" style="display:none" class="error-banner"></div>
 
 <main class="main">
   <div class="filter-bar">
     <input type="search" class="search" placeholder="🔍 施設名・エリアで絞り込み" id="search">
     <span class="count" id="count"></span>
   </div>
-  <div class="grid" id="grid"></div>
+  <div class="grid" id="grid"><div class="loading"><div class="loading-spinner"></div><div>クラウドからデータを読み込み中...</div></div></div>
 </main>
 
 <footer class="ftr">
-  <div>記事ネタプール v1 · このブラウザに自動保存</div>
+  <div>記事ネタプール v2 · Supabase クラウド保存</div>
   <div><a href="/journal/">← journal トップへ</a></div>
 </footer>
 
-<div class="save-status" id="save-status">✓ 保存しました</div>
+<div class="save-status" id="save-status">✓ クラウドに保存しました</div>
 
 <script>
-const STORAGE_KEY = 'coworkmill-journal-urls-pool-v1';
-const DEFAULT_DATA = [
-  { id: 'F001', name: 'co-lab 五反田 with JPRE', area: '五反田', station: '大崎広小路', ig_account: 'https://www.instagram.com/colab.jp/', ig_post: '', yt: '', note: 'クリエイター専用 / MUSE Design Award金賞', done: false },
-  { id: 'F002', name: 'MID POINT 目黒不動前', area: '五反田/不動前', station: '不動前', ig_account: 'https://www.instagram.com/midpoint_share_office/', ig_post: '', yt: '', note: '乃村工藝社デザイン / 職住近接', done: false },
-  { id: 'F003', name: '私のコワーキング', area: '五反田', station: '五反田', ig_account: 'https://www.instagram.com/watashino_tachinomi/', ig_post: '', yt: '', note: '立ち呑み併設 / IT交流', done: false },
-  { id: 'F004', name: 'コワーキングスペースpao', area: '五反田', station: '五反田', ig_account: '', ig_post: '', yt: 'https://twitter.com/paogotanda', note: 'X中心 @paogotanda / IGなし', done: false },
-  { id: 'F005', name: 'Basis Point 五反田店', area: '五反田', station: '五反田', ig_account: 'https://www.instagram.com/basispoint_official/', ig_post: 'https://www.instagram.com/p/DUpolXhkzT4/?img_index=1', yt: '', note: 'カルーセル投稿 / 採用済み（五反田5選）', done: true }
-];
-function loadData(){try{const s=localStorage.getItem(STORAGE_KEY);if(s)return JSON.parse(s);}catch(e){}return DEFAULT_DATA.map(d=>({...d}));}
-function saveData(d){localStorage.setItem(STORAGE_KEY,JSON.stringify(d));showSaveStatus();}
+const SUPABASE_URL = 'https://jakwntemjkwqwaqujffh.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+const TABLE = 'journal_url_pool';
+const LOCAL_STORAGE_KEY = 'coworkmill-journal-urls-pool-v1';
+const MIGRATION_KEY = 'coworkmill-journal-urls-pool-migrated';
+
+let cachedData = [];
 let saveTimer;
-function showSaveStatus(){const el=document.getElementById('save-status');el.classList.add('show');clearTimeout(saveTimer);saveTimer=setTimeout(()=>el.classList.remove('show'),1200);}
-function escapeHtml(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-function render(){
-  const data=loadData();
-  const search=document.getElementById('search').value.toLowerCase().trim();
-  const filtered=data.map((d,idx)=>({...d,_idx:idx})).filter(d=>!search||(d.name||'').toLowerCase().includes(search)||(d.area||'').toLowerCase().includes(search));
-  const grid=document.getElementById('grid');
-  document.getElementById('count').textContent=filtered.length+' / '+data.length+' 施設';
-  if(filtered.length===0){grid.innerHTML='<div class="empty">該当する施設がありません。 「+ 施設追加」で追加できます。</div>';return;}
-  grid.innerHTML=filtered.map(d=>renderCard(d)).join('');
+
+const supaHeaders = () => ({
+  'apikey': SUPABASE_KEY,
+  'Authorization': 'Bearer ' + SUPABASE_KEY,
+  'Content-Type': 'application/json'
+});
+
+async function fetchAll() {
+  const r = await fetch(SUPABASE_URL + '/rest/v1/' + TABLE + '?order=display_order.asc,created_at.asc', { headers: supaHeaders() });
+  if (!r.ok) throw new Error('読み込み失敗: ' + r.status + ' ' + (await r.text()).slice(0, 100));
+  return await r.json();
+}
+
+async function insertRow(row) {
+  const r = await fetch(SUPABASE_URL + '/rest/v1/' + TABLE, { method: 'POST', headers: { ...supaHeaders(), 'Prefer': 'return=representation' }, body: JSON.stringify(row) });
+  if (!r.ok) throw new Error('追加失敗: ' + (await r.text()).slice(0, 100));
+  return (await r.json())[0];
+}
+
+async function updateRowByFacilityId(facility_id, updates) {
+  const r = await fetch(SUPABASE_URL + '/rest/v1/' + TABLE + '?facility_id=eq.' + encodeURIComponent(facility_id), { method: 'PATCH', headers: { ...supaHeaders(), 'Prefer': 'return=representation' }, body: JSON.stringify(updates) });
+  if (!r.ok) throw new Error('更新失敗: ' + (await r.text()).slice(0, 100));
+  const result = await r.json();
+  return result[0];
+}
+
+async function deleteRowByFacilityId(facility_id) {
+  const r = await fetch(SUPABASE_URL + '/rest/v1/' + TABLE + '?facility_id=eq.' + encodeURIComponent(facility_id), { method: 'DELETE', headers: supaHeaders() });
+  if (!r.ok) throw new Error('削除失敗');
+  return true;
+}
+
+function showSaveStatus(text, isError) {
+  const el = document.getElementById('save-status');
+  el.textContent = isError ? '⚠ ' + text : '✓ ' + (text || 'クラウドに保存しました');
+  el.classList.toggle('error', !!isError);
+  el.classList.add('show');
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(() => el.classList.remove('show'), isError ? 4000 : 1400);
+}
+
+function showError(msg) {
+  const el = document.getElementById('error-banner');
+  el.textContent = '⚠ ' + msg;
+  el.style.display = 'block';
+}
+
+function clearError() {
+  document.getElementById('error-banner').style.display = 'none';
+}
+
+async function migrateFromLocalStorage(remoteData) {
+  if (localStorage.getItem(MIGRATION_KEY) === '1') return;
+  try {
+    const localRaw = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if (!localRaw) {
+      localStorage.setItem(MIGRATION_KEY, '1');
+      return;
+    }
+    const localItems = JSON.parse(localRaw);
+    const remoteIds = new Set(remoteData.map(r => r.facility_id));
+    let migrated = 0;
+    let nextOrder = remoteData.length + 1;
+    for (const item of localItems) {
+      const fid = item.id || item.facility_id;
+      if (!fid) continue;
+      if (remoteIds.has(fid)) continue;
+      try {
+        await insertRow({
+          facility_id: fid,
+          name: item.name || '',
+          area: item.area || '',
+          station: item.station || '',
+          ig_account: item.ig_account || '',
+          ig_post: item.ig_post || '',
+          yt: item.yt || '',
+          note: item.note || '',
+          done: !!item.done,
+          display_order: nextOrder++
+        });
+        migrated++;
+      } catch (e) {
+        console.error('Migration item failed', fid, e);
+      }
+    }
+    localStorage.setItem(MIGRATION_KEY, '1');
+    if (migrated > 0) showSaveStatus('ローカルから ' + migrated + ' 件移行しました');
+  } catch (e) {
+    console.error('Migration failed', e);
+  }
+}
+
+function escapeHtml(s) { return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+
+function render() {
+  const search = document.getElementById('search').value.toLowerCase().trim();
+  const filtered = cachedData.filter(d => !search || (d.name || '').toLowerCase().includes(search) || (d.area || '').toLowerCase().includes(search));
+  document.getElementById('count').textContent = filtered.length + ' / ' + cachedData.length + ' 施設';
+  const grid = document.getElementById('grid');
+  if (filtered.length === 0) {
+    grid.innerHTML = '<div class="empty">該当する施設がありません。 「+ 施設追加」 で追加できます。</div>';
+    return;
+  }
+  grid.innerHTML = filtered.map(renderCard).join('');
   wireEvents();
 }
-function renderCard(d){
-  const idx=d._idx;
-  const openLink=u=>u?'<a class="url-open" href="'+escapeHtml(u)+'" target="_blank" rel="noopener">↗ 開く</a>':'';
-  return '<div class="card '+(d.done?'done':'')+'" data-idx="'+idx+'">'+
-    '<div class="card-head">'+
-      '<div class="card-num">'+escapeHtml(d.id)+'</div>'+
-      '<div contenteditable="true" class="card-name" data-field="name">'+escapeHtml(d.name)+'</div>'+
-      '<div class="card-done-check"><input type="checkbox" data-field="done" '+(d.done?'checked':'')+' title="記事採用済み"></div>'+
-      '<button class="card-del" data-action="delete" title="削除">×</button>'+
-    '</div>'+
-    '<div class="card-meta">'+
-      '<div class="field"><label>エリア</label><div contenteditable="true" class="field-input" data-field="area" data-placeholder="例: 五反田">'+escapeHtml(d.area)+'</div></div>'+
-      '<div class="field"><label>最寄駅</label><div contenteditable="true" class="field-input" data-field="station" data-placeholder="例: 大崎広小路">'+escapeHtml(d.station)+'</div></div>'+
-    '</div>'+
-    '<div class="url-fields">'+
-      '<div class="url-field"><label><span>📸 Instagram アカウント</span>'+openLink(d.ig_account)+'</label><div contenteditable="true" class="url-input" data-field="ig_account" data-placeholder="https://www.instagram.com/...">'+escapeHtml(d.ig_account)+'</div></div>'+
-      '<div class="url-field"><label><span>📷 Instagram 投稿URL（埋め込み候補）</span>'+openLink(d.ig_post)+'</label><div contenteditable="true" class="url-input" data-field="ig_post" data-placeholder="https://www.instagram.com/p/...">'+escapeHtml(d.ig_post)+'</div></div>'+
-      '<div class="url-field"><label><span>▶️ YouTube URL（または X URL）</span>'+openLink(d.yt)+'</label><div contenteditable="true" class="url-input" data-field="yt" data-placeholder="https://www.youtube.com/...">'+escapeHtml(d.yt)+'</div></div>'+
-    '</div>'+
-    '<div class="note-field"><label>📝 メモ</label><div contenteditable="true" class="note-input" data-field="note">'+escapeHtml(d.note)+'</div></div>'+
+
+function renderCard(d) {
+  const openLink = u => u ? '<a class="url-open" href="' + escapeHtml(u) + '" target="_blank" rel="noopener">↗ 開く</a>' : '';
+  return '<div class="card ' + (d.done ? 'done' : '') + '" data-fid="' + escapeHtml(d.facility_id) + '">' +
+    '<div class="card-head">' +
+      '<div class="card-num">' + escapeHtml(d.facility_id) + '</div>' +
+      '<div contenteditable="true" class="card-name" data-field="name">' + escapeHtml(d.name) + '</div>' +
+      '<div class="card-done-check"><input type="checkbox" data-field="done" ' + (d.done ? 'checked' : '') + ' title="記事採用済み"></div>' +
+      '<button class="card-del" data-action="delete" title="削除">×</button>' +
+    '</div>' +
+    '<div class="card-meta">' +
+      '<div class="field"><label>エリア</label><div contenteditable="true" class="field-input" data-field="area" data-placeholder="例: 五反田">' + escapeHtml(d.area) + '</div></div>' +
+      '<div class="field"><label>最寄駅</label><div contenteditable="true" class="field-input" data-field="station" data-placeholder="例: 大崎広小路">' + escapeHtml(d.station) + '</div></div>' +
+    '</div>' +
+    '<div class="url-fields">' +
+      '<div class="url-field"><label><span>📸 Instagram アカウント</span>' + openLink(d.ig_account) + '</label><div contenteditable="true" class="url-input" data-field="ig_account" data-placeholder="https://www.instagram.com/...">' + escapeHtml(d.ig_account) + '</div></div>' +
+      '<div class="url-field"><label><span>📷 Instagram 投稿URL（埋め込み候補）</span>' + openLink(d.ig_post) + '</label><div contenteditable="true" class="url-input" data-field="ig_post" data-placeholder="https://www.instagram.com/p/...">' + escapeHtml(d.ig_post) + '</div></div>' +
+      '<div class="url-field"><label><span>▶️ YouTube URL（または X URL）</span>' + openLink(d.yt) + '</label><div contenteditable="true" class="url-input" data-field="yt" data-placeholder="https://www.youtube.com/...">' + escapeHtml(d.yt) + '</div></div>' +
+    '</div>' +
+    '<div class="note-field"><label>📝 メモ</label><div contenteditable="true" class="note-input" data-field="note">' + escapeHtml(d.note) + '</div></div>' +
   '</div>';
 }
-function wireEvents(){
-  document.querySelectorAll('[contenteditable]').forEach(el=>{
-    el.addEventListener('blur',()=>{
-      const idx=parseInt(el.closest('.card').dataset.idx);
-      const field=el.dataset.field;
-      const data=loadData();
-      data[idx][field]=el.textContent.trim();
-      saveData(data);
-      if(['ig_account','ig_post','yt'].includes(field))setTimeout(render,200);
+
+function wireEvents() {
+  document.querySelectorAll('[contenteditable]').forEach(el => {
+    el.addEventListener('blur', async () => {
+      const card = el.closest('.card');
+      const fid = card.dataset.fid;
+      const field = el.dataset.field;
+      const newValue = el.textContent.trim();
+      const item = cachedData.find(c => c.facility_id === fid);
+      if (!item || item[field] === newValue) return;
+      const oldValue = item[field];
+      item[field] = newValue;
+      card.classList.add('syncing');
+      try {
+        await updateRowByFacilityId(fid, { [field]: newValue });
+        card.classList.remove('syncing');
+        showSaveStatus();
+        clearError();
+        if (['ig_account','ig_post','yt'].includes(field)) setTimeout(render, 200);
+      } catch (e) {
+        item[field] = oldValue;
+        card.classList.remove('syncing');
+        showSaveStatus('保存失敗（再試行してください）', true);
+        showError('クラウドへの保存に失敗しました: ' + e.message);
+      }
     });
   });
-  document.querySelectorAll('input[type="checkbox"][data-field="done"]').forEach(el=>{
-    el.addEventListener('change',()=>{
-      const idx=parseInt(el.closest('.card').dataset.idx);
-      const data=loadData();
-      data[idx].done=el.checked;
-      saveData(data);
-      render();
+  document.querySelectorAll('input[type="checkbox"][data-field="done"]').forEach(el => {
+    el.addEventListener('change', async () => {
+      const card = el.closest('.card');
+      const fid = card.dataset.fid;
+      const item = cachedData.find(c => c.facility_id === fid);
+      if (!item) return;
+      const oldValue = item.done;
+      item.done = el.checked;
+      try {
+        await updateRowByFacilityId(fid, { done: el.checked });
+        showSaveStatus();
+        render();
+      } catch (e) {
+        item.done = oldValue;
+        el.checked = oldValue;
+        showSaveStatus('保存失敗', true);
+      }
     });
   });
-  document.querySelectorAll('[data-action="delete"]').forEach(el=>{
-    el.addEventListener('click',()=>{
-      const idx=parseInt(el.closest('.card').dataset.idx);
-      const data=loadData();
-      const name=data[idx].name||'無題';
-      if(!confirm('「'+name+'」を削除しますか？'))return;
-      data.splice(idx,1);
-      saveData(data);
-      render();
+  document.querySelectorAll('[data-action="delete"]').forEach(el => {
+    el.addEventListener('click', async () => {
+      const card = el.closest('.card');
+      const fid = card.dataset.fid;
+      const item = cachedData.find(c => c.facility_id === fid);
+      if (!item) return;
+      const name = item.name || '無題';
+      if (!confirm('「' + name + '」を削除しますか？\n(クラウドからも削除されます)')) return;
+      card.classList.add('syncing');
+      try {
+        await deleteRowByFacilityId(fid);
+        cachedData = cachedData.filter(c => c.facility_id !== fid);
+        render();
+        showSaveStatus('削除しました');
+      } catch (e) {
+        card.classList.remove('syncing');
+        showSaveStatus('削除失敗', true);
+      }
     });
   });
 }
-function addFacility(){
-  const data=loadData();
-  const nextId='F'+String(data.length+1).padStart(3,'0');
-  data.unshift({id:nextId,name:'',area:'',station:'',ig_account:'',ig_post:'',yt:'',note:'',done:false});
-  saveData(data);
-  render();
-  setTimeout(()=>{const first=document.querySelector('.card-name');if(first)first.focus();},100);
+
+async function addFacility() {
+  const btn = document.querySelector('.btn-primary');
+  btn.disabled = true;
+  const existingFids = cachedData.map(c => c.facility_id);
+  let n = cachedData.length + 1;
+  let newFid = 'F' + String(n).padStart(3, '0');
+  while (existingFids.includes(newFid)) { n++; newFid = 'F' + String(n).padStart(3, '0'); }
+  const newOrder = cachedData.length > 0 ? Math.max(...cachedData.map(c => c.display_order || 0)) + 1 : 1;
+  try {
+    const created = await insertRow({ facility_id: newFid, name: '', area: '', station: '', ig_account: '', ig_post: '', yt: '', note: '', done: false, display_order: newOrder });
+    cachedData.push(created);
+    render();
+    showSaveStatus('追加しました');
+    setTimeout(() => { const newCard = document.querySelector('.card[data-fid="' + newFid + '"] .card-name'); if (newCard) newCard.focus(); }, 100);
+  } catch (e) {
+    showSaveStatus('追加失敗', true);
+    showError(e.message);
+  } finally {
+    btn.disabled = false;
+  }
 }
-function csvCell(v){v=String(v||'');return v.includes(',')||v.includes('"')||v.includes('\n')?'"'+v.replace(/"/g,'""')+'"':v;}
-function exportCSV(){
-  const data=loadData();
-  const headers=['ID','施設名','エリア','最寄駅','IGアカウント','IG投稿URL','YouTube URL','メモ','完了'];
-  const rows=[headers.map(csvCell).join(',')];
-  data.forEach(d=>rows.push([d.id,d.name,d.area,d.station,d.ig_account,d.ig_post,d.yt,d.note,d.done?'○':''].map(csvCell).join(',')));
-  const csv='\uFEFF'+rows.join('\n');
-  const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');
-  a.href=url;
-  a.download='coworkmill-urls-pool-'+new Date().toISOString().slice(0,10)+'.csv';
+
+async function manualRefresh() {
+  const btn = document.getElementById('btn-refresh');
+  btn.disabled = true;
+  try {
+    cachedData = await fetchAll();
+    render();
+    showSaveStatus('最新データを読み込みました');
+    clearError();
+  } catch (e) {
+    showError(e.message);
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+function csvCell(v) { v = String(v || ''); return v.includes(',') || v.includes('"') || v.includes('\n') ? '"' + v.replace(/"/g, '""') + '"' : v; }
+function exportCSV() {
+  const headers = ['ID','施設名','エリア','最寄駅','IGアカウント','IG投稿URL','YouTube URL','メモ','完了'];
+  const rows = [headers.map(csvCell).join(',')];
+  cachedData.forEach(d => rows.push([d.facility_id, d.name, d.area, d.station, d.ig_account, d.ig_post, d.yt, d.note, d.done ? '○' : ''].map(csvCell).join(',')));
+  const csv = '\uFEFF' + rows.join('\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'coworkmill-urls-pool-' + new Date().toISOString().slice(0,10) + '.csv';
   a.click();
   URL.revokeObjectURL(url);
 }
-document.getElementById('search').addEventListener('input',render);
-render();
+
+async function init() {
+  try {
+    let remote = await fetchAll();
+    await migrateFromLocalStorage(remote);
+    cachedData = await fetchAll();
+    render();
+  } catch (e) {
+    showError('クラウドに接続できませんでした: ' + e.message);
+    document.getElementById('grid').innerHTML = '<div class="empty">⚠ データの読み込みに失敗しました。 「🔄 更新」ボタンで再試行してください。</div>';
+  }
+}
+
+document.getElementById('search').addEventListener('input', render);
+init();
 </script>
 </body>
 </html>
