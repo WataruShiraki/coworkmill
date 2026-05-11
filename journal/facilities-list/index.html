@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>施設マスタ — COWORKMILL journal</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<style>
+* { box-sizing: border-box; }
+body { margin: 0; padding: 0; font-family: -apple-system, 'Hiragino Sans', sans-serif; background: #121212; color: #f0f0f0; }
+.container { padding: 24px; }
+.header { border-bottom: 1px solid #2a2a2a; padding-bottom: 16px; margin-bottom: 20px; }
+.header h1 { margin: 0 0 8px; font-size: 22px; background: linear-gradient(135deg, #79F1A4, #0E5CAD); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; display: inline-block; }
+.header p { margin: 0; color: #888; font-size: 13px; line-height: 1.6; }
+.filter-bar { display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; align-items: center; }
+.search-input { flex: 1; min-width: 240px; padding: 10px 14px; background: #1a1a1a; border: 1px solid #333; color: #f0f0f0; border-radius: 8px; font-size: 14px; }
+.search-input:focus { border-color: #79F1A4; outline: none; }
+.add-btn { background: linear-gradient(135deg, #79F1A4, #0E5CAD); color: #000; border: none; padding: 10px 18px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 13px; }
+.tag-filters { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+.tag-chip { padding: 5px 12px; background: #1a1a1a; border: 1px solid #333; border-radius: 20px; font-size: 12px; cursor: pointer; user-select: none; }
+.tag-chip:hover { border-color: #555; }
+.tag-chip.on { background: linear-gradient(135deg, #79F1A4, #0E5CAD); color: #000; border-color: transparent; font-weight: 700; }
+.hit-count { margin-bottom: 12px; font-size: 14px; color: #888; padding: 10px 14px; background: #1a1a1a; border-radius: 8px; }
+.hit-count.candidate { color: #000; background: linear-gradient(135deg, #79F1A4, #0E5CAD); font-weight: 700; font-size: 16px; }
+.table-wrap { overflow-x: auto; margin-bottom: 40px; border: 1px solid #2a2a2a; border-radius: 8px; }
+table { border-collapse: collapse; font-size: 12px; white-space: nowrap; width: max-content; }
+th, td { padding: 6px 8px; border-bottom: 1px solid #2a2a2a; border-right: 1px solid #2a2a2a; }
+th { background: #1a1a1a; position: sticky; top: 0; font-weight: 700; text-align: left; font-size: 11px; color: #aaa; z-index: 2; }
+th.tag-th { writing-mode: vertical-rl; text-orientation: mixed; text-align: center; min-width: 32px; height: 110px; padding: 8px 4px; }
+td.tag-cell { text-align: center; padding: 4px 0; min-width: 32px; }
+td.tag-cell input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; accent-color: #79F1A4; }
+td.brand-cell input, td.name-cell input, td.station-cell input { background: transparent; border: 1px solid transparent; color: #f0f0f0; padding: 4px 8px; width: 100%; font-size: 12px; font-family: inherit; }
+td.brand-cell input { min-width: 100px; }
+td.name-cell input { min-width: 200px; }
+td.station-cell input { min-width: 100px; }
+td input:hover { border-color: #333; }
+td input:focus { border-color: #79F1A4; outline: none; background: #1a1a1a; }
+tr.candidate { background: rgba(121, 241, 164, 0.06); }
+tr:hover { background: rgba(255, 255, 255, 0.03); }
+.empty { padding: 60px 40px; text-align: center; color: #666; }
+.save-indicator { position: fixed; bottom: 20px; right: 20px; padding: 10px 18px; background: rgba(121, 241, 164, 0.95); color: #000; border-radius: 8px; font-weight: 700; opacity: 0; transition: opacity 0.2s; pointer-events: none; font-size: 13px; }
+.save-indicator.show { opacity: 1; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <h1>施設マスタ</h1>
+    <p>雰囲気タグで絞り込むと、 5件以上ヒット時に「記事化候補」マークが出ます。 チェックは即保存（Supabase）です。</p>
+  </div>
+  <div class="filter-bar">
+    <input type="search" class="search-input" placeholder="🔍 ブランド・施設名・駅で検索" id="search">
+    <button class="add-btn" id="add-btn">+ 新規施設追加</button>
+  </div>
+  <div class="tag-filters" id="tag-filters"></div>
+  <div class="hit-count" id="hit-count">読み込み中...</div>
+  <div class="table-wrap"><table><thead><tr id="thead-row"></tr></thead><tbody id="tbody"></tbody></table></div>
+</div>
+<div class="save-indicator" id="save-indicator">✓ 保存しました</div>
+<script>
+const SUPABASE_URL = 'https://jakwntemjkwqwaqujffh.supabase.co';
+const KEY = 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+const HEADERS = { 'apikey': KEY, 'Authorization': 'Bearer ' + KEY, 'Content-Type': 'application/json' };
+const TAGS = ['都市の高層階','古民家・町家','自然・山・海','倉庫・工場跡','ホテル併設','ミュージアム隣接','駅直結','ミニマル・無機質','テラス・屋外席','川沿い・水辺','緑・植物いっぱい','ライブラリー・書棚','歴史的建造物・レトロ','路地裏・隠れ家','アート・ギャラリー空間','吹き抜け・高天井'];
+let allSpaces = [];
+let activeFilters = new Set();
+let searchQuery = '';
+function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+function showSave() { const el = document.getElementById('save-indicator'); el.classList.add('show'); clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove('show'), 1200); }
+async function loadSpaces() {
+  const r = await fetch(SUPABASE_URL + '/rest/v1/spaces?select=id,name,brand,nearest_station,atmosphere_tags,status&order=brand.asc.nullslast,name.asc&limit=500', { headers: HEADERS });
+  if (!r.ok) { document.getElementById('hit-count').textContent = '❌ 読み込み失敗: ' + r.status; return; }
+  allSpaces = await r.json();
+}
+function renderTagFilters() {
+  const wrap = document.getElementById('tag-filters');
+  wrap.innerHTML = '';
+  for (const tag of TAGS) {
+    const c = document.createElement('span');
+    c.className = 'tag-chip';
+    c.textContent = tag;
+    c.onclick = () => { c.classList.toggle('on'); if (c.classList.contains('on')) activeFilters.add(tag); else activeFilters.delete(tag); render(); };
+    wrap.appendChild(c);
+  }
+}
+function renderThead() {
+  document.getElementById('thead-row').innerHTML = '<th>ブランド</th><th>施設店名</th><th>最寄駅</th>' + TAGS.map(t => '<th class="tag-th">' + esc(t) + '</th>').join('');
+}
+function filtered() {
+  let list = allSpaces;
+  if (searchQuery) { const q = searchQuery.toLowerCase(); list = list.filter(s => (s.brand || '').toLowerCase().includes(q) || (s.name || '').toLowerCase().includes(q) || (s.nearest_station || '').toLowerCase().includes(q)); }
+  if (activeFilters.size > 0) { list = list.filter(s => { const tags = s.atmosphere_tags || []; for (const t of activeFilters) if (!tags.includes(t)) return false; return true; }); }
+  return list;
+}
+function updateHitCount() {
+  const list = filtered();
+  const hitEl = document.getElementById('hit-count');
+  if (list.length >= 5 && activeFilters.size > 0) {
+    const tl = Array.from(activeFilters).join(' × ');
+    hitEl.innerHTML = '🎉 ' + list.length + '件ヒット — 「' + esc(tl) + '」' + list.length + '選で記事化候補です！';
+    hitEl.classList.add('candidate');
+  } else if (activeFilters.size > 0) {
+    hitEl.textContent = list.length + ' 件（5件以上で記事化候補マーク）/ 全 ' + allSpaces.length + ' 施設';
+    hitEl.classList.remove('candidate');
+  } else {
+    hitEl.textContent = list.length + ' 件 / 全 ' + allSpaces.length + ' 施設';
+    hitEl.classList.remove('candidate');
+  }
+}
+function render() {
+  const list = filtered();
+  updateHitCount();
+  const tbody = document.getElementById('tbody');
+  tbody.innerHTML = '';
+  if (list.length === 0) { tbody.innerHTML = '<tr><td colspan="' + (3 + TAGS.length) + '" class="empty">該当する施設がありません</td></tr>'; return; }
+  const isCand = activeFilters.size > 0 && list.length >= 5;
+  for (const s of list) {
+    const tr = document.createElement('tr');
+    if (isCand) tr.className = 'candidate';
+    let h = '<td class="brand-cell"><input value="' + esc(s.brand) + '" data-id="' + s.id + '" data-field="brand" placeholder="ブランド"></td>' +
+      '<td class="name-cell"><input value="' + esc(s.name) + '" data-id="' + s.id + '" data-field="name"></td>' +
+      '<td class="station-cell"><input value="' + esc(s.nearest_station) + '" data-id="' + s.id + '" data-field="nearest_station" placeholder="駅"></td>';
+    for (const t of TAGS) { const c = (s.atmosphere_tags || []).includes(t); h += '<td class="tag-cell"><input type="checkbox" data-id="' + s.id + '" data-tag="' + esc(t) + '"' + (c ? ' checked' : '') + '></td>'; }
+    tr.innerHTML = h;
+    tbody.appendChild(tr);
+  }
+  bindHandlers();
+}
+function bindHandlers() {
+  const tbody = document.getElementById('tbody');
+  tbody.querySelectorAll('input[type="checkbox"]').forEach(cb => { cb.onchange = () => onTagToggle(cb.dataset.id, cb.dataset.tag, cb.checked); });
+  tbody.querySelectorAll('input:not([type="checkbox"])').forEach(inp => { let t; inp.oninput = () => { clearTimeout(t); t = setTimeout(() => onFieldEdit(inp.dataset.id, inp.dataset.field, inp.value), 700); }; });
+}
+async function onTagToggle(id, tag, ck) {
+  const s = allSpaces.find(x => x.id === id);
+  if (!s) return;
+  const tags = new Set(s.atmosphere_tags || []);
+  if (ck) tags.add(tag); else tags.delete(tag);
+  s.atmosphere_tags = Array.from(tags);
+  await fetch(SUPABASE_URL + '/rest/v1/spaces?id=eq.' + id, { method: 'PATCH', headers: HEADERS, body: JSON.stringify({ atmosphere_tags: s.atmosphere_tags }) });
+  showSave();
+  updateHitCount();
+}
+async function onFieldEdit(id, field, val) {
+  const s = allSpaces.find(x => x.id === id);
+  if (!s) return;
+  s[field] = val;
+  await fetch(SUPABASE_URL + '/rest/v1/spaces?id=eq.' + id, { method: 'PATCH', headers: HEADERS, body: JSON.stringify({ [field]: val || null }) });
+  showSave();
+}
+document.getElementById('search').oninput = (e) => { searchQuery = e.target.value; render(); };
+document.getElementById('add-btn').onclick = async () => {
+  const name = prompt('施設店名（必須）');
+  if (!name) return;
+  const brand = prompt('ブランド名（任意・1店舗運営なら空でOK）') || null;
+  const station = prompt('最寄駅（任意）') || null;
+  const ns = { name, brand, nearest_station: station, status: 'live', atmosphere_tags: [], slug: 'manual-' + Date.now() };
+  const r = await fetch(SUPABASE_URL + '/rest/v1/spaces', { method: 'POST', headers: { ...HEADERS, 'Prefer': 'return=representation' }, body: JSON.stringify(ns) });
+  if (!r.ok) { alert('追加失敗: ' + r.status + ' — ' + await r.text()); return; }
+  const created = await r.json();
+  if (Array.isArray(created) && created[0]) { allSpaces.unshift(created[0]); render(); showSave(); }
+};
+(async () => { renderTagFilters(); renderThead(); await loadSpaces(); render(); })();
+</script>
+</body>
+</html>
