@@ -121,6 +121,19 @@ const SUPABASE_KEY = 'sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
 const TABLE = 'journal_url_pool';
 const LOCAL_STORAGE_KEY = 'coworkmill-journal-urls-pool-v1';
 const MIGRATION_KEY = 'coworkmill-journal-urls-pool-migrated';
+const DEFAULT_FACILITIES = [
+  { facility_id: 'F001', name: 'co-lab 五反田 with JPRE', area: '五反田', station: '大崎広小路', ig_account: 'https://www.instagram.com/colab.jp/', ig_post: '', yt: '', note: 'クリエイター専用 / MUSE Design Award金賞', done: false, display_order: 1 },
+  { facility_id: 'F002', name: 'MID POINT 目黒不動前', area: '五反田/不動前', station: '不動前', ig_account: 'https://www.instagram.com/midpoint_share_office/', ig_post: '', yt: '', note: '乃村工藝社デザイン / 職住近接', done: false, display_order: 2 },
+  { facility_id: 'F003', name: '私のコワーキング', area: '五反田', station: '五反田', ig_account: 'https://www.instagram.com/watashino_tachinomi/', ig_post: '', yt: '', note: '立ち呫み併設 / IT交流', done: false, display_order: 3 },
+  { facility_id: 'F004', name: 'コワーキングスペースpao', area: '五反田', station: '五反田', ig_account: '', ig_post: '', yt: 'https://twitter.com/paogotanda', note: 'X中心 @paogotanda / IGなし', done: false, display_order: 4 },
+  { facility_id: 'F005', name: 'Basis Point 五反田店', area: '五反田', station: '五反田', ig_account: 'https://www.instagram.com/basispoint_official/', ig_post: 'https://www.instagram.com/p/DUpolXhkzT4/?img_index=1', yt: '', note: 'カルーセル投稿 / 採用済み（五反田選）', done: true, display_order: 5 }
+];
+
+async function seedDefaultsIfEmpty() {
+  for (const f of DEFAULT_FACILITIES) {
+    try { await insertRow(f); } catch(e) { console.warn('seed skip', f.facility_id, e.message); }
+  }
+}
 
 let cachedData = [];
 let saveTimer;
@@ -375,9 +388,15 @@ function exportCSV() {
 async function init() {
   try {
     let remote = await fetchAll();
+    if (remote.length === 0) {
+      showSaveStatus('初期データをクラウドに投入中...');
+      await seedDefaultsIfEmpty();
+      remote = await fetchAll();
+    }
     await migrateFromLocalStorage(remote);
     cachedData = await fetchAll();
     render();
+    if (cachedData.length > 0) showSaveStatus(cachedData.length + ' 件を読み込みました');
   } catch (e) {
     showError('クラウドに接続できませんでした: ' + e.message);
     document.getElementById('grid').innerHTML = '<div class="empty">⚠ データの読み込みに失敗しました。 「🔄 更新」ボタンで再試行してください。</div>';
