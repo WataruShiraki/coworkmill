@@ -27,6 +27,9 @@ body { margin: 0; padding: 0; font-family: -apple-system, 'Hiragino Sans', sans-
 table { border-collapse: collapse; font-size: 12px; white-space: nowrap; width: max-content; }
 th, td { padding: 6px 8px; border-bottom: 1px solid #2a2a2a; border-right: 1px solid #2a2a2a; }
 th { background: #1a1a1a; position: sticky; top: 0; font-weight: 700; text-align: left; font-size: 11px; color: #aaa; z-index: 2; }
+th.sortable { cursor: pointer; user-select: none; }
+th.sortable:hover { background: #2a2a2a; color: #fff; }
+th.sortable .arrow { color: #79F1A4; font-weight: 900; margin-left: 4px; }
 th.tag-th { writing-mode: vertical-rl; text-orientation: mixed; text-align: center; min-width: 32px; height: 110px; padding: 8px 4px; }
 th.url-th { min-width: 80px; max-width: 80px; text-align: center; }
 th.memo-th { min-width: 160px; }
@@ -67,7 +70,7 @@ tr.verified:hover td { opacity: 0.8; }
 <div class="container">
   <div class="header">
     <h1>施設マスタ</h1>
-    <p>左端の ✅入力完了マーク｜🏠 COWORKMILL 掲載済か（非掲載 = 営業先候補）。 雰囲気タグ 5件以上ヒットで「記事化候補」マーク。 編集は即保存。</p>
+    <p>左端の ✅入力完了マーク｜🏠 COWORKMILL 掲載済か（非掲載 = 営業先候補）。 列ヘッダクリックで昇順↑/降順↓ソート。 編集は即保存。</p>
   </div>
   <div class="filter-bar">
     <input type="search" class="search-input" placeholder="🔍 施設名・駅・エリア・メモで検索（例: サウナ, 仙台エリア）" id="search">
@@ -97,21 +100,12 @@ const URL_FIELDS = [
   { key: 'youtube_url', label: 'YT', icon: '🎬' },
   { key: 'twitter_url', label: 'X', icon: '𝕏' }
 ];
-const REGION_AREAS = [
-  '渋谷エリア','新宿エリア','池袋エリア','銀座・有楽町エリア',
-  '丸の内・大手町エリア','六本木エリア','五反田・品川エリア',
-  '恵比寿・中目黒エリア','表参道・青山エリア','秋葉原・神田エリア',
-  '上野・浅草エリア','多摩エリア',
-  '横浜エリア','川崎エリア','鎌倉・湘南エリア',
-  'さいたまエリア','千葉エリア','軽井沢エリア',
-  '札幌エリア','仙台エリア','金沢エリア','名古屋エリア',
-  '京都エリア','大阪エリア','神戸エリア','広島エリア',
-  '福岡エリア','沖縄エリア','その他'
-];
+const REGION_AREAS = ['渋谷エリア','新宿エリア','池袋エリア','銀座・有楽町エリア','丸の内・大手町エリア','六本木エリア','五反田・品川エリア','恵比寿・中目黒エリア','表参道・青山エリア','秋葉原・神田エリア','上野・浅草エリア','多摩エリア','横浜エリア','川崎エリア','鎌倉・湘南エリア','さいたまエリア','千葉エリア','軽井沢エリア','札幌エリア','仙台エリア','金沢エリア','名古屋エリア','京都エリア','大阪エリア','神戸エリア','広島エリア','福岡エリア','沖縄エリア','その他'];
 let allSpaces = [];
 let activeFilters = new Set();
 let searchQuery = '';
 let sortMode = 'name';
+let columnSort = { field: null, dir: null };
 function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
 function showSave() { const el = document.getElementById('save-indicator'); el.classList.add('show'); clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove('show'), 1200); }
 async function loadSpaces() {
@@ -121,47 +115,63 @@ async function loadSpaces() {
   allSpaces = all.filter(s => s.status !== 'archived');
 }
 function renderTagFilters() {
-  const wrap = document.getElementById('tag-filters');
-  wrap.innerHTML = '';
+  const wrap = document.getElementById('tag-filters'); wrap.innerHTML = '';
   for (const tag of TAGS) {
-    const c = document.createElement('span');
-    c.className = 'tag-chip';
-    c.textContent = tag;
+    const c = document.createElement('span'); c.className = 'tag-chip'; c.textContent = tag;
     c.onclick = () => { c.classList.toggle('on'); if (c.classList.contains('on')) activeFilters.add(tag); else activeFilters.delete(tag); render(); };
     wrap.appendChild(c);
   }
 }
+function arrowFor(field) {
+  if (columnSort.field !== field) return '';
+  if (columnSort.dir === 'asc') return ' <span class="arrow">↑</span>';
+  if (columnSort.dir === 'desc') return ' <span class="arrow">↓</span>';
+  return '';
+}
 function renderThead() {
-  let h = '<th class="ver-th" title="入力完了">✅</th><th class="cwm-th" title="COWORKMILL掲載済">🏠</th><th>施設店名</th><th>最寄駅</th><th class="area-th">🗾 エリア</th><th class="memo-th">📝 メモ</th>';
+  let h = '<th class="ver-th" title="入力完了">✅</th><th class="cwm-th" title="COWORKMILL掲載済">🏠</th>';
+  h += '<th class="sortable" data-sort="name">施設店名' + arrowFor('name') + '</th>';
+  h += '<th class="sortable" data-sort="nearest_station">最寄駅' + arrowFor('nearest_station') + '</th>';
+  h += '<th class="sortable area-th" data-sort="region_area">🗾 エリア' + arrowFor('region_area') + '</th>';
+  h += '<th class="sortable memo-th" data-sort="tag_notes">📝 メモ' + arrowFor('tag_notes') + '</th>';
   for (const u of URL_FIELDS) h += '<th class="url-th">' + u.icon + ' ' + u.label + '</th>';
   h += TAGS.map(t => '<th class="tag-th">' + esc(t) + '</th>').join('');
   h += '<th class="del-th">🗑️</th>';
   document.getElementById('thead-row').innerHTML = h;
+  document.querySelectorAll('th.sortable').forEach(th => { th.onclick = () => onHeaderClick(th.dataset.sort); });
+}
+function onHeaderClick(field) {
+  if (columnSort.field === field) {
+    if (columnSort.dir === 'asc') columnSort.dir = 'desc';
+    else if (columnSort.dir === 'desc') { columnSort.field = null; columnSort.dir = null; }
+    else columnSort.dir = 'asc';
+  } else { columnSort.field = field; columnSort.dir = 'asc'; }
+  renderThead(); render();
 }
 function filtered() {
   let list = allSpaces;
   if (searchQuery) {
     const q = searchQuery.toLowerCase();
-    list = list.filter(s =>
-      (s.name || '').toLowerCase().includes(q) ||
-      (s.nearest_station || '').toLowerCase().includes(q) ||
-      (s.region_area || '').toLowerCase().includes(q) ||
-      (s.tag_notes || '').toLowerCase().includes(q)
-    );
+    list = list.filter(s => (s.name || '').toLowerCase().includes(q) || (s.nearest_station || '').toLowerCase().includes(q) || (s.region_area || '').toLowerCase().includes(q) || (s.tag_notes || '').toLowerCase().includes(q));
   }
   if (activeFilters.size > 0) {
-    list = list.filter(s => {
-      const tags = s.atmosphere_tags || [];
-      for (const t of activeFilters) if (!tags.includes(t)) return false;
-      return true;
-    });
+    list = list.filter(s => { const tags = s.atmosphere_tags || []; for (const t of activeFilters) if (!tags.includes(t)) return false; return true; });
   }
   list = [...list];
-  if (sortMode === 'name') { list.sort((a, b) => (a.name || '').localeCompare(b.name || '', 'ja')); }
-  else if (sortMode === 'area') { list.sort((a, b) => { const ba = (a.region_area || 'ｚｚ').localeCompare(b.region_area || 'ｚｚ', 'ja'); if (ba !== 0) return ba; return (a.name || '').localeCompare(b.name || '', 'ja'); }); }
-  else if (sortMode === 'updated') { list.sort((a, b) => (b.updated_at || '').localeCompare(a.updated_at || '')); }
-  else if (sortMode === 'verified') { list.sort((a, b) => { const av = a.is_verified ? 1 : 0; const bv = b.is_verified ? 1 : 0; if (av !== bv) return av - bv; return (a.name || '').localeCompare(b.name || '', 'ja'); }); }
-  else if (sortMode === 'cwm-unlisted') { list.sort((a, b) => { const ac = a.is_listed_on_coworkmill ? 1 : 0; const bc = b.is_listed_on_coworkmill ? 1 : 0; if (ac !== bc) return ac - bc; return (a.name || '').localeCompare(b.name || '', 'ja'); }); }
+  if (columnSort.field && columnSort.dir) {
+    const f = columnSort.field;
+    list.sort((a, b) => {
+      const av = (a[f] || '').toString(); const bv = (b[f] || '').toString();
+      if (!av && bv) return 1; if (av && !bv) return -1; if (!av && !bv) return 0;
+      const cmp = av.localeCompare(bv, 'ja'); return columnSort.dir === 'asc' ? cmp : -cmp;
+    });
+  } else {
+    if (sortMode === 'name') { list.sort((a, b) => (a.name || '').localeCompare(b.name || '', 'ja')); }
+    else if (sortMode === 'area') { list.sort((a, b) => { const ba = (a.region_area || 'ｚｚ').localeCompare(b.region_area || 'ｚｚ', 'ja'); if (ba !== 0) return ba; return (a.name || '').localeCompare(b.name || '', 'ja'); }); }
+    else if (sortMode === 'updated') { list.sort((a, b) => (b.updated_at || '').localeCompare(a.updated_at || '')); }
+    else if (sortMode === 'verified') { list.sort((a, b) => { const av = a.is_verified ? 1 : 0; const bv = b.is_verified ? 1 : 0; if (av !== bv) return av - bv; return (a.name || '').localeCompare(b.name || '', 'ja'); }); }
+    else if (sortMode === 'cwm-unlisted') { list.sort((a, b) => { const ac = a.is_listed_on_coworkmill ? 1 : 0; const bc = b.is_listed_on_coworkmill ? 1 : 0; if (ac !== bc) return ac - bc; return (a.name || '').localeCompare(b.name || '', 'ja'); }); }
+  }
   return list;
 }
 function updateHitCount() {
@@ -185,22 +195,18 @@ function updateHitCount() {
   }
 }
 function urlCellHtml(s, field) {
-  const val = s[field] || '';
-  const hasVal = val && val.length > 0;
+  const val = s[field] || ''; const hasVal = val && val.length > 0;
   const linkBtn = hasVal ? '<a href="' + esc(val) + '" target="_blank" rel="noopener" title="開く">🔗</a>' : '';
   return '<td class="url-cell text-cell"><div class="url-wrap"><input value="' + esc(val) + '" data-id="' + s.id + '" data-field="' + field + '" placeholder="URL">' + linkBtn + '</div></td>';
 }
 function areaCellHtml(s) {
-  let opts = '<option value="">（未設定）</option>';
-  const cur = s.region_area || '';
+  let opts = '<option value="">（未設定）</option>'; const cur = s.region_area || '';
   for (const a of REGION_AREAS) opts += '<option value="' + esc(a) + '"' + (a === cur ? ' selected' : '') + '>' + esc(a) + '</option>';
   return '<td class="area-cell"><select data-id="' + s.id + '" data-field="region_area">' + opts + '</select></td>';
 }
 function render() {
-  const list = filtered();
-  updateHitCount();
-  const tbody = document.getElementById('tbody');
-  tbody.innerHTML = '';
+  const list = filtered(); updateHitCount();
+  const tbody = document.getElementById('tbody'); tbody.innerHTML = '';
   const colCount = 7 + URL_FIELDS.length + TAGS.length;
   if (list.length === 0) { tbody.innerHTML = '<tr><td colspan="' + colCount + '" class="empty">該当する施設がありません</td></tr>'; return; }
   const q = (searchQuery || '').toLowerCase();
@@ -208,9 +214,7 @@ function render() {
   const isCand = (activeFilters.size > 0 || hasMemoOrAreaSearch) && list.length >= 5;
   for (const s of list) {
     const tr = document.createElement('tr');
-    const classes = [];
-    if (isCand) classes.push('candidate');
-    if (s.is_verified) classes.push('verified');
+    const classes = []; if (isCand) classes.push('candidate'); if (s.is_verified) classes.push('verified');
     if (classes.length > 0) tr.className = classes.join(' ');
     let h = '<td class="ver-cell"><input type="checkbox" class="ver-cb" data-id="' + s.id + '"' + (s.is_verified ? ' checked' : '') + '></td>' +
       '<td class="cwm-cell"><input type="checkbox" class="cwm-cb" data-id="' + s.id + '"' + (s.is_listed_on_coworkmill ? ' checked' : '') + ' title="COWORKMILL 掲載済"></td>' +
@@ -221,8 +225,7 @@ function render() {
     for (const u of URL_FIELDS) h += urlCellHtml(s, u.key);
     for (const t of TAGS) { const c = (s.atmosphere_tags || []).includes(t); h += '<td class="tag-cell"><input type="checkbox" class="tag-cb" data-id="' + s.id + '" data-tag="' + esc(t) + '"' + (c ? ' checked' : '') + '></td>'; }
     h += '<td class="del-cell"><button class="del-btn" data-id="' + s.id + '" data-name="' + esc(s.name) + '" title="削除">🗑️</button></td>';
-    tr.innerHTML = h;
-    tbody.appendChild(tr);
+    tr.innerHTML = h; tbody.appendChild(tr);
   }
   bindHandlers();
 }
@@ -236,27 +239,19 @@ function bindHandlers() {
   tbody.querySelectorAll('.del-btn').forEach(btn => { btn.onclick = () => onDelete(btn.dataset.id, btn.dataset.name); });
 }
 async function onTagToggle(id, tag, ck) {
-  const s = allSpaces.find(x => x.id === id);
-  if (!s) return;
-  const tags = new Set(s.atmosphere_tags || []);
-  if (ck) tags.add(tag); else tags.delete(tag);
+  const s = allSpaces.find(x => x.id === id); if (!s) return;
+  const tags = new Set(s.atmosphere_tags || []); if (ck) tags.add(tag); else tags.delete(tag);
   s.atmosphere_tags = Array.from(tags);
   await fetch(SUPABASE_URL + '/rest/v1/spaces?id=eq.' + id, { method: 'PATCH', headers: HEADERS, body: JSON.stringify({ atmosphere_tags: s.atmosphere_tags }) });
-  showSave();
-  updateHitCount();
+  showSave(); updateHitCount();
 }
 async function onBoolField(id, field, ck) {
-  const s = allSpaces.find(x => x.id === id);
-  if (!s) return;
-  s[field] = ck;
+  const s = allSpaces.find(x => x.id === id); if (!s) return; s[field] = ck;
   await fetch(SUPABASE_URL + '/rest/v1/spaces?id=eq.' + id, { method: 'PATCH', headers: HEADERS, body: JSON.stringify({ [field]: ck }) });
-  showSave();
-  render();
+  showSave(); render();
 }
 async function onFieldEdit(id, field, val) {
-  const s = allSpaces.find(x => x.id === id);
-  if (!s) return;
-  s[field] = val;
+  const s = allSpaces.find(x => x.id === id); if (!s) return; s[field] = val;
   await fetch(SUPABASE_URL + '/rest/v1/spaces?id=eq.' + id, { method: 'PATCH', headers: HEADERS, body: JSON.stringify({ [field]: val || null }) });
   showSave();
   if (field === 'tag_notes' || field === 'region_area') updateHitCount();
@@ -265,15 +260,12 @@ async function onDelete(id, name) {
   if (!confirm('「' + name + '」を削除しますか？\n（status=archived にする論理削除です。 DBには残ります。）')) return;
   const r = await fetch(SUPABASE_URL + '/rest/v1/spaces?id=eq.' + id, { method: 'PATCH', headers: HEADERS, body: JSON.stringify({ status: 'archived' }) });
   if (!r.ok) { alert('削除失敗: ' + r.status + ' — ' + await r.text()); return; }
-  allSpaces = allSpaces.filter(x => x.id !== id);
-  render();
-  showSave();
+  allSpaces = allSpaces.filter(x => x.id !== id); render(); showSave();
 }
 document.getElementById('search').oninput = (e) => { searchQuery = e.target.value; render(); };
-document.getElementById('sort').onchange = (e) => { sortMode = e.target.value; render(); };
+document.getElementById('sort').onchange = (e) => { sortMode = e.target.value; columnSort = { field: null, dir: null }; renderThead(); render(); };
 document.getElementById('add-btn').onclick = async () => {
-  const name = prompt('施設店名（必須）');
-  if (!name) return;
+  const name = prompt('施設店名（必須）'); if (!name) return;
   const station = prompt('最寄駅（任意）') || null;
   const ns = { name, nearest_station: station, status: 'live', atmosphere_tags: [], slug: 'manual-' + Date.now() };
   const r = await fetch(SUPABASE_URL + '/rest/v1/spaces', { method: 'POST', headers: { ...HEADERS, 'Prefer': 'return=representation' }, body: JSON.stringify(ns) });
