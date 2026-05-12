@@ -636,7 +636,7 @@ let allSpaces = [];
 
 async function loadSpaces() {
   try {
-    const data = await sbGet('spaces?select=id,name,area,prefecture,plan,status,contact_name,contact_email,created_at&order=created_at.desc');
+    const data = await sbGet('spaces?select=id,name,area,prefecture,plan,status,contact_name,contact_email,created_at&status=neq.archived&order=created_at.desc');
     if (!Array.isArray(data)) return;
     allSpaces = data;
 
@@ -867,7 +867,7 @@ async function loadAccounts() {
     // accountsとspacesのカウントを同時取得
     const [data, spacesData] = await Promise.all([
       sbGet('accounts?select=id,company,email,plan,paid_until,status,created_at&order=created_at.desc', true),
-      sbGet('spaces?select=account_id')
+      sbGet('spaces?select=account_id&status=neq.archived')
     ]);
     // account_idごとの施設数を集計
     const spaceCountMap = {};

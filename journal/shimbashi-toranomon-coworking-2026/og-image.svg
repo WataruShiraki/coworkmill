@@ -1,263 +1,31 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+<svg viewBox="0 0 1200 675" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
   <defs>
-    <!-- 夜空グラデーション：濃紺→紫→オレンジ -->
-    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#070b1c"/>
-      <stop offset="40%" stop-color="#0a1635"/>
-      <stop offset="75%" stop-color="#2d1f3f"/>
-      <stop offset="92%" stop-color="#723426"/>
-      <stop offset="100%" stop-color="#FF6B35" stop-opacity="0.95"/>
-    </linearGradient>
-
-    <!-- ビル群の前景に重ねるダーク化 -->
-    <linearGradient id="buildingShade" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#000" stop-opacity="0"/>
-      <stop offset="100%" stop-color="#000" stop-opacity="0.5"/>
-    </linearGradient>
-
-    <!-- オレンジのグロー -->
-    <radialGradient id="sunGlow" cx="80%" cy="85%" r="40%">
-      <stop offset="0%" stop-color="#FF6B35" stop-opacity="0.45"/>
-      <stop offset="100%" stop-color="#FF6B35" stop-opacity="0"/>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&amp;family=Noto+Sans+JP:wght@400;500;700&amp;display=swap');
+    </style>
+    <radialGradient id="navy" cx="78%" cy="20%" r="55%">
+      <stop offset="0%" stop-color="#2C4870" stop-opacity="0.38"/>
+      <stop offset="60%" stop-color="#2C4870" stop-opacity="0"/>
     </radialGradient>
-
-    <!-- 窓の光フィルター -->
-    <filter id="winGlow">
-      <feGaussianBlur stdDeviation="0.8"/>
-    </filter>
-
-    <!-- グレイン -->
-    <filter id="grain">
-      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2"/>
-      <feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.08 0"/>
-      <feComposite operator="in" in2="SourceGraphic"/>
-    </filter>
+    <radialGradient id="gold" cx="18%" cy="80%" r="50%">
+      <stop offset="0%" stop-color="#B89762" stop-opacity="0.14"/>
+      <stop offset="65%" stop-color="#B89762" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="line-grad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#79F1A4" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#79F1A4" stop-opacity="0"/>
+    </linearGradient>
   </defs>
-
-  <!-- 背景空 -->
-  <rect width="1200" height="630" fill="url(#sky)"/>
-  <!-- 夕焼け側グロー -->
-  <rect width="1200" height="630" fill="url(#sunGlow)"/>
-
-  <!-- 星 -->
-  <g fill="#ffffff" opacity="0.85">
-    <circle cx="80" cy="50" r="1"/>
-    <circle cx="150" cy="85" r="1.4"/>
-    <circle cx="230" cy="40" r="0.9"/>
-    <circle cx="320" cy="70" r="1.1"/>
-    <circle cx="420" cy="35" r="1.3"/>
-    <circle cx="520" cy="80" r="0.9"/>
-    <circle cx="610" cy="50" r="1.1"/>
-    <circle cx="710" cy="100" r="1"/>
-    <circle cx="820" cy="40" r="1.4"/>
-    <circle cx="920" cy="75" r="1"/>
-    <circle cx="1030" cy="50" r="1.2"/>
-    <circle cx="1130" cy="85" r="0.9"/>
-    <circle cx="190" cy="120" r="0.7"/>
-    <circle cx="380" cy="140" r="0.8"/>
-    <circle cx="580" cy="130" r="0.7"/>
-    <circle cx="780" cy="145" r="0.6"/>
-    <circle cx="980" cy="125" r="0.9"/>
-  </g>
-
-  <!-- 月 -->
-  <circle cx="950" cy="120" r="36" fill="#fff8e6" opacity="0.96"/>
-  <circle cx="938" cy="112" r="6" fill="#e9dfbf" opacity="0.5"/>
-  <circle cx="960" cy="128" r="4" fill="#e9dfbf" opacity="0.4"/>
-
-  <!-- 遠景ビル群（明るめ・小さめ） -->
-  <g fill="#1a2540" opacity="0.85">
-    <rect x="0" y="380" width="60" height="250"/>
-    <rect x="1140" y="370" width="60" height="260"/>
-    <rect x="55" y="400" width="40" height="230"/>
-    <rect x="1105" y="395" width="40" height="235"/>
-  </g>
-
-  <!-- 中景ビル群 -->
-  <g fill="#101a35">
-    <!-- 左 -->
-    <rect x="70" y="350" width="70" height="280"/>
-    <rect x="135" y="310" width="55" height="320"/>
-    <rect x="185" y="335" width="65" height="295"/>
-    <!-- 中央 -->
-    <rect x="245" y="290" width="80" height="340"/>
-    <rect x="320" y="260" width="60" height="370"/>
-    <rect x="375" y="295" width="50" height="335"/>
-    <rect x="420" y="320" width="70" height="310"/>
-    <!-- 中央右 -->
-    <rect x="485" y="270" width="85" height="360"/>
-    <rect x="565" y="245" width="55" height="385"/>
-    <rect x="615" y="285" width="70" height="345"/>
-    <!-- 右 -->
-    <rect x="680" y="305" width="60" height="325"/>
-    <rect x="735" y="270" width="75" height="360"/>
-    <rect x="805" y="290" width="55" height="340"/>
-    <rect x="855" y="325" width="65" height="305"/>
-    <rect x="915" y="295" width="50" height="335"/>
-    <rect x="960" y="345" width="70" height="285"/>
-    <rect x="1025" y="310" width="55" height="320"/>
-    <rect x="1075" y="350" width="65" height="280"/>
-  </g>
-
-  <!-- ビルのトップ装飾（アンテナ・尖端） -->
-  <g stroke="#0a0e1f" stroke-width="2">
-    <line x1="350" y1="260" x2="350" y2="225"/>
-    <line x1="595" y1="245" x2="595" y2="200"/>
-    <line x1="770" y1="270" x2="770" y2="230"/>
-  </g>
-
-  <!-- 窓の光 -->
-  <g fill="#FFD17A" filter="url(#winGlow)">
-    <!-- 列パターンで配置 -->
-    <!-- 左ブロック -->
-    <rect x="80" y="380" width="4" height="5"/><rect x="92" y="380" width="4" height="5"/><rect x="116" y="380" width="4" height="5"/><rect x="128" y="380" width="4" height="5"/>
-    <rect x="80" y="400" width="4" height="5"/><rect x="104" y="400" width="4" height="5"/><rect x="128" y="400" width="4" height="5"/>
-    <rect x="92" y="420" width="4" height="5"/><rect x="116" y="420" width="4" height="5"/>
-    <rect x="80" y="440" width="4" height="5"/><rect x="104" y="440" width="4" height="5"/><rect x="116" y="440" width="4" height="5"/><rect x="128" y="440" width="4" height="5"/>
-    <rect x="92" y="460" width="4" height="5"/><rect x="128" y="460" width="4" height="5"/>
-    <rect x="80" y="480" width="4" height="5"/><rect x="104" y="480" width="4" height="5"/>
-    <rect x="92" y="500" width="4" height="5"/><rect x="116" y="500" width="4" height="5"/><rect x="128" y="500" width="4" height="5"/>
-    <rect x="80" y="520" width="4" height="5"/><rect x="116" y="520" width="4" height="5"/>
-    <rect x="92" y="540" width="4" height="5"/><rect x="104" y="540" width="4" height="5"/><rect x="128" y="540" width="4" height="5"/>
-    <rect x="80" y="560" width="4" height="5"/><rect x="116" y="560" width="4" height="5"/>
-
-    <!-- 中央高層 -->
-    <rect x="260" y="320" width="4" height="6"/><rect x="280" y="320" width="4" height="6"/><rect x="300" y="320" width="4" height="6"/>
-    <rect x="260" y="345" width="4" height="6"/><rect x="300" y="345" width="4" height="6"/>
-    <rect x="280" y="370" width="4" height="6"/><rect x="300" y="370" width="4" height="6"/>
-    <rect x="260" y="395" width="4" height="6"/><rect x="280" y="395" width="4" height="6"/>
-    <rect x="300" y="420" width="4" height="6"/>
-    <rect x="260" y="445" width="4" height="6"/><rect x="280" y="445" width="4" height="6"/><rect x="300" y="445" width="4" height="6"/>
-    <rect x="260" y="470" width="4" height="6"/>
-    <rect x="280" y="495" width="4" height="6"/><rect x="300" y="495" width="4" height="6"/>
-    <rect x="260" y="520" width="4" height="6"/><rect x="300" y="520" width="4" height="6"/>
-    <rect x="280" y="545" width="4" height="6"/>
-    <rect x="260" y="570" width="4" height="6"/><rect x="280" y="570" width="4" height="6"/><rect x="300" y="570" width="4" height="6"/>
-
-    <!-- 中央右タワー -->
-    <rect x="335" y="290" width="3" height="5"/><rect x="350" y="290" width="3" height="5"/><rect x="365" y="290" width="3" height="5"/>
-    <rect x="335" y="310" width="3" height="5"/><rect x="365" y="310" width="3" height="5"/>
-    <rect x="350" y="330" width="3" height="5"/>
-    <rect x="335" y="350" width="3" height="5"/><rect x="350" y="350" width="3" height="5"/>
-    <rect x="365" y="375" width="3" height="5"/>
-    <rect x="335" y="400" width="3" height="5"/><rect x="365" y="400" width="3" height="5"/>
-    <rect x="350" y="425" width="3" height="5"/>
-    <rect x="335" y="450" width="3" height="5"/>
-    <rect x="350" y="475" width="3" height="5"/><rect x="365" y="475" width="3" height="5"/>
-    <rect x="335" y="500" width="3" height="5"/><rect x="365" y="500" width="3" height="5"/>
-    <rect x="350" y="525" width="3" height="5"/>
-    <rect x="335" y="550" width="3" height="5"/><rect x="365" y="550" width="3" height="5"/>
-    <rect x="350" y="575" width="3" height="5"/>
-    <rect x="335" y="600" width="3" height="5"/><rect x="365" y="600" width="3" height="5"/>
-
-    <!-- 大ビル -->
-    <rect x="500" y="300" width="4" height="6"/><rect x="520" y="300" width="4" height="6"/><rect x="540" y="300" width="4" height="6"/><rect x="560" y="300" width="4" height="6"/>
-    <rect x="500" y="325" width="4" height="6"/><rect x="540" y="325" width="4" height="6"/>
-    <rect x="520" y="350" width="4" height="6"/><rect x="560" y="350" width="4" height="6"/>
-    <rect x="500" y="375" width="4" height="6"/><rect x="520" y="375" width="4" height="6"/><rect x="540" y="375" width="4" height="6"/>
-    <rect x="500" y="400" width="4" height="6"/><rect x="560" y="400" width="4" height="6"/>
-    <rect x="520" y="425" width="4" height="6"/><rect x="540" y="425" width="4" height="6"/>
-    <rect x="500" y="450" width="4" height="6"/><rect x="540" y="450" width="4" height="6"/><rect x="560" y="450" width="4" height="6"/>
-    <rect x="520" y="475" width="4" height="6"/>
-    <rect x="500" y="500" width="4" height="6"/><rect x="540" y="500" width="4" height="6"/>
-    <rect x="520" y="525" width="4" height="6"/><rect x="560" y="525" width="4" height="6"/>
-    <rect x="500" y="550" width="4" height="6"/><rect x="520" y="550" width="4" height="6"/>
-    <rect x="540" y="575" width="4" height="6"/>
-    <rect x="500" y="600" width="4" height="6"/><rect x="560" y="600" width="4" height="6"/>
-
-    <!-- 右側中央タワー（最高層） -->
-    <rect x="580" y="270" width="3" height="5"/><rect x="595" y="270" width="3" height="5"/><rect x="610" y="270" width="3" height="5"/>
-    <rect x="580" y="290" width="3" height="5"/><rect x="610" y="290" width="3" height="5"/>
-    <rect x="595" y="310" width="3" height="5"/>
-    <rect x="580" y="330" width="3" height="5"/><rect x="595" y="330" width="3" height="5"/><rect x="610" y="330" width="3" height="5"/>
-    <rect x="580" y="355" width="3" height="5"/>
-    <rect x="595" y="380" width="3" height="5"/><rect x="610" y="380" width="3" height="5"/>
-    <rect x="580" y="405" width="3" height="5"/><rect x="610" y="405" width="3" height="5"/>
-    <rect x="595" y="430" width="3" height="5"/>
-    <rect x="580" y="455" width="3" height="5"/><rect x="610" y="455" width="3" height="5"/>
-    <rect x="595" y="480" width="3" height="5"/>
-    <rect x="580" y="505" width="3" height="5"/><rect x="610" y="505" width="3" height="5"/>
-    <rect x="580" y="530" width="3" height="5"/><rect x="595" y="530" width="3" height="5"/>
-    <rect x="610" y="555" width="3" height="5"/>
-    <rect x="580" y="580" width="3" height="5"/><rect x="595" y="580" width="3" height="5"/>
-    <rect x="610" y="605" width="3" height="5"/>
-
-    <!-- 右側中層 -->
-    <rect x="755" y="295" width="3" height="5"/><rect x="770" y="295" width="3" height="5"/><rect x="785" y="295" width="3" height="5"/>
-    <rect x="755" y="320" width="3" height="5"/><rect x="785" y="320" width="3" height="5"/>
-    <rect x="770" y="345" width="3" height="5"/>
-    <rect x="755" y="370" width="3" height="5"/><rect x="770" y="370" width="3" height="5"/>
-    <rect x="785" y="395" width="3" height="5"/>
-    <rect x="755" y="420" width="3" height="5"/><rect x="785" y="420" width="3" height="5"/>
-    <rect x="770" y="445" width="3" height="5"/>
-    <rect x="755" y="470" width="3" height="5"/><rect x="785" y="470" width="3" height="5"/>
-    <rect x="770" y="495" width="3" height="5"/><rect x="785" y="495" width="3" height="5"/>
-    <rect x="755" y="520" width="3" height="5"/>
-    <rect x="755" y="545" width="3" height="5"/><rect x="770" y="545" width="3" height="5"/><rect x="785" y="545" width="3" height="5"/>
-    <rect x="770" y="570" width="3" height="5"/>
-    <rect x="755" y="595" width="3" height="5"/><rect x="785" y="595" width="3" height="5"/>
-
-    <!-- 右端 -->
-    <rect x="880" y="345" width="3" height="5"/><rect x="895" y="345" width="3" height="5"/>
-    <rect x="880" y="370" width="3" height="5"/>
-    <rect x="895" y="395" width="3" height="5"/>
-    <rect x="880" y="420" width="3" height="5"/><rect x="895" y="420" width="3" height="5"/>
-    <rect x="880" y="445" width="3" height="5"/>
-    <rect x="895" y="470" width="3" height="5"/>
-    <rect x="880" y="495" width="3" height="5"/><rect x="895" y="495" width="3" height="5"/>
-    <rect x="880" y="520" width="3" height="5"/>
-    <rect x="895" y="545" width="3" height="5"/>
-    <rect x="880" y="570" width="3" height="5"/>
-    <rect x="895" y="595" width="3" height="5"/>
-
-    <rect x="985" y="365" width="3" height="5"/><rect x="1000" y="365" width="3" height="5"/><rect x="1015" y="365" width="3" height="5"/>
-    <rect x="985" y="390" width="3" height="5"/><rect x="1015" y="390" width="3" height="5"/>
-    <rect x="1000" y="415" width="3" height="5"/>
-    <rect x="985" y="440" width="3" height="5"/><rect x="1000" y="440" width="3" height="5"/>
-    <rect x="1015" y="465" width="3" height="5"/>
-    <rect x="985" y="490" width="3" height="5"/><rect x="1015" y="490" width="3" height="5"/>
-    <rect x="1000" y="515" width="3" height="5"/>
-    <rect x="985" y="540" width="3" height="5"/><rect x="1015" y="540" width="3" height="5"/>
-    <rect x="1000" y="565" width="3" height="5"/>
-    <rect x="985" y="590" width="3" height="5"/><rect x="1015" y="590" width="3" height="5"/>
-  </g>
-
-  <!-- ビル下端の暗化グラデ -->
-  <rect y="350" width="1200" height="280" fill="url(#buildingShade)"/>
-
-  <!-- 上部スペース：タイトル -->
-  <!-- 半透明オーバーレイで読みやすく -->
-  <rect x="0" y="160" width="1200" height="200" fill="#000" opacity="0.18"/>
-
-  <!-- メタライン -->
-  <text x="60" y="200" fill="#FF6B35" font-family="'Nunito', sans-serif" font-size="16" font-weight="900" letter-spacing="4">
-    COWORKMILL JOURNAL · 2026
-  </text>
-
-  <!-- 装飾線 -->
-  <line x1="60" y1="218" x2="180" y2="218" stroke="#FF6B35" stroke-width="2"/>
-
-  <!-- メインタイトル -->
-  <text x="60" y="270" fill="#ffffff" font-family="'Noto Serif JP', serif" font-size="50" font-weight="700" letter-spacing="-1">
-    新橋・虎ノ門で集中できる
-  </text>
-  <text x="60" y="335" fill="#FFD17A" font-family="'Noto Serif JP', serif" font-size="58" font-weight="700" letter-spacing="-1">
-    コワーキング 10選
-  </text>
-
-  <!-- 右上：副題 -->
-  <text x="1140" y="80" fill="rgba(255,255,255,0.65)" text-anchor="end" font-family="'Nunito', sans-serif" font-size="14" font-weight="700" letter-spacing="3">
-    SHIMBASHI · TORANOMON GUIDE
-  </text>
-
-  <!-- 下部：サブ情報 -->
-  <g>
-    <rect x="60" y="365" width="2" height="22" fill="#FF6B35"/>
-    <text x="78" y="383" fill="rgba(255,255,255,0.85)" font-family="'Noto Sans JP', sans-serif" font-size="17" font-weight="500" letter-spacing="1">
-      24時間営業 5施設 ／ 港区・千代田区
-    </text>
-  </g>
-
-  <!-- グレイン -->
-  <rect width="1200" height="630" fill="#fff" filter="url(#grain)" opacity="0.5"/>
+  <rect width="1200" height="675" fill="#121212"/>
+  <rect width="1200" height="675" fill="url(#navy)"/>
+  <rect width="1200" height="675" fill="url(#gold)"/>
+  <line x1="80" y1="120" x2="220" y2="120" stroke="url(#line-grad)" stroke-width="1.5"/>
+  <text x="80" y="160" font-family="Cormorant Garamond, serif" font-style="italic" font-size="20" fill="#666" letter-spacing="0.5">2026 / Spring · Tokyo Business Guide</text>
+  <text x="76" y="372" font-family="Cormorant Garamond, serif" font-size="166" font-weight="500" fill="#f0f0f0" letter-spacing="-2">SHINBASHI</text>
+  <text x="80" y="420" font-family="Noto Sans JP, sans-serif" font-size="22" fill="#999" letter-spacing="2">新橋・虎ノ門・汐留</text>
+  <line x1="80" y1="478" x2="120" y2="478" stroke="#333" stroke-width="1"/>
+  <text x="80" y="525" font-family="Noto Sans JP, sans-serif" font-size="30" font-weight="700" fill="#f0f0f0">新橋エリア 6選</text>
+  <text x="80" y="565" font-family="Cormorant Garamond, serif" font-style="italic" font-size="42" font-weight="500" fill="#79F1A4">— Business Coworking · 6 Picks</text>
+  <text x="80" y="625" font-family="Cormorant Garamond, serif" font-style="italic" font-size="16" fill="#666" letter-spacing="1">curated by Yoshiki Bucho · COWORKMILL journal</text>
+  <text x="1120" y="625" font-family="Cormorant Garamond, serif" font-style="italic" font-size="14" fill="#444" text-anchor="end" letter-spacing="1">No. 02</text>
 </svg>

@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "updated_at": "2026-05-11",
+  "updated_at": "2026-05-12",
   "writers": [
     {
       "slug": "coffee-bucho",
@@ -112,7 +112,17 @@
       "bio": "営業マネージャーを20年務めた後、独立してコンサル業。Zoomの声漏れ、鏡の有無、ネクタイを直すスペース、トイレの清潔感。商談を本業にしてきた人間にしか書けない切り口で、コワーキングを採点する。",
       "color": "#5A6F8A",
       "avatar_char": "ヨ",
-      "articles": []
+      "articles": [
+        {
+          "slug": "shimbashi-toranomon-coworking-2026",
+          "title": "新橋エリア ビジネス街で選ぶコワーキング 6選｜2026年最新",
+          "excerpt": "新橋・虎ノ門・汐留。商談を本業にしてきたヨシキ部長が、ビジネス街の視点で選ぶコワーキング6施設。",
+          "date": "2026-05-12",
+          "date_display": "2026.05.12",
+          "category": "エリアガイド",
+          "reading_minutes": 10
+        }
+      ]
     },
     {
       "slug": "wifi-mio",
