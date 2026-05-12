@@ -1,6 +1,6 @@
 # COWORKMILL Journal — Claude引き継ぎパック
 
-> **最終更新**: 2026-05-12  
+> **最終更新**: 2026-05-13（オウンドメディア化対応・サイドバーレイアウト確定）  
 > **目的**: 新規チャットの Claude が瞬時に状況把握し、 航さんの「3ステップワークフロー」を実行できるようにする  
 > **置き場所**: https://cowkml.com/journal/_claude-handover/index.md
 
@@ -222,9 +222,34 @@
 
 ---
 
-## 4. スタイル要件（既存シリーズ記事との完全統一が必須）
+## 4. スタイル要件（オウンドメディア化・2026-05-13確定版）
 
-> **重要**: 新記事を書く前に、 必ず五反田記事と新橋記事の HTML を web_fetch で読んで、 構造・CSS・JSON-LD を完全に踏襲してください。 統一感欠如は航さんが最も嫌う失敗です。
+> **重要**: 新記事を書く前に、 必ず **新橋記事（基準テンプレ）** の HTML を web_fetch で読んで、 構造・CSS・JSON-LD・サイドバーまで完全に踏襲してください。 統一感欠如は航さんが最も嫌う失敗です。
+> 
+> **基準テンプレ**: https://cowkml.com/journal/shimbashi-toranomon-coworking-2026/ （2カラム + 右サイドバー、 オウンドメディア型）
+
+### 4-0. 2カラムレイアウト（オウンドメディア化・必須）
+
+本文（左、 max-width:760px）+ 右サイドバー（300px）の2カラム。 mobile では縦並び。
+
+```css
+.j-page-grid{
+  max-width:1240px;margin:0 auto;padding:48px 32px 80px;
+  display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:64px
+}
+.j-article{max-width:760px;margin:0;padding:0;justify-self:end;width:100%}
+.j-sidebar{position:relative;font-family:var(--fd)}
+.j-sidebar-sticky{
+  position:sticky;top:80px;display:flex;flex-direction:column;gap:36px;
+  max-height:calc(100vh - 100px);overflow-y:auto;padding-right:4px
+}
+@media(max-width:1024px){
+  .j-page-grid{grid-template-columns:1fr;gap:0;max-width:780px}
+  .j-article{max-width:100%;justify-self:stretch}
+  .j-sidebar{margin-top:48px;padding-top:40px;border-top:1px solid var(--line)}
+  .j-sidebar-sticky{position:static;max-height:none;overflow-y:visible;display:grid;grid-template-columns:1fr 1fr;gap:32px 40px}
+}
+```
 
 ### 4-1. ダークモード必須（CSS変数）
 
@@ -247,29 +272,51 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Noto+Sans+JP:wght@400;500;600;700&display=swap" rel="stylesheet">
 ```
 
-### 4-3. 必須セクション（記事HTMLの構造、 順序厳守）
+### 4-3. 必須セクション（記事HTMLの構造、 順序厳守・全ての記事で同じ）
 
-1. `<header class="j-nav">` — ヘッダーナビ
-2. `<article class="j-article">`
-   1. `.j-article-eyebrow`（カテゴリ・公開日・読了時間）
-   2. `.j-article-title`（h1）
-   3. `.j-article-meta`（著者リンク・担当・タグ）
-   4. `.j-hero-img`（**インラインSVG** ※直リンク画像 NG）
-   5. `.j-article-body`
-      - `.j-lead`（リード文・1段落）
-      - 導入の追加段落 1〜2 個
-      - `.j-pullquote`（オープニングキャッチ）
-      - **施設ブロック × N**（h2 + 本文3段落 + IG embed + j-info-box）
-      - `.j-mid-cta`（任意・中盤誘導）
-      - Conclusion h2 + 本文
-      - `.j-pullquote`（クロージングキャッチ）
-   6. `.j-writer-card`（著者プロフィール・記者ページへのリンク）
-   7. `.j-end-cta`（**COWORKMILL誘導CTA・必須**）
-   8. `.j-related`（関連記事リンク）
-3. `<footer class="j-foot">`（フッター）
-4. `<script async src="//www.instagram.com/embed.js">`（最後に必須）
+1. `<div class="j-progress" id="progress"></div>` ← **読書進捗バー**（body直下、 最初）
+2. `<aside class="j-share-vbar">` ← **SNSシェア縦バー**（X / LINE / FB / リンクコピー、 1240px未満では非表示）
+3. `<header class="j-nav">` ← ヘッダーナビ
+4. `<main class="j-page-grid">` ← **2カラムグリッド**
+   - `<article class="j-article">` ← 左カラム（本文）
+     1. `.j-article-eyebrow`（カテゴリ・公開日・読了時間）
+     2. `.j-article-title`（h1）
+     3. `.j-article-meta`（著者リンク・担当・タグ）
+     4. `.j-hero-img`（**インラインSVG** ※直リンク画像 NG）
+     5. `.j-article-body`
+        - `.j-lead`（リード文・1段落）
+        - 導入の追加段落 1〜2 個
+        - `.j-pullquote`（オープニングキャッチ）
+        - **施設ブロック × N**（**h2 に必ず `id="sec-01"` 〜 `id="sec-NN"` を付与**、 TOCジャンプ用）
+        - `.j-mid-cta`（任意・中盤誘導）
+        - Conclusion h2（`id="sec-conclusion"` 必須）+ 本文 + `.j-pullquote`
+     6. `.j-writer-card`（著者プロフィール・記者ページへのリンク）
+     7. `.j-end-cta`（**COWORKMILL誘導CTA・必須**）
+     8. `.j-related`（関連記事リンク）
+   - `<aside class="j-sidebar">` ← **右カラム・サイドバー（必須）**
+     - `<div class="j-sidebar-sticky">` の中に6ブロック（順序厳守）:
+       1. **Contents（目次）** — `<ul class="j-toc-list" id="toc-list">` で各 h2 へのアンカー、 スクロール追従ハイライト
+       2. **Latest（新着記事）** — 最新3〜5本、 サムネ72x48px（og-image.svg）+ タイトル + 公開日
+       3. **Popular（人気記事ランキング）** — 上位5本、 サムネ+左上に順位バッジ(`.j-side-rank`)
+       4. **Topics（タグクラウド）** — 主要タグを大小2サイズで配置
+       5. **Find a Space** — `/spaces` `/architects` `/photos` への遷移リンク
+       6. **OFFICEMILL/CAFEMILL バナー**（**必須・施設詳細ページと同じ base64 SVG**）
+5. `<footer class="j-foot">` ← フッター
+6. `<script>` — 読書進捗バー + TOC アクティブ追跡 + TOC スムーズスクロール
+7. `<script async src="//www.instagram.com/embed.js">`（最後に必須）
 
-### 4-4. Instagram 組み込み（**公式 oEmbed のみ、 直リンク画像は禁止**）
+### 4-4. サイドバー実装のコピペ元
+
+新橋記事 https://cowkml.com/journal/shimbashi-toranomon-coworking-2026/ の HTML をそのまま雛形にしてください。 サイドバーの CSS・HTML・JavaScript はすべて新橋記事に含まれています。 新記事を作るときは：
+
+1. 新橋記事の HTML を web_fetch でフル取得
+2. `<article>` 内の本文・施設情報・著者カードを差し替え
+3. サイドバーの **Latest** と **Popular** のサムネURL・タイトル・順位だけ更新（残りは固定）
+4. サイドバーの **Topics** タグを記事に合わせて更新
+5. **Contents（目次）** の `<li>` を施設名と Conclusion に合わせて更新
+6. **OFFICEMILL/CAFEMILL バナー** はそのままコピー（base64 SVG含めて触らない）
+
+### 4-5. Instagram 組み込み（**公式 oEmbed のみ、 直リンク画像は禁止**）
 
 ```html
 <div class="j-ig-embed-wrap">
@@ -281,17 +328,29 @@
 <div class="j-ig-caption">via @handle on Instagram</div>
 ```
 
-### 4-5. Hero SVG 構造
+### 4-6. Hero SVG 構造
 
 インライン SVG（jpg/png/webp 直リンク禁止）。 ダーク背景にラジアルグラデ、 巨大ローマ字、 漢字サブ、 英語タグライン、 著者クレジット、 No. の構成。 五反田・新橋記事のSVGをそのままコピーして文字だけ差し替えるのが最速。
 
-### 4-6. JSON-LD（SEO 必須）
+### 4-7. 必須 JavaScript（読書進捗 + TOC追従 + スムーズスクロール）
 
-`Article` schema を `<script type="application/ld+json">` で記事末尾に埋める。 五反田・新橋記事をコピーして slug・title・date・author だけ差し替え。
+新橋記事の `</body>` 直前の `<script>` ブロックをそのままコピーしてください。 3つの IIFE 関数で構成：
 
-### 4-7. OGP / Twitter Card / canonical（必須）
+1. **読書進捗バー更新**: scroll イベントで `.j-progress` の width を更新
+2. **TOC アクティブ追跡**: スクロール位置で `#toc-list` のリンクに `.active` クラスを付け替え
+3. **TOC スムーズスクロール**: アンカークリックでオフセット 70px 付きスクロール
+
+### 4-8. JSON-LD（SEO 必須）
+
+`Article` schema を `<script type="application/ld+json">` で記事末尾に埋める。 新橋記事をコピーして slug・title・date・author だけ差し替え。
+
+### 4-9. OGP / Twitter Card / canonical（必須）
 
 `og:title`, `og:description`, `og:image`, `og:url`, `twitter:card=summary_large_image`, `<link rel="canonical">` を全て記事ヘッダに含める。
+
+### 4-10. 既存記事の更新タスク
+
+- [ ] **五反田記事を 2カラム + サイドバー に更新**（mockup-v2 ベースで全面書き換え、 次のチャットで対応推奨）
 
 ---
 
