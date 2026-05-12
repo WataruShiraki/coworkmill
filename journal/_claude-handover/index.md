@@ -294,13 +294,14 @@
      7. `.j-end-cta`（**COWORKMILL誘導CTA・必須**）
      8. `.j-related`（関連記事リンク）
    - `<aside class="j-sidebar">` ← **右カラム・サイドバー（必須）**
-     - `<div class="j-sidebar-sticky">` の中に6ブロック（順序厳守）:
-       1. **Contents（目次）** — `<ul class="j-toc-list" id="toc-list">` で各 h2 へのアンカー、 スクロール追従ハイライト
-       2. **Latest（新着記事）** — 最新3〜5本、 サムネ72x48px（og-image.svg）+ タイトル + 公開日
-       3. **Popular（人気記事ランキング）** — 上位5本、 サムネ+左上に順位バッジ(`.j-side-rank`)
-       4. **Topics（タグクラウド）** — 主要タグを大小2サイズで配置
-       5. **Find a Space** — `/spaces` `/architects` `/photos` への遷移リンク
-       6. **OFFICEMILL/CAFEMILL バナー**（**必須・施設詳細ページと同じ base64 SVG**）
+     - `<div class="j-sidebar-sticky">` の中に7ブロック（順序厳守）:
+       1. **COWORKMILL ブランドバナー** — サイドバー**最上部**、 検索流入ユーザーに「デザインコワーキングポータル COWORKMILL」を訴求（teal+cyan のグラデ枠、 Cormorant Garamond の COWORKMILL ロゴ、 CTA「COWORKMILL TOP →」）
+       2. **Contents（目次）** — `<ul class="j-toc-list" id="toc-list">` で各 h2 へのアンカー、 スクロール追従ハイライト
+       3. **Latest（新着記事）** — 最新3〜5本、 サムネ72x48px（og-image.svg）+ タイトル + 公開日
+       4. **Popular（人気記事ランキング）** — 上位5本、 サムネ+左上に順位バッジ(`.j-side-rank`)
+       5. **Topics（タグクラウド）** — 主要タグを大小2サイズで配置
+       6. **Find a Space** — `/spaces` `/architects` `/photos` への遷移リンク
+       7. **OFFICEMILL/CAFEMILL バナー**（**必須・施設詳細ページと同じ base64 SVG**）
 5. `<footer class="j-foot">` ← フッター
 6. `<script>` — 読書進捗バー + TOC アクティブ追跡 + TOC スムーズスクロール
 7. `<script async src="//www.instagram.com/embed.js">`（最後に必須）
@@ -314,7 +315,7 @@
 3. サイドバーの **Latest** と **Popular** のサムネURL・タイトル・順位だけ更新（残りは固定）
 4. サイドバーの **Topics** タグを記事に合わせて更新
 5. **Contents（目次）** の `<li>` を施設名と Conclusion に合わせて更新
-6. **OFFICEMILL/CAFEMILL バナー** はそのままコピー（base64 SVG含めて触らない）
+6. **COWORKMILL ブランドバナー** と **OFFICEMILL/CAFEMILL バナー** はそのままコピー（触らない）
 
 ### 4-5. Instagram 組み込み（**公式 oEmbed のみ、 直リンク画像は禁止**）
 
