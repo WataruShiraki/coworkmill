@@ -294,16 +294,54 @@
 
 ---
 
-### 🟢 Phase A：今週末（半日〜1日）
-**タスク A-1**: 施設詳細ページに「**この施設はCOWORKMILL編集部が独自にご紹介しています [施設オーナーの方はこちら] [掲載拒否]**」バナー追加（1〜2時間）
+### 🟢 Phase A：今週末（半日〜1日）✅ 2026-05-13 完了
 
-**タスク A-2**: フッターに「掲載拒否のお申し出」フォーム実装（1時間）
-- フォーム項目：施設名・施設URL・申出者の名前/役職・連絡先メール・理由
-- 送信先：航さんのメール（Resend経由）
+**タスク A-1**: ✅ 施設詳細ページバナーを needs_owner_claim フラグで動的制御
+- DB: `spaces.needs_owner_claim` (boolean, default true) カラム追加
+- 既存28施設（BasisPoint 8 + BusinessAirport 20）は false（許可済み）に更新
+- detail.html: バナー初期非表示、needs_owner_claim=true のときのみ表示
+- 安全策：fetch失敗・データなし・5秒タイムアウト時はデフォルト表示（無断施設のバナー漏れ防止）
+- バナーHTML自体は既存（前回チャットで実装済み）
 
-**タスク A-3**: 運用ルール明文化（30分）
-- 24〜48時間以内に削除
-- 6ヶ月間は再登録ロック
+**タスク A-2**: ✅ お申し出フォームを2ページ作成（フッター実装ではなく独立ページ）
+- `/contact-removal`（contact-removal.html）：掛載停止のお申し出
+- `/contact-owner-claim`（contact-owner-claim.html）：施設情報の修正・追加のご依頼
+- 設計：軽量自己完結HTML、mailto: 方式でメーラー起動 → 宛先 info@offml.com
+- フォーム項目：施設名・URL・申出者名/役職・連絡先メール・理由/詳細
+- ⚠️ **Phase B 課題**：mailto は端末メーラー未設定で機能不全のリスク → Edge Function + Resend に切り替え必須
+- ⚠️ **未対応**：meta description / Schema.org 構造化データ（Phase B で追加）
+
+**タスク A-3**: ✅ 運用ルール明文化
+- ファイル：`journal/_claude-handover/coworkmill-listing-policy.md`
+- 内容：24〜48時間以内に削除、6ヶ月再登録ロック、編集メディアスタンス明記
+
+**【追加実装】roadmap.md 外で実施したタスク**:
+- ✅ admin.html: 都道府県セレクト（47）+ エリアセレクト（計120エリア）の依存ドロップダウン
+  - データ：134エリア一覧から構築、現状120エリア（差分14は roadmap.md 詳細再パース必要）
+  - 配置：最寄駅入力欄の直後に追加（順序は要再考）
+- ✅ detail.html: 「同じ最寄駅」レコメンドセクション追加（既存「同じエリア」とセット）
+  - 仕様：同駅・他施設で最大3件、自分は除外、status=live & plan!=free
+  - カードCSS（`.related-card-*`）は独自実装、既存「同じエリア」のカード見た目との統一性は未検証
+- ✅ 28施設の area カラムを「区/市」形式から134エリア準拠形式に正規化
+- ✅ owner-banner fetch失敗時を安全側（デフォルト表示）に変更
+- 動作確認済：ビジネスエアポート渋谷フクラスで「渋谷駅からも」2件 + 「渋谷・恵比寿・代官山のスペース」3件表示
+
+**【Phase A の未対応・要追加】**:
+- 🟡 contact-*.html の meta description 追加
+- 🟡 関連スペース・施設の JSON-LD 構造化データ（Schema.org ItemList）
+- 🟡 admin.html: 「エリア（最寄駅とは別）」ラベル → 「エリア」に短縮、配置順を最寄駅の上に変更検討
+- 🟡 同じ最寄駅と同じエリアの重複表示問題（駅一致を優先しエリアから除く）
+- 🟡 BusinessAirport 京橋／竹芝のエリアマッピング再確認
+- 🟢 mailto → Resend Edge Function 切り替え（Phase B）
+
+**【コミット履歴 (2026-05-13)】**:
+- `1e00ae8` feat(detail): owner-banner needs_owner_claim 条件分岐
+- `ed6d79d` feat: A-2 contact-removal.html
+- `1c94b54` feat: A-2 contact-owner-claim.html
+- `03c41fd` docs: A-3 coworkmill-listing-policy.md
+- `abea909` feat(admin): 都道府県・エリア選択UI
+- feat(detail): A-5 同じ最寄駅レコメンドセクション
+- fix(detail): owner-banner fetch失敗時を安全側に
 
 ---
 
