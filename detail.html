@@ -678,6 +678,23 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
 .cwm-voice-date{font-size:10px;color:rgba(255,255,255,.25)}
 .vp-tag.on{border-color:#2BB5C8!important;color:#2BB5C8!important;background:rgba(43,181,200,.12)!important}
 .leaflet-control-attribution{font-size:8px!important}
+
+/* === オーナー向けバナー（柔らかめ A案） === */
+.owner-banner{background:var(--gray-50);border-bottom:1px solid var(--gray-100);padding:10px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;font-size:12px;color:var(--gray-600);font-family:var(--font-body)}
+.owner-banner .obx-msg{letter-spacing:.02em}
+.owner-banner .obx-links{display:flex;gap:18px;align-items:center}
+.owner-banner .obx-links a{color:var(--accent);font-weight:500;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s;padding:2px 0}
+.owner-banner .obx-links a:hover{border-bottom-color:var(--accent)}
+.owner-banner .obx-sep{color:var(--gray-200)}
+@media(max-width:900px){
+  .owner-banner{flex-direction:column;align-items:flex-start;gap:6px;padding:10px 16px}
+  .owner-banner .obx-msg{font-size:11px}
+  .owner-banner .obx-links{gap:14px;flex-wrap:wrap;width:100%;font-size:12px}
+  .owner-banner .obx-sep{display:none}
+}
+@media(prefers-color-scheme:dark){
+  .owner-banner{background:#1a1a1a;border-bottom-color:#2a2a2a;color:#a0a0a0}
+}
 </style>
 </head>
 <body>
@@ -695,6 +712,16 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
     <a href="/register" class="nav-cta">コワーキング登録</a>
   </div>
 </nav>
+
+<!-- オーナー向けバナー（柔らかめ A案） -->
+<div class="owner-banner">
+  <div class="obx-msg">この施設のオーナー・運営者の方は</div>
+  <div class="obx-links">
+    <a href="/contact-owner-claim/">施設情報の修正・追加はこちら →</a>
+    <span class="obx-sep">|</span>
+    <a href="/contact-removal/">掲載に関するお問い合わせ →</a>
+  </div>
+</div>
 
 <!-- GALLERY -->
 <div class="gallery" style="position:relative">
