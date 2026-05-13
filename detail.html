@@ -680,7 +680,7 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
 .leaflet-control-attribution{font-size:8px!important}
 
 /* === オーナー向けバナー（柔らかめ A案） === */
-.owner-banner{position:sticky;top:56px;z-index:199;margin-top:56px;background:var(--gray-50);border-bottom:1px solid var(--gray-100);padding:10px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;font-size:12px;color:var(--gray-600);font-family:var(--font-body)}
+.owner-banner{position:sticky;top:56px;z-index:199;margin-top:56px;background:var(--gray-50);border-bottom:1px solid var(--gray-100);padding:10px 24px;display:flex;align-items:center;justify-content:space-between;gap:16px;font-size:12px;color:var(--gray-600);font-family:var(--font-body)}body:not([data-needs-claim="true"]) .owner-banner{display:none!important}
 .owner-banner .obx-msg{letter-spacing:.02em}
 .owner-banner .obx-links{display:flex;gap:18px;align-items:center}
 .owner-banner .obx-links a{color:var(--accent);font-weight:500;text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s;padding:2px 0}
@@ -2576,4 +2576,4 @@ function renderPlanCards(sp) {
   window.__cwmInitSlideshow=init;
 })();
 </script>
-</body></html>
+<script>(function(){var n=0;var t=setInterval(function(){n++;if(window._currentSpaceId&&window.CWM_SB_URL&&window.CWM_SB_KEY){clearInterval(t);fetch(window.CWM_SB_URL+"/rest/v1/spaces?id=eq."+window._currentSpaceId+"&select=needs_owner_claim",{headers:{apikey:window.CWM_SB_KEY,Authorization:"Bearer "+window.CWM_SB_KEY}}).then(function(r){return r.json();}).then(function(d){if(Array.isArray(d)&&d[0]&&d[0].needs_owner_claim===true){document.body.dataset.needsClaim="true";}}).catch(function(){});}else if(n>50){clearInterval(t);}},100);})();</script></body></html>
