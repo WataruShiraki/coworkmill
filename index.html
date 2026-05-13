@@ -103,6 +103,21 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:56px;display:flex;ali
 .nav-cta{font-family:var(--font-display);font-size:11px;font-weight:600;padding:8px 16px;background:#2BB5C8;color:#fff;border:none;cursor:pointer;border-radius:6px;letter-spacing:.02em;transition:background .15s;text-decoration:none;display:inline-block}
 .nav-cta:hover{background:#22a3b5}
 
+/* ハンバーガーボタン（スマホのみ表示） */
+.nav-burger{display:none;flex-direction:column;justify-content:center;align-items:center;width:32px;height:32px;background:transparent;border:none;cursor:pointer;padding:0;gap:5px;margin-left:4px}
+.nav-burger span{display:block;width:18px;height:1.5px;background:var(--gray-800);transition:transform .25s,opacity .2s}
+.nav-burger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.nav-burger.open span:nth-child(2){opacity:0}
+.nav-burger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+
+/* モバイルメニュー（オーバーレイ） */
+.mobile-menu{position:fixed;top:56px;left:0;right:0;bottom:0;background:rgba(255,255,255,.98);backdrop-filter:blur(20px);z-index:199;opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s;overflow-y:auto;display:flex;flex-direction:column;padding:24px 32px 40px}
+.mobile-menu.open{opacity:1;visibility:visible}
+.mobile-menu a{display:block;padding:20px 4px;font-size:18px;font-weight:500;color:var(--gray-800);border-bottom:1px solid var(--gray-100);letter-spacing:.02em;text-decoration:none}
+.mobile-menu a:active,.mobile-menu a:hover{color:var(--accent)}
+.mobile-menu .mobile-cta{margin-top:24px;background:var(--accent);color:#fff;text-align:center;border-radius:8px;padding:16px;font-size:14px;font-weight:600;border:none;border-bottom:none;letter-spacing:.04em}
+.mobile-menu .mobile-cta:hover,.mobile-menu .mobile-cta:active{background:#22a3b5;color:#fff}
+
 /* ─── HERO ─── */
 .hero{min-height:min(720px,90vh);padding-top:56px;background:var(--black);display:flex;flex-direction:column;position:relative;overflow:hidden}
 .hero-bg-tiles{position:absolute;inset:0;display:grid;grid-template-columns:repeat(5,1fr);gap:3px;opacity:.35;filter:brightness(.7)}
@@ -354,6 +369,7 @@ footer{background:#0a1628;padding:64px 80px 40px;color:#fff;position:relative;ov
 @media(max-width:900px){
   nav{padding:0 20px}
   .nav-center{display:none}
+  .nav-burger{display:flex}
   .hero-main{grid-template-columns:1fr}
   .hero-right{display:none}
   .hero-left{padding:40px 24px}
@@ -451,6 +467,8 @@ footer{background:#0a1628;padding:64px 80px 40px;color:#fff;position:relative;ov
   body{background:#121212;color:#f0f0f0}
   nav{background:rgba(18,18,18,.97);border-bottom-color:#2a2a2a}
   .nav-cta{background:#2BB5C8!important;color:#fff!important}
+  .mobile-menu{background:rgba(18,18,18,.98)}
+  .mobile-menu a{border-bottom-color:#2a2a2a}
   .card,.scard,.lcard,.acard,.rcard,.voice-post,.aside-card,.plan-item,.wtag-card{background:#1e1e1e;border-color:#333}
   .card:hover,.scard:hover{border-color:#2BB5C8}
   .card-name,.scard-name,.lcard-name,.space-name,.page-title,.plan-name{color:#f0f0f0}
@@ -743,8 +761,19 @@ if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded"
   </div>
   <div class="nav-right">
     <a href="/register" class="nav-cta">コワーキング登録</a>
+    <button class="nav-burger" aria-label="メニューを開く" aria-expanded="false" onclick="toggleMobileMenu()"><span></span><span></span><span></span></button>
   </div>
 </nav>
+
+<!-- モバイルメニュー（スマホ用ハンバーガー展開時） -->
+<div class="mobile-menu" id="mobileMenu" role="dialog" aria-label="メインメニュー">
+  <a href="/spaces">コワーキングを探す</a>
+  <a href="/architects">建築家から探す</a>
+  <a href="/photos">写真から探す</a>
+  <a href="/map">場所から探す</a>
+  <a href="/journal/">ジャーナル</a>
+  <a href="/register" class="mobile-cta">コワーキング登録</a>
+</div>
 
 <!-- HERO -->
 <section class="hero">
@@ -1431,4 +1460,33 @@ function doSpSearch(){
 <script src="/shared/sp-nav.js" defer></script>
   <script src="/shared/cwm-security.js" defer></script>
 
+<script>
+// モバイルハンバーガーメニューの開閉
+function toggleMobileMenu(){
+  var menu=document.getElementById('mobileMenu');
+  var burger=document.querySelector('.nav-burger');
+  if(!menu||!burger)return;
+  var isOpen=menu.classList.toggle('open');
+  burger.classList.toggle('open',isOpen);
+  burger.setAttribute('aria-expanded',isOpen);
+  document.body.style.overflow=isOpen?'hidden':'';
+}
+// メニュー内のリンクをクリックしたら閉じる
+document.addEventListener('click',function(e){
+  if(e.target&&e.target.matches&&e.target.matches('.mobile-menu a')){
+    var menu=document.getElementById('mobileMenu');
+    var burger=document.querySelector('.nav-burger');
+    if(menu)menu.classList.remove('open');
+    if(burger){burger.classList.remove('open');burger.setAttribute('aria-expanded','false');}
+    document.body.style.overflow='';
+  }
+});
+// Escキーで閉じる
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'){
+    var menu=document.getElementById('mobileMenu');
+    if(menu&&menu.classList.contains('open'))toggleMobileMenu();
+  }
+});
+</script>
 </body></html>
