@@ -9,6 +9,20 @@
     "workstyle": "用途・働き方"
   },
   "articles": [
+{
+  "slug": "shibuya-creators-coworking-2026",
+  "title": "渋谷駅から徒歩圈 クリエイターが選ぶコワーキング 3選｜2026年最新",
+  "excerpt": "MOV、.andwork、HAPON。渋谷・原宿エリアで「ここじゃないといけない理由」がある3施設を、デざイン・コミュニティ・価格の軸で選んだ。",
+  "category": "area",
+  "tags": ["渋谷", "東京", "クリエイティブ", "コミュニティ"],
+  "writer": "midori-bucho",
+  "hero_image": "/journal/shibuya-creators-coworking-2026/og-image.svg",
+  "published_at": "2026-05-15",
+  "updated_at": "2026-05-15",
+  "reading_minutes": 7,
+  "is_pr": false,
+  "status": "live"
+},
     {
       "slug": "shimbashi-toranomon-coworking-2026",
       "title": "新橋エリア ビジネス街で選ぶコワーキング 6選｜2026年最新",
