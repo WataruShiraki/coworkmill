@@ -104,8 +104,8 @@ async function loadConfig() {
   try {
     const r = await fetch('/spaces');
     const html = await r.text();
-    const m = html.match(/CWM_SB_KEY=['"]([^'"]+)['"]/);
-    if (m) SB_KEY = m[1];
+    const m = html.match(/sb_publishable_[A-Za-z0-9_]+/);
+    if (m) SB_KEY = m[0];
   } catch (e) {
     console.error('config load failed', e);
   }
