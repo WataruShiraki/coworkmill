@@ -1307,7 +1307,7 @@ function handleSort(val) {
   cards.forEach(function(c){ container.appendChild(c); });
 }
 // 初期表示時に「おすすめ順」でソート（動的 fetch 後のタイミングも吸収）
-var __si=false;function initSort(){if(__si)return;try{var _c=document.querySelector('.scards')||document.querySelector('#scards-container')||document.querySelector('[id*="scard"]');if(!_c||_c.children.length===0)return;__si=true;handleSort('おすすめ順');}catch(e){}}
+var __si=false;function initSort(){if(__si)return;try{var _c=document.querySelector('#view-grid-content')||document.querySelector('#view-grid-content')||document.querySelector('[id*="scard"]');if(!_c||_c.children.length===0)return;__si=true;handleSort('おすすめ順');}catch(e){}}
 </script>
 
 
