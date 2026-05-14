@@ -1275,7 +1275,7 @@ function setView(mode) {
 }
 
 
-
+var _origOrder;
 function handleSort(val) {
   var container=document.getElementById('view-grid-content');
   if(!container)return;
@@ -1486,5 +1486,7 @@ window.cwmShowAllPrefectures = function() {
 <link rel="stylesheet" href="/shared/sp-nav.css">
 <script src="/shared/sp-nav.js" defer></script>
   <script src="/shared/cwm-security.js" defer></script>
-
+<script>
+(function(){var __si=false;function initSort(){if(__si)return;var gc=document.getElementById("view-grid-content");if(!gc||gc.children.length===0)return;__si=true;handleSort("おすすめ順");}var ob=new MutationObserver(function(){if(!__si){var gc=document.getElementById("view-grid-content");if(gc&&gc.children.length>0){ob.disconnect();initSort();}}});var gc0=document.getElementById("view-grid-content");if(gc0)ob.observe(gc0,{childList:true});setTimeout(initSort,600);setTimeout(initSort,2000);setTimeout(initSort,5000);})();
+</script>
 </body></html>
