@@ -1306,6 +1306,8 @@ function handleSort(val) {
   }
   cards.forEach(function(c){ container.appendChild(c); });
 }
+// 初期表示時に「おすすめ順」でソート（動的 fetch 後のタイミングも吸収）
+(function(){function initSort(){try{handleSort('おすすめ順');}catch(e){}}if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',function(){setTimeout(initSort,300);setTimeout(initSort,1500);setTimeout(initSort,3000);});}else{setTimeout(initSort,300);setTimeout(initSort,1500);setTimeout(initSort,3000);}})();
 </script>
 
 
