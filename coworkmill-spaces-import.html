@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>施設インポート — COWORKMILL ADMIN</title>
+<style>
+  *{box-sizing:border-box}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;background:#0a0a0a;color:#f0f0f0;padding:24px;max-width:760px;margin:0 auto;line-height:1.6}
+  h1{font-size:22px;font-weight:600;margin:0 0 4px}
+  h2{font-size:14px;color:#aaa;margin:0 0 12px;font-weight:600;letter-spacing:0.04em}
+  .desc{color:#888;font-size:13px;margin-bottom:24px}
+  .stat{padding:14px 18px;background:#1a1a1a;border-radius:8px;font-size:13px;color:#aaa;margin-bottom:24px;border:1px solid #1f1f1f}
+  .stat strong{color:#f0f0f0;font-weight:600}
+  .form-group{margin-bottom:14px}
+  label{display:block;font-size:12px;color:#aaa;margin-bottom:4px;letter-spacing:0.04em}
+  input,select,textarea{width:100%;padding:11px 13px;background:#1a1a1a;border:1px solid #2a2a2a;border-radius:6px;color:#f0f0f0;font-size:14px;font-family:inherit}
+  textarea{resize:vertical;min-height:60px}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:rgb(43,181,200)}
+  button{padding:13px 28px;background:rgb(43,181,200);color:#fff;border:0;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer;transition:background 0.15s}
+  button:hover{background:rgb(34,163,180)}
+  button:disabled{opacity:0.5;cursor:not-allowed}
+  .result{margin-top:24px;padding:16px 18px;background:#1a1a1a;border-radius:8px;font-size:13px;line-height:1.7}
+  .result-success{border-left:3px solid #4caf50}
+  .result-error{border-left:3px solid #f44336}
+  .result a{color:rgb(43,181,200);word-break:break-all}
+  .result em{color:#ccc;font-style:normal;display:block;margin:6px 0;padding:8px 12px;background:#0f0f0f;border-radius:4px}
+  .history{margin-top:36px}
+  .history-item{padding:10px 0;border-bottom:1px solid #1a1a1a;font-size:13px;display:flex;justify-content:space-between;gap:12px}
+  .history-item-meta{color:#666;font-size:12px;white-space:nowrap}
+  .nav{margin-bottom:24px;font-size:12px}
+  .nav a{color:#666;text-decoration:none;margin-right:12px}
+  .nav a:hover{color:#aaa}
+</style>
+</head>
+<body>
+<div class="nav">
+  <a href="/">← COWORKMILL TOP</a>
+  <a href="/coworkmill-journal-admin">ジャーナル管理</a>
+  <a href="/spaces">施設一覧</a>
+</div>
+
+<h1>📥 施設インポート</h1>
+<p class="desc">公開情報から無断掲載モードで施設を取り込みます（Claude Haiku が説明文を自動生成）</p>
+
+<div class="stat" id="stat">読み込み中...</div>
+
+<form id="import-form">
+  <div class="form-group">
+    <label>施設名 *</label>
+    <input type="text" name="name" required placeholder="例: BasisPoint 渋谷店">
+  </div>
+  <div class="form-group">
+    <label>公式URL *</label>
+    <input type="url" name="official_url" required placeholder="https://...">
+  </div>
+  <div class="form-group">
+    <label>都道府県</label>
+    <select name="prefecture">
+      <option value="">選択してください</option>
+      <option>東京都</option>
+      <option>大阪府</option>
+      <option>京都府</option>
+      <option>福岡県</option>
+      <option>愛知県</option>
+      <option>神奈川県</option>
+      <option>北海道</option>
+      <option>兵庫県</option>
+      <option>千葉県</option>
+      <option>埼玉県</option>
+      <option>沖縄県</option>
+      <option>宮城県</option>
+      <option>広島県</option>
+      <option>静岡県</option>
+    </select>
+  </div>
+  <div class="form-group">
+    <label>エリア</label>
+    <input type="text" name="area" placeholder="例: 渋谷・原宿（既存エリア名と一致させると関連スペース表示が機能）">
+  </div>
+  <div class="form-group">
+    <label>最寄駅</label>
+    <input type="text" name="nearest_station" placeholder="例: 渋谷駅">
+  </div>
+  <div class="form-group">
+    <label>追加情報（任意・短く）</label>
+    <textarea name="extra_info" placeholder="例: 全国展開・24時間営業・ドロップイン利用可"></textarea>
+  </div>
+  <button type="submit" id="submit-btn">📥 インポート</button>
+</form>
+
+<div id="result"></div>
+
+<div class="history">
+  <h2>📊 最近の取り込み（最新20件）</h2>
+  <div id="history-list">読み込み中...</div>
+</div>
+
+<script>
+const SB_URL = 'https://jakwntemjkwqwaqujffh.supabase.co';
+let SB_KEY = null;
+
+async function loadConfig() {
+  try {
+    const r = await fetch('/spaces');
+    const html = await r.text();
+    const m = html.match(/CWM_SB_KEY=['"]([^'"]+)['"]/);
+    if (m) SB_KEY = m[1];
+  } catch (e) {
+    console.error('config load failed', e);
+  }
+}
+
+async function loadStat() {
+  if (!SB_KEY) return;
+  try {
+    const now = new Date();
+    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+    const dayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate()).toISOString();
+    const headers = { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY };
+
+    const rMonth = await fetch(SB_URL + '/rest/v1/import_log?select=cost_usd,status&created_at=gte.' + monthStart, { headers });
+    const monthData = await rMonth.json();
+    const monthSuccess = Array.isArray(monthData) ? monthData.filter(d => d.status === 'success').length : 0;
+    const totalCost = Array.isArray(monthData) ? monthData.reduce((s, d) => s + (parseFloat(d.cost_usd) || 0), 0) : 0;
+
+    const rDay = await fetch(SB_URL + '/rest/v1/import_log?select=id&status=eq.success&created_at=gte.' + dayStart, { headers });
+    const dayData = await rDay.json();
+    const dayCount = Array.isArray(dayData) ? dayData.length : 0;
+
+    document.getElementById('stat').innerHTML =
+      '今日: <strong>' + dayCount + ' / 50 件</strong> &nbsp;|&nbsp; 今月: <strong>' + monthSuccess + ' / 500 件</strong> &nbsp;|&nbsp; 今月コスト: <strong>$' + totalCost.toFixed(4) + '</strong>';
+  } catch (e) {
+    document.getElementById('stat').innerText = 'stat エラー: ' + (e.message || e);
+  }
+}
+
+async function loadHistory() {
+  if (!SB_KEY) return;
+  try {
+    const headers = { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY };
+    const r = await fetch(SB_URL + '/rest/v1/import_log?select=*&order=created_at.desc&limit=20', { headers });
+    const data = await r.json();
+    if (!Array.isArray(data) || data.length === 0) {
+      document.getElementById('history-list').innerText = 'まだ取り込み履歴はありません';
+      return;
+    }
+    document.getElementById('history-list').innerHTML = data.map(d => {
+      const status = d.status === 'success' ? '✅' : '❌';
+      const date = new Date(d.created_at).toLocaleString('ja-JP', { month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+      const cost = d.cost_usd ? '$' + parseFloat(d.cost_usd).toFixed(6) : '-';
+      const name = d.input_name || '(no name)';
+      return '<div class="history-item"><span>' + status + ' ' + name + '</span><span class="history-item-meta">' + cost + ' &nbsp; ' + date + '</span></div>';
+    }).join('');
+  } catch (e) {
+    document.getElementById('history-list').innerText = '履歴エラー: ' + (e.message || e);
+  }
+}
+
+document.getElementById('import-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (!SB_KEY) {
+    alert('設定読み込み失敗。リロードしてください。');
+    return;
+  }
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.textContent = '⏳ インポート中...';
+
+  const formData = new FormData(e.target);
+  const payload = {};
+  for (const [k, v] of formData.entries()) {
+    if (v) payload[k] = v;
+  }
+
+  try {
+    const r = await fetch(SB_URL + '/functions/v1/import-space', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', apikey: SB_KEY },
+      body: JSON.stringify(payload)
+    });
+    const data = await r.json();
+    const resultEl = document.getElementById('result');
+    if (data.success) {
+      resultEl.className = 'result result-success';
+      resultEl.innerHTML =
+        '<strong>✅ 取り込み完了</strong><br>' +
+        '施設URL: <a href="' + data.url + '" target="_blank">' + data.url + '</a><br>' +
+        'AI生成説明文:<em>' + data.description + '</em>' +
+        'コスト: $' + data.cost_usd + ' &nbsp;|&nbsp; 残り(本日): ' + data.remaining_daily + '/50 &nbsp;|&nbsp; 残り(今月): ' + data.remaining_monthly + '/500';
+      e.target.reset();
+      setTimeout(() => { loadHistory(); loadStat(); }, 800);
+    } else {
+      resultEl.className = 'result result-error';
+      resultEl.innerHTML = '<strong>❌ エラー</strong><br>' + (data.error || JSON.stringify(data)) + (data.detail ? '<br><small>' + data.detail + '</small>' : '');
+    }
+  } catch (err) {
+    document.getElementById('result').className = 'result result-error';
+    document.getElementById('result').innerText = '❌ エラー: ' + (err.message || err);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '📥 インポート';
+  }
+});
+
+(async () => {
+  await loadConfig();
+  if (!SB_KEY) {
+    document.getElementById('stat').innerText = '⚠ 設定読み込み失敗（再読み込みしてください）';
+    return;
+  }
+  loadStat();
+  loadHistory();
+})();
+</script>
+</body>
+</html>
