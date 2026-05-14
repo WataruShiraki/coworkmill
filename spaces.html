@@ -1275,36 +1275,30 @@ function setView(mode) {
 }
 
 function handleSort(val) {
-  var cards = Array.from(document.querySelectorAll('.scard'));
-  var container = document.querySelector('.scard')?.parentElement;
-  if(!container) return;
-  // PLAN ランク (Pro=3 / Standard=2 / Free=1)
-  var planRank = { pro: 3, standard: 2, free: 1 };
-  // コンテンツ充実度スコア(写真数 × 3 + 説明文長 capped + workstyle_tags数 × 2)
-  function contentScore(c) {
-    var imgs = parseInt(c.dataset.imgCount || 0);
-    var descLen = parseInt(c.dataset.descLen || 0);
-    var tags = parseInt(c.dataset.tagCount || 0);
-    return imgs * 3 + Math.min(descLen / 100, 10) + tags * 2;
-  }
-  if (val === '新着順' || val === 'newest') {
+var _origOrder=null;
+function handleSort(val) {
+  var container=document.getElementById('view-grid-content');
+  if(!container)return;
+  var cards=Array.from(container.querySelectorAll(':scope>.scard'));
+  if(!_origOrder)_origOrder=cards.map(function(c){return c.getAttribute('href');});
+  var planRank={pro:3,standard:2,free:1};
+  if(val==='新着順'||val==='newest'){
+    if(_origOrder){
+      var map={};cards.forEach(function(c){map[c.getAttribute('href')]=c;});
+      _origOrder.forEach(function(h){if(map[h])container.appendChild(map[h]);});
+    }
+  }else if(val==='おすすめ順'||val==='recommended'){
     cards.sort(function(a,b){
-      return parseInt(b.dataset.created||0) - parseInt(a.dataset.created||0);
+      var pa=planRank[a.dataset.plan]||1;
+      var pb=planRank[b.dataset.plan]||1;
+      if(pb!==pa)return pb-pa;
+      var ia=a.querySelector('.scard-img');var ib=b.querySelector('.scard-img');
+      var sa=ia&&ia.style.backgroundImage&&ia.style.backgroundImage!=='none'?3:0;
+      var sb=ib&&ib.style.backgroundImage&&ib.style.backgroundImage!=='none'?3:0;
+      return sb-sa;
     });
-  } else if (val === 'おすすめ順' || val === 'recommended') {
-    cards.sort(function(a,b){
-      // 1. プラン順
-      var ap = planRank[(a.dataset.plan||'free').toLowerCase()] || 1;
-      var bp = planRank[(b.dataset.plan||'free').toLowerCase()] || 1;
-      if (ap !== bp) return bp - ap;
-      // 2. 同プラン内はコンテンツ充実度スコア
-      var diff = contentScore(b) - contentScore(a);
-      if (diff !== 0) return diff;
-      // 3. 同点なら新着順
-      return parseInt(b.dataset.created||0) - parseInt(a.dataset.created||0);
-    });
+    cards.forEach(function(c){container.appendChild(c);});
   }
-  cards.forEach(function(c){ container.appendChild(c); });
 }
 // 初期表示時に「おすすめ順」でソート（動的 fetch 後のタイミングも吸収）
 var __si=false;function initSort(){if(__si)return;try{var _c=document.querySelector('#view-grid-content');if(!_c||_c.children.length===0)return;__si=true;handleSort('おすすめ順');}catch(e){}}(function(){function _obs(){var gc=document.querySelector('#view-grid-content');if(gc){var ob=new MutationObserver(function(){if(!__si&&gc.children.length>0){ob.disconnect();initSort();}});ob.observe(gc,{childList:true});}setTimeout(initSort,800);setTimeout(initSort,2500);setTimeout(initSort,5000);}if(document.readyState==="loading"){document.addEventListener('DOMContentLoaded',_obs);}else{_obs();}})();
