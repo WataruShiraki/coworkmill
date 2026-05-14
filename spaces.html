@@ -1307,7 +1307,7 @@ function handleSort(val) {
   cards.forEach(function(c){ container.appendChild(c); });
 }
 // 初期表示時に「おすすめ順」でソート（動的 fetch 後のタイミングも吸収）
-var __si=false;function initSort(){if(__si)return;try{var _c=document.querySelector('#view-grid-content')||document.querySelector('#view-grid-content')||document.querySelector('[id*="scard"]');if(!_c||_c.children.length===0)return;__si=true;handleSort('おすすめ順');}catch(e){}}
+var __si=false;function initSort(){if(__si)return;try{var _c=document.querySelector('#view-grid-content');if(!_c||_c.children.length===0)return;__si=true;handleSort('おすすめ順');}catch(e){}}(function(){function _obs(){var gc=document.querySelector('#view-grid-content');if(gc){var ob=new MutationObserver(function(){if(!__si&&gc.children.length>0){ob.disconnect();initSort();}});ob.observe(gc,{childList:true});}setTimeout(initSort,800);setTimeout(initSort,2500);setTimeout(initSort,5000);}if(document.readyState==="loading"){document.addEventListener('DOMContentLoaded',_obs);}else{_obs();}})();
 </script>
 
 
