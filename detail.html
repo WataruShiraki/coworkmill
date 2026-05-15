@@ -2036,6 +2036,20 @@ document.addEventListener('DOMContentLoaded', () => {
             }
           }).catch(function(){});
         }
+      } else if (designByEl && d.designer_name) {
+        var _dnm = cwm.esc(d.designer_name);
+        var _dnHtml = d.designer_url
+          ? '<a href="' + cwm.esc(d.designer_url) + '" target="_blank" rel="noopener" style="color:#2BB5C8;font-weight:500;text-decoration:none">' + _dnm + '</a>'
+          : '<span style="color:#2BB5C8;font-weight:500">' + _dnm + '</span>';
+        var _pnHtml = '';
+        if (d.photographer_name) {
+          var _pnm = cwm.esc(d.photographer_name);
+          _pnHtml = ' · Photo by ' + (d.photographer_url
+            ? '<a href="' + cwm.esc(d.photographer_url) + '" target="_blank" rel="noopener" style="color:var(--gray-400)">' + _pnm + '</a>'
+            : '<span style="color:var(--gray-400)">' + _pnm + '</span>');
+        }
+        designByEl.innerHTML = 'Design by ' + _dnHtml + _pnHtml;
+        designByEl.style.display = '';
       }
       const archNameEl = document.getElementById('d-arch-name-text');
       if (archNameEl) archNameEl.textContent = d.architect_name || '';
@@ -2106,7 +2120,7 @@ function tryMap(){
   if(_mapDone)return;
   var sid=(window._currentSpaceId||new URLSearchParams(window.location.search).get('id'));
   if(!sid)return;
-  fetch(CWM_SB_URL+'/rest/v1/spaces?id=eq.'+sid+'&select=name,latitude,longitude,address,official_url,facilities,price_dropin_day,price_dropin_hour,price_monthly_amount,price_monthly_max,price_note,has_meeting_room,meeting_capacity,youtube_video_id',
+  fetch(CWM_SB_URL+'/rest/v1/spaces?id=eq.'+sid+'&select=name,latitude,longitude,address,official_url,facilities,price_dropin_day,price_dropin_hour,price_monthly_amount,price_monthly_max,price_note,has_meeting_room,meeting_capacity,youtube_video_id,designer_name,designer_url,photographer_name,photographer_url',
     {headers:{'apikey':CWM_SB_KEY,'Authorization':'Bearer '+CWM_SB_KEY}})
   .then(function(r){return r.json();})
   .then(function(data){
