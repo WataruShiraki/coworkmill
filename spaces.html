@@ -1258,6 +1258,18 @@ function filterSidebar(){
   // 上部 results-count-num も同期(本数のみ表示。後ろは "スペース" がHTML側で固定)
   var cntNum=document.getElementById('results-count-num');
   if(cntNum)cntNum.textContent=visible;
+  // 投票0件UXメッセージ
+  var emptyEl=document.getElementById('cwm-workstyle-empty');
+  if(!emptyEl){
+    emptyEl=document.createElement('div');
+    emptyEl.id='cwm-workstyle-empty';
+    emptyEl.style.cssText='display:none;text-align:center;padding:60px 20px;color:#999;font-size:14px;line-height:1.8;max-width:600px;margin:40px auto;';
+    emptyEl.innerHTML='<div style="font-size:48px;margin-bottom:16px;">💡</div><div style="font-size:18px;color:#bbb;margin-bottom:12px;font-weight:600;">まだ投票がないため、表示できる施設がありません</div><div>各施設の詳細ページから「最もこの施設が向いている仕事」を投票していただくと、人気順でここに表示されます。</div>';
+    var grid=document.querySelector('.spaces-grid')||document.querySelector('#spaces-grid')||document.querySelector('.grid');
+    if(grid&&grid.parentNode)grid.parentNode.insertBefore(emptyEl,grid.nextSibling);
+  }
+  var hasWorkChip=activeChips.length>0&&activeChips.indexOf('all')<0;
+  emptyEl.style.display=(visible===0&&hasWorkChip)?'block':'none';
 }
 
 function filterCards(){filterSidebar();}
