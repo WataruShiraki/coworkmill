@@ -916,7 +916,7 @@ function _apply(votes){
       card.setAttribute('data-vote-total','0');
     }
   });
-  if(typeof window.applyFiltersFn==='function')window.applyFiltersFn();
+  if(typeof filterSidebar==='function')filterSidebar();else if(typeof window.applyFiltersFn==='function')window.applyFiltersFn();
 }
 function patchFilterSidebar(){return;}
 var obs=new MutationObserver(function(){if(_vTimer)clearTimeout(_vTimer);_vTimer=setTimeout(applyWorkstyle,200);});
