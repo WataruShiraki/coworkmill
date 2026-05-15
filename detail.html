@@ -211,7 +211,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:56px;display:flex;ali
 .space-eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:12px}
 .space-city{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#2BB5C8}
 .space-badge{font-size:9px;font-weight:600;letter-spacing:.06em;padding:3px 8px;border-radius:3px;background:var(--accent-light);color:#2BB5C8}
-.space-name{font-family:var(--font-display);font-size:40px;font-weight:300;letter-spacing:-.03em;line-height:1.1;margin-bottom:10px}
+.space-name{font-family:var(--font-display);font-size:48px;font-weight:500;letter-spacing:-.04em;line-height:1.05;margin-bottom:12px}
 .design-by{font-size:12px;color:var(--gray-400);margin-bottom:24px}
 .design-by span{color:#2BB5C8;font-weight:500}
 .space-desc{font-size:14px;line-height:1.9;color:var(--gray-600);margin-bottom:40px;max-width:600px}
@@ -750,6 +750,7 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
 
     <!-- Header -->
     <div>
+      <h1 class="space-name" id="d-name"><span class="pick-badge" id="d-pick" style="display:none">PICK</span></h1>
       <div class="space-eyebrow">
         <span class="space-city" id="d-city"></span>
         <span class="space-badge" id="d-badge-24h" style="display:none">24時間利用可</span>
@@ -757,7 +758,6 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
         <span class="space-badge" id="d-badge-en" style="display:none;background:rgba(43,181,200,.12);color:#2BB5C8">英語対応</span>
         <span class="space-badge" id="d-card-badge" style="display:none;background:rgba(235,99,101,.1);color:var(--brand-pink)">クレカ可</span>
       </div>
-      <h1 class="space-name" id="d-name"><span class="pick-badge" id="d-pick" style="display:none">PICK</span></h1>
       <div class="design-by" id="d-design-by" style="display:none"></div>
       <p class="space-desc">
         <span id="d-desc"></span>
