@@ -2038,15 +2038,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       } else if (designByEl && d.designer_name) {
         var _dnm = cwm.esc(d.designer_name);
-        var _dnHtml = d.designer_url
-          ? '<a href="' + cwm.esc(d.designer_url) + '" target="_blank" rel="noopener" style="color:#2BB5C8;font-weight:500;text-decoration:none">' + _dnm + '</a>'
-          : '<span style="color:#2BB5C8;font-weight:500">' + _dnm + '</span>';
+        var _dnHtml = '<span style="color:#2BB5C8;font-weight:500">' + _dnm + '</span>';
         var _pnHtml = '';
         if (d.photographer_name) {
           var _pnm = cwm.esc(d.photographer_name);
-          _pnHtml = ' · Photo by ' + (d.photographer_url
-            ? '<a href="' + cwm.esc(d.photographer_url) + '" target="_blank" rel="noopener" style="color:var(--gray-400)">' + _pnm + '</a>'
-            : '<span style="color:var(--gray-400)">' + _pnm + '</span>');
+          _pnHtml = ' · Photo by <span style="color:var(--gray-400)">' + _pnm + '</span>';
         }
         designByEl.innerHTML = 'Design by ' + _dnHtml + _pnHtml;
         designByEl.style.display = '';

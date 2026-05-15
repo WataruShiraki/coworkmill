@@ -605,11 +605,9 @@ function resetVibeUI(){
     
 <div class="sec">
       <div class="sec-h"><div><div class="sec-ht">設計クレジット <span style="font-size:9px;color:#aaa;margin-left:4px">任意 — 詳細ページに「Designed by ◯◯」が表示されます</span></div><div class="sec-hs">設計者・建築家やフォトグラファーのお名前をご紹介可能であれば、ぜひお願いいたします</div></div></div>
-      <div class="fg"><div class="fl">設計：建築家・設計事務所名（任意）</div><input class="fin" id="f-designer-name" placeholder="例：トラフ建築設計事務所" value=""></div>
-      <div class="fg"><div class="fl">設計：公式URL（任意）</div><input class="fin" id="f-designer-url" placeholder="例：https://torafu.com" value=""></div>
-      <div class="fg"><div class="fl">撮影：フォトグラファー名（任意）</div><input class="fin" id="f-photographer-name" placeholder="例：阿野太一" value=""></div>
-      <div class="fg"><div class="fl">撮影：URL/SNS（任意）</div><input class="fin" id="f-photographer-url" placeholder="例：https://instagram.com/taichiano" value=""></div>
-    </div>
+      <div class="fg"><div class="fl">設計：建築家・設計事務所名（任意）</div><input class="fin" id="f-designer-name" placeholder="例：ミル建築設計事務所" value=""></div>
+      <div class="fg"><div class="fl">撮影：フォトグラファー名（任意）</div><input class="fin" id="f-photographer-name" placeholder="例：ミル撮影スタジオ" value=""></div>
+      </div>
     
     <div class="sec">
       <div class="sec-h"><div><div class="sec-ht">場所の特徴 <span class="vibe-count-label" style="font-size:11px;color:var(--gray-400);font-weight:normal">0/3</span></div><div class="sec-hs">3つまで複数選択（任意）</div></div></div>
@@ -1748,9 +1746,7 @@ function collectFormData() {
     architect_name:  g('p-arch'),
     architect_id:    document.getElementById('p-arch-selected')?.dataset?.archId || null,
     designer_name:     g('nf-designer-name', 'f-designer-name'),
-    designer_url:      g('nf-designer-url', 'f-designer-url'),
     photographer_name: g('nf-photographer-name', 'f-photographer-name'),
-    photographer_url:  g('nf-photographer-url', 'f-photographer-url'),
     vibe:            g('nfvibe', 'p-vibe'),
     instagram:       g('nfinsta', 'fig'),
     youtube_url:     g('nf-youtube-url', 'f-youtube-url'),
@@ -1874,9 +1870,7 @@ async function loadSpaceDetail(f) {
     if(document.getElementById('nf-price-hourly'))document.getElementById('nf-price-hourly').value=d.price_dropin_hour?d.price_dropin_hour.toLocaleString('ja-JP'):'';
     if(document.getElementById('f-official-url'))document.getElementById('f-official-url').value=d.official_url||'';
     if(document.getElementById('f-designer-name'))document.getElementById('f-designer-name').value=d.designer_name||'';
-    if(document.getElementById('f-designer-url'))document.getElementById('f-designer-url').value=d.designer_url||'';
     if(document.getElementById('f-photographer-name'))document.getElementById('f-photographer-name').value=d.photographer_name||'';
-    if(document.getElementById('f-photographer-url'))document.getElementById('f-photographer-url').value=d.photographer_url||'';
     window.setTransport=function(mode){
   var el=document.getElementById('f-transport-mode');if(el)el.value=mode;
   var bw=document.getElementById('btn-tw'),bc=document.getElementById('btn-tc');
