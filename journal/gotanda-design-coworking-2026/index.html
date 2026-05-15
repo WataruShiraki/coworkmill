@@ -246,6 +246,45 @@ img{max-width:100%;display:block}
   .j-nav-links a.j-back-to-main span.full{display:none}
   .j-nav-links a.j-back-to-main span.short{display:inline!important}
 }
+
+.j-page-grid{display:grid;grid-template-columns:minmax(0,680px) 260px;gap:0 52px;max-width:1100px;margin:0 auto;padding:56px 24px 80px;align-items:start}
+@media(max-width:1024px){.j-page-grid{grid-template-columns:1fr;max-width:780px}.j-sidebar{margin-top:48px;padding-top:40px;border-top:1px solid var(--line)}.j-sidebar-sticky{position:static;max-height:none;overflow-y:visible;display:grid;grid-template-columns:1fr 1fr;gap:32px 40px}.j-side-block{border-bottom:none;padding-bottom:0}}
+@media(max-width:640px){.j-page-grid{padding:32px 18px 56px}.j-sidebar-sticky{grid-template-columns:1fr;gap:28px}}
+.j-sidebar{position:relative;font-family:var(--fd)}
+.j-sidebar-sticky{position:sticky;top:80px;display:flex;flex-direction:column;gap:28px;max-height:calc(100vh - 100px);overflow-y:auto;padding-right:4px;scrollbar-width:thin}
+.j-side-block{padding-bottom:24px;border-bottom:1px solid var(--line)}
+.j-side-block:last-child{border-bottom:none;padding-bottom:0}
+.j-side-h{font-family:var(--fb);font-style:italic;font-size:12px;color:var(--teal);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.j-side-h::before{content:'';display:inline-block;width:18px;height:1px;background:var(--teal)}
+.j-toc-list{list-style:none;display:flex;flex-direction:column;gap:2px}
+.j-toc-list a{font-size:12.5px;color:var(--fg-3);line-height:1.55;padding:6px 0 6px 14px;border-left:1px solid var(--line);display:block;transition:all .15s}
+.j-toc-list a:hover,.j-toc-list a.active{color:var(--teal);border-left-color:var(--teal)}
+.j-side-list{list-style:none;display:flex;flex-direction:column;gap:14px}
+.j-side-list a{display:flex;gap:10px;align-items:flex-start;transition:opacity .15s}
+.j-side-list a:hover{opacity:.85}
+.j-side-thumb{flex-shrink:0;width:72px;height:48px;border-radius:4px;overflow:hidden;background:var(--bg-3);position:relative;display:block}
+.j-side-thumb img,.j-side-thumb svg{width:100%;height:100%;object-fit:cover}
+.j-side-rank{position:absolute;top:0;left:0;background:var(--teal);color:#000;font-family:var(--fb);font-style:italic;font-size:11px;font-weight:600;padding:1px 6px;border-radius:0 0 4px 0;line-height:1.4}
+.j-side-body{flex:1;min-width:0}
+.j-side-title{font-size:12.5px;line-height:1.55;color:var(--fg-2);margin-bottom:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;transition:color .15s}
+.j-side-list a:hover .j-side-title{color:var(--teal)}
+.j-side-meta{font-family:var(--fb);font-style:italic;font-size:11px;color:var(--fg-4)}
+.j-side-tags{display:flex;flex-wrap:wrap;gap:5px}
+.j-side-tag{padding:4px 10px;border:1px solid var(--line-2);border-radius:99px;font-size:11px;color:var(--fg-3);display:inline-block;transition:all .15s}
+.j-side-tag:hover{color:var(--teal);border-color:var(--teal)}
+.j-side-tag-lg{font-size:12.5px;color:var(--fg-2);font-weight:500}
+.j-side-find{display:flex;flex-direction:column;gap:6px}
+.j-side-find a{padding:10px 14px;border:1px solid var(--line);border-radius:4px;font-size:12px;color:var(--fg-2);display:flex;justify-content:space-between;align-items:center;transition:all .15s}
+.j-side-find a:hover{border-color:var(--teal);color:var(--teal)}
+.j-side-find a::after{content:'→';color:var(--fg-4)}
+.j-side-banner{padding:16px;border:1px solid var(--line);border-radius:6px;font-size:12px;color:var(--fg-3);line-height:1.7}
+.j-side-banner strong{display:block;font-size:13px;color:var(--fg-2);margin-bottom:4px}
+.j-side-banner a{display:inline-block;margin-top:8px;color:var(--teal);font-size:11.5px}
+.j-progress{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--teal),var(--teal-2));z-index:200;transition:width .1s;width:0%}
+.j-share-vbar{position:fixed;left:24px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:10px;z-index:50}
+.j-share-vbar a{width:36px;height:36px;border-radius:50%;background:var(--bg-2);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--fg-3);font-size:14px;transition:all .15s}
+.j-share-vbar a:hover{border-color:var(--teal);color:var(--teal)}
+@media(max-width:1240px){.j-share-vbar{display:none}}
 </style>
 
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-P6CZCM6K18"></script>
@@ -269,6 +308,17 @@ img{max-width:100%;display:block}
     </nav>
   </div>
 </header>
+
+<div class="j-progress" id="progress"></div>
+
+<aside class="j-share-vbar">
+  <a href="javascript:void(0)" title="X">𝕏</a>
+  <a href="javascript:void(0)" title="LINE">L</a>
+  <a href="javascript:void(0)" title="Facebook">f</a>
+  <a href="javascript:void(0)" title="Copy">⎘</a>
+</aside>
+
+<main class="j-page-grid">
 
 <article class="j-article">
 
@@ -330,7 +380,7 @@ img{max-width:100%;display:block}
 
     <p class="j-pullquote">「五反田は、デザインで選んでいい街になった。」</p>
 
-    <h2><span class="j-num">No.01</span>co-lab 五反田 with JPRE<span class="j-en">Waterscape Office — クリエイター専用の集合知</span></h2>
+    <h2 id="sec-01"><span class="j-num">No.01</span>co-lab 五反田 with JPRE<span class="j-en">Waterscape Office — クリエイター専用の集合知</span></h2>
     <p>正直に申し上げますと、最初は敷居が高そうに見えて少し尻込みしてしまいました。クリエイター専用、 MUSE Design Awards 金賞、サウナ併設……といった情報を見て、Webディレクター職の自分が伺っても良いものかと迷ったのです。それでも思い切ってドアを押してみたところ、受付の方がさらりと「コーヒーいかがですか」と声をかけてくださいました。その瞬間に、肩の力が抜けたような気がしました。</p>
     <p>エントランスをくぐった瞬間、空間の質感の違いを感じました。天井全体に1,000メートルのアルミシートを用いた「Waterscape Office」のシグネチャーデザインは、落合守征デザインプロジェクトによる仕事です。アメリカの <strong>MUSE Design Awards 2024 で金賞</strong>を受賞され、続いてA'Design Awardでも銀賞を受賞されています。コンセプトカラーである赤土錆色は、五反田という街の工場感・繁華街の猥雑さ・住宅街の高級感を、一枚に重ね合わせたものだそうです。なるほど、訪れた人がついつい腰を据えてしまう理由が、少し分かったような気がします。</p>
     <p>クリエイター専用というだけあって、入居者の方々は建築家、グラフィックデザイナー、映像作家、SNSマーケター、ECコンサルタントなど多彩な顔ぶれです。月1回のプレゼン会で互いの仕事を見せ合う文化も根づいているそうです。打ち合わせには会議室が9室、集中作業にはオンラインブースが11台、リフレッシュには <strong>サウナ併設</strong>（80℃、水風呂16℃、ロウリュあり）。回線は有線無線ともに高速で、コーヒーは本格コーヒーマシンで提供されます。働く方の集中力を支える環境が、随所に丁寧に整えられている印象を受けました。</p>
@@ -358,7 +408,7 @@ img{max-width:100%;display:block}
       </dl>
     </div>
 
-    <h2><span class="j-num">No.02</span>MID POINT 目黒不動前<span class="j-en">職住近接という思想、テラスで深呼吸する</span></h2>
+    <h2 id="sec-02"><span class="j-num">No.02</span>MID POINT 目黒不動前<span class="j-en">職住近接という思想、テラスで深呼吸する</span></h2>
     <p>五反田駅から目黒川沿いに15分ほど歩く、あるいは不動前駅から坂を上って5分ほどの場所に <strong>MID POINT 目黒不動前</strong> はあります。リードシー目黒不動前ビルの5階から8階を占めており、大和ハウスグループのコスモスイニシアが手がけるシェアオフィスブランドの第1弾としてオープンしたそうです。空間デザインは <strong>乃村工藝社</strong>。商業空間の名手が手がけた「働く場」と聞くと、訪れる前から少し期待が高まります。</p>
     <p>コンセプトは「職住近接」。住居と職場の中間に位置するエリアで、暮らすように働ける場所を提示しています。8階のラウンジに上がると、東京の空が大きく広がって見えました。テラスにはハンモックとソファが置かれ、キッチンには調理器具、バーカウンターまで揃っています。最初に伺った日は、ラウンジで作業するつもりだったのですが、心地よさにつられてハンモックで少しお休みさせていただきました。「コワーキング」というより、自宅から拡張された「もう一つの居間」と呼びたくなるような空間です。</p>
     <p>個人的に印象に残ったのは、 <strong>専用駐輪場とシェアサイクル</strong>でした。自転車での移動が多い方には嬉しい設備かと思います。コミュニティマネージャーが常駐されており、声をかけやすい距離感のように感じました。月額24,200円のコワーキング専用席プランから始められるそうです。五反田駅・目黒駅・不動前駅の3駅徒歩圏という立地のおかげで、天候を選ばずアクセスできるのもありがたい点だと思います。</p>
@@ -389,7 +439,7 @@ img{max-width:100%;display:block}
       <p>ここまで読んで「他のエリアも気になる」「建築家から探したい」と思った方は、 <a href="/spaces">COWORKMILL の施設一覧</a> から建築家・写真・エリア別に検索できます。</p>
     </div>
 
-    <h2><span class="j-num">No.03</span>コワーキングスペースpao<span class="j-en">五反田駅3分、カラフルの定番</span></h2>
+    <h2 id="sec-03"><span class="j-num">No.03</span>コワーキングスペースpao<span class="j-en">五反田駅3分、カラフルの定番</span></h2>
     <p>五反田駅東口を出て3分ほどの場所にある <strong>pao（パオ）</strong>。雑居ビルの中にあるとは思えないほど、エレベーターが開いた瞬間の空気が明るく、いい意味で予想を裏切られました。165平方メートルを「ワーキングスペース」「オープンスペース」「ラウンジスペース」の3エリアに区切り、カラフルな家具を並べた構成になっています。集中したいときは個別ブース、商談のときはオープン、休憩はラウンジ、というふうにエリアの境界がはっきりしているため、目的に応じて場所を選びやすい設計だと感じました。</p>
     <p>料金プランの細かさが、 pao の強みだと感じました。ホリデーメンバー5,500円、平日昼のみ11,000円、フルタイム16,500円、ドロップイン1時間1,980円（メンバーは990円〜）と幅があり、フリーランスの方、副業の方、起業準備中の方など、それぞれの生活リズムに合わせて選びやすい料金設計になっています。お菓子スタンド、1日20枚までの無料コピー、フリードリンクも用意されていて、 <strong>気軽さの設計が丁寧</strong>に作り込まれている印象を受けました。</p>
     <p>X（旧Twitter）の <strong>@paogotanda</strong> アカウントでは、空席情報やイベント告知がこまめに流れています。SNSを通じて運営の方の顔が見える施設は、実際に訪れた時に「想定外」が少なく、利用者としては小さくない安心感につながると感じました。</p>
@@ -415,7 +465,7 @@ img{max-width:100%;display:block}
       </dl>
     </div>
 
-    <h2><span class="j-num">No.04</span>Basis Point 五反田店<span class="j-en">ホテルラウンジ風の、隠れ家的1拠点</span></h2>
+    <h2 id="sec-04"><span class="j-num">No.04</span>Basis Point 五反田店<span class="j-en">ホテルラウンジ風の、隠れ家的1拠点</span></h2>
     <p>4選の最後にご紹介するのは、五反田駅徒歩3分にある <strong>Basis Point 五反田店</strong>です。BasisPointグループは新橋・銀座・五反田など都内主要駅に展開するコワーキングブランドで、こちらの五反田店は <strong>「ホテルのラウンジのよう」</strong>と評される落ち着いた内装が特徴とのことです。</p>
     <p>半個室型のBOX席が並んでおり、視線の干渉が少ない設計になっています。1時間単位のドロップインから月額会員まで、料金体系もシンプルで分かりやすい印象です。スマホやMac用の充電器、複合機、完全個室の会議室が2部屋。「商談前にちょっと30分」「資料を書き上げる夜2時間」といった、ピンポイントな用途に頼りになる施設だと感じました。日常的に通う1拠点というよりも、必要な時に頼れる場所、という位置づけが似合うかもしれません。</p>
     <p>※ Basis Point 五反田店は、 <a href="/space/basispoint-gotanda">COWORKMILL に詳細掲載中の施設</a> です。間取りや写真、リアルタイムの利用感は施設詳細ページもあわせてご覧ください。</p>
@@ -439,7 +489,7 @@ img{max-width:100%;display:block}
       </dl>
     </div>
 
-    <h2><span class="j-num">Conclusion</span>五反田は、選んで通う街になった<span class="j-en">どの一杯から始めるかは、あなた次第</span></h2>
+    <h2 id="sec-conclusion"><span class="j-num">Conclusion</span>五反田は、選んで通う街になった<span class="j-en">どの一杯から始めるかは、あなた次第</span></h2>
 
     <p>かつての五反田は「働く街」というより「飲む街」のイメージが強い街だったかと思います。それが2024年以降、五反田JPビルディングのオープンと目黒川沿いの再開発によって、街の空気が少しずつ変わってきているように感じます。<strong>デザイン賞を獲るシェアオフィスが歩いて行ける距離にある</strong>というのは、東京の中でも限られたエリアだけではないでしょうか。</p>
     <p>4つの中から、まず1つ選ぶとすれば——クリエイティブを本気で深めたい方には <strong>co-lab</strong>、暮らしと仕事を緩やかにつなぎたい方には <strong>MID POINT</strong>、フットワーク重視で選びたい方には <strong>pao</strong>、確実な1拠点を持ちたい方には <strong>Basis Point</strong>。それぞれに合った居方があるかと思います。</p>
@@ -479,6 +529,92 @@ img{max-width:100%;display:block}
   </div>
 
 </article>
+
+<aside class="j-sidebar">
+  <div class="j-sidebar-sticky">
+
+    <div class="j-side-block">
+      <div class="j-side-banner">
+        <strong>デザインコワーキングポータル<br>COWORKMILL</strong>
+        デザイン性に優れたコワーキングを、エリア・建築家・写真から探せる編集型データベース。
+        <a href="/spaces">COWORKMILL を使う →</a>
+      </div>
+    </div>
+
+    <div class="j-side-block">
+      <div class="j-side-h">Contents</div>
+      <ul class="j-toc-list" id="toc-list">
+        <li><a href="#sec-01">No.01 co-lab 五反田 with JPRE</a></li>
+        <li><a href="#sec-02">No.02 MID POINT 目黒不動前</a></li>
+        <li><a href="#sec-03">No.03 コワーキングスペーspao</a></li>
+        <li><a href="#sec-04">No.04 Basis Point 五反田店</a></li>
+        <li><a href="#sec-conclusion">Conclusion</a></li>
+      </ul>
+    </div>
+
+    <div class="j-side-block">
+      <div class="j-side-h">Latest</div>
+      <ul class="j-side-list">
+        <li><a href="/journal/shimbashi-toranomon-coworking-2026/">
+          <span class="j-side-thumb"><img src="/journal/shimbashi-toranomon-coworking-2026/og-image.svg" alt=""></span>
+          <span class="j-side-body"><span class="j-side-title">新橋エリア ビジネス街で選ぶコワーキング 6選</span><span class="j-side-meta">2026.05.12</span></span>
+        </a></li>
+        <li><a href="/journal/gotanda-design-coworking-2026/">
+          <span class="j-side-thumb"><img src="/journal/gotanda-design-coworking-2026/og-image.svg" alt=""></span>
+          <span class="j-side-body"><span class="j-side-title">五反田駅から徒歩圈 デザインで選ぶコワーキング 4選</span><span class="j-side-meta">2026.05.10</span></span>
+        </a></li>
+      </ul>
+    </div>
+
+    <div class="j-side-block">
+      <div class="j-side-h">Popular</div>
+      <ul class="j-side-list">
+        <li><a href="/journal/shimbashi-toranomon-coworking-2026/">
+          <span class="j-side-thumb"><span class="j-side-rank">01</span><img src="/journal/shimbashi-toranomon-coworking-2026/og-image.svg" alt=""></span>
+          <span class="j-side-body"><span class="j-side-title">新橋エリア ビジネス街で選ぶコワーキング 6選</span><span class="j-side-meta">2026.05.12</span></span>
+        </a></li>
+        <li><a href="/journal/gotanda-design-coworking-2026/">
+          <span class="j-side-thumb"><span class="j-side-rank">02</span><img src="/journal/gotanda-design-coworking-2026/og-image.svg" alt=""></span>
+          <span class="j-side-body"><span class="j-side-title">五反田駅から徒歩圈 デザインで選ぶコワーキング 4選</span><span class="j-side-meta">2026.05.10</span></span>
+        </a></li>
+      </ul>
+    </div>
+
+    <div class="j-side-block">
+      <div class="j-side-h">Topics</div>
+      <div class="j-side-tags">
+        <a href="/journal/?tag=五反田" class="j-side-tag j-side-tag-lg">#五反田</a>
+        <a href="/journal/?tag=新橋" class="j-side-tag j-side-tag-lg">#新橋</a>
+        <a href="/journal/?tag=デザイン" class="j-side-tag">#デザイン</a>
+        <a href="/journal/?tag=クリエイター" class="j-side-tag">#クリエイター</a>
+        <a href="/journal/?tag=サウナ" class="j-side-tag">#サウナ</a>
+        <a href="/journal/?tag=24時間" class="j-side-tag">#24時間</a>
+        <a href="/journal/?tag=品川区" class="j-side-tag">#品川区</a>
+        <a href="/journal/?tag=山手線" class="j-side-tag">#山手線</a>
+      </div>
+    </div>
+
+    <div class="j-side-block">
+      <div class="j-side-h">Find a Space</div>
+      <div class="j-side-find">
+        <a href="/spaces">コワーキングを探す</a>
+        <a href="/architects">建築家から探す</a>
+        <a href="/photos">写真から探す</a>
+      </div>
+    </div>
+
+    <div class="j-side-block">
+      <div class="j-side-banner">
+        <strong>オフィス環境ポータル</strong>
+        快適なオフィス環境はOFFICEMILLへ
+        <a href="https://offml.com/" target="_blank" rel="noopener">OFFICEMILL →</a>
+      </div>
+    </div>
+
+  </div>
+</aside>
+
+</main>
 
 <footer class="j-foot">
   <div class="j-foot-inner">
@@ -521,5 +657,19 @@ img{max-width:100%;display:block}
 
 <script async src="//www.instagram.com/embed.js"></script>
 
+
+<script>
+(function(){
+  var el=document.getElementById('progress');
+  function up(){var s=document.documentElement.scrollTop||document.body.scrollTop;var h=document.documentElement.scrollHeight-window.innerHeight;el.style.width=(h>0?Math.min(100,s/h*100):0)+'%';}
+  window.addEventListener('scroll',up,{passive:true});up();
+})();
+(function(){
+  var hs=document.querySelectorAll('h2[id]');
+  var ls=document.querySelectorAll('#toc-list a');
+  function up(){var c='';hs.forEach(function(h){if(window.scrollY>=h.offsetTop-100)c=h.id;});ls.forEach(function(a){a.classList.toggle('active',a.getAttribute('href')==='#'+c);});}
+  window.addEventListener('scroll',up,{passive:true});up();
+})();
+</script>
 </body>
 </html>
