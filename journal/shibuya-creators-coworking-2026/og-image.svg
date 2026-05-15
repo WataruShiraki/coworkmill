@@ -22,8 +22,8 @@
   <text x="76" y="372" font-family="Cormorant Garamond, serif" font-size="166" font-weight="500" fill="#f0f0f0" letter-spacing="-2">SHIBUYA</text>
   <text x="80" y="420" font-family="Noto Sans JP, sans-serif" font-size="22" fill="#999" letter-spacing="2">渋谷</text>
   <line x1="80" y1="478" x2="120" y2="478" stroke="#333" stroke-width="1"/>
-  <text x="80" y="525" font-family="Noto Sans JP, sans-serif" font-size="30" font-weight="700" fill="#f0f0f0">渋谷 5選</text>
-  <text x="80" y="565" font-family="Cormorant Garamond, serif" font-style="italic" font-size="42" font-weight="500" fill="#79F1A4">— Creative Coworking · 5 Picks</text>
+  <text x="80" y="525" font-family="Noto Sans JP, sans-serif" font-size="30" font-weight="700" fill="#f0f0f0">渋谷 4選</text>
+  <text x="80" y="565" font-family="Cormorant Garamond, serif" font-style="italic" font-size="42" font-weight="500" fill="#79F1A4">— Creative Coworking · 4 Picks</text>
   <text x="80" y="625" font-family="Cormorant Garamond, serif" font-style="italic" font-size="16" fill="#666" letter-spacing="1">curated by Haruka Bucho · COWORKMILL journal</text>
   <text x="1120" y="625" font-family="Cormorant Garamond, serif" font-style="italic" font-size="14" fill="#444" text-anchor="end" letter-spacing="1">No. 03</text>
 </svg>
