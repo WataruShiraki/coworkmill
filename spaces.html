@@ -886,19 +886,44 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
 </footer>
 
 <script>
-/* workstyle_tags → data-work + filterSidebarパッチ */
+/* workstyle votes → data-work + filterSidebarパッチ (vote-based) */
 (function(){
 var S="https://jakwntemjkwqwaqujffh.supabase.co",K="sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ";
-var MAP={"Deep Work":"deepwork","Creative":"creative","Ideation":"ideation","Meeting":"meeting","Remote Call":"remote","Learning":"learning"};
+var _vCache=null,_vTimer=null;
 function applyWorkstyle(){
-fetch(S+'/rest/v1/spaces?select=id,workstyle_tags&status=eq.live',{headers:{"apikey":K,"Authorization":"Bearer "+K}}).then(function(r){return r.json();}).then(function(d){d.forEach(function(sp){if(!sp.workstyle_tags||!sp.workstyle_tags.length)return;var card=document.querySelector('.scard[href*="id='+sp.id+'"]');if(!card)return;var works=sp.workstyle_tags.map(function(t){return MAP[t]||t.toLowerCase().replace(/\s+/g,"");});card.setAttribute("data-work",works.join(" "));});}).catch(function(){});
+  if(_vCache){_apply(_vCache);return;}
+  fetch(S+'/rest/v1/voices?select=space_id,workstyle&workstyle=not.is.null&status=eq.approved',{headers:{"apikey":K,"Authorization":"Bearer "+K}})
+  .then(function(r){return r.json();})
+  .then(function(votes){if(!votes||!Array.isArray(votes))return;_vCache=votes;_apply(votes);})
+  .catch(function(){});
+}
+function _apply(votes){
+  var voteMap={};
+  votes.forEach(function(v){
+    if(!v.space_id||!v.workstyle)return;
+    if(!voteMap[v.space_id])voteMap[v.space_id]={};
+    voteMap[v.space_id][v.workstyle]=(voteMap[v.space_id][v.workstyle]||0)+1;
+  });
+  document.querySelectorAll('.scard[data-id]').forEach(function(card){
+    var sid=card.getAttribute('data-id');
+    var works=voteMap[sid];
+    if(works){
+      var keys=Object.keys(works).sort(function(a,b){return works[b]-works[a];});
+      card.setAttribute('data-work',keys.join(' '));
+      card.setAttribute('data-vote-total',keys.reduce(function(s,k){return s+works[k];},0));
+    }else{
+      card.setAttribute('data-work','');
+      card.setAttribute('data-vote-total','0');
+    }
+  });
+  if(typeof window.applyFiltersFn==='function')window.applyFiltersFn();
 }
 function patchFilterSidebar(){return;}
-var obs=new MutationObserver(function(){applyWorkstyle();});
-var grid=document.getElementById("view-grid-content");
-if(grid)obs.observe(grid,{childList:true});
-if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",function(){setTimeout(function(){applyWorkstyle();patchFilterSidebar();},600);});}
-else{setTimeout(function(){applyWorkstyle();patchFilterSidebar();},600);}
+var obs=new MutationObserver(function(){if(_vTimer)clearTimeout(_vTimer);_vTimer=setTimeout(applyWorkstyle,200);});
+var grid=document.querySelector('.spaces-grid')||document.querySelector('#spaces-grid')||document.querySelector('.grid');
+if(grid){obs.observe(grid,{childList:true,subtree:false});}
+setTimeout(applyWorkstyle,800);
+window._applyWorkstyle=applyWorkstyle;
 })();
 </script>
 <script src="coworkmill-features.js"></script>
@@ -976,7 +1001,7 @@ function makeCard(d, i, type) {
   const delay = 'animation-delay:' + (i * 0.05) + 's';
 
   if (type === 'grid') {
-    return '<a class="scard" href="' + href + '" style="' + delay + '" data-pref="' + (d.prefecture||'') + '" data-area="' + (d.area||'') + '" data-vibe="' + (d.vibe||'') + '" data-plan="' + (d.plan||'free') + '" data-img-count="' + (Array.isArray(d.images)?d.images.length:(d.image_main?1:0)) + '" data-desc-len="' + ((d.description||'').length) + '" data-tag-count="' + (Array.isArray(d.workstyle_tags)?d.workstyle_tags.length:0) + '" data-name="' + (d.name||'').toLowerCase() + '" data-facilities="' + (d.facilities ? d.facilities.join(',') : '') + '">' +
+    return '<a class="scard" href="' + href + '" style="' + delay + '" data-id="' + (d.id||'') + '" data-pref="' + (d.prefecture||'') + '" data-area="' + (d.area||'') + '" data-vibe="' + (d.vibe||'') + '" data-plan="' + (d.plan||'free') + '" data-img-count="' + (Array.isArray(d.images)?d.images.length:(d.image_main?1:0)) + '" data-desc-len="' + ((d.description||'').length) + '" data-tag-count="' + (Array.isArray(d.workstyle_tags)?d.workstyle_tags.length:0) + '" data-name="' + (d.name||'').toLowerCase() + '" data-facilities="' + (d.facilities ? d.facilities.join(',') : '') + '">' +
       '<div class="scard-img" style="' + (img ? 'background-image:url(\'' + cwm.safeUrl(img) + '\')' : 'background:#1a1a2e') + '">' +
         (isPick ? '<div class="scard-badges"><span class="scard-badge pick">PICK</span></div>' : '') +
       '</div>' +
