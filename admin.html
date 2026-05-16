@@ -604,6 +604,11 @@ function resetVibeUI(){
       </div>
     
 <div class="sec">
+      <div class="sec-h"><div><div class="sec-ht">施設ロゴ <span style="font-size:9px;color:#aaa;margin-left:4px">任意 — 詳細ページの施設名の隣に表示</span></div><div class="sec-hs">施設のブランドロゴ画像URLをご入力ください</div></div></div>
+      <div class="fg"><div class="fl">ロゴ画像URL（任意）</div><input class="fin" id="f-logo-url" placeholder="例：https://example.com/logo.png" value=""></div>
+    </div>
+    
+    <div class="sec">
       <div class="sec-h"><div><div class="sec-ht">設計クレジット <span style="font-size:9px;color:#aaa;margin-left:4px">任意 — 詳細ページに「Designed by ◯◯」が表示されます</span></div><div class="sec-hs">設計者・建築家やフォトグラファーのお名前をご紹介可能であれば、ぜひお願いいたします</div></div></div>
       <div class="fg"><div class="fl">設計：建築家・設計事務所名（任意）</div><input class="fin" id="f-designer-name" placeholder="例：ミル建築設計事務所" value=""></div>
       <div class="fg"><div class="fl">撮影：フォトグラファー名（任意）</div><input class="fin" id="f-photographer-name" placeholder="例：ミル撮影スタジオ" value=""></div>
@@ -1745,6 +1750,7 @@ function collectFormData() {
     open_hours:      g('f-open-hours','p-hours'),
     architect_name:  g('p-arch'),
     architect_id:    document.getElementById('p-arch-selected')?.dataset?.archId || null,
+    logo_url:          g('nf-logo-url', 'f-logo-url'),
     designer_name:     g('nf-designer-name', 'f-designer-name'),
     photographer_name: g('nf-photographer-name', 'f-photographer-name'),
     vibe:            g('nfvibe', 'p-vibe'),
@@ -1869,6 +1875,7 @@ async function loadSpaceDetail(f) {
     if(document.getElementById('price-hourly'))document.getElementById('price-hourly').value=d.price_dropin_hour?d.price_dropin_hour.toLocaleString('ja-JP'):'';
     if(document.getElementById('nf-price-hourly'))document.getElementById('nf-price-hourly').value=d.price_dropin_hour?d.price_dropin_hour.toLocaleString('ja-JP'):'';
     if(document.getElementById('f-official-url'))document.getElementById('f-official-url').value=d.official_url||'';
+    if(document.getElementById('f-logo-url'))document.getElementById('f-logo-url').value=d.logo_url||'';
     if(document.getElementById('f-designer-name'))document.getElementById('f-designer-name').value=d.designer_name||'';
     if(document.getElementById('f-photographer-name'))document.getElementById('f-photographer-name').value=d.photographer_name||'';
     window.setTransport=function(mode){

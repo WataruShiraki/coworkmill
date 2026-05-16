@@ -750,7 +750,7 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
 
     <!-- Header -->
     <div>
-      <h1 class="space-name" id="d-name"><span class="pick-badge" id="d-pick" style="display:none">PICK</span></h1>
+      <div class="space-header" style="display:flex;align-items:center;gap:16px;margin-bottom:12px;flex-wrap:wrap"><img id="d-logo" alt="" style="display:none;height:56px;width:auto;max-width:120px;border-radius:8px;flex-shrink:0;background:#f8f8f8;border:1px solid #e5e5e5;object-fit:contain;padding:6px"><h1 class="space-name" id="d-name" style="margin-bottom:0;flex:1;min-width:200px"><span class="pick-badge" id="d-pick" style="display:none">PICK</span></h1></div>
       <div class="space-eyebrow">
         <span class="space-city" id="d-city"></span>
         <span class="space-badge" id="d-badge-24h" style="display:none">24時間利用可</span>
@@ -1768,6 +1768,13 @@ document.addEventListener('DOMContentLoaded', () => {
       if (nameEl) {
         const pickBadge = document.getElementById('d-pick');
         nameEl.childNodes[0].textContent = d.name || '';
+        // ロゴ画像
+        var logoEl = document.getElementById('d-logo');
+        if (logoEl && d.logo_url) {
+          logoEl.src = d.logo_url;
+          logoEl.alt = d.name || '';
+          logoEl.style.display = '';
+        }
       }
 
       // エリア
@@ -2116,7 +2123,7 @@ function tryMap(){
   if(_mapDone)return;
   var sid=(window._currentSpaceId||new URLSearchParams(window.location.search).get('id'));
   if(!sid)return;
-  fetch(CWM_SB_URL+'/rest/v1/spaces?id=eq.'+sid+'&select=name,latitude,longitude,address,official_url,facilities,price_dropin_day,price_dropin_hour,price_monthly_amount,price_monthly_max,price_note,has_meeting_room,meeting_capacity,youtube_video_id,designer_name,designer_url,photographer_name,photographer_url',
+  fetch(CWM_SB_URL+'/rest/v1/spaces?id=eq.'+sid+'&select=name,latitude,longitude,address,official_url,facilities,price_dropin_day,price_dropin_hour,price_monthly_amount,price_monthly_max,price_note,has_meeting_room,meeting_capacity,youtube_video_id,designer_name,designer_url,photographer_name,photographer_url,logo_url',
     {headers:{'apikey':CWM_SB_KEY,'Authorization':'Bearer '+CWM_SB_KEY}})
   .then(function(r){return r.json();})
   .then(function(data){
