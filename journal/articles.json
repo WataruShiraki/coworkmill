@@ -1,72 +1,92 @@
 {
-  "schema_version": "1.0",
-  "updated_at": "2026-05-15",
-  "categories": {
-    "area": "エリアガイド",
-    "interview": "インタビュー",
-    "theme": "デザイン・テーマ",
-    "trend": "トレンド・コラム",
-    "workstyle": "用途・働き方"
-  },
-  "articles": [
-    {
-      "slug": "shibuya-creators-coworking-2026",
-      "title": "渋谷駅から徒歩圏 クリエイターが選ぶコワーキング 4選｜2026年最新",
-      "excerpt": "MOV、.andwork shibuya、HAKADORU渋谷宮益坂店、co-ba 渋谷。渋谷駅から徒歩圏で「ここじゃないといけない理由」がある4施設を、デザイン・コミュニティ・コスパの軸で選んだ。",
-      "category": "area",
-      "tags": [
-        "渋谷",
-        "東京",
-        "クリエイティブ",
-        "デザイン"
-      ],
-      "writer": "midori-bucho",
-      "hero_image": "/journal/shibuya-creators-coworking-2026/og-image.svg",
-      "published_at": "2026-05-15",
-      "updated_at": "2026-05-15",
-      "reading_minutes": 10,
-      "is_pr": false,
-      "status": "live"
+    "schema_version": "1.0",
+    "updated_at": "2026-05-16",
+    "categories": {
+        "area": "エリアガイド",
+        "interview": "インタビュー",
+        "theme": "デザイン・テーマ",
+        "trend": "トレンド・コラム",
+        "workstyle": "用途・働き方"
     },
-    {
-      "slug": "shimbashi-toranomon-coworking-2026",
-      "title": "新橋エリア ビジネス街で選ぶコワーキング 6選｜2026年最新",
-      "excerpt": "新橋・虎ノ門・汐留。商談を本業にしてきたヨシキ部長が、ビジネス街の視点で選ぶコワーキング6施設。Zoom中の声漏れ、商談前の鏡、24時間営業、駅直結。",
-      "category": "area",
-      "tags": [
-        "新橋",
-        "虎ノ門",
-        "汐留",
-        "港区",
-        "商談",
-        "24時間"
-      ],
-      "writer": "yoshiki-bucho",
-      "hero_image": "/journal/shimbashi-toranomon-coworking-2026/og-image.svg",
-      "published_at": "2026-05-12",
-      "updated_at": "2026-05-12",
-      "reading_minutes": 10,
-      "is_pr": false,
-      "status": "live"
-    },
-    {
-      "slug": "gotanda-design-coworking-2026",
-      "title": "五反田駅から徒歩圏 デザインで選ぶコワーキング 4選｜2026年最新",
-      "excerpt": "五反田って働く街？ーー実際に通ってみると印象が変わる。デザイン軸で選ぶ五反田の駅近コワーキング4施設を、自分の使い方とセットで紹介する。",
-      "category": "area",
-      "tags": [
-        "五反田",
-        "東京",
-        "デザイン",
-        "山手線"
-      ],
-      "writer": "coffee-bucho",
-      "hero_image": "/journal/gotanda-design-coworking-2026/og-image.svg",
-      "published_at": "2026-05-10",
-      "updated_at": "2026-05-10",
-      "reading_minutes": 8,
-      "is_pr": false,
-      "status": "live"
-    }
-  ]
+    "articles": [
+        {
+            "slug": "aoyama-omotesando-coworking-2026",
+            "title": "青山・表参道で働きたい大人のためのコワーキング 4選｜2026年最新",
+            "excerpt": "ビジネスエアポート青山、ビジネスエアポート青山一丁目、WeWorkアイスバーグ、LIFORK原宿。青山・表参道エリアで品ある運営と落ち着いた空気を持つ4施設を、66歳・元雑誌編集長の視点で選んだ。",
+            "category": "area",
+            "tags": [
+                "青山",
+                "表参道",
+                "東京",
+                "ハイクラス",
+                "デザイン"
+            ],
+            "writer": "shibui-henshucho",
+            "hero_image": "/journal/aoyama-omotesando-coworking-2026/og-image.svg",
+            "published_at": "2026-05-16",
+            "updated_at": "2026-05-16",
+            "reading_minutes": 10,
+            "is_pr": false,
+            "status": "live"
+        },
+        {
+            "slug": "shibuya-creators-coworking-2026",
+            "title": "渋谷駅から徒歩圏 クリエイターが選ぶコワーキング 4選｜2026年最新",
+            "excerpt": "MOV、.andwork shibuya、HAKADORU渋谷宮益坂店、co-ba 渋谷。渋谷駅から徒歩圏で「ここじゃないといけない理由」がある4施設を、デザイン・コミュニティ・コスパの軸で選んだ。",
+            "category": "area",
+            "tags": [
+                "渋谷",
+                "東京",
+                "クリエイティブ",
+                "デザイン"
+            ],
+            "writer": "midori-bucho",
+            "hero_image": "/journal/shibuya-creators-coworking-2026/og-image.svg",
+            "published_at": "2026-05-15",
+            "updated_at": "2026-05-15",
+            "reading_minutes": 10,
+            "is_pr": false,
+            "status": "live"
+        },
+        {
+            "slug": "shimbashi-toranomon-coworking-2026",
+            "title": "新橋エリア ビジネス街で選ぶコワーキング 6選｜2026年最新",
+            "excerpt": "新橋・虎ノ門・汐留。商談を本業にしてきたヨシキ部長が、ビジネス街の視点で選ぶコワーキング6施設。Zoom中の声漏れ、商談前の鏡、24時間営業、駅直結。",
+            "category": "area",
+            "tags": [
+                "新橋",
+                "虎ノ門",
+                "汐留",
+                "港区",
+                "商談",
+                "24時間"
+            ],
+            "writer": "yoshiki-bucho",
+            "hero_image": "/journal/shimbashi-toranomon-coworking-2026/og-image.svg",
+            "published_at": "2026-05-12",
+            "updated_at": "2026-05-12",
+            "reading_minutes": 10,
+            "is_pr": false,
+            "status": "live"
+        },
+        {
+            "slug": "gotanda-design-coworking-2026",
+            "title": "五反田駅から徒歩圏 デザインで選ぶコワーキング 4選｜2026年最新",
+            "excerpt": "五反田って働く街？ーー実際に通ってみると印象が変わる。デザイン軸で選ぶ五反田の駅近コワーキング4施設を、自分の使い方とセットで紹介する。",
+            "category": "area",
+            "tags": [
+                "五反田",
+                "東京",
+                "デザイン",
+                "山手線"
+            ],
+            "writer": "coffee-bucho",
+            "hero_image": "/journal/gotanda-design-coworking-2026/og-image.svg",
+            "published_at": "2026-05-10",
+            "updated_at": "2026-05-10",
+            "reading_minutes": 8,
+            "is_pr": false,
+            "status": "live"
+        }
+    ]
 }
