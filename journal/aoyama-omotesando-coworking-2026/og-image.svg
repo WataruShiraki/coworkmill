@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1a1a1a"/>
+      <stop offset="100%" stop-color="#2a2520"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bgGrad)"/>
+  <text x="600" y="200" font-family="Cormorant Garamond, serif" font-size="120" font-weight="300" fill="#d4af37" fill-opacity="0.15" text-anchor="middle" letter-spacing="20">AOYAMA</text>
+  <text x="600" y="320" font-family="Noto Serif JP, serif" font-size="64" font-weight="500" fill="#f5f5f5" text-anchor="middle">表参道・青山・原宿</text>
+  <text x="600" y="400" font-family="Noto Serif JP, serif" font-size="44" font-weight="400" fill="#d4af37" text-anchor="middle">大人の品格で選ぶコワーキング 4選</text>
+  <text x="600" y="470" font-family="Cormorant Garamond, serif" font-style="italic" font-size="24" fill="#888" text-anchor="middle" letter-spacing="3">2026</text>
+  <line x1="500" y1="500" x2="700" y2="500" stroke="#d4af37" stroke-width="1"/>
+  <text x="80" y="600" font-family="Cormorant Garamond, serif" font-style="italic" font-size="16" fill="#666" letter-spacing="1">curated by Shibui Henshu-cho · COWORKMILL journal</text>
+  <text x="1120" y="625" font-family="Cormorant Garamond, serif" font-style="italic" font-size="14" fill="#444" text-anchor="end" letter-spacing="1">No. 04</text>
+</svg>
