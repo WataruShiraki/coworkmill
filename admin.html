@@ -603,12 +603,20 @@ function resetVibeUI(){
       </div>
       </div>
     
-<div class="sec">
-      <div class="sec-h"><div><div class="sec-ht">施設ロゴ <span style="font-size:9px;color:#aaa;margin-left:4px">任意 — 詳細ページの施設名の隣に表示</span></div><div class="sec-hs">施設のブランドロゴ画像URLをご入力ください</div></div></div>
-      <div class="fg"><div class="fl">ロゴ画像URL（任意）</div><input class="fin" id="f-logo-url" placeholder="例：https://example.com/logo.png" value=""></div>
-    </div>
-    
-    <div class="sec">
+      <div class="sec">
+      <div class="sec-h"><div><div class="sec-ht">施設ロゴ <span style="font-size:9px;color:#aaa;margin-left:4px">任意 — 詳細ページの施設名の隣に表示</span></div><div class="sec-hs">施設のブランドロゴ画像をアップロードしてください（PNG/JPG、推奨：透過PNG）</div></div></div>
+      <div class="fg">
+        <div class="fl">ロゴ画像（任意）</div>
+        <div style="display:flex;align-items:center;gap:14px;margin-top:8px;flex-wrap:wrap">
+          <img id="f-logo-preview" src="" alt="" style="display:none;height:60px;width:auto;max-width:140px;border-radius:8px;background:#f8f8f8;border:1px solid #e5e5e5;object-fit:contain;padding:6px">
+          <button type="button" onclick="document.getElementById('f-logo-file').click()" style="padding:10px 22px;font-size:12px;font-weight:600;color:#fff;background:linear-gradient(135deg,#79F1A4,#2BB5C8);border:none;border-radius:8px;cursor:pointer">画像を選択</button>
+          <input type="file" id="f-logo-file" accept="image/*" style="display:none" onchange="handleLogoUpload(this)">
+          <button type="button" id="f-logo-clear" onclick="clearLogo()" style="display:none;padding:10px 14px;font-size:11px;color:var(--g600);background:#fff;border:1px solid var(--g200);border-radius:8px;cursor:pointer">削除</button>
+        </div>
+        <input class="fin" id="f-logo-url" placeholder="（自動入力されます）" value="" readonly style="margin-top:10px;font-size:11px;color:var(--g500);background:#fafafa">
+      </div>
+      </div>
+        <div class="sec">
       <div class="sec-h"><div><div class="sec-ht">設計クレジット <span style="font-size:9px;color:#aaa;margin-left:4px">任意 — 詳細ページに「Designed by ◯◯」が表示されます</span></div><div class="sec-hs">設計者・建築家やフォトグラファーのお名前をご紹介可能であれば、ぜひお願いいたします</div></div></div>
       <div class="fg"><div class="fl">設計：建築家・設計事務所名（任意）</div><input class="fin" id="f-designer-name" placeholder="例：ミル建築設計事務所" value=""></div>
       <div class="fg"><div class="fl">撮影：フォトグラファー名（任意）</div><input class="fin" id="f-photographer-name" placeholder="例：ミル撮影スタジオ" value=""></div>
@@ -1372,7 +1380,55 @@ function updateAddBtn() {
   }
 }
 
-async function handlePhotoUpload(input) {
+async 
+async function handleLogoUpload(input) {
+  if (!input.files || input.files.length === 0) return;
+  const file = input.files[0];
+  if (file.size > 5 * 1024 * 1024) {
+    alert('5MB以下の画像を選択してください'); input.value = ''; return;
+  }
+  const dbId = facs[cur] && facs[cur].db_id;
+  if (!dbId) {
+    alert('先に施設情報を保存してください。'); input.value = ''; return;
+  }
+  const ext = file.name.split('.').pop().toLowerCase();
+  const path = dbId + '/logo-' + Date.now() + '.' + ext;
+  const url = SUPABASE_URL + '/storage/v1/object/space-images/' + path;
+  try {
+    const upRes = await fetch(url, {
+      method: 'POST',
+      headers: { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Content-Type': file.type, 'x-upsert': 'true' },
+      body: file
+    });
+    if (upRes.ok) {
+      const publicUrl = SUPABASE_URL + '/storage/v1/object/public/space-images/' + path;
+      const urlInput = document.getElementById('f-logo-url');
+      if (urlInput) urlInput.value = publicUrl;
+      const preview = document.getElementById('f-logo-preview');
+      if (preview) { preview.src = publicUrl; preview.style.display = ''; }
+      const clearBtn = document.getElementById('f-logo-clear');
+      if (clearBtn) clearBtn.style.display = '';
+    } else {
+      const errTxt = await upRes.text().catch(()=> '');
+      alert('アップロードに失敗しました (status: ' + upRes.status + ')\n' + errTxt.slice(0, 200));
+    }
+  } catch(e) {
+    console.error('logo upload error', e);
+    alert('エラー: ' + e.message);
+  }
+  input.value = '';
+}
+
+function clearLogo() {
+  const urlInput = document.getElementById('f-logo-url');
+  if (urlInput) urlInput.value = '';
+  const preview = document.getElementById('f-logo-preview');
+  if (preview) { preview.src = ''; preview.style.display = 'none'; }
+  const clearBtn = document.getElementById('f-logo-clear');
+  if (clearBtn) clearBtn.style.display = 'none';
+}
+
+function handlePhotoUpload(input) {
   if (!input.files || input.files.length === 0) return;
   const files = Array.from(input.files);
   const dbId = facs[cur] && facs[cur].db_id;
@@ -1876,6 +1932,13 @@ async function loadSpaceDetail(f) {
     if(document.getElementById('nf-price-hourly'))document.getElementById('nf-price-hourly').value=d.price_dropin_hour?d.price_dropin_hour.toLocaleString('ja-JP'):'';
     if(document.getElementById('f-official-url'))document.getElementById('f-official-url').value=d.official_url||'';
     if(document.getElementById('f-logo-url'))document.getElementById('f-logo-url').value=d.logo_url||'';
+    // ロゴプレビュー表示
+    var _logoPrev = document.getElementById('f-logo-preview');
+    var _logoClear = document.getElementById('f-logo-clear');
+    if (_logoPrev) {
+      if (d.logo_url) { _logoPrev.src = d.logo_url; _logoPrev.style.display = ''; if(_logoClear) _logoClear.style.display = ''; }
+      else { _logoPrev.src = ''; _logoPrev.style.display = 'none'; if(_logoClear) _logoClear.style.display = 'none'; }
+    }
     if(document.getElementById('f-designer-name'))document.getElementById('f-designer-name').value=d.designer_name||'';
     if(document.getElementById('f-photographer-name'))document.getElementById('f-photographer-name').value=d.photographer_name||'';
     window.setTransport=function(mode){

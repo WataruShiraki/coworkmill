@@ -1954,18 +1954,16 @@ document.addEventListener('DOMContentLoaded', () => {
           const pcEl = document.getElementById('gallery-pc');
           if (pcEl) {
             pcEl.innerHTML = allUrls.map(function(url, i) {
-              var extra = i >= 5 ? ' gpc-extra' : '';
-              var style = i >= 5 ? ' style="display:none"' : '';
+              var extra = i >= 8 ? ' gpc-extra' : '';
+              var style = i >= 8 ? ' style="display:none"' : '';
               return '<div class="gpc-item' + extra + '"' + style + '><img src="' + cwm.safeUrl(url) + '" alt="" loading="eager"></div>';
             }).join('');
-            // Airbnb風レイアウト: 表示枚数(最大5)に応じてdata-layout属性を設定
-            var _galShow = Math.min(allUrls.length, 5);
-            var _galLay = _galShow <= 1 ? 1 : _galShow <= 2 ? 2 : _galShow <= 3 ? 3 : 5;
-            pcEl.setAttribute('data-layout', _galLay);
+            // iGal()でAirbnb風レイアウト + cwm-all-btn + lightbox連携を発火
+            setTimeout(function(){ if (window.iGal) window.iGal(); }, 50);
           }
 
           // もっと見るボタン
-          var extra = allUrls.length - 5;
+          var extra = allUrls.length - 8;
           if (extra > 0) {
             var wrap = document.getElementById('gallery-more-wrap');
             var btn = document.getElementById('gallery-toggle-btn');
@@ -2117,6 +2115,7 @@ function cLb(){document.getElementById('cwm-lb').classList.remove('open');docume
 function uLb(){document.getElementById('cwm-lb-img').src=lbI[lbX];document.getElementById('cwm-lb-c').textContent=(lbX+1)+'/'+lbI.length;}
 function iLb(){if(document.getElementById('cwm-lb'))return;var lb=document.createElement('div');lb.id='cwm-lb';lb.innerHTML='<button id="cwm-lb-x">&#215;<\/button><button id="cwm-lb-p">&#8249;<\/button><img id="cwm-lb-img" src="" alt=""><button id="cwm-lb-n">&#8250;<\/button><div id="cwm-lb-c"><\/div>';document.body.appendChild(lb);document.getElementById('cwm-lb-x').onclick=cLb;lb.onclick=function(e){if(e.target===lb)cLb();};document.getElementById('cwm-lb-p').onclick=function(e){e.stopPropagation();lbX=(lbX-1+lbI.length)%lbI.length;uLb();};document.getElementById('cwm-lb-n').onclick=function(e){e.stopPropagation();lbX=(lbX+1)%lbI.length;uLb();};document.addEventListener('keydown',function(e){var lb=document.getElementById('cwm-lb');if(!lb||!lb.classList.contains('open'))return;if(e.key==='ArrowRight'){lbX=(lbX+1)%lbI.length;uLb();}if(e.key==='ArrowLeft'){lbX=(lbX-1+lbI.length)%lbI.length;uLb();}if(e.key==='Escape')cLb();});}
 function iGal(){var pc=document.querySelector('.gallery-pc');if(!pc)return;var its=Array.from(pc.querySelectorAll('.gpc-item')),tot=its.length;if(!tot)return;var ph=its.map(function(el){var img=el.querySelector('img');return img&&img.src;}).filter(Boolean),show=Math.min(tot,5),lay=show<=1?1:show<=2?2:show<=3?3:5;pc.setAttribute('data-layout',lay);its.forEach(function(it,i){it.style.display=i<show?'':'none';if(i<show){it.onclick=function(){iLb();oLb(ph,i);};}});var btn=document.getElementById('cwm-all-btn');if(!btn){btn=document.createElement('button');btn.id='cwm-all-btn';pc.appendChild(btn);}btn.textContent='写真を見る（'+tot+'枚）';btn.onclick=function(e){e.stopPropagation();iLb();oLb(ph,0);};}
+window.iGal = iGal;
 function iTitle(){if(document.getElementById('cwm-main-title'))return;var an=document.querySelector('.aside-space-name'),de=document.querySelector('p.space-desc,.space-desc');if(!an||!de)return;var txt=an.textContent.trim();if(!txt)return;var t=document.createElement('div');t.id='cwm-main-title';t.style.cssText='font-size:28px;font-weight:600;color:#f0f0f0;margin-bottom:16px;display:block';t.textContent=txt;de.parentNode.insertBefore(t,de);}
 function rSec(){var dm=document.querySelector('.detail-main');if(!dm||dm.dataset.reordered)return;var ws=Array.from(dm.children).find(function(el){return el.textContent.includes('このスペースに向いている仕事');});var fs=dm.querySelector('.facilities-section'),ps=dm.querySelector('.plans-section');if(!ws||!fs||!ps)return;var ref=ws.nextElementSibling||ws,next=ref.nextSibling;var fd=fs.previousElementSibling&&fs.previousElementSibling.classList.contains('sec-divider')?fs.previousElementSibling:null,pd=ps.previousElementSibling&&ps.previousElementSibling.classList.contains('sec-divider')?ps.previousElementSibling:null;if(fd){dm.insertBefore(fd,next);next=fd.nextSibling;}dm.insertBefore(fs,next);next=fs.nextSibling;if(pd){dm.insertBefore(pd,next);next=pd.nextSibling;}dm.insertBefore(ps,next);dm.dataset.reordered='1';
   var arch=document.getElementById('arch-profile-block');
