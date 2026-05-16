@@ -161,6 +161,9 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:56px;display:flex;ali
 .scard-body{padding:16px 18px 18px;display:flex;flex-direction:column;flex:1}
 .scard-city{font-size:9px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:#2BB5C8;margin-bottom:4px}
 .scard-name{font-family:var(--font-d);font-size:16px;font-weight:500;letter-spacing:-.02em;margin-bottom:4px;color:var(--black)}
+.scard-name-row,.lcard-name-row{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.scard-logo,.lcard-logo{width:28px;height:28px;border-radius:50%;object-fit:cover;background:#fff;border:1px solid #e5e5e5;flex-shrink:0}
+.scard-name-row .scard-name,.lcard-name-row .lcard-name{margin-bottom:0;flex:1;min-width:0}
 .scard-design{font-size:10px;color:var(--gray-400);margin-bottom:10px}
 .scard-design span{color:#2BB5C8;font-weight:500}
 .scard-wtags{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:12px;flex:1}
@@ -947,7 +950,7 @@ let allSpaces = [];
 
 async function loadSpaces() {
   try {
-    const res = await fetch(SUPABASE_URL_SP + '/rest/v1/spaces?select=id,name,area,nearest_station,prefecture,plan,status,image_main,images,description,workstyle_tags,architect_name,architect_firm,vibe,price_dropin,price_dropin_hour,price_dropin_day,price_monthly_amount,price_monthly_max,facilities,created_at,slug&status=eq.live' + (window.areaParam ? '&area=eq.' + encodeURIComponent(window.areaParam) : '') + '&order=created_at.desc', {
+    const res = await fetch(SUPABASE_URL_SP + '/rest/v1/spaces?select=id,name,area,nearest_station,prefecture,plan,status,image_main,images,description,workstyle_tags,architect_name,architect_firm,logo_url,vibe,price_dropin,price_dropin_hour,price_dropin_day,price_monthly_amount,price_monthly_max,facilities,created_at,slug&status=eq.live' + (window.areaParam ? '&area=eq.' + encodeURIComponent(window.areaParam) : '') + '&order=created_at.desc', {
       headers: { 'apikey': SUPABASE_KEY_SP, 'Authorization': 'Bearer ' + SUPABASE_KEY_SP }
     });
     const data = await res.json();
@@ -1007,7 +1010,7 @@ function makeCard(d, i, type) {
       '</div>' +
       '<div class="scard-body">' +
         '<div class="scard-city">' + cwm.esc(city) + '</div>' +
-        '<div class="scard-name">' + cwm.esc(d.name||'') + '</div>' +
+        '<div class="scard-name-row">' + (d.logo_url ? '<img class="scard-logo" src="' + cwm.safeUrl(d.logo_url) + '" alt="">' : '') + '<div class="scard-name">' + cwm.esc(d.name||'') + '</div></div>' +
         (d.architect_name ? '<div class="scard-design">Design by <span>' + (d.architect_id&&window._archNameMap&&window._archNameMap[d.architect_id]?window._archNameMap[d.architect_id]:(d.architect_name||'')) + '</span></div>' : '') +
         (vibes.length ? '<div class="scard-wtags">' + vibes.map(v=>'<span class="scard-wtag">'+cwm.esc(v)+'</span>').join('') + '</div>' : '') +
         (function(){
@@ -1024,7 +1027,7 @@ function makeCard(d, i, type) {
       '<div class="lcard-img" style="' + (img ? 'background-image:url(\'' + cwm.safeUrl(img) + '\')' : 'background:#1a1a2e') + '"></div>' +
       '<div class="lcard-body">' +
         '<div class="lcard-city">' + city + '</div>' +
-        '<div class="lcard-name">' + (d.name||'') + '</div>' +
+        '<div class="lcard-name-row">' + (d.logo_url ? '<img class="lcard-logo" src="' + cwm.safeUrl(d.logo_url) + '" alt="">' : '') + '<div class="lcard-name">' + (d.name||'') + '</div></div>' +
         (d.architect_name ? '<div class="lcard-design">Design by <span>' + d.architect_name + '</span></div>' : '') +
         (vibes.length ? '<div class="lcard-wtags">' + vibes.map(v=>'<span class="lcard-wtag">'+v+'</span>').join('') + '</div>' : '') +
       '</div>' +
