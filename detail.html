@@ -1954,14 +1954,18 @@ document.addEventListener('DOMContentLoaded', () => {
           const pcEl = document.getElementById('gallery-pc');
           if (pcEl) {
             pcEl.innerHTML = allUrls.map(function(url, i) {
-              var extra = i >= 8 ? ' gpc-extra' : '';
-              var style = i >= 8 ? ' style="display:none"' : '';
+              var extra = i >= 5 ? ' gpc-extra' : '';
+              var style = i >= 5 ? ' style="display:none"' : '';
               return '<div class="gpc-item' + extra + '"' + style + '><img src="' + cwm.safeUrl(url) + '" alt="" loading="eager"></div>';
             }).join('');
+            // Airbnb風レイアウト: 表示枚数(最大5)に応じてdata-layout属性を設定
+            var _galShow = Math.min(allUrls.length, 5);
+            var _galLay = _galShow <= 1 ? 1 : _galShow <= 2 ? 2 : _galShow <= 3 ? 3 : 5;
+            pcEl.setAttribute('data-layout', _galLay);
           }
 
           // もっと見るボタン
-          var extra = allUrls.length - 8;
+          var extra = allUrls.length - 5;
           if (extra > 0) {
             var wrap = document.getElementById('gallery-more-wrap');
             var btn = document.getElementById('gallery-toggle-btn');
