@@ -555,3 +555,35 @@
   })();
 
 })();
+
+
+// === Map auto-init fix (2026-05-16) ===
+// Fixes silent failure in detail.html where Leaflet map never initializes.
+// Runs only on /space/* pages, only when map div exists and is uninitialized.
+(function(){
+  if(!location.pathname.startsWith('/space/'))return;
+  function init(){
+    setTimeout(function(){
+      var lmap=document.querySelector('#cwm-lmap');
+      if(!lmap||typeof L==='undefined'||lmap._leaflet_id!==undefined)return;
+      var slug=location.pathname.split('/').pop();
+      var SU='https://jakwntemjkwqwaqujffh.supabase.co';
+      var SK='sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+      fetch(SU+'/rest/v1/spaces?slug=eq.'+encodeURIComponent(slug)+'&select=latitude,longitude,address',{headers:{apikey:SK,Authorization:'Bearer '+SK}})
+        .then(function(r){return r.json();})
+        .then(function(data){
+          var sp=data&&data[0];
+          if(!sp||!sp.latitude||!sp.longitude)return;
+          var lat=parseFloat(sp.latitude),lng=parseFloat(sp.longitude);
+          var map=L.map('cwm-lmap',{zoomControl:true,scrollWheelZoom:false}).setView([lat,lng],17);
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'\u00a9 OpenStreetMap',maxZoom:19}).addTo(map);
+          L.marker([lat,lng]).addTo(map);
+          var lk=document.getElementById('cwm-map-link');
+          if(lk)lk.href='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(sp.address||lat+','+lng);
+        })
+        .catch(function(){});
+    },3000);
+  }
+  if(document.readyState==='complete')init();
+  else window.addEventListener('load',init);
+})();
