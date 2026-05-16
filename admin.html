@@ -1384,7 +1384,6 @@ function updateAddBtn() {
   }
 }
 
-async 
 async function handleLogoUpload(input) {
   if (!input.files || input.files.length === 0) return;
   const file = input.files[0];
@@ -1432,7 +1431,7 @@ function clearLogo() {
   if (clearBtn) clearBtn.style.display = 'none';
 }
 
-function handlePhotoUpload(input) {
+async function handlePhotoUpload(input) {
   if (!input.files || input.files.length === 0) return;
   const files = Array.from(input.files);
   const dbId = facs[cur] && facs[cur].db_id;
