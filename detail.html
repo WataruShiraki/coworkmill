@@ -1767,7 +1767,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const nameEl = document.getElementById('d-name');
       if (nameEl) {
         const pickBadge = document.getElementById('d-pick');
-        nameEl.childNodes[0].textContent = d.name || '';
+        // 安全な施設名挿入：textContent で名前を入れて、PICK バッジを後付け
+        var _pickEl = nameEl.querySelector('.pick-badge');
+        nameEl.textContent = d.name || '';
+        if (_pickEl) nameEl.appendChild(_pickEl);
         // ロゴ画像
         var logoEl = document.getElementById('d-logo');
         if (logoEl && d.logo_url) {
