@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <radialGradient id="teal" cx="78%" cy="20%" r="55%">
+      <stop offset="0%" stop-color="#3D8FB8" stop-opacity="0.42"/>
+      <stop offset="60%" stop-color="#3D8FB8" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="amber" cx="15%" cy="85%" r="50%">
+      <stop offset="0%" stop-color="#C9A66B" stop-opacity="0.22"/>
+      <stop offset="60%" stop-color="#C9A66B" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="line-grad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#79F1A4" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#79F1A4" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#79F1A4" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#121212"/>
+  <rect width="1200" height="630" fill="url(#teal)"/>
+  <rect width="1200" height="630" fill="url(#amber)"/>
+  <line x1="80" y1="110" x2="220" y2="110" stroke="url(#line-grad)" stroke-width="1.5"/>
+  <text x="80" y="150" font-family="Cormorant Garamond, serif" font-style="italic" font-size="20" fill="#666" letter-spacing="0.5">2026 / Spring · Tokyo Engineer Guide</text>
+  <text x="76" y="350" font-family="Cormorant Garamond, serif" font-size="130" font-weight="500" fill="#f0f0f0" letter-spacing="-2">EBISU &amp; DAIKANYAMA</text>
+  <text x="80" y="395" font-family="Noto Sans JP, sans-serif" font-size="22" fill="#999" letter-spacing="2">恵比寿・代官山・渋谷区</text>
+  <line x1="80" y1="445" x2="120" y2="445" stroke="#333" stroke-width="1"/>
+  <text x="80" y="488" font-family="Noto Sans JP, sans-serif" font-size="28" font-weight="700" fill="#f0f0f0">エンジニアが集中できる 4選</text>
+  <text x="80" y="528" font-family="Cormorant Garamond, serif" font-style="italic" font-size="38" font-weight="500" fill="#79F1A4">— Engineer's Coworking · 4 Picks</text>
+  <text x="1120" y="585" font-family="Cormorant Garamond, serif" font-style="italic" font-size="14" fill="#444" text-anchor="end" letter-spacing="1">COWORKMILL journal · No. 03</text>
+</svg>
