@@ -106,7 +106,7 @@ async function updateSpaceFromSubscription(sub: any, opts: { active: boolean }):
       stripe_subscription_id: sub.id,
       stripe_price_id: priceId,
       subscription_status: sub.status,
-      current_period_end: sub.current_period_end ? new Date(sub.current_period_end * 1000).toISOString() : null,
+      current_period_end: (item?.current_period_end ?? sub.current_period_end) ? new Date((item?.current_period_end ?? sub.current_period_end) * 1000).toISOString() : null,
       subscription_canceled_at: null,
     };
   } else {
@@ -116,7 +116,7 @@ async function updateSpaceFromSubscription(sub: any, opts: { active: boolean }):
       stripe_subscription_id: null,
       stripe_price_id: null,
       subscription_status: sub.status,
-      current_period_end: sub.current_period_end ? new Date(sub.current_period_end * 1000).toISOString() : null,
+      current_period_end: (item?.current_period_end ?? sub.current_period_end) ? new Date((item?.current_period_end ?? sub.current_period_end) * 1000).toISOString() : null,
       subscription_canceled_at: new Date().toISOString(),
     };
   }
