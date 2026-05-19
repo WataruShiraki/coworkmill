@@ -13,9 +13,6 @@
 export const config = {
   matcher: [
     // ① Basic認証
-    '/admin',
-    '/admin.html',
-    '/admin/:path*',
     '/admin-ops',
     '/admin-ops.html',
     '/ops',
