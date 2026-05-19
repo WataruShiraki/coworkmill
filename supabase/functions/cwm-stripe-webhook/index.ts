@@ -722,10 +722,24 @@ Deno.serve(async (req: Request) => {
             if (space_id) {
               const ctx = await getSpaceContext(space_id);
               if (ctx) {
-                // ② オーナー宛
-                if (ctx.account_email) {
+        // ② オーナー宛（accounts に email なければ invoice.customer_email または Stripe Customer API fallback）
+        let pfEmail: string = ctx.account_email || (inv.customer_email as string) || "";
+        if (!pfEmail && inv.customer) {
+          try {
+            const cr = await fetch(`https://api.stripe.com/v1/customers/${inv.customer as string}`, {
+              headers: { "Authorization": "Basic " + btoa(STRIPE_SECRET_KEY + ":") },
+            });
+            if (cr.ok) {
+              const customer = await cr.json();
+              pfEmail = customer.email || "";
+            }
+          } catch (e) {
+            console.error("[webhook] failed to fetch customer for payment failed email", e);
+          }
+        }
+        if (pfEmail) {
                   await sendEmail(
-                    ctx.account_email,
+                    pfEmail,
                     "【COWORKMILL】お支払いを確認できませんでした",
                     tplPaymentFailedOwner({
                       account_name: ctx.account_name,
