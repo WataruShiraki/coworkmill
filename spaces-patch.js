@@ -2,7 +2,7 @@
 (function(){
   var SUPABASE_URL="https://jakwntemjkwqwaqujffh.supabase.co";
   var SUPABASE_KEY="sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ";
-  var PAGE_SIZE=12,currentPage=1,bySlug=null;
+  var PAGE_SIZE=50,currentPage=1,bySlug=null;
   var PREF_MAP={tokyo:"東京都",osaka:"大阪府",kyoto:"京都府",fukuoka:"福岡県",yokohama:"神奈川県",sapporo:"北海道"};
   var FAC_ALIAS={"power":["power","outlet"]},VIBE_ALIAS={"urban":["urban","highrise"]};
   function normWork(w){return String(w).toLowerCase().replace(/\s+/g,"").replace("call","");}
