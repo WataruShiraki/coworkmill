@@ -11,7 +11,8 @@
     .cwm-err { color:#f87171; font-size:11px; margin-top:5px; display:none; font-family:sans-serif; }
     .cwm-ok  { position:absolute; right:12px; top:13px; color:#4ade80; font-size:14px; pointer-events:none; display:none; }
     .submit-btn:disabled { opacity:0.4 !important; cursor:not-allowed !important; }
-  `;
+  .cwm-arch-marquee{overflow:hidden;padding:32px 0;margin:0 auto;max-width:640px}.cwm-arch-track{display:flex;gap:28px;animation:cwm-marquee 28s linear infinite;width:max-content}.cwm-arch-marquee:hover .cwm-arch-track{animation-play-state:paused}@keyframes cwm-marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}.cwm-arch-card{flex-shrink:0;text-align:center;text-decoration:none;width:100px;opacity:.85;transition:opacity .2s}.cwm-arch-card:hover{opacity:1}.cwm-arch-card img{width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.2);display:block;margin:0 auto}.cwm-arch-name{display:block;font-size:11px;font-weight:600;color:#fff;margin-top:8px;letter-spacing:.01em}.cwm-arch-firm{display:block;font-size:10px;color:rgba(255,255,255,.5);margin-top:2px}
+`;
   document.head.appendChild(css);
 
   function resetPlans() {
