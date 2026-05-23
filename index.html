@@ -65,14 +65,11 @@
 
   /* ---- hero ---- */
   .hero{position:relative;padding:62px 22px 54px;max-width:1280px;margin:0 auto;
-    overflow:hidden;background-size:cover;background-position:center;background-attachment:fixed;}
-  .hero::before{content:"";position:absolute;inset:0;
-    background-image:linear-gradient(var(--line) 1px,transparent 1px),
-      linear-gradient(90deg,var(--line) 1px,transparent 1px);
-    background-size:46px 46px;opacity:.35;
-    -webkit-mask-image:radial-gradient(ellipse 80% 70% at 70% 25%,#000,transparent);
-            mask-image:radial-gradient(ellipse 80% 70% at 70% 25%,#000,transparent);}
-  .hero-inner{position:relative;}
+    overflow:hidden;display:flex;align-items:center;}
+  .hero-overlay{position:absolute;inset:0;background:linear-gradient(rgba(21,20,15,.7),rgba(21,20,15,.8));z-index:1;}
+  .hero-images{position:absolute;inset:0;display:flex;gap:0;z-index:0;overflow:hidden;}
+  .hero-img{width:33.333%;height:100%;object-fit:cover;opacity:.6;}
+  .hero-inner{position:relative;z-index:2;}
   .eyebrow{font-size:11px;letter-spacing:.24em;color:var(--accent);
     font-weight:700;margin-bottom:22px;}
   .hero h1{font-family:var(--mincho);font-weight:800;font-size:46px;
@@ -351,8 +348,13 @@
   <div class="menu-foot">COWORKMILL — 建築家と、コワーキング。</div>
 </div>
 
-<!-- ① hero -->
-<div class="hero">
+<!-- ① hero --><div class="hero">
+  <div class="hero-overlay"></div>
+  <div class="hero-images">
+    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=300&fit=crop" alt="coworking" class="hero-img">
+    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&h=300&fit=crop" alt="coworking" class="hero-img">
+    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=300&fit=crop" alt="coworking" class="hero-img">
+  </div>
   <div class="hero-inner">
     <div class="eyebrow">DESIGN-LED COWORKING</div>
     <h1><em>建築家と、</em><em>コワーキング。</em></h1>
@@ -416,7 +418,7 @@
   </div>
   <section class="reveal">
     <div class="pickup"><div class="pk-card">
-      <div class="ph"><img alt="" src="https://picsum.photos/seed/cwm-pickup/900/560">
+      <div class="ph"><img alt="" src="https://images.unsplash.com/search?query=coworking+office&w=900&h=560&fit=crop">
         <div class="badges">
           <span class="bdg award">AWARD</span><span class="bdg pick">★ PICK</span>
         </div>
@@ -486,19 +488,19 @@
   <section class="reveal">
     <div class="journal">
       <a class="jcard" href="#">
-        <div class="jph"><img alt="" src="https://picsum.photos/seed/cwm-j1/400/400"></div>
+        <div class="jph"><img alt="" src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=400&fit=crop"></div>
         <div class="jtxt"><div class="jcat">蔵前・台東エリア</div>
           <h3>金物の街で、鉄と木が出会う仕事場を巡る</h3>
           <div class="jmeta">コーヒー部長 ・ 2026.05.18</div></div>
       </a>
       <a class="jcard" href="#">
-        <div class="jph"><img alt="" src="https://picsum.photos/seed/cwm-j2/400/400"></div>
+        <div class="jph"><img alt="" src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&h=400&fit=crop"></div>
         <div class="jtxt"><div class="jcat">建築家インタビュー</div>
           <h3>「余白を設計する」— 相原アトリエの仕事</h3>
           <div class="jmeta">渋井編集長 ・ 2026.05.11</div></div>
       </a>
       <a class="jcard" href="#">
-        <div class="jph"><img alt="" src="https://picsum.photos/seed/cwm-j3/400/400"></div>
+        <div class="jph"><img alt="" src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=400&fit=crop"></div>
         <div class="jtxt"><div class="jcat">特集</div>
           <h3>サウナのあるワークスペース、その作法</h3>
           <div class="jmeta">ヨシキ部長 ・ 2026.05.02</div></div>
@@ -578,7 +580,7 @@ const WORKTYPES = [
   ['06','学びの場として人気','読む・書く・学ぶ'],
 ];
 
-const img = (id,shelf)=>`https://picsum.photos/seed/cwm-${id}-${shelf}/640/480`;
+const img = (id,shelf)=>`https://images.unsplash.com/search?query=coworking+office\const img = (id,shelf)=>`https://picsum.photos/seed/cwm-${id}-${shelf}/640/480`;w=640\const img = (id,shelf)=>`https://picsum.photos/seed/cwm-${id}-${shelf}/640/480`;h=480\const img = (id,shelf)=>`https://picsum.photos/seed/cwm-${id}-${shelf}/640/480`;fit=crop`;
 const badges = f => `<div class="badges">
   ${f.award?'<span class="bdg award">AWARD</span>':'<span></span>'}
   ${f.pro?'<span class="bdg pick">★ PICK</span>':'<span></span>'}</div>`;
@@ -678,14 +680,15 @@ document.querySelectorAll('.card, .arch-card').forEach(c=>{
   c.addEventListener('mouseleave',()=>{im.style.transform='';c.style.boxShadow='';c.style.transform='';});
 });
 
-/* hero background - 3 real coworking office photos, random rotation */
-const heroImages=[
-  'https://images.unsplash.com/photo-1552664730-d307ca884978?w=1600&h=800&fit=crop',
-  'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1600&h=800&fit=crop',
-  'https://images.unsplash.com/photo-1552664730-d307ca884978?w=1600&h=800&fit=crop'
-];
-const randomHeroImage=heroImages[Math.floor(Math.random()*heroImages.length)];
-document.querySelector('.hero').style.backgroundImage=`linear-gradient(rgba(21,20,15,.5),rgba(21,20,15,.7)),url('${randomHeroImage}')`;
+/* hero images - shuffle order on each page load */
+const heroImgs=document.querySelectorAll('.hero-img');
+if(heroImgs.length===3){
+  const urls=['https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=300&fit=crop',
+    'https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&h=300&fit=crop',
+    'https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=300&fit=crop'];
+  const shuffled=[...urls].sort(()=>Math.random()-.5);
+  heroImgs.forEach((img,i)=>img.src=shuffled[i]);
+}
 </script>
 </body>
 </html>
