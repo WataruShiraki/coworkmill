@@ -351,9 +351,9 @@
 <!-- ① hero --><div class="hero">
   <div class="hero-overlay"></div>
   <div class="hero-images">
-    <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&h=300&fit=crop" alt="office design" class="hero-img">
-    <img src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=400&h=300&fit=crop" alt="modern office" class="hero-img">
-    <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=400&h=300&fit=crop" alt="workspace architecture" class="hero-img">
+    <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&h=300&fit=crop" alt="modern office design" class="hero-img">
+    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=300&fit=crop" alt="minimalist workspace" class="hero-img">
+    <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400&h=300&fit=crop" alt="contemporary office architecture" class="hero-img">
   </div>
   <div class="hero-inner">
     <div class="eyebrow">DESIGN-LED COWORKING</div>
@@ -683,9 +683,9 @@ document.querySelectorAll('.card, .arch-card').forEach(c=>{
 /* hero images - shuffle order on each page load */
 const heroImgs=document.querySelectorAll('.hero-img');
 if(heroImgs.length===3){
-  const urls=['https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&h=300&fit=crop',
-    'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=400&h=300&fit=crop',
-    'https://images.unsplash.com/photo-1504384308090-c894fdcc538d?w=400&h=300&fit=crop'];
+  const urls=['https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&h=300&fit=crop',
+    'https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=300&fit=crop',
+    'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400&h=300&fit=crop'];
   const shuffled=[...urls].sort(()=>Math.random()-.5);
   heroImgs.forEach((img,i)=>img.src=shuffled[i]);
 }
