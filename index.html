@@ -65,7 +65,7 @@
 
   /* ---- hero ---- */
   .hero{position:relative;padding:62px 22px 54px;max-width:1280px;margin:0 auto;
-    overflow:hidden;}
+    overflow:hidden;background-size:cover;background-position:center;background-attachment:fixed;}
   .hero::before{content:"";position:absolute;inset:0;
     background-image:linear-gradient(var(--line) 1px,transparent 1px),
       linear-gradient(90deg,var(--line) 1px,transparent 1px);
@@ -165,7 +165,7 @@
 
   /* ---- 建築家 ---- */
   .arch-card{flex:0 0 62%;scroll-snap-align:start;}
-  .arch-card:last-child{margin-right:40px;}
+  .arch-card:last-child{margin-right:120px;}
   .arch-card .ph{aspect-ratio:4/3;border-radius:var(--r);overflow:hidden;
     border:1px solid var(--line);background:var(--paper-2);}
   .arch-card .ph img{transition:transform .8s cubic-bezier(.5,0,.2,1);}
@@ -675,6 +675,11 @@ document.querySelectorAll('.card, .arch-card').forEach(c=>{
     c.style.boxShadow='0 18px 40px -24px rgba(27,26,22,.55)';c.style.transform='translateY(-4px)';});
   c.addEventListener('mouseleave',()=>{im.style.transform='';c.style.boxShadow='';c.style.transform='';});
 });
+
+/* hero background - random coworking images */
+const heroImages=['https://picsum.photos/seed/cwm-hero-office-1/1600/800','https://picsum.photos/seed/cwm-hero-office-2/1600/800','https://picsum.photos/seed/cwm-hero-office-3/1600/800','https://picsum.photos/seed/cwm-hero-office-4/1600/800','https://picsum.photos/seed/cwm-hero-office-5/1600/800','https://picsum.photos/seed/cwm-hero-workspace-1/1600/800','https://picsum.photos/seed/cwm-hero-workspace-2/1600/800'];
+const randomHeroImage=heroImages[Math.floor(Math.random()*heroImages.length)];
+document.querySelector('.hero').style.backgroundImage=`linear-gradient(rgba(21,20,15,.4),rgba(21,20,15,.6)),url('${randomHeroImage}')`;
 </script>
 </body>
 </html>
