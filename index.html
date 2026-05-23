@@ -179,16 +179,18 @@
   .arch-card .count .arr{color:var(--accent);font-size:15px;}
 
   /* ---- 仕事タイプ ---- */
-  .worktypes{padding:0 22px;display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-  .wt{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
-    padding:16px 15px;position:relative;overflow:hidden;cursor:pointer;
-    transition:background .25s;}
+  .worktypes{padding:0 22px;display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  .wt{background:var(--card);border:2px solid var(--line);border-radius:var(--r);
+    padding:20px 18px;position:relative;overflow:hidden;cursor:pointer;
+    transition:all .3s cubic-bezier(.4,0,.2,1);}
+  .wt:hover{border-color:var(--accent);background:var(--paper-2);
+    box-shadow:0 8px 16px rgba(27,26,22,.2);transform:translateY(-2px);}
   .wt:active{background:var(--paper-2);}
-  .wt .wt-no{font-family:var(--mincho);font-size:11px;color:var(--accent);
-    letter-spacing:.1em;}
-  .wt .wt-name{font-family:var(--mincho);font-size:16px;font-weight:700;
-    margin-top:6px;}
-  .wt .wt-sub{font-size:10.5px;color:var(--ink-50);margin-top:4px;}
+  .wt .wt-no{font-family:var(--mincho);font-size:12px;color:var(--accent);
+    letter-spacing:.1em;font-weight:700;}
+  .wt .wt-name{font-family:var(--mincho);font-size:17px;font-weight:700;
+    margin-top:8px;line-height:1.35;}
+  .wt .wt-sub{font-size:11px;color:var(--ink-60);margin-top:6px;line-height:1.5;}
 
   /* ---- 地域から探す ---- */
   .regions{padding:0 22px;display:grid;grid-template-columns:1fr 1fr;gap:10px;}
@@ -289,7 +291,7 @@
     .card{flex-basis:300px;}
     .arch-card{flex-basis:330px;}
     .crit,.pickup,.worktypes,.more-tags,.journal,.grid{padding-left:40px;padding-right:40px;}
-    .worktypes{grid-template-columns:repeat(3,1fr);}
+    .worktypes{grid-template-columns:repeat(3,1fr);gap:16px;}
     .regions{grid-template-columns:repeat(3,1fr);}
     .grid{grid-template-columns:repeat(4,1fr);}
     .journal{grid-template-columns:repeat(3,1fr);}
@@ -676,10 +678,14 @@ document.querySelectorAll('.card, .arch-card').forEach(c=>{
   c.addEventListener('mouseleave',()=>{im.style.transform='';c.style.boxShadow='';c.style.transform='';});
 });
 
-/* hero background - random coworking images */
-const heroImages=['https://picsum.photos/seed/cwm-hero-office-1/1600/800','https://picsum.photos/seed/cwm-hero-office-2/1600/800','https://picsum.photos/seed/cwm-hero-office-3/1600/800','https://picsum.photos/seed/cwm-hero-office-4/1600/800','https://picsum.photos/seed/cwm-hero-office-5/1600/800','https://picsum.photos/seed/cwm-hero-workspace-1/1600/800','https://picsum.photos/seed/cwm-hero-workspace-2/1600/800'];
+/* hero background - 3 real coworking office photos, random rotation */
+const heroImages=[
+  'https://images.unsplash.com/photo-1552664730-d307ca884978?w=1600&h=800&fit=crop',
+  'https://images.unsplash.com/photo-1497366216548-37526070297c?w=1600&h=800&fit=crop',
+  'https://images.unsplash.com/photo-1552664730-d307ca884978?w=1600&h=800&fit=crop'
+];
 const randomHeroImage=heroImages[Math.floor(Math.random()*heroImages.length)];
-document.querySelector('.hero').style.backgroundImage=`linear-gradient(rgba(21,20,15,.4),rgba(21,20,15,.6)),url('${randomHeroImage}')`;
+document.querySelector('.hero').style.backgroundImage=`linear-gradient(rgba(21,20,15,.5),rgba(21,20,15,.7)),url('${randomHeroImage}')`;
 </script>
 </body>
 </html>
