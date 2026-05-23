@@ -72,8 +72,8 @@
   .hero-inner{position:relative;z-index:2;}
   .eyebrow{font-size:11px;letter-spacing:.24em;color:var(--accent);
     font-weight:700;margin-bottom:22px;}
-  .hero h1{font-family:var(--mincho);font-weight:800;font-size:46px;
-    line-height:1.32;letter-spacing:.02em;}
+  .hero h1{font-family:var(--mincho);font-weight:600;font-size:46px;
+    line-height:1.3;letter-spacing:.05em;}
   .hero h1 em{font-style:normal;display:block;}
   .hero p.lead{margin-top:22px;font-size:14px;color:var(--ink-70);max-width:30em;}
   .search{margin-top:30px;display:flex;align-items:center;gap:12px;
@@ -220,12 +220,19 @@
   .mt-box .t-eye{color:var(--accent);font-size:10.5px;letter-spacing:.2em;font-weight:700;}
   .mt-box h2{font-family:var(--mincho);font-size:22px;font-weight:700;
     margin-top:9px;line-height:1.5;}
+  .mt-box .mt-lead{margin-top:11px;font-size:13px;color:var(--ink-70);max-width:34em;}
   .chips{margin-top:18px;display:flex;flex-wrap:wrap;gap:8px;}
-  .chip{font-size:11.5px;border:1px solid #413D33;
-    padding:7px 12px;border-radius:100px;color:var(--ink-70);}
-  .mt-cta{margin-top:22px;display:inline-flex;align-items:center;gap:8px;
-    font-size:12.5px;font-weight:700;letter-spacing:.06em;color:var(--accent);
-    border-bottom:1px solid var(--accent);padding-bottom:3px;}
+  .chip{font-size:12px;border:1px solid #4A453A;background:#252219;
+    padding:8px 14px;border-radius:100px;color:var(--ink);
+    transition:border-color .18s,color .18s,background .18s,transform .18s;}
+  .chip:hover{border-color:var(--accent);color:var(--accent);
+    background:#2A271E;transform:translateY(-1px);}
+  .mt-cta{margin-top:24px;display:inline-flex;align-items:center;gap:9px;
+    font-size:13px;font-weight:700;letter-spacing:.04em;
+    color:var(--paper);background:var(--accent);
+    padding:13px 22px;border-radius:100px;
+    transition:filter .18s,transform .18s;}
+  .mt-cta:hover{filter:brightness(1.09);transform:translateY(-1px);}
 
   /* ---- journal ---- */
   .journal{padding:0 22px;display:grid;gap:18px;}
@@ -345,19 +352,19 @@
     <a href="#"><span class="no">03</span>こだわりで探す</a>
     <a href="#"><span class="no">04</span>写真から探す</a>
   </nav>
-  <div class="menu-foot">COWORKMILL — 建築家と、コワーキング。</div>
+  <div class="menu-foot">COWORKMILL — デザインで選ぶ、コワーキング</div>
 </div>
 
 <!-- ① hero --><div class="hero">
   <div class="hero-overlay"></div>
   <div class="hero-images">
-    <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&h=300&fit=crop" alt="modern office design" class="hero-img">
-    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=300&fit=crop" alt="minimalist workspace" class="hero-img">
-    <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400&h=300&fit=crop" alt="contemporary office architecture" class="hero-img">
+    <img src="https://images.unsplash.com/photo-1758691737060-3814f16d5aba?w=600&h=400&fit=crop&q=80&auto=format" alt="coworking space" class="hero-img">
+    <img src="https://images.unsplash.com/photo-1758873268745-dd2cf0d677b5?w=600&h=400&fit=crop&q=80&auto=format" alt="coworking space" class="hero-img">
+    <img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600&h=400&fit=crop&q=80&auto=format" alt="modern office" class="hero-img">
   </div>
   <div class="hero-inner">
     <div class="eyebrow">DESIGN-LED COWORKING</div>
-    <h1><em>建築家と、</em><em>コワーキング。</em></h1>
+    <h1><em>デザインで選ぶ、</em><em>コワーキング</em></h1>
     <p class="lead">デザインと機能の宿るコワーキングだけを集めた、編集型のポータルです。</p>
     <div class="search">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
@@ -380,7 +387,7 @@
       <p class="note">有名な建築家が手がけたか、否かではなく。空間への深いこだわり、高い機能性、そして何より利用者に愛されているという<em>「事実」</em>で選べる場所へ。本当に優れたワークスペースが、正当に報われる世界をつくります。</p>
       <div class="axes">
         <div class="axis"><div class="ax-n">1</div>
-          <div class="ax-t"><b>建築家で探せる</b><br>設計者・設計事務所から空間を選ぶ。</div></div>
+          <div class="ax-t"><b>建築家・デザイナーで探せる</b><br>手がけた人の言葉まで、わかる。</div></div>
         <div class="axis"><div class="ax-n">2</div>
           <div class="ax-t"><b>仕事の雰囲気で探せる</b><br>利用者の投票が、空間の性格を映す。</div></div>
         <div class="axis"><div class="ax-n">3</div>
@@ -414,11 +421,11 @@
 <!-- ③ PICK UP -->
 <div class="block">
   <div class="sec-head reveal">
-    <div><div class="t-eye">PICK UP</div><h2>今月の一軒</h2></div>
+    <div><div class="t-eye">PICK UP</div><h2>今月のピックアップ</h2></div>
   </div>
   <section class="reveal">
     <div class="pickup"><div class="pk-card">
-      <div class="ph"><img alt="" src="https://images.unsplash.com/search?query=coworking+office&w=900&h=560&fit=crop">
+      <div class="ph"><img alt="" src="https://images.unsplash.com/photo-1758691737060-3814f16d5aba?w=900&h=560&fit=crop&q=80&auto=format">
         <div class="badges">
           <span class="bdg award">AWARD</span><span class="bdg pick">★ PICK</span>
         </div>
@@ -463,18 +470,19 @@
   <section class="reveal">
     <div class="more-tags"><div class="mt-box">
       <div class="t-eye">EXPLORE ALL ANGLES</div>
-      <h2>23の切り口から、<br>あなたの一軒を見つける。</h2>
+      <h2>「こんな空間で働きたい」<br>から、探す。</h2>
+      <p class="mt-lead">温泉やカフェ、本棚、暖炉、自然光 ── 設備や雰囲気のこだわりから、ぴったりのスペースへ。</p>
       <div class="chips">
-        <span class="chip">温泉のある空間</span><span class="chip">カフェ併設</span>
-        <span class="chip">テラスのある空間</span><span class="chip">ドッグランあり</span>
-        <span class="chip">本棚が豊かな空間</span><span class="chip">暖炉のある空間</span>
-        <span class="chip">緑が主役</span><span class="chip">自然光がたっぷり</span>
-        <span class="chip">配信・撮影向き</span>
+        <a class="chip" href="#">温泉のある空間</a><a class="chip" href="#">カフェ併設</a>
+        <a class="chip" href="#">テラスのある空間</a><a class="chip" href="#">ドッグランあり</a>
+        <a class="chip" href="#">本棚が豊かな空間</a><a class="chip" href="#">暖炉のある空間</a>
+        <a class="chip" href="#">緑が主役</a><a class="chip" href="#">自然光がたっぷり</a>
+        <a class="chip" href="#">配信・撮影向き</a>
       </div>
-      <div class="mt-cta">切り口をすべて見る
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-          stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-      </div>
+      <a class="mt-cta" href="#">23の切り口をすべて見る
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
     </div></div>
   </section>
 </div>
@@ -488,19 +496,19 @@
   <section class="reveal">
     <div class="journal">
       <a class="jcard" href="#">
-        <div class="jph"><img alt="" src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=400&fit=crop"></div>
+        <div class="jph"><img alt="" src="https://images.unsplash.com/photo-1758691737060-3814f16d5aba?w=400&h=400&fit=crop&q=80&auto=format"></div>
         <div class="jtxt"><div class="jcat">蔵前・台東エリア</div>
           <h3>金物の街で、鉄と木が出会う仕事場を巡る</h3>
           <div class="jmeta">コーヒー部長 ・ 2026.05.18</div></div>
       </a>
       <a class="jcard" href="#">
-        <div class="jph"><img alt="" src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&h=400&fit=crop"></div>
+        <div class="jph"><img alt="" src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400&h=400&fit=crop&q=80&auto=format"></div>
         <div class="jtxt"><div class="jcat">建築家インタビュー</div>
           <h3>「余白を設計する」— 相原アトリエの仕事</h3>
           <div class="jmeta">渋井編集長 ・ 2026.05.11</div></div>
       </a>
       <a class="jcard" href="#">
-        <div class="jph"><img alt="" src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=400&fit=crop"></div>
+        <div class="jph"><img alt="" src="https://images.unsplash.com/photo-1758873268745-dd2cf0d677b5?w=400&h=400&fit=crop&q=80&auto=format"></div>
         <div class="jtxt"><div class="jcat">特集</div>
           <h3>サウナのあるワークスペース、その作法</h3>
           <div class="jmeta">ヨシキ部長 ・ 2026.05.02</div></div>
@@ -522,7 +530,7 @@
 <!-- ⑨ footer -->
 <footer>
   <div class="f-logo"><span class="logo-img" role="img" aria-label="COWORKMILL"></span></div>
-  <div class="f-tag">建築家と、コワーキング。</div>
+  <div class="f-tag">デザインで選ぶ、コワーキング</div>
   <div class="f-links">
     <a href="#">すべてのコワーキング</a>
     <a href="#">建築家・デザイナーから探す</a>
@@ -568,8 +576,6 @@ const SHELVES = [
    ids:['ridge','nagi','sola','mori','nada']},
   {key:'warehouse', eye:'WAREHOUSE RENOVATION', title:'倉庫・工場をリノベーションした空間', tint:0,
    ids:['kurogane','slate','kura','hoji']},
-  {key:'photo', eye:'BEAUTIFUL PHOTOGRAPHY', title:'写真が特に美しい施設', tint:1,
-   ids:['kurogane','tomoshibi','slate','ridge','wack','kura','hoji','sola']},
 ];
 const WORKTYPES = [
   ['01','Deep Workの聖地','静けさと集中の票が集まる'],
@@ -580,7 +586,14 @@ const WORKTYPES = [
   ['06','学びの場として人気','読む・書く・学ぶ'],
 ];
 
-const img = (id,shelf)=>`https://images.unsplash.com/search?query=coworking+office&w=640&h=480&fit=crop`;
+/* オフィス写真プール（仮）— ヒーローと同じ表示確認済み画像を使用 */
+const CWM_PHOTOS=['photo-1758691737060-3814f16d5aba','photo-1758873268745-dd2cf0d677b5','photo-1552664730-d307ca884978','photo-1496181133206-80ce9b88a853'];
+function cwmPhoto(key,w,h){
+  let s=String(key),n=0;
+  for(let i=0;i<s.length;i++)n=(n*31+s.charCodeAt(i))>>>0;
+  return `https://images.unsplash.com/${CWM_PHOTOS[n%CWM_PHOTOS.length]}?w=${w}&h=${h}&fit=crop&q=80&auto=format`;
+}
+const img = (id,shelf)=>cwmPhoto(id+'_'+(shelf||''),640,480);
 const badges = f => `<div class="badges">
   ${f.award?'<span class="bdg award">AWARD</span>':'<span></span>'}
   ${f.pro?'<span class="bdg pick">★ PICK</span>':'<span></span>'}</div>`;
@@ -588,7 +601,7 @@ const badges = f => `<div class="badges">
 /* shelves */
 const shelvesEl = document.getElementById('shelves');
 SHELVES.forEach(s=>{
-  const cards = s.ids.map(id=>{
+  const cards = s.ids.slice(0,10).map(id=>{
     const f=F[id];
     return `<a class="card" href="#">
       <div class="ph"><img alt="" loading="lazy" src="${img(id,s.key)}">${badges(f)}</div>
@@ -602,7 +615,7 @@ SHELVES.forEach(s=>{
     <div class="block${s.tint?' tint':''}">
       <div class="sec-head reveal">
         <div><div class="t-eye">${s.eye}</div><h2>${s.title}</h2></div>
-        <a class="more" href="#">${s.ids.length}施設 ›</a>
+        <a class="more" href="#">すべて見る（${s.ids.length}件）›</a>
       </div>
       <section class="shelf reveal">
         <div class="track-wrap"><div class="shelf-track">${cards}</div></div>
@@ -626,7 +639,7 @@ const REGIONS=[
 ];
 document.getElementById('regions').innerHTML = REGIONS.map(r=>`
   <a class="region" href="#">
-    <img alt="" loading="lazy" src="https://picsum.photos/seed/cwm-${r.seed}/520/320">
+    <img alt="" loading="lazy" src="${cwmPhoto(r.seed,520,320)}">
     <div class="rg-txt"><div class="rg-name">${r.name}</div>
       <div class="rg-n">${r.n} 施設</div></div>
   </a>`).join('');
@@ -654,7 +667,7 @@ const ARCHITECTS=[
 ];
 document.getElementById('archTrack').innerHTML = ARCHITECTS.map(a=>`
   <a class="arch-card" href="#">
-    <div class="ph"><img alt="" loading="lazy" src="https://picsum.photos/seed/cwm-${a.seed}/560/420"></div>
+    <div class="ph"><img alt="" loading="lazy" src="${cwmPhoto(a.seed,560,420)}"></div>
     <div class="a-eye">ARCHITECT</div>
     <h3>${a.firm}</h3>
     <div class="count"><span>COWORKMILL掲載 ${a.n}軒</span><span class="arr">›</span></div>
@@ -683,9 +696,9 @@ document.querySelectorAll('.card, .arch-card').forEach(c=>{
 /* hero images - shuffle order on each page load */
 const heroImgs=document.querySelectorAll('.hero-img');
 if(heroImgs.length===3){
-  const urls=['https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&h=300&fit=crop',
-    'https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&h=300&fit=crop',
-    'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400&h=300&fit=crop'];
+  const urls=['https://images.unsplash.com/photo-1758691737060-3814f16d5aba?w=600&h=400&fit=crop&q=80&auto=format',
+    'https://images.unsplash.com/photo-1758873268745-dd2cf0d677b5?w=600&h=400&fit=crop&q=80&auto=format',
+    'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600&h=400&fit=crop&q=80&auto=format'];
   const shuffled=[...urls].sort(()=>Math.random()-.5);
   heroImgs.forEach((img,i)=>img.src=shuffled[i]);
 }
