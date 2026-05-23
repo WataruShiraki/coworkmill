@@ -580,7 +580,7 @@ const WORKTYPES = [
   ['06','学びの場として人気','読む・書く・学ぶ'],
 ];
 
-const img = (id,shelf)=>`https://images.unsplash.com/search?query=coworking+office\const img = (id,shelf)=>`https://picsum.photos/seed/cwm-${id}-${shelf}/640/480`;w=640\const img = (id,shelf)=>`https://picsum.photos/seed/cwm-${id}-${shelf}/640/480`;h=480\const img = (id,shelf)=>`https://picsum.photos/seed/cwm-${id}-${shelf}/640/480`;fit=crop`;
+const img = (id,shelf)=>`https://images.unsplash.com/search?query=coworking+office&w=640&h=480&fit=crop`;
 const badges = f => `<div class="badges">
   ${f.award?'<span class="bdg award">AWARD</span>':'<span></span>'}
   ${f.pro?'<span class="bdg pick">★ PICK</span>':'<span></span>'}</div>`;
