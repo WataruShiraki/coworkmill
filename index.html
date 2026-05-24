@@ -64,7 +64,7 @@
   .menu-foot{margin-top:auto;font-size:12px;color:var(--ink-50);letter-spacing:.05em;}
 
   /* ---- hero ---- */
-  .hero{position:relative;padding:92px 22px 112px;max-width:1280px;margin:0 auto;min-height:min(760px,90vh);overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .hero{position:relative;padding:92px 22px 112px;max-width:none;margin:0;min-height:min(760px,90vh);overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;}
   .hero-overlay{position:absolute;inset:0;background:linear-gradient(rgba(21,20,15,.6),rgba(21,20,15,.82));z-index:1;}
   .hero-images{position:absolute;inset:0;display:flex;gap:0;z-index:0;overflow:hidden;}
   .hero-img{width:33.333%;height:100%;object-fit:cover;opacity:.62;}
@@ -121,14 +121,19 @@
     display:flex;align-items:center;justify-content:center;flex:none;margin-top:2px;}
   .axis .ax-t{font-size:13.5px;}
   .axis .ax-t b{font-weight:700;}
-  .marquee{margin-top:30px;border-top:1px solid var(--line);
-    border-bottom:1px solid var(--line);padding:12px 0;overflow:hidden;
-    -webkit-mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);
-            mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent);}
-  .marquee .track{display:flex;gap:34px;width:max-content;
-    animation:slide 34s linear infinite;}
-  .marquee .track span{font-family:var(--mincho);font-size:13px;color:var(--ink-50);
-    white-space:nowrap;letter-spacing:.04em;}
+  .marquee{margin-top:36px;padding:6px 0;overflow:hidden;
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
+            mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);}
+  .marquee .track{display:flex;gap:20px;width:max-content;
+    animation:slide 64s linear infinite;}
+  .arch-port{flex:none;width:150px;}
+  .arch-port img{width:150px;height:188px;object-fit:cover;object-position:center 22%;
+    border-radius:11px;display:block;filter:grayscale(100%) contrast(1.07) brightness(1.03);
+    transition:filter .4s ease;}
+  .arch-port:hover img{filter:grayscale(0%);}
+  .arch-port .nm{margin-top:11px;font-family:var(--mincho);font-size:11.5px;
+    color:var(--ink-70);letter-spacing:.04em;text-align:center;line-height:1.4;}
+
   @keyframes slide{to{transform:translateX(-50%);}}
 
   /* ---- shelf (Netflix) ---- */
@@ -412,12 +417,22 @@
       </div>
       <div class="marquee">
         <div class="track">
-          <span>中村建築設計事務所</span><span>スタジオ・モク</span><span>相原アトリエ</span>
-          <span>田尻設計室</span><span>日下部建築</span><span>海と建築設計</span>
-          <span>白井建築アトリエ</span><span>林と建築</span>
-          <span>中村建築設計事務所</span><span>スタジオ・モク</span><span>相原アトリエ</span>
-          <span>田尻設計室</span><span>日下部建築</span><span>海と建築設計</span>
-          <span>白井建築アトリエ</span><span>林と建築</span>
+          <div class="arch-port"><img src="https://i.pravatar.cc/360?img=13" alt="" loading="lazy"><div class="nm">中村建築設計事務所</div></div>
+          <div class="arch-port"><img src="https://i.pravatar.cc/360?img=14" alt="" loading="lazy"><div class="nm">スタジオ・モク</div></div>
+          <div class="arch-port"><img src="https://i.pravatar.cc/360?img=31" alt="" loading="lazy"><div class="nm">相原アトリエ</div></div>
+          <div class="arch-port"><img src="https://i.pravatar.cc/360?img=33" alt="" loading="lazy"><div class="nm">田尻設計室</div></div>
+          <div class="arch-port"><img src="https://i.pravatar.cc/360?img=48" alt="" loading="lazy"><div class="nm">日下部建築</div></div>
+          <div class="arch-port"><img src="https://i.pravatar.cc/360?img=51" alt="" loading="lazy"><div class="nm">海と建築設計</div></div>
+          <div class="arch-port"><img src="https://i.pravatar.cc/360?img=60" alt="" loading="lazy"><div class="nm">白井建築アトリエ</div></div>
+          <div class="arch-port"><img src="https://i.pravatar.cc/360?img=68" alt="" loading="lazy"><div class="nm">林と建築</div></div>
+          <div class="arch-port"><img src="https://i.pravatar.cc/360?img=13" alt="" loading="lazy"><div class="nm">中村建築設計事務所</div></div>
+          <div class="arch-port"><img src="https://i.pravatar.cc/360?img=14" alt="" loading="lazy"><div class="nm">スタジオ・モク</div></div>
+          <div class="arch-port"><img src="https://i.pravatar.cc/360?img=31" alt="" loading="lazy"><div class="nm">相原アトリエ</div></div>
+          <div class="arch-port"><img src="https://i.pravatar.cc/360?img=33" alt="" loading="lazy"><div class="nm">田尻設計室</div></div>
+          <div class="arch-port"><img src="https://i.pravatar.cc/360?img=48" alt="" loading="lazy"><div class="nm">日下部建築</div></div>
+          <div class="arch-port"><img src="https://i.pravatar.cc/360?img=51" alt="" loading="lazy"><div class="nm">海と建築設計</div></div>
+          <div class="arch-port"><img src="https://i.pravatar.cc/360?img=60" alt="" loading="lazy"><div class="nm">白井建築アトリエ</div></div>
+          <div class="arch-port"><img src="https://i.pravatar.cc/360?img=68" alt="" loading="lazy"><div class="nm">林と建築</div></div>
         </div>
       </div>
     </div>
