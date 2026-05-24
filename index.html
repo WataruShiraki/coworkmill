@@ -64,27 +64,32 @@
   .menu-foot{margin-top:auto;font-size:12px;color:var(--ink-50);letter-spacing:.05em;}
 
   /* ---- hero ---- */
-  .hero{position:relative;padding:62px 22px 54px;max-width:1280px;margin:0 auto;
-    overflow:hidden;display:flex;align-items:center;}
-  .hero-overlay{position:absolute;inset:0;background:linear-gradient(rgba(21,20,15,.7),rgba(21,20,15,.8));z-index:1;}
+  .hero{position:relative;padding:92px 22px 112px;max-width:1280px;margin:0 auto;min-height:min(760px,90vh);overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .hero-overlay{position:absolute;inset:0;background:linear-gradient(rgba(21,20,15,.6),rgba(21,20,15,.82));z-index:1;}
   .hero-images{position:absolute;inset:0;display:flex;gap:0;z-index:0;overflow:hidden;}
-  .hero-img{width:33.333%;height:100%;object-fit:cover;opacity:.6;}
-  .hero-inner{position:relative;z-index:2;}
-  .eyebrow{font-size:11px;letter-spacing:.24em;color:var(--accent);
-    font-weight:700;margin-bottom:22px;}
-  .hero h1{font-family:var(--mincho);font-weight:600;font-size:46px;
-    line-height:1.3;letter-spacing:.05em;}
+  .hero-img{width:33.333%;height:100%;object-fit:cover;opacity:.62;}
+  .hero-inner{position:relative;z-index:2;width:100%;max-width:880px;margin:0 auto;text-align:center;display:flex;flex-direction:column;align-items:center;}
+  .eyebrow{font-size:11px;letter-spacing:.24em;color:var(--accent);font-weight:700;margin-bottom:22px;}
+  .hero h1{font-family:var(--mincho);font-weight:600;font-size:46px;line-height:1.3;letter-spacing:.05em;}
   .hero h1 em{font-style:normal;display:block;}
   .hero p.lead{margin-top:22px;font-size:14px;color:var(--ink-70);max-width:30em;}
-  .search{margin-top:30px;display:flex;align-items:center;gap:12px;
-    background:var(--card);border:1px solid var(--line);border-radius:var(--r);
-    padding:16px 18px;cursor:pointer;max-width:440px;
-    box-shadow:0 8px 24px -18px rgba(27,26,22,.4);}
+  .hero-search-row{margin-top:34px;width:100%;max-width:600px;display:flex;flex-direction:column;align-items:center;gap:16px;}
+  .search{width:100%;display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px 18px;cursor:pointer;box-shadow:0 18px 50px -22px rgba(0,0,0,.7);}
   .search svg{width:18px;height:18px;flex:none;color:var(--accent);}
   .search span{font-size:13px;color:var(--ink-50);}
-  .stats{margin-top:26px;display:flex;gap:30px;}
+  .hero-cta{font-family:inherit;font-size:13px;font-weight:700;letter-spacing:.06em;color:rgb(255,255,255);background:rgb(43,181,200);border:none;border-radius:8px;padding:14px 48px;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 14px 32px -12px rgba(43,181,200,.7);}
+  .hero-cta:hover{transform:translateY(-2px);box-shadow:0 18px 38px -10px rgba(43,181,200,.85);}
+  .hero-chips{margin-top:30px;display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:840px;}
+  .hero-chip{display:flex;flex-direction:column;align-items:center;gap:2px;padding:9px 18px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);color:rgba(255,255,255,.9);cursor:pointer;transition:background .2s,border-color .2s;}
+  .hero-chip:hover{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.42);color:rgb(255,255,255);}
+  .hero-chip-en{font-size:12.5px;font-weight:700;letter-spacing:.02em;}
+  .hero-chip-ja{font-size:9px;color:rgba(255,255,255,.62);}
+  .stats{margin-top:34px;display:flex;gap:34px;justify-content:center;}
   .stat .n{font-family:var(--mincho);font-size:26px;font-weight:700;}
   .stat .l{font-size:10.5px;letter-spacing:.12em;color:var(--ink-50);}
+  .scroll-hint{margin-top:42px;display:flex;flex-direction:column;align-items:center;gap:7px;opacity:.55;}
+  .scroll-hint-label{font-size:8px;letter-spacing:.2em;color:rgba(255,255,255,.6);}
+  .scroll-hint-line{width:1px;height:30px;background:linear-gradient(transparent,rgba(255,255,255,.7));}
 
   /* ---- section frame ---- */
   section{max-width:1280px;margin:0 auto;}
@@ -366,16 +371,28 @@
     <div class="eyebrow">DESIGN-LED COWORKING</div>
     <h1><em>デザインで選ぶ、</em><em>コワーキング</em></h1>
     <p class="lead">デザインと機能の宿るコワーキングだけを集めた、編集型のポータルです。</p>
-    <div class="search">
+    <div class="hero-search-row">
+        <div class="search">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
         <circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
       <span>エリア・こだわりからコワーキングを探す</span>
     </div>
+        <button class="hero-cta" onclick="document.querySelector('.search').click()">スペースを探す</button>
+      </div>
+      <div class="hero-chips">
+        <button class="hero-chip"><span class="hero-chip-en">Deep Work</span><span class="hero-chip-ja">集中・執筆・戦略</span></button>
+        <button class="hero-chip"><span class="hero-chip-en">Creative</span><span class="hero-chip-ja">制作・クリエイティブ</span></button>
+        <button class="hero-chip"><span class="hero-chip-en">Ideation</span><span class="hero-chip-ja">アイデア・ブレスト</span></button>
+        <button class="hero-chip"><span class="hero-chip-en">Meeting</span><span class="hero-chip-ja">商談・ミーティング</span></button>
+        <button class="hero-chip"><span class="hero-chip-en">Remote Call</span><span class="hero-chip-ja">オンライン会議</span></button>
+        <button class="hero-chip"><span class="hero-chip-en">Learning</span><span class="hero-chip-ja">学習・リサーチ</span></button>
+      </div>
     <div class="stats">
       <div class="stat"><div class="n">128</div><div class="l">掲載施設</div></div>
       <div class="stat"><div class="n">64</div><div class="l">登録建築家</div></div>
       <div class="stat"><div class="n">23</div><div class="l">特集の切り口</div></div>
     </div>
+      <div class="scroll-hint"><div class="scroll-hint-label">SCROLL</div><div class="scroll-hint-line"></div></div>
   </div>
 </div>
 
