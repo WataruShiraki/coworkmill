@@ -544,16 +544,6 @@
   </section>
 </div>
 
-<!-- ④.5 地域から探す -->
-<div class="block">
-  <div class="sec-head reveal">
-    <div><div class="t-eye">FIND BY REGION</div><h2>地域から探す</h2></div>
-  </div>
-  <section class="reveal">
-    <div class="regions" id="regions"></div>
-  </section>
-</div>
-
 <!-- ⑨ footer -->
 <footer>
   <div class="f-logo"><span class="logo-img" role="img" aria-label="COWORKMILL"></span></div>
@@ -654,22 +644,6 @@ SHELVES.forEach(s=>{
 document.getElementById('worktypes').innerHTML = WORKTYPES.map(w=>`
   <div class="wt"><div class="wt-no">${w[0]}</div>
     <div class="wt-name">${w[1]}</div><div class="wt-sub">${w[2]}</div></div>`).join('');
-
-/* regions */
-const REGIONS=[
-  {name:'北海道・東北',n:1,seed:'rg-hokkaido'},
-  {name:'関東',n:7,seed:'rg-kanto'},
-  {name:'中部',n:2,seed:'rg-chubu'},
-  {name:'近畿',n:1,seed:'rg-kinki'},
-  {name:'中国・四国',n:2,seed:'rg-chugoku'},
-  {name:'九州・沖縄',n:1,seed:'rg-kyushu'},
-];
-document.getElementById('regions').innerHTML = REGIONS.map(r=>`
-  <a class="region" href="#">
-    <img alt="" loading="lazy" src="${cwmPhoto(r.seed,520,320)}">
-    <div class="rg-txt"><div class="rg-name">${r.name}</div>
-      <div class="rg-n">${r.n} 施設</div></div>
-  </a>`).join('');
 
 /* grid (new arrivals) */
 const gridIds=['mori','hoji','sola','jou','wack','hako','slate','nagi'];
