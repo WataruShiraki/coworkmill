@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>COWORKMILL — TOPページ デザインプロトタイプ</title>
+<link rel="icon" type="image/svg+xml" href="/coworkmill_icon.svg">
+<link rel="apple-touch-icon" href="/coworkmill_icon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
@@ -122,7 +124,7 @@
     display:flex;align-items:center;justify-content:center;flex:none;margin-top:2px;}
   .axis .ax-t{font-size:13.5px;}
   .axis .ax-t b{font-weight:700;}
-  .marquee{margin-top:36px;padding:6px 0;overflow:hidden;
+  .marquee{margin-top:36px;padding:6px 0;overflow:hidden;width:100vw;margin-left:calc(50% - 50vw);
     -webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);
             mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);}
   .marquee .track{display:flex;gap:20px;width:max-content;
@@ -132,6 +134,8 @@
     border-radius:11px;display:block;filter:grayscale(100%) contrast(1.07) brightness(1.03);
     transition:filter .4s ease;}
   .arch-port:hover img{filter:grayscale(0%);}
+  .arch-port .logo-mark{width:150px;height:188px;border-radius:11px;background:rgb(239,236,228);display:flex;align-items:center;justify-content:center;}
+  .arch-port .logo-mark svg{width:78px;height:78px;}
   .arch-port .nm{margin-top:11px;font-family:var(--mincho);font-size:11.5px;
     color:var(--ink-70);letter-spacing:.04em;text-align:center;line-height:1.4;}
 
@@ -420,35 +424,24 @@
       <div class="marquee">
         <div class="track">
           <div class="arch-port"><img src="https://i.pravatar.cc/360?img=13" alt="" loading="lazy"><div class="nm">中村建築設計事務所</div></div>
-          <div class="arch-port"><img src="https://i.pravatar.cc/360?img=14" alt="" loading="lazy"><div class="nm">スタジオ・モク</div></div>
+          <div class="arch-port"><div class="logo-mark"><svg viewBox="0 0 64 64" fill="none" stroke="rgb(27,26,22)" stroke-width="2.6"><rect x="11" y="11" width="30" height="30"/><rect x="23" y="23" width="30" height="30"/></svg></div><div class="nm">スタジオ・モク</div></div>
           <div class="arch-port"><img src="https://i.pravatar.cc/360?img=31" alt="" loading="lazy"><div class="nm">相原アトリエ</div></div>
           <div class="arch-port"><img src="https://i.pravatar.cc/360?img=33" alt="" loading="lazy"><div class="nm">田尻設計室</div></div>
-          <div class="arch-port"><img src="https://i.pravatar.cc/360?img=48" alt="" loading="lazy"><div class="nm">日下部建築</div></div>
+          <div class="arch-port"><div class="logo-mark"><svg viewBox="0 0 64 64" fill="none" stroke="rgb(27,26,22)" stroke-width="2.6"><circle cx="32" cy="32" r="20"/><line x1="12" y1="32" x2="52" y2="32"/></svg></div><div class="nm">日下部建築</div></div>
           <div class="arch-port"><img src="https://i.pravatar.cc/360?img=51" alt="" loading="lazy"><div class="nm">海と建築設計</div></div>
           <div class="arch-port"><img src="https://i.pravatar.cc/360?img=60" alt="" loading="lazy"><div class="nm">白井建築アトリエ</div></div>
-          <div class="arch-port"><img src="https://i.pravatar.cc/360?img=68" alt="" loading="lazy"><div class="nm">林と建築</div></div>
+          <div class="arch-port"><div class="logo-mark"><svg viewBox="0 0 64 64" fill="rgb(27,26,22)" stroke="none"><rect x="16" y="36" width="7" height="16"/><rect x="28" y="26" width="7" height="26"/><rect x="40" y="16" width="7" height="36"/></svg></div><div class="nm">林と建築</div></div>
           <div class="arch-port"><img src="https://i.pravatar.cc/360?img=13" alt="" loading="lazy"><div class="nm">中村建築設計事務所</div></div>
-          <div class="arch-port"><img src="https://i.pravatar.cc/360?img=14" alt="" loading="lazy"><div class="nm">スタジオ・モク</div></div>
+          <div class="arch-port"><div class="logo-mark"><svg viewBox="0 0 64 64" fill="none" stroke="rgb(27,26,22)" stroke-width="2.6"><rect x="11" y="11" width="30" height="30"/><rect x="23" y="23" width="30" height="30"/></svg></div><div class="nm">スタジオ・モク</div></div>
           <div class="arch-port"><img src="https://i.pravatar.cc/360?img=31" alt="" loading="lazy"><div class="nm">相原アトリエ</div></div>
           <div class="arch-port"><img src="https://i.pravatar.cc/360?img=33" alt="" loading="lazy"><div class="nm">田尻設計室</div></div>
-          <div class="arch-port"><img src="https://i.pravatar.cc/360?img=48" alt="" loading="lazy"><div class="nm">日下部建築</div></div>
+          <div class="arch-port"><div class="logo-mark"><svg viewBox="0 0 64 64" fill="none" stroke="rgb(27,26,22)" stroke-width="2.6"><circle cx="32" cy="32" r="20"/><line x1="12" y1="32" x2="52" y2="32"/></svg></div><div class="nm">日下部建築</div></div>
           <div class="arch-port"><img src="https://i.pravatar.cc/360?img=51" alt="" loading="lazy"><div class="nm">海と建築設計</div></div>
           <div class="arch-port"><img src="https://i.pravatar.cc/360?img=60" alt="" loading="lazy"><div class="nm">白井建築アトリエ</div></div>
-          <div class="arch-port"><img src="https://i.pravatar.cc/360?img=68" alt="" loading="lazy"><div class="nm">林と建築</div></div>
+          <div class="arch-port"><div class="logo-mark"><svg viewBox="0 0 64 64" fill="rgb(27,26,22)" stroke="none"><rect x="16" y="36" width="7" height="16"/><rect x="28" y="26" width="7" height="26"/><rect x="40" y="16" width="7" height="36"/></svg></div><div class="nm">林と建築</div></div>
         </div>
       </div>
     </div>
-  </section>
-</div>
-
-<!-- ②.5 建築家から探す -->
-<div class="block">
-  <div class="sec-head reveal">
-    <div><div class="t-eye">ARCHITECTS</div><h2>建築家・デザイナーから探す</h2></div>
-    <a class="more" href="#">一覧 ›</a>
-  </div>
-  <section class="shelf reveal">
-    <div class="track-wrap"><div class="shelf-track" id="archTrack"></div></div>
   </section>
 </div>
 
@@ -687,25 +680,6 @@ document.getElementById('grid').innerHTML = gridIds.map(id=>{
     <div class="gbody"><div class="area">${f.pref}・${f.area}</div>
       <h3>${f.name}</h3><div class="arch">設計 ${f.arch}</div></div></a>`;
 }).join('');
-
-/* architects */
-const ARCHITECTS=[
-  {firm:'中村建築設計事務所',n:6,seed:'arch-nakamura'},
-  {firm:'相原アトリエ',n:5,seed:'arch-aihara'},
-  {firm:'スタジオ・モク',n:4,seed:'arch-moku'},
-  {firm:'日下部建築',n:4,seed:'arch-kusakabe'},
-  {firm:'田尻設計室',n:3,seed:'arch-tajiri'},
-  {firm:'白井建築アトリエ',n:3,seed:'arch-shirai'},
-  {firm:'海と建築設計',n:3,seed:'arch-umi'},
-  {firm:'林と建築',n:2,seed:'arch-hayashi'},
-];
-document.getElementById('archTrack').innerHTML = ARCHITECTS.map(a=>`
-  <a class="arch-card" href="#">
-    <div class="ph"><img alt="" loading="lazy" src="${cwmPhoto(a.seed,560,420)}"></div>
-    <div class="a-eye">ARCHITECT</div>
-    <h3>${a.firm}</h3>
-    <div class="count"><span>COWORKMILL掲載 ${a.n}軒</span><span class="arr">›</span></div>
-  </a>`).join('');
 
 /* menu */
 const menu=document.getElementById('menu');
