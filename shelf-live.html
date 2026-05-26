@@ -34,7 +34,7 @@ body{background:var(--bg);color:var(--ink);font-family:'Zen Kaku Gothic New',san
 .fs-ph::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 56%,rgba(0,0,0,.36));}
 .fs-card:hover .fs-ph{transform:scale(1.03);}
 .fs-name{margin-top:13px;font-weight:700;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.fs-desc{margin-top:5px;font-size:12.5px;color:var(--mut);line-height:1.55;min-height:1px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.fs-desc{margin-top:5px;font-size:12.5px;color:var(--mut);line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
 .fs-area{margin-top:7px;font-size:10.5px;color:var(--faint);letter-spacing:.07em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .fs-state{padding:48px 0;color:var(--mut);font-size:13.5px;line-height:1.8;}
 #fs-shelves.fade{animation:fd .55s ease;}
@@ -57,13 +57,13 @@ body{background:var(--bg);color:var(--ink);font-family:'Zen Kaku Gothic New',san
 </section>
 <!-- ===== ここまで ===== -->
 
-<div class="foot">※ 実装版コンポーネントです。Supabaseの tags（show_on_shelf）＋ space_tags（photo_url・description）＋ spaces を読み、3施設以上集まった特徴だけを棚として表示します。各棚は写真ありカードを先頭に並べます。条件を満たす棚が無い場合・取得エラー時はサンプル表示にフォールバックします（上部「データソース」表示で判別）。</div>
+<div class="foot">※ 実装版コンポーネントです。棚に出す条件＝「その特徴の写真を登録した施設が3つ以上」。条件を満たした特徴のうち3本をランダムに表示し、カードはすべて施設が登録した写真です。条件を満たす棚が無い場合・取得エラー時はサンプル表示にフォールバックします（上部「データソース」表示で判別）。</div>
 </div>
 <script>
 (function(){
 var SB_URL='https://jakwntemjkwqwaqujffh.supabase.co';
 var SB_KEY='sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
-var MIN_SPACES=3;
+var MIN_PHOTOS=3;
 var MAX_SHELVES=3;
 var TONES=['linear-gradient(158deg,#cdbb98,#6d5c44 58%,#352c1f)','linear-gradient(158deg,#9fae93,#505b49 58%,#2a312a)','linear-gradient(158deg,#bcc0c4,#6c7075 55%,#393c3f)','linear-gradient(158deg,#8c95a9,#454a5b 60%,#262a33)','linear-gradient(158deg,#dab98c,#7c5f43 55%,#38291d)','linear-gradient(158deg,#c4ab7c,#6f5937 58%,#332a1d)','linear-gradient(158deg,#a7a08f,#56513f 58%,#2c2a22)','linear-gradient(158deg,#93a39e,#49544f 58%,#262d2a)'];
 var SAMPLE=[
@@ -82,7 +82,7 @@ return '<a class="fs-card" href="#"><div class="fs-ph" style="'+st+'"></div><div
 function render(shelves){
 var pick=shuffle(shelves).slice(0,MAX_SHELVES);
 var html=pick.map(function(s){
-var cs=shuffle(s.cards).sort(function(a,b){return (b.img?1:0)-(a.img?1:0);}).map(cardHTML).join('');
+var cs=shuffle(s.cards).map(cardHTML).join('');
 return '<div class="fs-shelf"><div class="fs-shelf-head"><div class="fs-shelf-name">'+esc(s.name)+'</div><a class="fs-all" href="#">すべて見る →</a></div><div class="fs-row">'+cs+'</div></div>';
 }).join('');
 var el=document.getElementById('fs-shelves');
@@ -98,17 +98,19 @@ var shelves=[];
 (tags||[]).forEach(function(t){
 var cards=[];
 (t.space_tags||[]).forEach(function(stg){
-var sp=stg.spaces;if(!sp)return;if(sp.status&&sp.status!=='live')return;
-cards.push({n:sp.name||'(無題)',d:stg.description||'',a:loc(sp),img:stg.photo_url||'',slug:sp.slug||''});
+var sp=stg.spaces;if(!sp)return;
+if(sp.status&&sp.status!=='live')return;
+if(!stg.photo_url)return;
+cards.push({n:sp.name||'(無題)',d:stg.description||'',a:loc(sp),img:stg.photo_url,slug:sp.slug||''});
 });
-if(cards.length>=MIN_SPACES)shelves.push({name:t.name,cards:cards});
+if(cards.length>=MIN_PHOTOS)shelves.push({name:t.name,cards:cards});
 });
 return shelves;
 });
 }
 loadLive().then(function(shelves){
-if(shelves&&shelves.length){setSrc('#7ea87e','データソース：Supabase（ライブ）／ 条件を満たす棚 '+shelves.length+' 本');window._FS=shelves;render(shelves);}
-else{setSrc('#caa46a','データソース：サンプル（棚の条件＝3施設以上 を満たす特徴がまだ無いため）');window._FS=SAMPLE;render(SAMPLE);}
+if(shelves&&shelves.length){setSrc('#7ea87e','データソース：Supabase（ライブ）／ 写真が3施設以上そろった棚 '+shelves.length+' 本');window._FS=shelves;render(shelves);}
+else{setSrc('#caa46a','データソース：サンプル（写真を3施設以上が登録した特徴がまだ無いため。施設が特徴ごとの写真を登録すると、ここに実データの棚が出ます）');window._FS=SAMPLE;render(SAMPLE);}
 }).catch(function(e){
 setSrc('#c98b8b','データソース：サンプル（ライブ取得エラー: '+esc(e.message||e)+'）');window._FS=SAMPLE;render(SAMPLE);
 });
