@@ -33,9 +33,9 @@ body{background:var(--bg);color:var(--ink);font-family:'Zen Kaku Gothic New',san
 .fs-ph::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 78% at 80% 6%,rgba(255,250,235,.30),rgba(255,250,235,0) 56%);}
 .fs-ph::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 56%,rgba(0,0,0,.36));}
 .fs-card:hover .fs-ph{transform:scale(1.03);}
-.fs-name{margin-top:13px;font-weight:700;font-size:14.5px;}
-.fs-desc{margin-top:5px;font-size:12.5px;color:var(--mut);line-height:1.55;}
-.fs-area{margin-top:7px;font-size:10.5px;color:var(--faint);letter-spacing:.07em;}
+.fs-name{margin-top:13px;font-weight:700;font-size:14.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.fs-desc{margin-top:5px;font-size:12.5px;color:var(--mut);line-height:1.55;min-height:1px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.fs-area{margin-top:7px;font-size:10.5px;color:var(--faint);letter-spacing:.07em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .fs-state{padding:48px 0;color:var(--mut);font-size:13.5px;line-height:1.8;}
 #fs-shelves.fade{animation:fd .55s ease;}
 @keyframes fd{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
@@ -57,7 +57,7 @@ body{background:var(--bg);color:var(--ink);font-family:'Zen Kaku Gothic New',san
 </section>
 <!-- ===== ここまで ===== -->
 
-<div class="foot">※ 実装版コンポーネントです。Supabaseの tags（show_on_shelf）＋ space_tags（photo_url・description）＋ spaces を読み、3施設以上集まった特徴だけを棚として表示します。条件を満たす棚がまだ無い場合・取得エラー時はサンプル表示にフォールバックします（上部の「データソース」表示で判別できます）。</div>
+<div class="foot">※ 実装版コンポーネントです。Supabaseの tags（show_on_shelf）＋ space_tags（photo_url・description）＋ spaces を読み、3施設以上集まった特徴だけを棚として表示します。各棚は写真ありカードを先頭に並べます。条件を満たす棚が無い場合・取得エラー時はサンプル表示にフォールバックします（上部「データソース」表示で判別）。</div>
 </div>
 <script>
 (function(){
@@ -74,6 +74,7 @@ var SAMPLE=[
 ];
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(m){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[m];});}
 function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function loc(sp){if(sp.nearest_station)return sp.nearest_station;var a=sp.area||'';return a.split('・').slice(0,2).join('・');}
 function cardHTML(c,i){
 var st=(c.img&&/^https?:/.test(c.img))?('background-image:url('+c.img+')'):('background:'+(c.img||TONES[i%TONES.length]));
 return '<a class="fs-card" href="#"><div class="fs-ph" style="'+st+'"></div><div class="fs-name">'+esc(c.n)+'</div><div class="fs-desc">'+esc(c.d)+'</div><div class="fs-area">'+esc(c.a)+'</div></a>';
@@ -81,7 +82,7 @@ return '<a class="fs-card" href="#"><div class="fs-ph" style="'+st+'"></div><div
 function render(shelves){
 var pick=shuffle(shelves).slice(0,MAX_SHELVES);
 var html=pick.map(function(s){
-var cs=shuffle(s.cards).map(cardHTML).join('');
+var cs=shuffle(s.cards).sort(function(a,b){return (b.img?1:0)-(a.img?1:0);}).map(cardHTML).join('');
 return '<div class="fs-shelf"><div class="fs-shelf-head"><div class="fs-shelf-name">'+esc(s.name)+'</div><a class="fs-all" href="#">すべて見る →</a></div><div class="fs-row">'+cs+'</div></div>';
 }).join('');
 var el=document.getElementById('fs-shelves');
@@ -90,7 +91,7 @@ el.classList.remove('fade');void el.offsetWidth;el.classList.add('fade');
 }
 function setSrc(color,msg){document.getElementById('src').innerHTML='<span class="dot" style="background:'+color+'"></span>'+msg;}
 function loadLive(){
-var q=SB_URL+'/rest/v1/tags?select=name,show_on_shelf,space_tags(photo_url,description,spaces(name,slug,area,prefecture,status))&show_on_shelf=eq.true';
+var q=SB_URL+'/rest/v1/tags?select=name,show_on_shelf,space_tags(photo_url,description,spaces(name,slug,area,prefecture,nearest_station,status))&show_on_shelf=eq.true';
 var ctrl=new AbortController();var to=setTimeout(function(){ctrl.abort();},7000);
 return fetch(q,{headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY},signal:ctrl.signal}).then(function(r){clearTimeout(to);if(!r.ok)throw new Error('HTTP '+r.status);return r.json();}).then(function(tags){
 var shelves=[];
@@ -98,7 +99,7 @@ var shelves=[];
 var cards=[];
 (t.space_tags||[]).forEach(function(stg){
 var sp=stg.spaces;if(!sp)return;if(sp.status&&sp.status!=='live')return;
-cards.push({n:sp.name||'(無題)',d:stg.description||'',a:[sp.prefecture,sp.area].filter(Boolean).join('・'),img:stg.photo_url||'',slug:sp.slug||''});
+cards.push({n:sp.name||'(無題)',d:stg.description||'',a:loc(sp),img:stg.photo_url||'',slug:sp.slug||''});
 });
 if(cards.length>=MIN_SPACES)shelves.push({name:t.name,cards:cards});
 });
