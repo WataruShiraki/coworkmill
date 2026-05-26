@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>COWORKMILL — 特徴の棚 デザイン案（縦長カード）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@600;700;800&family=Shippori+Mincho:wght@600;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#15140f;--ink:#ece8dc;--mut:#a8a38f;--faint:#6f6a5a;--line:#332f27;--accent:#87a9d6;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--ink);font-family:'Zen Kaku Gothic New',sans-serif;-webkit-font-smoothing:antialiased;}
+.wrap{max-width:1180px;margin:0 auto;padding:0 32px;}
+.mocklabel{font-size:11px;letter-spacing:.14em;color:var(--faint);padding:20px 0;border-bottom:1px solid var(--line);}
+.shead{padding:58px 0 4px;}
+.eyebrow{font-family:'Manrope',sans-serif;font-size:12px;font-weight:700;letter-spacing:.22em;color:var(--accent);}
+.stitle{font-family:'Shippori Mincho',serif;font-weight:700;font-size:38px;line-height:1.4;margin-top:18px;}
+.ssub{font-size:13.5px;color:var(--mut);line-height:1.95;margin-top:16px;max-width:560px;}
+.shuffle{margin-top:24px;display:inline-flex;align-items:center;gap:9px;background:none;border:1px solid var(--line);color:var(--ink);font-family:'Zen Kaku Gothic New',sans-serif;font-size:13px;padding:11px 21px;border-radius:999px;cursor:pointer;transition:.2s;}
+.shuffle:hover{border-color:var(--accent);color:var(--accent);}
+.shuffle .ic{font-size:15px;display:inline-block;}
+.shelf{margin-top:48px;}
+.shelf-head{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:13px;}
+.shelf-name{font-family:'Manrope','Zen Kaku Gothic New',sans-serif;font-weight:800;font-size:21px;letter-spacing:.01em;}
+.shelf-all{font-size:12px;color:var(--accent);text-decoration:none;white-space:nowrap;}
+.row{display:flex;gap:18px;margin-top:20px;overflow-x:auto;padding-bottom:12px;}
+.row::-webkit-scrollbar{height:6px;}
+.row::-webkit-scrollbar-thumb{background:var(--line);border-radius:3px;}
+.card{flex:0 0 180px;cursor:pointer;}
+.ph{width:180px;height:240px;border-radius:11px;position:relative;overflow:hidden;transition:transform .45s cubic-bezier(.2,.7,.2,1);}
+.ph::after{content:"";position:absolute;inset:0;background:radial-gradient(120% 78% at 80% 6%,rgba(255,250,235,.32),rgba(255,250,235,0) 56%);}
+.ph::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 56%,rgba(0,0,0,.36));}
+.card:hover .ph{transform:scale(1.03);}
+.cname{margin-top:13px;font-weight:700;font-size:14.5px;letter-spacing:.01em;}
+.cdesc{margin-top:5px;font-size:12.5px;color:var(--mut);line-height:1.55;}
+.carea{margin-top:7px;font-size:10.5px;color:var(--faint);letter-spacing:.07em;}
+.foot{margin-top:64px;padding:26px 0 80px;border-top:1px solid var(--line);font-size:11.5px;color:var(--faint);line-height:1.85;}
+#shelves.fade{animation:fd .55s ease;}
+@keyframes fd{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+@media(max-width:560px){.stitle{font-size:26px;}.wrap{padding:0 18px;}.card{flex-basis:142px;}.ph{width:142px;height:190px;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="mocklabel">COWORKMILL — TOPページ「特徴の棚」デザイン案 ／ 縦長カード版</div>
+<div class="shead">
+<div class="eyebrow">EXPLORE BY FEATURE</div>
+<div class="stitle">その日の、ひとつの切り口。</div>
+<div class="ssub">温泉、本棚、暖炉、自然光 —— こだわりの「特徴」ごとに棚を編みました。並ぶ切り口は、訪れるたびに変わります。探すのではなく、出会う。</div>
+<button class="shuffle" id="shuf"><span class="ic">↻</span> 別の切り口で見る</button>
+</div>
+<div id="shelves"></div>
+<div class="foot">※ デザイン確認用モックです。写真はプレースホルダー（実装時は、施設が特徴ごとに登録した写真が入ります）。施設名・キャッチコピーは仮のものです。「別の切り口で見る」を押すと棚とカードがランダムに入れ替わります。</div>
+</div>
+<script>
+var TONES=['linear-gradient(158deg,#cdbb98,#6d5c44 58%,#352c1f)','linear-gradient(158deg,#9fae93,#505b49 58%,#2a312a)','linear-gradient(158deg,#bcc0c4,#6c7075 55%,#393c3f)','linear-gradient(158deg,#8c95a9,#454a5b 60%,#262a33)','linear-gradient(158deg,#dab98c,#7c5f43 55%,#38291d)','linear-gradient(158deg,#c4ab7c,#6f5937 58%,#332a1d)','linear-gradient(158deg,#a7a08f,#56513f 58%,#2c2a22)','linear-gradient(158deg,#93a39e,#49544f 58%,#262d2a)'];
+var SHELVES=[
+{name:'温泉のある空間',cards:[{n:'KUROGANE 蔵前',d:'打ち合わせの前に、ひとっ風呂。',a:'東京・蔵前'},{n:'湯けむり STUDIO',d:'露天で、考えごとが進む。',a:'大分・別府'},{n:'SLATE 箱根',d:'仕事を終えたら、すぐ湯へ。',a:'神奈川・箱根'},{n:'のぼせ works',d:'源泉かけ流しの集中部屋。',a:'群馬・草津'},{n:'蒸 -mushi- 登別',d:'サウナ後の、外気浴デッキ。',a:'北海道・登別'},{n:'月見湯ベース',d:'夜風呂しながら、締切を越える。',a:'長野・上田'}]},
+{name:'本棚が豊かな空間',cards:[{n:'SLATE 金沢',d:'三万冊に囲まれて書く。',a:'石川・金沢'},{n:'倉 -kura- 関内',d:'天井までの本棚が、壁になる。',a:'神奈川・横浜'},{n:'文庫LOUNGE 神保町',d:'古書の匂いの中で集中する。',a:'東京・神保町'},{n:'KUROGANE 蔵前',d:'建築書ばかりの、読書席。',a:'東京・蔵前'},{n:'ひだまり文庫',d:'借りて読める、返さなくていい。',a:'長野・松本'},{n:'章 -sho- 京都',d:'町家の本棚と、中庭。',a:'京都・烏丸'}]},
+{name:'暖炉のある空間',cards:[{n:'焙 -hoji- 清澄白河',d:'薪の音だけが響く朝。',a:'東京・清澄白河'},{n:'山小屋OFFICE',d:'火を見ながら、考える席。',a:'長野・軽井沢'},{n:'ストーブ社 函館',d:'鋳鉄ストーブのある編集部。',a:'北海道・函館'},{n:'焚 -taku- 高山',d:'囲炉裏を囲んで、打ち合わせ。',a:'岐阜・高山'},{n:'KUROGANE 蔵前',d:'土間に、薪ストーブ。',a:'東京・蔵前'},{n:'炉端WORKS 盛岡',d:'火のそばが、一番はかどる。',a:'岩手・盛岡'}]},
+{name:'自然光がたっぷり',cards:[{n:'硝子 -glass- 代々木',d:'朝の光で、目が覚める席。',a:'東京・代々木'},{n:'SLATE 金沢',d:'大きな北窓の、アトリエ。',a:'石川・金沢'},{n:'陽だまり那覇',d:'光の差す、白い部屋。',a:'沖縄・那覇'},{n:'ひかり台STUDIO',d:'トップライトの真下で描く。',a:'神奈川・藤沢'},{n:'採光社 京都',d:'障子ごしの、やわらかい光。',a:'京都・北山'},{n:'倉 -kura- 関内',d:'倉庫窓から差す、午後の光。',a:'神奈川・横浜'}]}
+];
+function sh(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function render(){
+var pick=sh(SHELVES).slice(0,3);var html='';
+pick.forEach(function(s){
+var cs='';sh(s.cards).forEach(function(c,i){
+cs+='<div class="card"><div class="ph" style="background:'+TONES[i%TONES.length]+'"></div><div class="cname">'+c.n+'</div><div class="cdesc">'+c.d+'</div><div class="carea">'+c.a+'</div></div>';
+});
+html+='<div class="shelf"><div class="shelf-head"><div class="shelf-name">'+s.name+'</div><a class="shelf-all" href="#">すべて見る →</a></div><div class="row">'+cs+'</div></div>';
+});
+var el=document.getElementById('shelves');el.innerHTML=html;el.classList.remove('fade');void el.offsetWidth;el.classList.add('fade');
+}
+render();
+document.getElementById('shuf').addEventListener('click',render);
+</script>
+</body>
+</html>
