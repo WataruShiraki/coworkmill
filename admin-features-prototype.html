@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>COWORKMILL 施設管理 — 特徴の登録（プロトタイプ）</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0a0a0a;--white:#fff;--g50:#f7f7f7;--g100:#efefef;--g200:#e0e0e0;--g400:#a0a0a0;--g600:#606060;--accent:#2bb5c8;--fd:'Montserrat',sans-serif;--fb:'Noto Sans JP','Montserrat',sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--g50);color:var(--ink);font-family:var(--fb);-webkit-font-smoothing:antialiased;}
+.top{background:var(--white);border-bottom:1px solid var(--g200);padding:0 26px;height:56px;display:flex;align-items:center;gap:16px;}
+.brand{font-family:var(--fd);font-weight:800;font-size:15px;letter-spacing:.04em;}
+.crumb{font-size:12px;color:var(--g400);}
+.crumb b{color:var(--g600);font-weight:700;}
+.main{max-width:840px;margin:0 auto;padding:26px 26px 90px;}
+.devnote{background:#fff7e6;border:1px solid #f0dcab;color:#8a6d2f;font-size:11.5px;line-height:1.7;border-radius:9px;padding:11px 14px;margin-bottom:22px;}
+.panel{background:var(--white);border:1px solid var(--g200);border-radius:13px;padding:26px 28px;}
+.h2{font-family:var(--fd);font-weight:800;font-size:19px;letter-spacing:.02em;}
+.lead{font-size:13px;color:var(--g600);line-height:1.85;margin-top:9px;}
+.step{display:flex;align-items:center;gap:10px;margin:30px 0 14px;font-weight:700;font-size:14px;}
+.num{width:23px;height:23px;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--fd);font-weight:700;font-size:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.chips{display:flex;flex-wrap:wrap;}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:9px 15px;border:1px solid var(--g200);border-radius:999px;background:#fff;cursor:pointer;font-size:13px;color:#3a3a3a;transition:.15s;margin:0 8px 8px 0;}
+.chip:hover{border-color:var(--accent);}
+.chip.on{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700;}
+.chip .ck{font-size:11px;opacity:0;width:0;transition:.12s;}
+.chip.on .ck{opacity:1;width:11px;}
+.empty{color:var(--g400);font-size:13px;padding:22px 0;border:1.5px dashed var(--g200);border-radius:10px;text-align:center;}
+.fcard{background:#fff;border:1px solid var(--g200);border-radius:12px;padding:17px 19px;margin-bottom:13px;}
+.fcard-head{display:flex;justify-content:space-between;align-items:center;}
+.fcard-title{display:flex;align-items:center;gap:8px;font-weight:700;font-size:14.5px;}
+.tdot{width:8px;height:8px;border-radius:50%;background:var(--accent);}
+.remove{border:none;background:none;color:var(--g400);font-size:18px;cursor:pointer;line-height:1;padding:2px 4px;}
+.remove:hover{color:#c0392b;}
+.fbody{display:flex;gap:22px;margin-top:15px;}
+.left{flex:1;min-width:0;}
+.up{height:152px;border:1.5px dashed #cdcdcd;border-radius:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;background:#fafafa;color:var(--g400);font-size:12.5px;text-align:center;background-size:cover;background-position:center;transition:.15s;}
+.up:hover{border-color:var(--accent);color:var(--g600);}
+.up.has{border-style:solid;border-color:var(--g200);}
+.up .ico{font-size:21px;}
+.up.has .ph-txt{background:rgba(255,255,255,.92);padding:3px 9px;border-radius:5px;font-size:11px;color:var(--g600);}
+.desc{width:100%;margin-top:11px;padding:10px 12px;border:1px solid var(--g200);border-radius:8px;font-size:13px;font-family:var(--fb);color:var(--ink);}
+.desc:focus{outline:none;border-color:var(--accent);}
+.drow{display:flex;justify-content:space-between;margin-top:6px;}
+.hint{font-size:11px;color:var(--g400);line-height:1.6;}
+.cnt{font-size:11px;color:var(--g400);}
+.right{width:184px;flex-shrink:0;}
+.plabel{font-family:var(--fd);font-size:10px;letter-spacing:.13em;color:var(--g400);font-weight:700;margin-bottom:8px;}
+.pwrap{background:#15140f;border-radius:12px;padding:15px;}
+.pcard-ph{width:100%;height:202px;border-radius:8px;background:#2a2722;background-size:cover;background-position:center;position:relative;overflow:hidden;}
+.pcard-ph::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 58%,rgba(0,0,0,.34));}
+.pcard-ph .none{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#5a5648;font-size:11px;}
+.pcard-name{color:#ece8dc;font-size:12.5px;font-weight:700;margin-top:9px;}
+.pcard-desc{color:#a8a38f;font-size:11px;margin-top:4px;line-height:1.5;min-height:30px;}
+.pcard-area{color:#6f6a5a;font-size:9.5px;margin-top:5px;letter-spacing:.05em;}
+.actions{margin-top:26px;display:flex;align-items:center;gap:16px;}
+.save{background:var(--accent);color:#fff;border:none;font-family:var(--fb);font-weight:700;font-size:14px;padding:13px 32px;border-radius:9px;cursor:pointer;transition:.15s;}
+.save:hover{filter:brightness(1.07);}
+.saved{font-size:12.5px;color:var(--g600);}
+@media(max-width:680px){.fbody{flex-direction:column;}.right{width:100%;}.pcard-ph{height:230px;}}
+</style>
+</head>
+<body>
+<div class="top">
+<div class="brand">COWORKMILL</div>
+<div class="crumb">施設管理 › 施設情報の編集 › <b>特徴</b></div>
+</div>
+<div class="main">
+<div class="devnote">【プロトタイプ】施設管理画面に追加する「特徴」セクションのデザイン確認用です。特徴タグはSupabaseの tags テーブルから実データを読み込みます。写真アップロードはプレビュー表示のみ（実際の保存・アップロードは本実装で接続）。右側に「TOPの棚での見え方」を即時プレビューします。</div>
+<div class="panel">
+<div class="h2">この施設の特徴</div>
+<div class="lead">あてはまる特徴を選び、それぞれに「写真」と「ひとこと」を登録してください。同じ特徴で写真を登録した施設が3つ以上になると、COWORKMILLトップの「特徴の棚」に自動で掲載されます。</div>
+
+<div class="step"><span class="num">1</span>あてはまる特徴を選ぶ</div>
+<div class="chips" id="chips"><span style="color:#a0a0a0;font-size:13px">特徴を読み込んでいます…</span></div>
+
+<div class="step"><span class="num">2</span>選んだ特徴に、写真とひとことを登録</div>
+<div id="cards"></div>
+<div class="empty" id="empty">上で特徴を選ぶと、ここに写真とひとことの登録欄が出ます。</div>
+
+<div class="actions">
+<button class="save" id="save">保存する</button>
+<span class="saved" id="saved"></span>
+</div>
+</div>
+</div>
+<script>
+(function(){
+var SB_URL='https://jakwntemjkwqwaqujffh.supabase.co';
+var SB_KEY='sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+var MYNAME='（あなたの施設名）';
+var MYAREA='エリア';
+var DESC_MAX=40;
+var FALLBACK=['受賞歴あり','リノベーション建築','木のぬくもりが主役の空間','自然に囲まれた空間','温泉のある空間','カフェ併設','テラスのある空間','本棚が豊かな空間','暖炉のある空間','緑が主役','自然光がたっぷり','配信・撮影向き','ドッグランあり'];
+var state={};
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(m){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[m];});}
+var TAGS=[];
+function loadTags(){
+var ctrl=new AbortController();var to=setTimeout(function(){ctrl.abort();},7000);
+return fetch(SB_URL+'/rest/v1/tags?select=name&order=name.asc',{headers:{apikey:SB_KEY,Authorization:'Bearer '+SB_KEY},signal:ctrl.signal}).then(function(r){clearTimeout(to);if(!r.ok)throw new Error('HTTP '+r.status);return r.json();}).then(function(j){var n=(j||[]).map(function(t){return t.name;}).filter(Boolean);return n.length?n:FALLBACK;}).catch(function(){return FALLBACK;});
+}
+function renderChips(){
+var el=document.getElementById('chips');
+el.innerHTML=TAGS.map(function(t){
+var on=state[t]?' on':'';
+return '<span class="chip'+on+'" data-t="'+esc(t)+'"><span class="ck">✓</span>'+esc(t)+'</span>';
+}).join('');
+[].slice.call(el.querySelectorAll('.chip')).forEach(function(c){
+c.addEventListener('click',function(){toggle(c.getAttribute('data-t'));});
+});
+}
+function toggle(t){
+if(state[t]){delete state[t];}else{state[t]={photo:'',pname:'',desc:''};}
+renderChips();renderCards();
+}
+function renderCards(){
+var keys=Object.keys(state);
+document.getElementById('empty').style.display=keys.length?'none':'block';
+var box=document.getElementById('cards');
+box.innerHTML=keys.map(function(t){
+var s=state[t];
+var phStyle=s.photo?(' style="background-image:url('+s.photo+')"'):'';
+var phClass=s.photo?'up has':'up';
+var inner=s.photo?'<span class="ph-txt">写真を変更</span>':'<span class="ico">＋</span><span>クリックして写真を選択</span>';
+var prevPh=s.photo?(' style="background-image:url('+s.photo+')"'):'';
+var prevNone=s.photo?'':'<span class="none">写真未登録</span>';
+return '<div class="fcard" data-t="'+esc(t)+'">'
++'<div class="fcard-head"><div class="fcard-title"><span class="tdot"></span>'+esc(t)+'</div><button class="remove" data-rm="'+esc(t)+'">×</button></div>'
++'<div class="fbody">'
++'<div class="left">'
++'<div class="'+phClass+'" data-up="'+esc(t)+'"'+phStyle+'>'+inner+'</div>'
++'<input type="file" accept="image/*" data-file="'+esc(t)+'" style="display:none">'
++'<input class="desc" data-desc="'+esc(t)+'" maxlength="'+DESC_MAX+'" placeholder="ひとこと（例：打ち合わせの前に、ひとっ風呂。）" value="'+esc(s.desc)+'">'
++'<div class="drow"><span class="hint">同じ特徴で写真を登録した施設が3つ以上で、TOPの棚に掲載されます。</span><span class="cnt" data-cnt="'+esc(t)+'">'+s.desc.length+'/'+DESC_MAX+'</span></div>'
++'</div>'
++'<div class="right"><div class="plabel">TOPの棚での見え方</div><div class="pwrap">'
++'<div class="pcard-ph"'+prevPh+'>'+prevNone+'</div>'
++'<div class="pcard-name">'+esc(MYNAME)+'</div>'
++'<div class="pcard-desc" data-prev="'+esc(t)+'">'+esc(s.desc||'（ひとこと）')+'</div>'
++'<div class="pcard-area">'+esc(MYAREA)+'</div>'
++'</div></div>'
++'</div></div>';
+}).join('');
+[].slice.call(box.querySelectorAll('[data-rm]')).forEach(function(b){b.addEventListener('click',function(){toggle(b.getAttribute('data-rm'));});});
+[].slice.call(box.querySelectorAll('[data-up]')).forEach(function(u){u.addEventListener('click',function(){box.querySelector('[data-file="'+cssesc(u.getAttribute('data-up'))+'"]').click();});});
+[].slice.call(box.querySelectorAll('[data-file]')).forEach(function(f){f.addEventListener('change',function(){
+var t=f.getAttribute('data-file');var file=f.files&&f.files[0];if(!file)return;
+state[t].photo=URL.createObjectURL(file);state[t].pname=file.name;renderCards();
+});});
+[].slice.call(box.querySelectorAll('[data-desc]')).forEach(function(d){d.addEventListener('input',function(){
+var t=d.getAttribute('data-desc');state[t].desc=d.value;
+var cnt=box.querySelector('[data-cnt="'+cssesc(t)+'"]');if(cnt)cnt.textContent=d.value.length+'/'+DESC_MAX;
+var pv=box.querySelector('[data-prev="'+cssesc(t)+'"]');if(pv)pv.textContent=d.value||'（ひとこと）';
+});});
+}
+function cssesc(s){return String(s).replace(/["\\]/g,'\\$&');}
+document.getElementById('save').addEventListener('click',function(){
+var n=Object.keys(state).length;
+var withPhoto=Object.keys(state).filter(function(t){return state[t].photo;}).length;
+document.getElementById('saved').textContent='【プロトタイプ】選択した特徴 '+n+' 件（写真登録済み '+withPhoto+' 件）。本実装では space_tags へ保存し、写真は space-images バケットにアップロードします。';
+});
+loadTags().then(function(t){TAGS=t;renderChips();});
+renderCards();
+})();
+</script>
+</body>
+</html>
