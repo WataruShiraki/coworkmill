@@ -5004,5 +5004,43 @@ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded'
 </script>
 <!-- CWMA-END -->
 
+
+<!-- CWMUI-START -->
+<script>
+(function(){
+try{
+ var titles={db:'アナリティクス',info:'施設情報の編集',new:'新規施設',photo:'写真管理',voice:'利用者の声',arch:'建築家情報',co:'企業情報',st:'掲載ステータス',plan:'プラン管理'};
+ var contentPanels=['db'];
+ var infoOnlyPanels=['info','new'];
+ var facilityScopedPanels=['info','photo','voice','arch','st'];
+ function applyUI(key){
+  var content=document.querySelector('.content');if(content)content.style.display=(contentPanels.indexOf(key)>=0)?'':'none';
+  var ttl=document.getElementById('ttl');if(ttl&&titles[key])ttl.textContent=titles[key];
+  var tbr=document.getElementById('tbr');if(tbr)tbr.style.display=(infoOnlyPanels.indexOf(key)>=0)?'':'none';
+  var banner=document.querySelector('.banner');if(banner)banner.style.display=(facilityScopedPanels.indexOf(key)>=0)?'':'none';
+ }
+ function detectCurrent(){
+  var keys=['db','info','new','photo','voice','arch','co','st','plan'];
+  for(var i=0;i<keys.length;i++){var p=document.getElementById('p-'+keys[i]);if(p&&getComputedStyle(p).display!=='none')return keys[i];}
+  return null;
+ }
+ function init(){
+  if(!window.go){setTimeout(init,100);return;}
+  if(window._cwmuiWrapped)return;
+  window._cwmuiWrapped=true;
+  var origGo=window.go;
+  window.go=function(key,el){
+   var r;try{r=origGo.apply(this,arguments);}catch(e){if(window.console)console.warn('orig go err',e);}
+   try{applyUI(key);}catch(e){if(window.console)console.warn('cwmui apply err',e);}
+   return r;
+  };
+  setTimeout(function(){var k=detectCurrent();if(k)applyUI(k);},500);
+  setTimeout(function(){var k=detectCurrent();if(k)applyUI(k);},2000);
+ }
+ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',init);}else{init();}
+}catch(e){if(window.console)console.warn('cwmui init err',e);}
+})();
+</script>
+<!-- CWMUI-END -->
 </body></html>
 <!-- deploy -->
