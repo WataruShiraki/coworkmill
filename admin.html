@@ -4705,30 +4705,44 @@ document.addEventListener("DOMContentLoaded", function(){
   var p = document.getElementById("fpref");
   if(p){ p.addEventListener("change", function(){ cwmInitAreaOptions(p.value); }); }
 });
-</script><style>
-#cwmf-section{margin:34px 0 10px;font-family:inherit;}
-#cwmf-section *{box-sizing:border-box;}
-.cwmf-hd{font-weight:800;font-size:17px;color:#0a0a0a;display:flex;align-items:center;gap:9px;}
+</script>
+<!-- CWMF-START -->
+<style>
+#cwmf-section,#cwmf-section *{font-family:'Noto Sans JP',sans-serif;box-sizing:border-box;}
+#cwmf-section{margin:28px 0;background:#fff;border:1px solid #e0e0e0;border-radius:12px;padding:26px 28px;}
+.cwmf-hd{display:flex;align-items:center;gap:10px;}
 .cwmf-hd::before{content:"";width:4px;height:18px;background:#2bb5c8;border-radius:2px;display:inline-block;}
-.cwmf-lead{font-size:12.5px;color:#606060;line-height:1.85;margin:10px 0 0;}
+.cwmf-title{font-weight:700;font-size:17px;color:#0a0a0a;}
+.cwmf-lead{font-size:12.5px;color:#606060;line-height:1.9;margin:11px 0 0;}
+.cwmf-lead b{color:#0a0a0a;font-weight:700;}
+.cwmf-counter{display:inline-flex;align-items:baseline;gap:5px;background:#f7f7f7;border-radius:999px;padding:6px 14px;font-size:12px;color:#606060;margin-top:14px;}
+.cwmf-counter .num{font-weight:700;color:#2bb5c8;font-size:14px;}
+.cwmf-counter.full .num{color:#d3631a;}
+.cwmf-counter .max{color:#a0a0a0;}
 .cwmf-step{font-weight:700;font-size:13px;color:#0a0a0a;margin:22px 0 11px;display:flex;align-items:center;gap:9px;}
 .cwmf-num{width:21px;height:21px;border-radius:50%;background:#2bb5c8;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.cwmf-cat{margin-top:20px;}
+.cwmf-cat:first-of-type{margin-top:4px;}
+.cwmf-cat-hd{display:flex;align-items:center;gap:8px;font-weight:700;font-size:12.5px;color:#0a0a0a;margin-bottom:10px;padding-bottom:7px;border-bottom:1px solid #efefef;}
+.cwmf-cat-ico{width:17px;height:17px;color:#2bb5c8;flex-shrink:0;}
+.cwmf-cat-count{color:#a0a0a0;font-size:11px;font-weight:500;margin-left:6px;}
 .cwmf-chips{display:flex;flex-wrap:wrap;}
-.cwmf-chip{display:inline-flex;align-items:center;gap:5px;padding:8px 13px;border:1px solid #e0e0e0;border-radius:999px;background:#fff;cursor:pointer;font-size:12.5px;color:#3a3a3a;margin:0 7px 7px 0;transition:.14s;}
+.cwmf-chip{display:inline-flex;align-items:center;padding:7px 13px;border:1px solid #e0e0e0;border-radius:999px;background:#fff;cursor:pointer;font-size:12.5px;color:#3a3a3a;margin:0 7px 7px 0;transition:border-color .14s,background .14s,color .14s;}
 .cwmf-chip:hover{border-color:#2bb5c8;}
 .cwmf-chip.on{background:#2bb5c8;border-color:#2bb5c8;color:#fff;font-weight:700;}
+.cwmf-chip.disabled{opacity:.3;cursor:not-allowed;pointer-events:none;}
 .cwmf-empty{color:#a0a0a0;font-size:12.5px;padding:18px;border:1.5px dashed #e0e0e0;border-radius:9px;text-align:center;}
 .cwmf-card{border:1px solid #e0e0e0;border-radius:11px;padding:15px 17px;margin-bottom:11px;background:#fff;}
 .cwmf-card-hd{display:flex;justify-content:space-between;align-items:center;font-weight:700;font-size:13.5px;}
-.cwmf-rm{border:none;background:none;color:#a0a0a0;font-size:17px;cursor:pointer;line-height:1;padding:0 3px;}
+.cwmf-rm{border:none;background:none;color:#a0a0a0;font-size:17px;cursor:pointer;line-height:1;padding:0 3px;font-family:inherit;}
 .cwmf-rm:hover{color:#c0392b;}
 .cwmf-body{display:flex;gap:18px;margin-top:12px;}
 .cwmf-left{flex:1;min-width:0;}
-.cwmf-up{height:140px;border:1.5px dashed #cdcdcd;border-radius:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;background:#fafafa;color:#a0a0a0;font-size:12px;text-align:center;background-size:cover;background-position:center;}
+.cwmf-up{height:140px;border:1.5px dashed #cdcdcd;border-radius:9px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;background:#fafafa;color:#a0a0a0;font-size:12px;text-align:center;background-size:cover;background-position:center;transition:border-color .14s;}
 .cwmf-up:hover{border-color:#2bb5c8;}
 .cwmf-up.has{border-style:solid;border-color:#e0e0e0;}
 .cwmf-up.has span{background:rgba(255,255,255,.92);padding:3px 9px;border-radius:5px;color:#606060;font-size:11px;}
-.cwmf-desc{width:100%;margin-top:10px;padding:9px 11px;border:1px solid #e0e0e0;border-radius:7px;font-size:12.5px;font-family:inherit;color:#0a0a0a;}
+.cwmf-desc{width:100%;margin-top:10px;padding:9px 11px;border:1px solid #e0e0e0;border-radius:7px;font-size:12.5px;color:#0a0a0a;font-family:inherit;}
 .cwmf-desc:focus{outline:none;border-color:#2bb5c8;}
 .cwmf-hint{font-size:10.5px;color:#a0a0a0;margin-top:6px;line-height:1.6;}
 .cwmf-right{width:158px;flex-shrink:0;}
@@ -4737,7 +4751,7 @@ document.addEventListener("DOMContentLoaded", function(){
 .cwmf-pph{width:100%;height:170px;border-radius:7px;background:#2a2722;background-size:cover;background-position:center;}
 .cwmf-pn{color:#ece8dc;font-size:11.5px;font-weight:700;margin-top:7px;}
 .cwmf-pd{color:#a8a38f;font-size:10px;margin-top:3px;line-height:1.5;min-height:26px;}
-.cwmf-save{background:#2bb5c8;color:#fff;border:none;font-family:inherit;font-weight:700;font-size:13.5px;padding:12px 30px;border-radius:8px;cursor:pointer;margin-top:18px;}
+.cwmf-save{background:#2bb5c8;color:#fff;border:none;font-weight:700;font-size:13.5px;padding:12px 30px;border-radius:8px;cursor:pointer;margin-top:18px;font-family:inherit;}
 .cwmf-save:hover{filter:brightness(1.07);}
 .cwmf-save:disabled{opacity:.5;cursor:default;}
 .cwmf-status{font-size:12px;color:#606060;margin-top:11px;line-height:1.7;}
@@ -4748,27 +4762,130 @@ document.addEventListener("DOMContentLoaded", function(){
 try{
 var SB='https://jakwntemjkwqwaqujffh.supabase.co';
 var KEY='sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
-var DMAX=40;
-function sb(path,opts){opts=opts||{};if(typeof window.sbFetch==='function'){return Promise.resolve(window.sbFetch(path,opts));}var h={apikey:KEY,Authorization:'Bearer '+KEY};if(opts.body)h['Content-Type']='application/json';return fetch(SB+path,{method:opts.method||'GET',headers:h,body:opts.body});}
-function sbj(path,opts){return sb(path,opts).then(function(r){return (r&&r.json)?r.json():r;});}
+var DMAX=40,MAX=5;
+var ICONS={A:'<svg class="cwmf-cat-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="1"/><line x1="12" y1="4" x2="12" y2="20"/><line x1="4" y1="12" x2="20" y2="12"/></svg>',B:'<svg class="cwmf-cat-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21h6"/><path d="M10 18h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.9.7 1.5 1.5 1.5 2.6V18h4v-1.5c0-1.1.6-1.9 1.5-2.6A6 6 0 0 0 12 3z"/></svg>',C:'<svg class="cwmf-cat-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>',D:'<svg class="cwmf-cat-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>',E:'<svg class="cwmf-cat-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>'};
+var CATS=[{key:'A',name:'空間の雰囲気・デザイン'},{key:'B',name:'仕事のスタイル'},{key:'C',name:'設備・機能'},{key:'D',name:'サービス・契約'},{key:'E',name:'アクセス・その他'}];
+var CAT_MAP={'リノベーション建築':'A','倉庫・工場リノベーション':'A','木のぬくもりが主役の空間':'A','自然に囲まれた空間':'A','緑・植栽が主役':'A','自然光がたっぷり入る':'A','絶景の見える空間':'A','写真が特に美しい':'A','暖炉・薪ストーブあり':'A','テラス・屋外スペースあり':'A','本棚・蔵書が豊かな空間':'A','Deep Workの聖地':'B','アイデア出しに強い':'B','クリエイティブワーク向き':'B','会議・打ち合わせ向き':'B','リモートワーク拠点':'B','学びの場として人気':'B','個室・集中ブースが充実':'B','高速Wi-Fi・電源完備':'C','Web会議システムあり':'C','Web会議室あり':'C','電話ブースあり':'C','配信・撮影に使える防音ブースあり':'C','個人ロッカーあり':'C','シュレッダーあり':'C','複合機・プリンターあり':'C','個別空調（一部居室）':'C','無料貸出品あり':'C','24時間利用可':'D','有人受付':'D','ゲスト利用可':'D','フリードリンク':'D','フリースナック':'D','カフェ・喫茶併設':'D','法人登記・住所利用可':'D','社名プレート掲出可':'D','受賞歴あり':'D','駅徒歩5分以内':'E','駐車場あり':'E','駐輪場あり':'E','ペット同伴可':'E','ドッグランあり':'E','サウナあり':'E','温泉のある空間':'E','喫煙所あり':'E','新耐震基準':'E'};
+function sb(p,o){o=o||{};if(typeof window.sbFetch==='function'){return Promise.resolve(window.sbFetch(p,o));}var h={apikey:KEY,Authorization:'Bearer '+KEY};if(o.body)h['Content-Type']='application/json';return fetch(SB+p,{method:o.method||'GET',headers:h,body:o.body});}
+function sbj(p,o){return sb(p,o).then(function(r){return (r&&r.json)?r.json():r;});}
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(m){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[m];});}
 var state={space:null,tags:[],existing:{},sel:{}};
 var root=null,lastSlug=null,loading=false;
 function tagById(id){for(var i=0;i<state.tags.length;i++){if(String(state.tags[i].id)===String(id))return state.tags[i];}return null;}
 function spaceName(){return (state.space&&state.space.name)?state.space.name:'（この施設）';}
 function setStatus(m){var s=root&&root.querySelector('#cwmf-status');if(s)s.textContent=m;}
-function build(){root=document.createElement('div');root.id='cwmf-section';root.innerHTML='<div class="cwmf-hd">この施設の特徴</div><p class="cwmf-lead">あてはまる特徴を選び、それぞれに「写真」と「ひとこと」を登録してください。同じ特徴で写真を登録した施設が3つ以上になると、COWORKMILLトップの「特徴の棚」に自動で掲載されます。</p><div class="cwmf-step"><span class="cwmf-num">1</span>あてはまる特徴を選ぶ</div><div class="cwmf-chips" id="cwmf-chips"><span style="color:#a0a0a0;font-size:12.5px">読み込み中…</span></div><div class="cwmf-step"><span class="cwmf-num">2</span>選んだ特徴に、写真とひとことを登録</div><div id="cwmf-cards"></div><div class="cwmf-empty" id="cwmf-empty">上で特徴を選ぶと、ここに登録欄が出ます。</div><div><button type="button" class="cwmf-save" id="cwmf-save">特徴を保存する</button></div><div class="cwmf-status" id="cwmf-status"></div>';return root;}
-function renderChips(){var box=root.querySelector('#cwmf-chips');if(!state.tags.length){box.innerHTML='<span style="color:#a0a0a0;font-size:12.5px">特徴を読み込めませんでした。</span>';return;}box.innerHTML='';state.tags.forEach(function(t){var c=document.createElement('span');c.className='cwmf-chip'+(state.sel[t.id]?' on':'');c.textContent=t.name;c.addEventListener('click',function(){toggleTag(t);});box.appendChild(c);});}
-function toggleTag(t){if(state.sel[t.id]){delete state.sel[t.id];}else{var ex=state.existing[t.id];state.sel[t.id]={photo_url:ex?ex.photo_url:'',photoFile:null,photoPreview:ex?ex.photo_url:'',description:ex?(ex.description||''):''};}renderChips();renderCards();}
-function renderCards(){var box=root.querySelector('#cwmf-cards');var ids=Object.keys(state.sel);root.querySelector('#cwmf-empty').style.display=ids.length?'none':'block';box.innerHTML='';ids.forEach(function(tid){var tag=tagById(tid);if(!tag)return;var s=state.sel[tid];var pv=s.photoPreview||'';var card=document.createElement('div');card.className='cwmf-card';card.innerHTML='<div class="cwmf-card-hd"><span>'+esc(tag.name)+'</span><button type="button" class="cwmf-rm">×</button></div><div class="cwmf-body"><div class="cwmf-left"><div class="cwmf-up'+(pv?' has':'')+'"'+(pv?(' style="background-image:url('+pv+')"'):'')+'>'+(pv?'<span>写真を変更</span>':'<span style="font-size:19px">＋</span><span>クリックして写真を選択</span>')+'</div><input type="file" accept="image/*" style="display:none"><input type="text" class="cwmf-desc" maxlength="'+DMAX+'" placeholder="ひとこと（例：打ち合わせの前に、ひとっ風呂。）" value="'+esc(s.description)+'"><div class="cwmf-hint">同じ特徴で写真を登録した施設が3つ以上になると、TOPの棚に掲載されます。</div></div><div class="cwmf-right"><div class="cwmf-plabel">TOPの棚での見え方</div><div class="cwmf-pw"><div class="cwmf-pph"'+(pv?(' style="background-image:url('+pv+')"'):'')+'></div><div class="cwmf-pn">'+esc(spaceName())+'</div><div class="cwmf-pd">'+esc(s.description||'（ひとこと）')+'</div></div></div></div>';card.querySelector('.cwmf-rm').addEventListener('click',function(){toggleTag(tag);});var up=card.querySelector('.cwmf-up'),file=card.querySelector('input[type=file]');up.addEventListener('click',function(){file.click();});file.addEventListener('change',function(){var f=file.files&&file.files[0];if(!f)return;s.photoFile=f;s.photoPreview=URL.createObjectURL(f);renderCards();});var d=card.querySelector('.cwmf-desc');d.addEventListener('input',function(){s.description=d.value;var pd=card.querySelector('.cwmf-pd');if(pd)pd.textContent=d.value||'（ひとこと）';});box.appendChild(card);});}
+function selCount(){return Object.keys(state.sel).length;}
+function build(){
+ root=document.createElement('div');root.id='cwmf-section';
+ var ch='';CATS.forEach(function(c){ch+='<div class="cwmf-cat"><div class="cwmf-cat-hd">'+ICONS[c.key]+'<span class="cwmf-cat-name">'+esc(c.name)+'</span><span class="cwmf-cat-count" data-cc="'+c.key+'"></span></div><div class="cwmf-chips" data-chips="'+c.key+'"><span style="color:#a0a0a0;font-size:12px">読み込み中…</span></div></div>';});
+ root.innerHTML='<div class="cwmf-hd"><div class="cwmf-title">この施設の特徴</div></div><p class="cwmf-lead">あてはまる特徴の中から、<b>もっとも自信のあるものを5つまで</b>選んでください。厳選するほど、TOPの「特徴の棚」で施設の個性がはっきり伝わります。それぞれに「写真」と「ひとこと」を登録し、同じ特徴で写真を登録した施設が3つ以上そろうと、自動で棚に掲載されます。</p><div class="cwmf-counter" id="cwmf-counter"><span>選択中</span><span class="num" id="cwmf-cnt-num">0</span><span class="max">/ '+MAX+'</span></div><div class="cwmf-step"><span class="cwmf-num">1</span>あてはまる特徴を選ぶ</div>'+ch+'<div class="cwmf-step"><span class="cwmf-num">2</span>選んだ特徴に、写真とひとことを登録</div><div id="cwmf-cards"></div><div class="cwmf-empty" id="cwmf-empty">上で特徴を選ぶと、ここに登録欄が出ます。</div><div><button type="button" class="cwmf-save" id="cwmf-save">特徴を保存する</button></div><div class="cwmf-status" id="cwmf-status"></div>';
+ return root;
+}
+function renderChips(){
+ var byC={A:[],B:[],C:[],D:[],E:[]};
+ state.tags.forEach(function(t){var k=CAT_MAP[t.name]||'E';byC[k].push(t);});
+ var atMax=selCount()>=MAX;
+ CATS.forEach(function(c){
+  var box=root.querySelector('[data-chips="'+c.key+'"]');
+  var ccEl=root.querySelector('[data-cc="'+c.key+'"]');
+  if(!box)return;
+  var list=byC[c.key];
+  if(!list.length){box.innerHTML='<span style="color:#a0a0a0;font-size:12px">（該当なし）</span>';if(ccEl)ccEl.textContent='';return;}
+  box.innerHTML='';
+  list.forEach(function(t){
+   var on=!!state.sel[t.id];var disabled=!on&&atMax;
+   var chip=document.createElement('span');
+   chip.className='cwmf-chip'+(on?' on':'')+(disabled?' disabled':'');
+   chip.textContent=t.name;
+   chip.addEventListener('click',function(){toggleTag(t);});
+   box.appendChild(chip);
+  });
+  var sel=list.filter(function(t){return !!state.sel[t.id];}).length;
+  if(ccEl)ccEl.textContent=sel>0?(sel+' / '+list.length):('（'+list.length+'件）');
+ });
+ var cn=root.querySelector('#cwmf-cnt-num');if(cn)cn.textContent=selCount();
+ var co=root.querySelector('#cwmf-counter');if(co){if(selCount()>=MAX){co.classList.add('full');}else{co.classList.remove('full');}}
+}
+function toggleTag(t){
+ if(state.sel[t.id]){delete state.sel[t.id];}
+ else{if(selCount()>=MAX){return;}var ex=state.existing[t.id];state.sel[t.id]={photo_url:ex?ex.photo_url:'',photoFile:null,photoPreview:ex?ex.photo_url:'',description:ex?(ex.description||''):''};}
+ renderChips();renderCards();
+}
+function renderCards(){
+ var box=root.querySelector('#cwmf-cards');
+ var ids=Object.keys(state.sel);
+ var emp=root.querySelector('#cwmf-empty');if(emp)emp.style.display=ids.length?'none':'block';
+ box.innerHTML='';
+ ids.forEach(function(tid){
+  var tag=tagById(tid);if(!tag)return;
+  var s=state.sel[tid];var pv=s.photoPreview||'';
+  var card=document.createElement('div');card.className='cwmf-card';
+  card.innerHTML='<div class="cwmf-card-hd"><span>'+esc(tag.name)+'</span><button type="button" class="cwmf-rm">×</button></div><div class="cwmf-body"><div class="cwmf-left"><div class="cwmf-up'+(pv?' has':'')+'"'+(pv?(' style="background-image:url('+pv+')"'):'')+'>'+(pv?'<span>写真を変更</span>':'<span style="font-size:19px">＋</span><span>クリックして写真を選択</span>')+'</div><input type="file" accept="image/*" style="display:none"><input type="text" class="cwmf-desc" maxlength="'+DMAX+'" placeholder="ひとこと（例：打ち合わせの前に、ひとっ風呂。）" value="'+esc(s.description)+'"><div class="cwmf-hint">同じ特徴で写真を登録した施設が3つ以上になると、TOPの棚に掲載されます。</div></div><div class="cwmf-right"><div class="cwmf-plabel">TOPの棚での見え方</div><div class="cwmf-pw"><div class="cwmf-pph"'+(pv?(' style="background-image:url('+pv+')"'):'')+'></div><div class="cwmf-pn">'+esc(spaceName())+'</div><div class="cwmf-pd">'+esc(s.description||'（ひとこと）')+'</div></div></div></div>';
+  card.querySelector('.cwmf-rm').addEventListener('click',function(){toggleTag(tag);});
+  var up=card.querySelector('.cwmf-up'),file=card.querySelector('input[type=file]');
+  up.addEventListener('click',function(){file.click();});
+  file.addEventListener('change',function(){var f=file.files&&file.files[0];if(!f)return;s.photoFile=f;s.photoPreview=URL.createObjectURL(f);renderCards();});
+  var d=card.querySelector('.cwmf-desc');
+  d.addEventListener('input',function(){s.description=d.value;var pd=card.querySelector('.cwmf-pd');if(pd)pd.textContent=d.value||'（ひとこと）';});
+  box.appendChild(card);
+ });
+}
 function uploadPhoto(dbId,tagId,f){var ext=((f.name||'').split('.').pop()||'jpg').toLowerCase();var path=dbId+'/feature-'+tagId+'-'+Date.now()+'.'+ext;return fetch(SB+'/storage/v1/object/space-images/'+path,{method:'POST',headers:{apikey:KEY,Authorization:'Bearer '+KEY,'Content-Type':f.type||'image/jpeg','x-upsert':'true'},body:f}).then(function(r){if(!r.ok)throw new Error('写真アップロード失敗('+r.status+')');return SB+'/storage/v1/object/public/space-images/'+path;});}
-function doSave(){if(!state.space){setStatus('施設情報を保存してから、特徴を登録してください。');return;}var dbId=state.space.id;var btn=root.querySelector('#cwmf-save');btn.disabled=true;setStatus('保存しています…');var ids=Object.keys(state.sel);var chain=Promise.resolve();ids.forEach(function(tid){var s=state.sel[tid];if(s.photoFile){chain=chain.then(function(){return uploadPhoto(dbId,tid,s.photoFile).then(function(u){s.photo_url=u;s.photoFile=null;});});}});chain=chain.then(function(){var ops=[];ids.forEach(function(tid){var s=state.sel[tid],ex=state.existing[tid];if(ex&&ex.rowId){ops.push(sb('/rest/v1/space_tags?id=eq.'+ex.rowId,{method:'PATCH',body:JSON.stringify({photo_url:s.photo_url||null,description:s.description||null})}));}else{ops.push(sb('/rest/v1/space_tags',{method:'POST',body:JSON.stringify({space_id:dbId,tag_id:(isNaN(+tid)?tid:+tid),photo_url:s.photo_url||null,description:s.description||null})}));}});Object.keys(state.existing).forEach(function(tid){if(!state.sel[tid]&&state.existing[tid].rowId){ops.push(sb('/rest/v1/space_tags?id=eq.'+state.existing[tid].rowId,{method:'DELETE'}));}});return Promise.all(ops);}).then(function(){setStatus('保存しました。写真を登録した特徴は、3施設以上そろうとTOPの棚に表示されます。');btn.disabled=false;lastSlug=null;}).catch(function(e){setStatus('保存中にエラーが発生しました：'+(e&&e.message?e.message:e)+'　もう一度お試しください。');btn.disabled=false;});}
-function loadForSpace(slug){if(loading)return;loading=true;setStatus('');sbj('/rest/v1/spaces?slug=eq.'+encodeURIComponent(slug)+'&select=id,name,area,prefecture').then(function(rows){var sp=(rows&&rows[0])?rows[0]:null;if(!sp){loading=false;state.space=null;return null;}state.space=sp;return Promise.all([sbj('/rest/v1/tags?select=id,name&order=name.asc'),sbj('/rest/v1/space_tags?space_id=eq.'+sp.id+'&select=id,tag_id,photo_url,description')]);}).then(function(res){if(!res){loading=false;return;}state.tags=res[0]||[];state.existing={};state.sel={};(res[1]||[]).forEach(function(r){state.existing[r.tag_id]={rowId:r.id,photo_url:r.photo_url||'',description:r.description||''};state.sel[r.tag_id]={photo_url:r.photo_url||'',photoFile:null,photoPreview:r.photo_url||'',description:r.description||''};});renderChips();renderCards();loading=false;}).catch(function(e){loading=false;setStatus('特徴データの読み込みに失敗しました：'+(e&&e.message?e.message:e));});}
-function mount(){if(document.getElementById('cwmf-section'))return true;var pinfo=document.getElementById('p-info');if(!pinfo)return false;var sec=build();var anchor=document.getElementById('savebtn-bottom');if(anchor&&anchor.parentNode){anchor.parentNode.insertBefore(sec,anchor);}else{pinfo.appendChild(sec);}root.querySelector('#cwmf-save').addEventListener('click',doSave);return true;}
-function tick(){mount();if(!root)return;var pinfo=document.getElementById('p-info');var visible=pinfo&&pinfo.offsetParent!==null;if(!visible)return;var se=document.getElementById('fslug');var slug=se?(se.value||'').trim():'';if(!slug){if(lastSlug!=='__none__'){lastSlug='__none__';root.querySelector('#cwmf-chips').innerHTML='<span style="color:#a0a0a0;font-size:12.5px">施設情報を保存すると、特徴の登録ができます。</span>';root.querySelector('#cwmf-cards').innerHTML='';root.querySelector('#cwmf-empty').style.display='none';}return;}if(slug!==lastSlug){lastSlug=slug;loadForSpace(slug);}}
+function doSave(){
+ if(!state.space){setStatus('施設情報を保存してから、特徴を登録してください。');return;}
+ var dbId=state.space.id;var btn=root.querySelector('#cwmf-save');btn.disabled=true;setStatus('保存しています…');
+ var ids=Object.keys(state.sel);var chain=Promise.resolve();
+ ids.forEach(function(tid){var s=state.sel[tid];if(s.photoFile){chain=chain.then(function(){return uploadPhoto(dbId,tid,s.photoFile).then(function(u){s.photo_url=u;s.photoFile=null;});});}});
+ chain=chain.then(function(){
+  var ops=[];
+  ids.forEach(function(tid){var s=state.sel[tid],ex=state.existing[tid];if(ex&&ex.rowId){ops.push(sb('/rest/v1/space_tags?id=eq.'+ex.rowId,{method:'PATCH',body:JSON.stringify({photo_url:s.photo_url||null,description:s.description||null})}));}else{ops.push(sb('/rest/v1/space_tags',{method:'POST',body:JSON.stringify({space_id:dbId,tag_id:(isNaN(+tid)?tid:+tid),photo_url:s.photo_url||null,description:s.description||null})}));}});
+  Object.keys(state.existing).forEach(function(tid){if(!state.sel[tid]&&state.existing[tid].rowId){ops.push(sb('/rest/v1/space_tags?id=eq.'+state.existing[tid].rowId,{method:'DELETE'}));}});
+  return Promise.all(ops);
+ }).then(function(){setStatus('保存しました。写真を登録した特徴は、3施設以上そろうとTOPの棚に表示されます。');btn.disabled=false;lastSlug=null;}).catch(function(e){setStatus('保存中にエラーが発生しました：'+(e&&e.message?e.message:e)+'　もう一度お試しください。');btn.disabled=false;});
+}
+function loadForSpace(slug){
+ if(loading)return;loading=true;setStatus('');
+ sbj('/rest/v1/spaces?slug=eq.'+encodeURIComponent(slug)+'&select=id,name,area,prefecture').then(function(rows){
+  var sp=(rows&&rows[0])?rows[0]:null;
+  if(!sp){loading=false;state.space=null;return null;}
+  state.space=sp;
+  return Promise.all([sbj('/rest/v1/tags?select=id,name&order=name.asc'),sbj('/rest/v1/space_tags?space_id=eq.'+sp.id+'&select=id,tag_id,photo_url,description')]);
+ }).then(function(res){
+  if(!res){loading=false;return;}
+  state.tags=res[0]||[];state.existing={};state.sel={};
+  (res[1]||[]).forEach(function(r){state.existing[r.tag_id]={rowId:r.id,photo_url:r.photo_url||'',description:r.description||''};state.sel[r.tag_id]={photo_url:r.photo_url||'',photoFile:null,photoPreview:r.photo_url||'',description:r.description||''};});
+  renderChips();renderCards();loading=false;
+ }).catch(function(e){loading=false;setStatus('特徴データの読み込みに失敗しました：'+(e&&e.message?e.message:e));});
+}
+function mount(){
+ if(document.getElementById('cwmf-section'))return true;
+ var savebtn=document.getElementById('savebtn-bottom');var pinfo=document.getElementById('p-info');
+ if(!savebtn||!savebtn.parentNode||!pinfo)return false;
+ var saveRow=savebtn.parentNode;var sec=build();
+ if(saveRow.parentNode){saveRow.parentNode.insertBefore(sec,saveRow);}else{pinfo.appendChild(sec);}
+ root.querySelector('#cwmf-save').addEventListener('click',doSave);
+ return true;
+}
+function tick(){
+ mount();if(!root)return;
+ var pinfo=document.getElementById('p-info');var visible=pinfo&&pinfo.offsetParent!==null;if(!visible)return;
+ var se=document.getElementById('fslug');var slug=se?(se.value||'').trim():'';
+ if(!slug){
+  if(lastSlug!=='__none__'){
+   lastSlug='__none__';
+   CATS.forEach(function(c){var b=root.querySelector('[data-chips="'+c.key+'"]');if(b)b.innerHTML='<span style="color:#a0a0a0;font-size:12px">施設情報を保存すると、特徴を登録できます。</span>';var cc=root.querySelector('[data-cc="'+c.key+'"]');if(cc)cc.textContent='';});
+   var cards=root.querySelector('#cwmf-cards');if(cards)cards.innerHTML='';
+   var emp=root.querySelector('#cwmf-empty');if(emp)emp.style.display='none';
+   var cn=root.querySelector('#cwmf-cnt-num');if(cn)cn.textContent='0';
+  }return;
+ }
+ if(slug!==lastSlug){lastSlug=slug;loadForSpace(slug);}
+}
 function start(){mount();setInterval(tick,1000);}
 if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',start);}else{start();}
 }catch(e){if(window.console)console.warn('cwmf init error',e);}
 })();
-</script></body></html>
+</script>
+<!-- CWMF-END -->
+</body></html>
 <!-- deploy -->
