@@ -4889,5 +4889,106 @@ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded'
 })();
 </script>
 <!-- CWMF-END -->
+<!-- CWMA-START -->
+<style>
+#cwma-section,#cwma-section *{font-family:'Noto Sans JP',sans-serif;box-sizing:border-box;}
+#cwma-section{margin:28px 0;background:#fff;border:1px solid #e0e0e0;border-radius:12px;padding:26px 28px;}
+</style>
+<script>
+(function(){
+try{
+var SB='https://jakwntemjkwqwaqujffh.supabase.co';
+var KEY='sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+var ICONS={A:'<svg class="cwmf-cat-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="13" rx="1"/><line x1="2" y1="20" x2="22" y2="20"/></svg>',B:'<svg class="cwmf-cat-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',C:'<svg class="cwmf-cat-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>',D:'<svg class="cwmf-cat-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>',E:'<svg class="cwmf-cat-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>'};
+var CATS=[{key:'A',name:'基本設備'},{key:'B',name:'会議設備'},{key:'C',name:'契約・利用形態'},{key:'D',name:'アクセス・立地'},{key:'E',name:'その他'}];
+var CAT_MAP={'高速Wi-Fi・電源完備':'A','複合機・プリンターあり':'A','シュレッダーあり':'A','個人ロッカーあり':'A','個別空調（一部居室）':'A','無料貸出品あり':'A','Web会議システムあり':'B','Web会議室あり':'B','24時間利用可':'C','ゲスト利用可':'C','法人登記・住所利用可':'C','駅徒歩5分以内':'D','駐車場あり':'D','駐輪場あり':'D','新耐震基準':'E'};
+function sb(p,o){o=o||{};if(typeof window.sbFetch==='function'){return Promise.resolve(window.sbFetch(p,o));}var h={apikey:KEY,Authorization:'Bearer '+KEY};if(o.body)h['Content-Type']='application/json';return fetch(SB+p,{method:o.method||'GET',headers:h,body:o.body});}
+function sbj(p,o){return sb(p,o).then(function(r){return (r&&r.json)?r.json():r;});}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(m){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[m];});}
+var state={space:null,tags:[],existing:{},sel:{}};
+var root=null,lastSlug=null,loading=false;
+function setStatus(m){var s=root&&root.querySelector('#cwma-status');if(s)s.textContent=m;}
+function build(){
+ root=document.createElement('div');root.id='cwma-section';
+ var ch='';CATS.forEach(function(c){ch+='<div class="cwmf-cat"><div class="cwmf-cat-hd">'+ICONS[c.key]+'<span class="cwmf-cat-name">'+esc(c.name)+'</span><span class="cwmf-cat-count" data-cca="'+c.key+'"></span></div><div class="cwmf-chips" data-chipsa="'+c.key+'"><span style="color:#a0a0a0;font-size:12px">読み込み中…</span></div></div>';});
+ root.innerHTML='<div class="cwmf-hd"><div class="cwmf-title">この施設の設備</div></div><p class="cwmf-lead">ユーザーが施設を比較しやすいよう、<b>あてはまる設備にチェック</b>してください。他の施設にもあるけれど、利用者が知りたい基本情報です。<b>写真は不要、数の制限もありません</b>。あてはまるものを全部チェックしてください。</p>'+ch+'<div><button type="button" class="cwmf-save" id="cwma-save">設備を保存する</button></div><div class="cwmf-status" id="cwma-status"></div>';
+ return root;
+}
+function renderChips(){
+ var byC={};CATS.forEach(function(c){byC[c.key]=[];});
+ state.tags.forEach(function(t){var k=CAT_MAP[t.name];if(!k||!byC[k])return;byC[k].push(t);});
+ CATS.forEach(function(c){
+  var box=root.querySelector('[data-chipsa="'+c.key+'"]');
+  var ccEl=root.querySelector('[data-cca="'+c.key+'"]');
+  if(!box)return;
+  var list=byC[c.key];
+  if(!list.length){box.innerHTML='<span style="color:#a0a0a0;font-size:12px">（該当なし）</span>';if(ccEl)ccEl.textContent='';return;}
+  box.innerHTML='';
+  list.forEach(function(t){
+   var on=!!state.sel[t.id];
+   var chip=document.createElement('span');
+   chip.className='cwmf-chip'+(on?' on':'');
+   chip.textContent=t.name;
+   chip.addEventListener('click',function(){toggleTag(t);});
+   box.appendChild(chip);
+  });
+  var sel=list.filter(function(t){return !!state.sel[t.id];}).length;
+  if(ccEl)ccEl.textContent=sel>0?(sel+' / '+list.length):('（'+list.length+'件）');
+ });
+}
+function toggleTag(t){if(state.sel[t.id]){delete state.sel[t.id];}else{state.sel[t.id]=true;}renderChips();}
+function doSave(){
+ if(!state.space){setStatus('施設情報を保存してから、設備を登録してください。');return;}
+ var dbId=state.space.id;var btn=root.querySelector('#cwma-save');btn.disabled=true;setStatus('保存しています…');
+ var ops=[];
+ Object.keys(state.sel).forEach(function(tid){if(!state.existing[tid]){ops.push(sb('/rest/v1/space_tags',{method:'POST',body:JSON.stringify({space_id:dbId,tag_id:(isNaN(+tid)?tid:+tid),photo_url:null,description:null})}));}});
+ Object.keys(state.existing).forEach(function(tid){if(!state.sel[tid]&&state.existing[tid].rowId){ops.push(sb('/rest/v1/space_tags?id=eq.'+state.existing[tid].rowId,{method:'DELETE'}));}});
+ Promise.all(ops).then(function(){setStatus('設備を保存しました。');btn.disabled=false;lastSlug=null;}).catch(function(e){setStatus('保存中にエラーが発生しました：'+(e&&e.message?e.message:e)+'　もう一度お試しください。');btn.disabled=false;});
+}
+function loadForSpace(slug){
+ if(loading)return;loading=true;setStatus('');
+ sbj('/rest/v1/spaces?slug=eq.'+encodeURIComponent(slug)+'&select=id,name').then(function(rows){
+  var sp=(rows&&rows[0])?rows[0]:null;
+  if(!sp){loading=false;state.space=null;return null;}
+  state.space=sp;
+  return Promise.all([sbj('/rest/v1/tags?select=id,name&order=name.asc'),sbj('/rest/v1/space_tags?space_id=eq.'+sp.id+'&select=id,tag_id,photo_url,description')]);
+ }).then(function(res){
+  if(!res){loading=false;return;}
+  state.tags=res[0]||[];state.existing={};state.sel={};
+  (res[1]||[]).forEach(function(r){var tname=null;for(var i=0;i<state.tags.length;i++){if(String(state.tags[i].id)===String(r.tag_id)){tname=state.tags[i].name;break;}}if(tname&&CAT_MAP[tname]){state.existing[r.tag_id]={rowId:r.id};state.sel[r.tag_id]=true;}});
+  renderChips();loading=false;
+ }).catch(function(e){loading=false;setStatus('設備データの読み込みに失敗しました：'+(e&&e.message?e.message:e));});
+}
+function mount(){
+ if(document.getElementById('cwma-section'))return true;
+ var featureSec=document.getElementById('cwmf-section');
+ var savebtn=document.getElementById('savebtn-bottom');var pinfo=document.getElementById('p-info');
+ if(!pinfo)return false;
+ var sec=build();
+ if(featureSec&&featureSec.parentNode){featureSec.parentNode.insertBefore(sec,featureSec.nextSibling);}
+ else if(savebtn&&savebtn.parentNode&&savebtn.parentNode.parentNode){var saveRow=savebtn.parentNode;saveRow.parentNode.insertBefore(sec,saveRow);}
+ else{pinfo.appendChild(sec);}
+ root.querySelector('#cwma-save').addEventListener('click',doSave);
+ return true;
+}
+function tick(){
+ mount();if(!root)return;
+ var pinfo=document.getElementById('p-info');var visible=pinfo&&pinfo.offsetParent!==null;if(!visible)return;
+ var se=document.getElementById('fslug');var slug=se?(se.value||'').trim():'';
+ if(!slug){
+  if(lastSlug!=='__none__'){
+   lastSlug='__none__';
+   CATS.forEach(function(c){var b=root.querySelector('[data-chipsa="'+c.key+'"]');if(b)b.innerHTML='<span style="color:#a0a0a0;font-size:12px">施設情報を保存すると、設備を登録できます。</span>';var cc=root.querySelector('[data-cca="'+c.key+'"]');if(cc)cc.textContent='';});
+  }return;
+ }
+ if(slug!==lastSlug){lastSlug=slug;loadForSpace(slug);}
+}
+function start(){mount();setInterval(tick,1000);}
+if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',start);}else{start();}
+}catch(e){if(window.console)console.warn('cwma init error',e);}
+})();
+</script>
+<!-- CWMA-END -->
+
 </body></html>
 <!-- deploy -->
