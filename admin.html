@@ -5042,43 +5042,5 @@ try{
 })();
 </script>
 <!-- CWMUI-END -->
-
-<!-- CWMACCESS-START -->
-<script>
-(function(){
-try{
- function build(){
-  if(document.getElementById('cwm-access-helper'))return true;
-  var lat=document.getElementById('admin-lat');var lon=document.getElementById('admin-lon');
-  if(!lat||!lon)return false;
-  var searchBtn=null;
-  [].slice.call(document.querySelectorAll('button')).forEach(function(b){if(((b.textContent||'').trim()==='住所から検索'))searchBtn=b;});
-  var anchor=null;
-  if(searchBtn){var p=searchBtn;while(p&&p.parentElement&&p.parentElement.id!=='p-info')p=p.parentElement;anchor=p;}
-  if(!anchor){var fad=document.getElementById('fad');if(fad)anchor=fad.closest('.fr,.fg');}
-  if(!anchor)return false;
-  var div=document.createElement('div');div.id='cwm-access-helper';
-  div.style.cssText='margin:14px 0;font-family:'Noto Sans JP',sans-serif;';
-  div.innerHTML='<div style="font-size:11px;color:#606060;margin-bottom:6px;">📍 登録される位置（緯度・経度：<span id="cwm-latlon-display" style="font-family:monospace;color:#0a0a0a">未設定</span>）</div><iframe id="cwm-map-preview" style="width:100%;height:240px;border:1px solid #e0e0e0;border-radius:8px;display:none;" loading="lazy"></iframe><div id="cwm-map-help" style="padding:18px;border:1.5px dashed #e0e0e0;border-radius:8px;color:#a0a0a0;font-size:12px;text-align:center;">住所を入力して「住所から検索」を押すと、ここに地図プレビューが表示されます。ズレていたら住所を見直してください。</div>';
-  anchor.parentNode.insertBefore(div,anchor.nextSibling);
-  return true;
- }
- var lastKey='';
- function updateMap(){
-  var latEl=document.getElementById('admin-lat');var lonEl=document.getElementById('admin-lon');if(!latEl||!lonEl)return;
-  var lat=parseFloat(latEl.value);var lon=parseFloat(lonEl.value);
-  var display=document.getElementById('cwm-latlon-display');var iframe=document.getElementById('cwm-map-preview');var help=document.getElementById('cwm-map-help');
-  if(!display||!iframe||!help)return;
-  if(!isNaN(lat)&&!isNaN(lon)&&lat!==0&&lon!==0){
-   var key=lat.toFixed(6)+','+lon.toFixed(6);
-   if(key!==lastKey){lastKey=key;display.textContent=key;iframe.src='https://www.openstreetmap.org/export/embed.html?bbox='+(lon-0.003).toFixed(6)+'%2C'+(lat-0.003).toFixed(6)+'%2C'+(lon+0.003).toFixed(6)+'%2C'+(lat+0.003).toFixed(6)+'&layer=mapnik&marker='+lat.toFixed(6)+'%2C'+lon.toFixed(6);iframe.style.display='block';help.style.display='none';}
-  }else{if(lastKey!==''){lastKey='';display.textContent='未設定';iframe.style.display='none';help.style.display='block';}}
- }
- function start(){if(!build()){setTimeout(start,500);return;}updateMap();setInterval(updateMap,1000);}
- if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',function(){setTimeout(start,500);});}else{setTimeout(start,500);}
-}catch(e){if(window.console)console.warn('cwm-access init err',e);}
-})();
-</script>
-<!-- CWMACCESS-END -->
 </body></html>
 <!-- deploy -->
