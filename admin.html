@@ -4706,6 +4706,8 @@ document.addEventListener("DOMContentLoaded", function(){
   if(p){ p.addEventListener("change", function(){ cwmInitAreaOptions(p.value); }); }
 });
 </script>
+
+
 <!-- CWMF-START -->
 <style>
 #cwmf-section,#cwmf-section *{font-family:'Noto Sans JP',sans-serif;box-sizing:border-box;}
@@ -4763,9 +4765,9 @@ try{
 var SB='https://jakwntemjkwqwaqujffh.supabase.co';
 var KEY='sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
 var DMAX=40,MAX=5;
-var ICONS={A:'<svg class="cwmf-cat-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="1"/><line x1="12" y1="4" x2="12" y2="20"/><line x1="4" y1="12" x2="20" y2="12"/></svg>',B:'<svg class="cwmf-cat-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21h6"/><path d="M10 18h4"/><path d="M12 3a6 6 0 0 0-3.5 10.9c.9.7 1.5 1.5 1.5 2.6V18h4v-1.5c0-1.1.6-1.9 1.5-2.6A6 6 0 0 0 12 3z"/></svg>',C:'<svg class="cwmf-cat-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>',D:'<svg class="cwmf-cat-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>',E:'<svg class="cwmf-cat-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>'};
-var CATS=[{key:'A',name:'空間の雰囲気・デザイン'},{key:'B',name:'仕事のスタイル'},{key:'C',name:'設備・機能'},{key:'D',name:'サービス・契約'},{key:'E',name:'アクセス・その他'}];
-var CAT_MAP={'リノベーション建築':'A','倉庫・工場リノベーション':'A','木のぬくもりが主役の空間':'A','自然に囲まれた空間':'A','緑・植栽が主役':'A','自然光がたっぷり入る':'A','絶景の見える空間':'A','写真が特に美しい':'A','暖炉・薪ストーブあり':'A','テラス・屋外スペースあり':'A','本棚・蔵書が豊かな空間':'A','Deep Workの聖地':'B','アイデア出しに強い':'B','クリエイティブワーク向き':'B','会議・打ち合わせ向き':'B','リモートワーク拠点':'B','学びの場として人気':'B','個室・集中ブースが充実':'B','高速Wi-Fi・電源完備':'C','Web会議システムあり':'C','Web会議室あり':'C','電話ブースあり':'C','配信・撮影に使える防音ブースあり':'C','個人ロッカーあり':'C','シュレッダーあり':'C','複合機・プリンターあり':'C','個別空調（一部居室）':'C','無料貸出品あり':'C','24時間利用可':'D','有人受付':'D','ゲスト利用可':'D','フリードリンク':'D','フリースナック':'D','カフェ・喫茶併設':'D','法人登記・住所利用可':'D','社名プレート掲出可':'D','受賞歴あり':'D','駅徒歩5分以内':'E','駐車場あり':'E','駐輪場あり':'E','ペット同伴可':'E','ドッグランあり':'E','サウナあり':'E','温泉のある空間':'E','喫煙所あり':'E','新耐震基準':'E'};
+var ICONS={A:'<svg class="cwmf-cat-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="1"/><line x1="12" y1="4" x2="12" y2="20"/><line x1="4" y1="12" x2="20" y2="12"/></svg>',C:'<svg class="cwmf-cat-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>',D:'<svg class="cwmf-cat-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>',E:'<svg class="cwmf-cat-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15 9 22 9.5 17 14.5 18.5 22 12 18 5.5 22 7 14.5 2 9.5 9 9 12 2"/></svg>'};
+var CATS=[{key:'A',name:'空間の雰囲気・デザイン'},{key:'C',name:'特殊設備'},{key:'D',name:'サービス・特典'},{key:'E',name:'プラスαの体験'}];
+var CAT_MAP={'リノベーション建築':'A','倉庫・工場リノベーション':'A','木のぬくもりが主役の空間':'A','自然に囲まれた空間':'A','緑・植栽が主役':'A','自然光がたっぷり入る':'A','絶景の見える空間':'A','暖炉・薪ストーブあり':'A','テラス・屋外スペースあり':'A','本棚・蔵書が豊かな空間':'A','配信・撮影に使える防音ブースあり':'C','電話ブースあり':'C','カフェ・喫茶併設':'D','フリードリンク':'D','フリースナック':'D','有人受付':'D','社名プレート掲出可':'D','受賞歴あり':'D','サウナあり':'E','温泉のある空間':'E','ペット同伴可':'E','ドッグランあり':'E','喫煙所あり':'E'};
 function sb(p,o){o=o||{};if(typeof window.sbFetch==='function'){return Promise.resolve(window.sbFetch(p,o));}var h={apikey:KEY,Authorization:'Bearer '+KEY};if(o.body)h['Content-Type']='application/json';return fetch(SB+p,{method:o.method||'GET',headers:h,body:o.body});}
 function sbj(p,o){return sb(p,o).then(function(r){return (r&&r.json)?r.json():r;});}
 function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(m){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[m];});}
@@ -4782,8 +4784,8 @@ function build(){
  return root;
 }
 function renderChips(){
- var byC={A:[],B:[],C:[],D:[],E:[]};
- state.tags.forEach(function(t){var k=CAT_MAP[t.name]||'E';byC[k].push(t);});
+ var byC={};CATS.forEach(function(c){byC[c.key]=[];});
+ state.tags.forEach(function(t){var k=CAT_MAP[t.name];if(!k||!byC[k])return;byC[k].push(t);});
  var atMax=selCount()>=MAX;
  CATS.forEach(function(c){
   var box=root.querySelector('[data-chips="'+c.key+'"]');
@@ -4853,7 +4855,7 @@ function loadForSpace(slug){
  }).then(function(res){
   if(!res){loading=false;return;}
   state.tags=res[0]||[];state.existing={};state.sel={};
-  (res[1]||[]).forEach(function(r){state.existing[r.tag_id]={rowId:r.id,photo_url:r.photo_url||'',description:r.description||''};state.sel[r.tag_id]={photo_url:r.photo_url||'',photoFile:null,photoPreview:r.photo_url||'',description:r.description||''};});
+  (res[1]||[]).forEach(function(r){if(!CAT_MAP[r.tag_id])return;state.existing[r.tag_id]={rowId:r.id,photo_url:r.photo_url||'',description:r.description||''};state.sel[r.tag_id]={photo_url:r.photo_url||'',photoFile:null,photoPreview:r.photo_url||'',description:r.description||''};});
   renderChips();renderCards();loading=false;
  }).catch(function(e){loading=false;setStatus('特徴データの読み込みに失敗しました：'+(e&&e.message?e.message:e));});
 }
