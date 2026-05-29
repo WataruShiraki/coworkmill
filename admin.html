@@ -5311,5 +5311,128 @@ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded'
 })();
 </script>
 <!-- CWMSTATIONS-END -->
+
+<!-- CWMSTNADM-START -->
+<style>
+#cwm-stations-section{margin:18px 0;font-family:'Noto Sans JP',sans-serif;}
+#cwm-stations-section .cwm-sect-hd{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+#cwm-stations-section .cwm-sect-hd::before{content:'';width:4px;height:16px;background:#2bb5c8;border-radius:2px;display:inline-block;}
+#cwm-stations-section .cwm-sect-title{font-weight:700;font-size:14px;color:#0a0a0a;}
+#cwm-stations-section .cwm-sect-lead{font-size:11.5px;color:#606060;line-height:1.7;margin:0 0 12px 14px;}
+.cwm-station-row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:10px 12px;border:1px solid #e0e0e0;border-radius:8px;margin-bottom:8px;background:#fafafa;}
+.cwm-station-row input[type="text"]{flex:1 1 140px;min-width:100px;padding:7px 10px;border:1px solid #d0d0d0;border-radius:6px;font-size:13px;font-family:inherit;}
+.cwm-station-row input[type="text"]:focus{outline:none;border-color:#2bb5c8;}
+.cwm-station-row input[type="number"]{width:54px;padding:7px;border:1px solid #d0d0d0;border-radius:6px;font-size:13px;text-align:center;font-family:inherit;}
+.cwm-station-row input[type="number"]:focus{outline:none;border-color:#2bb5c8;}
+.cwm-station-row .cwm-min-label{font-size:12px;color:#606060;}
+.cwm-station-row .cwm-mode{display:inline-flex;border:1px solid #d0d0d0;border-radius:6px;overflow:hidden;flex-shrink:0;}
+.cwm-station-row .cwm-mode button{padding:6px 10px;border:none;background:#fff;font-size:12px;cursor:pointer;color:#707070;font-family:inherit;}
+.cwm-station-row .cwm-mode button.on{background:#2bb5c8;color:#fff;font-weight:700;}
+.cwm-station-row .cwm-rm{border:none;background:none;color:#bbb;font-size:18px;cursor:pointer;padding:4px 8px;line-height:1;font-family:inherit;}
+.cwm-station-row .cwm-rm:hover{color:#c0392b;}
+.cwm-station-row .cwm-rm:disabled{opacity:0.3;cursor:not-allowed;}
+#cwm-stations-add{background:#fff;border:1.5px dashed #c0c0c0;padding:10px 20px;border-radius:8px;font-size:13px;color:#606060;cursor:pointer;margin-top:4px;font-family:inherit;width:100%;}
+#cwm-stations-add:hover{background:#f5f5f5;border-color:#2bb5c8;color:#2bb5c8;}
+#cwm-stations-save{background:#2bb5c8;color:#fff;border:none;font-weight:700;font-size:13px;padding:10px 24px;border-radius:7px;cursor:pointer;margin-top:12px;font-family:inherit;}
+#cwm-stations-save:hover{filter:brightness(1.07);}
+#cwm-stations-save:disabled{opacity:0.5;cursor:default;}
+#cwm-stations-status{font-size:12px;color:#606060;margin-top:8px;line-height:1.6;}
+.cwm-stnadm-hide{display:none !important;}
+</style>
+<script>
+(function(){
+try{
+var SB='https://jakwntemjkwqwaqujffh.supabase.co';
+var KEY='sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+function sb(p,o){o=o||{};if(typeof window.sbFetch==='function')return Promise.resolve(window.sbFetch(p,o));var h={apikey:KEY,Authorization:'Bearer '+KEY};if(o.body)h['Content-Type']='application/json';if(o.method==='POST')h['Prefer']='return=representation';return fetch(SB+p,{method:o.method||'GET',headers:h,body:o.body});}
+function sbj(p,o){return sb(p,o).then(function(r){return (r&&r.json)?r.json():r;});}
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(m){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[m];});}
+var state={space:null,rows:[],loaded:false};
+var root=null,lastSlug=null,loading=false;
+function setStatus(m){var s=root&&root.querySelector('#cwm-stations-status');if(s)s.textContent=m;}
+function syncToOld(){
+ var first=state.rows[0]||{};
+ function setNative(el,val){if(!el)return;var setter=Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype,'value')||Object.getOwnPropertyDescriptor(Object.getPrototypeOf(el),'value');if(setter&&setter.set){setter.set.call(el,val);}else{el.value=val;}el.dispatchEvent(new Event('input',{bubbles:true}));el.dispatchEvent(new Event('change',{bubbles:true}));}
+ setNative(document.getElementById('fst'),first.station||'');
+ setNative(document.getElementById('fline'),first.line||'');
+ setNative(document.getElementById('f-walk-minutes'),first.minutes||'');
+ var tm=document.getElementById('f-transport-mode');if(tm){tm.value=first.mode||'walk';tm.dispatchEvent(new Event('change',{bubbles:true}));}
+}
+function renderRows(){
+ var list=root&&root.querySelector('#cwm-stations-list');if(!list)return;
+ list.innerHTML='';
+ if(state.rows.length===0)state.rows.push({station:'',line:'',minutes:'',mode:'walk'});
+ state.rows.forEach(function(row,idx){
+  var div=document.createElement('div');div.className='cwm-station-row';
+  div.innerHTML='<input type="text" class="cwm-r-station" list="cwm-stations" placeholder="例：外苑前駅" value="'+esc(row.station)+'">'+'<input type="text" class="cwm-r-line" list="cwm-lines" placeholder="例：東京メトロ銀座線" value="'+esc(row.line)+'">'+'<input type="number" class="cwm-r-min" placeholder="5" min="1" max="60" value="'+esc(row.minutes)+'"><span class="cwm-min-label">分</span>'+'<div class="cwm-mode"><button type="button" class="cwm-r-walk'+(row.mode==='walk'?' on':'')+'">🚶 徒歩</button><button type="button" class="cwm-r-car'+(row.mode==='car'?' on':'')+'">🚗 車</button></div>'+'<button type="button" class="cwm-rm" title="この駅を削除">✕</button>';
+  div.querySelector('.cwm-r-station').addEventListener('input',function(e){state.rows[idx].station=e.target.value;syncToOld();});
+  div.querySelector('.cwm-r-line').addEventListener('input',function(e){state.rows[idx].line=e.target.value;syncToOld();});
+  div.querySelector('.cwm-r-min').addEventListener('input',function(e){state.rows[idx].minutes=e.target.value;syncToOld();});
+  div.querySelector('.cwm-r-walk').addEventListener('click',function(){state.rows[idx].mode='walk';renderRows();syncToOld();});
+  div.querySelector('.cwm-r-car').addEventListener('click',function(){state.rows[idx].mode='car';renderRows();syncToOld();});
+  div.querySelector('.cwm-rm').addEventListener('click',function(){state.rows.splice(idx,1);if(state.rows.length===0)state.rows.push({station:'',line:'',minutes:'',mode:'walk'});renderRows();syncToOld();});
+  list.appendChild(div);
+ });
+}
+function addRow(){state.rows.push({station:'',line:'',minutes:'',mode:'walk'});renderRows();}
+function doSave(){
+ if(!state.space){setStatus('まず左の一覧から施設を選ぶか、施設情報を「変更を保存」してから駅情報を保存できます。');return;}
+ var btn=root.querySelector('#cwm-stations-save');btn.disabled=true;setStatus('保存しています…');
+ var dbId=state.space.id;
+ var rowsToSave=state.rows.filter(function(r){return r.station&&r.station.trim();}).map(function(r,idx){return{space_id:dbId,station_name:r.station.trim(),line_name:(r.line||'').trim()||null,walk_minutes:r.minutes?parseInt(r.minutes):null,transport_mode:r.mode||'walk',display_order:idx};});
+ sb('/rest/v1/space_stations?space_id=eq.'+dbId,{method:'DELETE'}).then(function(){if(rowsToSave.length===0)return Promise.resolve();return sb('/rest/v1/space_stations',{method:'POST',body:JSON.stringify(rowsToSave)});}).then(function(){setStatus('駅情報を保存しました。'+rowsToSave.length+'件登録されています。');btn.disabled=false;}).catch(function(e){setStatus('保存中にエラーが発生しました：'+(e&&e.message?e.message:e));btn.disabled=false;});
+}
+function loadForSpace(slug){
+ if(loading)return;loading=true;setStatus('');
+ sbj('/rest/v1/spaces?slug=eq.'+encodeURIComponent(slug)+'&select=id,name,nearest_station,nearest_line,walk_minutes,transport_mode').then(function(rows){
+  var sp=(rows&&rows[0])?rows[0]:null;
+  if(!sp){loading=false;state.space=null;state.rows=[{station:'',line:'',minutes:'',mode:'walk'}];renderRows();return null;}
+  state.space=sp;
+  return sbj('/rest/v1/space_stations?space_id=eq.'+sp.id+'&select=*&order=display_order.asc');
+ }).then(function(stations){
+  if(!stations){loading=false;return;}
+  state.rows=[];
+  if(stations.length===0){
+   if(state.space&&state.space.nearest_station){state.rows.push({station:state.space.nearest_station||'',line:state.space.nearest_line||'',minutes:state.space.walk_minutes||'',mode:state.space.transport_mode||'walk'});}
+  }else{
+   stations.forEach(function(s){state.rows.push({id:s.id,station:s.station_name||'',line:s.line_name||'',minutes:s.walk_minutes||'',mode:s.transport_mode||'walk'});});
+  }
+  if(state.rows.length===0)state.rows.push({station:'',line:'',minutes:'',mode:'walk'});
+  renderRows();state.loaded=true;loading=false;
+ }).catch(function(e){loading=false;setStatus('読み込みエラー：'+(e&&e.message?e.message:e));});
+}
+function findOldRow(){
+ var fst=document.getElementById('fst');if(!fst)return null;
+ var p=fst;for(var i=0;i<6&&p;i++){if(p.classList&&p.classList.contains('fr'))return p;p=p.parentElement;}
+ return fst.parentElement&&fst.parentElement.parentElement||null;
+}
+function build(){
+ if(document.getElementById('cwm-stations-section'))return true;
+ var fst=document.getElementById('fst');if(!fst)return false;
+ var oldRow=findOldRow();if(!oldRow)return false;
+ var sec=document.createElement('div');sec.id='cwm-stations-section';
+ sec.innerHTML='<div class="cwm-sect-hd"><span class="cwm-sect-title">最寄駅情報（複数登録可）</span></div>'+'<p class="cwm-sect-lead">ユーザーが閲覧しやすいよう、複数の最寄駅を登録できます（例：JR新橋駅、東京メトロ銀座線新橋駅、ゆりかもめ新橋駅）。</p>'+'<div id="cwm-stations-list"></div>'+'<button type="button" id="cwm-stations-add">＋ 駅を追加</button>'+'<div><button type="button" id="cwm-stations-save">駅情報を保存</button></div>'+'<div id="cwm-stations-status"></div>';
+ oldRow.parentNode.insertBefore(sec,oldRow);
+ oldRow.classList.add('cwm-stnadm-hide');
+ root=sec;
+ root.querySelector('#cwm-stations-add').addEventListener('click',addRow);
+ root.querySelector('#cwm-stations-save').addEventListener('click',doSave);
+ if(state.rows.length===0)state.rows.push({station:'',line:'',minutes:'',mode:'walk'});
+ renderRows();
+ return true;
+}
+function tick(){
+ if(!build())return;
+ var pInfo=document.getElementById('p-info');if(!pInfo||pInfo.offsetParent===null)return;
+ var se=document.getElementById('fslug');var slug=se?(se.value||'').trim():'';
+ if(!slug){if(lastSlug!=='__none__'){lastSlug='__none__';state.space=null;state.rows=[{station:'',line:'',minutes:'',mode:'walk'}];renderRows();}return;}
+ if(slug!==lastSlug){lastSlug=slug;loadForSpace(slug);}
+}
+function start(){build();setInterval(tick,1000);}
+if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',start);}else{start();}
+}catch(e){if(window.console)console.warn('cwm-stations init err',e);}
+})();
+</script>
+<!-- CWMSTNADM-END -->
 </body></html>
 <!-- deploy -->
