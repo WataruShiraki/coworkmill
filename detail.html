@@ -2645,14 +2645,20 @@ try{
  var done=false;var tries=0;
  function sbj(url){return fetch(SB+url,{headers:{apikey:KEY,Authorization:'Bearer '+KEY}}).then(function(r){return r.json();});}
  function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(m){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[m];});}
+ function getSlug(){
+  var qs=new URLSearchParams(location.search).get('slug');
+  if(qs)return qs;
+  var parts=location.pathname.split('/').filter(function(p){return p;});
+  if(parts.length>=2&&(parts[0]==='detail'||parts[0]==='spaces'))return parts[1];
+  return '';
+ }
  function tryUpdate(){
   if(done)return;tries++;if(tries>30)return;
   var stnEl=document.getElementById('d-station');
   if(!stnEl){setTimeout(tryUpdate,500);return;}
   var txt=stnEl.textContent.trim();
   if(txt===''||txt==='—'){setTimeout(tryUpdate,500);return;}
-  var slug=(new URLSearchParams(location.search)).get('slug')||'';
-  if(!slug){var m=location.pathname.match(//(?:detail|spaces)/([^/?]+)/);if(m)slug=m[1];}
+  var slug=getSlug();
   if(!slug){done=true;return;}
   done=true;
   sbj('/rest/v1/spaces?slug=eq.'+encodeURIComponent(slug)+'&select=id').then(function(rows){
