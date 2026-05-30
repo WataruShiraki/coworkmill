@@ -2631,4 +2631,48 @@ body[data-needs-claim="true"] .related-section:has(.related-card) {
   else window.addEventListener('load',init);
 })();
 </script>
+
+<!-- CWMSTNDETAIL-START -->
+<style>
+#d-station .cwm-stn-line{display:block;line-height:1.75;}
+#d-station .cwm-stn-line + .cwm-stn-line{margin-top:1px;}
+</style>
+<script>
+(function(){
+try{
+ var SB='https://jakwntemjkwqwaqujffh.supabase.co';
+ var KEY='sb_publishable_bQ84WCmRiFUbpPemMcO9xQ_Dj9Mh1mQ';
+ var done=false;var tries=0;
+ function sbj(url){return fetch(SB+url,{headers:{apikey:KEY,Authorization:'Bearer '+KEY}}).then(function(r){return r.json();});}
+ function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(m){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[m];});}
+ function tryUpdate(){
+  if(done)return;tries++;if(tries>30)return;
+  var stnEl=document.getElementById('d-station');
+  if(!stnEl){setTimeout(tryUpdate,500);return;}
+  var txt=stnEl.textContent.trim();
+  if(txt===''||txt==='—'){setTimeout(tryUpdate,500);return;}
+  var slug=(new URLSearchParams(location.search)).get('slug')||'';
+  if(!slug){var m=location.pathname.match(//(?:detail|spaces)/([^/?]+)/);if(m)slug=m[1];}
+  if(!slug){done=true;return;}
+  done=true;
+  sbj('/rest/v1/spaces?slug=eq.'+encodeURIComponent(slug)+'&select=id').then(function(rows){
+   if(!rows||!rows[0])return null;
+   return sbj('/rest/v1/space_stations?space_id=eq.'+rows[0].id+'&select=*&order=display_order.asc');
+  }).then(function(stations){
+   if(!stations||stations.length===0)return;
+   var formatted=stations.map(function(s){
+    var line=s.line_name||'';
+    var modeIcon=s.transport_mode==='car'?'車で':'徒歩';
+    var min=s.walk_minutes?s.walk_minutes+'分':'';
+    return (line?line+' ':'')+s.station_name+'より '+modeIcon+(min?' '+min:'');
+   });
+   if(formatted.length===1){stnEl.textContent=formatted[0];}
+   else{stnEl.innerHTML=formatted.map(function(f){return '<span class="cwm-stn-line">'+esc(f)+'</span>';}).join('');}
+  }).catch(function(e){if(window.console)console.warn('cwm-stn-detail fetch err',e);});
+ }
+ if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',function(){setTimeout(tryUpdate,300);});}else{setTimeout(tryUpdate,300);}
+}catch(e){if(window.console)console.warn('cwm-stn-detail init err',e);}
+})();
+</script>
+<!-- CWMSTNDETAIL-END -->
 </body></html>
