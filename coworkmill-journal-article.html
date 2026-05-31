@@ -338,7 +338,7 @@ footer{background:var(--gray-100);padding:64px 80px 40px;color:var(--black);posi
         headers: (function(){var h={'apikey':KEY,'Authorization':'Bearer '+KEY};try{for(var i=0;i<localStorage.length;i++){var k=localStorage.key(i);if(k&&k.indexOf('sb-')===0&&k.indexOf('-auth-token')>-1){var d=JSON.parse(localStorage.getItem(k));if(d&&d.access_token){h.Authorization='Bearer '+d.access_token;break;}}}}catch(e){}return h;})()
       });
       if (!r.ok) throw new Error('fetch failed');
-      const list = await r.json();
+      const list = await (async function(){var raw,pd,p=null;try{raw=localStorage.getItem('cwm_journal_preview');if(raw){pd=JSON.parse(raw);if(pd&&pd.slug===slug)p=pd;}}catch(e){}return p?[p]:await r.json();})();
       if (!list || !list[0]) { showNotFound(); return; }
 
       const a = list[0];
