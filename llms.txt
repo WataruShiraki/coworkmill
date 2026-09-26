@@ -1,6 +1,6 @@
 # COWORKMILL
 
-> 日本のかっこいいコワーキングスペースを、公式素材をもとに日本語で1施設ずつ紹介するメディア。受付から執務フロア、会議室、食堂へと、初めて訪れた人が歩く順番で案内する。運営: COWORKMILL 編集部（日本）。
+> 日本で最も優れたコワーキングを、公式素材をもとに日本語で1施設ずつ紹介するメディア。受付から執務フロア、会議室、食堂へと、初めて訪れた人が歩く順番で案内する。運営: COWORKMILL 編集部（日本）。
 
 ## 記事（コワーキング）
 
@@ -23,7 +23,15 @@
 
 ## その他
 
-- [Q&A](https://cowkml.com/questions/index.html): コワーキングスペースには、どんな「人をつなぐ仕組み」があるの？
+- [Q&A](https://cowkml.com/questions/index.html): コワーキングスペースの Q&A
+- [コワーキングスペースとシェアオフィス、何が違うの？](https://cowkml.com/questions/difference.html): コワーキングは共用の席を分け合う使い方、シェアオフィスは鍵のかかる部屋を借りる使い方です。実際には一つの施設に両方が入っていることが多く、co-ba ebisu は1階がコワーキング、2階が個室オフィスです。
+- [会員でなくても使える場所はあるの？](https://cowkml.com/questions/drop-in.html): あります。1日単位のドロップイン、30分単位の部屋貸し、見学ツアーなど、入口の形はさまざまです。co-ba ebisu のドロップインは平日10時〜19時で1日2,000円です。
+- [24時間使えるコワーキングはあるの？](https://cowkml.com/questions/24h.html): あります。co-lab 渋谷キャスト、LIFORK 大手町、MIDORI.so Nakameguro、co-ba ebisu の1階は24時間365日使えます。深夜や休日の出入りは、スマートロックなど鍵を持ち歩かない仕組みで支えられています。
+- [「コミュニティマネージャー」は何をする人？](https://cowkml.com/questions/community-manager.html): 会員同士や会員と外の人をつなぎ、催しや相談の窓口になるスタッフです。席を管理する受付とは役目が違います。Business Airport では「伴走するパートナー」として置かれています。
+- [会議室やイベントスペースはどう使うの？](https://cowkml.com/questions/meeting-event.html): 会議室は予約して時間単位で使い、イベントスペースはふだん共用の場所を催しのときだけ貸し切る形が多いです。WeWork 渋谷スクランブルスクエアには会議室が70室あり、部屋の大きさを選べます。
+- [個室と固定席は、どんな人が選ぶの？](https://cowkml.com/questions/private-fixed.html): その場所を会社の拠点として置きたい人が選びます。法人登記、鍵のかかる部屋、荷物を置いたままにできる席が理由です。SAAI の4階の固定席は「法人登記も可能な専用デスク」で、月77,000円です。
+- [駅直結のコワーキングは、どこにあるの？](https://cowkml.com/questions/station.html): 大手町駅直結の LIFORK 大手町と、渋谷駅直結の渋谷スクランブルスクエアに入る WeWork と SHIBUYA QWS があります。LIFORK 大手町は大手町駅の C8・C11・C12 出口から直結し、JR東京駅からも歩いて5分です。
+- [古い建物を使ったコワーキングはあるの？](https://cowkml.com/questions/reuse.html): あります。MIDORI.so Nakameguro は、蔦に覆われた廃屋を改装した2棟のシェアオフィスです。古い建物の骨格を残したまま直しているので、新しいビルにはない凹凸と陰影があります。
 - [COWORKMILL について](https://cowkml.com/about/index.html)
 - [お問い合わせ](https://cowkml.com/contact/index.html)
 

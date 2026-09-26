@@ -429,6 +429,9 @@ main>.hero.hsmall{background:none}main>.hero.hsmall .fig .cap{text-align:left}
 .qidx a span{color:var(--mute);font-size:14px}
 .qidx a:hover b{color:var(--or)}
 
+.lst{background:var(--ground);border-left:3px solid var(--accent);padding:14px 18px;margin:0 0 16px;font-size:14px;line-height:1.8}.lst ol{margin:6px 0 8px 20px;padding:0}.lst p{margin:0 0 6px}
+.qidx{list-style:none;padding:0;margin:8px 0 48px}.qidx li{border-top:1px solid var(--line)}.qidx li:last-child{border-bottom:1px solid var(--line)}.qidx a{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 16px;padding:20px 0;text-decoration:none}.qidx a b{font-size:19px;font-weight:600;line-height:1.4;font-family:var(--sans)}.qidx a span{flex:1 1 100%;font-size:14px;color:var(--ink-2);line-height:1.7}.qidx a:hover b{color:var(--accent)}
+.qmore{list-style:none;padding:0;margin:0}.qmore li{border-top:1px solid var(--line)}.qmore li:last-child{border-bottom:1px solid var(--line)}.qmore a{display:block;padding:14px 0;font-weight:600;text-decoration:none}.qmore a:hover{color:var(--accent)}
 /* 2026-09-26 わたるさん「ページを狭くするとガタガタ」→ 長い社名で列の幅が変わらないように、列を等幅に固定 */
 .cards{grid-template-columns:repeat(4,minmax(0,1fr))}.card{min-width:0}.card .co .kn{white-space:normal}
 @media (max-width:900px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}

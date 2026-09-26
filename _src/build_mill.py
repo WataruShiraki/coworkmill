@@ -26,6 +26,11 @@ A_by = {{a['slug']: a for a in A}}
 for _a in A:
     _h = _a['hero'][0]
     _a['steps'] = [st[:3] + ([(n, c) for n, c in st[3] if n != _h],) for st in _a['steps']]
+SEC_NAME = {json.dumps(B["sec"])}; KIND_WORD = {json.dumps(B["kind"])}; SITE_NAME = {json.dumps(B["name"])}; UTM = {json.dumps(B["utm"])}
+QA_TITLE = {json.dumps(B["subj"] + "の Q&A")}
+QA_LEAD = {json.dumps("日本の" + B["subj"] + "について、よく聞かれる質問に短く答えます。答えはすべて、掲載している" + B["kind"] + "の公式情報から書いています。")}
+_qp = {json.dumps(os.path.join(HERE, "questions_" + os.environ["BRAND"] + ".py"))}
+if os.path.exists(_qp): exec(open(_qp, encoding='utf-8').read())
 def url(slug, n): return IMG30.get(slug, {{}}).get(str(n))
 def purl(a, n): return url(a['slug'], n)
 '''
@@ -68,7 +73,7 @@ src = src.replace("('spaces', 'オフィス')", f"('spaces', '{B['subj_s']}')").
 src = src.replace('いま多く読まれている12社', 'いま多く読まれている12' + B['kind']).replace('人気のオフィス', f'人気の{B["subj_s"]}').replace('オフィスの内装', f'{B["subj_s"]}の内装').replace('のオフィス｜', f'の{B["subj_s"]}｜').replace('のオフィスを、', f'の{B["subj_s"]}を、')
 src = src.replace('記事（オフィス）', f'記事（{B["subj_s"]}）').replace('articleSection":"§', 'articleSection":"§')
 src = src.replace('会社名・都市・キーワードで探す', f'{B["kind"]}名・街・キーワードで探す').replace('最新のオフィス', f'最新の{B["subj_s"]}')
-src = re.sub(r"BAND = '[^']*'", 'BAND = ' + json.dumps(B['band'], ensure_ascii=False), src).replace('世界の日本の', '日本の')
+src = re.sub(r"BAND = '[^']*'", 'BAND = ' + json.dumps('日本で最も優れた' + B['subj_s'] + 'を、見に行こう。', ensure_ascii=False), src).replace('世界の日本の', '日本の')
 src = src.replace('offisnap.com', B['domain']).replace('オフィスナップ', B['kana']).replace('OFFISNAP', B['name'])
 src = src.replace('§OMTXT§', 'オフィス環境ならOFFICEMILL').replace('§OM§', 'OFFICEMILL').replace('§OMD§', 'offml.com')
 src = src.replace("GA_ID = 'G-69FCWMYT6Y'", f"GA_ID = {json.dumps(B['ga'])}")
@@ -94,6 +99,18 @@ src = re.sub(r"OFFICIAL = \{.*?\n(?=OFFICIAL\.update)", "OFFICIAL = {}\n", src, 
 src = re.sub(r"LOC = \{.*?\n(?=LOC\.update)", "LOC = {}\n", src, flags=re.S)
 src = re.sub(r"KANA = \{.*?\n(?=KANA\.update)", "KANA = {}\n", src, flags=re.S)
 src = re.sub(r"COUNTRY = \{\*\*COUNTRY20.*?\}", "COUNTRY = dict(COUNTRY20)", src)
+
+# 6) 「日本のかっこいい」系の残りを、決めた一言（日本で最も優れた○○を厳選紹介）に合わせる。OFFISNAP 固有の社名の列挙も消す
+src = src.replace('日本のかっこいい' + B['subj'] + 'を写真で紹介', '日本で最も優れた' + B['subj_s'] + 'を厳選紹介')
+src = src.replace('日本のかっこいい' + B['subj'] + 'を、見に行こう。', '日本で最も優れた' + B['subj_s'] + 'を、見に行こう。')
+src = src.replace('日本のかっこいい' + B['subj'], '日本で最も優れた' + B['subj_s'])
+src = re.sub(r"Apple・Google・Amazon・Spotify・Dyson など\{len\(A\)\}社の内装、デザイン、働き方を日本語で。", "{len(A)}" + B['kind'] + "の内装とデザインを、初めて訪れた人が歩く順番で。", src)
+src = src.replace('Apple・Google・Amazon・Spotify・Dyson など', '')
+
+# 7) 掲載のご相談（フォームの文言）
+for _w in ['オフィスを紹介してほしい', '紹介してほしいオフィスの場所', 'オフィスの写真', 'オフィスのことが分かる資料']:
+    src = src.replace(_w, _w.replace('オフィス', B['subj_s']))
+src = src.replace('会社名と、紹介してほしい', B['owner'] + '名と、紹介してほしい').replace('会社名・オフィスの場所', B['owner'] + '名・' + B['subj_s'] + 'の場所')
 
 open(os.path.join(HERE, f'_generated_{os.environ["BRAND"]}.py'), 'w', encoding='utf-8').write(src)
 exec(compile(src, f'build_{os.environ["BRAND"]}.py', 'exec'))
