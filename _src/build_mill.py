@@ -65,7 +65,7 @@ src = src.replace('1社ごとに', f'1{B["kind"]}ごとに').replace('1社ずつ
 src = src.replace('オフィスを取材・紹介する', f'{B["subj"]}を取材・紹介する').replace('オフィス一覧', f'{B["subj"]}一覧').replace('オフィスを探す', f'{B["subj"]}を探す')
 src = src.replace("('offices', 'オフィス')", f"('{B['sec']}', '{B['subj_s']}')").replace("('§SEC§', 'オフィス')", '')
 src = src.replace("('spaces', 'オフィス')", f"('spaces', '{B['subj_s']}')").replace("('cafes', 'オフィス')", f"('cafes', '{B['subj_s']}')")
-src = src.replace('人気のオフィス', f'人気の{B["subj_s"]}').replace('オフィスの内装', f'{B["subj_s"]}の内装').replace('のオフィス｜', f'の{B["subj_s"]}｜').replace('のオフィスを、', f'の{B["subj_s"]}を、')
+src = src.replace('いま多く読まれている12社', 'いま多く読まれている12' + B['kind']).replace('人気のオフィス', f'人気の{B["subj_s"]}').replace('オフィスの内装', f'{B["subj_s"]}の内装').replace('のオフィス｜', f'の{B["subj_s"]}｜').replace('のオフィスを、', f'の{B["subj_s"]}を、')
 src = src.replace('記事（オフィス）', f'記事（{B["subj_s"]}）').replace('articleSection":"§', 'articleSection":"§')
 src = src.replace('会社名・都市・キーワードで探す', f'{B["kind"]}名・街・キーワードで探す').replace('最新のオフィス', f'最新の{B["subj_s"]}')
 src = re.sub(r"BAND = '[^']*'", 'BAND = ' + json.dumps(B['band'], ensure_ascii=False), src).replace('世界の日本の', '日本の')

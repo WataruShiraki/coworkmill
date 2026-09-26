@@ -429,6 +429,9 @@ main>.hero.hsmall{background:none}main>.hero.hsmall .fig .cap{text-align:left}
 .qidx a span{color:var(--mute);font-size:14px}
 .qidx a:hover b{color:var(--or)}
 
+/* 2026-09-26 わたるさん「ページを狭くするとガタガタ」→ 長い社名で列の幅が変わらないように、列を等幅に固定 */
+.cards{grid-template-columns:repeat(4,minmax(0,1fr))}.card{min-width:0}.card .co .kn{white-space:normal}
+@media (max-width:900px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
 /* COWORKMILL: 日本語の書体（欧文は WALL と同じ Cormorant / Inter Tight、和文は明朝とゴシック） */
 :root{--serif:"Shippori Mincho B1","Hiragino Mincho ProN","Yu Mincho",serif;--sans:"Zen Kaku Gothic New","Hiragino Sans","Noto Sans JP",sans-serif;--jp:"Shippori Mincho B1","Hiragino Mincho ProN",serif}
 body{font-family:var(--sans);font-feature-settings:"palt"}

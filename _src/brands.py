@@ -3,7 +3,7 @@ BRANDS = {
  'cowork': dict(
     name='COWORKMILL', kana='コワークミル', domain='cowkml.com', sec='spaces',
     subj='コワーキングスペース', subj_s='コワーキング', kind='施設', owner='運営会社',
-    tag='日本のかっこいいコワーキング紹介', band='日本のかっこいいコワーキングスペースを、見に行こう。',
+    tag='日本で最も優れたコワーキングを厳選紹介', band='日本のかっこいいコワーキングスペースを、見に行こう。',
     c1='#7FC39A', c2='#3B7DAE', dark='#2F6A98', light='#EEF6F1', light2='#F3F8F4', light3='#F6FAF7', line='#CFE3D8', mid='#4F9DB0',
     logo='/mnt/user-data/uploads/Downloads/coworkmill_logo.svg', ga='',
     facilities='cowork_facilities.py',
@@ -13,7 +13,7 @@ BRANDS = {
  'cafe': dict(
     name='CAFEMILL', kana='カフェミル', domain='cfmill.com', sec='cafes',
     subj='カフェ', subj_s='カフェ', kind='店', owner='運営会社',
-    tag='日本のかっこいいカフェ紹介', band='日本のかっこいいカフェを、見に行こう。',
+    tag='日本で最も優れたカフェを厳選紹介', band='日本のかっこいいカフェを、見に行こう。',
     c1='#F2B21F', c2='#E0431F', dark='#C8380F', light='#FDF4E6', light2='#FDF6EC', light3='#FEF9F2', line='#F3DCB8', mid='#E07828',
     logo='/mnt/user-data/uploads/Downloads/cafemill_logo_color_fixed.svg', ga='',
     facilities='cafe_facilities.py',
