@@ -1,84 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- TOP / メインページ -->
-  <url>
-    <loc>https://cowkml.com/</loc>
-    <lastmod>2026-04-29</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://cowkml.com/coworkmill.html</loc>
-    <lastmod>2026-04-29</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
-
-  <!-- 検索ページ -->
-  <url>
-    <loc>https://cowkml.com/coworkmill-spaces.html</loc>
-    <lastmod>2026-04-29</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://cowkml.com/coworkmill-photos.html</loc>
-    <lastmod>2026-04-29</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://cowkml.com/coworkmill-architects.html</loc>
-    <lastmod>2026-04-29</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <!-- 申込・サポート -->
-  <url>
-    <loc>https://cowkml.com/coworkmill-register.html</loc>
-    <lastmod>2026-04-29</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://cowkml.com/coworkmill-contact.html</loc>
-    <lastmod>2026-04-29</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-
-  <!-- 会社・ポリシー -->
-  <url>
-    <loc>https://cowkml.com/coworkmill-company.html</loc>
-    <lastmod>2026-04-29</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
-  <url>
-    <loc>https://cowkml.com/coworkmill-privacy.html</loc>
-    <lastmod>2026-04-29</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
-  <url>
-    <loc>https://cowkml.com/coworkmill-terms.html</loc>
-    <lastmod>2026-04-29</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
-
-  <!-- 施設詳細 (live施設のみ・Supabase 2026-04-29 時点) -->
-  <url>
-    <loc>https://cowkml.com/coworkmill-detail.html?id=6f79f3a4-4d8d-4ef1-ac90-4f55a246a47d</loc>
-    <lastmod>2026-04-01</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://cowkml.com/coworkmill-detail.html?id=4e728cce-cf81-4687-a768-9107b34843da</loc>
-    <lastmod>2026-03-31</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
+<url><loc>https://cowkml.com/</loc><lastmod>2026-09-26</lastmod></url>
+<url><loc>https://cowkml.com/spaces/index.html</loc><lastmod>2026-09-26</lastmod></url>
+<url><loc>https://cowkml.com/collections/index.html</loc><lastmod>2026-09-26</lastmod></url>
+<url><loc>https://cowkml.com/questions/index.html</loc><lastmod>2026-09-26</lastmod></url>
+<url><loc>https://cowkml.com/about/index.html</loc><lastmod>2026-09-26</lastmod></url>
+<url><loc>https://cowkml.com/about/privacy.html</loc><lastmod>2026-09-26</lastmod></url>
+<url><loc>https://cowkml.com/about/terms.html</loc><lastmod>2026-09-26</lastmod></url>
+<url><loc>https://cowkml.com/contact/index.html</loc><lastmod>2026-09-26</lastmod></url>
+<url><loc>https://cowkml.com/spaces/100banch.html</loc><lastmod>2026-09-26</lastmod></url>
+<url><loc>https://cowkml.com/spaces/shibuya-qws.html</loc><lastmod>2026-09-26</lastmod></url>
+<url><loc>https://cowkml.com/spaces/cic-tokyo.html</loc><lastmod>2026-09-26</lastmod></url>
+<url><loc>https://cowkml.com/spaces/toranomon-hills-arch.html</loc><lastmod>2026-09-26</lastmod></url>
+<url><loc>https://cowkml.com/spaces/lifork-otemachi.html</loc><lastmod>2026-09-26</lastmod></url>
+<url><loc>https://cowkml.com/spaces/wework-shibuya-scramble-square.html</loc><lastmod>2026-09-26</lastmod></url>
+<url><loc>https://cowkml.com/spaces/midori-so-nakameguro.html</loc><lastmod>2026-09-26</lastmod></url>
+<url><loc>https://cowkml.com/spaces/co-ba-ebisu.html</loc><lastmod>2026-09-26</lastmod></url>
+<url><loc>https://cowkml.com/spaces/saai-yurakucho.html</loc><lastmod>2026-09-26</lastmod></url>
+<url><loc>https://cowkml.com/spaces/business-airport-aoyama.html</loc><lastmod>2026-09-26</lastmod></url>
+<url><loc>https://cowkml.com/collections/shibuya.html</loc><lastmod>2026-09-26</lastmod></url>
+<url><loc>https://cowkml.com/collections/incubation.html</loc><lastmod>2026-09-26</lastmod></url>
+<url><loc>https://cowkml.com/collections/reuse.html</loc><lastmod>2026-09-26</lastmod></url>
 </urlset>
