@@ -1,9 +1,11 @@
 # COWORKMILL / CAFEMILL のビルド（2026-09-26）
 # OFFISNAP の _src/build_site.py をそのまま読み込み、ブランドに関わる部分だけ差し替えて実行する。
-# 使い方: BRAND=cowork python3 build_mill.py   /  BRAND=cafe python3 build_mill.py
+# 使い方: BRAND=cowork OUT_DIR=<出力先>/ python3 build_mill.py   /  BRAND=cafe OUT_DIR=<出力先>/ python3 build_mill.py
+# 依存（OFFISNAP の build_site.py と WALL の style.css / index.html）は _src/deps/ に写しがあるので、このリポジトリだけで動く
 import os, re, sys, json
 HERE = os.path.dirname(os.path.abspath(__file__))
-OFF = os.environ.get('OFF_SRC', os.path.join(HERE, '..', 'off', '_src'))
+OFF = os.environ.get('OFF_SRC', os.path.join(HERE, 'deps', 'off'))  # OFFISNAP の build_site.py の写し（deps/README.md）
+os.environ.setdefault('WALL_DIR', os.path.join(HERE, 'deps', 'wall') + os.sep)  # WALL の style.css / index.html の写し
 exec(open(os.path.join(HERE, 'brands.py'), encoding='utf-8').read())
 B = BRANDS[os.environ['BRAND']]
 os.environ['OUT_DIR'] = os.environ.get('OUT_DIR', f'/mnt/user-data/outputs/{B["utm"]}-site/')
@@ -90,7 +92,9 @@ src = src.replace("exec(open('site.py', encoding='utf-8').read())", '').replace(
 src = src.replace("GA = (f'<script async", "GA = '' if not GA_ID else (f'<script async")
 # アイコン：ブランドの favicon（build_mill.py が icons_<brand>/ に作る）
 src = src.replace("shutil.copy(f'icons/", f"shutil.copy(f'{HERE}/icons_{os.environ['BRAND']}/")
-src = src.replace("os.listdir('icons')", f"os.listdir('{HERE}/icons_{os.environ['BRAND']}')")
+src = src.replace("os.listdir('icons')", f"os.listdir('{HERE}/icons_{os.environ['BRAND']}')").replace("shutil.copy('icons/' + _f", f"shutil.copy('{HERE}/icons_{os.environ['BRAND']}/' + _f")
+# 送客バナー：_src/banner/ にあればそれを使う（本番に置いてある実物）
+if os.path.isdir(os.path.join(HERE, 'banner')): src = src.replace("shutil.copy(f'banner/", f"shutil.copy(f'{HERE}/banner/")
 
 # 5) OFFISNAP 固有のスラッグ参照
 src = src.replace("enumerate(['apple', 'swatch', 'nvidia', 'dyson', 'siemens', 'google-bay-view'])", "enumerate([a['slug'] for a in A[:6]])")
@@ -111,6 +115,49 @@ src = src.replace('Apple・Google・Amazon・Spotify・Dyson など', '')
 for _w in ['オフィスを紹介してほしい', '紹介してほしいオフィスの場所', 'オフィスの写真', 'オフィスのことが分かる資料']:
     src = src.replace(_w, _w.replace('オフィス', B['subj_s']))
 src = src.replace('会社名と、紹介してほしい', B['owner'] + '名と、紹介してほしい').replace('会社名・オフィスの場所', B['owner'] + '名・' + B['subj_s'] + 'の場所')
+
+# 8) 2026-09-26 後半のコミット分（メタタイトル・構造化データ・絞り込み・一言の確定・OGP）。データは seo_<brand>.py
+_seo = os.path.join(HERE, f'seo_{os.environ["BRAND"]}.py')
+src = src.replace("if os.path.exists(_qp): exec(open(_qp, encoding='utf-8').read())",
+                  "if os.path.exists(_qp): exec(open(_qp, encoding='utf-8').read())\n"
+                  f"exec(open({json.dumps(_seo)}, encoding='utf-8').read())\n"
+                  "F2_LABEL = 'テーマ'\n"
+                  "def F2_OF(a): return [c['title'] for c in COLLECTIONS if any(x[0] == a['slug'] for x in c['items'])]\n")
+# 一言の確定：「内装デザインが最も優れた○○を厳選紹介」／帯だけ「日本で」入り
+src = src.replace('日本で最も優れた' + B['subj_s'] + 'を、見に行こう。', '§BAND§')
+src = src.replace('日本で最も優れた' + B['subj_s'], '内装デザインが最も優れた' + B['subj_s'])
+src = src.replace('§BAND§', '内装デザインが日本で最も優れた' + B['subj_s'] + 'を、見に行こう。')
+# 街チップ：「渋谷（東京）」→「渋谷」
+src = src.replace("def AREA_OF(a):\n", "def AREA_OF(a):\n    return a['city'].split('（')[0]\n", 1)
+# head()：twitter:title/description を足す。og 画像を渡さないページは assets/og.png（1200×630）
+src = src.replace("    og = og or purl(A[0], A[0]['hero'][0])", "    _ogdef = og is None; og = og or (SITE + '/assets/og.png')")
+src = src.replace('<meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="{E(og)}">',
+                  '<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{E(title)}"><meta name="twitter:description" content="{E(desc)}"><meta name="twitter:image" content="{E(og)}">')
+src = src.replace("    _ogdef = og is None; og = og or (SITE + '/assets/og.png')", "    _ogdef = og is None; og = og or (SITE + '/assets/og.png'); _ogwh = '<meta property=\"og:image:width\" content=\"1200\"><meta property=\"og:image:height\" content=\"630\">' if _ogdef else ''")
+src = src.replace('<meta property="og:image:alt" content="{E(title)}">\'', '<meta property="og:image:alt" content="{E(title)}">{_ogwh}\'')
+# メタタイトル・description：施設ごとに seo_<brand>.py の SEO を使う
+src = src.replace("def meta_title(a):\n", "def meta_title(a):\n    if a['slug'] in SEO: return SEO[a['slug']][0] + ' | ' + SITE_NAME\n", 1)
+src = src.replace("def meta_desc(a):\n", "def meta_desc(a):\n    if a['slug'] in SEO: return SEO[a['slug']][1]\n", 1)
+# トップと一覧のタイトル・description
+src = re.sub(r"top = \(head\('[^']*', f'[^']*'", "top = (head(INDEX_TITLE, INDEX_DESC", src, count=1)
+src = re.sub(r"lst = \(head\(f'[^']*', f'[^']*'", "lst = (head(LIST_TITLE + ' | ' + SITE_NAME, LIST_DESC", src, count=1)
+# パンくず：「オフィス」→ 施設の種類
+src = src.replace('<div class="crumb">オフィス › ', '<div class="crumb">' + B['subj_s'] + ' › ')
+src = src.replace('{"@type":"ListItem","position":2,"name":"オフィス","item":SITE+"/' + B['sec'] + '/index.html"}', '{"@type":"ListItem","position":2,"name":"' + B['subj_s'] + '","item":SITE+"/' + B['sec'] + '/index.html"}')
+# 構造化データ：施設ページに LocalBusiness／CafeOrCoffeeShop（住所は PLACE）
+_ptype = 'CafeOrCoffeeShop' if os.environ['BRAND'] == 'cafe' else 'LocalBusiness'
+src = src.replace('        ld.append({"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"' + B['name'] + '","item":SITE+"/"},{"@type":"ListItem","position":2,"name":"' + B['subj_s'] + '"',
+                  '        _pl = PLACE.get(a["slug"])\n'
+                  '        if _pl:\n'
+                  '            _d = {"@context":"https://schema.org","@type":"' + _ptype + '","@id":u+"#place","name":a["company"],"url":OFFICIAL.get(a["slug"], src),"sameAs":OFFICIAL.get(a["slug"], src),"image":purl(a, a["hero"][0]),"description":a["card"]}\n'
+                  '            if KANA.get(a["slug"]): _d["alternateName"] = KANA[a["slug"]]\n'
+                  '            _d["address"] = {"@type":"PostalAddress","streetAddress":_pl["streetAddress"],"addressLocality":_pl["addressLocality"],"addressRegion":_pl["addressRegion"],"addressCountry":"JP"}\n'
+                  '            if _pl.get("openingHours"): _d["openingHours"] = _pl["openingHours"]\n'
+                  '            _d["subjectOf"] = {"@id":u+"#article"}\n'
+                  '            ld.append(_d)\n'
+                  '        ld.append({"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"' + B['name'] + '","item":SITE+"/"},{"@type":"ListItem","position":2,"name":"' + B['subj_s'] + '"', 1)
+# 旧スラッグからの転送ページ
+src = src.replace("open(OUT + 'site.webmanifest', 'w'", "for _old, _new in REDIRECTS.items():\n    open(OUT + f'{SEC_NAME}/{_old}.html', 'w', encoding='utf-8').write(f'<!doctype html><meta charset=\"utf-8\"><title>Redirecting</title><meta http-equiv=\"refresh\" content=\"0;url=/{SEC_NAME}/{_new}.html\"><meta name=\"robots\" content=\"noindex\"><link rel=\"canonical\" href=\"{SITE}/{SEC_NAME}/{_new}.html\">')\nopen(OUT + 'site.webmanifest', 'w'", 1)
 
 open(os.path.join(HERE, f'_generated_{os.environ["BRAND"]}.py'), 'w', encoding='utf-8').write(src)
 exec(compile(src, f'build_{os.environ["BRAND"]}.py', 'exec'))
