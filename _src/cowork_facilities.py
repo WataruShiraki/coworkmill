@@ -9,8 +9,11 @@ COUNTRY30 = {}
 ED30 = {}
 OFFICIAL30 = {}
 LOC30 = {}
+# 掲載日。_add の前にこの値を書き換えてから足すと、その施設に掲載日が付く。一覧・トップの「新着順」はこの日付の新しい順（同じ日の中はファイルの順）
+_ADDED = '2026-09-26'
 
 def _add(a, imgs, kana, country, ed, official, loc):
+    a.setdefault('added', _ADDED)
     A30.append(a)
     IMG30[a['slug']] = {str(k): v for k, v in imgs.items()}
     KANA30[a['slug']] = kana
@@ -362,6 +365,7 @@ _add(dict(slug='business-airport-aoyama', company='Business Airport 青山', cit
 
 
 # ======== 2026-09-27 追加5施設（別チャットの調査・cowork_add_2026-09-27.py） ========
+_ADDED = '2026-09-27'
 # 2026-09-27 COWORKMILL 追加5施設（Tokyo Venture Capital Hub／CIC Tokyo／point 0 marunouchi／MIDORI.so NAGATACHO／Tokyo Innovation Base）
 # 事実は各施設の公式サイト（または運営会社の公式発表）の範囲だけ。写真も同じページの直リンク
 # 形式：_src/cowork_facilities.py の _add(...) と同じ。IMG30 等の定義と _add／_w／_wq の定義は既存ファイルのものを使う

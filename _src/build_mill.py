@@ -22,7 +22,8 @@ def find(prefix):
 i0 = find('def load(name):'); i1 = find('# ---- ロゴ ----')
 loader = f'''
 exec(open({json.dumps(os.path.join(HERE, B["facilities"]))}, encoding='utf-8').read())
-A = list(A30); IMG20 = dict(IMG30); KANA20 = dict(KANA30); COUNTRY20 = dict(COUNTRY30); ED = dict(ED30); ED20 = {{}}
+A = sorted(A30, key=lambda a: a.get('added', ''), reverse=True)  # 2026-09-27 新着順＝掲載日の新しい順（後から足した施設が下に入っていた）
+IMG20 = dict(IMG30); KANA20 = dict(KANA30); COUNTRY20 = dict(COUNTRY30); ED = dict(ED30); ED20 = {{}}
 exec(open({json.dumps(os.path.join(HERE, "collections_" + os.environ["BRAND"] + ".py"))}, encoding='utf-8').read())
 A_by = {{a['slug']: a for a in A}}
 for _a in A:
