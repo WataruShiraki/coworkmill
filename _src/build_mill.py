@@ -84,6 +84,8 @@ src = re.sub(r"<meta name=\"google-site-verification\"[^>]*>", '', src)
 src = src.replace('｜オフィス・施設の内装を写真で紹介', '｜日本のかっこいい' + B['subj'] + 'を写真で紹介').replace('｜オフィス・店の内装を写真で紹介', '｜日本のかっこいい' + B['subj'] + 'を写真で紹介')
 # サイトごとの文言（トップの帯・About・タグライン）
 src = src.replace('日本の最新オフィス紹介', B['tag'])
+if B.get('coll_lead'): src = src.replace('国も業種も違うオフィスを、共通のテーマで見比べる特集です。', B['coll_lead'])
+if B.get('coll_desc'): src = src.replace(re.search(r"'植物、階段[^']*特集。'", src).group(0), json.dumps(B['coll_desc'], ensure_ascii=False).replace('"', "'"))
 # 特集・人気・Q&A・翻訳表（OFFISNAP 固有）を無効化
 src = src.replace("exec(open('tokushu.py', encoding='utf-8').read())", '')
 src = src.replace("exec(open('popular.py', encoding='utf-8').read())", "POPULAR = [a['slug'] for a in A]")
