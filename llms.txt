@@ -25,6 +25,12 @@
 - [渋谷のコワーキングスペース3選](https://cowkml.com/collections/shibuya.html): 実験区、問いの場所、駅直結の高層階。渋谷の駅まわりに集まる3施設です。
 - [新しい事業を生む場所4選](https://cowkml.com/collections/incubation.html): 大企業の新規事業、日本最大級のキャンパス、失敗を恐れないコミュニティ。事業づくりのための施設です。
 - [建物をそのまま生かす4選](https://cowkml.com/collections/reuse.html): 蔦に覆われた廃屋、1棟まるごと、1,573㎡の2フロア。あるものを生かした施設です。
+- [丸の内・有楽町・大手町のコワーキングスペース4選](https://cowkml.com/collections/marunouchi.html): 東京駅のまわりには、東京都、三菱地所、NTT都市開発、大企業の共同体と、つくり手の違う4施設が集まっています。
+- [虎ノ門・麻布台のコワーキングスペース3選](https://cowkml.com/collections/toranomon-azabudai.html): 虎ノ門ヒルズと麻布台ヒルズ。森ビルの2つの街に、新規事業、スタートアップ、ベンチャーキャピタルの拠点が集まっています。
+- [駅直結のコワーキングスペース4選](https://cowkml.com/collections/station-direct.html): 改札から外に出ずに着く施設です。雨の日も、打ち合わせの前後も移動が短くすみます。
+- [24時間使えるコワーキングスペース3選](https://cowkml.com/collections/24hours.html): 締め切り前の夜も、早朝の海外との会議も。公式サイトに「24時間365日」と書かれている施設です。
+- [広さで選ぶ、大きなコワーキングスペース4選](https://cowkml.com/collections/large-floor.html): 約6,000㎡から1,573㎡まで。フロアが広い施設は、会議室やイベントの場所も一緒にそろっています。
+- [企業や行政がつくった場所4選](https://cowkml.com/collections/corporate-public.html): 不動産会社だけでなく、メーカーや東京都もコワーキングスペースをつくっています。つくった側の目的が、場所の性格に表れます。
 
 ## その他
 
