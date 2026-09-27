@@ -336,13 +336,27 @@ def meta_desc(a):
     return f"{a['company']}{'（' + kn + '）' if kn else ''}の{LOC.get(a['slug'], city_short(a) + '本社')}のオフィスを、公式の写真と情報で紹介。{a['card']}。{a['lead']}"
 
 # ---- 記事ページ（WALL offices/mitsui-fudosan.html と同じ並び） ----
+import os
+_UNCONF = ('確認中', '要確認', '未確認', 'to confirm', 'TBD', 'TODO')
+def _unconf(v):
+    # 未確認メモは本番に出さない。値そのものがメモなら行ごと消し、「、」区切りの一部なら、その部分だけ消す
+    v = str(v)
+    if not any(u in v for u in _UNCONF): return v
+    parts = [x for x in re.split(r'[、,]', v) if not any(u in x for u in _UNCONF)]
+    return '、'.join(p.strip() for p in parts if p.strip())
 def article(a):
     p = '../'
     src = next(c[1] for c in a['credits'] if c[0] == '出典URL')
     host = re.sub(r'^https?://(www\.)?', '', src).split('/')[0]
-    facts = ''.join(f'<span>{E(k)} <b>{E(v)}</b></span>' for k, v in a['facts'] if k != '写真')
-    _off = OFFICIAL.get(a['slug'], src); _oh = re.sub(r'^https?://(www\.)?', '', _off).split('/')[0]
-    facts += f'<span>公式サイト <a class="offl" href="{E(_off)}" target="_blank" rel="noopener">{E(_oh)} ↗</a></span>'
+    _off = OFFICIAL.get(a['slug'], src)
+    # 2026-09-27 わたるさん「会社名そのものを公式HPへのリンクに。端の『公式サイト ○○ ↗』は置かない」「未確認メモを本番に出さない」
+    _NAMEK = ('会社', '施設', '店', '店名', '企業')
+    def _lk(v): return f'<a class="offl" href="{E(_off)}" target="_blank" rel="noopener">{E(v)} &#8599;</a>'
+    _fx = [(k, _unconf(v)) for k, v in a['facts'] if k != '写真']
+    _fx = [(k, v) for k, v in _fx if v]
+    facts = ''.join(f'<span>{E(k)} <b>{_lk(v) if k in _NAMEK and _off else E(v)}</b></span>' for k, v in _fx)
+    if _off and not any(k in _NAMEK for k, v in _fx):
+        facts = f'<span>{"店" if os.environ.get("BRAND") == "cafe" else "会社"} <b>{_lk(a["company"])}</b></span>' + facts
     toc = '<li><a href="#concept">はじめに</a></li>' + ''.join(f'<li><a href="#s{i+1}">{E(s[0].split("｜")[1].strip())}</a></li>' for i, s in enumerate(a['steps'])) + '<li><a href="#context">キーワード</a></li><li><a href="#editor">編集部より</a></li><li><a href="#credits">基本情報</a></li>'
     body = f'<section class="step" id="concept"><p class="no">はじめに</p><h2>{E(a["concept"][0])}</h2>' + ''.join(f'<p>{E(x)}</p>' for x in a['concept'][1]) + '</section>'
     # 写真の並べ方（2026-09-25 わたるさん）：写真が少ない記事は1枚ずつ幅いっぱいに大きく。本文の写真が12枚以上ある記事だけ横並び
@@ -365,9 +379,9 @@ def article(a):
     def crv(k, v):
         if k == '出典URL': return f'<a class="offl" href="{E(v)}" target="_blank" rel="noopener">{E(host)} &#8599;</a>'
         # 2026-09-26 わたるさん「会社名にもちゃんと企業URLでリンクさせる。出典はそのまま」
-        if k == '会社' and _off: return f'<a class="offl" href="{E(_off)}" target="_blank" rel="noopener">{E(v)} &#8599;</a>'
+        if k in _NAMEK and _off: return _lk(v)
         return E(v)
-    cr = ''.join(f'<div><span>{E(k)}</span><b>{crv(k, v)}</b></div>' for k, v in a['credits'])
+    cr = ''.join(f'<div><span>{E(k)}</span><b>{crv(k, _unconf(v) if k != "出典URL" else v)}</b></div>' for k, v in a['credits'] if k == '出典URL' or _unconf(v))
     # 2026-09-26 「掲載 2026年9月25日」は出さない（オフィスの完成日と誤解されるため）
     heroimg = fig(a, a['hero'][0], a['hero'][1], 'hero-ph')
     edc = '<aside class="edc" id="editor"><p class="lab">編集部より</p>' + ''.join(f'<p>{E(x)}</p>' for x in ED[a['slug']]) + '<p class="sig">OFFISNAP 編集部</p></aside>'
@@ -666,7 +680,8 @@ _today = datetime.date.today().isoformat()
 _paths = ['', 'offices/index.html', 'collections/index.html', 'questions/index.html', 'about/index.html', 'about/privacy.html', 'about/terms.html', 'contact/index.html'] + [f'offices/{a["slug"]}.html' for a in A] + [f'collections/{c["slug"]}.html' for c in COLLECTIONS] + [f'questions/{q["slug"]}.html' for q in QUESTIONS]
 open(OUT + 'sitemap.xml', 'w', encoding='utf-8').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' + ''.join(f'<url><loc>{SITE}/{x}</loc><lastmod>{_today}</lastmod></url>\n' for x in _paths) + '</urlset>\n')
 open(OUT + 'robots.txt', 'w').write(f'User-agent: *\nAllow: /\n\nSitemap: {SITE}/sitemap.xml\n')
-open(OUT + 'vercel.json', 'w').write('{}\n')
+# 2026-09-27 わたるさん「URLの末尾に index.html がつくのが嫌」→ 古い …/index.html は …/ へ転送する
+open(OUT + 'vercel.json', 'w').write(json.dumps({"redirects": [{"source": "/index.html", "destination": "/", "permanent": True}, {"source": "/:path*/index.html", "destination": "/:path*/", "permanent": True}]}, indent=1) + '\n')
 
 # ---- SEO / AIO（構造化データ・llms.txt・webmanifest）2026-09-25 ----
 COUNTRY = {**COUNTRY20, 'spotify':'SE','amazon':'US','dyson':'SG','adidas':'DE','bloomberg':'GB','lego':'DK','google-bay-view':'US','nike':'US','booking':'NL'}
@@ -721,3 +736,16 @@ _lines = ['# OFFISNAP', '', '> 海外の有名企業の最新オフィスを、�
           '## 記事（オフィス）', ''] + [f'- [{a["title"]}]({SITE}/offices/{a["slug"]}.html): {a["lead"]}' for a in A] + ['', '## 特集', ''] + [f'- [{c["title"]}]({SITE}/collections/{c["slug"]}.html): {c["lead"]}' for c in COLLECTIONS] + \
          ['', '## その他', '', f'- [Q&A]({SITE}/questions/index.html): {QA["q"]}'] + [f'- [{q_["q"]}]({SITE}/questions/{q_["slug"]}.html): {q_["a"]}' for q_ in QUESTIONS] + [ f'- [OFFISNAP について]({SITE}/about/index.html)', f'- [お問い合わせ]({SITE}/contact/index.html)', '', '## 引用について', '', '記事の事実は各社の公式サイト・公式ニュースが出典。引用の際は記事URLを添えてください。写真の権利は各社・撮影者に帰属します。']
 open(OUT + 'llms.txt', 'w', encoding='utf-8').write('\n'.join(_lines) + '\n')
+
+# ---- 2026-09-27 わたるさん「サイトを開くと末尾に index.html がつくのが嫌」----
+# 出力したHTML・sitemap・llms.txt のリンクから index.html を外す（…/index.html → …/、index.html → ./）
+import re as _re, os as _os
+for _root, _ds, _fs in _os.walk(OUT):
+    for _f in _fs:
+        if not _f.endswith(('.html', '.xml', '.txt', '.json', '.js')) or _f == 'vercel.json': continue
+        _p = _os.path.join(_root, _f)
+        try: _t = open(_p, encoding='utf-8').read()
+        except Exception: continue
+        _n = _re.sub(r'(?<=/)index\.html(?=[?#"\'\s)<\]])', '', _t)
+        _n = _re.sub(r'(?<=["\'])index\.html(?=[?#"\'])', './', _n)
+        if _n != _t: open(_p, 'w', encoding='utf-8').write(_n)
