@@ -246,3 +246,193 @@ PLACE_ADD = {
   'senq-meguro': {'streetAddress': '東京都品川区上大崎三丁目2-1 目黒センタービル8F', 'addressLocality': '目黒', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 09:00-22:00'},
 }
 SEO.update(SEO_ADD); PLACE.update(PLACE_ADD)
+
+
+# ---- 2026-09-27 追加 cowork_add_2026-09-27_g.py ----
+SEO_ADD = {
+  'workstyling-tokyo-midtown-yaesu': ('ワークスタイリング 東京ミッドタウン八重洲｜内装・内観・雰囲気の写真｜東京駅直結',
+    'ワークスタイリング 東京ミッドタウン八重洲（八重洲セントラルタワー7階）の内装・内観・雰囲気を写真で。東京駅と地下で直結し土日も開くシェアオフィス。会議室、個室を歩く順番で紹介します。'),
+  'workstyling-otemachi': ('ワークスタイリング 大手町｜内装・内観・雰囲気の写真｜芸術作品モチーフの会議室',
+    'ワークスタイリング 大手町（Otemachi Oneタワー6階）の内装・内観・雰囲気を写真で。白基調のモダンな空間と、世界の芸術作品をモチーフにした会議室を歩く順番で紹介します。'),
+  'workstyling-yaesu-kitaguchi': ('ワークスタイリング 八重洲北口｜内装・内観・雰囲気の写真｜東京駅直結の17階',
+    'ワークスタイリング 八重洲北口（グラントウキョウノースタワー17階）の内装・内観・雰囲気を写真で。東京駅直結の高層階のオープンスペース、会議室、個室を歩く順番で紹介します。'),
+  'workstyling-yaesu-minamiguchi': ('ワークスタイリング 八重洲南口｜内装・内観・雰囲気の写真｜土日も22時まで',
+    'ワークスタイリング 八重洲南口（パシフィックセンチュリープレイス丸の内2階）の内装・内観・雰囲気を写真で。土日も22時まで開くオープンスペース、会議室、個室を歩く順番で紹介します。'),
+  'workstyling-nihonbashi-mitsui-tower': ('ワークスタイリング 日本橋三井タワー｜内装・内観・雰囲気の写真｜WORKSTYLING LAB',
+    'ワークスタイリング 日本橋三井タワー（6階）の内装・内観・雰囲気を写真で。コンセプトは「WORKSTYLING LAB」。テーマの異なる9つの会議室とオープンスペースを歩く順番で紹介します。'),
+  'workstyling-nihonbashi-takashimaya-mitsui': ('ワークスタイリング 日本橋髙島屋三井ビル｜内装・内観・雰囲気の写真｜日本橋駅直結',
+    'ワークスタイリング 日本橋髙島屋三井ビル（9階）の内装・内観・雰囲気を写真で。日本橋駅直結で登記もできるシェアオフィス。オープンスペース、会議室、個室を歩く順番で紹介します。'),
+  'workstyling-nihonbashi-ichome': ('ワークスタイリング 日本橋一丁目｜内装・内観・雰囲気の写真｜レンタルオフィスも',
+    'ワークスタイリング 日本橋一丁目（日本橋一丁目三井ビルディング5階）の内装・内観・雰囲気を写真で。日本橋駅直結、オープンスペースからレンタルオフィスまでを歩く順番で紹介します。'),
+  'workstyling-ginza': ('ワークスタイリング 銀座｜内装・内観・雰囲気の写真｜銀座駅1分、土日も営業',
+    'ワークスタイリング 銀座（ギンザ・グラッセ9階）の内装・内観・雰囲気を写真で。銀座駅から徒歩1分、土日祝も22時まで開くシェアオフィス。会議室と個室を歩く順番で紹介します。'),
+  'workstyling-shiodome-city-center': ('ワークスタイリング 汐留シティーセンター｜内装・内観・雰囲気の写真｜INDUSTRY+FOREST',
+    'ワークスタイリング 汐留シティーセンター（5階）の内装・内観・雰囲気を写真で。駅舎のようなエントランスと緑豊かな「INDUSTRY+FOREST」の空間を、歩く順番で紹介します。'),
+  'workstyling-shinbashi': ('ワークスタイリング 新橋｜内装・内観・雰囲気の写真｜新橋駅徒歩1分',
+    'ワークスタイリング 新橋（新橋M-SQUARE 2階）の内装・内観・雰囲気を写真で。新橋駅から徒歩1分、予約なしで使えるオープンスペースと会議室、個室を歩く順番で紹介します。'),
+}
+PLACE_ADD = {
+  'workstyling-tokyo-midtown-yaesu': {'streetAddress': '東京都中央区八重洲2-2-1 東京ミッドタウン八重洲 八重洲セントラルタワー7階', 'addressLocality': '八重洲', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:00-21:00, Sa-Su 10:00-18:00'},
+  'workstyling-otemachi': {'streetAddress': '東京都千代田区大手町1-2-1 Otemachi Oneタワー6階', 'addressLocality': '大手町', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:00-21:00'},
+  'workstyling-yaesu-kitaguchi': {'streetAddress': '東京都千代田区丸の内1-9-1 グラントウキョウノースタワー17階', 'addressLocality': '丸の内', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:00-21:00'},
+  'workstyling-yaesu-minamiguchi': {'streetAddress': '東京都千代田区丸の内1-11-1 パシフィックセンチュリープレイス丸の内2階', 'addressLocality': '丸の内', 'addressRegion': '東京都', 'openingHours': 'Mo-Su 08:00-22:00'},
+  'workstyling-nihonbashi-mitsui-tower': {'streetAddress': '東京都中央区日本橋室町二丁目1番1号 日本橋三井タワー6階', 'addressLocality': '日本橋', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:00-21:00'},
+  'workstyling-nihonbashi-takashimaya-mitsui': {'streetAddress': '東京都中央区日本橋二丁目5番1号 日本橋髙島屋三井ビルディング9階', 'addressLocality': '日本橋', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:00-21:00'},
+  'workstyling-nihonbashi-ichome': {'streetAddress': '東京都中央区日本橋1丁目4-1 日本橋一丁目三井ビルディング5階', 'addressLocality': '日本橋', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:00-21:00'},
+  'workstyling-ginza': {'streetAddress': '東京都中央区銀座3-2-15 ギンザ・グラッセ9階', 'addressLocality': '銀座', 'addressRegion': '東京都', 'openingHours': 'Mo-Su 08:00-22:00'},
+  'workstyling-shiodome-city-center': {'streetAddress': '東京都港区東新橋1-5-2 汐留シティセンター5階', 'addressLocality': '汐留', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:00-21:00'},
+  'workstyling-shinbashi': {'streetAddress': '東京都港区新橋1-10-6 新橋M-SQUARE 2階', 'addressLocality': '新橋', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:00-21:00'},
+}
+SEO.update(SEO_ADD); PLACE.update(PLACE_ADD)
+
+
+# ---- 2026-09-27 追加 cowork_add_2026-09-27_h.py ----
+SEO_ADD = {
+  'workstyling-hamamatsucho': ('ワークスタイリング 浜松町｜内装・内観・雰囲気の写真｜浜松町・大門から徒歩2分',
+    'ワークスタイリング 浜松町（オリックス浜松町ビル3階）の内装・内観・雰囲気を写真で。浜松町駅と大門駅から歩いて2分。予約なしで座れるオープンスペース、会議室、個室を歩く順番で紹介します。'),
+  'workstyling-omotesando': ('ワークスタイリング 表参道｜内装・内観・雰囲気の写真｜平日夜と土日も営業',
+    'ワークスタイリング 表参道（ミヤヒロビル4階・8階）の内装・内観・雰囲気を写真で。平日は22時30分まで、土日祝日も開く青山通り沿いの拠点。オープンスペース、会議室、個室を紹介します。'),
+  'workstyling-shibuya': ('ワークスタイリング 渋谷｜内装・内観・雰囲気の写真｜渋谷駅東口から徒歩4分',
+    'ワークスタイリング 渋谷（渋谷パークビル3階）の内装・内観・雰囲気を写真で。渋谷駅の東口から歩いて4分。予約なしで座れるオープンスペース、12名までの会議室、個室を歩く順番で紹介します。'),
+  'workstyling-shibuya-sakurastage': ('ワークスタイリング 渋谷サクラステージ｜内装・内観・雰囲気の写真｜最大108名のオープンスペース',
+    'ワークスタイリング 渋谷サクラステージ（SAKURAサイド2階）の内装・内観・雰囲気を写真で。三井不動産が運営する、最大108名のオープンスペースと土日営業の拠点。会議室、個室、レンタルオフィスも紹介。'),
+  'workstyling-meguro': ('ワークスタイリング 目黒｜内装・内観・雰囲気の写真｜目黒駅から徒歩1分',
+    'ワークスタイリング 目黒（目黒ヒルトップウォーク5階）の内装・内観・雰囲気を写真で。目黒駅から歩いて1分。エントランス、オープンスペース、12名までの会議室、個室を歩く順番で紹介します。'),
+  'workstyling-nakameguro': ('ワークスタイリング 中目黒｜内装・内観・雰囲気の写真｜中目黒駅から徒歩2分',
+    'ワークスタイリング 中目黒（中目黒GS第一ビル8階）の内装・内観・雰囲気を写真で。中目黒駅の東口から歩いて2分。予約なしで座れるオープンスペース、会議室、個室を歩く順番で紹介します。'),
+  'workstyling-ebisu': ('ワークスタイリング 恵比寿｜内装・内観・雰囲気の写真｜150名のカンファレンスルーム',
+    'ワークスタイリング 恵比寿（フジワラビルディング8階）の内装・内観・雰囲気を写真で。恵比寿駅から徒歩1分。オープンスペース、会議室、150名まで入るカンファレンスルーム、個室を紹介します。'),
+  'workstyling-shinagawa': ('ワークスタイリング 品川｜内装・内観・雰囲気の写真｜働くための巣',
+    'ワークスタイリング 品川（NBF品川タワー5・6階）の内装・内観・雰囲気を写真で。「極上のソロワークができる、働くための巣」がコンセプト。多種多様な席、会議室、個室、レンタルオフィスを紹介します。'),
+  'workstyling-tamachi-mitaguchi': ('ワークスタイリング 田町三田口｜内装・内観・雰囲気の写真｜田町・三田から徒歩1分',
+    'ワークスタイリング 田町三田口（田町センタービル13階）の内装・内観・雰囲気を写真で。田町駅と三田駅から歩いて1分。オープンスペース、12名までの会議室、個室を歩く順番で紹介します。'),
+  'workstyling-shinjuku-mitsui-building': ('ワークスタイリング 新宿三井ビルディング｜内装・内観・雰囲気の写真｜RETRO FUTURE',
+    'ワークスタイリング 新宿三井ビルディング（11階）の内装・内観・雰囲気を写真で。過去と未来を横断する「RETRO FUTURE」の空間。オープンスペース、会議室、個室、レンタルオフィスを紹介します。'),
+}
+PLACE_ADD = {
+  'workstyling-hamamatsucho': {'streetAddress': '東京都港区浜松町1-24-8 オリックス浜松町ビル3階', 'addressLocality': '浜松町', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:00-21:00'},
+  'workstyling-omotesando': {'streetAddress': '東京都港区北青山3-5-15 ミヤヒロビル4階・8階', 'addressLocality': '表参道', 'addressRegion': '東京都', 'openingHours': 'Mo-Tu 08:00-22:30, We 08:00-21:00, Th-Fr 08:00-22:30, Sa-Su 10:00-18:00'},
+  'workstyling-shibuya': {'streetAddress': '東京都渋谷区渋谷3-6-6 渋谷パークビル3階', 'addressLocality': '渋谷', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:00-21:00'},
+  'workstyling-shibuya-sakurastage': {'streetAddress': '東京都渋谷区桜丘町3-4 渋谷サクラステージ SAKURAサイド2階201区画', 'addressLocality': '渋谷', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:00-21:00, Sa-Su 10:00-18:00'},
+  'workstyling-meguro': {'streetAddress': '東京都品川区上大崎4-1-5 目黒ヒルトップウォーク5階', 'addressLocality': '目黒', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:00-21:00'},
+  'workstyling-nakameguro': {'streetAddress': '東京都目黒区上目黒2-9-1 中目黒GS第一ビル8階', 'addressLocality': '中目黒', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:00-21:00'},
+  'workstyling-ebisu': {'streetAddress': '東京都渋谷区恵比寿西1-10-11 フジワラビルディング8階', 'addressLocality': '恵比寿', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:00-21:00'},
+  'workstyling-shinagawa': {'streetAddress': '東京都港区港南2-16-5 NBF品川タワー5階・6階', 'addressLocality': '品川', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:00-21:00'},
+  'workstyling-tamachi-mitaguchi': {'streetAddress': '東京都港区芝5-34-7 田町センタービル13階', 'addressLocality': '田町', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:00-21:00'},
+  'workstyling-shinjuku-mitsui-building': {'streetAddress': '東京都新宿区西新宿2-1-1 新宿三井ビルディング11階', 'addressLocality': '新宿', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:00-21:00'},
+}
+SEO.update(SEO_ADD); PLACE.update(PLACE_ADD)
+
+
+# ---- 2026-09-27 追加 cowork_add_2026-09-27_i.py ----
+SEO_ADD = {
+  'workstyling-shinjuku-higashiguchi': ('ワークスタイリング 新宿東口｜内装・内観・雰囲気の写真｜駅直結で土日祝も営業',
+    'ワークスタイリング 新宿東口（NEWNO･GS新宿8階）の内装・内観・雰囲気を写真で。丸ノ内線新宿駅B12出口直結、土日祝も開くシェアオフィスのオープンスペース、会議室、個室を紹介します。'),
+  'workstyling-iidabashi-grand-bloom': ('ワークスタイリング 飯田橋グラン・ブルーム｜内装・内観・雰囲気の写真｜2階と9階',
+    'ワークスタイリング 飯田橋グラン・ブルーム（2階・9階）の内装・内観・雰囲気を写真で。JR飯田橋駅西口から徒歩1分、二つのフロアのオープンスペース、会議室、個室、レンタルオフィスを紹介します。'),
+  'workstyling-kasumigaseki-building': ('ワークスタイリング 霞が関ビルディング｜内装・内観・雰囲気の写真｜36階の高層階',
+    'ワークスタイリング 霞が関ビルディング（36階）の内装・内観・雰囲気を写真で。虎ノ門駅から徒歩2分、80名まで入る会議室を持つ高層階のシェアオフィスのオープンスペース、個室を紹介します。'),
+  'workstyling-tokyo-midtown-roppongi': ('ワークスタイリング 東京ミッドタウン（六本木）｜内装・内観・雰囲気の写真｜アートを加えた空間',
+    'ワークスタイリング 東京ミッドタウン（東京ミッドタウン・タワー18階）の内装・内観・雰囲気を写真で。「デザイン思考」の場に「アート」を加えた空間のオープンスペース、会議室、個室を紹介します。'),
+  'workstyling-futako-tamagawa': ('ワークスタイリング 二子玉川｜内装・内観・雰囲気の写真｜ショッピングセンターの中',
+    'ワークスタイリング 二子玉川（玉川髙島屋SC ケヤキコート1階）の内装・内観・雰囲気を写真で。商業施設の中にある、土日祝も開くシェアオフィスのオープンスペース、会議室、個室を紹介します。'),
+  'h1t-roppongi': ('H¹T六本木｜内装・内観・雰囲気の写真｜駅から徒歩1分、席の種類が多い',
+    'H¹T六本木（誠志堂ビル7階）の内装・内観・雰囲気を写真で。六本木駅4a出口から徒歩1分、オープンスペース、ブース、ボックス、個室10室と会議室2室がそろう法人向けシェアオフィスを紹介します。'),
+  'h1t-ikebukuro-higashiguchi-the-garden': ('H¹T池袋東口 THE GARDEN｜内装・内観・雰囲気の写真｜個室18室、土日祝も営業',
+    'H¹T池袋東口 THE GARDEN（池袋伊藤ビル10階）の内装・内観・雰囲気を写真で。JR池袋駅北改札から徒歩3分、一人用の個室18室と会議室2室、土日祝も7時から開く法人向けシェアオフィスです。'),
+  'h1t-ochanomizu-the-garden': ('H¹T御茶ノ水 THE GARDEN｜内装・内観・雰囲気の写真｜駅から徒歩1分の個室',
+    'H¹T御茶ノ水 THE GARDEN（御茶ノ水穂高ビル2階）の内装・内観・雰囲気を写真で。JR御茶ノ水駅聖橋口から徒歩1分、一人用の個室11室だけで構成された法人向けシェアオフィスを紹介します。'),
+  'h1t-shinjuku-nishiguchi': ('H¹T新宿西口｜内装・内観・雰囲気の写真｜会議室7室の法人向けシェアオフィス',
+    'H¹T新宿西口（西新宿昭和ビル9階）の内装・内観・雰囲気を写真で。新宿駅西口から徒歩2分、オープンスペース、ボックス、個室18室、会議室7室がそろう法人向けシェアオフィスを紹介します。'),
+  'h1t-omotesando': ('H¹T表参道｜内装・内観・雰囲気の写真｜個室15室と10名の会議室',
+    'H¹T表参道（プレファス表参道4階）の内装・内観・雰囲気を写真で。表参道駅A2出口から徒歩2分、一人用の個室15室と2〜10名の会議室を持つ、土日祝も開く法人向けシェアオフィスを紹介します。'),
+}
+PLACE_ADD = {
+  'workstyling-shinjuku-higashiguchi': {'streetAddress': '東京都新宿区新宿3-24-1 NEWNO･GS新宿8階', 'addressLocality': '新宿', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:00-21:00, Sa-Su 10:00-18:00'},
+  'workstyling-iidabashi-grand-bloom': {'streetAddress': '東京都千代田区富士見2-10-2 飯田橋グラン・ブルーム 2階・9階', 'addressLocality': '飯田橋', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:00-21:00'},
+  'workstyling-kasumigaseki-building': {'streetAddress': '東京都千代田区霞が関3-2-5 霞が関ビルディング 36階', 'addressLocality': '霞が関', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:00-21:00'},
+  'workstyling-tokyo-midtown-roppongi': {'streetAddress': '東京都港区赤坂9-7-1 東京ミッドタウン・タワー18階', 'addressLocality': '六本木', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:00-21:00'},
+  'workstyling-futako-tamagawa': {'streetAddress': '東京都世田谷区玉川2-27-8 玉川髙島屋ショッピングセンター ケヤキコート1階', 'addressLocality': '二子玉川', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:00-21:00, Sa-Su 10:00-18:00'},
+  'h1t-roppongi': {'streetAddress': '東京都港区六本木7-14-10 誠志堂ビル7階', 'addressLocality': '六本木', 'addressRegion': '東京都', 'openingHours': 'Mo-Su 07:30-22:00'},
+  'h1t-ikebukuro-higashiguchi-the-garden': {'streetAddress': '東京都豊島区東池袋1-3-5 池袋伊藤ビル10階', 'addressLocality': '池袋', 'addressRegion': '東京都', 'openingHours': 'Mo-Su 07:00-22:30'},
+  'h1t-ochanomizu-the-garden': {'streetAddress': '東京都千代田区神田駿河台4-5-3 御茶ノ水穂高ビル2階', 'addressLocality': '御茶ノ水', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:00-21:00'},
+  'h1t-shinjuku-nishiguchi': {'streetAddress': '東京都新宿区西新宿1-13-12 西新宿昭和ビル9階', 'addressLocality': '新宿', 'addressRegion': '東京都', 'openingHours': 'Mo-Su 07:00-22:00'},
+  'h1t-omotesando': {'streetAddress': '東京都渋谷区神宮前4-11-6 プレファス表参道4階', 'addressLocality': '表参道', 'addressRegion': '東京都', 'openingHours': 'Mo-Su 08:30-21:00'},
+}
+SEO.update(SEO_ADD); PLACE.update(PLACE_ADD)
+
+
+# ---- 2026-09-27 追加 cowork_add_2026-09-27_j.py ----
+SEO_ADD = {
+  'fabbit-shibuya-ekimae': ('fabbit 渋谷駅前｜内装・内観・雰囲気の写真｜渋谷駅2分と TKP の会議室',
+    'fabbit 渋谷駅前（渋谷東口ビル5階）の内装・内観・雰囲気を写真で。渋谷駅から徒歩2分、6名用から18名規模の完全個室と、同じフロアの TKP の会議室を歩く順番で紹介します。'),
+  'crosscoop-shibuya-nextsite': ('クロスコープ 渋谷ネクストサイト｜内装・内観・雰囲気の写真｜植栽のラウンジ',
+    'クロスコープ 渋谷ネクストサイト（ネクストサイト渋谷ビル5・6階）の内装・内観・雰囲気を写真で。＋PERFORMANCE を掲げ、植栽のラウンジ、7室の会議室、19室のテレブースを紹介します。'),
+  'crosscoop-shinjuku-avenue': ('クロスコープ 新宿AVENUE｜内装・内観・雰囲気の写真｜7階の24時間ラウンジ',
+    'クロスコープ 新宿AVENUE（4〜7階）の内装・内観・雰囲気を写真で。新宿三丁目駅と新宿御苑前駅の間、7階の24時間ラウンジ、8室の会議室、大きな窓の個室を歩く順番で紹介します。'),
+  'fabbit-ginza': ('fabbit 銀座｜内装・内観・雰囲気の写真｜銀座一丁目のコワーキングラウンジ',
+    'fabbit 銀座（ヒューリック銀座一丁目昭和通りビル7階）の内装・内観・雰囲気を写真で。銀座一丁目駅3分、コワーキングラウンジと2〜6名の完全個室を歩く順番で紹介します。'),
+  'fabbit-kyobashi': ('fabbit 京橋｜内装・内観・雰囲気の写真｜東京駅4分のセントラルビル',
+    'fabbit 京橋（セントラルビル2階）の内装・内観・雰囲気を写真で。東京駅の八重洲地下街24番出口すぐ、コワーキングラウンジと2〜6名用の完全個室を歩く順番で紹介します。'),
+  'crosscoop-roppongi-next': ('クロスコープ 六本木NEXT｜内装・内観・雰囲気の写真｜60席のラウンジ',
+    'クロスコープ 六本木NEXT（ラウンドクロス六本木4・5階）の内装・内観・雰囲気を写真で。2フロア約490坪、約60席のコワーキングラウンジ、テレブース、窓付きの個室を紹介します。'),
+  'fabbit-aoyama-itchome': ('fabbit 青山一丁目｜内装・内観・雰囲気の写真｜青山タワープレイス8階',
+    'fabbit 青山一丁目（青山タワープレイス8階）の内装・内観・雰囲気を写真で。青山一丁目駅2分、コワーキングラウンジと2名用から20名規模の完全個室を歩く順番で紹介します。'),
+  'crosscoop-nihonbashi': ('クロスコープ 日本橋｜内装・内観・雰囲気の写真｜約43席のラウンジ',
+    'クロスコープ 日本橋（日本橋三丁目スクエア2・3階）の内装・内観・雰囲気を写真で。約43席のラウンジ、コワーキングエリア、リフレッシュラウンジ、会議室、テレブースを紹介します。'),
+  'crosscoop-aoyama': ('クロスコープ 青山｜内装・内観・雰囲気の写真｜外苑前駅2分の3フロア',
+    'クロスコープ 青山（Landwork青山ビル2・4・5階）の内装・内観・雰囲気を写真で。外苑前駅2分、受付と待合、5室の会議室、1名用から20名用の個室を歩く順番で紹介します。'),
+  'crosscoop-shibuya': ('クロスコープ 渋谷｜内装・内観・雰囲気の写真｜宮益坂の30席のラウンジ',
+    'クロスコープ 渋谷（ヒューリック渋谷一丁目ビル5〜7階）の内装・内観・雰囲気を写真で。宮益坂の途中、30席のコワーキングラウンジ、リフレッシュラウンジ、会議室、個室を紹介します。'),
+}
+PLACE_ADD = {
+  'fabbit-shibuya-ekimae': {'streetAddress': '東京都渋谷区渋谷2-22-3 渋谷東口ビル5階', 'addressLocality': '渋谷', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 09:00-18:00'},
+  'crosscoop-shibuya-nextsite': {'streetAddress': '東京都渋谷区渋谷2-12-4 ネクストサイト渋谷ビル5・6F', 'addressLocality': '渋谷', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 09:00-18:00'},
+  'crosscoop-shinjuku-avenue': {'streetAddress': '東京都新宿区新宿2丁目5-12 4〜7F', 'addressLocality': '新宿', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 09:00-18:00'},
+  'fabbit-ginza': {'streetAddress': '東京都中央区銀座1丁目15-4 ヒューリック銀座一丁目昭和通りビル7階', 'addressLocality': '銀座', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 09:00-18:00'},
+  'fabbit-kyobashi': {'streetAddress': '東京都中央区京橋1-1-5 セントラルビル2階', 'addressLocality': '京橋', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 09:00-18:00'},
+  'crosscoop-roppongi-next': {'streetAddress': '東京都港区六本木7丁目14-23 ラウンドクロス六本木4・5F', 'addressLocality': '六本木', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 09:00-18:00'},
+  'fabbit-aoyama-itchome': {'streetAddress': '東京都港区赤坂8丁目4-14 青山タワープレイス8階', 'addressLocality': '赤坂', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 09:00-18:00'},
+  'crosscoop-nihonbashi': {'streetAddress': '東京都中央区日本橋3丁目9-1 日本橋三丁目スクエア2・3F', 'addressLocality': '日本橋', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 09:00-18:00'},
+  'crosscoop-aoyama': {'streetAddress': '東京都港区北青山2-7-26 Landwork青山ビル 2・4・5F', 'addressLocality': '北青山', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 09:00-18:00'},
+  'crosscoop-shibuya': {'streetAddress': '東京都渋谷区渋谷1丁目3-9 ヒューリック渋谷一丁目ビル5〜7F', 'addressLocality': '渋谷', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 09:00-18:00'},
+}
+SEO.update(SEO_ADD); PLACE.update(PLACE_ADD)
+
+
+# ---- 2026-09-27 追加 cowork_add_2026-09-27_k.py ----
+SEO_ADD = {
+  'the-hub-nihonbashi-odenmacho': ('THE HUB 日本橋大伝馬町｜内装・内観・雰囲気の写真｜有人フロントと81室',
+    'THE HUB 日本橋大伝馬町（日本橋大富ビル2・3階）の内装・内観・雰囲気を写真で。小伝馬町駅3分、有人フロント付き。全81室の個室、会議室、ブース席を歩く順番で紹介します。'),
+  'the-hub-kayabacho': ('THE HUB 茅場町｜内装・内観・雰囲気の写真｜新川の2〜5名用個室',
+    'THE HUB 茅場町（AIビル茅場町2〜5階）の内装・内観・雰囲気を写真で。茅場町駅4分、2〜5名用の個室オフィスに、ウェイティングスペース、会議室、ブース席を歩く順番で紹介します。'),
+  'the-hub-nihonbashi-kayabacho': ('THE HUB 日本橋茅場町｜内装・内観・雰囲気の写真｜士業に人気のコンパクトオフィス',
+    'THE HUB 日本橋茅場町（BIZMARKS 日本橋茅場町）の内装・内観・雰囲気を写真で。東証の近く、1階に受付と会議室。ラウンジと全室個室のオフィスを歩く順番で紹介します。'),
+  'the-hub-nihonbashi-kabutocho': ('THE HUB 日本橋兜町｜内装・内観・雰囲気の写真｜全室完全個室と屋上テラス',
+    'THE HUB 日本橋兜町（兜町平和ダイヤビル）の内装・内観・雰囲気を写真で。SOHO物件を大胆にリニューアル。全室完全個室、会議室、ラウンジ、屋上テラスを歩く順番で紹介します。'),
+  'the-hub-higashi-nihonbashi': ('THE HUB 東日本橋｜内装・内観・雰囲気の写真｜1〜4名用の個室',
+    'THE HUB 東日本橋（三幸日本橋プラザビル5〜7階）の内装・内観・雰囲気を写真で。4駅が使える立地に、1〜4名用の個室オフィスとMTGスペースを歩く順番で紹介します。'),
+  'the-hub-ginza-6chome': ('THE HUB 銀座6丁目｜内装・内観・雰囲気の写真｜高品質フロントの銀座オフィス',
+    'THE HUB 銀座6丁目（銀座石井ビル4〜7階）の内装・内観・雰囲気を写真で。東銀座駅2分、高品質フロント付き。2〜4名用の個室、会議室、ブース席を歩く順番で紹介します。'),
+  'the-hub-ginza-oct': ('THE HUB 銀座OCT｜内装・内観・雰囲気の写真｜一棟まるごとのシェアオフィス',
+    'THE HUB 銀座OCT（銀座8丁目、地上10階の一棟）の内装・内観・雰囲気を写真で。ラウンジ、フロント、7室の会議室・応接室、4〜35名用の個室、屋上テラスを歩く順番で紹介します。'),
+  'senq-aoyama-namikidori': ('SENQ 青山並木通り｜内装・内観・雰囲気の写真｜BUILD NEXT CULTURES',
+    'SENQ 青山並木通り（第一法規本社ビル3階）の内装・内観・雰囲気を写真で。テーマは BUILD NEXT CULTURES。ラウンジ、カフェコーナー、18室のルーム、ソロブースを歩く順番で紹介します。'),
+  'crosscoop-shinjuku': ('CROSSCOOP 新宿SOUTH｜内装・内観・雰囲気の写真｜会議室15室のレンタルオフィス',
+    'クロスコープ 新宿SOUTH（ヒューリック新宿四丁目ビル3・5・6階）の内装・内観・雰囲気を写真で。新宿三丁目駅1分。ラウンジ、15室の会議室、個室を歩く順番で紹介します。'),
+  'crosscoop-shimbashi': ('CROSSCOOP 新橋｜内装・内観・雰囲気の写真｜約96席のラウンジと個室',
+    'クロスコープ新橋（アーバンネット内幸町ビル3〜5階）の内装・内観・雰囲気を写真で。内幸町駅2分。約96席のラウンジ、会議室、セミナールーム、100名用までの個室を紹介します。'),
+}
+PLACE_ADD = {
+  'the-hub-nihonbashi-odenmacho': {'streetAddress': '東京都中央区日本橋大伝馬町13-7 日本橋大富ビル2-3F', 'addressLocality': '日本橋大伝馬町', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 10:00-18:30'},
+  'the-hub-kayabacho': {'streetAddress': '東京都中央区新川1-6-12 AIビル茅場町2-5F', 'addressLocality': '茅場町', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 10:00-18:30'},
+  'the-hub-nihonbashi-kayabacho': {'streetAddress': '東京都中央区日本橋小網町8-2 BIZMARKS 日本橋茅場町', 'addressLocality': '日本橋小網町', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 10:00-18:30'},
+  'the-hub-nihonbashi-kabutocho': {'streetAddress': '東京都中央区日本橋兜町9-5 兜町平和ダイヤビル', 'addressLocality': '日本橋兜町', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 10:00-18:30'},
+  'the-hub-higashi-nihonbashi': {'streetAddress': '東京都中央区東日本橋1-1-20 三幸日本橋プラザビル5-7F', 'addressLocality': '東日本橋', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 10:00-18:30'},
+  'the-hub-ginza-6chome': {'streetAddress': '東京都中央区銀座6-14-8 銀座石井ビル4-7F', 'addressLocality': '銀座', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 10:00-18:30'},
+  'the-hub-ginza-oct': {'streetAddress': '東京都中央区銀座8-17-5 THE HUB 銀座 OCT', 'addressLocality': '銀座', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 10:00-18:30'},
+  'senq-aoyama-namikidori': {'streetAddress': '東京都港区南青山二丁目11-17 第一法規本社ビル3F', 'addressLocality': '南青山', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 09:00-22:00'},
+  'crosscoop-shinjuku': {'streetAddress': '東京都新宿区新宿4-3-17 ヒューリック新宿四丁目ビル3・5・6F', 'addressLocality': '新宿', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 09:00-18:00'},
+  'crosscoop-shimbashi': {'streetAddress': '東京都港区新橋1-1-13 アーバンネット内幸町ビル3F', 'addressLocality': '新橋', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 09:00-18:00'},
+}
+SEO.update(SEO_ADD); PLACE.update(PLACE_ADD)
