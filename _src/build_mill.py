@@ -162,5 +162,7 @@ src = src.replace('        ld.append({"@context":"https://schema.org","@type":"B
 # 旧スラッグからの転送ページ
 src = src.replace("open(OUT + 'site.webmanifest', 'w'", "for _old, _new in REDIRECTS.items():\n    open(OUT + f'{SEC_NAME}/{_old}.html', 'w', encoding='utf-8').write(f'<!doctype html><meta charset=\"utf-8\"><title>Redirecting</title><meta http-equiv=\"refresh\" content=\"0;url=/{SEC_NAME}/{_new}.html\"><meta name=\"robots\" content=\"noindex\"><link rel=\"canonical\" href=\"{SITE}/{SEC_NAME}/{_new}.html\">')\nopen(OUT + 'site.webmanifest', 'w'", 1)
 
+# 2026-09-27 キーワードに残っていた「オフィス」を消す
+src = re.sub(r"a\['industry'\], 'オフィス', '([^']*)',", r"a['industry'], '\1',", src)
 open(os.path.join(HERE, f'_generated_{os.environ["BRAND"]}.py'), 'w', encoding='utf-8').write(src)
 exec(compile(src, f'build_{os.environ["BRAND"]}.py', 'exec'))
