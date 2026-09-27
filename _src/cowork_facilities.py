@@ -3680,3 +3680,8 @@ _add(dict(slug='crosscoop-shimbashi', company='CROSSCOOP 新橋', city='新橋�
  'https://crosscoop.com/', '新橋')
 
 # ===== SEO と住所（seo_<brand>.py に足す分） =====
+
+# 2026-09-27 わたるさん指摘「TOP画像がおかしい」：ロゴ・看板・文字入り・料理の寄りの写真がメインになっていた施設は、室内の写真をメインにする（全110施設のメイン写真を並べて目視で確認）
+_HERO_FIX = {"andwork-shibuya-higashi": [2, "館内の様子"], "co-ba-akasaka": [2, "ワークスペース"], "birth-work-toranomon": [2, "2階の集中ゾーン"], "workstyling-omotesando": [2, "オープンスペース"], "midori-so-kichijoji": [4, "シェアデスク"], "3x3lab-future": [2, "サロン。竹集成材の机と椅子、サイザル麻の床"], "base-point-shinjuku": [3, "館内の席"]}
+for _a in A30:
+    if _a['slug'] in _HERO_FIX: _a['hero'] = tuple(_HERO_FIX[_a['slug']])
