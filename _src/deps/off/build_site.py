@@ -233,6 +233,7 @@ body.stuck header .nav{padding-block:10px}
 @media (max-width:700px){.rk{min-width:28px;height:28px;font-size:13px;line-height:28px;padding:0 6px}}
 @media (max-width:700px){.card .co{font-size:13.5px;letter-spacing:.04em;margin:8px 0 2px}.card .cp{font-size:12px;line-height:1.55}.newb{width:48px;height:48px}.newb::after{font-size:9px}.cards{gap:22px 14px}}
 '''
+css += '\n/* 2026-09-27 施設情報（施設ページ最下部） */\n.shopinfo{margin:8px 0 40px;padding:22px 24px;background:var(--accent-tint,#f6f6f6);border-radius:4px}.shopinfo h2{font-size:18px;margin:0 0 12px}.shopinfo dl{margin:0;display:grid;gap:10px}.shopinfo dl div{display:grid;grid-template-columns:7em 1fr;gap:12px;font-size:14px;line-height:1.7}.shopinfo dt{color:var(--mute);font-size:12px;padding-top:2px}.shopinfo dd{margin:0}.shopinfo a{border-bottom:1px solid var(--accent)}@media(max-width:600px){.shopinfo dl div{grid-template-columns:1fr;gap:2px}}\n'
 open(OUT + 'assets/style.css', 'w', encoding='utf-8').write(css)
 
 FONTS = '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@500;600&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">'
@@ -251,7 +252,17 @@ for _b in ('officemill_160x600.webp', 'officemill_728x90.webp'):
 
 SITE = 'https://offisnap.com'
 # 公開用（2026-09-25 わたるさん判断：写真は公式プレス素材＋出典明記のまま公開。noindex を外す）
+# ---- メタタイトルの決まり（2026-09-27 わたるさん「アルファベットとカタカナをマストで」） ----
+# ①トップ：英字名（カタカナ）＋一言  ②下層：ページ名 | 英字名（カタカナ）  ③About：英字名（カタカナ）について
+_BRAND_EN = 'OFFISNAP'; _BRAND_KANA = 'オフィスナップ'
+def _brand_title(t):
+    full = _BRAND_EN + '（' + _BRAND_KANA + '）'
+    if full in t: return t
+    if t.startswith(_BRAND_EN): return full + t[len(_BRAND_EN):].lstrip()
+    t = re.sub(r'\s*[|｜]\s*' + re.escape(_BRAND_EN) + r'\s*$', '', t)
+    return t + ' | ' + full
 def head(title, desc, p, path='', og=None, otype='website'):
+    title = _brand_title(title)
     u = SITE + '/' + ('' if path == 'index.html' else path)
     og = og or purl(A_by['spotify'], 7)
     return (f'<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
@@ -382,6 +393,19 @@ def article(a):
         if k in _NAMEK and _off: return _lk(v)
         return E(v)
     cr = ''.join(f'<div><span>{E(k)}</span><b>{crv(k, _unconf(v) if k != "出典URL" else v)}</b></div>' for k, v in a['credits'] if k == '出典URL' or _unconf(v))
+    # 2026-09-27 わたるさん「施設詳細ページの一番下に、店舗URLと住所（押すとGoogleマップ）と最寄駅を」。データは seo_<brand>.py の PLACE
+    _pl = globals().get('PLACE', {}).get(a['slug'])
+    shop = ''
+    if _pl:
+        from urllib.parse import quote as _qq
+        _rows = [('名称', f'<a class="offl" href="{E(_off)}" target="_blank" rel="noopener">{E(a["company"])} &#8599;</a>' if _off else E(a['company']))]
+        _adr = _pl.get('streetAddress', '')
+        if _adr: _rows.append(('住所', f'<a class="offl" href="https://www.google.com/maps/search/?api=1&amp;query={_qq(_adr + " " + a["company"])}" target="_blank" rel="noopener">{E(_adr)} &#8599;</a>'))
+        if _pl.get('station'): _rows.append(('最寄駅', E(_pl['station'])))
+        if _pl.get('openingHours'): _rows.append(('営業時間', E(_pl['openingHours'])))
+        if _off: _rows.append(('公式サイト', f'<a class="offl" href="{E(_off)}" target="_blank" rel="noopener">{E(re.sub(r"^https?://(www[.])?", "", _off).rstrip("/"))} &#8599;</a>'))
+        _lab = '店舗情報' if KIND_WORD == '店' else '施設情報'
+        shop = f'<section class="shopinfo" id="shopinfo"><h2>{_lab}</h2><dl>' + ''.join(f'<div><dt>{k}</dt><dd>{v}</dd></div>' for k, v in _rows) + '</dl></section>'
     # 2026-09-26 「掲載 2026年9月25日」は出さない（オフィスの完成日と誤解されるため）
     heroimg = fig(a, a['hero'][0], a['hero'][1], 'hero-ph')
     edc = '<aside class="edc" id="editor"><p class="lab">編集部より</p>' + ''.join(f'<p>{E(x)}</p>' for x in ED[a['slug']]) + '<p class="sig">OFFISNAP 編集部</p></aside>'
@@ -390,7 +414,7 @@ def article(a):
             f'<div class="head"><p class="tag" style="color:var(--mute)">{E(tagline(a))}</p>\n<h1>{T(a["title"])}</h1>\n<p class="std">{E(a["lead"])}</p>\n<div class="facts">{facts}</div></div>\n'
             f'<div class="hero">{heroimg}</div>\n<div class="body">\n<nav class="toc"><p>目次</p><ol>{toc}</ol>'
             f'<a class="omv" href="https://offml.com/?utm_source=offisnap&amp;utm_medium=banner" rel="noopener"><img src="{OMB160}" width="160" height="600" alt="OFFICEMILL"></a></nav>\n'
-            f'<article>\n{body}\n{ctx}\n{edc}\n<div class="credits" id="credits">{cr}</div>\n</article></div>\n'
+            f'<article>\n{body}\n{ctx}\n{edc}\n<div class="credits" id="credits">{cr}</div>\n{shop}\n</article></div>\n'
             f'<a class="omb omb-728x90" href="https://offml.com/?utm_source=offisnap&amp;utm_medium=banner" rel="noopener"><img src="{OMB728}" width="728" height="90" alt="OFFICEMILL"></a>\n'
             '</main>' + foot(p) + '</body></html>')
 
@@ -431,7 +455,7 @@ _bs = {a['slug']: a for a in A}
 POP = [_bs[x] for x in POPULAR if x in _bs] + [a for a in A if a['slug'] not in POPULAR]
 POPRANK = {a['slug']: i + 1 for i, a in enumerate(POP)}
 SLIDER_JS = open(W + 'index.html', encoding='utf-8').read().split('</footer>')[1].replace('</body></html>', '')
-top = (head('海外オフィス｜有名企業のオフィス・本社の内装を写真で紹介 | OFFISNAP', f'海外の有名企業のオフィスを、公式の写真と情報で1社ずつ紹介。Apple・Google・Amazon・Spotify・Dyson など{len(A)}社の本社の内装、デザイン、働き方を日本語で。', p, 'index.html') + nav(p) + '\n<main class="wrap">\n'
+top = (head('OFFISNAP（オフィスナップ）海外オフィス｜有名企業・本社の内装を写真で紹介', f'海外の有名企業のオフィスを、公式の写真と情報で1社ずつ紹介。Apple・Google・Amazon・Spotify・Dyson など{len(A)}社の本社の内装、デザイン、働き方を日本語で。', p, 'index.html') + nav(p) + '\n<main class="wrap">\n'
        f'<section class="hero hslider" aria-roledescription="carousel">{slides}<div class="hdots">{dots}</div></section>{HERO_JS}\n\n'
        '<form class="tsearch" action="offices/index.html" method="get" role="search"><input type="search" name="q" placeholder="会社名・都市・キーワードで探す" aria-label="オフィスを探す"><button type="submit">検索</button></form>\n'
        f'<section class="sec"><div class="sec-h"><h2>新着記事</h2><span class="sub">エントランスから順に、1社ずつご案内</span><a class="more" href="offices/index.html">一覧へ →</a></div>\n'
