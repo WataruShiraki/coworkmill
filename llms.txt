@@ -117,15 +117,25 @@
 
 ## 特集
 
-- [渋谷のコワーキングスペース3選](https://cowkml.com/collections/shibuya.html): 実験区、問いの場所、駅直結の高層階。渋谷の駅まわりに集まる3施設です。
+- [渋谷のコワーキングスペース10選](https://cowkml.com/collections/shibuya.html): 実験区、問いの場所、駅直結の高層階。渋谷の駅まわりに集まる3施設です。
 - [新しい事業を生む場所4選](https://cowkml.com/collections/incubation.html): 大企業の新規事業、日本最大級のキャンパス、失敗を恐れないコミュニティ。事業づくりのための施設です。
-- [建物をそのまま生かす4選](https://cowkml.com/collections/reuse.html): 蔦に覆われた廃屋、1棟まるごと、1,573㎡の2フロア。あるものを生かした施設です。
-- [丸の内・有楽町・大手町のコワーキングスペース4選](https://cowkml.com/collections/marunouchi.html): 東京駅のまわりには、東京都、三菱地所、NTT都市開発、大企業の共同体と、つくり手の違う4施設が集まっています。
+- [建物をそのまま生かす6選](https://cowkml.com/collections/reuse.html): 蔦に覆われた廃屋、1棟まるごと、1,573㎡の2フロア。あるものを生かした施設です。
+- [丸の内・有楽町・大手町のコワーキングスペース10選](https://cowkml.com/collections/marunouchi.html): 東京駅のまわりには、東京都、三菱地所、NTT都市開発、大企業の共同体と、つくり手の違う4施設が集まっています。
 - [虎ノ門・麻布台のコワーキングスペース3選](https://cowkml.com/collections/toranomon-azabudai.html): 虎ノ門ヒルズと麻布台ヒルズ。森ビルの2つの街に、新規事業、スタートアップ、ベンチャーキャピタルの拠点が集まっています。
-- [駅直結のコワーキングスペース4選](https://cowkml.com/collections/station-direct.html): 改札から外に出ずに着く施設です。雨の日も、打ち合わせの前後も移動が短くすみます。
-- [24時間使えるコワーキングスペース3選](https://cowkml.com/collections/24hours.html): 締め切り前の夜も、早朝の海外との会議も。公式サイトに「24時間365日」と書かれている施設です。
+- [駅直結のコワーキングスペース10選](https://cowkml.com/collections/station-direct.html): 改札から外に出ずに着く施設です。雨の日も、打ち合わせの前後も移動が短くすみます。
+- [24時間使えるコワーキングスペース6選](https://cowkml.com/collections/24hours.html): 締め切り前の夜も、早朝の海外との会議も。公式サイトに「24時間365日」と書かれている施設です。
 - [広さで選ぶ、大きなコワーキングスペース4選](https://cowkml.com/collections/large-floor.html): 約6,000㎡から1,573㎡まで。フロアが広い施設は、会議室やイベントの場所も一緒にそろっています。
 - [企業や行政がつくった場所4選](https://cowkml.com/collections/corporate-public.html): 不動産会社だけでなく、メーカーや東京都もコワーキングスペースをつくっています。つくった側の目的が、場所の性格に表れます。
+- [日本橋・京橋・八重洲のコワーキングスペース8選](https://cowkml.com/collections/nihonbashi-yaesu.html): 宇宙ビジネスの拠点、地域と東京をつなぐラウンジ、FOOD INNOVATION。東京駅の東側に集まる施設です。
+- [新宿のコワーキングスペース7選](https://cowkml.com/collections/shinjuku.html): コーヒーの香るワーキングカフェ、RETRO FUTURE の11階、24時間のラウンジ。駅の東西に広がる新宿の施設です。
+- [青山・表参道のコワーキングスペース8選](https://cowkml.com/collections/aoyama-omotesando.html): CREATOR'S VILLAGE、固定の机を置かない会員制、屋上の庭。デザインの街にあるワークスペースです。
+- [眺めのいい高層階のコワーキングスペース8選](https://cowkml.com/collections/high-floor.html): 45階、東京タワーを望む34階、霞が関ビルの36階。窓の外まで仕事場にした施設です。
+- [土日も使えるコワーキングスペース8選](https://cowkml.com/collections/weekend.html): 土日も朝8時から夜22時まで、毎日朝7時から、毎日夜23時まで。週末に仕事をする日にも開いている施設です。
+- [ひとりで集中できるコワーキングスペース7選](https://cowkml.com/collections/solo.html): 1名用の個室18室、ソロブース26室、「集中」のフロア。ひとりの仕事のためにつくられた場所です。
+- [ホテルの中のコワーキングスペース4選](https://cowkml.com/collections/hotel.html): ロビー、ラウンジ、最上階のバー、泊まれる部屋。ホテルの中で働ける施設です。
+- [内装にテーマのあるコワーキングスペース9選](https://cowkml.com/collections/design-theme.html): 伝統文様の ZEN MODERN、RETRO FUTURE、劇場、鉄道、五街道。街や物語を内装に取り入れた施設です。
+- [屋上やテラスのあるコワーキングスペース5選](https://cowkml.com/collections/rooftop.html): 9階のスカイテラス、屋上の畑、屋上の庭。外の空気を吸える場所がある施設です。
+- [MIDORI.so の拠点8選](https://cowkml.com/collections/midori-so.html): 蔦の廃屋、1棟まるごとの旗艦拠点、泊まれる建物、商業ビルの8階。同じ運営会社が、建物ごとに違う場所をつくっています。
 
 ## その他
 
@@ -138,6 +148,16 @@
 - [個室と固定席は、どんな人が選ぶの？](https://cowkml.com/questions/private-fixed.html): その場所を会社の拠点として置きたい人が選びます。法人登記、鍵のかかる部屋、荷物を置いたままにできる席が理由です。SAAI の4階の固定席は「法人登記も可能な専用デスク」で、月77,000円です。
 - [駅直結のコワーキングは、どこにあるの？](https://cowkml.com/questions/station.html): 大手町駅直結の LIFORK 大手町と、渋谷駅直結の渋谷スクランブルスクエアに入る WeWork と SHIBUYA QWS があります。LIFORK 大手町は大手町駅の C8・C11・C12 出口から直結し、JR東京駅からも歩いて5分です。
 - [古い建物を使ったコワーキングはあるの？](https://cowkml.com/questions/reuse.html): あります。MIDORI.so Nakameguro は、蔦に覆われた廃屋を改装した2棟のシェアオフィスです。古い建物の骨格を残したまま直しているので、新しいビルにはない凹凸と陰影があります。
+- [ひとりで集中できる個室のあるコワーキングは？](https://cowkml.com/questions/solo-room.html): 定員1名の個室を並べた施設があります。H¹T池袋東口 THE GARDEN と H¹T新宿西口は1名用のルームが18室、SENQ 目黒はソロブースが26室です。
+- [土日も使えるコワーキングは？](https://cowkml.com/questions/weekend.html): 土日も平日と同じ時間に開く施設があります。ワークスタイリング八重洲南口とワークスタイリング銀座は土日も8時から22時まで、MIDORI.so Kichijoji は毎日8時から23時までです。
+- [朝早くから使えるコワーキングは？](https://cowkml.com/questions/early-morning.html): 朝7時から使える施設が多くあります。Business Airport の多くの拠点はコワーキングが平日7時から、H¹T池袋東口 THE GARDEN は毎日7時から、.andwork 渋谷のドロップインは7時から24時までです。
+- [ホテルの中のコワーキングは、どう使うの？](https://cowkml.com/questions/hotel.html): ロビーやラウンジを、時間や日にち単位で借りて使います。.andwork 渋谷は1時間1,100円から、.andwork 麻布十番は1時間800円からです。MIDORI.so Nihonbashi は、昼は働く場所、夜は泊まる場所として使えます。
+- [コワーキングの月額料金は、どのくらい？](https://cowkml.com/questions/price.html): 共用の席を使うプランは、月1万円台から6万円台まで幅があります。SAAI のフリーデスクは月33,000円、MIDORI.so のフリーデスクは月42,350円からです。
+- [1時間から使えるコワーキングは？](https://cowkml.com/questions/hourly.html): 1時間単位のドロップインを用意している施設があります。DIAGONAL RUN TOKYO は平日1時間660円、.andwork 麻布十番は1時間800円、.andwork 渋谷は1時間1,100円です。
+- [屋上やテラスのあるコワーキングは？](https://cowkml.com/questions/rooftop.html): 屋上に庭や畑を持つ施設や、高層階にテラスを持つ施設があります。SENQ 六本木は9階にスカイテラス、MIDORI.so Bakuroyokoyama は屋上に畑、THE HUB 日本橋兜町は屋上テラスがあります。
+- [内装にテーマのあるコワーキングは？](https://cowkml.com/questions/design-theme.html): 街の歴史や物語を内装に取り入れた施設があります。ワークスタイリングは日比谷が「ZEN MODERN」、新宿三井ビルディングが「RETRO FUTURE」、Business Airport は日比谷が劇場、新橋が鉄道をモチーフにしています。
+- [眺めのいい高層階のコワーキングは？](https://cowkml.com/questions/high-floor.html): 超高層ビルの上の階を使う施設があります。WeWork 渋谷スクランブルスクエアは37〜42階と45階、Hills House 麻布台は東京タワーを望む33・34階、ワークスタイリング 霞が関ビルディングは36階です。
+- [セミナーや大人数の会議ができるコワーキングは？](https://cowkml.com/questions/seminar.html): 大きな会議室やイベントスペースを持つ施設があります。Global Business Hub Tokyo は最大200名のイベントスペース、ワークスタイリング恵比寿は150名までのカンファレンスルーム、X-NIHONBASHI TOWER はシアター形式で約120席です。
 - [COWORKMILL について](https://cowkml.com/about/)
 - [お問い合わせ](https://cowkml.com/contact/)
 
