@@ -8,6 +8,13 @@
 - ★施設を足すとき、ビルドする前に必ず GitHub の最新の _src を取り直すこと。手元の古い写しでビルドすると、外した写真が本番に戻ってしまう。
 - ★新しく足す施設も、写真を1枚ずつ見て、顔の分かる写真は IMG に入れない。外した結果、店内の写真が1枚以下になる施設は載せない。
 
+## 2026-09-28 別チャットの追加分の統合（Drive「02_設計書・指示書」の「連絡_統合のお願い_2026-09-28.md」どおり）
+
+- 2回目の追加 cowork_add_2026-09-28_d/e/f.py（30施設） は cowork_facilities.py の末尾（SEO と住所は seo_cowork.py の末尾）に統合済み。30施設のうち19施設を掲載、11施設は保留（顔の分かる写真を外すと館内の写真が2枚以下になる10施設と、コワーキングではない THE BASE 浜松町）。
+- 写真の確認結果は cowork_facilities.py の最後の `_HOLD_FACE2`・`_DROP_FACE2`・`_HERO_FACE2` にある。
+- ★1回目の追加 cowork_facilities_add.py（1回目の追加分・10施設） は、写真の顔チェックがまだのため統合していない。brands.py は cowork_facilities.py を読む形に戻した。載せる場合は、写真を1枚ずつ確認してから cowork_facilities.py の末尾に足すこと。
+- ★brands.py を別ファイルに差し替えるやり方はやめて、追加は必ず cowork_facilities.py の末尾に足す（顔写真を外す処理が末尾にあるため、その前に足すこと）。
+
 # COWORKMILL の生成器（2026-09-27 保全版）
 
 公開物（リポジトリ直下の index.html・spaces/・collections/・questions/ など）は、この _src/ だけで作り直せます。

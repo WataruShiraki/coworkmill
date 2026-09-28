@@ -547,3 +547,114 @@ PLACE_ADD = {
   'co-ba-re-sohko-shinagawa': {'streetAddress': '東京都港区港南3丁目4-27 第2東運ビル（WARE HOUSE Konan）4F', 'addressLocality': '品川', 'addressRegion': '東京都'},
 }
 SEO.update(SEO_ADD); PLACE.update(PLACE_ADD)
+
+# ==== 2026-09-28 cowork_add_2026-09-28_d.py の SEO／場所 ====
+SEO_ADD = {
+  'wework-the-argyle-aoyama': ('WeWork ジ アーガイル アオヤマ｜内装・内観・雰囲気の写真｜白木とオークの共用エリア',
+    'WeWork ジ アーガイル アオヤマ（the ARGYLE aoyama 6階）の内装・内観・雰囲気を写真で。青山ベルコモンズ跡地の複合ビル。白木とオークの共用エリア、9室の会議室を歩く順番で紹介します。'),
+  'wework-nogizaka': ('WeWork 乃木坂｜内装・内観・雰囲気の写真｜全オフィスエリアに自然光',
+    'WeWork 乃木坂（南青山1丁目）の内装・内観・雰囲気を写真で。乃木坂駅から徒歩1分、文化と自然が交わる街の拠点。ホットデスクの共用エリア、自然光の執務スペース、会議室を歩く順番で紹介します。'),
+  'wework-akasaka-green-cross': ('WeWork 赤坂グリーンクロス｜内装・内観・雰囲気の写真｜ウェルビーイングと赤坂のアート',
+    'WeWork 赤坂グリーンクロス（5・6階）の内装・内観・雰囲気を写真で。2025年2月開業、溜池山王駅直結。6階ラウンジとアート、5・6階のキッチン、会議室を歩く順番で紹介します。'),
+  'wework-shiroyama-trust-tower': ('WeWork 城山トラストタワー｜内装・内観・雰囲気の写真｜グローバルな雰囲気と眺め',
+    'WeWork 城山トラストタワー（21階）の内装・内観・雰囲気を写真で。神谷町駅から徒歩3分、外資系企業の集まる街。コミュニティバー、カフェスペース、19室の会議室を歩く順番で紹介します。'),
+  'wework-kabuto-one': ('WeWork KABUTO ONE｜内装・内観・雰囲気の写真｜国際金融街・兜町の再開発ビル',
+    'WeWork KABUTO ONE（9・10階）の内装・内観・雰囲気を写真で。茅場町駅直結、兜町の再開発の中心。9階の入口とコミュニティバー、窓際のラウンジ、パントリーを歩く順番で紹介します。'),
+  'wework-hibiya-park-front': ('WeWork 日比谷パークフロント｜内装・内観・雰囲気の写真｜日比谷公園を望む4フロア',
+    'WeWork 日比谷パークフロント（17〜20階）の内装・内観・雰囲気を写真で。霞ヶ関駅直結、日比谷公園の目の前。グリーンの多い共用エリア、公園側の区画、36室の会議室を歩く順番で紹介します。'),
+  'wework-jimbocho': ('WeWork 神保町｜内装・内観・雰囲気の写真｜本の街の手描きアート',
+    'WeWork 神保町（神田神保町2丁目）の内装・内観・雰囲気を写真で。神保町駅から徒歩2分、本の街から着想した手描きアートのある小さな拠点。共用エリア、個室、会議室を歩く順番で紹介します。'),
+  'wework-daiwa-harumi': ('WeWork Daiwa 晴海｜内装・内観・雰囲気の写真｜晴れた日の海のような内装',
+    'WeWork Daiwa 晴海（Daiwa晴海ビル2階）の内装・内観・雰囲気を写真で。晴れた日の海から着想した明るい色づかいの空間。共用エリア、7室の会議室、周辺の環境を歩く順番で紹介します。'),
+  'wework-link-square-shinjuku': ('WeWork リンクスクエア新宿｜内装・内観・雰囲気の写真｜新宿御苑を望む和のラウンジ',
+    'WeWork リンクスクエア新宿（リンクスクエア新宿）の内装・内観・雰囲気を写真で。新宿駅新南口から徒歩5分、4フロアの大型拠点。新宿御苑を望むラウンジ、31室の会議室を歩く順番で紹介します。'),
+  'wework-nippon-tv-yotsuya': ('WeWork 日テレ四谷ビル｜内装・内観・雰囲気の写真｜日本庭園を意識した空間',
+    'WeWork 日テレ四谷ビル（麹町5丁目）の内装・内観・雰囲気を写真で。ビル一棟を WeWork が借りた拠点。日本庭園を意識した共用エリア、テラス、14室の会議室を歩く順番で紹介します。'),
+}
+PLACE_ADD = {
+  'wework-the-argyle-aoyama': {'streetAddress': '東京都港区北青山2-14-4 the ARGYLE aoyama 6F', 'addressLocality': '北青山', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:30-18:00'},
+  'wework-nogizaka': {'streetAddress': '東京都港区南青山1-24-3 1F', 'addressLocality': '南青山', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:30-18:00'},
+  'wework-akasaka-green-cross': {'streetAddress': '東京都港区赤坂2-4-6 赤坂グリーンクロス 6F', 'addressLocality': '赤坂', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:30-18:00'},
+  'wework-shiroyama-trust-tower': {'streetAddress': '東京都港区虎ノ門4-3-1 城山トラストタワー 21F', 'addressLocality': '虎ノ門', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:30-18:00'},
+  'wework-kabuto-one': {'streetAddress': '東京都中央区日本橋兜町7-1 KABUTO ONE', 'addressLocality': '日本橋兜町', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 09:00-18:00'},
+  'wework-hibiya-park-front': {'streetAddress': '東京都千代田区内幸町2-1-6 日比谷パークフロント 19F', 'addressLocality': '内幸町', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 09:00-18:00'},
+  'wework-jimbocho': {'streetAddress': '東京都千代田区神田神保町2-11-15 2F', 'addressLocality': '神田神保町', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 09:00-18:00'},
+  'wework-daiwa-harumi': {'streetAddress': '東京都中央区晴海3-10-1 Daiwa晴海ビル 2F', 'addressLocality': '晴海', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 09:00-18:00'},
+  'wework-link-square-shinjuku': {'streetAddress': '東京都渋谷区千駄ヶ谷5-27-5 リンクスクエア新宿 16F', 'addressLocality': '千駄ヶ谷', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:30-18:00'},
+  'wework-nippon-tv-yotsuya': {'streetAddress': '東京都千代田区麹町5-3-23 日テレ四谷ビル 1F', 'addressLocality': '麹町', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:30-18:00'},
+}
+SEO.update(SEO_ADD); PLACE.update(PLACE_ADD)
+
+# ==== 2026-09-28 cowork_add_2026-09-28_e.py の SEO／場所 ====
+SEO_ADD = {
+  'the-hub-shiodome': ('THE HUB 汐留｜内装・内観・雰囲気の写真｜イタリア街の1棟オフィス',
+    'THE HUB 汐留（東新橋・昭和アステック1号館）の内装・内観・雰囲気を写真で。汐留「イタリア街」の7階建てを1棟で使う拠点。ラウンジ、会議室、応接室、ブース席を歩く順番で紹介します。'),
+  'the-hub-shimbashi-west': ('THE HUB 新橋WEST｜内装・内観・雰囲気の写真｜内幸町3分の機能的なオフィス',
+    'THE HUB 新橋WEST（プロス西新橋ビル6・7階）の内装・内観・雰囲気を写真で。内幸町駅3分、虎ノ門・新橋も徒歩圏。ラウンジ、共有スペース、会議室、個室、ブース席を歩く順番で紹介します。'),
+  'the-hub-tamachi': ('THE HUB 田町｜内装・内観・雰囲気の写真｜テラスと応接室のある共用部',
+    'THE HUB 田町（シャーメゾンステージ田町3〜7階）の内装・内観・雰囲気を写真で。三田駅1分、田町駅3分。ラウンジ、テラス、5名用の会議室、応接室、2〜13名用の個室を歩く順番で紹介します。'),
+  'the-hub-tamachi-mita': ('THE HUB 田町三田｜内装・内観・雰囲気の写真｜1〜14名用の個室がそろうRIPL9',
+    'THE HUB 田町三田（三田・RIPL9の1〜7階）の内装・内観・雰囲気を写真で。「都心の機動力と落ち着きが同居するビジネス拠点」。共有スペース、ラウンジ、会議室、ブース席、個室を紹介します。'),
+  'the-hub-takanawa': ('THE HUB 高輪｜内装・内観・雰囲気の写真｜泉岳寺4分、進化と落ち着きの拠点',
+    'THE HUB 高輪（グレイス高輪ビル8・9階）の内装・内観・雰囲気を写真で。泉岳寺駅4分、高輪ゲートウェイ駅6分。ウェイティングスペース、会議室、個室型と半個室型のブース席、個室を紹介します。'),
+  'the-base-hamamatsucho': ('THE BASE 浜松町｜内装・内観・雰囲気の写真｜20〜25名用のセットアップオフィス',
+    'THE BASE 浜松町（港ビル4階）の内装・内観・雰囲気を写真で。浜松町駅3分、内装完備で敷金・礼金ゼロのワンフロア。オフィススペース、会議室、ブース、ウェイティングスペースを紹介します。'),
+  'the-executive-centre-kyobashi-edogrand': ('The Executive Centre 京橋エドグラン｜内装・内観・雰囲気の写真｜京橋駅直結の26階',
+    'The Executive Centre 京橋エドグラン（26階）の内装・内観・雰囲気を写真で。京橋駅と地下直結、東京駅を見下ろす眺め。石のカウンターのバリスタバー、ラウンジ、個室、4室の会議室を紹介します。'),
+  'the-executive-centre-grantokyo-south-tower': ('The Executive Centre グラントウキョウサウスタワー｜内装・内観・雰囲気の写真｜東京駅1分の7階',
+    'The Executive Centre グラントウキョウサウスタワー（7階）の内装・内観・雰囲気を写真で。東京駅八重洲南口の上、駅から1分。受付、メンバーズラウンジ、パントリー、個室、会議室を紹介します。'),
+  'the-executive-centre-tofrom-yaesu-tower': ('The Executive Centre TOFROM YAESU TOWER｜内装・内観・雰囲気の写真｜和の意匠の220席',
+    'The Executive Centre TOFROM YAESU TOWER（11階）の内装・内観・雰囲気を写真で。東京駅と地下直結。和紙の照明、松の木、瓦に着想を得たバリスタバー、ラウンジ、個室、会議室を紹介します。'),
+  'the-executive-centre-world-trade-center-south-tower': ('The Executive Centre 世界貿易センタービルディング南館｜内装・内観・雰囲気の写真｜東京湾を望む17階',
+    'The Executive Centre 世界貿易センタービルディング南館（17階）の内装・内観・雰囲気を写真で。浜松町駅直結、東京湾を望む窓。黒い大理石のバリスタバー、コワーキング、個室、会議室を紹介します。'),
+}
+PLACE_ADD = {
+  'the-hub-shiodome': {'streetAddress': '東京都港区東新橋2-7-3 昭和アステック1号館', 'addressLocality': '汐留', 'addressRegion': '東京都'},
+  'the-hub-shimbashi-west': {'streetAddress': '東京都港区西新橋2-4-3 プロス西新橋ビル6-7F', 'addressLocality': '新橋', 'addressRegion': '東京都'},
+  'the-hub-tamachi': {'streetAddress': '東京都港区芝5-32-12 シャーメゾンステージ田町3-7F', 'addressLocality': '田町', 'addressRegion': '東京都'},
+  'the-hub-tamachi-mita': {'streetAddress': '東京都港区三田3-4-3 RIPL9（リップルナイン）1-7F', 'addressLocality': '三田', 'addressRegion': '東京都'},
+  'the-hub-takanawa': {'streetAddress': '東京都港区高輪2-14-17 グレイス高輪ビル8-9F', 'addressLocality': '高輪', 'addressRegion': '東京都'},
+  'the-base-hamamatsucho': {'streetAddress': '東京都港区浜松町1-21-4 港ビル4F', 'addressLocality': '浜松町', 'addressRegion': '東京都'},
+  'the-executive-centre-kyobashi-edogrand': {'streetAddress': '東京都中央区京橋2-2-1 京橋エドグラン26階', 'addressLocality': '京橋', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 09:00-18:00'},
+  'the-executive-centre-grantokyo-south-tower': {'streetAddress': '東京都千代田区丸の内1-9-2 グラントウキョウサウスタワー7階', 'addressLocality': '丸の内', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 09:00-18:00'},
+  'the-executive-centre-tofrom-yaesu-tower': {'streetAddress': '東京都中央区八重洲1-6-1 TOFROM YAESU TOWER 11階', 'addressLocality': '八重洲', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 09:00-18:00'},
+  'the-executive-centre-world-trade-center-south-tower': {'streetAddress': '東京都港区浜松町2-4-1 世界貿易センタービルディング南館17階', 'addressLocality': '浜松町', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 09:00-18:00'},
+}
+SEO.update(SEO_ADD); PLACE.update(PLACE_ADD)
+
+# ==== 2026-09-28 cowork_add_2026-09-28_f.py の SEO／場所 ====
+SEO_ADD = {
+  'the-collective-grantokyo-south-tower': ('ザ・コレクティブ グラントウキョウサウスタワー｜内装・内観・雰囲気の写真｜東京駅直結のラグジュアリーコワーキング',
+    'ザ・コレクティブ グラントウキョウサウスタワー（9階）の内装・内観・雰囲気を写真で。JustCo 最上位ブランド。アーロンチェアの共用デスク、パントリー、会議室、個室を歩く順番で紹介します。'),
+  'newwork-shibuya-goto-ikueikai-building': ('NewWork 渋谷五島育英会ビル The Flagship｜内装・内観・雰囲気の写真｜93席の旗艦店',
+    'NewWork 渋谷五島育英会ビル The Flagship（7階）の内装・内観・雰囲気を写真で。東急の法人会員制サテライトオフィス。93席、プレミアム会議室、個室ブース、マッサージチェアを紹介します。'),
+  'newwork-ginza': ('NewWork 銀座｜内装・内観・雰囲気の写真｜銀座と新橋のあいだの2階',
+    'NewWork 銀座（K-18ビル2階）の内装・内観・雰囲気を写真で。東急が運営する法人会員制のサテライトオフィス。新橋駅5分、40席と6名用の会議室、個室ブースを歩く順番で紹介します。'),
+  'newwork-ebisu': ('NewWork 恵比寿｜内装・内観・雰囲気の写真｜西口3分の39席',
+    'NewWork 恵比寿（恵比寿STビル3階）の内装・内観・雰囲気を写真で。東急が運営する法人会員制のサテライトオフィス。39席と6名・4名用の会議室、個室ブースを歩く順番で紹介します。'),
+  'newwork-akihabara': ('NewWork 秋葉原｜内装・内観・雰囲気の写真｜駅1分・土日祝も開く10階',
+    'NewWork 秋葉原（新秋葉原ビル10階）の内装・内観・雰囲気を写真で。東急が運営する法人会員制のサテライトオフィス。土日祝日も営業、31席と会議室、9室の個室ブースを紹介します。'),
+  'newwork-ikebukuro-higashiguchi': ('NewWork 池袋東口｜内装・内観・雰囲気の写真｜個室ブース15室の9階',
+    'NewWork 池袋東口（菊邑91ビル9階）の内装・内観・雰囲気を写真で。東急が運営する法人会員制のサテライトオフィス。土日祝日も営業、40席、15室の個室ブース、会議室を紹介します。'),
+  'newwork-daimon-hamamatsucho': ('NewWork 大門・浜松町｜内装・内観・雰囲気の写真｜大門駅1分の4階',
+    'NewWork 大門・浜松町（RBM浜松町ビル4階）の内装・内観・雰囲気を写真で。東急が運営する法人会員制のサテライトオフィス。大門駅1分、36席と会議室、個室ブースを歩く順番で紹介します。'),
+  'newwork-ueno': ('NewWork 上野｜内装・内観・雰囲気の写真｜上野駅3分の37席',
+    'NewWork 上野（VORT上野2階）の内装・内観・雰囲気を写真で。東急が運営する法人会員制のサテライトオフィス。上野駅3分、37席と6名・4名用の会議室、個室ブースを歩く順番で紹介します。'),
+  'newwork-oimachi': ('NewWork 大井町｜内装・内観・雰囲気の写真｜個室ブース11室の5階',
+    'NewWork 大井町（K-3ビル5階）の内装・内観・雰囲気を写真で。東急が運営する法人会員制のサテライトオフィス。土日祝日も営業、27席、11室の個室ブース、8名用の会議室を紹介します。'),
+  'newwork-kinshicho-2nd': ('NewWork 錦糸町2nd｜内装・内観・雰囲気の写真｜南口2分・土日祝も開く2階',
+    'NewWork 錦糸町2nd（錦糸町スクエアビル2階）の内装・内観・雰囲気を写真で。東急が運営する法人会員制のサテライトオフィス。土日祝日も営業、27席と会議室、個室ブースを紹介します。'),
+}
+PLACE_ADD = {
+  'the-collective-grantokyo-south-tower': {'streetAddress': '東京都千代田区丸の内1-9-2 グラントウキョウサウスタワー9階', 'addressLocality': '丸の内', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 09:00-18:00'},
+  'newwork-shibuya-goto-ikueikai-building': {'streetAddress': '東京都渋谷区道玄坂1-10-7 五島育英会ビル7F', 'addressLocality': '渋谷', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:00-20:00'},
+  'newwork-ginza': {'streetAddress': '東京都中央区銀座8-9-13 K-18ビル2F', 'addressLocality': '銀座', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:00-20:00'},
+  'newwork-ebisu': {'streetAddress': '東京都渋谷区東3-24-2 恵比寿STビル3F', 'addressLocality': '恵比寿', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:00-20:00'},
+  'newwork-akihabara': {'streetAddress': '東京都千代田区外神田1-18-19 新秋葉原ビル10F', 'addressLocality': '秋葉原', 'addressRegion': '東京都', 'openingHours': 'Mo-Su 08:00-21:00'},
+  'newwork-ikebukuro-higashiguchi': {'streetAddress': '東京都豊島区東池袋1-41-6 菊邑91ビル9F', 'addressLocality': '池袋', 'addressRegion': '東京都', 'openingHours': 'Mo-Su 08:00-21:00'},
+  'newwork-daimon-hamamatsucho': {'streetAddress': '東京都港区浜松町1-27-12 RBM浜松町ビル4F', 'addressLocality': '浜松町', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:00-21:00'},
+  'newwork-ueno': {'streetAddress': '東京都台東区上野7-4-7 VORT上野2F', 'addressLocality': '上野', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:00-21:00'},
+  'newwork-oimachi': {'streetAddress': '東京都品川区大井1-14-3 K-3ビル5F', 'addressLocality': '大井町', 'addressRegion': '東京都', 'openingHours': 'Mo-Su 08:00-21:00'},
+  'newwork-kinshicho-2nd': {'streetAddress': '東京都墨田区江東橋3-10-8 錦糸町スクエアビル2F', 'addressLocality': '錦糸町', 'addressRegion': '東京都', 'openingHours': 'Mo-Su 08:00-20:00'},
+}
+SEO.update(SEO_ADD); PLACE.update(PLACE_ADD)
