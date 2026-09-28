@@ -436,3 +436,114 @@ PLACE_ADD = {
   'crosscoop-shimbashi': {'streetAddress': '東京都港区新橋1-1-13 アーバンネット内幸町ビル3F', 'addressLocality': '新橋', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 09:00-18:00'},
 }
 SEO.update(SEO_ADD); PLACE.update(PLACE_ADD)
+
+# 2026-09-28 cowork_add_2026-09-28_a.py
+SEO_ADD = {
+  'wework-marunouchi-kitaguchi': ('WeWork 丸の内北口｜内装・内観・雰囲気の写真｜フロアごとに違うラウンジ',
+    'WeWork 丸の内北口（丸の内北口ビルディング7〜11階）の内装・内観・雰囲気を写真で。東京駅直結、リラックスがコンセプト。フロアごとのラウンジ、35室の会議室を歩く順番で紹介します。'),
+  'wework-kamiyacho-trust-tower': ('WeWork 神谷町トラストタワー｜内装・内観・雰囲気の写真｜虎ノ門の過去と現代',
+    'WeWork 神谷町トラストタワー（21〜24階）の内装・内観・雰囲気を写真で。神谷町駅直結の国内最大規模の拠点。和の要素の共用エリア、56室の会議室、アートを歩く順番で紹介します。'),
+  'wework-hibiya-fort-tower': ('WeWork 日比谷FORT TOWER｜内装・内観・雰囲気の写真｜メタボリズムの8フロア',
+    'WeWork 日比谷FORT TOWER（4〜11階）の内装・内観・雰囲気を写真で。内装のテーマはメタボリズム。10階のホットデスクとコミュニティバー、11階の SOHO 区画を歩く順番で紹介します。'),
+  'wework-ginza-six': ('WeWork ギンザシックス｜内装・内観・雰囲気の写真｜最上階と屋上庭園',
+    'WeWork ギンザシックス（GINZA SIX 13階）の内装・内観・雰囲気を写真で。銀座駅直結、街に合わせたラグジュアリーな内装。共用エリア、9室の会議室、屋上庭園を歩く順番で紹介します。'),
+  'wework-kanda-square': ('WeWork KANDA SQUARE｜内装・内観・雰囲気の写真｜電気街と昔のゲーム',
+    'WeWork KANDA SQUARE（神田錦町）の内装・内観・雰囲気を写真で。秋葉原の電気街と昔のゲームがテーマのアート。共用エリア、45室の会議室、専用オフィスを歩く順番で紹介します。'),
+  'wework-tokyo-square-garden': ('WeWork 東京スクエアガーデン｜内装・内観・雰囲気の写真｜ワンフロアに凝縮',
+    'WeWork 東京スクエアガーデン（14階）の内装・内観・雰囲気を写真で。京橋駅直結、WeWork の要素をワンフロアに凝縮。共用エリア、15室の会議室、ビル内の施設を歩く順番で紹介します。'),
+  'wework-d-tower-nishishinjuku': ('WeWork Dタワー西新宿｜内装・内観・雰囲気の写真｜モダニズムと木の濃淡',
+    'WeWork Dタワー西新宿（16階）の内装・内観・雰囲気を写真で。モダニズムがコンセプトの木の濃淡の空間。共用エリア、高層階の眺め、20室の会議室を歩く順番で紹介します。'),
+  'wework-tk-ikedayama': ('WeWork TK 池田山｜内装・内観・雰囲気の写真｜昭和のノスタルジア',
+    'WeWork TK 池田山（TK池田山ビル2階）の内装・内観・雰囲気を写真で。五反田駅から徒歩3分、昭和のノスタルジアがコンセプト。共用エリア、会議室、個室を歩く順番で紹介します。'),
+  'wework-hareza-ikebukuro': ('WeWork Hareza 池袋｜内装・内観・雰囲気の写真｜アート・日本絵画・映画',
+    'WeWork Hareza 池袋（Hareza Tower 高層階）の内装・内観・雰囲気を写真で。池袋のアートや日本絵画、映画に着想した内装。共用エリア、22室の会議室を歩く順番で紹介します。'),
+  'wework-ark-hills-south': ('WeWork アークヒルズサウス｜内装・内観・雰囲気の写真｜アメリカンと華やかさ',
+    'WeWork アークヒルズサウス（アークヒルズサウスタワー16階）の内装・内観・雰囲気を写真で。六本木一丁目駅直結、アメリカンな雰囲気の空間。共用エリアと会議室を歩く順番で紹介します。'),
+}
+PLACE_ADD = {
+  'wework-marunouchi-kitaguchi': {'streetAddress': '東京都千代田区丸の内1-6-5 丸の内北口ビルディング 9F', 'addressLocality': '丸の内', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:30-20:00'},
+  'wework-kamiyacho-trust-tower': {'streetAddress': '東京都港区虎ノ門4-1-1 神谷町トラストタワー 23F', 'addressLocality': '神谷町', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:30-20:00'},
+  'wework-hibiya-fort-tower': {'streetAddress': '東京都港区西新橋1-1-1 日比谷フォートタワー 10F', 'addressLocality': '西新橋', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:30-18:00'},
+  'wework-ginza-six': {'streetAddress': '東京都中央区銀座6-10-1 GINZA SIX 13F', 'addressLocality': '銀座', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:30-18:00'},
+  'wework-kanda-square': {'streetAddress': '東京都千代田区神田錦町2-2-1 KANDA SQUARE 11F', 'addressLocality': '神田', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:30-18:00'},
+  'wework-tokyo-square-garden': {'streetAddress': '東京都中央区京橋3-1-1 東京スクエアガーデン 14F', 'addressLocality': '京橋', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:30-18:00'},
+  'wework-d-tower-nishishinjuku': {'streetAddress': '東京都新宿区西新宿6-11-3 Dタワー西新宿 16F', 'addressLocality': '西新宿', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:30-18:00'},
+  'wework-tk-ikedayama': {'streetAddress': '東京都品川区東五反田5-22-33 TK池田山ビル 2F', 'addressLocality': '五反田', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:30-18:00'},
+  'wework-hareza-ikebukuro': {'streetAddress': '東京都豊島区東池袋1-18-1 Hareza Tower 20F', 'addressLocality': '池袋', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:30-20:00'},
+  'wework-ark-hills-south': {'streetAddress': '東京都港区六本木1-4-5 アークヒルズサウスタワー 16F', 'addressLocality': '六本木', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:30-18:00'},
+}
+SEO.update(SEO_ADD); PLACE.update(PLACE_ADD)
+
+# 2026-09-28 cowork_add_2026-09-28_b.py
+SEO_ADD = {
+  'the-executive-centre-jp-tower': ('The Executive Centre JPタワー｜内装・内観・雰囲気の写真｜東京駅を見下ろすバリスタバー',
+    'The Executive Centre JPタワー（11・14階）の内装・内観・雰囲気を写真で。旧東京中央郵便局を再生した東京駅直結のビル。ラウンジ、バリスタバー、個室、会議室を歩く順番で紹介します。'),
+  'the-executive-centre-shin-marunouchi-center': ('The Executive Centre 新丸の内センタービル｜内装・内観・雰囲気の写真｜木と大理石の2フロア',
+    'The Executive Centre 新丸の内センタービル（20・21階）の内装・内観・雰囲気を写真で。東京駅と地下直結。大理石とオークの受付、リフレッシュエリア、個室、6室の会議室を紹介します。'),
+  'the-executive-centre-roppongi-hills': ('The Executive Centre 六本木ヒルズ ノースタワー｜内装・内観・雰囲気の写真｜オークと障子風の会議室',
+    'The Executive Centre 六本木ヒルズ ノースタワー（16・17階）の内装・内観・雰囲気を写真で。明るいオークの仕上げと障子風の会議室。受付、リフレッシュエリア、個室を歩く順番で紹介します。'),
+  'the-executive-centre-sanno-park-tower': ('The Executive Centre 山王パークタワー｜内装・内観・雰囲気の写真｜静けさのある3階',
+    'The Executive Centre 山王パークタワー（3階）の内装・内観・雰囲気を写真で。溜池山王・国会議事堂前駅直結。ラウンジ、コワーキング、個室、会議室、ファンクションルームを紹介します。'),
+  'the-executive-centre-cerulean-tower': ('The Executive Centre セルリアンタワー｜内装・内観・雰囲気の写真｜茶室に着想を得た受付',
+    'The Executive Centre セルリアンタワー（15階）の内装・内観・雰囲気を写真で。茶室に着想を得た受付、ブース席のラウンジ、コワーキング、パントリー、個室、渋谷の眺めを紹介します。'),
+  'the-executive-centre-jingumae-tower': ('The Executive Centre 神宮前タワービルディング｜内装・内観・雰囲気の写真｜英国と日本の混じる内装',
+    'The Executive Centre 神宮前タワービルディング（12〜14階）の内装・内観・雰囲気を写真で。オークの床と紺の壁紙、ヴィンテージ家具。ラウンジ、個室、9室の会議室を紹介します。'),
+  'the-executive-centre-meguro-arco-tower': ('The Executive Centre 目黒アルコタワー｜内装・内観・雰囲気の写真｜目黒川を見下ろす7階',
+    'The Executive Centre 目黒アルコタワー（7階）の内装・内観・雰囲気を写真で。目黒川の桜並木を見下ろす木の仕上げのセンター。ラウンジ、コワーキング、個室、ボードルームを紹介します。'),
+  'justco-shibuya-hikarie': ('JustCo 渋谷ヒカリエ｜内装・内観・雰囲気の写真｜渋谷駅直結の33階',
+    'ジャストコ 渋谷ヒカリエ（33階）の内装・内観・雰囲気を写真で。渋谷駅直結、晴れた日は富士山まで見渡せる高さ。メインラウンジ、ホットデスク、プライベートオフィス、会議室を紹介します。'),
+  'justco-shinjuku-miraina-tower': ('JustCo 新宿ミライナタワー｜内装・内観・雰囲気の写真｜新宿駅直結の18階',
+    'ジャストコ 新宿ミライナタワー（18階）の内装・内観・雰囲気を写真で。新宿駅ミライナタワー改札直結。メインラウンジ、パントリー、ホットデスク、プライベートオフィス、会議室を紹介します。'),
+  'justco-grantokyo-south-tower': ('JustCo グラントウキョウサウスタワー｜内装・内観・雰囲気の写真｜東京駅直結の11階',
+    'ジャストコ グラントウキョウサウスタワー（11階）の内装・内観・雰囲気を写真で。東京駅直結、八重洲南口から約150m。メインラウンジ、プライベートオフィス、会議室を歩く順番で紹介します。'),
+}
+PLACE_ADD = {
+  'the-executive-centre-jp-tower': {'streetAddress': '東京都千代田区丸の内2-7-2 JPタワー11・14階', 'addressLocality': '丸の内', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 09:00-18:00'},
+  'the-executive-centre-shin-marunouchi-center': {'streetAddress': '東京都千代田区丸の内1-6-2 新丸の内センタービル20・21階', 'addressLocality': '丸の内', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 09:00-18:00'},
+  'the-executive-centre-roppongi-hills': {'streetAddress': '東京都港区六本木6-2-31 六本木ヒルズノースタワー16・17階', 'addressLocality': '六本木', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 09:00-18:00'},
+  'the-executive-centre-sanno-park-tower': {'streetAddress': '東京都千代田区永田町2-11-1 山王パークタワー3階', 'addressLocality': '永田町', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 09:00-18:00'},
+  'the-executive-centre-cerulean-tower': {'streetAddress': '東京都渋谷区桜丘町26-1 セルリアンタワー15階', 'addressLocality': '渋谷', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:30-18:00'},
+  'the-executive-centre-jingumae-tower': {'streetAddress': '東京都渋谷区神宮前1-5-8 神宮前タワービルディング12〜14階', 'addressLocality': '原宿', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 09:00-18:00'},
+  'the-executive-centre-meguro-arco-tower': {'streetAddress': '東京都目黒区下目黒1-8-1 アルコタワー7階', 'addressLocality': '目黒', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 09:00-18:00'},
+  'justco-shibuya-hikarie': {'streetAddress': '東京都渋谷区渋谷2-21-1 渋谷ヒカリエ33階', 'addressLocality': '渋谷', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 09:00-18:00'},
+  'justco-shinjuku-miraina-tower': {'streetAddress': '東京都新宿区新宿4-1-6 JR新宿ミライナタワー18階', 'addressLocality': '新宿', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 09:00-18:00'},
+  'justco-grantokyo-south-tower': {'streetAddress': '東京都千代田区丸の内1-9-2 グラントウキョウサウスタワー11階', 'addressLocality': '丸の内', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 09:00-18:00'},
+}
+SEO.update(SEO_ADD); PLACE.update(PLACE_ADD)
+
+# 2026-09-28 cowork_add_2026-09-28_c.py
+SEO_ADD = {
+  'the-hub-hanzomon': ('THE HUB 半蔵門｜内装・内観・雰囲気の写真｜麹町の4フロアと1名用ブース',
+    'THE HUB 半蔵門（BIZMARKS 麹町2・3・5・6階）の内装・内観・雰囲気を写真で。半蔵門駅と麹町駅から3分。ウェイティングスペース、1〜6名用の個室、会議室、ブース席を歩く順番で紹介します。'),
+  'the-hub-shimbashi': ('THE HUB 新橋｜内装・内観・雰囲気の写真｜4路線が使える第一日比谷ビル',
+    'THE HUB 新橋（第一日比谷ビル4〜7階）の内装・内観・雰囲気を写真で。内幸町駅1分、新橋・虎ノ門・日比谷も徒歩圏。ラウンジ、受付、1〜9名用の個室、会議室を歩く順番で紹介します。'),
+  'the-hub-akasaka': ('THE HUB 赤坂｜内装・内観・雰囲気の写真｜1階に待合と契約者ラウンジ',
+    'THE HUB 赤坂（BIZMARKS 赤坂）の内装・内観・雰囲気を写真で。2020年にリノベーションした4階建て。1階の契約者専用ラウンジと待合、6名用の会議室、全室個室のオフィスを歩く順番で紹介します。'),
+  'the-hub-takadanobaba': ('THE HUB 高田馬場｜内装・内観・雰囲気の写真｜新築ビルの会話・通話OKラウンジ',
+    'THE HUB 高田馬場（東京三協信用金庫本店ビル6〜8階）の内装・内観・雰囲気を写真で。2023年新築、駅1分。会話・通話OKのラウンジ、完全個室のブース、1〜11名用の個室を歩く順番で紹介します。'),
+  'the-hub-meguro': ('THE HUB 目黒｜内装・内観・雰囲気の写真｜少人数企業向けの駅3分オフィス',
+    'THE HUB 目黒（千里馬ビル）の内装・内観・雰囲気を写真で。目黒駅西口から3分、少人数企業向けのオフィス。ラウンジ、ウェイティングスペース、会議室、1・2・5名用の個室を歩く順番で紹介します。'),
+  'the-hub-toranomon': ('THE HUB 虎ノ門｜内装・内観・雰囲気の写真｜駅直結、士業・コンサル向け',
+    'THE HUB 虎ノ門（新虎ノ門実業会館5階）の内装・内観・雰囲気を写真で。虎ノ門駅10番出口直結。4名用の会議室3室、MTGコーナー、ブース席、1〜5名用の個室を歩く順番で紹介します。'),
+  'co-ba-chofu': ('co-ba CHOFU｜内装・内観・雰囲気の写真｜調布駅1分の仕事軸のコミュニティ',
+    'co-ba CHOFU（調布・寿ビル2階）の内装・内観・雰囲気を写真で。2014年開設、「仕事軸のコミュニティ」を掲げる調布駅1分の場所。対話しやすいワークテーブル、会議室、フォンブースを紹介します。'),
+  'co-ba-re-sohko-tamachi': ('co-ba Re-SOHKO 田町｜内装・内観・雰囲気の写真｜芝浦のスケルトン空間',
+    'co-ba Re-SOHKO 田町（芝浦・第3東運ビル8階）の内装・内観・雰囲気を写真で。ベイエリアのスケルトン空間を生かしたコワーキングと個室、大小の会議室、屋上会議スペースを歩く順番で紹介します。'),
+  'co-ba-kamikitazawa': ('co-coono KAMIKITAZAWA WORK LOUNGE｜内装・内観・雰囲気の写真｜住まいに併設したラウンジ',
+    'co-coono KAMIKITAZAWA WORK LOUNGE（上北沢）の内装・内観・雰囲気を写真で。リノベーション賃貸住宅に併設し、朝6時から開くワークラウンジ。会議室やイベントスペースも紹介します。'),
+  'co-ba-re-sohko-shinagawa': ('co-ba Re-SOHKO shinagawa｜内装・内観・雰囲気の写真｜港南の「ニュー倉庫街」',
+    'co-ba Re-SOHKO shinagawa（港南の倉庫ビル4階）の内装・内観・雰囲気を写真で。倉庫でありショールームでもある「ニュー倉庫街」。ラウンジ、ミーティングルーム、倉庫空間を紹介します。'),
+}
+PLACE_ADD = {
+  'the-hub-hanzomon': {'streetAddress': '東京都千代田区平河町1-3-6 BIZMARKS 麹町2-3F・5-6F', 'addressLocality': '半蔵門', 'addressRegion': '東京都'},
+  'the-hub-shimbashi': {'streetAddress': '東京都港区新橋1-18-21 第一日比谷ビル4-7F', 'addressLocality': '新橋', 'addressRegion': '東京都'},
+  'the-hub-akasaka': {'streetAddress': '東京都港区赤坂2-16-6 BIZMARKS 赤坂', 'addressLocality': '赤坂', 'addressRegion': '東京都'},
+  'the-hub-takadanobaba': {'streetAddress': '東京都新宿区高田馬場2-17-3 東京三協信用金庫本店ビル6-8F', 'addressLocality': '高田馬場', 'addressRegion': '東京都'},
+  'the-hub-meguro': {'streetAddress': '東京都品川区上大崎2-17-6 千里馬ビル', 'addressLocality': '目黒', 'addressRegion': '東京都'},
+  'the-hub-toranomon': {'streetAddress': '東京都港区虎ノ門1-1-21 新虎ノ門実業会館5F', 'addressLocality': '虎ノ門', 'addressRegion': '東京都'},
+  'co-ba-chofu': {'streetAddress': '東京都調布市小島町2丁目51番地2号 寿ビル2階', 'addressLocality': '調布', 'addressRegion': '東京都', 'openingHours': 'Mo-Su 07:00-23:59'},
+  'co-ba-re-sohko-tamachi': {'streetAddress': '東京都港区芝浦1-13-10 第3東運ビル8階', 'addressLocality': '田町', 'addressRegion': '東京都', 'openingHours': 'Mo-Sa 09:00-22:00'},
+  'co-ba-kamikitazawa': {'streetAddress': '東京都杉並区上高井戸3-1-3', 'addressLocality': '上北沢', 'addressRegion': '東京都', 'openingHours': 'Mo-Su 06:00-24:00'},
+  'co-ba-re-sohko-shinagawa': {'streetAddress': '東京都港区港南3丁目4-27 第2東運ビル（WARE HOUSE Konan）4F', 'addressLocality': '品川', 'addressRegion': '東京都'},
+}
+SEO.update(SEO_ADD); PLACE.update(PLACE_ADD)
