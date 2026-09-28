@@ -166,3 +166,6 @@ src = src.replace("open(OUT + 'site.webmanifest', 'w'", "for _old, _new in REDIR
 src = re.sub(r"a\['industry'\], 'オフィス', '([^']*)',", r"a['industry'], '\1',", src)
 open(os.path.join(HERE, f'_generated_{os.environ["BRAND"]}.py'), 'w', encoding='utf-8').write(src)
 exec(compile(src, f'build_{os.environ["BRAND"]}.py', 'exec'))
+
+# 2026-09-28 AdSense 審査：About に運営者情報を足す
+exec(open(os.path.join(HERE, 'about_ops.py'), encoding='utf-8').read())
