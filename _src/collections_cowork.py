@@ -60,3 +60,9 @@ COLLECTIONS += [
  dict(slug='midori-so', title='MIDORI.so の拠点', lead='蔦の廃屋、1棟まるごとの旗艦拠点、泊まれる建物、商業ビルの8階。同じ運営会社が、建物ごとに違う場所をつくっています。',
       items=[('midori-so-nakameguro','蔦に覆われた廃屋を、2棟のシェアオフィスに'),('midori-so-nagatacho','地下1階から6階まで1棟丸ごと'),('midori-so-bakuroyokoyama','カフェ、印刷の工房、ギャラリー、屋上の畑'),('midori-so-shibuya','桜丘の4つの階'),('midori-so-aoyama','固定の机を置かない'),('midori-so-ikejiri','WEST・CENTRAL・EAST の3つの棟'),('midori-so-kichijoji','吉祥寺PARCOの8階'),('midori-so-nihonbashi','働くことと泊まることが同じ建物に')]),
 ]
+
+# ==== 2026-09-28 人の顔が分かる写真を外した結果、保留にした施設は特集からも外す ====
+_GONE_FACE = {'andwork-shibuya-higashi', 'wework-tokyo-square-garden', 'base-point-shinjuku', 'the-hub-shimbashi', 'the-hub-toranomon', 'midori-so-ikejiri', 'the-hub-takadanobaba', 'tokyo-innovation-base', 'saai-yurakucho', 'hills-house-azabudai', 'the-hub-nihonbashi-kayabacho', 'the-hub-meguro', 'tokyo-venture-capital-hub', 'the-hub-kayabacho', 'the-hub-ginza-6chome', 'wework-ginza-six', 'the-hub-hanzomon', 'the-hub-ginza-oct', 'the-hub-nihonbashi-odenmacho'}
+for _c in COLLECTIONS:
+    _c['items'] = [x for x in _c['items'] if x[0] not in _GONE_FACE]
+QA['secs'] = [s for s in QA['secs'] if s[0] not in _GONE_FACE]

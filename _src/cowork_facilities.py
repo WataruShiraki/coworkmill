@@ -4682,3 +4682,27 @@ for _a in A30:
     if _h != _a['hero'][0]:
         _cap = next((p[1] for st in _a['steps'] for p in st[3] if p[0] == _h), _a['company'] + 'の様子')
         _a['hero'] = (_h, _cap)
+
+
+# ==== 2026-09-28 人の顔が分かる写真はすべて外す（わたるさんのルール「人の顔が認識できる画像は絶対使わない」）／表示されない写真も外す／外した結果、店内の写真が1枚以下になる施設は保留 ====
+_HOLD_FACE = {'andwork-shibuya-higashi', 'wework-tokyo-square-garden', 'base-point-shinjuku', 'wework-ginza-six', 'hills-house-azabudai', 'tokyo-innovation-base', 'midori-so-ikejiri', 'the-hub-ginza-oct', 'the-hub-nihonbashi-odenmacho', 'the-hub-toranomon', 'tokyo-venture-capital-hub', 'the-hub-kayabacho', 'the-hub-takadanobaba', 'the-hub-ginza-6chome', 'the-hub-meguro', 'the-hub-shimbashi', 'the-hub-hanzomon', 'saai-yurakucho', 'the-hub-nihonbashi-kayabacho'}
+_DROP_FACE = {'100banch': [6, 8], 'andwork-azabujuban': [2, 3, 6, 8], 'andwork-shibuya': [1, 2, 3, 4, 6, 8], 'andwork-shibuya-higashi': [2, 5, 6, 8], 'base-point-shinjuku': [2, 4], 'business-airport-tokyo': [8], 'cic-tokyo': [1], 'co-ba-chofu': [1, 2], 'co-ba-ebisu': [1, 2, 3], 'co-ba-re-sohko-tamachi': [7, 8], 'co-lab-shibuya-cast': [1, 2, 3], 'crosscoop-nihonbashi': [1, 2, 3, 4, 5, 7], 'crosscoop-shibuya': [2, 3, 4, 5], 'crosscoop-shibuya-nextsite': [1, 2, 3, 4, 6, 7], 'crosscoop-shimbashi': [1, 2, 3, 4, 5, 6], 'diagonal-run-tokyo': [1], 'egg-japan-marunouchi': [1], 'lifork-otemachi': [2, 3, 7], 'midori-so-aoyama': [7, 8], 'midori-so-bakuroyokoyama': [3, 5, 6], 'midori-so-kichijoji': [2, 4], 'midori-so-nagatacho': [3, 4], 'midori-so-nakameguro': [3, 4], 'midori-so-nihonbashi': [2, 4, 5, 7], 'midori-so-shibuya': [2, 3, 4, 6, 7], 'potluck-yaesu': [6], 'senq-aoyama': [1], 'senq-kasumigaseki': [2], 'share-m-10': [6], 'shibuya-qws': [2, 3, 4, 5], 'the-executive-centre-cerulean-tower': [2, 3, 4, 7], 'the-executive-centre-jp-tower': [1, 2, 3, 4, 5], 'the-executive-centre-roppongi-hills': [2], 'the-executive-centre-sanno-park-tower': [2], 'the-executive-centre-shin-marunouchi-center': [7], 'the-hub-akasaka': [8], 'the-hub-nihonbashi-kabutocho': [1, 2, 3, 4], 'wework-ark-hills-south': [3, 6], 'wework-d-tower-nishishinjuku': [1, 2, 3, 5], 'wework-hareza-ikebukuro': [3, 4], 'wework-hibiya-fort-tower': [1, 3, 4, 5], 'wework-kamiyacho-trust-tower': [2, 3], 'wework-kanda-square': [4, 5, 6], 'wework-marunouchi-kitaguchi': [1, 2, 3, 4, 6], 'wework-shibuya-scramble-square': [2, 3, 5, 6, 8], 'wework-tk-ikedayama': [1, 2, 5, 6, 7], 'wework-tokyo-square-garden': [3, 4, 7], 'workstyling-kasumigaseki-building': [3], 'workstyling-nihonbashi-mitsui-tower': [3, 8], 'workstyling-otemachi': [4], 'workstyling-shinagawa': [2, 3], 'workstyling-shinjuku-mitsui-building': [3], 'workstyling-tokyo-midtown-hibiya': [2, 3, 4], 'workstyling-tokyo-midtown-yaesu': [2]}
+A30[:] = [a for a in A30 if a['slug'] not in _HOLD_FACE]
+for _a in A30:
+    _s = _a['slug']
+    if _s not in _DROP_FACE: continue
+    for _n in _DROP_FACE[_s]: IMG30[_s].pop(str(_n), None)
+    _st = [(st[0], st[1], st[2], [p for p in st[3] if p[0] not in _DROP_FACE[_s]]) for st in _a['steps']]
+    _st = [st for st in _st if st[3]]
+    _a['steps'] = [(_re.sub(r'^\d+', '%02d' % (i + 1), st[0]),) + tuple(st[1:]) for i, st in enumerate(_st)]
+    _a['photo_total'] = len(IMG30[_s])
+    if str(_a['hero'][0]) not in IMG30[_s]:
+        _h = next(p[0] for st in _a['steps'] for p in st[3])  # 本文で使っている写真の先頭（使っていない写真は選ばない）
+        _cap = next((p[1] for st in _a['steps'] for p in st[3] if p[0] == _h), '館内の様子')
+        _a['hero'] = (_h, _cap)
+# 外したあとのTOPも館内の写真に（ロッカー・ロゴの写真はTOPにしない）
+_HERO_FACE = {'lifork-otemachi': 6, 'diagonal-run-tokyo': 4}
+for _a in A30:
+    _h = _HERO_FACE.get(_a['slug'])
+    if _h and str(_h) in IMG30[_a['slug']]:
+        _a['hero'] = (_h, next((p[1] for st in _a['steps'] for p in st[3] if p[0] == _h), '館内の様子'))

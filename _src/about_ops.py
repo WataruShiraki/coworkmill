@@ -23,3 +23,14 @@ if 'id="ops"' not in _h:
     _h = _h.replace(f'<title>{_B["name"]} について', f'<title>{_B["name"]} について・運営者情報', 1)
     open(_abp, 'w', encoding='utf-8').write(_h)
     print('about_ops ok')
+
+# 2026-09-28 掲載をやめた店（gone.txt に「セクション/スラッグ」を1行ずつ）は、一覧ページへ転送する
+import os as _os, json as _json
+_gp = _os.path.join(globals().get('HERE', '.'), 'gone.txt')
+if _os.path.exists(_gp) and _os.path.exists(OUT + 'vercel.json'):
+    _vj = _json.load(open(OUT + 'vercel.json'))
+    for _l in open(_gp, encoding='utf-8').read().split():
+        _sec_, _slug_ = _l.split('/')
+        for _e in ('.html', ''):
+            _vj['redirects'].append({"source": f"/{_sec_}/{_slug_}{_e}", "destination": f"/{_sec_}/", "permanent": True})
+    open(OUT + 'vercel.json', 'w').write(_json.dumps(_vj, indent=1) + '\n')

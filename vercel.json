@@ -9,6 +9,196 @@
    "source": "/:path*/index.html",
    "destination": "/:path*/",
    "permanent": true
+  },
+  {
+   "source": "/spaces/hills-house-azabudai.html",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/spaces/hills-house-azabudai",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/spaces/midori-so-ikejiri.html",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/spaces/midori-so-ikejiri",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/spaces/saai-yurakucho.html",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/spaces/saai-yurakucho",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/spaces/the-hub-ginza-6chome.html",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/spaces/the-hub-ginza-6chome",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/spaces/the-hub-ginza-oct.html",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/spaces/the-hub-ginza-oct",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/spaces/the-hub-hanzomon.html",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/spaces/the-hub-hanzomon",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/spaces/the-hub-kayabacho.html",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/spaces/the-hub-kayabacho",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/spaces/the-hub-meguro.html",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/spaces/the-hub-meguro",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/spaces/the-hub-nihonbashi-kayabacho.html",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/spaces/the-hub-nihonbashi-kayabacho",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/spaces/the-hub-nihonbashi-odenmacho.html",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/spaces/the-hub-nihonbashi-odenmacho",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/spaces/the-hub-shimbashi.html",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/spaces/the-hub-shimbashi",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/spaces/the-hub-takadanobaba.html",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/spaces/the-hub-takadanobaba",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/spaces/the-hub-toranomon.html",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/spaces/the-hub-toranomon",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/spaces/tokyo-innovation-base.html",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/spaces/tokyo-innovation-base",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/spaces/tokyo-venture-capital-hub.html",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/spaces/tokyo-venture-capital-hub",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/spaces/wework-ginza-six.html",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/spaces/wework-ginza-six",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/spaces/base-point-shinjuku.html",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/spaces/base-point-shinjuku",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/spaces/wework-tokyo-square-garden.html",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/spaces/wework-tokyo-square-garden",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/spaces/andwork-shibuya-higashi.html",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/spaces/andwork-shibuya-higashi",
+   "destination": "/spaces/",
+   "permanent": true
   }
  ]
 }
