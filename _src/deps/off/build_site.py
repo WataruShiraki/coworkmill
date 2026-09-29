@@ -433,6 +433,8 @@ def cc(c, p):
     return (f'<a class="cc" href="{p}collections/{c["slug"]}.html">{main_i}<div class="ccm">{sub}</div>'
             f'<h3>{E(c["title"])}</h3><p class="ccs">{E(c["lead"])}</p></a>')
 
+# 2026-09-29 わたるさん「WALLみたいに一覧ボタンに数を入れろ」→ トップの一覧ボタン3つ全部に数（WALL: VIEW ALL 128 OFFICES）
+_KW = globals().get('KIND_WORD', '社') if globals().get('KIND_WORD') not in (None, '', 'オフィス') else '社'
 # ---- トップ（WALL index.html と同じ並び） ----
 p = ''
 slides = ''
@@ -459,11 +461,11 @@ top = (head('OFFISNAP（オフィスナップ）海外オフィス｜有名企�
        f'<section class="hero hslider" aria-roledescription="carousel">{slides}<div class="hdots">{dots}</div></section>{HERO_JS}\n\n'
        '<form class="tsearch" action="offices/index.html" method="get" role="search"><input type="search" name="q" placeholder="会社名・都市・キーワードで探す" aria-label="オフィスを探す"><button type="submit">検索</button></form>\n'
        f'<section class="sec"><div class="sec-h"><h2>新着記事</h2><span class="sub">エントランスから順に、1社ずつご案内</span><a class="more" href="offices/index.html">一覧へ →</a></div>\n'
-       f'<div class="cards">{"".join(card(a, p) for a in A[:12])}</div><div class="viewall"><a href="offices/index.html">オフィス一覧を見る <span>→</span></a></div></section>\n\n'
+       f'<div class="cards">{"".join(card(a, p) for a in A[:12])}</div><div class="viewall"><a href="offices/index.html">オフィス一覧を見る（{len(A)}{_KW}） <span>→</span></a></div></section>\n\n'
        f'<section class="sec"><div class="sec-h"><h2>人気のオフィス</h2><span class="sub">いま多く読まれている12社</span><a class="more" href="offices/index.html?sort=pop">一覧へ →</a></div>\n'
-       f'<div class="cards">{"".join(card(a, p, False, i + 1) for i, a in enumerate(POP[:12]))}</div><div class="viewall"><a href="offices/index.html?sort=pop">人気順で一覧を見る <span>→</span></a></div></section>\n\n'
+       f'<div class="cards">{"".join(card(a, p, False, i + 1) for i, a in enumerate(POP[:12]))}</div><div class="viewall"><a href="offices/index.html?sort=pop">人気順で一覧を見る（{len(A)}{_KW}） <span>→</span></a></div></section>\n\n'
        f'<section class="sec"><div class="sec-h"><h2>特集</h2><span class="sub">テーマ別に、国を越えて見比べる</span><a class="more" href="collections/index.html">一覧へ →</a></div>\n'
-       f'<div class="ccg">{"".join(cc(c, p) for c in COLLECTIONS[:6])}</div><div class="viewall"><a href="collections/index.html">特集一覧を見る <span>&rarr;</span></a></div></section>\n\n'
+       f'<div class="ccg">{"".join(cc(c, p) for c in COLLECTIONS[:6])}</div><div class="viewall"><a href="collections/index.html">特集一覧を見る（{len(COLLECTIONS)}本） <span>&rarr;</span></a></div></section>\n\n'
        f'<a class="omb omb-728x90" href="https://offml.com/?utm_source=offisnap&amp;utm_medium=banner" rel="noopener"><img src="{OMB728}" width="728" height="90" alt="OFFICEMILL"></a>\n\n'
        # 設計・施工パートナー欄は、掲載できる会社がそろうまで非表示（2026-09-25）
        '</main>' + foot(p) + SLIDER_JS + '</body></html>')
