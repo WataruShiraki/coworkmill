@@ -70,6 +70,8 @@ src = src.replace('のオフィス・本社の内装', f'の{B["subj"]}の内装
 src = src.replace('受付から執務フロア、会議室、食堂、福利厚生の場所へと', B['about_lead'].split('。')[1].split('へと')[0] + 'へと')
 src = src.replace('掲載企業', f'掲載{B["kind"]}').replace('各社の公式', f'各{B["kind"]}の公式').replace('各企業', f'各{B["kind"]}')
 src = src.replace('1社ごとに', f'1{B["kind"]}ごとに').replace('1社ずつ', f'1{B["kind"]}ずつ').replace('社数', f'{B["kind"]}数')
+# 2026-09-29 トップの「○○一覧を見る」ボタンに施設数を出す（WALL の VIEW ALL 168 OFFICES と同じ考え方）。数はビルドのたびに A から数える
+src = src.replace('index.html">オフィス一覧を見る <span>', 'index.html">オフィス一覧を見る（{len(A)}施設） <span>')
 src = src.replace('オフィスを取材・紹介する', f'{B["subj"]}を取材・紹介する').replace('オフィス一覧', f'{B["subj"]}一覧').replace('オフィスを探す', f'{B["subj"]}を探す')
 src = src.replace("('offices', 'オフィス')", f"('{B['sec']}', '{B['subj_s']}')").replace("('§SEC§', 'オフィス')", '')
 src = src.replace("('spaces', 'オフィス')", f"('spaces', '{B['subj_s']}')").replace("('cafes', 'オフィス')", f"('cafes', '{B['subj_s']}')")
