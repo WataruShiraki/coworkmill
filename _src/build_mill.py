@@ -169,3 +169,6 @@ exec(compile(src, f'build_{os.environ["BRAND"]}.py', 'exec'))
 
 # 2026-09-28 AdSense 審査：About に運営者情報を足す
 exec(open(os.path.join(HERE, 'about_ops.py'), encoding='utf-8').read())
+
+# 2026-09-29 画像サイトマップ（sitemap.xml に <image:image> を足す）
+exec(open(os.path.join(HERE, "imgsitemap.py"), encoding="utf-8").read())
