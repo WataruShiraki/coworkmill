@@ -414,7 +414,7 @@ def article(a):
             f'<div class="head"><p class="tag" style="color:var(--mute)">{E(tagline(a))}</p>\n<h1>{T(a["title"])}</h1>\n<p class="std">{E(a["lead"])}</p>\n<div class="facts">{facts}</div></div>\n'
             f'<div class="hero">{heroimg}</div>\n<div class="body">\n<nav class="toc"><p>目次</p><ol>{toc}</ol>'
             f'<a class="omv" href="https://offml.com/?utm_source=offisnap&amp;utm_medium=banner" rel="noopener"><img src="{OMB160}" width="160" height="600" alt="OFFICEMILL"></a></nav>\n'
-            f'<article>\n{body}\n{ctx}\n{edc}\n<div class="credits" id="credits">{cr}</div>\n{shop}\n</article></div>\n'
+            f'<article>\n{body}\n{ctx}\n{edc}\n<div class="credits" id="credits">{cr}</div>\n{shop}\n</article></div>\n<!--REL:{a["slug"]}-->\n'
             f'<a class="omb omb-728x90" href="https://offml.com/?utm_source=offisnap&amp;utm_medium=banner" rel="noopener"><img src="{OMB728}" width="728" height="90" alt="OFFICEMILL"></a>\n'
             '</main>' + foot(p) + '</body></html>')
 
@@ -760,6 +760,81 @@ _lines = ['# OFFISNAP', '', '> 海外の有名企業の最新オフィスを、�
           '## 記事（オフィス）', ''] + [f'- [{a["title"]}]({SITE}/offices/{a["slug"]}.html): {a["lead"]}' for a in A] + ['', '## 特集', ''] + [f'- [{c["title"]}]({SITE}/collections/{c["slug"]}.html): {c["lead"]}' for c in COLLECTIONS] + \
          ['', '## その他', '', f'- [Q&A]({SITE}/questions/index.html): {QA["q"]}'] + [f'- [{q_["q"]}]({SITE}/questions/{q_["slug"]}.html): {q_["a"]}' for q_ in QUESTIONS] + [ f'- [OFFISNAP について]({SITE}/about/index.html)', f'- [お問い合わせ]({SITE}/contact/index.html)', '', '## 引用について', '', '記事の事実は各社の公式サイト・公式ニュースが出典。引用の際は記事URLを添えてください。写真の権利は各社・撮影者に帰属します。']
 open(OUT + 'llms.txt', 'w', encoding='utf-8').write('\n'.join(_lines) + '\n')
+
+# ---------- 詳細ページ下のおすすめ（2026-09-29 WALLと同じ仕組み。指示書_記事下おすすめ_内部リンク_2026-09-29） ----------
+# ①この施設が載っている特集（最大3本）＋質問ページの1行 ②次に見る施設3件（理由つき）。人気順ではなく「候補リストの中で自分の次」を選ぶ
+REL_NOUN  = globals().get('REL_NOUN', 'オフィス')
+REL_ORDER = globals().get('REL_ORDER', ['kind', 'town', 'coll', 'country', 'coll2'])
+_REL_CN = {'UK': 'イギリス', 'US': 'アメリカ', 'GB': 'イギリス', 'DE': 'ドイツ', 'FR': 'フランス', 'NL': 'オランダ', 'SE': 'スウェーデン', 'DK': 'デンマーク', 'SG': 'シンガポール', 'CN': '中国', 'KR': '韓国', 'CH': 'スイス', 'IT': 'イタリア', 'ES': 'スペイン', 'AU': 'オーストラリア', 'CA': 'カナダ', 'JP': '日本', 'IE': 'アイルランド', 'FI': 'フィンランド', 'NO': 'ノルウェー', 'BE': 'ベルギー', 'AT': 'オーストリア', 'HK': '香港', 'TW': '台湾', 'IN': 'インド', 'BR': 'ブラジル', 'MX': 'メキシコ', 'IL': 'イスラエル', 'AE': 'アラブ首長国連邦', 'TH': 'タイ', 'PL': 'ポーランド', 'PT': 'ポルトガル', 'CZ': 'チェコ', 'NZ': 'ニュージーランド', 'ZA': '南アフリカ', 'RU': 'ロシア', 'TR': 'トルコ', 'VN': 'ベトナム', 'MY': 'マレーシア', 'ID': 'インドネシア', 'PH': 'フィリピン', 'AR': 'アルゼンチン', 'CL': 'チリ', 'LU': 'ルクセンブルク', 'HU': 'ハンガリー'}
+NEAR      = globals().get('NEAR', {})
+REL_KIND_LABEL = globals().get('REL_KIND_LABEL', '同じ{kind}業界')
+def _rel_next(lst, slug, taken):
+    ss = [x['slug'] for x in lst]
+    if slug in ss: st = ss.index(slug) + 1
+    else:  # 自分が候補に入っていない（近いエリアなど）ときは、データの並びで自分の次の位置から選ぶ（先頭ばかりに集まらないように）
+        _ix = {x['slug']: i for i, x in enumerate(A)}
+        st = sum(1 for x in lst if _ix.get(x['slug'], 0) < _ix.get(slug, 0))
+    for x in lst[st:] + lst[:st]:
+        if x['slug'] != slug and x['slug'] not in taken:
+            return x
+    return None
+def related_html(a):
+    s = a['slug']
+    colls = [c for c in COLLECTIONS if s in [it[0] for it in c['items']]]
+    qs = [q for q in QUESTIONS if any(a_ == s for sec in q['secs'] for a_, _ in sec[3])]
+    picks, taken = [], set()
+    def add(lst, label):
+        x = _rel_next(lst, s, taken) if lst else None
+        if x:
+            picks.append((x, label)); taken.add(x['slug'])
+    town = city_short(a)
+    near = NEAR.get(town)
+    kind = a.get('industry')
+    c0 = colls[0] if colls else None
+    cands = {
+        'town_kind': ([x for x in A if city_short(x) == town and x.get('industry') == kind], f'{town}の{kind}'),
+        'kind':      ([x for x in A if x.get('industry') == kind], REL_KIND_LABEL.format(kind=kind)),
+        'town':      ([x for x in A if city_short(x) == town], f'同じ{town}エリア'),
+        'near':      ([x for x in A if near and NEAR.get(city_short(x)) == near and city_short(x) != town], f'近くの{near}エリア'),
+        'coll':      ([A_by[it[0]] for it in c0['items'] if it[0] in A_by] if c0 else [], f'特集「{c0["title"]}」から' if c0 else ''),
+    }
+    _cty = globals().get('COUNTRY', {}).get(s)
+    cands['country'] = ([x for x in A if _cty and globals().get('COUNTRY', {}).get(x['slug']) == _cty], f'同じ{_REL_CN.get(_cty, _cty)}' if _cty else '')
+    c1 = colls[1] if len(colls) > 1 else None
+    cands['coll2'] = ([A_by[it[0]] for it in c1['items'] if it[0] in A_by] if c1 else [], f'特集「{c1["title"]}」から' if c1 else '')
+    for key in REL_ORDER:
+        lst, label = cands[key]
+        if len(picks) < 3: add(lst, label)
+    while len(picks) < 3:
+        x = _rel_next(A, s, taken)
+        if not x: break
+        picks.append((x, f'ほかの{REL_NOUN}')); taken.add(x['slug'])
+    out = '<section class="rel">'
+    qline = (f'<p class="qchip">この質問でも紹介しています：<a href="../questions/{qs[0]["slug"]}.html">{E(qs[0]["q"])} &rarr;</a></p>' if qs else '')
+    if colls:
+        out += (f'<div class="rel-block"><p class="rel-h">{E(a["company"])}が載っている特集（{len(colls)}本）</p>'
+                f'<div class="ccg rel-cc">' + ''.join(cc(c, '../') for c in colls[:3]) + '</div>' + qline + '</div>')
+    elif qline:
+        out += '<div class="rel-block">' + qline + '</div>'
+    if picks:
+        out += (f'<div class="rel-block"><p class="rel-h">次に見る{REL_NOUN}</p><div class="rel-grid">'
+                + ''.join(f'<div class="rel-item"><p class="why">{E(lb)}</p>{card(x, "../", False)}</div>' for x, lb in picks)
+                + '</div></div>')
+    return out + '</section>\n'
+REL_LOG = []
+for _root, _ds, _fs in os.walk(OUT):
+    for _f in _fs:
+        if not _f.endswith('.html'): continue
+        _p = os.path.join(_root, _f)
+        _t = open(_p, encoding='utf-8').read()
+        _m = re.search(r'<!--REL:([^>]+?)-->', _t)
+        if not _m or _m.group(1) not in A_by: continue
+        _h = related_html(A_by[_m.group(1)])
+        REL_LOG.append(_m.group(1))
+        open(_p, 'w', encoding='utf-8').write(_t.replace(_m.group(0), _h))
+_css_p = OUT + 'assets/style.css'
+if os.path.exists(_css_p) and '.rel-grid' not in open(_css_p, encoding='utf-8').read():
+    open(_css_p, 'a', encoding='utf-8').write('\n/* 詳細ページ下のおすすめ 2026-09-29 */\n.rel{margin:10px 0 40px;display:grid;gap:44px}\n.rel-h{font-weight:600;font-size:13px;letter-spacing:.08em;color:var(--accent);margin:0 0 14px}\n.ccg.rel-cc{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}\n.qchip{margin:16px 0 0;font-size:13px;color:var(--mute)}\n.qchip a{color:var(--ink);border-bottom:1px solid var(--accent);text-decoration:none}\n.rel-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}\n.why{margin:0 0 8px;font-size:12px;font-weight:600;color:var(--ink)}\n@media (max-width:700px){.ccg.rel-cc,.rel-grid{grid-template-columns:1fr}}\n')
 
 # ---- 2026-09-27 わたるさん「サイトを開くと末尾に index.html がつくのが嫌」----
 # 出力したHTML・sitemap・llms.txt のリンクから index.html を外す（…/index.html → …/、index.html → ./）

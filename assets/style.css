@@ -560,3 +560,13 @@ body.stuck header .nav{padding-block:10px}
 
 /* 2026-09-27 施設情報（施設ページ最下部） */
 .shopinfo{margin:8px 0 40px;padding:22px 24px;background:var(--accent-tint,#f6f6f6);border-radius:4px}.shopinfo h2{font-size:18px;margin:0 0 12px}.shopinfo dl{margin:0;display:grid;gap:10px}.shopinfo dl div{display:grid;grid-template-columns:7em 1fr;gap:12px;font-size:14px;line-height:1.7}.shopinfo dt{color:var(--mute);font-size:12px;padding-top:2px}.shopinfo dd{margin:0}.shopinfo a{border-bottom:1px solid var(--accent)}@media(max-width:600px){.shopinfo dl div{grid-template-columns:1fr;gap:2px}}
+
+/* 詳細ページ下のおすすめ 2026-09-29 */
+.rel{margin:10px 0 40px;display:grid;gap:44px}
+.rel-h{font-weight:600;font-size:13px;letter-spacing:.08em;color:var(--accent);margin:0 0 14px}
+.ccg.rel-cc{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.qchip{margin:16px 0 0;font-size:13px;color:var(--mute)}
+.qchip a{color:var(--ink);border-bottom:1px solid var(--accent);text-decoration:none}
+.rel-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+.why{margin:0 0 8px;font-size:12px;font-weight:600;color:var(--ink)}
+@media (max-width:700px){.ccg.rel-cc,.rel-grid{grid-template-columns:1fr}}
