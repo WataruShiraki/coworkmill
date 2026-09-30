@@ -100,6 +100,11 @@ src = src.replace("GA = (f'<script async", "GA = '' if not GA_ID else (f'<script
 # アイコン：ブランドの favicon（build_mill.py が icons_<brand>/ に作る）
 src = src.replace("shutil.copy(f'icons/", f"shutil.copy(f'{HERE}/icons_{os.environ['BRAND']}/")
 src = src.replace("os.listdir('icons')", f"os.listdir('{HERE}/icons_{os.environ['BRAND']}')").replace("shutil.copy('icons/' + _f", f"shutil.copy('{HERE}/icons_{os.environ['BRAND']}/' + _f")
+
+# 2026-09-30 一覧の件数・特集の目次の言葉を施設に合わせる（「社」「会社」をやめる）
+_UNIT = {'hotel': ('軒', 'ホテル'), 'cafe': ('店', 'カフェ'), 'salon': ('店', 'サロン'), 'clinic': ('院', 'クリニック'), 'sauna': ('施設', 'サウナ'), 'cowork': ('施設', 'コワーキングスペース')}.get(os.environ['BRAND'])
+if _UNIT:
+    src = src.replace("fbar(A, '社',", f"fbar(A, '{_UNIT[0]}',").replace('条件に合う{kind_word if kind_word != "社" else "会社"}がありません', f'条件に合う{_UNIT[1]}がありません').replace('<p>登場する会社</p>', f'<p>登場する{_UNIT[1]}</p>')
 # 送客バナー：_src/banner/ にあればそれを使う（本番に置いてある実物）
 if os.path.isdir(os.path.join(HERE, 'banner')): src = src.replace("shutil.copy(f'banner/", f"shutil.copy(f'{HERE}/banner/")
 
