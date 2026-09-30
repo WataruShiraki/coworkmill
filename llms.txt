@@ -156,7 +156,7 @@
 
 ## 特集
 
-- [渋谷のコワーキングスペース10選](https://cowkml.com/collections/shibuya.html): 実験区、問いの場所、駅直結の高層階。渋谷の駅まわりに集まる3施設です。
+- [渋谷のコワーキングスペース17選](https://cowkml.com/collections/shibuya.html): 実験区、問いの場所、駅直結の高層階。渋谷の駅まわりに集まる3施設です。
 - [新しい事業を生む場所3選](https://cowkml.com/collections/incubation.html): 大企業の新規事業、日本最大級のキャンパス、失敗を恐れないコミュニティ。事業づくりのための施設です。
 - [建物をそのまま生かす6選](https://cowkml.com/collections/reuse.html): 蔦に覆われた廃屋、1棟まるごと、1,573㎡の2フロア。あるものを生かした施設です。
 - [丸の内・有楽町・大手町のコワーキングスペース8選](https://cowkml.com/collections/marunouchi.html): 東京駅のまわりには、東京都、三菱地所、NTT都市開発、大企業の共同体と、つくり手の違う4施設が集まっています。
@@ -166,7 +166,7 @@
 - [広さで選ぶ、大きなコワーキングスペース4選](https://cowkml.com/collections/large-floor.html): 約6,000㎡から1,573㎡まで。フロアが広い施設は、会議室やイベントの場所も一緒にそろっています。
 - [企業や行政がつくった場所3選](https://cowkml.com/collections/corporate-public.html): 不動産会社だけでなく、メーカーや東京都もコワーキングスペースをつくっています。つくった側の目的が、場所の性格に表れます。
 - [日本橋・京橋・八重洲のコワーキングスペース8選](https://cowkml.com/collections/nihonbashi-yaesu.html): 宇宙ビジネスの拠点、地域と東京をつなぐラウンジ、FOOD INNOVATION。東京駅の東側に集まる施設です。
-- [新宿のコワーキングスペース6選](https://cowkml.com/collections/shinjuku.html): コーヒーの香るワーキングカフェ、RETRO FUTURE の11階、24時間のラウンジ。駅の東西に広がる新宿の施設です。
+- [新宿のコワーキングスペース8選](https://cowkml.com/collections/shinjuku.html): コーヒーの香るワーキングカフェ、RETRO FUTURE の11階、24時間のラウンジ。駅の東西に広がる新宿の施設です。
 - [青山・表参道のコワーキングスペース8選](https://cowkml.com/collections/aoyama-omotesando.html): CREATOR'S VILLAGE、固定の机を置かない会員制、屋上の庭。デザインの街にあるワークスペースです。
 - [眺めのいい高層階のコワーキングスペース7選](https://cowkml.com/collections/high-floor.html): 45階、東京タワーを望む34階、霞が関ビルの36階。窓の外まで仕事場にした施設です。
 - [土日も使えるコワーキングスペース7選](https://cowkml.com/collections/weekend.html): 土日も朝8時から夜22時まで、毎日朝7時から、毎日夜23時まで。週末に仕事をする日にも開いている施設です。
@@ -175,6 +175,15 @@
 - [内装にテーマのあるコワーキングスペース9選](https://cowkml.com/collections/design-theme.html): 伝統文様の ZEN MODERN、RETRO FUTURE、劇場、鉄道、五街道。街や物語を内装に取り入れた施設です。
 - [屋上やテラスのあるコワーキングスペース4選](https://cowkml.com/collections/rooftop.html): 9階のスカイテラス、屋上の畑、屋上の庭。外の空気を吸える場所がある施設です。
 - [MIDORI.so の拠点7選](https://cowkml.com/collections/midori-so.html): 蔦の廃屋、1棟まるごとの旗艦拠点、泊まれる建物、商業ビルの8階。同じ運営会社が、建物ごとに違う場所をつくっています。
+- [渋谷の高層階のコワーキングスペース4選](https://cowkml.com/collections/shibuya-high-floor.html): 地上47階、ヒカリエ33階、駅前の17階、スクランブル交差点を見下ろす15階。渋谷の街を見下ろせる施設です。
+- [恵比寿・目黒・中目黒のコワーキングスペース10選](https://cowkml.com/collections/ebisu-meguro.html): 約1,600㎡の「働き方解放区」、150名のカンファレンスルーム、目黒川を見下ろす7階、蔦の廃屋を直した2棟。恵比寿から目黒までの施設です。
+- [六本木・麻布十番のコワーキングスペース9選](https://cowkml.com/collections/roppongi-azabu.html): 9階のスカイテラス、オークと障子風の会議室、隈研吾設計の木の輪の森、大人の隠れ家。六本木から麻布十番までの施設です。
+- [銀座・新橋・汐留のコワーキングスペース8選](https://cowkml.com/collections/ginza-shimbashi.html): GINZA SIX の最上階と屋上庭園、一棟まるごとのシェアオフィス、鉄道発祥の地のモチーフ、イタリア街。銀座から汐留までの施設です。
+- [神田・秋葉原・御茶ノ水・神保町のコワーキングスペース8選](https://cowkml.com/collections/kanda-akihabara.html): 電気街と昔のゲーム、本の街の手描きアート、レトロと新しさ、駅から徒歩1分の個室。神田のまわりの施設です。
+- [品川・田町・浜松町のコワーキングスペース10選](https://cowkml.com/collections/shinagawa-hamamatsucho.html): 28階の太陽生命品川ビル、芝浦のスケルトン空間、東京湾を望む17階、東京湾の水上空港。品川から浜松町までの施設です。
+- [中央線・多摩エリアのコワーキングスペース6選](https://cowkml.com/collections/tama-chuo-line.html): 吉祥寺PARCOの8階、調布駅1分、立川駅南口、武蔵小金井、国立。都心に出なくても使える、西側の施設です。
+- [世田谷のコワーキングスペース4選](https://cowkml.com/collections/setagaya.html): 住まいに併設したラウンジ、経堂の個室、千歳船橋の朝7時から、二子玉川のショッピングセンター。住宅街の近くの施設です。
+- [H¹T の拠点15選](https://cowkml.com/collections/h1t.html): 駅前の一人用の個室、ブース、ボックス、会議室。野村不動産の法人向けシェアオフィスを、拠点ごとに紹介します。
 
 ## その他
 
