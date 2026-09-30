@@ -84,3 +84,72 @@ for _c in COLLECTIONS:
 COLLECTIONS += [ { "slug": "shibuya-high-floor", "title": "渋谷の高層階のコワーキングスペース", "lead": "地上47階、ヒカリエ33階、駅前の17階、スクランブル交差点を見下ろす15階。渋谷の街を見下ろせる施設です。", "items": [[ "wework-shibuya-scramble-square", "地上47階、窓際ラウンジから渋谷を見下ろす" ], [ "justco-shibuya-hikarie", "渋谷駅直結の33階" ], [ "business-airport-shibuya-fukuras", "駅前の17階" ], [ "shibuya-qws", "スクランブル交差点を見下ろす15階の会員制施設" ] ] }, { "slug": "ebisu-meguro", "title": "恵比寿・目黒・中目黒のコワーキングスペース", "lead": "約1,600㎡の「働き方解放区」、150名のカンファレンスルーム、目黒川を見下ろす7階、蔦の廃屋を直した2棟。恵比寿から目黒までの施設です。", "items": [[ "co-ba-ebisu", "「働き方解放区」、約1,600㎡の2フロア" ], [ "business-airport-ebisu", "柔らかな曲線の基地" ], [ "workstyling-ebisu", "150名のカンファレンスルーム" ], [ "newwork-ebisu", "西口3分の39席" ], [ "the-executive-centre-meguro-arco-tower", "目黒川を見下ろす7階" ], [ "midori-so-nakameguro", "蔦に覆われた廃屋を直した2棟のシェアオフィス" ], [ "workstyling-meguro", "目黒駅から徒歩1分" ], [ "senq-meguro", "暮らしながら働く8階" ], [ "workstyling-nakameguro", "中目黒駅から徒歩2分" ], [ "business-airport-daikanyama", "緑に囲まれた3階" ] ] }, { "slug": "roppongi-azabu", "title": "六本木・麻布十番のコワーキングスペース", "lead": "9階のスカイテラス、オークと障子風の会議室、隈研吾設計の木の輪の森、大人の隠れ家。六本木から麻布十番までの施設です。", "items": [[ "senq-roppongi", "9階のスカイテラス" ], [ "the-executive-centre-roppongi-hills", "オークと障子風の会議室" ], [ "workstyling-tokyo-midtown-roppongi", "アートを加えた空間" ], [ "wework-ark-hills-south", "アメリカンと華やかさ" ], [ "crosscoop-roppongi-next", "60席のラウンジ" ], [ "h1t-roppongi", "駅から徒歩1分、席の種類が多い" ], [ "share-m-10", "隈研吾設計、木の輪の森" ], [ "andwork-azabujuban", "大人の隠れ家的オフィス" ], [ "birth-work-azabujuban", "集中と憩いの3フロア" ] ] }, { "slug": "ginza-shimbashi", "title": "銀座・新橋・汐留のコワーキングスペース", "lead": "GINZA SIX の最上階と屋上庭園、一棟まるごとのシェアオフィス、鉄道発祥の地のモチーフ、イタリア街。銀座から汐留までの施設です。", "items": [[ "workstyling-ginza", "銀座駅1分、土日も営業" ], [ "fabbit-ginza", "銀座一丁目のコワーキングラウンジ" ], [ "newwork-ginza", "銀座と新橋のあいだの2階" ], [ "business-airport-shimbashi", "鉄道発祥の地のモチーフ" ], [ "crosscoop-shimbashi", "約96席のラウンジと個室" ], [ "workstyling-shinbashi", "新橋駅徒歩1分" ], [ "the-hub-shiodome", "イタリア街の1棟オフィス" ], [ "workstyling-shiodome-city-center", "INDUSTRY+FOREST" ] ] }, { "slug": "kanda-akihabara", "title": "神田・秋葉原・御茶ノ水・神保町のコワーキングスペース", "lead": "電気街と昔のゲーム、本の街の手描きアート、レトロと新しさ、駅から徒歩1分の個室。神田のまわりの施設です。", "items": [[ "wework-kanda-square", "電気街と昔のゲーム" ], [ "wework-jimbocho", "本の街の手描きアート" ], [ "business-airport-kanda", "レトロと新しさの共存" ], [ "birth-work-kanda", "成長型フリーワーキングオフィス" ], [ "newwork-akihabara", "駅1分・土日祝も開く10階" ], [ "h1t-ochanomizu-the-garden", "駅から徒歩1分の個室" ], [ "workstyling-iidabashi-grand-bloom", "2階と9階" ], [ "h1t-iidabashi", "ビルの16階、緑の大きなテーブルがある飯田橋の拠点" ] ] }, { "slug": "shinagawa-hamamatsucho", "title": "品川・田町・浜松町のコワーキングスペース", "lead": "28階の太陽生命品川ビル、芝浦のスケルトン空間、東京湾を望む17階、東京湾の水上空港。品川から浜松町までの施設です。", "items": [[ "business-airport-shinagawa", "太陽生命品川ビル28階" ], [ "workstyling-shinagawa", "働くための巣" ], [ "co-ba-re-sohko-tamachi", "芝浦のスケルトン空間" ], [ "business-airport-tamachi", "格式あるオフィスを継ぐ" ], [ "workstyling-tamachi-mitaguchi", "田町・三田から徒歩1分" ], [ "the-executive-centre-world-trade-center-south-tower", "東京湾を望む17階" ], [ "workstyling-hamamatsucho", "浜松町・大門から徒歩2分" ], [ "newwork-daimon-hamamatsucho", "大門駅1分の4階" ], [ "business-airport-takeshiba", "東京湾の水上空港" ], [ "the-hub-takanawa", "泉岳寺4分、進化と落ち着きの拠点" ] ] }, { "slug": "tama-chuo-line", "title": "中央線・多摩エリアのコワーキングスペース", "lead": "吉祥寺PARCOの8階、調布駅1分、立川駅南口、武蔵小金井、国立。都心に出なくても使える、西側の施設です。", "items": [[ "midori-so-kichijoji", "吉祥寺PARCO 8階" ], [ "co-ba-chofu", "調布駅1分の仕事軸のコミュニティ" ], [ "h1t-tachikawa", "立川駅南口から徒歩2分、席の種類が多い多摩の拠点" ], [ "h1t-musashikoganei", "武蔵小金井駅から徒歩3分、個室18室の大きな拠点" ], [ "h1t-kunitachi", "国立駅南口から徒歩2分、一人用の個室が17室ある拠点" ], [ "h1t-machida", "町田モディの6階、ブースと個室で一人の仕事に集中できる拠点" ] ] }, { "slug": "setagaya", "title": "世田谷のコワーキングスペース", "lead": "住まいに併設したラウンジ、経堂の個室、千歳船橋の朝7時から、二子玉川のショッピングセンター。住宅街の近くの施設です。", "items": [[ "co-ba-kamikitazawa", "住まいに併設したラウンジ" ], [ "h1t-kyodo", "経堂駅北口から徒歩2分、個室だけの静かな拠点" ], [ "h1t-chitosefunabashi", "千歳船橋駅から徒歩3分、朝7時から夜22時まで開く拠点" ], [ "workstyling-futako-tamagawa", "ショッピングセンターの中" ] ] }, { "slug": "h1t", "title": "H¹T の拠点", "lead": "駅前の一人用の個室、ブース、ボックス、会議室。野村不動産の法人向けシェアオフィスを、拠点ごとに紹介します。", "items": [[ "h1t-roppongi", "駅から徒歩1分、席の種類が多い" ], [ "h1t-shinjuku-nishiguchi", "会議室7室の法人向けシェアオフィス" ], [ "h1t-omotesando", "個室15室と10名の会議室" ], [ "h1t-ochanomizu-the-garden", "駅から徒歩1分の個室" ], [ "h1t-ikebukuro-higashiguchi-the-garden", "個室18室、土日祝も営業" ], [ "h1t-ichigaya", "4路線の市ヶ谷駅から徒歩1分、会議室が3室ある拠点" ], [ "h1t-iidabashi", "ビルの16階、緑の大きなテーブルがある飯田橋の拠点" ], [ "h1t-kojimachi", "麹町駅から徒歩1分、6名の会議室が3室ある拠点" ], [ "h1t-tsukiji", "築地駅4番出口から徒歩30秒、個室だけの拠点" ], [ "h1t-tachikawa", "立川駅南口から徒歩2分、席の種類が多い多摩の拠点" ], [ "h1t-machida", "町田モディの6階、ブースと個室で一人の仕事に集中できる拠点" ], [ "h1t-kunitachi", "国立駅南口から徒歩2分、一人用の個室が17室ある拠点" ], [ "h1t-kyodo", "経堂駅北口から徒歩2分、個室だけの静かな拠点" ], [ "h1t-musashikoganei", "武蔵小金井駅から徒歩3分、個室18室の大きな拠点" ], [ "h1t-chitosefunabashi", "千歳船橋駅から徒歩3分、朝7時から夜22時まで開く拠点" ] ] } ]
 for _c in COLLECTIONS:
     _c['items'] = [tuple(x) for x in _c['items']]
+
+
+# ==== 2026-09-30 地域×テーマの特集を追加（わたるさん指示「地域＋〇〇の特集をがんがん」）。一言は各記事のタイトルにある事実だけ ====
+_EXT30 = {}
+for _c in COLLECTIONS:
+    _have = {x[0] for x in _c['items']}
+    _c['items'] += [tuple(x) for x in _EXT30.get(_c['slug'], []) if x[0] not in _have]
+COLLECTIONS += [ { "slug": "brand-wework", "title": "東京のWeWork（ウィーワーク）の拠点", "lead": "昭和のノスタルジア、電気街と昔のゲーム、本の街の手描きアート。拠点ごとに内装のテーマが違う WeWork を紹介します。", "items": [[ "wework-ark-hills-south", "アメリカンと華やかさ" ], [ "wework-d-tower-nishishinjuku", "モダニズムと木の濃淡" ], [ "wework-hareza-ikebukuro", "アート・日本絵画・映画" ], [ "wework-hibiya-fort-tower", "メタボリズムの8フロア" ], [ "wework-jimbocho", "本の街の手描きアート" ], [ "wework-kabuto-one", "国際金融街・兜町の再開発ビル" ], [ "wework-kamiyacho-trust-tower", "虎ノ門の過去と現代" ], [ "wework-kanda-square", "電気街と昔のゲーム" ], [ "wework-marunouchi-kitaguchi", "フロアごとに違うラウンジ" ], [ "wework-shibuya-scramble-square", "地上47階、窓際ラウンジから渋谷を見下ろす" ], [ "wework-the-argyle-aoyama", "白木とオークの共用エリア" ], [ "wework-tk-ikedayama", "昭和のノスタルジア" ] ] }, { "slug": "brand-business-airport", "title": "ビジネスエアポートの拠点", "lead": "鉄道発祥の地、職人の街、劇場、東京湾の水上空港。街の歴史を内装にした、東急不動産のシェアオフィスです。", "items": [[ "business-airport-aoyama", "自由な発想を誘う青山のシェアオフィス" ], [ "business-airport-daikanyama", "緑に囲まれた3階" ], [ "business-airport-ebisu", "柔らかな曲線の基地" ], [ "business-airport-hibiya", "劇場モチーフと緑" ], [ "business-airport-kanda", "レトロと新しさの共存" ], [ "business-airport-kudanshita", "お濠に面した九段会館テラス" ], [ "business-airport-kyobashi", "職人の街を和テイストで" ], [ "business-airport-marunouchi", "岸本ビルヂングの上質な空間" ], [ "business-airport-nihonbashi", "五街道の起点を思わせる1階" ], [ "business-airport-shibuya-fukuras", "駅前の17階" ], [ "business-airport-shibuya-nanpeidai", "SHIBUYA SOLASTA 3階" ], [ "business-airport-shibuya-sakurastage", "SHIBUYAタワー7階" ], [ "business-airport-shimbashi", "鉄道発祥の地のモチーフ" ], [ "business-airport-shinagawa", "太陽生命品川ビル28階" ], [ "business-airport-shinjuku3chome", "街の多様性を表す" ], [ "business-airport-takeshiba", "東京湾の水上空港" ], [ "business-airport-tamachi", "格式あるオフィスを継ぐ" ], [ "business-airport-tokyo", "丸の内ガーデンタワー3階" ] ] }, { "slug": "brand-the-executive-centre", "title": "The Executive Centre 東京の拠点", "lead": "茶室に着想した受付、英国と日本の内装、東京湾を望む17階。高層ビルに入るレンタルオフィスです。", "items": [[ "the-executive-centre-cerulean-tower", "茶室に着想を得た受付" ], [ "the-executive-centre-grantokyo-south-tower", "東京駅1分の7階" ], [ "the-executive-centre-jingumae-tower", "英国と日本の混じる内装" ], [ "the-executive-centre-jp-tower", "東京駅を見下ろすバリスタバー" ], [ "the-executive-centre-kyobashi-edogrand", "京橋駅直結の26階" ], [ "the-executive-centre-meguro-arco-tower", "目黒川を見下ろす7階" ], [ "the-executive-centre-roppongi-hills", "オークと障子風の会議室" ], [ "the-executive-centre-sanno-park-tower", "静けさのある3階" ], [ "the-executive-centre-shin-marunouchi-center", "木と大理石の2フロア" ], [ "the-executive-centre-tofrom-yaesu-tower", "和の意匠の220席" ], [ "the-executive-centre-world-trade-center-south-tower", "東京湾を望む17階" ] ] }, { "slug": "brand-workstyling", "title": "WORKSTYLING（ワークスタイリング）の拠点", "lead": "ZEN MODERN、RETRO FUTURE、INDUSTRY+FOREST。三井不動産のシェアオフィスを、拠点ごとに紹介します。", "items": [[ "workstyling-ebisu", "150名のカンファレンスルーム" ], [ "workstyling-futako-tamagawa", "ショッピングセンターの中" ], [ "workstyling-ginza", "銀座駅1分、土日も営業" ], [ "workstyling-hamamatsucho", "浜松町・大門から徒歩2分" ], [ "workstyling-iidabashi-grand-bloom", "2階と9階" ], [ "workstyling-kasumigaseki-building", "36階の高層階" ], [ "workstyling-meguro", "目黒駅から徒歩1分" ], [ "workstyling-nakameguro", "中目黒駅から徒歩2分" ], [ "workstyling-nihonbashi-ichome", "レンタルオフィスも" ], [ "workstyling-nihonbashi-mitsui-tower", "WORKSTYLING LAB" ], [ "workstyling-nihonbashi-takashimaya-mitsui", "日本橋駅直結" ], [ "workstyling-omotesando", "平日夜と土日も営業" ], [ "workstyling-otemachi", "芸術作品モチーフの会議室" ], [ "workstyling-shibuya", "渋谷駅東口から徒歩4分" ], [ "workstyling-shibuya-sakurastage", "最大108名のオープンスペース" ], [ "workstyling-shinagawa", "働くための巣" ], [ "workstyling-shinbashi", "新橋駅徒歩1分" ], [ "workstyling-shinjuku-higashiguchi", "駅直結で土日祝も営業" ], [ "workstyling-shinjuku-mitsui-building", "RETRO FUTURE" ], [ "workstyling-shiodome-city-center", "INDUSTRY+FOREST" ], [ "workstyling-tamachi-mitaguchi", "田町・三田から徒歩1分" ], [ "workstyling-tokyo-midtown-hibiya", "ZEN MODERN" ], [ "workstyling-tokyo-midtown-roppongi", "アートを加えた空間" ], [ "workstyling-tokyo-midtown-yaesu", "東京駅直結" ], [ "workstyling-yaesu-kitaguchi", "東京駅直結の17階" ], [ "workstyling-yaesu-minamiguchi", "土日も22時まで" ] ] }, { "slug": "brand-crosscoop", "title": "CROSSCOOP（クロスコープ）の拠点", "lead": "植栽のラウンジ、24時間のラウンジ、会議室15室。駅の近くのレンタルオフィスとコワーキングです。", "items": [[ "crosscoop-aoyama", "外苑前駅2分の3フロア" ], [ "crosscoop-nihonbashi", "約43席のラウンジ" ], [ "crosscoop-roppongi-next", "60席のラウンジ" ], [ "crosscoop-shibuya", "宮益坂の30席のラウンジ" ], [ "crosscoop-shibuya-nextsite", "植栽のラウンジ" ], [ "crosscoop-shimbashi", "約96席のラウンジと個室" ], [ "crosscoop-shinjuku", "会議室15室のレンタルオフィス" ], [ "crosscoop-shinjuku-avenue", "7階の24時間ラウンジ" ] ] }, { "slug": "brand-newwork", "title": "NEWWORK（ニューワーク）の拠点", "lead": "個室ブースの多いフロア、土日祝も開く店舗、93席の旗艦店。駅から近い、東急のシェアオフィスです。", "items": [[ "newwork-akihabara", "駅1分・土日祝も開く10階" ], [ "newwork-daimon-hamamatsucho", "大門駅1分の4階" ], [ "newwork-ebisu", "西口3分の39席" ], [ "newwork-ginza", "銀座と新橋のあいだの2階" ], [ "newwork-ikebukuro-higashiguchi", "個室ブース15室の9階" ], [ "newwork-kinshicho-2nd", "南口2分・土日祝も開く2階" ], [ "newwork-oimachi", "個室ブース11室の5階" ], [ "newwork-shibuya-goto-ikueikai-building", "93席の旗艦店" ], [ "newwork-ueno", "上野駅3分の37席" ] ] }, { "slug": "brand-senq", "title": "SENQ（センク）の拠点", "lead": "CREATOR'S VILLAGE、9階のスカイテラス、掘りごたつ。拠点ごとにテーマを掲げるシェアオフィスです。", "items": [[ "senq-aoyama", "22室の CREATOR'S VILLAGE" ], [ "senq-aoyama-namikidori", "BUILD NEXT CULTURES" ], [ "senq-kasumigaseki", "LEAD JAPAN と掘りごたつ" ], [ "senq-kyobashi", "京橋エドグランの FOOD INNOVATION" ], [ "senq-meguro", "暮らしながら働く8階" ], [ "senq-roppongi", "9階のスカイテラス" ] ] }, { "slug": "brand-co-ba", "title": "co-ba（コーバ）の拠点", "lead": "「働き方解放区」、芝浦のスケルトン空間、住まいに併設したラウンジ。地域ごとに運営されるコワーキングです。", "items": [[ "co-ba-akasaka", "溜池山王1分、集中の基地" ], [ "co-ba-chofu", "調布駅1分の仕事軸のコミュニティ" ], [ "co-ba-ebisu", "「働き方解放区」、約1,600㎡の2フロア" ], [ "co-ba-kamikitazawa", "住まいに併設したラウンジ" ], [ "co-ba-re-sohko-tamachi", "芝浦のスケルトン空間" ] ] } ]
+for _c in COLLECTIONS:
+    _c['items'] = [tuple(x) for x in _c['items']]
+
+# ==== 2026-09-30 特集名を検索されやすい言葉に（わたるさん「SEOを考えて」）。URL（slug）は変えない ====
+_RENAME30 = {
+ 'shibuya': '渋谷のおしゃれなコワーキングスペース',
+ 'incubation': '東京の起業家向けインキュベーション施設・コワーキングスペース',
+ 'reuse': '東京の古いビルをリノベーションしたおしゃれなコワーキングスペース',
+ 'marunouchi': '丸の内・有楽町・大手町のおしゃれなコワーキングスペース',
+ 'toranomon-azabudai': '虎ノ門・麻布台のおしゃれなコワーキングスペース',
+ 'station-direct': '東京の駅直結のコワーキングスペース',
+ 'large-floor': '東京の広くて大きいコワーキングスペース',
+ 'corporate-public': '東京の企業・行政がつくったコワーキングスペース',
+ 'nihonbashi-yaesu': '日本橋・京橋・八重洲のおしゃれなコワーキングスペース',
+ 'shinjuku': '新宿のおしゃれなコワーキングスペース',
+ 'aoyama-omotesando': '青山・表参道のおしゃれなコワーキングスペース',
+ 'high-floor': '東京の眺めのいい高層階のコワーキングスペース',
+ '24hours': '東京の24時間使えるコワーキングスペース',
+ 'weekend': '東京の土日も使えるコワーキングスペース',
+ 'solo': '東京のひとりで集中できる個室のあるコワーキングスペース',
+ 'hotel': '東京のホテルの中のおしゃれなコワーキングスペース',
+ 'design-theme': '東京の内装がかっこいいコワーキングスペース',
+ 'rooftop': '東京の屋上・テラスのある気持ちいいコワーキングスペース',
+ 'midori-so': 'MIDORI.so（ミドリソー）の拠点',
+ 'shibuya-high-floor': '渋谷の眺めのいい高層階のコワーキングスペース',
+ 'ebisu-meguro': '恵比寿・目黒・中目黒のおしゃれなコワーキングスペース',
+ 'roppongi-azabu': '六本木・麻布十番のおしゃれなコワーキングスペース',
+ 'ginza-shimbashi': '銀座・新橋・汐留のおしゃれなコワーキングスペース',
+ 'kanda-akihabara': '神田・秋葉原・御茶ノ水・神保町のおしゃれなコワーキングスペース',
+ 'shinagawa-hamamatsucho': '品川・田町・浜松町のおしゃれなコワーキングスペース',
+ 'tama-chuo-line': '吉祥寺・立川・国立など中央線沿いのコワーキングスペース',
+ 'setagaya': '世田谷のおしゃれなコワーキングスペース',
+ 'h1t': 'H¹T（エイチワンティー）の拠点',
+}
+for _c in COLLECTIONS:
+    _c['title'] = _RENAME30.get(_c['slug'], _c['title'])
+
+# ==== 2026-09-30 わたるさん「MILLSの強みは内装がかっこいいところ。入れようよ」→ 特集名に「内装がかっこいい」を入れる ====
+import re as _re30
+def _naisou30(t):
+    if '内装' in t: return t
+    t = t.replace('おしゃれなコワーキングスペース', '内装がかっこいいコワーキングスペース').replace('気持ちいいコワーキングスペース', '内装がかっこいいコワーキングスペース')
+    if '内装' not in t:
+        t = _re30.sub(r'のコワーキングスペース$', 'の内装がかっこいいコワーキングスペース', t)
+        t = _re30.sub(r'の拠点$', 'の内装がかっこいい拠点', t)
+        t = _re30.sub(r'施設・コワーキングスペース$', '施設・内装がかっこいいコワーキングスペース', t)
+    return t
+for _c in COLLECTIONS:
+    _c['title'] = _naisou30(_c['title'])
+_FIX30 = {
+ '24hours': '東京の24時間使える内装がかっこいいコワーキングスペース',
+ 'corporate-public': '東京の企業・行政がつくった内装がかっこいいコワーキングスペース',
+ 'large-floor': '東京の広くて内装がかっこいいコワーキングスペース',
+ 'solo': '東京のひとりで集中できる個室のある内装がかっこいいコワーキングスペース',
+ 'weekend': '東京の土日も使える内装がかっこいいコワーキングスペース',
+ 'incubation': '東京の起業家向け内装がかっこいいインキュベーション施設',
+ 'high-floor': '東京の眺めがよく内装がかっこいい高層階コワーキングスペース',
+ 'shibuya-high-floor': '渋谷の眺めがよく内装がかっこいい高層階コワーキングスペース',
+}
+for _c in COLLECTIONS:
+    _c['title'] = _FIX30.get(_c['slug'], _c['title'])
