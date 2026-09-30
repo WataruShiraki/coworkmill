@@ -157,3 +157,18 @@ for _c in COLLECTIONS:
 for _c in COLLECTIONS:
     if _c['slug'] == 'shibuya': _c['lead'] = _c['lead'].replace('集まる3施設です。', '集まる施設です。')
     if _c['slug'] == 'marunouchi': _c['lead'] = _c['lead'].replace('つくり手の違う4施設が', 'つくり手の違う施設が')
+# 2026-10-01 9/28と10/1に足した施設を、特集に入れる
+_ADD_1001 = {
+ 'brand-workstyling': [('ws-ueno','JR上野駅から1分、予約なしで座れる'),('ws-ikebukuro-nishiguchi','池袋駅から1分の5階'),('ws-yotsuya','麹町と四ツ谷の両方から4分'),('ws-gotanda','五反田駅から1分'),('ws-kanda','神田駅から1分、80名までの会議室'),('ws-akihabara','秋葉原駅の中央改札から1分'),('ws-jimbocho','神保町駅から1分、登記もできる'),('ws-toyosu','豊洲駅から2分、登記もできる'),('ws-kichijoji','吉祥寺駅から1分'),('ws-machida','JRと小田急の町田駅から3分'),('ws-musashikosugi','ららテラス武蔵小杉の4階'),('ws-shinyokohama','新横浜駅から3分'),('ws-umeda','阪急ターミナルビルの10階'),('ws-kyoto-ekimae','京都駅から2分')],
+ 'kanda-akihabara': [('ws-kanda','神田駅から徒歩1分'),('ws-akihabara','秋葉原駅中央改札から徒歩1分'),('ws-jimbocho','神保町駅から徒歩1分、登記もできる')],
+ 'tama-chuo-line': [('ws-kichijoji','吉祥寺駅から徒歩1分'),('ws-machida','町田駅から徒歩3分')],
+ 'h1t': [('h1t-toranomon','虎ノ門駅10番出口に直結'),('h1t-ginza','銀座駅A7出口から徒歩1分'),('h1t-otemachi','大手町駅から徒歩1分、20階と21階'),('h1t-ueno','上野マルイの3階')],
+ 'marunouchi': [('h1t-otemachi','大成大手町ビルの20階と21階')],
+ 'ginza-shimbashi': [('h1t-ginza','銀座駅A7出口から徒歩1分')],
+ 'toranomon-azabudai': [('h1t-toranomon','虎ノ門駅10番出口に直結')],
+ 'station-direct': [('h1t-toranomon','虎ノ門駅10番出口に直結')],
+ 'solo': [('h1t-toranomon','1名用ルーム27室')],
+}
+for _c in COLLECTIONS:
+    _have = {x[0] for x in _c['items']}
+    _c['items'] += [tuple(x) for x in _ADD_1001.get(_c['slug'], []) if x[0] not in _have]

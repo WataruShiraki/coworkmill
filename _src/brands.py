@@ -6,7 +6,7 @@ BRANDS = {
     tag='日本で最も優れたコワーキングを厳選紹介', band='日本のかっこいいコワーキングスペースを、見に行こう。',
     c1='#7FC39A', c2='#3B7DAE', dark='#2F6A98', light='#EEF6F1', light2='#F3F8F4', light3='#F6FAF7', line='#CFE3D8', mid='#4F9DB0',
     logo=os.path.join(HERE, 'logo_cowork.svg'), ga='G-P6CZCM6K18',
-    facilities='cowork_facilities.py',
+    facilities='cowork_facilities_add.py',
     desc='日本のかっこいいコワーキングスペースを、公式の写真と情報で1施設ずつ紹介するメディア。',
     coll_lead='街、駅からの近さ、使える時間、広さ。コワーキングスペースを、共通のテーマで見比べる特集です。',
     coll_desc='丸の内・虎ノ門・渋谷などの街、駅直結、24時間、広さ、つくった会社。日本のコワーキングスペースをテーマ別に見比べる特集。',
