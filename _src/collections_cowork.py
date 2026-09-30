@@ -153,3 +153,7 @@ _FIX30 = {
 }
 for _c in COLLECTIONS:
     _c['title'] = _FIX30.get(_c['slug'], _c['title'])
+# 2026-09-30 施設を足したので、紹介文の中の古い件数を消す
+for _c in COLLECTIONS:
+    if _c['slug'] == 'shibuya': _c['lead'] = _c['lead'].replace('集まる3施設です。', '集まる施設です。')
+    if _c['slug'] == 'marunouchi': _c['lead'] = _c['lead'].replace('つくり手の違う4施設が', 'つくり手の違う施設が')

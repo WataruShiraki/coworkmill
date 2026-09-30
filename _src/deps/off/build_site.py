@@ -149,6 +149,8 @@ main>.hero p.std,.hslider .std{font-size:16px;line-height:1.9;max-width:40em}
 .card .co{font-size:12.5px;letter-spacing:.08em}
 .card .cr{letter-spacing:.06em}
 .cc h3{line-height:1.5;letter-spacing:.02em}.ccs{line-height:1.7}
+/* 2026-09-30 わたるさん「特集のタイトル、フォントサイズ大きすぎない？バランス考えて」→ 22px から 18px（スマホ16px）に。句ごとの改行をやめて自然に折り返す */
+.cc h3{font-size:18px!important;line-height:1.5;word-break:normal!important;margin:10px 0 6px}@media(max-width:720px){.cc h3{font-size:16px!important}}
 .sec-h h2{font-size:24px;letter-spacing:.04em}
 .sec-h .sub{letter-spacing:.04em}
 /* 6. 上部の帯・パンくず・目次 */
