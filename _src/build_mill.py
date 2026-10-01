@@ -173,6 +173,47 @@ src = src.replace("open(OUT + 'site.webmanifest', 'w'", "for _old, _new in REDIR
 
 # 2026-09-27 キーワードに残っていた「オフィス」を消す
 src = re.sub(r"a\['industry'\], 'オフィス', '([^']*)',", r"a['industry'], '\1',", src)
+# 10) 2026-10-01（SAUNAMILL 9/30 と同じ） 地域チップを「都道府県 → 街」の2段に（わたるさん：チップが約90個・ほとんど1件で探せない、を受けて）
+#   1段目＝都道府県（北から順）。押すと2段目にその県の街が出る。県は PLACE[slug]['addressRegion']（構造化データの住所）から取る
+_PORD = ['北海道','青森県','岩手県','宮城県','秋田県','山形県','福島県','茨城県','栃木県','群馬県','埼玉県','千葉県','東京都','神奈川県','新潟県','富山県','石川県','福井県','山梨県','長野県','岐阜県','静岡県','愛知県','三重県','滋賀県','京都府','大阪府','兵庫県','奈良県','和歌山県','鳥取県','島根県','岡山県','広島県','山口県','徳島県','香川県','愛媛県','高知県','福岡県','佐賀県','長崎県','熊本県','大分県','宮崎県','鹿児島県','沖縄県']
+src = src.replace("F2_LABEL = 'テーマ'\n",
+    "F2_LABEL = 'テーマ'\n"
+    "_PORD = " + json.dumps(_PORD, ensure_ascii=False) + "\n"
+    "def PREF_OF(a):\n"
+    "    r = (PLACE.get(a['slug']) or {}).get('addressRegion') or ''\n"
+    "    if not r:\n"
+    "        for k, v in (a.get('facts') or []):\n"
+    "            m = re.match(r'(北海道|東京都|(?:京都|大阪)府|\\S{2,3}県)', str(v))\n"
+    "            if k in ('場所', '住所') and m: r = m.group(1); break\n"
+    "    return r or 'その他'\n", 1)
+_n0 = src.count('data-a="{E(AREA_OF(a))}"')
+src = src.replace('data-a="{E(AREA_OF(a))}"', 'data-p="{E(PREF_OF(a))}" data-a="{E(AREA_OF(a))}"', 1)
+_i = src.index("    chips = f'<button type=\"button\" data-a=\"\" class=\"on\">すべて")
+_j = src.index('\n', _i)
+src = src[:_i] + (
+    "    pc = collections.Counter(PREF_OF(a) for a in items)\n"
+    "    prefs = sorted(pc, key=lambda k: (k != '東京都', -pc[k], _PORD.index(k) if k in _PORD else 99, k))  # 2026-09-30 わたるさん：東京を一番上、あとは登録が多い順\n"
+    "    chips = f'<button type=\"button\" data-p=\"\" class=\"on\">すべて<small>{len(items)}</small></button>' + ''.join(f'<button type=\"button\" data-p=\"{E(k)}\">{E(k[:-1] if k[-1:] in \"都府県\" else k)}<small>{pc[k]}</small></button>' for k in prefs)\n"
+    "    tc = collections.Counter((PREF_OF(a), AREA_OF(a)) for a in items)\n"
+    "    towns = ''.join(f'<button type=\"button\" data-p=\"{E(p_)}\" data-a=\"{E(t_)}\" hidden>{E(t_)}<small>{n_}</small></button>' for (p_, t_), n_ in sorted(tc.items(), key=lambda kv: (-kv[1], kv[0][1])))"
+) + src[_j:]
+src = src.replace("f'<div class=\"chips\" id=\"fchips\" role=\"group\" aria-label=\"地域\">{chips}</div>'",
+                  "f'<div class=\"chips\" id=\"fchips\" role=\"group\" aria-label=\"都道府県\">{chips}</div><div class=\"chips towns\" id=\"ftowns\" role=\"group\" aria-label=\"街\" hidden>{towns}</div>'", 1)
+_js_old = [
+ ("var q=document.getElementById('fq'),ch=document.getElementById('fchips'),", "var q=document.getElementById('fq'),ch=document.getElementById('fchips'),tw=document.getElementById('ftowns'),"),
+ ("var st={a:'',f2:'',s:'new',q:''};", "var st={p:'',a:'',f2:'',s:'new',q:''};"),
+ ("var ok=(!st.a||c.getAttribute('data-a')===st.a)", "var ok=(!st.p||c.getAttribute('data-p')===st.p)&&(!st.a||c.getAttribute('data-a')===st.a)"),
+ ("[].forEach.call(ch.children,function(b){b.classList.toggle('on',b.getAttribute('data-a')===st.a);});",
+  "[].forEach.call(ch.children,function(b){b.classList.toggle('on',b.getAttribute('data-p')===st.p);});tw.hidden=!st.p;[].forEach.call(tw.children,function(b){b.hidden=b.getAttribute('data-p')!==st.p;b.classList.toggle('on',!!st.a&&b.getAttribute('data-a')===st.a);});"),
+ ("if(st.a)u.set('area',st.a);", "if(st.p)u.set('pref',st.p);if(st.a)u.set('area',st.a);"),
+ ("ch.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;st.a=b.getAttribute('data-a');apply(true);});",
+  "ch.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;st.p=b.getAttribute('data-p');st.a='';apply(true);});tw.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;var v=b.getAttribute('data-a');st.a=(st.a===v)?'':v;apply(true);});"),
+ ("st.a=u.get('area')||'';", "st.p=u.get('pref')||'';st.a=u.get('area')||'';if(st.a&&!st.p){var _t=[].filter.call(tw.children,function(b){return b.getAttribute('data-a')===st.a;})[0];if(_t)st.p=_t.getAttribute('data-p');}"),
+ (".fnone{padding:40px 0", ".fbar .chips[hidden],.fbar .chips button[hidden]{display:none!important}.fbar .chips.towns{margin-top:-4px;padding-left:12px;border-left:2px solid var(--line)}.fbar .chips.towns button{border-color:var(--line);color:#111;padding:6px 12px;font-size:12.5px}.fbar .chips.towns button.on{background:#111;border-color:#111;color:#fff}.fbar .chips.towns button.on:hover{background:#111}.fnone{padding:40px 0"),
+]
+for _o, _nw in _js_old:
+    assert src.count(_o) >= 1, _o[:60]
+    src = src.replace(_o, _nw, 1)
 open(os.path.join(HERE, f'_generated_{os.environ["BRAND"]}.py'), 'w', encoding='utf-8').write(src)
 exec(compile(src, f'build_{os.environ["BRAND"]}.py', 'exec'))
 
