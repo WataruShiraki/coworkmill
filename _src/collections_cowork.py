@@ -172,3 +172,24 @@ _ADD_1001 = {
 for _c in COLLECTIONS:
     _have = {x[0] for x in _c['items']}
     _c['items'] += [tuple(x) for x in _ADD_1001.get(_c['slug'], []) if x[0] not in _have]
+
+# 2026-10-01 別チャットの追加（cowork_add_2026-09-30）を特集に（一言は各記事のカードの文）
+_ADD_1001B = {
+ 'brand-wework': [('wework-hanzomon-prex-north', '半蔵門の「門」をイメージした、メタルと木の組み合わせ'), ('wework-tokyo-portcity-takeshiba', '竹芝スマートシティの中心、「NY×和風」の空間'), ('wework-kdx-toranomon-1chome', '11階のラウンジと屋外テラスがひと続きの空間')],
+ 'h1t': [('h1t-shibuya-miyamasuzaka', '宮益坂のワコー宮益坂8階、個室14室と会議室5室'), ('h1t-akasaka-mitsuke', '赤坂見附駅10番出口1分、日曜・祝日も開く7階'), ('h1t-jimbocho', '神保町駅A7出口1分、14席と会議室4室の5階')],
+ 'brand-newwork': [('newwork-ikebukuro-7f', '池袋駅東口4分、オーク池袋ビルディング7階の31席'), ('newwork-ikebukuro-4f', '個室ブース7室と会議室2室、打ち合わせ向きの4階'), ('newwork-omori', '大森駅3分、個室ブース11室のいちご大森ビル6階'), ('newwork-aoto', '青砥駅5分、13席の小さな朝日生命葛飾ビル4階'), ('newwork-tokyo-the-flagship', '東京駅1分、丸の内トラストタワーN館11階の95席')],
+ 'shinjuku': [('hapon-shinjuku', '日本列島の形のテーブルと、畳の「富士の間」'), ('case-shinjuku', '高田馬場駅1分、クリエイターと起業家がゆるやかにつながる')],
+ 'incubation': [('startup-hub-tokyo-marunouchi', '起業を考え始めた人のための、無料の創業支援施設'), ('nexs-tokyo-community-space', '全国と東京のスタートアップがつながる、丸の内の会員制スペース'), ('chiyoda-platform-square', '区の公共施設を生まれ変わらせた、2004年からのシェアオフィス'), ('startupside-tokyo', '50席と個室8室、インキュベーションマネージャーが常駐'), ('city-lab-tokyo', '持続可能な都市づくりのための、京橋のオープンイノベーション拠点'), ('ship-osaki', '大崎の会員制ラウンジと3Dプリンターの工房、品川区の拠点')],
+ 'marunouchi': [('startup-hub-tokyo-marunouchi', '起業を考え始めた人のための、無料の創業支援施設'), ('newwork-tokyo-the-flagship', '東京駅1分、丸の内トラストタワーN館11階の95席')],
+ 'aoyama-omotesando': [('nagaya-aoyama', '約70㎡のウッドテラスがある、静かな南青山の2階'), ('faro-aoyama', '100％国産の木材、緑につつまれたシェアオフィス')],
+ 'shibuya': [('h1t-shibuya-miyamasuzaka', '宮益坂のワコー宮益坂8階、個室14室と会議室5室'), ('co-lab-daikanyama', 'SodaCCo の4〜6階、テラスと屋上のあるクリエイターのシェアオフィス')],
+ 'nihonbashi-yaesu': [('soil-work-nihonbashi', '公園に面した窓、1階にカフェベーカリーのある6階')],
+ 'kanda-akihabara': [('basispoint-jimbocho', '神保町駅A5出口から1分、ホテルラウンジのような6階'), ('h1t-jimbocho', '神保町駅A7出口1分、14席と会議室4室の5階')],
+ 'ginza-shimbashi': [('basispoint-shimbashi-ginzaguchi', '新橋駅銀座口から1分、56名の大会議室まで')],
+ 'toranomon-azabudai': [('wework-kdx-toranomon-1chome', '11階のラウンジと屋外テラスがひと続きの空間')],
+ 'setagaya': [('tefu-lounge-shimokitazawa', '下北沢駅の南西改札口から0分、ラウンジを中心にした複合施設')],
+ 'tama-chuo-line': [('merise-tachikawa', '信用金庫の旧本店を生まれ変わらせた、多摩の共創拠点')],
+}
+for _c in COLLECTIONS:
+    _have = {x[0] for x in _c['items']}
+    _c['items'] += [tuple(x) for x in _ADD_1001B.get(_c['slug'], []) if x[0] not in _have]
