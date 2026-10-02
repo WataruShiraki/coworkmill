@@ -11,10 +11,10 @@ for d in ['', 'assets', 'spaces', 'collections', 'questions', 'about']:
     os.makedirs(OUT + d, exist_ok=True)
 
 
-exec(open("/tmp/cwrepo/_src/cowork_facilities.py", encoding='utf-8').read())
+exec(open("/home/claude/n2/coworkmill-main/_src/cowork_facilities.py", encoding='utf-8').read())
 A = sorted(A30, key=lambda a: a.get('added', ''), reverse=True)  # 2026-09-27 新着順＝掲載日の新しい順（後から足した施設が下に入っていた）
 IMG20 = dict(IMG30); KANA20 = dict(KANA30); COUNTRY20 = dict(COUNTRY30); ED = dict(ED30); ED20 = {}
-exec(open("/tmp/cwrepo/_src/collections_cowork.py", encoding='utf-8').read())
+exec(open("/home/claude/n2/coworkmill-main/_src/collections_cowork.py", encoding='utf-8').read())
 A_by = {a['slug']: a for a in A}
 for _a in A:
     _h = _a['hero'][0]
@@ -22,10 +22,18 @@ for _a in A:
 SEC_NAME = "spaces"; KIND_WORD = "\u65bd\u8a2d"; SITE_NAME = "COWORKMILL"; UTM = "coworkmill"
 QA_TITLE = "\u30b3\u30ef\u30fc\u30ad\u30f3\u30b0\u30b9\u30da\u30fc\u30b9\u306e Q&A"
 QA_LEAD = "\u65e5\u672c\u306e\u30b3\u30ef\u30fc\u30ad\u30f3\u30b0\u30b9\u30da\u30fc\u30b9\u306b\u3064\u3044\u3066\u3001\u3088\u304f\u805e\u304b\u308c\u308b\u8cea\u554f\u306b\u77ed\u304f\u7b54\u3048\u307e\u3059\u3002\u7b54\u3048\u306f\u3059\u3079\u3066\u3001\u63b2\u8f09\u3057\u3066\u3044\u308b\u65bd\u8a2d\u306e\u516c\u5f0f\u60c5\u5831\u304b\u3089\u66f8\u3044\u3066\u3044\u307e\u3059\u3002"
-_qp = "/tmp/cwrepo/_src/questions_cowork.py"
+_qp = "/home/claude/n2/coworkmill-main/_src/questions_cowork.py"
 if os.path.exists(_qp): exec(open(_qp, encoding='utf-8').read())
-exec(open("/tmp/cwrepo/_src/seo_cowork.py", encoding='utf-8').read())
+exec(open("/home/claude/n2/coworkmill-main/_src/seo_cowork.py", encoding='utf-8').read())
 F2_LABEL = 'テーマ'
+_PORD = ["北海道", "青森県", "岩手県", "宮城県", "秋田県", "山形県", "福島県", "茨城県", "栃木県", "群馬県", "埼玉県", "千葉県", "東京都", "神奈川県", "新潟県", "富山県", "石川県", "福井県", "山梨県", "長野県", "岐阜県", "静岡県", "愛知県", "三重県", "滋賀県", "京都府", "大阪府", "兵庫県", "奈良県", "和歌山県", "鳥取県", "島根県", "岡山県", "広島県", "山口県", "徳島県", "香川県", "愛媛県", "高知県", "福岡県", "佐賀県", "長崎県", "熊本県", "大分県", "宮崎県", "鹿児島県", "沖縄県"]
+def PREF_OF(a):
+    r = (PLACE.get(a['slug']) or {}).get('addressRegion') or ''
+    if not r:
+        for k, v in (a.get('facts') or []):
+            m = re.match(r'(北海道|東京都|(?:京都|大阪)府|\S{2,3}県)', str(v))
+            if k in ('場所', '住所') and m: r = m.group(1); break
+    return r or 'その他'
 def F2_OF(a): return [c['title'] for c in COLLECTIONS if any(x[0] == a['slug'] for x in c['items'])]
 
 def url(slug, n): return IMG30.get(slug, {}).get(str(n))
@@ -33,7 +41,7 @@ def purl(a, n): return url(a['slug'], n)
 
 # ---- ロゴ ----
 
-_LOGO = open("/tmp/cwrepo/_src/logo_cowork.svg", encoding='utf-8').read()
+_LOGO = open("/home/claude/n2/coworkmill-main/_src/logo_cowork.svg", encoding='utf-8').read()
 _LOGO = re.sub(r'<\?xml[^>]*>\s*', '', _LOGO).replace('<!-- Generator: Adobe Illustrator 30.2.1, SVG Export Plug-In . SVG Version: 2.1.1 Build 1)  -->', '')
 _LOGO = _LOGO.replace('<svg ', '<svg role="img" aria-label="COWORKMILL" ', 1)
 def logo_svg(fill=None):
@@ -94,6 +102,8 @@ main>.hero p.std,.hslider .std{font-size:16px;line-height:1.9;max-width:40em}
 .card .co{font-size:12.5px;letter-spacing:.08em}
 .card .cr{letter-spacing:.06em}
 .cc h3{line-height:1.5;letter-spacing:.02em}.ccs{line-height:1.7}
+/* 2026-09-30 わたるさん「特集のタイトル、フォントサイズ大きすぎない？バランス考えて」→ 22px から 18px（スマホ16px）に。句ごとの改行をやめて自然に折り返す */
+.cc h3{font-size:18px!important;line-height:1.5;word-break:normal!important;margin:10px 0 6px}@media(max-width:720px){.cc h3{font-size:16px!important}}
 .sec-h h2{font-size:24px;letter-spacing:.04em}
 .sec-h .sub{letter-spacing:.04em}
 /* 6. 上部の帯・パンくず・目次 */
@@ -174,7 +184,7 @@ body.stuck header .nav{padding-block:10px}
 .sortbar button{appearance:none;border:0;background:#fff;color:#111;cursor:pointer;padding:6px 14px;font:700 12.5px/1 var(--sans);letter-spacing:.06em}
 .sortbar button.on{background:#111;color:#fff}
 .toc{top:calc(var(--hh,60px) + 16px)}
-.fbar{margin:0 0 18px;padding-bottom:14px;border-bottom:1px solid var(--line)}.fbar .srch{display:block;position:relative;max-width:620px;margin:0 0 14px}.fbar .srch input{width:100%;box-sizing:border-box;border:1px solid var(--line);background:#fff;padding:12px 14px 12px 38px;font:14px/1.4 var(--sans);color:#111;border-radius:2px}.fbar .srch input:focus{outline:none;border-color:#111}.fbar .srch:before{content:"";position:absolute;left:14px;top:50%;width:12px;height:12px;margin-top:-8px;border:2px solid var(--accent);border-radius:50%;box-sizing:border-box}.fbar .srch:after{content:"";position:absolute;left:24px;top:50%;width:6px;height:2px;margin-top:2px;background:var(--accent);transform:rotate(45deg)}.fbar .chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}.fbar .chips button{appearance:none;cursor:pointer;border:1px solid var(--accent);background:#fff;color:var(--accent);padding:7px 14px;border-radius:999px;font:500 13px/1 var(--sans);white-space:nowrap}.fbar .chips button small{font-size:10.5px;margin-left:5px;opacity:.75;font-weight:400}.fbar .chips button.on{background:var(--accent);color:#fff}.fbar .chips button:hover{background:var(--ground)}.fbar .chips button.on:hover{background:var(--accent)}.fbar .fsel{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:13px}.fbar select{appearance:none;-webkit-appearance:none;border:1px solid var(--line);background:#fff url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2710%27 height=%276%27%3E%3Cpath d=%27M1 1l4 4 4-4%27 fill=%27none%27 stroke=%27%23111%27 stroke-width=%271.5%27/%3E%3C/svg%3E") no-repeat right 10px center;padding:8px 28px 8px 12px;font:13px/1.2 var(--sans);color:#111;border-radius:2px;cursor:pointer}.fbar .cnt{margin-left:auto;color:var(--mute)}.fbar .cnt b{color:#111;font-size:15px;margin-right:2px}.fnone{padding:40px 0;color:var(--mute);text-align:center}@media(max-width:700px){.fbar .chips{flex-wrap:nowrap;overflow-x:auto;padding-bottom:6px;margin-right:-16px;padding-right:16px;scrollbar-width:none}.fbar .chips::-webkit-scrollbar{display:none}.fbar .cnt{width:100%;margin-left:0}}
+.fbar{margin:0 0 18px;padding-bottom:14px;border-bottom:1px solid var(--line)}.fbar .srch{display:block;position:relative;max-width:620px;margin:0 0 14px}.fbar .srch input{width:100%;box-sizing:border-box;border:1px solid var(--line);background:#fff;padding:12px 14px 12px 38px;font:14px/1.4 var(--sans);color:#111;border-radius:2px}.fbar .srch input:focus{outline:none;border-color:#111}.fbar .srch:before{content:"";position:absolute;left:14px;top:50%;width:12px;height:12px;margin-top:-8px;border:2px solid var(--accent);border-radius:50%;box-sizing:border-box}.fbar .srch:after{content:"";position:absolute;left:24px;top:50%;width:6px;height:2px;margin-top:2px;background:var(--accent);transform:rotate(45deg)}.fbar .chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}.fbar .chips button{appearance:none;cursor:pointer;border:1px solid var(--accent);background:#fff;color:var(--accent);padding:7px 14px;border-radius:999px;font:500 13px/1 var(--sans);white-space:nowrap}.fbar .chips button small{font-size:10.5px;margin-left:5px;opacity:.75;font-weight:400}.fbar .chips button.on{background:var(--accent);color:#fff}.fbar .chips button:hover{background:var(--ground)}.fbar .chips button.on:hover{background:var(--accent)}.fbar .fsel{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:13px}.fbar select{appearance:none;-webkit-appearance:none;border:1px solid var(--line);background:#fff url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2710%27 height=%276%27%3E%3Cpath d=%27M1 1l4 4 4-4%27 fill=%27none%27 stroke=%27%23111%27 stroke-width=%271.5%27/%3E%3C/svg%3E") no-repeat right 10px center;padding:8px 28px 8px 12px;font:13px/1.2 var(--sans);color:#111;border-radius:2px;cursor:pointer}.fbar .cnt{margin-left:auto;color:var(--mute)}.fbar .cnt b{color:#111;font-size:15px;margin-right:2px}.fbar .chips[hidden],.fbar .chips button[hidden]{display:none!important}.fbar .chips.towns{margin-top:-4px;padding-left:12px;border-left:2px solid var(--line)}.fbar .chips.towns button{border-color:var(--line);color:#111;padding:6px 12px;font-size:12.5px}.fbar .chips.towns button.on{background:#111;border-color:#111;color:#fff}.fbar .chips.towns button.on:hover{background:#111}.fnone{padding:40px 0;color:var(--mute);text-align:center}@media(max-width:700px){.fbar .chips{flex-wrap:nowrap;overflow-x:auto;padding-bottom:6px;margin-right:-16px;padding-right:16px;scrollbar-width:none}.fbar .chips::-webkit-scrollbar{display:none}.fbar .cnt{width:100%;margin-left:0}}
 @media (max-width:700px){.rk{min-width:28px;height:28px;font-size:13px;line-height:28px;padding:0 6px}}
 @media (max-width:700px){.card .co{font-size:13.5px;letter-spacing:.04em;margin:8px 0 2px}.card .cp{font-size:12px;line-height:1.55}.newb{width:48px;height:48px}.newb::after{font-size:9px}.cards{gap:22px 14px}}
 '''
@@ -193,7 +203,7 @@ OMB160 = '/assets/banner/officemill_160x600.webp'
 OMB728 = '/assets/banner/officemill_728x90.webp'
 os.makedirs(OUT + 'assets/banner', exist_ok=True)
 for _b in ('officemill_160x600.webp', 'officemill_728x90.webp'):
-    shutil.copy(f'/tmp/cwrepo/_src/banner/{_b}', OUT + 'assets/banner/' + _b)
+    shutil.copy(f'/home/claude/n2/coworkmill-main/_src/banner/{_b}', OUT + 'assets/banner/' + _b)
 
 SITE = 'https://cowkml.com'
 # 公開用（2026-09-25 わたるさん判断：写真は公式プレス素材＋出典明記のまま公開。noindex を外す）
@@ -224,8 +234,8 @@ GA_ID = "G-P6CZCM6K18"
 GA = '' if not GA_ID else (f'<script async src="https://www.googletagmanager.com/gtag/js?id={GA_ID}"></script>'
       f'<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments)}}gtag("js",new Date());gtag("config","{GA_ID}",{{anonymize_ip:true}});</script>')
 shutil.copy('flip.js', OUT + 'assets/flip.js')  # 一覧カードの写真めくり
-for _f in os.listdir('/tmp/cwrepo/_src/icons_cowork'):
-    shutil.copy('/tmp/cwrepo/_src/icons_cowork/' + _f, OUT + _f)
+for _f in os.listdir('/home/claude/n2/coworkmill-main/_src/icons_cowork'):
+    shutil.copy('/home/claude/n2/coworkmill-main/_src/icons_cowork/' + _f, OUT + _f)
 
 BAND = "内装デザインが日本で最も優れたコワーキングを、見に行こう。"  # 2026-09-25 わたるさん選択
 def nav(p, cur='', band=None):
@@ -360,7 +370,7 @@ def article(a):
             f'<div class="head"><p class="tag" style="color:var(--mute)">{E(tagline(a))}</p>\n<h1>{T(a["title"])}</h1>\n<p class="std">{E(a["lead"])}</p>\n<div class="facts">{facts}</div></div>\n'
             f'<div class="hero">{heroimg}</div>\n<div class="body">\n<nav class="toc"><p>目次</p><ol>{toc}</ol>'
             f'<a class="omv" href="https://offml.com/?utm_source=coworkmill&amp;utm_medium=banner" rel="noopener"><img src="{OMB160}" width="160" height="600" alt="OFFICEMILL"></a></nav>\n'
-            f'<article>\n{body}\n{ctx}\n{edc}\n<div class="credits" id="credits">{cr}</div>\n{shop}\n</article></div>\n'
+            f'<article>\n{body}\n{ctx}\n{edc}\n<div class="credits" id="credits">{cr}</div>\n{shop}\n</article></div>\n<!--REL:{a["slug"]}-->\n'
             f'<a class="omb omb-728x90" href="https://offml.com/?utm_source=coworkmill&amp;utm_medium=banner" rel="noopener"><img src="{OMB728}" width="728" height="90" alt="OFFICEMILL"></a>\n'
             '</main>' + foot(p) + '</body></html>')
 
@@ -370,7 +380,7 @@ for a in A:
 # ---- 特集カード（WALL の .cc と同じ） ----
 # 特集タイトルの最後に施設数で「〇選」（2026-09-26 わたるさん）。施設数が増えれば自動で変わる
 for _c in COLLECTIONS:
-    _c['title'] = re.sub(r'\d+選$', '', _c['title']) + f'{len(_c["items"])}選'
+    _c['title'] = re.sub(r'(おすすめ)?\d+選$', '', _c['title']) + f'おすすめ{len(_c["items"])}選'
 def cc(c, p):
     imgs = [purl(A_by[s], A_by[s]['hero'][0]) for s, _ in c['items']]
     imgs = [u for u in imgs if u]
@@ -379,6 +389,8 @@ def cc(c, p):
     return (f'<a class="cc" href="{p}collections/{c["slug"]}.html">{main_i}<div class="ccm">{sub}</div>'
             f'<h3>{E(c["title"])}</h3><p class="ccs">{E(c["lead"])}</p></a>')
 
+# 2026-09-29 わたるさん「WALLみたいに一覧ボタンに数を入れろ」→ トップの一覧ボタン3つ全部に数（WALL: VIEW ALL 128 OFFICES）
+_KW = globals().get('KIND_WORD', '社') if globals().get('KIND_WORD') not in (None, '', 'オフィス') else '社'
 # ---- トップ（WALL index.html と同じ並び） ----
 p = ''
 slides = ''
@@ -405,11 +417,11 @@ top = (head(INDEX_TITLE, INDEX_DESC, p, 'index.html') + nav(p) + '\n<main class=
        f'<section class="hero hslider" aria-roledescription="carousel">{slides}<div class="hdots">{dots}</div></section>{HERO_JS}\n\n'
        '<form class="tsearch" action="spaces/index.html" method="get" role="search"><input type="search" name="q" placeholder="施設名・街・キーワードで探す" aria-label="コワーキングスペースを探す"><button type="submit">検索</button></form>\n'
        f'<section class="sec"><div class="sec-h"><h2>新着記事</h2><span class="sub">エントランスから順に、1施設ずつご案内</span><a class="more" href="spaces/index.html">一覧へ →</a></div>\n'
-       f'<div class="cards">{"".join(card(a, p) for a in A[:12])}</div><div class="viewall"><a href="spaces/index.html">コワーキングスペース一覧を見る <span>→</span></a></div></section>\n\n'
+       f'<div class="cards">{"".join(card(a, p) for a in A[:12])}</div><div class="viewall"><a href="spaces/index.html">コワーキングスペース一覧を見る（{len(A)}{_KW}） <span>→</span></a></div></section>\n\n'
        f'<section class="sec"><div class="sec-h"><h2>人気のコワーキング</h2><span class="sub">いま多く読まれている12施設</span><a class="more" href="spaces/index.html?sort=pop">一覧へ →</a></div>\n'
-       f'<div class="cards">{"".join(card(a, p, False, i + 1) for i, a in enumerate(POP[:12]))}</div><div class="viewall"><a href="spaces/index.html?sort=pop">人気順で一覧を見る <span>→</span></a></div></section>\n\n'
+       f'<div class="cards">{"".join(card(a, p, False, i + 1) for i, a in enumerate(POP[:12]))}</div><div class="viewall"><a href="spaces/index.html?sort=pop">人気順で一覧を見る（{len(A)}{_KW}） <span>→</span></a></div></section>\n\n'
        f'<section class="sec"><div class="sec-h"><h2>特集</h2><span class="sub">テーマ別に、国を越えて見比べる</span><a class="more" href="collections/index.html">一覧へ →</a></div>\n'
-       f'<div class="ccg">{"".join(cc(c, p) for c in COLLECTIONS[:6])}</div><div class="viewall"><a href="collections/index.html">特集一覧を見る <span>&rarr;</span></a></div></section>\n\n'
+       f'<div class="ccg">{"".join(cc(c, p) for c in COLLECTIONS[:6])}</div><div class="viewall"><a href="collections/index.html">特集一覧を見る（{len(COLLECTIONS)}本） <span>&rarr;</span></a></div></section>\n\n'
        f'<a class="omb omb-728x90" href="https://offml.com/?utm_source=coworkmill&amp;utm_medium=banner" rel="noopener"><img src="{OMB728}" width="728" height="90" alt="OFFICEMILL"></a>\n\n'
        # 設計・施工パートナー欄は、掲載できる会社がそろうまで非表示（2026-09-25）
        '</main>' + foot(p) + SLIDER_JS + '</body></html>')
@@ -429,38 +441,42 @@ def _qtext(a):
 _AZ = {a['slug']: i for i, a in enumerate(sorted(A, key=lambda x: (KANA.get(x['slug']) or x['company']).lower()))}
 def lcard(i, a):
     r = POPRANK[a['slug']]
-    return card(a, '../', False, r if r <= 12 else None, f' data-new="{i}" data-pop="{r}" data-az="{_AZ[a["slug"]]}" data-a="{E(AREA_OF(a))}" data-f2="{E("|".join(F2_OF(a)))}" data-q="{E(_qtext(a))}"')
+    return card(a, '../', False, r if r <= 12 else None, f' data-new="{i}" data-pop="{r}" data-az="{_AZ[a["slug"]]}" data-p="{E(PREF_OF(a))}" data-a="{E(AREA_OF(a))}" data-f2="{E("|".join(F2_OF(a)))}" data-q="{E(_qtext(a))}"')
 def fbar(items, kind_word, ph):
     import collections
     ac = collections.Counter(AREA_OF(a) for a in items)
-    chips = f'<button type="button" data-a="" class="on">すべて<small>{len(items)}</small></button>' + ''.join(f'<button type="button" data-a="{E(k)}">{E(k)}<small>{n}</small></button>' for k, n in sorted(ac.items(), key=lambda kv: (-kv[1], kv[0])))
+    pc = collections.Counter(PREF_OF(a) for a in items)
+    prefs = sorted(pc, key=lambda k: (k != '東京都', -pc[k], _PORD.index(k) if k in _PORD else 99, k))  # 2026-09-30 わたるさん：東京を一番上、あとは登録が多い順
+    chips = f'<button type="button" data-p="" class="on">すべて<small>{len(items)}</small></button>' + ''.join(f'<button type="button" data-p="{E(k)}">{E(k[:-1] if k[-1:] in "都府県" else k)}<small>{pc[k]}</small></button>' for k in prefs)
+    tc = collections.Counter((PREF_OF(a), AREA_OF(a)) for a in items)
+    towns = ''.join(f'<button type="button" data-p="{E(p_)}" data-a="{E(t_)}" hidden>{E(t_)}<small>{n_}</small></button>' for (p_, t_), n_ in sorted(tc.items(), key=lambda kv: (-kv[1], kv[0][1])))
     f2 = sorted({v for a in items for v in F2_OF(a)})
     sel2 = f'<select id="ff2" aria-label="{E(F2_LABEL)}"><option value="">すべての{E(F2_LABEL)}</option>' + ''.join(f'<option value="{E(v)}">{E(v)}</option>' for v in f2) + '</select>'
     return (f'<div class="fbar"><label class="srch"><input type="search" id="fq" placeholder="{E(ph)}" autocomplete="off"></label>'
-            f'<div class="chips" id="fchips" role="group" aria-label="地域">{chips}</div>'
+            f'<div class="chips" id="fchips" role="group" aria-label="都道府県">{chips}</div><div class="chips towns" id="ftowns" role="group" aria-label="街" hidden>{towns}</div>'
             f'<div class="fsel">{sel2}<select id="fsort" aria-label="並び替え"><option value="new">新着順</option><option value="pop">人気順</option><option value="az">名前順</option></select>'
-            f'<span class="cnt"><b id="fcnt">{len(items)}</b>{kind_word}</span></div></div><p class="fnone" id="fnone" hidden>条件に合う{kind_word if kind_word != "社" else "会社"}がありません。</p>')
-FILTER_JS = """<script>(function(){var l=document.getElementById('olist');if(!l)return;var q=document.getElementById('fq'),ch=document.getElementById('fchips'),f2=document.getElementById('ff2'),so=document.getElementById('fsort'),cn=document.getElementById('fcnt'),no=document.getElementById('fnone');
-var st={a:'',f2:'',s:'new',q:''};
+            f'<span class="cnt"><b id="fcnt">{len(items)}</b>{kind_word}</span></div></div><p class="fnone" id="fnone" hidden>条件に合うコワーキングスペースがありません。</p>')
+FILTER_JS = """<script>(function(){var l=document.getElementById('olist');if(!l)return;var q=document.getElementById('fq'),ch=document.getElementById('fchips'),tw=document.getElementById('ftowns'),f2=document.getElementById('ff2'),so=document.getElementById('fsort'),cn=document.getElementById('fcnt'),no=document.getElementById('fnone');
+var st={p:'',a:'',f2:'',s:'new',q:''};
 function norm(x){return (x||'').toLowerCase().replace(/[\s\u3000]+/g,' ').trim();}
 function apply(push){var cs=[].slice.call(l.children),n=0,qs=norm(st.q).split(' ').filter(Boolean);
 cs.sort(function(a,b){return a.getAttribute('data-'+st.s)-b.getAttribute('data-'+st.s);});
-cs.forEach(function(c){var ok=(!st.a||c.getAttribute('data-a')===st.a)&&(!st.f2||('|'+c.getAttribute('data-f2')+'|').indexOf('|'+st.f2+'|')>=0);
+cs.forEach(function(c){var ok=(!st.p||c.getAttribute('data-p')===st.p)&&(!st.a||c.getAttribute('data-a')===st.a)&&(!st.f2||('|'+c.getAttribute('data-f2')+'|').indexOf('|'+st.f2+'|')>=0);
 if(ok&&qs.length){var t=c.getAttribute('data-q')||'';ok=qs.every(function(w){return t.indexOf(w)>=0;});}
 c.hidden=!ok;if(ok)n++;l.appendChild(c);});
 l.classList.toggle('bynew',st.s==='new');cn.textContent=n;no.hidden=n>0;
-[].forEach.call(ch.children,function(b){b.classList.toggle('on',b.getAttribute('data-a')===st.a);});
-if(push){try{var u=new URLSearchParams();if(st.a)u.set('area',st.a);if(st.f2)u.set('f',st.f2);if(st.s!=='new')u.set('sort',st.s);if(st.q)u.set('q',st.q);var qs2=u.toString();history.replaceState(null,'',qs2?'?'+qs2:location.pathname);}catch(e){}}}
-ch.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;st.a=b.getAttribute('data-a');apply(true);});
+[].forEach.call(ch.children,function(b){b.classList.toggle('on',b.getAttribute('data-p')===st.p);});tw.hidden=!st.p;[].forEach.call(tw.children,function(b){b.hidden=b.getAttribute('data-p')!==st.p;b.classList.toggle('on',!!st.a&&b.getAttribute('data-a')===st.a);});
+if(push){try{var u=new URLSearchParams();if(st.p)u.set('pref',st.p);if(st.a)u.set('area',st.a);if(st.f2)u.set('f',st.f2);if(st.s!=='new')u.set('sort',st.s);if(st.q)u.set('q',st.q);var qs2=u.toString();history.replaceState(null,'',qs2?'?'+qs2:location.pathname);}catch(e){}}}
+ch.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;st.p=b.getAttribute('data-p');st.a='';apply(true);});tw.addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;var v=b.getAttribute('data-a');st.a=(st.a===v)?'':v;apply(true);});
 f2.addEventListener('change',function(){st.f2=f2.value;apply(true);});so.addEventListener('change',function(){st.s=so.value;apply(true);});
 q.addEventListener('input',function(){st.q=q.value;apply(true);});
-try{var u=new URLSearchParams(location.search);st.a=u.get('area')||'';st.f2=u.get('f')||'';st.s=u.get('sort')||'new';st.q=u.get('q')||'';
+try{var u=new URLSearchParams(location.search);st.p=u.get('pref')||'';st.a=u.get('area')||'';if(st.a&&!st.p){var _t=[].filter.call(tw.children,function(b){return b.getAttribute('data-a')===st.a;})[0];if(_t)st.p=_t.getAttribute('data-p');}st.f2=u.get('f')||'';st.s=u.get('sort')||'new';st.q=u.get('q')||'';
 if(!/^(new|pop|az)$/.test(st.s))st.s='new';f2.value=st.f2;so.value=st.s;q.value=st.q;}catch(e){}
 apply(false);})();</script>"""
 SORT_JS = FILTER_JS
 p = '../'
 lst = (head(LIST_TITLE + ' | ' + SITE_NAME, LIST_DESC, p, 'spaces/index.html') + nav(p, 'spaces') + '\n<main class="wrap"><div class="coll"><h1>コワーキングスペース一覧</h1><p class="lead">内装デザインが最も優れたコワーキングを、エントランスから順に1施設ずつご案内しています。</p></div>\n'
-       f'<section class="sec">' + fbar(A, '社', '施設名・街・キーワードで探す') +
+       f'<section class="sec">' + fbar(A, '施設', '施設名・街・キーワードで探す') +
        f'<div class="cards bynew" id="olist">{"".join(lcard(i, a) for i, a in enumerate(A))}</div></section>\n' + SORT_JS +
        f'<a class="omb omb-728x90" href="https://offml.com/" rel="noopener"><img src="{OMB728}" width="728" height="90" alt="OFFICEMILL"></a></main>' + foot(p) + '</body></html>')
 open(OUT + 'spaces/index.html', 'w', encoding='utf-8').write(lst)
@@ -477,7 +493,7 @@ for c in COLLECTIONS:
                  f'<p>{E(a["lead"])}</p><p><a class="ctx-tag" href="../spaces/{s}.html">続きを読む →</a></p></section>')
     pg = (head(f'{c["title"]}｜コワーキングスペース特集 | COWORKMILL', c['lead'] + '（' + '・'.join(A_by[x[0]]['company'] for x in c['items']) + '）', p, f'collections/{c["slug"]}.html', purl(A_by[c['items'][0][0]], A_by[c['items'][0][0]]['hero'][0]), 'article') + nav(p, 'collections', '特集｜テーマ別に見比べる') + '\n<main class="wrap">\n'
           f'<div class="crumb">特集 › {E(c["title"])}</div><div class="head"><p class="tag" style="color:var(--mute)">特集</p><h1>{E(c["title"])}</h1><p class="std">{E(c["lead"])}</p></div>\n'
-          f'<div class="body"><nav class="toc"><p>登場する会社</p><ol>{toc_items([x[0] for x in c["items"]])}</ol></nav><article>{secs}</article></div>\n'
+          f'<div class="body"><nav class="toc"><p>登場するコワーキングスペース</p><ol>{toc_items([x[0] for x in c["items"]])}</ol></nav><article>{secs}</article></div>\n'
           f'<a class="omb omb-728x90" href="https://offml.com/" rel="noopener"><img src="{OMB728}" width="728" height="90" alt="OFFICEMILL"></a></main>' + foot(p) + '</body></html>')
     open(OUT + f'collections/{c["slug"]}.html', 'w', encoding='utf-8').write(pg)
 
@@ -717,6 +733,105 @@ _lines = ['# COWORKMILL', '', '> 内装デザインが最も優れたコワー�
           '## 記事（コワーキング）', ''] + [f'- [{a["title"]}]({SITE}/spaces/{a["slug"]}.html): {a["lead"]}' for a in A] + ['', '## 特集', ''] + [f'- [{c["title"]}]({SITE}/collections/{c["slug"]}.html): {c["lead"]}' for c in COLLECTIONS] + \
          ['', '## その他', '', f'- [Q&A]({SITE}/questions/index.html): {QA["q"]}'] + [f'- [{q_["q"]}]({SITE}/questions/{q_["slug"]}.html): {q_["a"]}' for q_ in QUESTIONS] + [ f'- [COWORKMILL について]({SITE}/about/index.html)', f'- [お問い合わせ]({SITE}/contact/index.html)', '', '## 引用について', '', '記事の事実は各施設の公式サイト・公式ニュースが出典。引用の際は記事URLを添えてください。写真の権利は各社・撮影者に帰属します。']
 open(OUT + 'llms.txt', 'w', encoding='utf-8').write('\n'.join(_lines) + '\n')
+
+# ---------- 2026-09-29 記事下おすすめ：MILL側の設定（呼び名・選ぶ順・近いエリアの表） ----------
+_RB = os.environ.get('BRAND', '')
+REL_NOUN = {'cowork': 'コワーキング', 'cafe': 'カフェ', 'sauna': 'サウナ', 'salon': 'サロン', 'clinic': 'クリニック'}.get(_RB, 'スポット')
+REL_ORDER = {'salon': ['town_kind', 'kind', 'near', 'town', 'coll', 'coll2'], 'clinic': ['town_kind', 'kind', 'town', 'near', 'coll', 'coll2']}.get(_RB, ['town', 'near', 'coll', 'coll2'])
+REL_KIND_LABEL = '同じ{kind}'
+_NEAR_TOKYO = {
+ '渋谷・恵比寿': '渋谷 恵比寿 代官山 中目黒 広尾 池尻 池尻大橋 富ヶ谷 西原 目黒',
+ '青山・表参道': '青山 南青山 表参道 原宿 神宮前 外苑前 千駄ヶ谷 代々木 明治公園 信濃町 乃木坂',
+ '丸の内・大手町': '丸の内 大手町 有楽町 日比谷 内幸町 霞が関 永田町 北の丸公園 麹町 半蔵門 九段下 神保町 飯田橋 市ヶ谷',
+ '日本橋・清澄白河': '日本橋 京橋 八重洲 茅場町 日本橋兜町 馬喰横山 馬喰町 東日本橋 浅草橋 八丁堀 人形町 蔵前 両国 清澄白河 住吉 錦糸町 本所 晴海',
+ '銀座・新橋': '銀座 新橋 汐留 西新橋 虎ノ門 神谷町 竹芝 浜松町 田町 三田 台場',
+ '六本木・赤坂': '六本木 赤坂 麻布台 麻布十番 白金台 高輪 品川 五反田 大井町',
+ '新宿・中野': '新宿 西新宿 歌舞伎町 新大久保 高田馬場 早稲田 神楽坂 中野 方南町 落合 西落合 目白 目白台 江古田',
+ '池袋・大塚': '池袋 大塚 茗荷谷 本駒込 巣鴨 十条',
+ '上野・神田': '上野 谷中 下谷 西日暮里 日暮里 千駄木 御茶ノ水 神田 神田小川町 秋葉原 水道橋 浅草 北千住 千住',
+ '世田谷': '三軒茶屋 下北沢 桜新町 八雲 尾山台 自由が丘 奥沢 千歳船橋 千歳烏山 成城 二子玉川 砧公園 田園調布 上北沢 東松原 池上',
+ '中央線沿線': '吉祥寺 西荻窪 荻窪 南阿佐ケ谷 武蔵境 国立 立川 高尾 小金井 花小金井 府中 調布 狛江',
+}
+NEAR = {t: k for k, v in _NEAR_TOKYO.items() for t in v.split()}
+for _a in A:
+    _t = _a['city'].split('（')[0]
+    _m = re.search(r'（(.+?)）', _a['city'])
+    if _t not in NEAR and _m and _m.group(1) not in ('東京', '東京都'):
+        NEAR[_t] = _m.group(1)
+# ---------- 詳細ページ下のおすすめ（2026-09-29 WALLと同じ仕組み。指示書_記事下おすすめ_内部リンク_2026-09-29） ----------
+# ①この施設が載っている特集（最大3本）＋質問ページの1行 ②次に見る施設3件（理由つき）。人気順ではなく「候補リストの中で自分の次」を選ぶ
+REL_NOUN  = globals().get('REL_NOUN', 'オフィス')
+REL_ORDER = globals().get('REL_ORDER', ['kind', 'town', 'coll', 'country', 'coll2'])
+_REL_CN = {'UK': 'イギリス', 'US': 'アメリカ', 'GB': 'イギリス', 'DE': 'ドイツ', 'FR': 'フランス', 'NL': 'オランダ', 'SE': 'スウェーデン', 'DK': 'デンマーク', 'SG': 'シンガポール', 'CN': '中国', 'KR': '韓国', 'CH': 'スイス', 'IT': 'イタリア', 'ES': 'スペイン', 'AU': 'オーストラリア', 'CA': 'カナダ', 'JP': '日本', 'IE': 'アイルランド', 'FI': 'フィンランド', 'NO': 'ノルウェー', 'BE': 'ベルギー', 'AT': 'オーストリア', 'HK': '香港', 'TW': '台湾', 'IN': 'インド', 'BR': 'ブラジル', 'MX': 'メキシコ', 'IL': 'イスラエル', 'AE': 'アラブ首長国連邦', 'TH': 'タイ', 'PL': 'ポーランド', 'PT': 'ポルトガル', 'CZ': 'チェコ', 'NZ': 'ニュージーランド', 'ZA': '南アフリカ', 'RU': 'ロシア', 'TR': 'トルコ', 'VN': 'ベトナム', 'MY': 'マレーシア', 'ID': 'インドネシア', 'PH': 'フィリピン', 'AR': 'アルゼンチン', 'CL': 'チリ', 'LU': 'ルクセンブルク', 'HU': 'ハンガリー'}
+NEAR      = globals().get('NEAR', {})
+REL_KIND_LABEL = globals().get('REL_KIND_LABEL', '同じ{kind}業界')
+def _rel_next(lst, slug, taken):
+    ss = [x['slug'] for x in lst]
+    if slug in ss: st = ss.index(slug) + 1
+    else:  # 自分が候補に入っていない（近いエリアなど）ときは、データの並びで自分の次の位置から選ぶ（先頭ばかりに集まらないように）
+        _ix = {x['slug']: i for i, x in enumerate(A)}
+        st = sum(1 for x in lst if _ix.get(x['slug'], 0) < _ix.get(slug, 0))
+    for x in lst[st:] + lst[:st]:
+        if x['slug'] != slug and x['slug'] not in taken:
+            return x
+    return None
+def related_html(a):
+    s = a['slug']
+    colls = [c for c in COLLECTIONS if s in [it[0] for it in c['items']]]
+    qs = [q for q in QUESTIONS if any(a_ == s for sec in q['secs'] for a_, _ in sec[3])]
+    picks, taken = [], set()
+    def add(lst, label):
+        x = _rel_next(lst, s, taken) if lst else None
+        if x:
+            picks.append((x, label)); taken.add(x['slug'])
+    town = city_short(a)
+    near = NEAR.get(town)
+    kind = a.get('industry')
+    c0 = colls[0] if colls else None
+    cands = {
+        'town_kind': ([x for x in A if city_short(x) == town and x.get('industry') == kind], f'{town}の{kind}'),
+        'kind':      ([x for x in A if x.get('industry') == kind], REL_KIND_LABEL.format(kind=kind)),
+        'town':      ([x for x in A if city_short(x) == town], f'同じ{town}エリア'),
+        'near':      ([x for x in A if near and NEAR.get(city_short(x)) == near and city_short(x) != town], f'近くの{near}エリア'),
+        'coll':      ([A_by[it[0]] for it in c0['items'] if it[0] in A_by] if c0 else [], f'特集「{c0["title"]}」から' if c0 else ''),
+    }
+    _cty = globals().get('COUNTRY', {}).get(s)
+    cands['country'] = ([x for x in A if _cty and globals().get('COUNTRY', {}).get(x['slug']) == _cty], f'同じ{_REL_CN.get(_cty, _cty)}' if _cty else '')
+    c1 = colls[1] if len(colls) > 1 else None
+    cands['coll2'] = ([A_by[it[0]] for it in c1['items'] if it[0] in A_by] if c1 else [], f'特集「{c1["title"]}」から' if c1 else '')
+    for key in REL_ORDER:
+        lst, label = cands[key]
+        if len(picks) < 3: add(lst, label)
+    while len(picks) < 3:
+        x = _rel_next(A, s, taken)
+        if not x: break
+        picks.append((x, f'ほかの{REL_NOUN}')); taken.add(x['slug'])
+    out = '<section class="rel">'
+    qline = (f'<p class="qchip">この質問でも紹介しています：<a href="../questions/{qs[0]["slug"]}.html">{E(qs[0]["q"])} &rarr;</a></p>' if qs else '')
+    if colls:
+        out += (f'<div class="rel-block"><p class="rel-h">{E(a["company"])}が載っている特集（{len(colls)}本）</p>'
+                f'<div class="ccg rel-cc">' + ''.join(cc(c, '../') for c in colls[:3]) + '</div>' + qline + '</div>')
+    elif qline:
+        out += '<div class="rel-block">' + qline + '</div>'
+    if picks:
+        out += (f'<div class="rel-block"><p class="rel-h">次に見る{REL_NOUN}</p><div class="rel-grid">'
+                + ''.join(f'<div class="rel-item"><p class="why">{E(lb)}</p>{card(x, "../", False)}</div>' for x, lb in picks)
+                + '</div></div>')
+    return out + '</section>\n'
+REL_LOG = []
+for _root, _ds, _fs in os.walk(OUT):
+    for _f in _fs:
+        if not _f.endswith('.html'): continue
+        _p = os.path.join(_root, _f)
+        _t = open(_p, encoding='utf-8').read()
+        _m = re.search(r'<!--REL:([^>]+?)-->', _t)
+        if not _m or _m.group(1) not in A_by: continue
+        _h = related_html(A_by[_m.group(1)])
+        REL_LOG.append(_m.group(1))
+        open(_p, 'w', encoding='utf-8').write(_t.replace(_m.group(0), _h))
+_css_p = OUT + 'assets/style.css'
+if os.path.exists(_css_p) and '.rel-grid' not in open(_css_p, encoding='utf-8').read():
+    open(_css_p, 'a', encoding='utf-8').write('\n/* 詳細ページ下のおすすめ 2026-09-29 */\n.rel{margin:10px 0 40px;display:grid;gap:44px}\n.rel-h{font-weight:600;font-size:13px;letter-spacing:.08em;color:var(--accent);margin:0 0 14px}\n.ccg.rel-cc{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}\n.qchip{margin:16px 0 0;font-size:13px;color:var(--mute)}\n.qchip a{color:var(--ink);border-bottom:1px solid var(--accent);text-decoration:none}\n.rel-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}\n.why{margin:0 0 8px;font-size:12px;font-weight:600;color:var(--ink)}\n@media (max-width:700px){.ccg.rel-cc,.rel-grid{grid-template-columns:1fr}}\n')
 
 # ---- 2026-09-27 わたるさん「サイトを開くと末尾に index.html がつくのが嫌」----
 # 出力したHTML・sitemap・llms.txt のリンクから index.html を外す（…/index.html → …/、index.html → ./）

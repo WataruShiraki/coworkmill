@@ -214,6 +214,12 @@ _js_old = [
 for _o, _nw in _js_old:
     assert src.count(_o) >= 1, _o[:60]
     src = src.replace(_o, _nw, 1)
+# 2026-10-02 わたるさん：特集タイトルに「おすすめ」を入れる（例：メーカーの内装が綺麗な研究所おすすめ10選）。クリックしたくなるタイトルにする
+_o = "_c['title'] = re.sub(r'\\d+選$', '', _c['title']) + f'{len(_c[\"items\"])}選'"
+if src.count(_o) == 1:
+    src = src.replace(_o, "_c['title'] = re.sub(r'(おすすめ)?\\d+選$', '', _c['title']) + f'おすすめ{len(_c[\"items\"])}選'")
+else:
+    raise SystemExit('おすすめ置換の対象が見つからない')
 open(os.path.join(HERE, f'_generated_{os.environ["BRAND"]}.py'), 'w', encoding='utf-8').write(src)
 exec(compile(src, f'build_{os.environ["BRAND"]}.py', 'exec'))
 
