@@ -951,3 +951,205 @@ PLACE_ADD_0930F = {
 }
 
 SEO.update(SEO_ADD_0930F); PLACE.update(PLACE_ADD_0930F)
+
+
+# ---- cowork_add_2026-10-05_a.py（2026-10-05 別チャットの追加）----
+SEO_ADD_1005A = {
+  'the-hub-shibuya': ('THE HUB 渋谷｜内装・内観・雰囲気の写真｜渋谷駅C1出口30秒のシェアオフィス',
+    'THE HUB 渋谷（エクラート渋谷4・5・8階）の内装・内観・雰囲気を写真で。渋谷駅C1出口から30秒。ラウンジ、カウンター席、モニター席、ブース席、有人フロント、会議室を紹介します。'),
+  'the-hub-kanda-ogawamachi': ('THE HUB 神田小川町｜内装・内観・雰囲気の写真｜4路線4駅が使える拠点',
+    'THE HUB 神田小川町（小川町北ビル）の内装・内観・雰囲気を写真で。小川町駅1分、4路線4駅が使える立地。ラウンジ、ウェイティングスペース、会議室、MTG-BOOTH、個室を紹介します。'),
+  'the-hub-shinjuku': ('THE HUB 新宿｜内装・内観・雰囲気の写真｜2つのラウンジがある高機能オフィス',
+    'THE HUB 新宿（レイフラット新宿B棟3階）の内装・内観・雰囲気を写真で。新宿三丁目駅30秒。会話OKのラウンジ、サイレントラウンジ、ウェイティング、会議室、個室を紹介します。'),
+  'the-hub-shinjuku-gyoen': ('THE HUB 新宿御苑｜内装・内観・雰囲気の写真｜落ち着いた低コスト設計のオフィス',
+    'THE HUB 新宿御苑（サンカテリーナビル6階）の内装・内観・雰囲気を写真で。新宿御苑前駅3分。来訪者用の待合、受付、会議室、ブース、共有スペース、個室オフィスを紹介します。'),
+  'the-hub-yoyogi': ('THE HUB 代々木｜内装・内観・雰囲気の写真｜新宿至近の1〜6名用20室',
+    'THE HUB 代々木（パシフィックスクエア代々木3・4階）の内装・内観・雰囲気を写真で。南新宿駅6分、代々木駅7分。ラウンジ、会議室、ブース席、1〜6名用の個室を紹介します。'),
+  'the-hub-aoyama-west': ('THE HUB 青山WEST｜内装・内観・雰囲気の写真｜天高4mのラウンジと55室',
+    'THE HUB 青山WEST（アミーホール3〜6階）の内装・内観・雰囲気を写真で。渋谷駅・表参道駅から6分。天井高4mのラウンジ、受付、ウェイティング、会議室、個室を紹介します。'),
+  'the-hub-kanda-nishiguchi': ('THE HUB 神田西口｜内装・内観・雰囲気の写真｜神田駅1分の広いラウンジ',
+    'THE HUB 神田西口（第一岸ビル4・5階）の内装・内観・雰囲気を写真で。JR神田駅西口から1分。広々としたラウンジ、受付、会議室、個室ブース、共有スペース、個室を紹介します。'),
+  'the-hub-kojimachi': ('THE HUB 麹町｜内装・内観・雰囲気の写真｜600坪1棟のフロント付きオフィス',
+    'THE HUB 麹町（二番町・THE BASE 麹町）の内装・内観・雰囲気を写真で。麹町駅1分、600坪の1棟。有人のオフィスフロント、ラウンジ、応接室、会議室、ブース席、個室を紹介します。'),
+  'the-hub-shinjuku-nishiguchi': ('THE HUB 新宿西口｜内装・内観・雰囲気の写真｜新宿駅1分のラウンジ付き',
+    'THE HUB 新宿西口（ニューセントラルビル8・9階）の内装・内観・雰囲気を写真で。新宿駅から1分。TELブースのあるラウンジ、ウェイティング、会議室、ブース席、個室を紹介します。'),
+  'the-hub-kanda-east': ('THE HUB 神田EAST｜内装・内観・雰囲気の写真｜4駅が使える機能的な拠点',
+    'THE HUB 神田EAST（神田ビジネスセンター）の内装・内観・雰囲気を写真で。岩本町・小伝馬町・新日本橋駅4分、神田駅5分。エントランス、受付、会議室、ブース席、個室を紹介します。'),
+}
+PLACE_ADD_1005A = {
+  'the-hub-shibuya': {'streetAddress': '東京都渋谷区渋谷3-6-2 エクラート渋谷4-5F・8F', 'addressLocality': '渋谷', 'addressRegion': '東京都'},
+  'the-hub-kanda-ogawamachi': {'streetAddress': '東京都千代田区神田小川町1-8-3 小川町北ビルB1・3-5F・7F', 'addressLocality': '神田', 'addressRegion': '東京都'},
+  'the-hub-shinjuku': {'streetAddress': '東京都新宿区新宿4-3-15 レイフラット新宿B棟3F', 'addressLocality': '新宿', 'addressRegion': '東京都'},
+  'the-hub-shinjuku-gyoen': {'streetAddress': '東京都新宿区新宿1-36-12 サンカテリーナビル6F', 'addressLocality': '新宿御苑', 'addressRegion': '東京都'},
+  'the-hub-yoyogi': {'streetAddress': '東京都渋谷区代々木3-1-11 パシフィックスクエア代々木3F・4F', 'addressLocality': '代々木', 'addressRegion': '東京都'},
+  'the-hub-aoyama-west': {'streetAddress': '東京都渋谷区渋谷1-1-3 アミーホール3-6F', 'addressLocality': '渋谷', 'addressRegion': '東京都'},
+  'the-hub-kanda-nishiguchi': {'streetAddress': '東京都千代田区内神田3-12-4 第一岸ビル4-5F', 'addressLocality': '神田', 'addressRegion': '東京都'},
+  'the-hub-kojimachi': {'streetAddress': '東京都千代田区二番町9-3 THE BASE 麹町', 'addressLocality': '麹町', 'addressRegion': '東京都'},
+  'the-hub-shinjuku-nishiguchi': {'streetAddress': '東京都新宿区西新宿1-5-12 ニューセントラルビル8-9F', 'addressLocality': '新宿', 'addressRegion': '東京都'},
+  'the-hub-kanda-east': {'streetAddress': '東京都千代田区岩本町1-3-1 神田ビジネスセンター', 'addressLocality': '岩本町', 'addressRegion': '東京都'},
+}
+
+SEO.update(SEO_ADD_1005A); PLACE.update(PLACE_ADD_1005A)
+
+# ---- cowork_add_2026-10-05_b.py（2026-10-05 別チャットの追加）----
+SEO_ADD_1005B = {
+  'h1t-by-w-shinjuku-tonanguchi': ('H¹T by W 新宿東南口｜内装・内観・雰囲気の写真｜一人用の席に絞った新宿の拠点',
+    'H¹T by W 新宿東南口（市嶋ビル4階）の内装・内観・雰囲気を写真で。JR新宿駅東南口2分、土日祝も7時から22時まで開く法人向けシェアオフィス。ボックス6つと個室12室を紹介します。'),
+  'h1t-yurakucho': ('H¹T有楽町｜内装・内観・雰囲気の写真｜東京交通会館9階の大きな拠点',
+    'H¹T有楽町（東京交通会館9階）の内装・内観・雰囲気を写真で。JR有楽町駅1分、野村不動産の法人向けシェアオフィス。19席のオープンスペース、ボックス、ブース、個室14室、会議室6室を紹介します。'),
+  'h1t-ebisu': ('H¹T恵比寿｜内装・内観・雰囲気の写真｜恵比寿駅西口1分、会議室8室',
+    'H¹T恵比寿（EBSビル8階）の内装・内観・雰囲気を写真で。恵比寿駅西口1分、日曜も開く法人向けシェアオフィス。21席のオープンスペース、2名・4名用ボックス、個室18室、会議室8室を紹介します。'),
+  'h1t-shinagawa': ('H¹T品川｜内装・内観・雰囲気の写真｜品川駅港南口4分、会議室10室',
+    'H¹T品川（A-PLACE品川3階）の内装・内観・雰囲気を写真で。品川駅港南口4分、平日に開く野村不動産の法人向けシェアオフィス。33席のオープンスペース、個室25室、12名用を含む会議室10室を紹介します。'),
+  'h1t-ikebukuro-nishiguchi': ('H¹T池袋西口｜内装・内観・雰囲気の写真｜エソラ池袋8階、出口から15秒',
+    'H¹T池袋西口（エソラ池袋8階）の内装・内観・雰囲気を写真で。丸ノ内線の出口から15秒、土日祝も22時まで開く法人向けシェアオフィス。ボックス、ブース、個室9室、10名用会議室を紹介します。'),
+  'h1t-shibuya-dogenzaka': ('H¹T渋谷道玄坂｜内装・内観・雰囲気の写真｜一人用の個室10室だけの拠点',
+    'H¹T渋谷道玄坂（ACN渋谷道玄坂ビル3階）の内装・内観・雰囲気を写真で。渋谷マークシティ道玄坂出口2分、毎日7時から22時まで開く法人向けシェアオフィス。一人用の個室10室を紹介します。'),
+  'h1t-ochanomizu': ('H¹T御茶ノ水｜内装・内観・雰囲気の写真｜聖橋口から近い個室10室',
+    'H¹T御茶ノ水（VORT御茶ノ水5階）の内装・内観・雰囲気を写真で。新御茶ノ水駅2分・御茶ノ水駅3分、毎日7時から21時まで開く法人向けシェアオフィス。一人用の個室10室を紹介します。'),
+  'h1t-akihabara-denkigai-kitaguchi': ('H¹T秋葉原電気街北口｜内装・内観・雰囲気の写真｜駅1分、個室20室',
+    'H¹T秋葉原電気街北口（新秋葉原ビル5階）の内装・内観・雰囲気を写真で。秋葉原駅電気街北口1分、毎日22時まで開く法人向けシェアオフィス。一人用の個室20室と会議室5室を紹介します。'),
+  'h1t-nakameguro': ('H¹T中目黒｜内装・内観・雰囲気の写真｜中目黒駅1分、個室18室',
+    'H¹T中目黒（アサヒ電機朝日生命中目黒ビル7階）の内装・内観・雰囲気を写真で。中目黒駅1分、毎日開く法人向けシェアオフィス。15席のオープンスペース、ボックス、個室18室、会議室を紹介します。'),
+  'h1t-gotanda': ('H¹T五反田｜内装・内観・雰囲気の写真｜五反田駅前、毎日8時から22時',
+    'H¹T五反田（5セントラルビル7階）の内装・内観・雰囲気を写真で。五反田駅東口2分、毎日8時から22時まで開く法人向けシェアオフィス。8席のオープンスペース、個室10室、会議室4室を紹介します。'),
+}
+PLACE_ADD_1005B = {
+  'h1t-by-w-shinjuku-tonanguchi': {'streetAddress': '東京都新宿区新宿3-36-5 市嶋ビル4階', 'addressLocality': '新宿', 'addressRegion': '東京都', 'openingHours': 'Mo-Su 07:00-22:00'},
+  'h1t-yurakucho': {'streetAddress': '東京都千代田区有楽町2-10-1 東京交通会館9階', 'addressLocality': '有楽町', 'addressRegion': '東京都', 'openingHours': 'Mo-Su 08:15-22:00'},
+  'h1t-ebisu': {'streetAddress': '東京都渋谷区恵比寿西1-7-7 EBSビル8階', 'addressLocality': '恵比寿', 'addressRegion': '東京都', 'openingHours': 'Mo-Sa 08:00-22:00, Su 08:00-20:00'},
+  'h1t-shinagawa': {'streetAddress': '東京都港区港南1-8-40 A-PLACE品川3階', 'addressLocality': '品川', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 07:00-20:00'},
+  'h1t-ikebukuro-nishiguchi': {'streetAddress': '東京都豊島区西池袋1-12-1 エソラ池袋8階', 'addressLocality': '池袋', 'addressRegion': '東京都', 'openingHours': 'Mo-Su 08:00-22:00'},
+  'h1t-shibuya-dogenzaka': {'streetAddress': '東京都渋谷区道玄坂1-15-12 ACN渋谷道玄坂ビル3F', 'addressLocality': '渋谷', 'addressRegion': '東京都', 'openingHours': 'Mo-Su 07:00-22:00'},
+  'h1t-ochanomizu': {'streetAddress': '東京都千代田区神田駿河台2-10-6 VORT御茶ノ水5F', 'addressLocality': '御茶ノ水', 'addressRegion': '東京都', 'openingHours': 'Mo-Su 07:00-21:00'},
+  'h1t-akihabara-denkigai-kitaguchi': {'streetAddress': '東京都千代田区外神田1-18-19 新秋葉原ビル5階', 'addressLocality': '秋葉原', 'addressRegion': '東京都', 'openingHours': 'Mo-Su 07:30-22:00'},
+  'h1t-nakameguro': {'streetAddress': '東京都目黒区上目黒3-3-14 アサヒ電機朝日生命中目黒ビル7階', 'addressLocality': '中目黒', 'addressRegion': '東京都', 'openingHours': 'Mo-Su 08:30-20:00'},
+  'h1t-gotanda': {'streetAddress': '東京都品川区東五反田5-27-5 5セントラルビル7階', 'addressLocality': '五反田', 'addressRegion': '東京都', 'openingHours': 'Mo-Su 08:00-22:00'},
+}
+
+SEO.update(SEO_ADD_1005B); PLACE.update(PLACE_ADD_1005B)
+
+# ---- cowork_add_2026-10-05_c.py（2026-10-05 別チャットの追加）----
+SEO_ADD_1005C = {
+  'basispoint-kichijoji-marui': ('BasisPoint 吉祥寺マルイ店｜内装・内観・雰囲気の写真｜駅1分のマルイ4階',
+    'BasisPoint 吉祥寺マルイ店（吉祥寺マルイ4階）の内装・内観・雰囲気を写真で。吉祥寺駅公園口1分、毎日10時30分から開くドロップインできるコワーキング。ソファ席、ブース席、BOX席を紹介します。'),
+  'basispoint-hachioji': ('BasisPoint 八王子店｜内装・内観・雰囲気の写真｜個室ブース13室',
+    'BasisPoint 八王子店（松坂ビル1階）の内装・内観・雰囲気を写真で。八王子駅3分、登記もできるドロップイン可能なコワーキング。オープンスペース、個室ブース13室、BOX席、会議室を紹介します。'),
+  'newwork-tokyu-shibuya-1chome-building': ('NewWork 東急渋谷一丁目ビル｜内装・内観・雰囲気の写真｜渋谷駅1分、土日祝も営業',
+    'NewWork 東急渋谷一丁目ビル（4階）の内装・内観・雰囲気を写真で。渋谷駅B2出入口1分、土日祝も開く東急の法人会員制サテライトオフィス。24席、会議室2室、個室ブースを紹介します。'),
+  'newwork-tameike-sanno': ('NewWork 溜池山王｜内装・内観・雰囲気の写真｜個室ブース10室の8階',
+    'NewWork 溜池山王（渡辺商事赤坂ビル8階）の内装・内観・雰囲気を写真で。溜池山王駅3分、東急が運営する法人会員制のサテライトオフィス。21席、個室ブース10室、会議室を紹介します。'),
+  'newwork-ogikubo': ('NewWork 荻窪｜内装・内観・雰囲気の写真｜荻窪駅1分の13席',
+    'NewWork 荻窪（Daiwa荻窪ビル7階）の内装・内観・雰囲気を写真で。荻窪駅1分、東急が運営する法人会員制のサテライトオフィス。13席のブース席、個室ブース、6名用の会議室を紹介します。'),
+  'newwork-meguro': ('NewWork 目黒｜内装・内観・雰囲気の写真｜駅ビル17階の51席',
+    'NewWork 目黒（JR東急目黒ビル17階）の内装・内観・雰囲気を写真で。目黒駅1分、東急が運営する法人会員制のサテライトオフィス。51席、個室ブース16室、8名用の会議室2室を紹介します。'),
+  'newwork-nerima': ('NewWork 練馬｜内装・内観・雰囲気の写真｜練馬駅1分、土日祝も営業',
+    'NewWork 練馬（練馬CRビル4階）の内装・内観・雰囲気を写真で。練馬駅1分、土日祝も開く東急の法人会員制サテライトオフィス。28席、ワイド個室ブース、8名用の会議室を紹介します。'),
+  'newwork-kyodo': ('NewWork 経堂｜内装・内観・雰囲気の写真｜小田急線経堂駅2分の18席',
+    'NewWork 経堂（経堂フコク生命ビル5階）の内装・内観・雰囲気を写真で。経堂駅2分、東急が運営する法人会員制のサテライトオフィス。18席のブース席、個室ブース5室、会議室を紹介します。'),
+  'newwork-seijogakuenmae': ('NewWork 成城学園前｜内装・内観・雰囲気の写真｜南口1分、会議室2室',
+    'NewWork 成城学園前（SMBC成城ビル4階）の内装・内観・雰囲気を写真で。成城学園前駅南口1分、東急の法人会員制サテライトオフィス。28席、個室ブース7室、会議室2室を紹介します。'),
+  'newwork-akabane-higashiguchi': ('NewWork 赤羽東口｜内装・内観・雰囲気の写真｜赤羽駅東口2分の53席',
+    'NewWork 赤羽東口（赤羽南ビル6階）の内装・内観・雰囲気を写真で。赤羽駅東口2分、東急が運営する法人会員制のサテライトオフィス。53席のオープン席とブース席、会議室2室を紹介します。'),
+}
+PLACE_ADD_1005C = {
+  'basispoint-kichijoji-marui': {'streetAddress': '東京都武蔵野市吉祥寺南町1-7-1 吉祥寺マルイ店4F', 'addressLocality': '吉祥寺', 'addressRegion': '東京都', 'openingHours': 'Mo-Su 10:30-20:00'},
+  'basispoint-hachioji': {'streetAddress': '東京都八王子市東町12-2 松坂ビル1F', 'addressLocality': '八王子', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:00-22:00, Sa-Su 10:00-22:00'},
+  'newwork-tokyu-shibuya-1chome-building': {'streetAddress': '東京都渋谷区渋谷1-24-8 東急渋谷一丁目ビル 4F', 'addressLocality': '渋谷', 'addressRegion': '東京都', 'openingHours': 'Mo-Su 08:00-21:00'},
+  'newwork-tameike-sanno': {'streetAddress': '東京都港区赤坂2-5-7 渡辺商事赤坂ビル8F', 'addressLocality': '赤坂', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:00-20:00'},
+  'newwork-ogikubo': {'streetAddress': '東京都杉並区荻窪5-26-13 Daiwa荻窪ビル7F', 'addressLocality': '荻窪', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:00-20:00'},
+  'newwork-meguro': {'streetAddress': '東京都品川区上大崎3-1-1 JR東急目黒ビル 17F', 'addressLocality': '目黒', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:00-21:00'},
+  'newwork-nerima': {'streetAddress': '東京都練馬区練馬1-4-4 練馬CRビル4F', 'addressLocality': '練馬', 'addressRegion': '東京都', 'openingHours': 'Mo-Su 08:00-21:00'},
+  'newwork-kyodo': {'streetAddress': '東京都世田谷区宮坂3-10-9 経堂フコク生命ビル5F', 'addressLocality': '経堂', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:00-20:00'},
+  'newwork-seijogakuenmae': {'streetAddress': '東京都世田谷区成城2-34-14 SMBC成城ビル4F', 'addressLocality': '成城', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:00-21:00'},
+  'newwork-akabane-higashiguchi': {'streetAddress': '東京都北区赤羽南1-9-11 赤羽南ビル6F', 'addressLocality': '赤羽', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:00-20:00'},
+}
+
+SEO.update(SEO_ADD_1005C); PLACE.update(PLACE_ADD_1005C)
+
+# ---- cowork_add_2026-10-05_d.py（2026-10-05 別チャットの追加）----
+SEO_ADD_1005D = {
+  'the-hub-tachikawa': ('THE HUB 立川｜内装・内観・雰囲気の写真｜吹き抜けラウンジのデザイナーズオフィス',
+    'THE HUB 立川（立川NXビル5階・立川駅から徒歩3分）の内装・内観・雰囲気を写真で。吹き抜けのラウンジ、6名の会議室、個室ブース、ブース席、個室オフィスを歩く順番で紹介します。'),
+  'garage-machida-sakaigawa': ('GARAGE MACHIDA 境川店｜内装・内観・雰囲気の写真｜カフェ併設の第二の居場所',
+    'GARAGE MACHIDA 境川店（町田市木曽東）の内装・内観・雰囲気を写真で。古淵駅から徒歩8分、入口はカフェ。一枚板のテーブル席、集中席、個室、ロフト付きシェアオフィスを歩く順番で紹介します。'),
+  'garage-machida-minamioya': ('GARAGE MACHIDA 南大谷店｜内装・内観・雰囲気の写真｜スーパーの2階の仕事場',
+    'GARAGE MACHIDA 南大谷店（町田市南大谷・スーパー三徳2階）の内装・内観・雰囲気を写真で。カウンター席、8席の集中室、半個室と個室、6名の会議室を歩く順番で紹介します。'),
+  'breath-mitaka': ('コワーキングスペース Breath｜内装・内観・雰囲気の写真｜子どもと来られる三鷹の1階',
+    'コワーキングスペース Breath（三鷹駅北口から徒歩5分）の内装・内観・雰囲気を写真で。ガラス張りの1階に、ラウンジ、ワーキングデスク、子どもの見守りスペースを歩く順番で紹介します。'),
+  'func-fuchu': ('シェアオフィス func｜内装・内観・雰囲気の写真｜建築家が設計・運営する府中の場所',
+    'シェアオフィス func（府中駅から徒歩6分・多磨ビル2階）の内装・内観・雰囲気を写真で。設計・運営はアワーデザイン。昇降式デスクのコワーキング、6室の個室、会議室を紹介します。'),
+  'buso-agora-machida': ('BUSO AGORA｜内装・内観・雰囲気の写真｜町田駅3分の地域密着型コワーキング',
+    'BUSO AGORA（町田駅から徒歩3分・AETA町田4階）の内装・内観・雰囲気を写真で。フリースペース、ブース席、1名ブース、個室、商談スペース、会議室を歩く順番で紹介します。'),
+  'cs-tachikawa': ('シーズ立川｜内装・内観・雰囲気の写真｜立川駅南口5分の24時間コワーキング',
+    'シーズ立川（Cs TACHIKAWA・立川駅南口から徒歩5分）の内装・内観・雰囲気を写真で。24時間365日のコワーキング、個室エリア、定員12名の会議室3室を歩く順番で紹介します。'),
+  '8beat-hachioji': ('8Beat｜内装・内観・雰囲気の写真｜八王子駅近くのまちのコワーキング',
+    'コワーキングスペース八王子 8Beat（三崎町・トーネンビル5階）の内装・内観・雰囲気を写真で。2時間500円から使える席、本棚のあるフロア、入口の様子を歩く順番で紹介します。'),
+  'over-coffee-hub-kichijoji': ('OVER COFFEE HUB｜内装・内観・雰囲気の写真｜吉祥寺のカフェ一体の3階建て',
+    'OVER COFFEE HUB（吉祥寺駅から徒歩約3分）の内装・内観・雰囲気を写真で。1階のカフェ、2階のコワーキング・イベントスペース、3階のオフィスとテラスを階ごとに紹介します。'),
+  'cobrew-kichijoji': ('CoBREW KICHIJOJI｜内装・内観・雰囲気の写真｜2フロア50席以上の共創の場',
+    'CoBREW KICHIJOJI（吉祥寺駅から徒歩5分）の内装・内観・雰囲気を写真で。1階と2階のフリーアドレス、Web会議専用ブース、固定席、個室、会議室を歩く順番で紹介します。'),
+}
+PLACE_ADD_1005D = {
+  'the-hub-tachikawa': {'streetAddress': '東京都立川市柴崎町3-8-5 立川NXビル5F', 'addressLocality': '立川', 'addressRegion': '東京都'},
+  'garage-machida-sakaigawa': {'streetAddress': '東京都町田市木曽東2-10-12', 'addressLocality': '町田', 'addressRegion': '東京都', 'openingHours': 'Mo-Su 09:00-18:00'},
+  'garage-machida-minamioya': {'streetAddress': '東京都町田市南大谷三丁目22番31号 スーパー三徳本町田店2階', 'addressLocality': '町田', 'addressRegion': '東京都', 'openingHours': 'Mo-Sa 08:00-22:00, Su 09:30-22:00'},
+  'breath-mitaka': {'streetAddress': '東京都武蔵野市中町1丁目24番8号 1階', 'addressLocality': '武蔵野', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 09:00-20:00, Sa 10:00-17:00'},
+  'func-fuchu': {'streetAddress': '東京都府中市府中町2-10-10 多磨ビル2階', 'addressLocality': '府中', 'addressRegion': '東京都', 'openingHours': 'Mo-Su 06:00-23:00'},
+  'buso-agora-machida': {'streetAddress': '東京都町田市原町田6-9-8 AETA町田4F', 'addressLocality': '町田', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 09:00-23:00, Sa-Su 10:00-20:00'},
+  'cs-tachikawa': {'streetAddress': '東京都立川市錦町1-4-4 サニービル2F', 'addressLocality': '立川', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 10:00-22:00'},
+  '8beat-hachioji': {'streetAddress': '東京都八王子市三崎町4-11 トーネンビル5F', 'addressLocality': '八王子', 'addressRegion': '東京都'},
+  'over-coffee-hub-kichijoji': {'streetAddress': '東京都武蔵野市吉祥寺本町2丁目10-6', 'addressLocality': '吉祥寺', 'addressRegion': '東京都', 'openingHours': 'Mo-Su 10:30-18:00'},
+  'cobrew-kichijoji': {'streetAddress': '東京都武蔵野市吉祥寺本町1-20-13 ウェルビーズ吉祥寺 1F・2F', 'addressLocality': '吉祥寺', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 09:30-18:00'},
+}
+
+SEO.update(SEO_ADD_1005D); PLACE.update(PLACE_ADD_1005D)
+
+# ---- cowork_add_2026-10-05_e.py（2026-10-05 別チャットの追加）----
+SEO_ADD_1005E = {
+  'portal-point-harajuku': ('PORTAL POINT HARAJUKU｜内装・内観・雰囲気の写真｜屋上テラスのある一棟オフィス',
+    'PORTAL POINT HARAJUKU の内装・内観・雰囲気を写真で。北参道駅から4分、リアルゲイトの一棟オフィス。8階のコワーキング、国立競技場と明治神宮を望むスカイテラスを紹介します。'),
+  'portal-point-shibuya': ('PORTAL POINT SHIBUYA｜内装・内観・雰囲気の写真｜神南の24時間フリーデスク',
+    'PORTAL POINT SHIBUYA の内装・内観・雰囲気を写真で。渋谷駅B1出口から3分の神南。24時間使える8階のフリーデスク、共用ラウンジ、会議室、ルーフトップテラスを紹介します。'),
+  'portal-point-yoyogi-koen': ('PORTAL POINT Yoyogi-Koen｜内装・内観・雰囲気の写真｜代々木公園を望むテラス',
+    'PORTAL POINT Yoyogi-Koen の内装・内観・雰囲気を写真で。代々木八幡駅から1分。開放的なワークラウンジ、代々木公園を見渡すルーフトップテラス、バルコニー付きオフィスを紹介します。'),
+  'portal-point-ebisu': ('PORTAL POINT Ebisu｜内装・内観・雰囲気の写真｜光のふりそそぐラウンジ',
+    'PORTAL POINT Ebisu の内装・内観・雰囲気を写真で。恵比寿ガーデンプレイス内、吹き抜けのガラスから光がふりそそぐコミュニティラウンジ、仮眠室、フォンブース、ショールームを紹介します。'),
+  'libport-shinagawa': ('リブポート品川｜内装・内観・雰囲気の写真｜竹林を臨むコワーキング',
+    'リブポート品川の内装・内観・雰囲気を写真で。品川駅港南口から5分。竹林を臨む2フロアのコワーキング、隣接カフェ、ハンギングチェアの仮眠スペース、会議室を紹介します。'),
+  'libport-hamamatsucho': ('リブポート浜松町｜内装・内観・雰囲気の写真｜駅20秒の24時間ワークスペース',
+    'リブポート浜松町の内装・内観・雰囲気を写真で。浜松町駅から20秒、24時間使えるワークスペース。フリーアドレス席、モノレールを望む眺望空間、ラウンジ、会議室を紹介します。'),
+  'blink-roppongi': ('BLINK 六本木｜内装・内観・雰囲気の写真｜カフェラウンジのある海外風コワーキング',
+    'BLINK 六本木の内装・内観・雰囲気を写真で。六本木ヒルズのそば、「まるで海外のような」コワーキング。1階のカフェラウンジ、オープンデスク、シンキングルーム、個室を紹介します。'),
+  'blink-kioicho': ('BLINK 紀尾井町｜内装・内観・雰囲気の写真｜永田町駅直結のラウンジ',
+    'BLINK 紀尾井町の内装・内観・雰囲気を写真で。永田町駅直結の東京ガーデンテラス紀尾井町2階。半個室型を含むラウンジシート、2〜8席のプライベートオフィス、会議室を紹介します。'),
+}
+PLACE_ADD_1005E = {
+  'portal-point-harajuku': {'streetAddress': '東京都渋谷区千駄ヶ谷3-51-10', 'addressLocality': '原宿', 'addressRegion': '東京都'},
+  'portal-point-shibuya': {'streetAddress': '東京都渋谷区神南1-11-3', 'addressLocality': '渋谷', 'addressRegion': '東京都', 'openingHours': 'Mo-Su 00:00-24:00'},
+  'portal-point-yoyogi-koen': {'streetAddress': '東京都渋谷区代々木5-7-5', 'addressLocality': '代々木公園', 'addressRegion': '東京都'},
+  'portal-point-ebisu': {'streetAddress': '東京都渋谷区恵比寿4-20-4 恵比寿ガーデンプレイス グラススクエア内', 'addressLocality': '恵比寿', 'addressRegion': '東京都'},
+  'libport-shinagawa': {'streetAddress': '東京都港区港南1-8-15 Wビル2F', 'addressLocality': '品川', 'addressRegion': '東京都', 'openingHours': 'Mo-Sa 07:30-23:00'},
+  'libport-hamamatsucho': {'streetAddress': '東京都港区浜松町2-5-3', 'addressLocality': '浜松町', 'addressRegion': '東京都', 'openingHours': 'Mo-Su 00:00-24:00'},
+  'blink-roppongi': {'streetAddress': '東京都港区元麻布3-1-6', 'addressLocality': '六本木', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 09:00-18:00'},
+  'blink-kioicho': {'streetAddress': '東京都千代田区紀尾井町1-2 東京ガーデンテラス紀尾井町2F', 'addressLocality': '紀尾井町', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 09:00-18:00'},
+}
+
+SEO.update(SEO_ADD_1005E); PLACE.update(PLACE_ADD_1005E)
+
+# ---- cowork_add_2026-10-05_f.py（2026-10-05 別チャットの追加）----
+SEO_ADD_1005F = {
+ 'h1t-akihabara-chuo-kitaguchi': ('H¹T秋葉原中央北口｜内装・内観・雰囲気の写真｜3路線から近い個室17室',
+ 'H¹T秋葉原中央北口（長谷川ビル2階）の内装・内観・雰囲気を写真で。秋葉原駅中央改札北口3分、毎日7時から22時まで開く法人向けシェアオフィス。一人用の個室17室と8名用会議室を紹介します。'),
+ 'h1t-shimbashi-ginzaguchi': ('H¹T新橋銀座口｜内装・内観・雰囲気の写真｜平日23時まで開く個室12室',
+ 'H¹T新橋銀座口（SNTビル8階）の内装・内観・雰囲気を写真で。銀座線新橋駅1分、平日は23時まで開く野村不動産の法人向けシェアオフィス。一人用の個室12室と6名用会議室を紹介します。'),
+}
+PLACE_ADD_1005F = {
+ 'h1t-akihabara-chuo-kitaguchi': {'streetAddress': '東京都千代田区神田松永町10-1 長谷川ビル2F', 'addressLocality': '秋葉原', 'addressRegion': '東京都', 'openingHours': 'Mo-Su 07:00-22:00'},
+ 'h1t-shimbashi-ginzaguchi': {'streetAddress': '東京都港区新橋2-19-4 SNTビル8階', 'addressLocality': '新橋', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 08:00-23:00, Sa-Su 10:00-20:00'},
+}
+
+SEO.update(SEO_ADD_1005F); PLACE.update(PLACE_ADD_1005F)
+
+for _s in ['the-hub-shibuya', 'the-hub-kanda-ogawamachi', 'the-hub-shinjuku', 'the-hub-shinjuku-gyoen', 'the-hub-yoyogi', 'the-hub-aoyama-west', 'the-hub-kanda-nishiguchi', 'the-hub-kojimachi', 'the-hub-shinjuku-nishiguchi', 'the-hub-kanda-east', 'the-hub-tachikawa', 'garage-machida-minamioya', 'over-coffee-hub-kichijoji']:
+    SEO.pop(_s, None); PLACE.pop(_s, None)
