@@ -92,7 +92,9 @@ if B.get('coll_lead'): src = src.replace('国も業種も違うオフィスを�
 if B.get('coll_desc'): src = src.replace(re.search(r"'植物、階段[^']*特集。'", src).group(0), json.dumps(B['coll_desc'], ensure_ascii=False).replace('"', "'"))
 # 特集・人気・Q&A・翻訳表（OFFISNAP 固有）を無効化
 src = src.replace("exec(open('tokushu.py', encoding='utf-8').read())", '')
-src = src.replace("exec(open('popular.py', encoding='utf-8').read())", "POPULAR = [a['slug'] for a in A]")
+# 2026-10-06 人気順はブランドごとの popular_<BRAND>.py（GA4 の閲覧数順）。無ければ掲載順
+_popf = os.path.join(HERE, f'popular_{os.environ["BRAND"]}.py')
+src = src.replace("exec(open('popular.py', encoding='utf-8').read())", "exec(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'popular_%s.py'), encoding='utf-8').read())" % os.environ["BRAND"] if os.path.exists(_popf) else "POPULAR = [a['slug'] for a in A]")
 src = src.replace("exec(open('articles_ja.py', encoding='utf-8').read())", 'J = {}')
 src = src.replace("exec(open('site.py', encoding='utf-8').read())", '').replace("exec(open('editorial.py', encoding='utf-8').read())", '')
 # GA を空にしたときはタグを出さない
