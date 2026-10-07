@@ -11,10 +11,10 @@ for d in ['', 'assets', 'spaces', 'collections', 'questions', 'about']:
     os.makedirs(OUT + d, exist_ok=True)
 
 
-exec(open("/home/claude/n2/coworkmill-main/_src/cowork_facilities.py", encoding='utf-8').read())
+exec(open("/tmp/claude-0/d7/m/coworkmill-main/_src/cowork_facilities.py", encoding='utf-8').read())
 A = sorted(A30, key=lambda a: a.get('added', ''), reverse=True)  # 2026-09-27 新着順＝掲載日の新しい順（後から足した施設が下に入っていた）
 IMG20 = dict(IMG30); KANA20 = dict(KANA30); COUNTRY20 = dict(COUNTRY30); ED = dict(ED30); ED20 = {}
-exec(open("/home/claude/n2/coworkmill-main/_src/collections_cowork.py", encoding='utf-8').read())
+exec(open("/tmp/claude-0/d7/m/coworkmill-main/_src/collections_cowork.py", encoding='utf-8').read())
 A_by = {a['slug']: a for a in A}
 for _a in A:
     _h = _a['hero'][0]
@@ -22,9 +22,9 @@ for _a in A:
 SEC_NAME = "spaces"; KIND_WORD = "\u65bd\u8a2d"; SITE_NAME = "COWORKMILL"; UTM = "coworkmill"
 QA_TITLE = "\u30b3\u30ef\u30fc\u30ad\u30f3\u30b0\u30b9\u30da\u30fc\u30b9\u306e Q&A"
 QA_LEAD = "\u65e5\u672c\u306e\u30b3\u30ef\u30fc\u30ad\u30f3\u30b0\u30b9\u30da\u30fc\u30b9\u306b\u3064\u3044\u3066\u3001\u3088\u304f\u805e\u304b\u308c\u308b\u8cea\u554f\u306b\u77ed\u304f\u7b54\u3048\u307e\u3059\u3002\u7b54\u3048\u306f\u3059\u3079\u3066\u3001\u63b2\u8f09\u3057\u3066\u3044\u308b\u65bd\u8a2d\u306e\u516c\u5f0f\u60c5\u5831\u304b\u3089\u66f8\u3044\u3066\u3044\u307e\u3059\u3002"
-_qp = "/home/claude/n2/coworkmill-main/_src/questions_cowork.py"
+_qp = "/tmp/claude-0/d7/m/coworkmill-main/_src/questions_cowork.py"
 if os.path.exists(_qp): exec(open(_qp, encoding='utf-8').read())
-exec(open("/home/claude/n2/coworkmill-main/_src/seo_cowork.py", encoding='utf-8').read())
+exec(open("/tmp/claude-0/d7/m/coworkmill-main/_src/seo_cowork.py", encoding='utf-8').read())
 F2_LABEL = 'テーマ'
 _PORD = ["北海道", "青森県", "岩手県", "宮城県", "秋田県", "山形県", "福島県", "茨城県", "栃木県", "群馬県", "埼玉県", "千葉県", "東京都", "神奈川県", "新潟県", "富山県", "石川県", "福井県", "山梨県", "長野県", "岐阜県", "静岡県", "愛知県", "三重県", "滋賀県", "京都府", "大阪府", "兵庫県", "奈良県", "和歌山県", "鳥取県", "島根県", "岡山県", "広島県", "山口県", "徳島県", "香川県", "愛媛県", "高知県", "福岡県", "佐賀県", "長崎県", "熊本県", "大分県", "宮崎県", "鹿児島県", "沖縄県"]
 def PREF_OF(a):
@@ -41,7 +41,7 @@ def purl(a, n): return url(a['slug'], n)
 
 # ---- ロゴ ----
 
-_LOGO = open("/home/claude/n2/coworkmill-main/_src/logo_cowork.svg", encoding='utf-8').read()
+_LOGO = open("/tmp/claude-0/d7/m/coworkmill-main/_src/logo_cowork.svg", encoding='utf-8').read()
 _LOGO = re.sub(r'<\?xml[^>]*>\s*', '', _LOGO).replace('<!-- Generator: Adobe Illustrator 30.2.1, SVG Export Plug-In . SVG Version: 2.1.1 Build 1)  -->', '')
 _LOGO = _LOGO.replace('<svg ', '<svg role="img" aria-label="COWORKMILL" ', 1)
 def logo_svg(fill=None):
@@ -203,7 +203,7 @@ OMB160 = '/assets/banner/officemill_160x600.webp'
 OMB728 = '/assets/banner/officemill_728x90.webp'
 os.makedirs(OUT + 'assets/banner', exist_ok=True)
 for _b in ('officemill_160x600.webp', 'officemill_728x90.webp'):
-    shutil.copy(f'/home/claude/n2/coworkmill-main/_src/banner/{_b}', OUT + 'assets/banner/' + _b)
+    shutil.copy(f'/tmp/claude-0/d7/m/coworkmill-main/_src/banner/{_b}', OUT + 'assets/banner/' + _b)
 
 SITE = 'https://cowkml.com'
 # 公開用（2026-09-25 わたるさん判断：写真は公式プレス素材＋出典明記のまま公開。noindex を外す）
@@ -234,8 +234,8 @@ GA_ID = "G-P6CZCM6K18"
 GA = '' if not GA_ID else (f'<script async src="https://www.googletagmanager.com/gtag/js?id={GA_ID}"></script>'
       f'<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments)}}gtag("js",new Date());gtag("config","{GA_ID}",{{anonymize_ip:true}});</script>')
 shutil.copy('flip.js', OUT + 'assets/flip.js')  # 一覧カードの写真めくり
-for _f in os.listdir('/home/claude/n2/coworkmill-main/_src/icons_cowork'):
-    shutil.copy('/home/claude/n2/coworkmill-main/_src/icons_cowork/' + _f, OUT + _f)
+for _f in os.listdir('/tmp/claude-0/d7/m/coworkmill-main/_src/icons_cowork'):
+    shutil.copy('/tmp/claude-0/d7/m/coworkmill-main/_src/icons_cowork/' + _f, OUT + _f)
 
 BAND = "内装デザインが日本で最も優れたコワーキングを、見に行こう。"  # 2026-09-25 わたるさん選択
 def nav(p, cur='', band=None):
@@ -408,7 +408,7 @@ HERO_JS = ('<script>var OS_HERO=' + json.dumps(_pool, ensure_ascii=False).replac
  'for(var k=0;k<S.length&&k<P.length;k++){var j=k+Math.floor(Math.random()*(P.length-k));var t=P[k];P[k]=P[j];P[j]=t;var d=P[k],e=S[k],u="spaces/"+d.s+".html";'
  'var im=e.querySelector("img");im.src=d.img;im.alt=d.alt;e.querySelector(".hsimg").href=u;e.querySelector(".tag").textContent=d.tag;'
  'var h=e.querySelector("h1 a");h.href=u;h.innerHTML=d.h;e.querySelector(".std").textContent=d.std;e.querySelector(".ctx-tag").href=u;}}catch(x){}})();</script>')
-POPULAR = [a['slug'] for a in A]
+exec(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'popular_cowork.py'), encoding='utf-8').read())
 _bs = {a['slug']: a for a in A}
 POP = [_bs[x] for x in POPULAR if x in _bs] + [a for a in A if a['slug'] not in POPULAR]
 POPRANK = {a['slug']: i + 1 for i, a in enumerate(POP)}
