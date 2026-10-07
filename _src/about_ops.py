@@ -34,3 +34,11 @@ if _os.path.exists(_gp) and _os.path.exists(OUT + 'vercel.json'):
         for _e in ('.html', ''):
             _vj['redirects'].append({"source": f"/{_sec_}/{_slug_}{_e}", "destination": f"/{_sec_}/", "permanent": True})
     open(OUT + 'vercel.json', 'w').write(_json.dumps(_vj, indent=1) + '\n')
+
+# 2026-10-07 旧版（Supabase時代）のURLへの対策。検索に残っている /areas/… と /modes/… は今のページへ転送する
+# （/spaces/<名前>-<6文字> の旧施設ページは 404.html 側で一覧へ案内する。今の施設と名前が重なるため、ここでは転送しない）
+if _os.path.exists(OUT + 'vercel.json') and __import__('os').environ.get('BRAND') == 'cowork':
+    _vj = _json.load(open(OUT + 'vercel.json'))
+    for _s, _d in (('/areas', '/spaces/'), ('/areas/:path*', '/spaces/'), ('/modes/:path*', '/')):
+        _vj['redirects'].append({"source": _s, "destination": _d, "permanent": True})
+    open(OUT + 'vercel.json', 'w').write(_json.dumps(_vj, indent=1) + '\n')

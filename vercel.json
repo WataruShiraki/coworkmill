@@ -199,6 +199,21 @@
    "source": "/spaces/andwork-shibuya-higashi",
    "destination": "/spaces/",
    "permanent": true
+  },
+  {
+   "source": "/areas",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/areas/:path*",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/modes/:path*",
+   "destination": "/",
+   "permanent": true
   }
  ]
 }

@@ -45,5 +45,9 @@
     <a href="/spaces" class="btn btn-ghost">コワーキングを探す <span class="arr">→</span></a>
   </div>
   <div class="footer">© COWORKMILL — designed coworking, curated</div>
+  <script>
+  // 2026-10-07 旧版の施設ページ（/spaces/名前-6文字・/areas/…）から来た人を、いま掲載中の一覧へ案内する
+  (function(){var p=location.pathname;if(/^\/(spaces|areas)\//.test(p)){var s=document.querySelector('.sub');if(s)s.innerHTML='このページは掲載を終了しました。<br>いま掲載中のコワーキングスペースの一覧へ移動します。';setTimeout(function(){location.replace('/spaces/')},2500)}})();
+  </script>
 </body>
 </html>
