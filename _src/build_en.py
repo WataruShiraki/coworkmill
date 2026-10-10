@@ -335,7 +335,13 @@ CSS = open(os.path.join(HERE, 'en', 'en.css'), encoding='utf-8').read()
 JS = open(os.path.join(HERE, 'en', 'en.js'), encoding='utf-8').read()
 
 # ---------- 書き出し ----------
+def om_banner(where):
+    return (f'<a class="omb" href="https://offml.com/?utm_source=coworkmill&amp;utm_medium=banner&amp;utm_campaign={where}" rel="noopener">'
+            f'<img src="{U("assets/banner/officemill_728x90_en.webp")}" width="728" height="90" alt="OFFICEMILL — explore offices across Japan" loading="lazy"></a>')
 def w(path, s):
+    if path not in ('404.html', 'contact/thanks.html') and '</main>' in s:
+        where = path.split('/')[0].replace('.html', '') or 'top'
+        i = s.rfind('</main>'); s = s[:i] + om_banner(where) + s[i:]
     p = os.path.join(OUT, path); os.makedirs(os.path.dirname(p), exist_ok=True)
     open(p, 'w', encoding='utf-8').write(s)
 shutil.rmtree(OUT, ignore_errors=True); os.makedirs(OUT)
