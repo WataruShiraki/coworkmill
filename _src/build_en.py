@@ -72,12 +72,16 @@ def photos(slug):
     return out
 
 # 旅行者向けのしるし（公式情報から作った facts だけで判定。推測では付けない）
+# 2026-10-10 わたるさん「支払い方法とか、英語対応可能かとかちゃんと入ってるか？」：公式サイトで確かめた予約・支払い・英語対応（en/visit_extra.json、人気の上位から順に追加）
+VX = json.load(open(os.path.join(HERE, 'en', 'visit_extra.json'), encoding='utf-8'))
 def traits(slug):
-    e = EN[slug]; t = []
+    e = EN[slug]; t = []; vx = VX.get(slug, {})
     txt = ' '.join(v for k, v in e['facts']).lower(); allf = json.dumps(e, ensure_ascii=False).lower()
-    members_only = 'no drop-in' in txt or 'corporate membership only' in txt or 'members only' in txt
+    members_only = 'no drop-in' in txt or 'corporate membership only' in txt or 'members only' in txt or 'members only' in vx.get('Booking', '').lower() or 'membership only' in vx.get('Booking', '').lower()
     if not members_only and re.search(r'drop-in|per hour|/hour|an hour|per day|/day|a day', fact(e, 'Drop-in', 'Prices', 'Price').lower()): t.append('Day pass')
     h = fact(e, 'Hours', 'Access hours').lower(); c = fact(e, 'Closed').lower()
+    if vx.get('day') and not members_only and 'Day pass' not in t: t.append('Day pass')
+    if vx.get('English'): t.append('English website')
     if '24 hours' in h: t.append('24-hour access')
     h2 = re.sub(r'\([^)]*(member|support|tenant|office|reception)[^)]*\)', '', h); h2 = re.sub(r'/ *[^/]*(members|tenants|serviced offices|private rooms|offices)[^/]*', '', h2)
     _wk = re.search(r'weekend|sat|sun|every day|mon–sun|365 days|daily', h2) and not re.search(r'closed (on )?(weekends|saturdays|sundays|sat)', h) and not re.match(r'24 hours', h)
@@ -176,8 +180,19 @@ def space_page(slug):
                     rows += f'<div class="row"><span>{lab}</span><div>{E(v)}</div></div>'
     if 'Members only' in TRAIT[slug] and not any(k in ('Use',) for k, v in e['facts']):
         rows = f'<div class="row"><span>Who</span><div>Members only — not a drop-in space.</div></div>' + rows
+    vx = VX.get(slug, {})
+    if vx.get('Who') and 'Who</span>' not in rows:
+        rows = f'<div class="row"><span>Who</span><div>{E(vx["Who"])}</div></div>' + rows
     if not any(k in ('Prices', 'Price', 'Drop-in', 'Monthly', 'Free desk', 'Entry fee') for k, v in e['facts']):
-        rows += '<div class="row"><span>Price</span><div>Not published here <small>— check the official website</small></div></div>'
+        pr = (f'<div class="row"><span>Price</span><div>{E(vx["Price"])}</div></div>' if vx.get('Price') else
+              '<div class="row"><span>Price</span><div>Not published here <small>— check the official website</small></div></div>')
+        i = rows.find('</div></div>') + 12 if rows.startswith('<div class="row"><span>Who</span>') else 0
+        rows = rows[:i] + pr + rows[i:]
+    for lab in ('Booking', 'Payment', 'English'):
+        if vx.get(lab):
+            rows += f'<div class="row"><span>{"How" if lab == "Booking" else "Pay" if lab == "Payment" else lab}</span><div>{E(vx[lab])}</div></div>'
+    if vx:
+        rows += '<p class="chk">Checked on the official website, October 2026</p>'
     taxi = ''
     if adr:
         taxi = (f'<div class="taxi"><p>Show this to your taxi driver</p><div class="ja" lang="ja">{E(adr)}<br>{E(ja["company"])}</div><div class="en">{E(en_address(e))}</div>'
@@ -212,7 +227,7 @@ def space_page(slug):
 def prefs_count(slugs):
     c = collections.Counter(pref(EN[s]) for s in slugs)
     return sorted(c.items(), key=lambda kv: (kv[0] != 'Tokyo', -kv[1], kv[0]))
-TFILTERS = ['Day pass', 'Open weekends', 'Open late', '24-hour access', 'Station-linked']
+TFILTERS = ['Day pass', 'Open weekends', 'Open late', '24-hour access', 'Station-linked', 'English website']
 def list_page():
     pc = prefs_count(ORDER)
     chips = f'<button type="button" data-p="" class="on">All<small>{len(ORDER)}</small></button>' + ''.join(f'<button type="button" data-p="{E(k)}">{E(k)}<small>{n}</small></button>' for k, n in pc)
