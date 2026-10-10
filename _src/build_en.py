@@ -47,6 +47,14 @@ def jp_address(slug):
             if re.match(r'(北海道|東京都|(?:京都|大阪)府|\S{2,3}県)', v): return v
     return ''
 def town(e): return e['area'].split(',')[0].strip()
+# 2026-10-10 わたるさん「英語表記もあった方よくね？」：英訳本文の「on the 5th floor of the ◯◯ Building」から建物と階を取り、街・県とあわせて英語の住所にする（番地のローマ字は推測になるので書かない）
+_FLOOR = re.compile(r"on the ((?:\d+(?:st|nd|rd|th))|ground|basement|second basement) floors? (?:and [^ ]+ floors? )?of (?:the )?([A-Z0-9][^,;]*?)(?:,| in | near | directly | a | —|(?<!No)\.(?: |$))")
+def en_address(e):
+    m = _FLOOR.search(e['lead']); t = town(e); pr = pref(e)
+    place = t if t == pr else f'{t}, {pr}'
+    if not m: return f'{place}, Japan'
+    fl = {'ground': 'Ground floor', 'basement': 'Basement', 'second basement': '2nd basement'}.get(m.group(1), m.group(1) + ' floor')
+    return f'{m.group(2).strip()}, {fl}, {place}, Japan' 
 def pref(e): return (e['area'].split(',')[1] if ',' in e['area'] else e['area']).strip()
 def fact(e, *keys):
     for k, v in e['facts']:
@@ -142,7 +150,8 @@ def space_page(slug):
         gal += '</div>'
         _ph = next((v for k, v in e['credits'] if k == 'Photos'), '')
         gal += f'<p class="cap">{len(P)} photo{"s" if len(P) > 1 else ""}{(" · " + E(_ph)) if _ph else ""} · Tap any photo to view it full size</p>'
-    facts = ''.join(f'<span>{E(k)}<b>{E(v)}</b></span>' for k, v in e['facts'] if k not in ('Space',))
+    _vk = {k for _, ks in VISIT_KEYS for k in ks}  # 2026-10-10 Plan your visit と同じ項目は下に繰り返さない
+    facts = ''.join(f'<span>{E(k)}<b>{E(v)}</b></span>' for k, v in e['facts'] if k not in ('Space',) and k not in _vk)
     body = f'<section class="step"><p class="no">Introduction</p><h2>{E(e["concept"][0])}</h2>' + ''.join(f'<p>{E(x)}</p>' for x in e['concept'][1]) + '</section>'
     for st in e['steps']:
         figs = [(idx[n], c) for n, c in st[3] if n in idx and n != ja['hero'][0]]
@@ -171,7 +180,7 @@ def space_page(slug):
         rows += '<div class="row"><span>Price</span><div>Not published here <small>— check the official website</small></div></div>'
     taxi = ''
     if adr:
-        taxi = (f'<div class="taxi"><p>Show this to your taxi driver</p><div class="ja" lang="ja">{E(adr)}<br>{E(ja["company"])}</div>'
+        taxi = (f'<div class="taxi"><p>Show this to your taxi driver</p><div class="ja" lang="ja">{E(adr)}<br>{E(ja["company"])}</div><div class="en">{E(en_address(e))}</div>'
                 f'<div class="tb"><button type="button" class="cp" data-t="{E(adr + " " + ja["company"])}">Copy address</button>'
                 f'<a href="https://www.google.com/maps/search/?api=1&amp;query={quote(adr + " " + ja["company"])}" target="_blank" rel="noopener">Open in Google Maps</a></div></div>')
     cta = f'<a class="cta" href="{E(off)}" target="_blank" rel="noopener">Visit the official website<small>Booking and contact are on the operator\'s site, often in Japanese</small></a>' if off else ''
@@ -196,7 +205,7 @@ def space_page(slug):
     return (head(title, desc, f'spaces/{slug}.html', P[0][0] if P else None, 'article', ld) + nav('spaces/') +
             f'<main class="wrap"><div class="crumb"><a href="{U("spaces/")}">Spaces</a> › {E(e["area"])} › {E(e["name"])}</div>'
             f'<div class="head"><p class="tag">{E(e["area"])}</p><h1>{nm} — {E(tail)}</h1><p class="lead">{E(e["lead"])}</p></div>'
-            f'{gal}<div class="grid"><article><div class="facts">{facts}</div>{body}<div class="cred">{cred}</div></article>{visit}</div>{relh}</main>'
+            f'{gal}<div class="grid"><article>{("<div class=facts>" + facts + "</div>") if facts else ""}{body}<div class="cred">{cred}</div></article>{visit}</div>{relh}</main>'
             f'<script type="application/json" id="photos">{json.dumps(P, ensure_ascii=False)}</script>' + foot())
 
 # ---------- 一覧 ----------
