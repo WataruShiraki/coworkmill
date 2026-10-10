@@ -214,6 +214,937 @@
    "source": "/modes/:path*",
    "destination": "/",
    "permanent": true
+  },
+  {
+   "source": "/100banch.html",
+   "destination": "/spaces/100banch.html",
+   "permanent": true
+  },
+  {
+   "source": "/100banch",
+   "destination": "/spaces/100banch.html",
+   "permanent": true
+  },
+  {
+   "source": "/andwork-azabujuban.html",
+   "destination": "/spaces/andwork-azabujuban.html",
+   "permanent": true
+  },
+  {
+   "source": "/andwork-azabujuban",
+   "destination": "/spaces/andwork-azabujuban.html",
+   "permanent": true
+  },
+  {
+   "source": "/andwork-shibuya.html",
+   "destination": "/spaces/andwork-shibuya.html",
+   "permanent": true
+  },
+  {
+   "source": "/andwork-shibuya",
+   "destination": "/spaces/andwork-shibuya.html",
+   "permanent": true
+  },
+  {
+   "source": "/birth-work-kanda.html",
+   "destination": "/spaces/birth-work-kanda.html",
+   "permanent": true
+  },
+  {
+   "source": "/birth-work-kanda",
+   "destination": "/spaces/birth-work-kanda.html",
+   "permanent": true
+  },
+  {
+   "source": "/birth-work-toranomon.html",
+   "destination": "/spaces/birth-work-toranomon.html",
+   "permanent": true
+  },
+  {
+   "source": "/birth-work-toranomon",
+   "destination": "/spaces/birth-work-toranomon.html",
+   "permanent": true
+  },
+  {
+   "source": "/business-airport-aoyama.html",
+   "destination": "/spaces/business-airport-aoyama.html",
+   "permanent": true
+  },
+  {
+   "source": "/business-airport-aoyama",
+   "destination": "/spaces/business-airport-aoyama.html",
+   "permanent": true
+  },
+  {
+   "source": "/business-airport-ebisu.html",
+   "destination": "/spaces/business-airport-ebisu.html",
+   "permanent": true
+  },
+  {
+   "source": "/business-airport-ebisu",
+   "destination": "/spaces/business-airport-ebisu.html",
+   "permanent": true
+  },
+  {
+   "source": "/business-airport-kanda.html",
+   "destination": "/spaces/business-airport-kanda.html",
+   "permanent": true
+  },
+  {
+   "source": "/business-airport-kanda",
+   "destination": "/spaces/business-airport-kanda.html",
+   "permanent": true
+  },
+  {
+   "source": "/business-airport-shibuya-nanpeidai.html",
+   "destination": "/spaces/business-airport-shibuya-nanpeidai.html",
+   "permanent": true
+  },
+  {
+   "source": "/business-airport-shibuya-nanpeidai",
+   "destination": "/spaces/business-airport-shibuya-nanpeidai.html",
+   "permanent": true
+  },
+  {
+   "source": "/business-airport-shibuya-sakurastage.html",
+   "destination": "/spaces/business-airport-shibuya-sakurastage.html",
+   "permanent": true
+  },
+  {
+   "source": "/business-airport-shibuya-sakurastage",
+   "destination": "/spaces/business-airport-shibuya-sakurastage.html",
+   "permanent": true
+  },
+  {
+   "source": "/business-airport-shimbashi.html",
+   "destination": "/spaces/business-airport-shimbashi.html",
+   "permanent": true
+  },
+  {
+   "source": "/business-airport-shimbashi",
+   "destination": "/spaces/business-airport-shimbashi.html",
+   "permanent": true
+  },
+  {
+   "source": "/business-airport-tokyo.html",
+   "destination": "/spaces/business-airport-tokyo.html",
+   "permanent": true
+  },
+  {
+   "source": "/business-airport-tokyo",
+   "destination": "/spaces/business-airport-tokyo.html",
+   "permanent": true
+  },
+  {
+   "source": "/chiyoda-platform-square.html",
+   "destination": "/spaces/chiyoda-platform-square.html",
+   "permanent": true
+  },
+  {
+   "source": "/chiyoda-platform-square",
+   "destination": "/spaces/chiyoda-platform-square.html",
+   "permanent": true
+  },
+  {
+   "source": "/city-lab-tokyo.html",
+   "destination": "/spaces/city-lab-tokyo.html",
+   "permanent": true
+  },
+  {
+   "source": "/city-lab-tokyo",
+   "destination": "/spaces/city-lab-tokyo.html",
+   "permanent": true
+  },
+  {
+   "source": "/co-ba-re-sohko-tamachi.html",
+   "destination": "/spaces/co-ba-re-sohko-tamachi.html",
+   "permanent": true
+  },
+  {
+   "source": "/co-ba-re-sohko-tamachi",
+   "destination": "/spaces/co-ba-re-sohko-tamachi.html",
+   "permanent": true
+  },
+  {
+   "source": "/crosscoop-nihonbashi.html",
+   "destination": "/spaces/crosscoop-nihonbashi.html",
+   "permanent": true
+  },
+  {
+   "source": "/crosscoop-nihonbashi",
+   "destination": "/spaces/crosscoop-nihonbashi.html",
+   "permanent": true
+  },
+  {
+   "source": "/diagonal-run-tokyo.html",
+   "destination": "/spaces/diagonal-run-tokyo.html",
+   "permanent": true
+  },
+  {
+   "source": "/diagonal-run-tokyo",
+   "destination": "/spaces/diagonal-run-tokyo.html",
+   "permanent": true
+  },
+  {
+   "source": "/egg-japan-marunouchi.html",
+   "destination": "/spaces/egg-japan-marunouchi.html",
+   "permanent": true
+  },
+  {
+   "source": "/egg-japan-marunouchi",
+   "destination": "/spaces/egg-japan-marunouchi.html",
+   "permanent": true
+  },
+  {
+   "source": "/h1t-chitosefunabashi.html",
+   "destination": "/spaces/h1t-chitosefunabashi.html",
+   "permanent": true
+  },
+  {
+   "source": "/h1t-chitosefunabashi",
+   "destination": "/spaces/h1t-chitosefunabashi.html",
+   "permanent": true
+  },
+  {
+   "source": "/h1t-ichigaya.html",
+   "destination": "/spaces/h1t-ichigaya.html",
+   "permanent": true
+  },
+  {
+   "source": "/h1t-ichigaya",
+   "destination": "/spaces/h1t-ichigaya.html",
+   "permanent": true
+  },
+  {
+   "source": "/h1t-jimbocho.html",
+   "destination": "/spaces/h1t-jimbocho.html",
+   "permanent": true
+  },
+  {
+   "source": "/h1t-jimbocho",
+   "destination": "/spaces/h1t-jimbocho.html",
+   "permanent": true
+  },
+  {
+   "source": "/h1t-kunitachi.html",
+   "destination": "/spaces/h1t-kunitachi.html",
+   "permanent": true
+  },
+  {
+   "source": "/h1t-kunitachi",
+   "destination": "/spaces/h1t-kunitachi.html",
+   "permanent": true
+  },
+  {
+   "source": "/h1t-musashikoganei.html",
+   "destination": "/spaces/h1t-musashikoganei.html",
+   "permanent": true
+  },
+  {
+   "source": "/h1t-musashikoganei",
+   "destination": "/spaces/h1t-musashikoganei.html",
+   "permanent": true
+  },
+  {
+   "source": "/h1t-roppongi.html",
+   "destination": "/spaces/h1t-roppongi.html",
+   "permanent": true
+  },
+  {
+   "source": "/h1t-roppongi",
+   "destination": "/spaces/h1t-roppongi.html",
+   "permanent": true
+  },
+  {
+   "source": "/h1t-tachikawa.html",
+   "destination": "/spaces/h1t-tachikawa.html",
+   "permanent": true
+  },
+  {
+   "source": "/h1t-tachikawa",
+   "destination": "/spaces/h1t-tachikawa.html",
+   "permanent": true
+  },
+  {
+   "source": "/h1t-toranomon.html",
+   "destination": "/spaces/h1t-toranomon.html",
+   "permanent": true
+  },
+  {
+   "source": "/h1t-toranomon",
+   "destination": "/spaces/h1t-toranomon.html",
+   "permanent": true
+  },
+  {
+   "source": "/hapon-shinjuku.html",
+   "destination": "/spaces/hapon-shinjuku.html",
+   "permanent": true
+  },
+  {
+   "source": "/hapon-shinjuku",
+   "destination": "/spaces/hapon-shinjuku.html",
+   "permanent": true
+  },
+  {
+   "source": "/index",
+   "destination": "/spaces/index.html",
+   "permanent": true
+  },
+  {
+   "source": "/justco-shibuya-hikarie.html",
+   "destination": "/spaces/justco-shibuya-hikarie.html",
+   "permanent": true
+  },
+  {
+   "source": "/justco-shibuya-hikarie",
+   "destination": "/spaces/justco-shibuya-hikarie.html",
+   "permanent": true
+  },
+  {
+   "source": "/justco-shinjuku-miraina-tower.html",
+   "destination": "/spaces/justco-shinjuku-miraina-tower.html",
+   "permanent": true
+  },
+  {
+   "source": "/justco-shinjuku-miraina-tower",
+   "destination": "/spaces/justco-shinjuku-miraina-tower.html",
+   "permanent": true
+  },
+  {
+   "source": "/merise-tachikawa.html",
+   "destination": "/spaces/merise-tachikawa.html",
+   "permanent": true
+  },
+  {
+   "source": "/merise-tachikawa",
+   "destination": "/spaces/merise-tachikawa.html",
+   "permanent": true
+  },
+  {
+   "source": "/midori-so-kichijoji.html",
+   "destination": "/spaces/midori-so-kichijoji.html",
+   "permanent": true
+  },
+  {
+   "source": "/midori-so-kichijoji",
+   "destination": "/spaces/midori-so-kichijoji.html",
+   "permanent": true
+  },
+  {
+   "source": "/midori-so-nakameguro.html",
+   "destination": "/spaces/midori-so-nakameguro.html",
+   "permanent": true
+  },
+  {
+   "source": "/midori-so-nakameguro",
+   "destination": "/spaces/midori-so-nakameguro.html",
+   "permanent": true
+  },
+  {
+   "source": "/midori-so-nihonbashi.html",
+   "destination": "/spaces/midori-so-nihonbashi.html",
+   "permanent": true
+  },
+  {
+   "source": "/midori-so-nihonbashi",
+   "destination": "/spaces/midori-so-nihonbashi.html",
+   "permanent": true
+  },
+  {
+   "source": "/midori-so-shibuya.html",
+   "destination": "/spaces/midori-so-shibuya.html",
+   "permanent": true
+  },
+  {
+   "source": "/midori-so-shibuya",
+   "destination": "/spaces/midori-so-shibuya.html",
+   "permanent": true
+  },
+  {
+   "source": "/nagaya-aoyama.html",
+   "destination": "/spaces/nagaya-aoyama.html",
+   "permanent": true
+  },
+  {
+   "source": "/nagaya-aoyama",
+   "destination": "/spaces/nagaya-aoyama.html",
+   "permanent": true
+  },
+  {
+   "source": "/newwork-daimon-hamamatsucho.html",
+   "destination": "/spaces/newwork-daimon-hamamatsucho.html",
+   "permanent": true
+  },
+  {
+   "source": "/newwork-daimon-hamamatsucho",
+   "destination": "/spaces/newwork-daimon-hamamatsucho.html",
+   "permanent": true
+  },
+  {
+   "source": "/newwork-ebisu.html",
+   "destination": "/spaces/newwork-ebisu.html",
+   "permanent": true
+  },
+  {
+   "source": "/newwork-ebisu",
+   "destination": "/spaces/newwork-ebisu.html",
+   "permanent": true
+  },
+  {
+   "source": "/newwork-ikebukuro-7f.html",
+   "destination": "/spaces/newwork-ikebukuro-7f.html",
+   "permanent": true
+  },
+  {
+   "source": "/newwork-ikebukuro-7f",
+   "destination": "/spaces/newwork-ikebukuro-7f.html",
+   "permanent": true
+  },
+  {
+   "source": "/newwork-ikebukuro-higashiguchi.html",
+   "destination": "/spaces/newwork-ikebukuro-higashiguchi.html",
+   "permanent": true
+  },
+  {
+   "source": "/newwork-ikebukuro-higashiguchi",
+   "destination": "/spaces/newwork-ikebukuro-higashiguchi.html",
+   "permanent": true
+  },
+  {
+   "source": "/newwork-tokyo-the-flagship.html",
+   "destination": "/spaces/newwork-tokyo-the-flagship.html",
+   "permanent": true
+  },
+  {
+   "source": "/newwork-tokyo-the-flagship",
+   "destination": "/spaces/newwork-tokyo-the-flagship.html",
+   "permanent": true
+  },
+  {
+   "source": "/newwork-ueno.html",
+   "destination": "/spaces/newwork-ueno.html",
+   "permanent": true
+  },
+  {
+   "source": "/newwork-ueno",
+   "destination": "/spaces/newwork-ueno.html",
+   "permanent": true
+  },
+  {
+   "source": "/point-0-marunouchi.html",
+   "destination": "/spaces/point-0-marunouchi.html",
+   "permanent": true
+  },
+  {
+   "source": "/point-0-marunouchi",
+   "destination": "/spaces/point-0-marunouchi.html",
+   "permanent": true
+  },
+  {
+   "source": "/senq-aoyama.html",
+   "destination": "/spaces/senq-aoyama.html",
+   "permanent": true
+  },
+  {
+   "source": "/senq-aoyama",
+   "destination": "/spaces/senq-aoyama.html",
+   "permanent": true
+  },
+  {
+   "source": "/senq-aoyama-namikidori.html",
+   "destination": "/spaces/senq-aoyama-namikidori.html",
+   "permanent": true
+  },
+  {
+   "source": "/senq-aoyama-namikidori",
+   "destination": "/spaces/senq-aoyama-namikidori.html",
+   "permanent": true
+  },
+  {
+   "source": "/senq-kasumigaseki.html",
+   "destination": "/spaces/senq-kasumigaseki.html",
+   "permanent": true
+  },
+  {
+   "source": "/senq-kasumigaseki",
+   "destination": "/spaces/senq-kasumigaseki.html",
+   "permanent": true
+  },
+  {
+   "source": "/senq-roppongi.html",
+   "destination": "/spaces/senq-roppongi.html",
+   "permanent": true
+  },
+  {
+   "source": "/senq-roppongi",
+   "destination": "/spaces/senq-roppongi.html",
+   "permanent": true
+  },
+  {
+   "source": "/startup-hub-tokyo-marunouchi.html",
+   "destination": "/spaces/startup-hub-tokyo-marunouchi.html",
+   "permanent": true
+  },
+  {
+   "source": "/startup-hub-tokyo-marunouchi",
+   "destination": "/spaces/startup-hub-tokyo-marunouchi.html",
+   "permanent": true
+  },
+  {
+   "source": "/tefu-lounge-shimokitazawa.html",
+   "destination": "/spaces/tefu-lounge-shimokitazawa.html",
+   "permanent": true
+  },
+  {
+   "source": "/tefu-lounge-shimokitazawa",
+   "destination": "/spaces/tefu-lounge-shimokitazawa.html",
+   "permanent": true
+  },
+  {
+   "source": "/the-executive-centre-cerulean-tower.html",
+   "destination": "/spaces/the-executive-centre-cerulean-tower.html",
+   "permanent": true
+  },
+  {
+   "source": "/the-executive-centre-cerulean-tower",
+   "destination": "/spaces/the-executive-centre-cerulean-tower.html",
+   "permanent": true
+  },
+  {
+   "source": "/the-executive-centre-meguro-arco-tower.html",
+   "destination": "/spaces/the-executive-centre-meguro-arco-tower.html",
+   "permanent": true
+  },
+  {
+   "source": "/the-executive-centre-meguro-arco-tower",
+   "destination": "/spaces/the-executive-centre-meguro-arco-tower.html",
+   "permanent": true
+  },
+  {
+   "source": "/the-executive-centre-sanno-park-tower.html",
+   "destination": "/spaces/the-executive-centre-sanno-park-tower.html",
+   "permanent": true
+  },
+  {
+   "source": "/the-executive-centre-sanno-park-tower",
+   "destination": "/spaces/the-executive-centre-sanno-park-tower.html",
+   "permanent": true
+  },
+  {
+   "source": "/the-executive-centre-shin-marunouchi-center.html",
+   "destination": "/spaces/the-executive-centre-shin-marunouchi-center.html",
+   "permanent": true
+  },
+  {
+   "source": "/the-executive-centre-shin-marunouchi-center",
+   "destination": "/spaces/the-executive-centre-shin-marunouchi-center.html",
+   "permanent": true
+  },
+  {
+   "source": "/the-executive-centre-world-trade-center-south-tower.html",
+   "destination": "/spaces/the-executive-centre-world-trade-center-south-tower.html",
+   "permanent": true
+  },
+  {
+   "source": "/the-executive-centre-world-trade-center-south-tower",
+   "destination": "/spaces/the-executive-centre-world-trade-center-south-tower.html",
+   "permanent": true
+  },
+  {
+   "source": "/the-hub-nihonbashi-kabutocho.html",
+   "destination": "/spaces/the-hub-nihonbashi-kabutocho.html",
+   "permanent": true
+  },
+  {
+   "source": "/the-hub-nihonbashi-kabutocho",
+   "destination": "/spaces/the-hub-nihonbashi-kabutocho.html",
+   "permanent": true
+  },
+  {
+   "source": "/the-hub-shiodome.html",
+   "destination": "/spaces/the-hub-shiodome.html",
+   "permanent": true
+  },
+  {
+   "source": "/the-hub-shiodome",
+   "destination": "/spaces/the-hub-shiodome.html",
+   "permanent": true
+  },
+  {
+   "source": "/toranomon-hills-arch.html",
+   "destination": "/spaces/toranomon-hills-arch.html",
+   "permanent": true
+  },
+  {
+   "source": "/toranomon-hills-arch",
+   "destination": "/spaces/toranomon-hills-arch.html",
+   "permanent": true
+  },
+  {
+   "source": "/wework-d-tower-nishishinjuku.html",
+   "destination": "/spaces/wework-d-tower-nishishinjuku.html",
+   "permanent": true
+  },
+  {
+   "source": "/wework-d-tower-nishishinjuku",
+   "destination": "/spaces/wework-d-tower-nishishinjuku.html",
+   "permanent": true
+  },
+  {
+   "source": "/wework-kabuto-one.html",
+   "destination": "/spaces/wework-kabuto-one.html",
+   "permanent": true
+  },
+  {
+   "source": "/wework-kabuto-one",
+   "destination": "/spaces/wework-kabuto-one.html",
+   "permanent": true
+  },
+  {
+   "source": "/wework-tokyo-portcity-takeshiba.html",
+   "destination": "/spaces/wework-tokyo-portcity-takeshiba.html",
+   "permanent": true
+  },
+  {
+   "source": "/wework-tokyo-portcity-takeshiba",
+   "destination": "/spaces/wework-tokyo-portcity-takeshiba.html",
+   "permanent": true
+  },
+  {
+   "source": "/workstyling-futako-tamagawa.html",
+   "destination": "/spaces/workstyling-futako-tamagawa.html",
+   "permanent": true
+  },
+  {
+   "source": "/workstyling-futako-tamagawa",
+   "destination": "/spaces/workstyling-futako-tamagawa.html",
+   "permanent": true
+  },
+  {
+   "source": "/workstyling-kasumigaseki-building.html",
+   "destination": "/spaces/workstyling-kasumigaseki-building.html",
+   "permanent": true
+  },
+  {
+   "source": "/workstyling-kasumigaseki-building",
+   "destination": "/spaces/workstyling-kasumigaseki-building.html",
+   "permanent": true
+  },
+  {
+   "source": "/workstyling-nakameguro.html",
+   "destination": "/spaces/workstyling-nakameguro.html",
+   "permanent": true
+  },
+  {
+   "source": "/workstyling-nakameguro",
+   "destination": "/spaces/workstyling-nakameguro.html",
+   "permanent": true
+  },
+  {
+   "source": "/workstyling-nihonbashi-ichome.html",
+   "destination": "/spaces/workstyling-nihonbashi-ichome.html",
+   "permanent": true
+  },
+  {
+   "source": "/workstyling-nihonbashi-ichome",
+   "destination": "/spaces/workstyling-nihonbashi-ichome.html",
+   "permanent": true
+  },
+  {
+   "source": "/workstyling-nihonbashi-mitsui-tower.html",
+   "destination": "/spaces/workstyling-nihonbashi-mitsui-tower.html",
+   "permanent": true
+  },
+  {
+   "source": "/workstyling-nihonbashi-mitsui-tower",
+   "destination": "/spaces/workstyling-nihonbashi-mitsui-tower.html",
+   "permanent": true
+  },
+  {
+   "source": "/workstyling-nihonbashi-takashimaya-mitsui.html",
+   "destination": "/spaces/workstyling-nihonbashi-takashimaya-mitsui.html",
+   "permanent": true
+  },
+  {
+   "source": "/workstyling-nihonbashi-takashimaya-mitsui",
+   "destination": "/spaces/workstyling-nihonbashi-takashimaya-mitsui.html",
+   "permanent": true
+  },
+  {
+   "source": "/workstyling-otemachi.html",
+   "destination": "/spaces/workstyling-otemachi.html",
+   "permanent": true
+  },
+  {
+   "source": "/workstyling-otemachi",
+   "destination": "/spaces/workstyling-otemachi.html",
+   "permanent": true
+  },
+  {
+   "source": "/workstyling-shibuya-sakurastage.html",
+   "destination": "/spaces/workstyling-shibuya-sakurastage.html",
+   "permanent": true
+  },
+  {
+   "source": "/workstyling-shibuya-sakurastage",
+   "destination": "/spaces/workstyling-shibuya-sakurastage.html",
+   "permanent": true
+  },
+  {
+   "source": "/workstyling-shinbashi.html",
+   "destination": "/spaces/workstyling-shinbashi.html",
+   "permanent": true
+  },
+  {
+   "source": "/workstyling-shinbashi",
+   "destination": "/spaces/workstyling-shinbashi.html",
+   "permanent": true
+  },
+  {
+   "source": "/workstyling-tamachi-mitaguchi.html",
+   "destination": "/spaces/workstyling-tamachi-mitaguchi.html",
+   "permanent": true
+  },
+  {
+   "source": "/workstyling-tamachi-mitaguchi",
+   "destination": "/spaces/workstyling-tamachi-mitaguchi.html",
+   "permanent": true
+  },
+  {
+   "source": "/workstyling-tokyo-midtown-yaesu.html",
+   "destination": "/spaces/workstyling-tokyo-midtown-yaesu.html",
+   "permanent": true
+  },
+  {
+   "source": "/workstyling-tokyo-midtown-yaesu",
+   "destination": "/spaces/workstyling-tokyo-midtown-yaesu.html",
+   "permanent": true
+  },
+  {
+   "source": "/ws-akihabara.html",
+   "destination": "/spaces/ws-akihabara.html",
+   "permanent": true
+  },
+  {
+   "source": "/ws-akihabara",
+   "destination": "/spaces/ws-akihabara.html",
+   "permanent": true
+  },
+  {
+   "source": "/ws-jimbocho.html",
+   "destination": "/spaces/ws-jimbocho.html",
+   "permanent": true
+  },
+  {
+   "source": "/ws-jimbocho",
+   "destination": "/spaces/ws-jimbocho.html",
+   "permanent": true
+  },
+  {
+   "source": "/ws-kanda.html",
+   "destination": "/spaces/ws-kanda.html",
+   "permanent": true
+  },
+  {
+   "source": "/ws-kanda",
+   "destination": "/spaces/ws-kanda.html",
+   "permanent": true
+  },
+  {
+   "source": "/ws-kyoto-ekimae.html",
+   "destination": "/spaces/ws-kyoto-ekimae.html",
+   "permanent": true
+  },
+  {
+   "source": "/ws-kyoto-ekimae",
+   "destination": "/spaces/ws-kyoto-ekimae.html",
+   "permanent": true
+  },
+  {
+   "source": "/ws-machida.html",
+   "destination": "/spaces/ws-machida.html",
+   "permanent": true
+  },
+  {
+   "source": "/ws-machida",
+   "destination": "/spaces/ws-machida.html",
+   "permanent": true
+  },
+  {
+   "source": "/ws-shinyokohama.html",
+   "destination": "/spaces/ws-shinyokohama.html",
+   "permanent": true
+  },
+  {
+   "source": "/ws-shinyokohama",
+   "destination": "/spaces/ws-shinyokohama.html",
+   "permanent": true
+  },
+  {
+   "source": "/ws-toyosu.html",
+   "destination": "/spaces/ws-toyosu.html",
+   "permanent": true
+  },
+  {
+   "source": "/ws-toyosu",
+   "destination": "/spaces/ws-toyosu.html",
+   "permanent": true
+  },
+  {
+   "source": "/ws-yotsuya.html",
+   "destination": "/spaces/ws-yotsuya.html",
+   "permanent": true
+  },
+  {
+   "source": "/ws-yotsuya",
+   "destination": "/spaces/ws-yotsuya.html",
+   "permanent": true
+  },
+  {
+   "source": "/spaces.html",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/map.html",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/map",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/detail.html",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/detail",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/photos.html",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/photos",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/architect.html",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/architect",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/architects.html",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/architects",
+   "destination": "/spaces/",
+   "permanent": true
+  },
+  {
+   "source": "/company.html",
+   "destination": "/about/",
+   "permanent": true
+  },
+  {
+   "source": "/company",
+   "destination": "/about/",
+   "permanent": true
+  },
+  {
+   "source": "/contact.html",
+   "destination": "/contact/",
+   "permanent": true
+  },
+  {
+   "source": "/privacy.html",
+   "destination": "/about/privacy.html",
+   "permanent": true
+  },
+  {
+   "source": "/privacy",
+   "destination": "/about/privacy.html",
+   "permanent": true
+  },
+  {
+   "source": "/terms.html",
+   "destination": "/about/terms.html",
+   "permanent": true
+  },
+  {
+   "source": "/terms",
+   "destination": "/about/terms.html",
+   "permanent": true
+  }
+ ],
+ "headers": [
+  {
+   "source": "/admin-features-prototype.html",
+   "headers": [
+    {
+     "key": "X-Robots-Tag",
+     "value": "noindex"
+    }
+   ]
+  },
+  {
+   "source": "/coworkmill-spaces-import.html",
+   "headers": [
+    {
+     "key": "X-Robots-Tag",
+     "value": "noindex"
+    }
+   ]
+  },
+  {
+   "source": "/font-test.html",
+   "headers": [
+    {
+     "key": "X-Robots-Tag",
+     "value": "noindex"
+    }
+   ]
+  },
+  {
+   "source": "/shelf-live.html",
+   "headers": [
+    {
+     "key": "X-Robots-Tag",
+     "value": "noindex"
+    }
+   ]
+  },
+  {
+   "source": "/shelf-mock.html",
+   "headers": [
+    {
+     "key": "X-Robots-Tag",
+     "value": "noindex"
+    }
+   ]
+  },
+  {
+   "source": "/shared/:path*",
+   "headers": [
+    {
+     "key": "X-Robots-Tag",
+     "value": "noindex"
+    }
+   ]
   }
  ]
 }

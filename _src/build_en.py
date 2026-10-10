@@ -114,6 +114,11 @@ GA = (f'<script async src="https://www.googletagmanager.com/gtag/js?id={GA_ID}">
       f'<script>window.dataLayer=window.dataLayer||[];function gtag(){{dataLayer.push(arguments)}}gtag("js",new Date());gtag("config","{GA_ID}",{{anonymize_ip:true}});</script>') if not PREVIEW else ''
 def U(path): return BASE + '/' + path  # サイト内リンク
 
+# 2026-10-11 わたるさん「メタタイトルとかディスクリプション、OGPは大丈夫そう？」→ 検索結果で切れないよう、タイトルは60字以内に収める
+def fit(*cands, limit=60):
+    for c in cands:
+        if len(c) <= limit: return c
+    return cands[-1]
 def head(title, desc, path, og=None, otype='website', ld=None):
     u = SITE + '/' + path.replace('index.html', '')
     og = og or SITE + '/assets/og.png'
@@ -238,8 +243,12 @@ def space_page(slug):
     rel = [s for s in ORDER if s != slug and pref(EN[s]) == pref(e) and town(EN[s]) == town(e)][:4]
     rel += [s for s in POPULAR if s != slug and s not in rel and s in EN and pref(EN[s]) == pref(e)][:4 - len(rel)]
     relh = f'<section class="sec"><div class="sh"><div><h2>More spaces nearby</h2><p>{E(town(e))} and around</p></div><a href="{U("spaces/")}?q={quote(town(e).lower())}">See all in {E(town(e))} →</a></div><div class="cards">' + ''.join(card(s) for s in rel) + '</div></section>' if rel else ''
-    title = f'{e["name"]}, {town(e)} — photos and how to visit | {NAME}'
-    desc = (e['card'] + '. ' + e['lead'])[:155].rsplit(' ', 1)[0] + '…'
+    _nt = e['name'] if town(e).lower() in e['name'].lower() else f'{e["name"]}, {town(e)}'
+    title = fit(f'{_nt} — photos & how to visit | {NAME}', f'{_nt} — coworking | {NAME}', f'{_nt} | {NAME}', f'{e["name"]} | {NAME}', e['name'])
+    _c = e['card'].rstrip('.')
+    desc = fit(f'{_c}. {_nt}: photos, prices, hours, how to get in and the Japanese address for your taxi.',
+               f'{_c}. {_nt}: photos, prices, hours and how to visit.', f'{_c}. Photos, prices, hours and how to visit.',
+               (_c + '. ' + e['lead'])[:155].rsplit(' ', 1)[0] + '…', limit=158)
     return (head(title, desc, f'spaces/{slug}.html', P[0][0] if P else None, 'article', ld) + nav('spaces/') +
             f'<main class="wrap"><div class="crumb"><a href="{U("spaces/")}">Spaces</a> › {E(e["area"])} › {E(e["name"])}</div>'
             f'<div class="head"><p class="tag">{E(e["area"])}</p><h1>{nm} — {E(tail)}</h1><p class="lead">{E(e["lead"])}</p></div>'
@@ -276,11 +285,11 @@ def top_page():
     trav = [s for s in POPULAR if s in EN and 'Day pass' in TRAIT[s] and photo(s, JA[s]['hero'][0])][:4]
     tf = ''.join(f'<a href="{U("spaces/")}?t={quote(t)}">{E(t)}<small>{sum(1 for s in ORDER if t in TRAIT[s])}</small></a>' for t in TFILTERS)
     cols = ''.join(f'<a class="col" href="{U("collections/" + c["slug"] + ".html")}"><span class="n">{len(c["items"])}</span><b>{E(c["title"])}</b><p>{E(c["lead"])}</p></a>' for c in COLS[:6])
-    title = f'{NAME} — {TAG}, in English'
-    desc = f'{len(ORDER)} coworking spaces in Tokyo and across Japan, chosen for their interiors — with prices, hours, day passes and the Japanese address for your taxi. Every fact from the official website.'
+    title = f"Japan's best-designed coworking spaces, in English | {NAME}"
+    desc = f'{len(ORDER)} coworking spaces in Tokyo and across Japan, chosen for their design — with prices, hours, day passes, payment and the Japanese address for your taxi.'
     ld = [{"@context": "https://schema.org", "@type": "WebSite", "name": NAME, "url": SITE + '/', "inLanguage": "en",
            "potentialAction": {"@type": "SearchAction", "target": SITE + '/spaces/?q={q}', "query-input": "required name=q"}}]
-    return (head(title, desc, 'index.html', himg, 'website', ld) + nav() +
+    return (head(title, desc, 'index.html', None, 'website', ld) + nav() +
             f'<main class="wrap"><div class="hero"><img src="{E(himg)}" alt="{E(he["hero_cap"])}"><span class="credit">{E(_hc)}</span><div class="in">'
             f'<h1>Japan\'s best-designed places to work</h1><p>{len(ORDER)} coworking spaces chosen for their interiors, from Shibuya hotel lounges to Marunouchi towers. Every fact comes from the space\'s official website.</p>'
             f'<form class="search" action="{U("spaces/")}" method="get" role="search"><input type="search" name="q" placeholder="Area, station or name — e.g. Shibuya" aria-label="Search coworking spaces"><button type="submit">Search</button></form></div></div>'
@@ -307,7 +316,7 @@ def col_page(c):
     others = ''.join(f'<a class="col" href="{U("collections/" + o["slug"] + ".html")}"><span class="n">{len(o["items"])}</span><b>{E(o["title"])}</b><p>{E(o["lead"])}</p></a>' for o in _o)
     ld = [{"@context": "https://schema.org", "@type": "ItemList", "name": c['title'], "itemListElement": [{"@type": "ListItem", "position": i + 1, "url": SITE + '/spaces/' + s + '.html', "name": EN[s]['name']} for i, (s, _) in enumerate(items)]}]
     img = photo(items[0][0], JA[items[0][0]]['hero'][0]) if items else None
-    return (head(f'{c["title"]} — {len(items)} spaces | {NAME}', c['lead'][:155], f'collections/{c["slug"]}.html', img, 'article', ld) + nav('collections/') +
+    return (head(fit(f'{c["title"]} — {len(items)} spaces | {NAME}', f'{c["title"]} | {NAME}', c['title']), c['lead'][:155], f'collections/{c["slug"]}.html', img, 'article', ld) + nav('collections/') +
             f'<main class="wrap"><div class="crumb"><a href="{U("collections/")}">Collections</a> › {E(c["title"])}</div><div class="head"><p class="tag">{len(items)} spaces</p><h1>{E(c["title"])}</h1><p class="lead">{E(c["lead"])}</p></div>'
             '<div class="cards">' + ''.join(card(s, i + 1, cap) for i, (s, cap) in enumerate(items)) + '</div>'
             f'<section class="sec"><div class="sh"><div><h2>More collections</h2></div><a href="{U("collections/")}">All {len(COLS)} →</a></div><div class="cols">{others}</div></section></main>' + foot())
@@ -328,7 +337,8 @@ def q_page(q):
         body += f'<div class="word"><p><b>{E(q["ctx"]["title"])}</b></p>' + ''.join(f'<p>{E(x)}</p>' for x in q['ctx']['body']) + '</div>'
     others = ''.join(f'<a class="qa" href="{U("questions/" + o["slug"] + ".html")}"><b>{E(o["q"])}</b></a>' for o in QS if o is not q)[:]
     ld = [{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q['q'], "acceptedAnswer": {"@type": "Answer", "text": q['a']}}]}]
-    return (head(f'{q["q"]} | {NAME}', q['desc'][:155], f'questions/{q["slug"]}.html', None, 'article', ld) + nav('questions/') +
+    _qi = next((photo(a, n) for _s, _h, _p, phs in q['secs'] for a, n in phs if photo(a, n)), None)
+    return (head(fit(f'{q["q"]} | {NAME}', q['q']), (q['desc'] if len(q['desc']) <= 158 else q['desc'][:155].rsplit(' ', 1)[0].rstrip(',') + '…'), f'questions/{q["slug"]}.html', _qi, 'article', ld) + nav('questions/') +
             f'<main class="wrap"><div class="crumb"><a href="{U("questions/")}">Q&amp;A</a></div><div class="head"><p class="tag">Q&amp;A</p><h1>{E(q["q"])}</h1><p class="lead answer">{E(q["a"])}</p></div>'
             f'<div class="narrow">{body}</div><section class="sec"><div class="sh"><div><h2>Other questions</h2></div></div><div class="qas small">{others}</div></section></main>' + foot())
 
