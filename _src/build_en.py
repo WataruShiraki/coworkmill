@@ -375,7 +375,7 @@ def _stations(sl):
     return [k for k, _ in c.most_common(5)]
 def _price(s):
     e = EN[s]; v = fact(e, 'Drop-in') or (VX.get(s, {}).get('Price') if 'Day pass' in TRAIT[s] else '')
-    return v or fact(e, 'Prices', 'Price', 'Monthly', 'Free desk')
+    return v or fact(e, 'Prices', 'Price', 'Monthly', 'Free desk') or VX.get(s, {}).get('Price', '')
 def _short(x, n=70): return x if len(x) <= n else x[:n].rsplit(' ', 1)[0].rstrip(',;/ ') + '…'
 def visitor_block(c, sl, label):
     n = len(sl); dp = [s for s in sl if 'Day pass' in TRAIT[s]]; wk = [s for s in sl if 'Open weekends' in TRAIT[s]]

@@ -7,32 +7,38 @@
  "ws-ikebukuro-nishiguchi": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "ws-akihabara": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "ws-musashikosugi": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "the-executive-centre-shin-marunouchi-center": {
   "Booking": "Day Pass open to first-time visitors: book online, in the MyTEC app or at reception, then check in at reception.",
   "English": "English website.",
-  "src": "https://www.executivecentre.com/day-pass/"
+  "src": "https://www.executivecentre.com/day-pass/",
+  "Price": "City Pass from JPY 54,000/month; Dedicated Desk from JPY 58,500/month (rates vary by location)"
  },
  "the-executive-centre-jingumae-tower": {
   "Booking": "Day Pass open to first-time visitors: book online, in the MyTEC app or at reception, then check in at reception.",
   "English": "English website.",
-  "src": "https://www.executivecentre.com/day-pass/"
+  "src": "https://www.executivecentre.com/day-pass/",
+  "Price": "City Pass from JPY 54,000/month; Dedicated Desk from JPY 58,500/month (rates vary by location)"
  },
  "newwork-kinshicho-2nd": {
   "Booking": "Corporate membership only — no drop-in.",
   "English": "The operator's website has an English version.",
-  "src": "https://www.newwork109.com/"
+  "src": "https://www.newwork109.com/",
+  "Price": "Corporate plans: ¥770/hour pay-as-you-go, or ¥35,000/month per licence (excl. tax)"
  },
  "cowork-key-site-wakayama": {
   "Booking": "Workstyling members walk in without booking. The space's own paid services for other visitors are separate.",
@@ -57,12 +63,14 @@
  "and-biz-lounge-nihonbashi-muromachi": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "and-biz-lounge-nihonbashi-takashimaya": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "h1t-tsukishima": {
   "Booking": "Book a seat in the H¹T app or on the member site. Enter with your phone or a registered IC card (Suica etc.).",
@@ -82,47 +90,56 @@
  "workstyling-solo-kashiwanoha": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-solo-seijyogakuen": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-solo-shin-yurigaoka": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-solo-tamaplaza": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-solo-center-kita": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-solo-tsurumi": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-solo-oofuna": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-solo-fujisawa": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-solo-nagoya-shinkansenguchi": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "cowork-tovio-fukuyama": {
   "Booking": "Workstyling members walk in without booking. The space's own paid services for other visitors are separate.",
@@ -149,8 +166,10 @@
   "src": "https://jp.cic.com/en/cic-tokyo/"
  },
  "wework-kamiyacho-trust-tower": {
-  "Booking": "Monthly contracts from one person; tours by request. Members enter with a key card and the WeWork app.",
-  "src": "https://wework.co.jp/"
+  "Booking": "All Access Plus: apply online and start from two business days later. Meeting rooms can be booked without membership. Members enter with a key card and the WeWork app.",
+  "src": "https://wework.co.jp/plan/allaccess",
+  "Price": "All Access Plus ¥42,900/month incl. tax (about 40 sites); meeting rooms without membership from ¥6,600/hour",
+  "Payment": "Credit card (billed monthly)."
  },
  "egg-japan-marunouchi": {
   "Booking": "Invitation-only community with concierge service.",
@@ -237,472 +256,566 @@
  "workstyling-solo-omiya-nishiguchi": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-solo-urawa": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-solo-tokorozawa": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-solo-matsudo": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-solo-motoyawata": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-solo-nishifunabashi": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-solo-tsudanuma": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-solo-chofu": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-solo-noborito": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-solo-mizonokuchi": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-solo-takadanobaba": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-solo-osaki": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-solo-sangenjaya": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-solo-jiyugaoka": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-solo-nerima": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-solo-shinjuku-nishiguchi": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-solo-toyocho": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-solo-toyosu": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-solo-mitaka": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-solo-fuchu": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-nishi-umeda": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-hakata": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-hotel-kyobashi-lounge": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-garden-hotel-jingugaien": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-solo-nakano": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-solo-ogikubo": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-solo-kinshicho": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-yokohama-higashiguchi": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-minatomirai": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-shin-osaka": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-yodoyabashi": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-osakahonmachi": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-namba": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-sannomiya": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-sendai": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-nagoya": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-musashikosugi-kitaguchi": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-omiya-higashiguchi": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-kawaguchi": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-kashiwa": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-funabashi": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-kaihinmakuhari": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-akabane": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-kitasenju": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-kawasaki": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-yokohama-nishiguchi": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-sapporo": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-ochanomizu": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-akasaka-mitsuke": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-shiodome-b2": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-tamachi-shibaura": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-shinjuku-nishiguchi": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-shinjuku-shinminamiguchi": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-korakuen": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-ikebukuro-it-tower-tokyo": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-oimachi": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-kamata": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "ws-ueno": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "ws-yotsuya": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "ws-gotanda": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "ws-kanda": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "ws-jimbocho": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "ws-toyosu": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "ws-kichijoji": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "ws-machida": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "ws-shinyokohama": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "ws-umeda": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "ws-kyoto-ekimae": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-tokyo-midtown-hibiya": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-tokyo-midtown-yaesu": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-otemachi": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-yaesu-kitaguchi": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-yaesu-minamiguchi": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-nihonbashi-mitsui-tower": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-nihonbashi-takashimaya-mitsui": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-nihonbashi-ichome": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-ginza": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-shiodome-city-center": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-shinbashi": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-hamamatsucho": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-omotesando": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-shibuya": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-shibuya-sakurastage": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-meguro": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-nakameguro": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-ebisu": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-shinagawa": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-tamachi-mitaguchi": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-shinjuku-mitsui-building": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-shinjuku-higashiguchi": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-iidabashi-grand-bloom": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-kasumigaseki-building": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-tokyo-midtown-roppongi": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "workstyling-futako-tamagawa": {
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
-  "src": "https://mf.workstyling.jp/faq/"
+  "src": "https://mf.workstyling.jp/faq/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
  },
  "h1t-by-w-shinjuku-tonanguchi": {
   "Booking": "Book a seat in the H¹T app or on the member site. Enter with your phone or a registered IC card (Suica etc.).",
@@ -872,163 +985,212 @@
  "newwork-tokyu-shibuya-1chome-building": {
   "Booking": "Corporate membership only — no drop-in.",
   "English": "The operator's website has an English version.",
-  "src": "https://www.newwork109.com/"
+  "src": "https://www.newwork109.com/",
+  "Price": "Corporate plans: ¥770/hour pay-as-you-go, or ¥35,000/month per licence (excl. tax)"
  },
  "newwork-tameike-sanno": {
   "Booking": "Corporate membership only — no drop-in.",
   "English": "The operator's website has an English version.",
-  "src": "https://www.newwork109.com/"
+  "src": "https://www.newwork109.com/",
+  "Price": "Corporate plans: ¥770/hour pay-as-you-go, or ¥35,000/month per licence (excl. tax)"
  },
  "newwork-ogikubo": {
   "Booking": "Corporate membership only — no drop-in.",
   "English": "The operator's website has an English version.",
-  "src": "https://www.newwork109.com/"
+  "src": "https://www.newwork109.com/",
+  "Price": "Corporate plans: ¥770/hour pay-as-you-go, or ¥35,000/month per licence (excl. tax)"
  },
  "newwork-meguro": {
   "Booking": "Corporate membership only — no drop-in.",
   "English": "The operator's website has an English version.",
-  "src": "https://www.newwork109.com/"
+  "src": "https://www.newwork109.com/",
+  "Price": "Corporate plans: ¥770/hour pay-as-you-go, or ¥35,000/month per licence (excl. tax)"
  },
  "newwork-nerima": {
   "Booking": "Corporate membership only — no drop-in.",
   "English": "The operator's website has an English version.",
-  "src": "https://www.newwork109.com/"
+  "src": "https://www.newwork109.com/",
+  "Price": "Corporate plans: ¥770/hour pay-as-you-go, or ¥35,000/month per licence (excl. tax)"
  },
  "newwork-kyodo": {
   "Booking": "Corporate membership only — no drop-in.",
   "English": "The operator's website has an English version.",
-  "src": "https://www.newwork109.com/"
+  "src": "https://www.newwork109.com/",
+  "Price": "Corporate plans: ¥770/hour pay-as-you-go, or ¥35,000/month per licence (excl. tax)"
  },
  "newwork-seijogakuenmae": {
   "Booking": "Corporate membership only — no drop-in.",
   "English": "The operator's website has an English version.",
-  "src": "https://www.newwork109.com/"
+  "src": "https://www.newwork109.com/",
+  "Price": "Corporate plans: ¥770/hour pay-as-you-go, or ¥35,000/month per licence (excl. tax)"
  },
  "newwork-akabane-higashiguchi": {
   "Booking": "Corporate membership only — no drop-in.",
   "English": "The operator's website has an English version.",
-  "src": "https://www.newwork109.com/"
+  "src": "https://www.newwork109.com/",
+  "Price": "Corporate plans: ¥770/hour pay-as-you-go, or ¥35,000/month per licence (excl. tax)"
  },
  "newwork-ikebukuro-7f": {
   "Booking": "Corporate membership only — no drop-in.",
   "English": "The operator's website has an English version.",
-  "src": "https://www.newwork109.com/"
+  "src": "https://www.newwork109.com/",
+  "Price": "Corporate plans: ¥770/hour pay-as-you-go, or ¥35,000/month per licence (excl. tax)"
  },
  "newwork-ikebukuro-4f": {
   "Booking": "Corporate membership only — no drop-in.",
   "English": "The operator's website has an English version.",
-  "src": "https://www.newwork109.com/"
+  "src": "https://www.newwork109.com/",
+  "Price": "Corporate plans: ¥770/hour pay-as-you-go, or ¥35,000/month per licence (excl. tax)"
  },
  "newwork-omori": {
   "Booking": "Corporate membership only — no drop-in.",
   "English": "The operator's website has an English version.",
-  "src": "https://www.newwork109.com/"
+  "src": "https://www.newwork109.com/",
+  "Price": "Corporate plans: ¥770/hour pay-as-you-go, or ¥35,000/month per licence (excl. tax)"
  },
  "newwork-aoto": {
   "Booking": "Corporate membership only — no drop-in.",
   "English": "The operator's website has an English version.",
-  "src": "https://www.newwork109.com/"
+  "src": "https://www.newwork109.com/",
+  "Price": "Corporate plans: ¥770/hour pay-as-you-go, or ¥35,000/month per licence (excl. tax)"
  },
  "newwork-tokyo-the-flagship": {
   "Booking": "Corporate membership only — no drop-in.",
   "English": "The operator's website has an English version.",
-  "src": "https://www.newwork109.com/"
+  "src": "https://www.newwork109.com/",
+  "Price": "Corporate plans: ¥770/hour pay-as-you-go, or ¥35,000/month per licence (excl. tax)"
  },
  "newwork-shibuya-goto-ikueikai-building": {
   "Booking": "Corporate membership only — no drop-in.",
   "English": "The operator's website has an English version.",
-  "src": "https://www.newwork109.com/"
+  "src": "https://www.newwork109.com/",
+  "Price": "Corporate plans: ¥770/hour pay-as-you-go, or ¥35,000/month per licence (excl. tax)"
  },
  "newwork-ginza": {
   "Booking": "Corporate membership only — no drop-in.",
   "English": "The operator's website has an English version.",
-  "src": "https://www.newwork109.com/"
+  "src": "https://www.newwork109.com/",
+  "Price": "Corporate plans: ¥770/hour pay-as-you-go, or ¥35,000/month per licence (excl. tax)"
  },
  "newwork-ebisu": {
   "Booking": "Corporate membership only — no drop-in.",
   "English": "The operator's website has an English version.",
-  "src": "https://www.newwork109.com/"
+  "src": "https://www.newwork109.com/",
+  "Price": "Corporate plans: ¥770/hour pay-as-you-go, or ¥35,000/month per licence (excl. tax)"
  },
  "newwork-akihabara": {
   "Booking": "Corporate membership only — no drop-in.",
   "English": "The operator's website has an English version.",
-  "src": "https://www.newwork109.com/"
+  "src": "https://www.newwork109.com/",
+  "Price": "Corporate plans: ¥770/hour pay-as-you-go, or ¥35,000/month per licence (excl. tax)"
  },
  "newwork-ikebukuro-higashiguchi": {
   "Booking": "Corporate membership only — no drop-in.",
   "English": "The operator's website has an English version.",
-  "src": "https://www.newwork109.com/"
+  "src": "https://www.newwork109.com/",
+  "Price": "Corporate plans: ¥770/hour pay-as-you-go, or ¥35,000/month per licence (excl. tax)"
  },
  "newwork-daimon-hamamatsucho": {
   "Booking": "Corporate membership only — no drop-in.",
   "English": "The operator's website has an English version.",
-  "src": "https://www.newwork109.com/"
+  "src": "https://www.newwork109.com/",
+  "Price": "Corporate plans: ¥770/hour pay-as-you-go, or ¥35,000/month per licence (excl. tax)"
  },
  "newwork-ueno": {
   "Booking": "Corporate membership only — no drop-in.",
   "English": "The operator's website has an English version.",
-  "src": "https://www.newwork109.com/"
+  "src": "https://www.newwork109.com/",
+  "Price": "Corporate plans: ¥770/hour pay-as-you-go, or ¥35,000/month per licence (excl. tax)"
  },
  "newwork-oimachi": {
   "Booking": "Corporate membership only — no drop-in.",
   "English": "The operator's website has an English version.",
-  "src": "https://www.newwork109.com/"
+  "src": "https://www.newwork109.com/",
+  "Price": "Corporate plans: ¥770/hour pay-as-you-go, or ¥35,000/month per licence (excl. tax)"
  },
  "wework-hanzomon-prex-north": {
-  "Booking": "Monthly contracts from one person; tours by request. Members enter with a key card and the WeWork app.",
-  "src": "https://wework.co.jp/"
+  "Booking": "All Access Plus: apply online and start from two business days later. Meeting rooms can be booked without membership. Members enter with a key card and the WeWork app.",
+  "src": "https://wework.co.jp/plan/allaccess",
+  "Price": "All Access Plus ¥42,900/month incl. tax (about 40 sites); meeting rooms without membership from ¥6,600/hour",
+  "Payment": "Credit card (billed monthly)."
  },
  "wework-tokyo-portcity-takeshiba": {
-  "Booking": "Monthly contracts from one person; tours by request. Members enter with a key card and the WeWork app.",
-  "src": "https://wework.co.jp/"
+  "Booking": "All Access Plus: apply online and start from two business days later. Meeting rooms can be booked without membership. Members enter with a key card and the WeWork app.",
+  "src": "https://wework.co.jp/plan/allaccess",
+  "Price": "All Access Plus ¥42,900/month incl. tax (about 40 sites); meeting rooms without membership from ¥6,600/hour",
+  "Payment": "Credit card (billed monthly)."
  },
  "wework-kdx-toranomon-1chome": {
-  "Booking": "Monthly contracts from one person; tours by request. Members enter with a key card and the WeWork app.",
-  "src": "https://wework.co.jp/"
+  "Booking": "All Access Plus: apply online and start from two business days later. Meeting rooms can be booked without membership. Members enter with a key card and the WeWork app.",
+  "src": "https://wework.co.jp/plan/allaccess",
+  "Price": "All Access Plus ¥42,900/month incl. tax (about 40 sites); meeting rooms without membership from ¥6,600/hour",
+  "Payment": "Credit card (billed monthly)."
  },
  "wework-marunouchi-kitaguchi": {
-  "Booking": "Monthly contracts from one person; tours by request. Members enter with a key card and the WeWork app.",
-  "src": "https://wework.co.jp/"
+  "Booking": "All Access Plus: apply online and start from two business days later. Meeting rooms can be booked without membership. Members enter with a key card and the WeWork app.",
+  "src": "https://wework.co.jp/plan/allaccess",
+  "Price": "All Access Plus ¥42,900/month incl. tax (about 40 sites); meeting rooms without membership from ¥6,600/hour",
+  "Payment": "Credit card (billed monthly)."
  },
  "wework-hibiya-fort-tower": {
-  "Booking": "Monthly contracts from one person; tours by request. Members enter with a key card and the WeWork app.",
-  "src": "https://wework.co.jp/"
+  "Booking": "All Access Plus: apply online and start from two business days later. Meeting rooms can be booked without membership. Members enter with a key card and the WeWork app.",
+  "src": "https://wework.co.jp/plan/allaccess",
+  "Price": "All Access Plus ¥42,900/month incl. tax (about 40 sites); meeting rooms without membership from ¥6,600/hour",
+  "Payment": "Credit card (billed monthly)."
  },
  "wework-kanda-square": {
-  "Booking": "Monthly contracts from one person; tours by request. Members enter with a key card and the WeWork app.",
-  "src": "https://wework.co.jp/"
+  "Booking": "All Access Plus: apply online and start from two business days later. Meeting rooms can be booked without membership. Members enter with a key card and the WeWork app.",
+  "src": "https://wework.co.jp/plan/allaccess",
+  "Price": "All Access Plus ¥42,900/month incl. tax (about 40 sites); meeting rooms without membership from ¥6,600/hour",
+  "Payment": "Credit card (billed monthly)."
  },
  "wework-d-tower-nishishinjuku": {
-  "Booking": "Monthly contracts from one person; tours by request. Members enter with a key card and the WeWork app.",
-  "src": "https://wework.co.jp/"
+  "Booking": "All Access Plus: apply online and start from two business days later. Meeting rooms can be booked without membership. Members enter with a key card and the WeWork app.",
+  "src": "https://wework.co.jp/plan/allaccess",
+  "Price": "All Access Plus ¥42,900/month incl. tax (about 40 sites); meeting rooms without membership from ¥6,600/hour",
+  "Payment": "Credit card (billed monthly)."
  },
  "wework-tk-ikedayama": {
-  "Booking": "Monthly contracts from one person; tours by request. Members enter with a key card and the WeWork app.",
-  "src": "https://wework.co.jp/"
+  "Booking": "All Access Plus: apply online and start from two business days later. Meeting rooms can be booked without membership. Members enter with a key card and the WeWork app.",
+  "src": "https://wework.co.jp/plan/allaccess",
+  "Price": "All Access Plus ¥42,900/month incl. tax (about 40 sites); meeting rooms without membership from ¥6,600/hour",
+  "Payment": "Credit card (billed monthly)."
  },
  "wework-hareza-ikebukuro": {
-  "Booking": "Monthly contracts from one person; tours by request. Members enter with a key card and the WeWork app.",
-  "src": "https://wework.co.jp/"
+  "Booking": "All Access Plus: apply online and start from two business days later. Meeting rooms can be booked without membership. Members enter with a key card and the WeWork app.",
+  "src": "https://wework.co.jp/plan/allaccess",
+  "Price": "All Access Plus ¥42,900/month incl. tax (about 40 sites); meeting rooms without membership from ¥6,600/hour",
+  "Payment": "Credit card (billed monthly)."
  },
  "wework-ark-hills-south": {
-  "Booking": "Monthly contracts from one person; tours by request. Members enter with a key card and the WeWork app.",
-  "src": "https://wework.co.jp/"
+  "Booking": "All Access Plus: apply online and start from two business days later. Meeting rooms can be booked without membership. Members enter with a key card and the WeWork app.",
+  "src": "https://wework.co.jp/plan/allaccess",
+  "Price": "All Access Plus ¥42,900/month incl. tax (about 40 sites); meeting rooms without membership from ¥6,600/hour",
+  "Payment": "Credit card (billed monthly)."
  },
  "wework-the-argyle-aoyama": {
-  "Booking": "Monthly contracts from one person; tours by request. Members enter with a key card and the WeWork app.",
-  "src": "https://wework.co.jp/"
+  "Booking": "All Access Plus: apply online and start from two business days later. Meeting rooms can be booked without membership. Members enter with a key card and the WeWork app.",
+  "src": "https://wework.co.jp/plan/allaccess",
+  "Price": "All Access Plus ¥42,900/month incl. tax (about 40 sites); meeting rooms without membership from ¥6,600/hour",
+  "Payment": "Credit card (billed monthly)."
  },
  "wework-kabuto-one": {
-  "Booking": "Monthly contracts from one person; tours by request. Members enter with a key card and the WeWork app.",
-  "src": "https://wework.co.jp/"
+  "Booking": "All Access Plus: apply online and start from two business days later. Meeting rooms can be booked without membership. Members enter with a key card and the WeWork app.",
+  "src": "https://wework.co.jp/plan/allaccess",
+  "Price": "All Access Plus ¥42,900/month incl. tax (about 40 sites); meeting rooms without membership from ¥6,600/hour",
+  "Payment": "Credit card (billed monthly)."
  },
  "wework-jimbocho": {
-  "Booking": "Monthly contracts from one person; tours by request. Members enter with a key card and the WeWork app.",
-  "src": "https://wework.co.jp/"
+  "Booking": "All Access Plus: apply online and start from two business days later. Meeting rooms can be booked without membership. Members enter with a key card and the WeWork app.",
+  "src": "https://wework.co.jp/plan/allaccess",
+  "Price": "All Access Plus ¥42,900/month incl. tax (about 40 sites); meeting rooms without membership from ¥6,600/hour",
+  "Payment": "Credit card (billed monthly)."
  },
  "wework-shibuya-scramble-square": {
-  "Booking": "Monthly contracts from one person; tours by request. Members enter with a key card and the WeWork app.",
-  "src": "https://wework.co.jp/"
+  "Booking": "All Access Plus: apply online and start from two business days later. Meeting rooms can be booked without membership. Members enter with a key card and the WeWork app.",
+  "src": "https://wework.co.jp/plan/allaccess",
+  "Price": "All Access Plus ¥42,900/month incl. tax (about 40 sites); meeting rooms without membership from ¥6,600/hour",
+  "Payment": "Credit card (billed monthly)."
  },
  "fabbit-shibuya-ekimae": {
   "Booking": "Contracts after a tour and screening; paid by invoice.",
@@ -1077,167 +1239,206 @@
  "the-executive-centre-jp-tower": {
   "Booking": "Day Pass open to first-time visitors: book online, in the MyTEC app or at reception, then check in at reception.",
   "English": "English website.",
-  "src": "https://www.executivecentre.com/day-pass/"
+  "src": "https://www.executivecentre.com/day-pass/",
+  "Price": "City Pass from JPY 54,000/month; Dedicated Desk from JPY 58,500/month (rates vary by location)"
  },
  "the-executive-centre-roppongi-hills": {
   "Booking": "Day Pass open to first-time visitors: book online, in the MyTEC app or at reception, then check in at reception.",
   "English": "English website.",
-  "src": "https://www.executivecentre.com/day-pass/"
+  "src": "https://www.executivecentre.com/day-pass/",
+  "Price": "City Pass from JPY 54,000/month; Dedicated Desk from JPY 58,500/month (rates vary by location)"
  },
  "the-executive-centre-sanno-park-tower": {
   "Booking": "Day Pass open to first-time visitors: book online, in the MyTEC app or at reception, then check in at reception.",
   "English": "English website.",
-  "src": "https://www.executivecentre.com/day-pass/"
+  "src": "https://www.executivecentre.com/day-pass/",
+  "Price": "City Pass from JPY 54,000/month; Dedicated Desk from JPY 58,500/month (rates vary by location)"
  },
  "the-executive-centre-cerulean-tower": {
   "Booking": "Day Pass open to first-time visitors: book online, in the MyTEC app or at reception, then check in at reception.",
   "English": "English website.",
-  "src": "https://www.executivecentre.com/day-pass/"
+  "src": "https://www.executivecentre.com/day-pass/",
+  "Price": "City Pass from JPY 54,000/month; Dedicated Desk from JPY 58,500/month (rates vary by location)"
  },
  "the-executive-centre-meguro-arco-tower": {
   "Booking": "Day Pass open to first-time visitors: book online, in the MyTEC app or at reception, then check in at reception.",
   "English": "English website.",
-  "src": "https://www.executivecentre.com/day-pass/"
+  "src": "https://www.executivecentre.com/day-pass/",
+  "Price": "City Pass from JPY 54,000/month; Dedicated Desk from JPY 58,500/month (rates vary by location)"
  },
  "the-executive-centre-kyobashi-edogrand": {
   "Booking": "Day Pass open to first-time visitors: book online, in the MyTEC app or at reception, then check in at reception.",
   "English": "English website.",
-  "src": "https://www.executivecentre.com/day-pass/"
+  "src": "https://www.executivecentre.com/day-pass/",
+  "Price": "City Pass from JPY 54,000/month; Dedicated Desk from JPY 58,500/month (rates vary by location)"
  },
  "the-executive-centre-grantokyo-south-tower": {
   "Booking": "Day Pass open to first-time visitors: book online, in the MyTEC app or at reception, then check in at reception.",
   "English": "English website.",
-  "src": "https://www.executivecentre.com/day-pass/"
+  "src": "https://www.executivecentre.com/day-pass/",
+  "Price": "City Pass from JPY 54,000/month; Dedicated Desk from JPY 58,500/month (rates vary by location)"
  },
  "the-executive-centre-tofrom-yaesu-tower": {
   "Booking": "Day Pass open to first-time visitors: book online, in the MyTEC app or at reception, then check in at reception.",
   "English": "English website.",
-  "src": "https://www.executivecentre.com/day-pass/"
+  "src": "https://www.executivecentre.com/day-pass/",
+  "Price": "City Pass from JPY 54,000/month; Dedicated Desk from JPY 58,500/month (rates vary by location)"
  },
  "the-executive-centre-world-trade-center-south-tower": {
   "Booking": "Day Pass open to first-time visitors: book online, in the MyTEC app or at reception, then check in at reception.",
   "English": "English website.",
-  "src": "https://www.executivecentre.com/day-pass/"
+  "src": "https://www.executivecentre.com/day-pass/",
+  "Price": "City Pass from JPY 54,000/month; Dedicated Desk from JPY 58,500/month (rates vary by location)"
  },
  "midori-so-nagatacho": {
-  "Booking": "Membership by application: contact form, tour and interview, then a board review.",
+  "Booking": "Pop-in day pass: pay per visit at any free desk. Monthly membership is by application, tour and interview.",
   "English": "English website.",
-  "src": "https://midori.so/locations/aoyama"
+  "src": "https://midori.so/locations/nagatacho",
+  "Price": "¥3,300/day pop-in, or ¥33,000 for 11 days; free desk ¥42,350/month",
+  "day": true
  },
  "midori-so-bakuroyokoyama": {
-  "Booking": "Membership by application: contact form, tour and interview, then a board review.",
+  "Booking": "Pop-in day pass: pay per visit at any free desk. Monthly membership is by application, tour and interview.",
   "English": "English website.",
-  "src": "https://midori.so/locations/aoyama"
+  "src": "https://midori.so/locations/bakuroyokoyama",
+  "Price": "¥2,200/day pop-in, or ¥22,000 for 11 days; free desk ¥42,350/month",
+  "day": true
  },
  "midori-so-shibuya": {
-  "Booking": "Membership by application: contact form, tour and interview, then a board review.",
+  "Booking": "Pop-in day pass: pay per visit at any free desk. Monthly membership is by application, tour and interview.",
   "English": "English website.",
-  "src": "https://midori.so/locations/aoyama"
+  "src": "https://midori.so/locations/shibuya",
+  "Price": "¥3,300/day pop-in; free desk ¥44,000/month (+ ¥11,000 admission)",
+  "day": true
  },
  "midori-so-kichijoji": {
-  "Booking": "Membership by application: contact form, tour and interview, then a board review.",
+  "Booking": "Pop-in day pass: pay per visit at any free desk. Monthly membership is by application, tour and interview.",
   "English": "English website.",
-  "src": "https://midori.so/locations/aoyama"
+  "src": "https://midori.so/locations/kichijoji",
+  "Price": "¥1,100 for 2 hours or ¥2,200/day pop-in; free desk ¥33,000/month",
+  "day": true
  },
  "midori-so-nihonbashi": {
-  "Booking": "Membership by application: contact form, tour and interview, then a board review.",
+  "Booking": "Pop-in: no membership or admission fee — pay per visit. The building also has overnight stays.",
   "English": "English website.",
-  "src": "https://midori.so/locations/aoyama"
+  "src": "https://midori.so/locations/nihonbashi",
+  "Price": "¥2,200/day pop-in (lounge 10:00–18:00), no membership or admission fee",
+  "day": true
  },
  "midori-so-nakameguro": {
-  "Booking": "Membership by application: contact form, tour and interview, then a board review.",
+  "Booking": "Pop-in day pass: pay per visit at any free desk. Monthly membership is by application, tour and interview.",
   "English": "English website.",
-  "src": "https://midori.so/locations/aoyama"
+  "src": "https://midori.so/locations/nakameguro",
+  "Price": "¥3,300/day pop-in, or ¥33,000 for 11 days",
+  "day": true
  },
  "business-airport-kudanshita": {
   "Booking": "Membership with photo ID (driving licence, passport or My Number card); you can start the same day you sign up. Minimum two months.",
   "Payment": "Sign-up fees by credit card; monthly fees by credit card (invoice or bank debit possible).",
-  "src": "https://business-airport.net/faq/"
+  "src": "https://business-airport.net/faq/",
+  "Price": "Master membership ¥38,500/month for all sites (sign-up fee ¥38,500); Private membership ¥14,300/month for weekday mornings, evenings and weekends"
  },
  "business-airport-daikanyama": {
   "Booking": "Membership with photo ID (driving licence, passport or My Number card); you can start the same day you sign up. Minimum two months.",
   "Payment": "Sign-up fees by credit card; monthly fees by credit card (invoice or bank debit possible).",
-  "src": "https://business-airport.net/faq/"
+  "src": "https://business-airport.net/faq/",
+  "Price": "Master membership ¥38,500/month for all sites (sign-up fee ¥38,500); Private membership ¥14,300/month for weekday mornings, evenings and weekends"
  },
  "business-airport-shibuya-sakurastage": {
   "Booking": "Membership with photo ID (driving licence, passport or My Number card); you can start the same day you sign up. Minimum two months.",
   "Payment": "Sign-up fees by credit card; monthly fees by credit card (invoice or bank debit possible).",
-  "src": "https://business-airport.net/faq/"
+  "src": "https://business-airport.net/faq/",
+  "Price": "Master membership ¥38,500/month for all sites (sign-up fee ¥38,500); Private membership ¥14,300/month for weekday mornings, evenings and weekends"
  },
  "business-airport-takeshiba": {
   "Booking": "Membership with photo ID (driving licence, passport or My Number card); you can start the same day you sign up. Minimum two months.",
   "Payment": "Sign-up fees by credit card; monthly fees by credit card (invoice or bank debit possible).",
-  "src": "https://business-airport.net/faq/"
+  "src": "https://business-airport.net/faq/",
+  "Price": "Master membership ¥38,500/month for all sites (sign-up fee ¥38,500); Private membership ¥14,300/month for weekday mornings, evenings and weekends"
  },
  "business-airport-nihonbashi": {
   "Booking": "Membership with photo ID (driving licence, passport or My Number card); you can start the same day you sign up. Minimum two months.",
   "Payment": "Sign-up fees by credit card; monthly fees by credit card (invoice or bank debit possible).",
-  "src": "https://business-airport.net/faq/"
+  "src": "https://business-airport.net/faq/",
+  "Price": "Master membership ¥38,500/month for all sites (sign-up fee ¥38,500); Private membership ¥14,300/month for weekday mornings, evenings and weekends"
  },
  "business-airport-tokyo": {
   "Booking": "Membership with photo ID (driving licence, passport or My Number card); you can start the same day you sign up. Minimum two months.",
   "Payment": "Sign-up fees by credit card; monthly fees by credit card (invoice or bank debit possible).",
-  "src": "https://business-airport.net/faq/"
+  "src": "https://business-airport.net/faq/",
+  "Price": "Master membership ¥38,500/month for all sites (sign-up fee ¥38,500); Private membership ¥14,300/month for weekday mornings, evenings and weekends"
  },
  "business-airport-marunouchi": {
   "Booking": "Membership with photo ID (driving licence, passport or My Number card); you can start the same day you sign up. Minimum two months.",
   "Payment": "Sign-up fees by credit card; monthly fees by credit card (invoice or bank debit possible).",
-  "src": "https://business-airport.net/faq/"
+  "src": "https://business-airport.net/faq/",
+  "Price": "Master membership ¥38,500/month for all sites (sign-up fee ¥38,500); Private membership ¥14,300/month for weekday mornings, evenings and weekends"
  },
  "business-airport-hibiya": {
   "Booking": "Membership with photo ID (driving licence, passport or My Number card); you can start the same day you sign up. Minimum two months.",
   "Payment": "Sign-up fees by credit card; monthly fees by credit card (invoice or bank debit possible).",
-  "src": "https://business-airport.net/faq/"
+  "src": "https://business-airport.net/faq/",
+  "Price": "Master membership ¥38,500/month for all sites (sign-up fee ¥38,500); Private membership ¥14,300/month for weekday mornings, evenings and weekends"
  },
  "business-airport-kyobashi": {
   "Booking": "Membership with photo ID (driving licence, passport or My Number card); you can start the same day you sign up. Minimum two months.",
   "Payment": "Sign-up fees by credit card; monthly fees by credit card (invoice or bank debit possible).",
-  "src": "https://business-airport.net/faq/"
+  "src": "https://business-airport.net/faq/",
+  "Price": "Master membership ¥38,500/month for all sites (sign-up fee ¥38,500); Private membership ¥14,300/month for weekday mornings, evenings and weekends"
  },
  "business-airport-shibuya-fukuras": {
   "Booking": "Membership with photo ID (driving licence, passport or My Number card); you can start the same day you sign up. Minimum two months.",
   "Payment": "Sign-up fees by credit card; monthly fees by credit card (invoice or bank debit possible).",
-  "src": "https://business-airport.net/faq/"
+  "src": "https://business-airport.net/faq/",
+  "Price": "Master membership ¥38,500/month for all sites (sign-up fee ¥38,500); Private membership ¥14,300/month for weekday mornings, evenings and weekends"
  },
  "business-airport-shibuya-nanpeidai": {
   "Booking": "Membership with photo ID (driving licence, passport or My Number card); you can start the same day you sign up. Minimum two months.",
   "Payment": "Sign-up fees by credit card; monthly fees by credit card (invoice or bank debit possible).",
-  "src": "https://business-airport.net/faq/"
+  "src": "https://business-airport.net/faq/",
+  "Price": "Master membership ¥38,500/month for all sites (sign-up fee ¥38,500); Private membership ¥14,300/month for weekday mornings, evenings and weekends"
  },
  "business-airport-kanda": {
   "Booking": "Membership with photo ID (driving licence, passport or My Number card); you can start the same day you sign up. Minimum two months.",
   "Payment": "Sign-up fees by credit card; monthly fees by credit card (invoice or bank debit possible).",
-  "src": "https://business-airport.net/faq/"
+  "src": "https://business-airport.net/faq/",
+  "Price": "Master membership ¥38,500/month for all sites (sign-up fee ¥38,500); Private membership ¥14,300/month for weekday mornings, evenings and weekends"
  },
  "business-airport-shimbashi": {
   "Booking": "Membership with photo ID (driving licence, passport or My Number card); you can start the same day you sign up. Minimum two months.",
   "Payment": "Sign-up fees by credit card; monthly fees by credit card (invoice or bank debit possible).",
-  "src": "https://business-airport.net/faq/"
+  "src": "https://business-airport.net/faq/",
+  "Price": "Master membership ¥38,500/month for all sites (sign-up fee ¥38,500); Private membership ¥14,300/month for weekday mornings, evenings and weekends"
  },
  "business-airport-tamachi": {
   "Booking": "Membership with photo ID (driving licence, passport or My Number card); you can start the same day you sign up. Minimum two months.",
   "Payment": "Sign-up fees by credit card; monthly fees by credit card (invoice or bank debit possible).",
-  "src": "https://business-airport.net/faq/"
+  "src": "https://business-airport.net/faq/",
+  "Price": "Master membership ¥38,500/month for all sites (sign-up fee ¥38,500); Private membership ¥14,300/month for weekday mornings, evenings and weekends"
  },
  "business-airport-shinagawa": {
   "Booking": "Membership with photo ID (driving licence, passport or My Number card); you can start the same day you sign up. Minimum two months.",
   "Payment": "Sign-up fees by credit card; monthly fees by credit card (invoice or bank debit possible).",
-  "src": "https://business-airport.net/faq/"
+  "src": "https://business-airport.net/faq/",
+  "Price": "Master membership ¥38,500/month for all sites (sign-up fee ¥38,500); Private membership ¥14,300/month for weekday mornings, evenings and weekends"
  },
  "business-airport-ebisu": {
   "Booking": "Membership with photo ID (driving licence, passport or My Number card); you can start the same day you sign up. Minimum two months.",
   "Payment": "Sign-up fees by credit card; monthly fees by credit card (invoice or bank debit possible).",
-  "src": "https://business-airport.net/faq/"
+  "src": "https://business-airport.net/faq/",
+  "Price": "Master membership ¥38,500/month for all sites (sign-up fee ¥38,500); Private membership ¥14,300/month for weekday mornings, evenings and weekends"
  },
  "business-airport-shinjuku3chome": {
   "Booking": "Membership with photo ID (driving licence, passport or My Number card); you can start the same day you sign up. Minimum two months.",
   "Payment": "Sign-up fees by credit card; monthly fees by credit card (invoice or bank debit possible).",
-  "src": "https://business-airport.net/faq/"
+  "src": "https://business-airport.net/faq/",
+  "Price": "Master membership ¥38,500/month for all sites (sign-up fee ¥38,500); Private membership ¥14,300/month for weekday mornings, evenings and weekends"
  },
  "business-airport-aoyama": {
   "Booking": "Membership with photo ID (driving licence, passport or My Number card); you can start the same day you sign up. Minimum two months.",
   "Payment": "Sign-up fees by credit card; monthly fees by credit card (invoice or bank debit possible).",
-  "src": "https://business-airport.net/faq/"
+  "src": "https://business-airport.net/faq/",
+  "Price": "Master membership ¥38,500/month for all sites (sign-up fee ¥38,500); Private membership ¥14,300/month for weekday mornings, evenings and weekends"
  },
  "senq-kyobashi": {
   "Booking": "Drop-in: sign up at reception, no booking needed. Weekdays 9:00–19:00.",
