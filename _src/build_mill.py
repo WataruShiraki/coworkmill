@@ -3,6 +3,10 @@
 # 使い方: BRAND=cowork OUT_DIR=<出力先>/ python3 build_mill.py   /  BRAND=cafe OUT_DIR=<出力先>/ python3 build_mill.py
 # 依存（OFFISNAP の build_site.py と WALL の style.css / index.html）は _src/deps/ に写しがあるので、このリポジトリだけで動く
 import os, re, sys, json
+# ★2026-10-10 COWORKMILL は英語版に切り替えた（わたるさん「全部英語」「基本は英語で表示、海外サイトっぽく」）。
+#   公開ページは _src/build_en.py で作る。このファイル（日本語版）で cowork をビルドして上げると英語版が日本語に戻るので、止めておく。
+if os.environ.get('BRAND') == 'cowork' and os.environ.get('ALLOW_JA') != '1':
+    raise SystemExit('COWORKMILL は英語版です。_src/build_en.py でビルドしてください（日本語版をあえて作るときだけ ALLOW_JA=1）')
 HERE = os.path.dirname(os.path.abspath(__file__))
 OFF = os.environ.get('OFF_SRC', os.path.join(HERE, 'deps', 'off'))  # OFFISNAP の build_site.py の写し（deps/README.md）
 os.environ.setdefault('WALL_DIR', os.path.join(HERE, 'deps', 'wall') + os.sep)  # WALL の style.css / index.html の写し

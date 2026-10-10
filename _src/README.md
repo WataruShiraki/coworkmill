@@ -1,3 +1,13 @@
+# ★2026-10-10 COWORKMILL は英語版に切り替えた（最初に読む）
+- わたるさん「MILLS をインバウンド・外国企業向けに全部切り替える」「全部英語」「基本は英語で表示、海外サイトっぽく」。形は承認済みの見本（TOP と施設ページ）どおり。
+- 公開ページ（index.html・spaces/・collections/・questions/・about/・contact/・404.html・sitemap.xml・llms.txt・site.webmanifest）は **_src/build_en.py** で作る：
+      cd _src && OUT_DIR=/どこか/out/ BASE= python3 build_en.py   → 出力をリポジトリ直下にコピー
+  確認用（noindex）は BASE=/preview/en で preview/en/ に出す。
+- 英訳データ：_src/en/b001〜b038.json（施設347件の本文）・en/collections.json（特集36）・en/questions.json（Q&A18）。CSS/JS は en/en.css・en/en.js。
+- 写真・公式URL・日本語住所（タクシー用）は日本語版のデータ（cowork_facilities.py・seo_cowork.py の PLACE）からそのまま使う。施設を足すときは日本語データに足し、en/ にも英訳を1件足す（件数が合わないとビルドが止まる）。
+- 旅行者向けのしるし（Day pass・Open weekends・Open late・24-hour access・Station-linked・Members only）は、英訳の facts（公式情報）だけから自動で付ける。推測では付けない。
+- build_mill.py の cowork ビルドは止めてある（ALLOW_JA=1 のときだけ動く）。journal/（日本語のコラム）はそのまま残している。
+
 # ★2026-09-29 build_site.py に記事下のおすすめを追加。ビルドの前に必ず最新を取り直すこと
 
 # ★最初に読む：人の顔が分かる写真は使わない（2026-09-28 わたるさんのルール）
