@@ -1308,3 +1308,6 @@ SEO.update(SEO_ADD_1009L); PLACE.update(PLACE_ADD_1009L)
 
 for _s in ['roomus-yokosuka-chuo']:
     SEO.pop(_s, None); PLACE.pop(_s, None)
+
+for _s in ['totonoi-plus-omiya', 'nankyoku-space-tateyama', 'po-to-higashikoganei', 'kanadebako-shimokitazawa', 'sancha-work-sangenjaya', '100work-shoin-jinja-mae', 'coworking-eifuku', 'spa-metsa-otaka-nagareyama', 'skyspa-yokohama-koowork']:
+    SEO.pop(_s, None); PLACE.pop(_s, None)

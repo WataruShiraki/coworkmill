@@ -12240,3 +12240,21 @@ if 'thermae-yu-shinjuku' in IMG30:
     for _k, _u in list(IMG30['thermae-yu-shinjuku'].items()):
         if _u.startswith('http://'):
             IMG30['thermae-yu-shinjuku'][_k] = 'https://wsrv.nl/?url=' + _u[len('http://'):] + '&w=1600&output=jpg&q=80'
+
+# ==== 2026-10-10 統合分の写真確認（Chrome で全写真を目視・表示確認。2サイト合計315枚とも表示OK）====
+# 顔が分かる写真・告知や図の画像・重複を外す。写真が4枚未満、または館内の写真が1枚以下になる施設は保留（ととのい＋・南極スペース・PO-TO・KanadeBako・三茶WORK・100work・永福・スパメッツァ・スカイスパ）
+import re as _re
+_HOLD_FACE1009 = ['totonoi-plus-omiya', 'nankyoku-space-tateyama', 'po-to-higashikoganei', 'kanadebako-shimokitazawa', 'sancha-work-sangenjaya', '100work-shoin-jinja-mae', 'coworking-eifuku', 'spa-metsa-otaka-nagareyama', 'skyspa-yokohama-koowork']
+_DROP_FACE1009 = {'rembrally-cafe-ebina': [3, 4], 'noblesse-oblige-kashiwa': [2, 5, 6], 'tokorozawa-node': [5], 'ok-nishitokyo-tanashi': [3, 5], 'coworking-space-mono-aomi': [6], 'h1o-shibakoen': [4], 'stayup-shonan-fujisawa': [2], 'agora-kgu-kannai': [1], 'thermae-yu-shinjuku': [1], 'karumaru-ikebukuro': [4]}
+A30[:] = [a for a in A30 if a['slug'] not in _HOLD_FACE1009]
+for _a in A30:
+    _s = _a['slug']
+    if _s not in _DROP_FACE1009: continue
+    for _n in _DROP_FACE1009[_s]: IMG30[_s].pop(str(_n), None)
+    _st = [(st[0], st[1], st[2], [p for p in st[3] if p[0] not in _DROP_FACE1009[_s]]) for st in _a['steps']]
+    _st = [st for st in _st if st[3]]
+    _a['steps'] = [(_re.sub(r'^\d+', '%02d' % (i + 1), st[0]),) + tuple(st[1:]) for i, st in enumerate(_st)]
+    _a['photo_total'] = len(IMG30[_s])
+    if str(_a['hero'][0]) not in IMG30[_s]:
+        _h = next(p[0] for st in _a['steps'] for p in st[3])
+        _a['hero'] = (_h, next((p[1] for st in _a['steps'] for p in st[3] if p[0] == _h), '館内の様子'))
