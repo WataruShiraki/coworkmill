@@ -81,7 +81,7 @@ def traits(slug):
     if not members_only and re.search(r'drop-in|per hour|/hour|an hour|per day|/day|a day', fact(e, 'Drop-in', 'Prices', 'Price').lower()): t.append('Day pass')
     h = fact(e, 'Hours', 'Access hours').lower(); c = fact(e, 'Closed').lower()
     if vx.get('day') and not members_only and 'Day pass' not in t: t.append('Day pass')
-    if vx.get('English'): t.append('English website')
+    if vx.get('English') and 'in Japanese' not in vx['English']: t.append('English website')
     if '24 hours' in h: t.append('24-hour access')
     h2 = re.sub(r'\([^)]*(member|support|tenant|office|reception)[^)]*\)', '', h); h2 = re.sub(r'/ *[^/]*(members|tenants|serviced offices|private rooms|offices)[^/]*', '', h2)
     _wk = re.search(r'weekend|sat|sun|every day|mon–sun|365 days|daily', h2) and not re.search(r'closed (on )?(weekends|saturdays|sundays|sat)', h) and not re.match(r'24 hours', h)
@@ -188,6 +188,12 @@ def space_page(slug):
               '<div class="row"><span>Price</span><div>Not published here <small>— check the official website</small></div></div>')
         i = rows.find('</div></div>') + 12 if rows.startswith('<div class="row"><span>Who</span>') else 0
         rows = rows[:i] + pr + rows[i:]
+    _pt = ' '.join(v for k, v in e['facts'] if k in ('Prices', 'Price', 'Drop-in', 'Monthly', 'Free desk', 'Entry fee')).lower()
+    if vx.get('Price') and _pt and not re.search(r'drop-in|one-time|/hour|per hour|/day|per day|half day', _pt):
+        _r = f'<div class="row"><span>Price</span><div>{E(vx["Price"])}</div></div>'
+        _i = rows.find('<div class="row"><span>Price</span>')
+        _i = rows.find('</div></div>', _i) + 12 if _i >= 0 else len(rows)
+        rows = rows[:_i] + _r + rows[_i:]
     for lab in ('Booking', 'Payment', 'English'):
         if vx.get(lab):
             rows += f'<div class="row"><span>{"How" if lab == "Booking" else "Pay" if lab == "Payment" else lab}</span><div>{E(vx[lab])}</div></div>'
