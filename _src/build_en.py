@@ -405,7 +405,7 @@ def visitor_block(c, sl, label):
     return html_, ld
 def col_label(c):
     t = col_seo(c)
-    m = re.match(r'Coworking (in|near) (.+)$', t)
+    m = re.search(r'coworking (in|near) (.+)$', t, re.I)
     return f'{m.group(1)} {m.group(2)}' if m else f'in this collection'
 def col_page(c):
     items = [(s, cap) for s, cap in c['items'] if s in EN]
