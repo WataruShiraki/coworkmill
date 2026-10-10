@@ -1142,5 +1142,249 @@
 ]
 ],
 "ctx": null
+},
+{
+"slug": "payment",
+"q": "How do I pay at a coworking space in Japan?",
+"a": "Most drop-in spaces take cards, and several take no cash at all. SENQ's drop-in accepts credit cards, transit IC cards, Apple Pay, iD and QUICPay but not cash, and NAKANO HAKO is cashless only.",
+"desc": "Payment methods at coworking spaces in Japan — cash, cards, transit IC cards, PayPay and apps — from the official information of SENQ, NAKANO HAKO, Noblesse Oblige, BasisPoint and Rembrally Cafe.",
+"secs": [
+[
+"senq-kyobashi",
+"Cards and e-money, no cash",
+[
+"SENQ's drop-in, offered at Kyobashi, Kasumigaseki, Roppongi, Meguro and Aoyama Namikidori, accepts credit cards and e-money: transit IC cards, Apple Pay, iD and QUICPay.",
+"Cash is not accepted, and cards cannot be topped up at the desk. You sign up at reception without booking; it costs ¥550 an hour plus a one-time ¥550 joining fee."
+],
+[
+[
+"senq-kyobashi",
+1
+]
+]
+],
+[
+"nakano-hako",
+"Cashless only",
+[
+"NAKANO HAKO takes credit cards, e-money and QR payments, and no cash.",
+"You check in at reception and wear a user card while you are inside; private booths can be booked in the SHARE LOUNGE app."
+],
+[
+[
+"nakano-hako",
+1
+]
+]
+],
+[
+"noblesse-oblige-kashiwa",
+"Cash, card, e-money or PayPay",
+[
+"At Noblesse Oblige in Kashiwa you register at the staffed reception on your first visit and pay by cash, credit card, e-money or PayPay.",
+"Drop-in is ¥660 an hour or ¥1,980 a day."
+],
+[
+[
+"noblesse-oblige-kashiwa",
+1
+]
+]
+],
+[
+"basispoint-shimbashi-ginzaguchi",
+"Pay when you leave",
+[
+"BasisPoint lets you register free at reception, sit anywhere in the open space and pay for the time you used when you leave.",
+"It accepts cash, credit cards, e-money and QR payments; drop-in starts at ¥330 per 30 minutes with a daily cap."
+],
+[
+[
+"basispoint-shimbashi-ginzaguchi",
+1
+]
+]
+],
+[
+"rembrally-cafe-ebina",
+"An app, or cash at the hotel desk",
+[
+"Rembrally Cafe in Ebina has no staff: you unlock the door and pay in the Threes app, from ¥250 for the first 30 minutes up to ¥1,500 a day.",
+"Visitors who prefer cash apply and pay at the front desk of the hotel next door."
+],
+[
+[
+"rembrally-cafe-ebina",
+1
+]
+]
+]
+],
+"ctx": {
+"term": "Transit IC card",
+"title": "What is a transit IC card?",
+"body": [
+"Suica and PASMO are the rechargeable cards used on trains and buses around Tokyo. Many shops also accept them as e-money.",
+"SENQ lists transit IC cards among its payment methods, and at H¹T members can register one as their door key."
+]
+}
+},
+{
+"slug": "english",
+"q": "Which coworking spaces have English-speaking staff or an English website?",
+"a": "CIC Tokyo says it has bilingual staff, and StartupSide Tokyo has staff who speak English, Chinese and Malay. Operators such as The Executive Centre, JustCo and MIDORI.so publish English websites, while THE HUB states that its contracts require Japanese.",
+"desc": "English support at coworking spaces in Japan, from the official information of CIC Tokyo, StartupSide Tokyo, The Executive Centre, Thermae-Yu and THE HUB.",
+"secs": [
+[
+"cic-tokyo",
+"Bilingual staff",
+[
+"CIC Tokyo lists bilingual staff among its services, together with 24-hour access and an English website.",
+"It is a membership space with coworking desks and private offices; members book meeting rooms in the booking system."
+],
+[
+[
+"cic-tokyo",
+2
+]
+]
+],
+[
+"startupside-tokyo",
+"Staff who speak English, Chinese and Malay",
+[
+"StartupSide Tokyo has staff who speak English, Chinese and Malay, and supports companies expanding abroad or into Japan.",
+"It is open 24 hours a day."
+],
+[
+[
+"startupside-tokyo",
+1
+]
+]
+],
+[
+"the-executive-centre-jingumae-tower",
+"A Day Pass you can book in English",
+[
+"The Executive Centre sells a Day Pass to first-time visitors. You book on its English website, in the MyTEC app or at reception, then check in at reception.",
+"Day Pass access is usually during standard business hours, about 9:00–18:00."
+],
+[
+[
+"the-executive-centre-jingumae-tower",
+2
+]
+]
+],
+[
+"thermae-yu-shinjuku",
+"A hot spring with an English website",
+[
+"Thermae-Yu in Shinjuku publishes its website in English, Korean and Chinese, and takes cards, PayPay, Alipay and UnionPay.",
+"Tattoos are allowed for overseas visitors only."
+],
+[
+[
+"thermae-yu-shinjuku",
+2
+]
+]
+],
+[
+"the-hub-akasaka",
+"Where Japanese is required",
+[
+"THE HUB states that its service is in Japanese and that contract holders need to read, write and speak Japanese.",
+"Its drop-in, 10-hour and weekend plans are registered in the official app and paid by credit card."
+],
+[
+[
+"the-hub-akasaka",
+1
+]
+]
+]
+],
+"ctx": null
+},
+{
+"slug": "first-visit",
+"q": "What do I need for my first visit?",
+"a": "It depends on the space. Some let you walk in and sign up at reception, some ask you to register in an app before you arrive, and monthly plans usually need photo ID.",
+"desc": "What to expect on a first visit to a coworking space in Japan — walk-in, app registration, booking and ID — from the official information of MONO, RoomUs, tefu, co-ba akasaka and Business-Airport.",
+"secs": [
+[
+"coworking-space-mono-aomi",
+"Walk in and sign at reception",
+[
+"MONO in Aomi needs no booking or registration for drop-in: you check in at reception, and on your first visit you sign the terms of use.",
+"Drop-in runs on weekdays from 10:00 to 18:00, for 2 hours or a full day."
+],
+[
+[
+"coworking-space-mono-aomi",
+1
+]
+]
+],
+[
+"roomus-yokohama",
+"Register online before you go",
+[
+"RoomUs Yokohama is unstaffed, so you register online before your first visit.",
+"It charges ¥100 per 20 minutes and is open 7:00–23:00 every day."
+],
+[
+[
+"roomus-yokohama",
+1
+]
+]
+],
+[
+"tefu-lounge-shimokitazawa",
+"Sign up in the LINE app",
+[
+"The (tefu) lounge is used through the LINE app: you register with a credit card, choose a plan and check in, and you can book before you arrive.",
+"Lounge users get free specialty coffee."
+],
+[
+[
+"tefu-lounge-shimokitazawa",
+1
+]
+]
+],
+[
+"co-ba-akasaka",
+"Book first — no walk-ins",
+[
+"co-ba akasaka takes drop-in only through the STATION WORK booking site and does not accept same-day visitors without a booking.",
+"A day is ¥2,200, on weekdays from 10:00 to 19:00."
+],
+[
+[
+"co-ba-akasaka",
+2
+]
+]
+],
+[
+"business-airport-tokyo",
+"Photo ID for monthly plans",
+[
+"Business-Airport asks for photo ID — a driving licence, passport or My Number card — when you sign up, and you can start the same day.",
+"Its plans run for at least two months."
+],
+[
+[
+"business-airport-tokyo",
+1
+]
+]
+]
+],
+"ctx": null
 }
 ]

@@ -73,6 +73,20 @@ def photos(slug):
 
 # 旅行者向けのしるし（公式情報から作った facts だけで判定。推測では付けない）
 # 2026-10-10 わたるさん「支払い方法とか、英語対応可能かとかちゃんと入ってるか？」：公式サイトで確かめた予約・支払い・英語対応（en/visit_extra.json、人気の上位から順に追加）
+# 2026-10-11 海外の掲載サイト（Coworker・Tokyo Cheapo・Tabelog English）は「設備」を一覧で出している。英訳本文（公式サイト由来）に書かれた設備だけを拾う（否定文は除外）
+AMEN = [('Wi-Fi', r'wi-?fi'), ('Power outlets', r'power (outlets?|sockets?|points?|supply)|\boutlets?\b|\bsockets?\b|power at (every|each|all)'),
+        ('Meeting rooms', r'meeting rooms?'), ('Phone booths', r'(phone|call|web[- ]?(meeting|conference|call)?|telephone|soundproof|calling|online[- ]meeting|video[- ]call) ?booths?|telephone boxes?|phone boxes?'),
+        ('Monitors', r'\b(external )?monitors?\b|external displays?'), ('Printing', r'printers?|printing|copiers?|multifunction'), ('Lockers', r'\blockers?\b'),
+        ('Kitchen', r'(?<!test )\bkitchen'), ('Free drinks', r'free (coffee|drinks?|tea)|(coffee|drinks?|tea) (is|are) free|drink bar|free-flow|unlimited (coffee|drinks?)|complimentary (coffee|drinks?)'),
+        ('Showers', r'\bshowers?\b'), ('Nap room', r'\bnap(ping)? (room|space|area|pods?|booths?)')]
+_NEG = re.compile(r"\b(no|not|without|n't|none)\b|power cut|generator|3d print|test kitchen|^B?\d+F\b", re.I)
+def amenities(slug):
+    e = EN[slug]; t = [v for k, v in e['facts']] + [e['lead']] + [p for st in e['steps'] for p in st[2]] + list(e['word']['body'])
+    c = e.get('concept')
+    if isinstance(c, list): t += [c[0]] + list(c[1])
+    sents = [x for y in t for x in re.split(r'(?<=[.;!?])\s+|\s/\s', str(y))]
+    return [lab for lab, pat in AMEN if any(re.search(pat, x, re.I) and not _NEG.search(x) for x in sents)]
+AM = {}
 VX = json.load(open(os.path.join(HERE, 'en', 'visit_extra.json'), encoding='utf-8'))
 def traits(slug):
     e = EN[slug]; t = []; vx = VX.get(slug, {})
@@ -83,6 +97,7 @@ def traits(slug):
     if vx.get('day') and not members_only and 'Day pass' not in t: t.append('Day pass')
     if vx.get('English') and 'in Japanese' not in vx['English']: t.append('English website')
     if '24 hours' in h: t.append('24-hour access')
+    if 'Phone booths' in AM.setdefault(slug, amenities(slug)): t.append('Phone booths')
     h2 = re.sub(r'\([^)]*(member|support|tenant|office|reception)[^)]*\)', '', h); h2 = re.sub(r'/ *[^/]*(members|tenants|serviced offices|private rooms|offices)[^/]*', '', h2)
     _wk = re.search(r'weekend|sat|sun|every day|mon–sun|365 days|daily', h2) and not re.search(r'closed (on )?(weekends|saturdays|sundays|sat)', h) and not re.match(r'24 hours', h)
     if (_wk or re.match(r'(every day|daily)', h)) and 'weekend' not in c and 'saturday' not in c and 'sunday' not in c: t.append('Open weekends')
@@ -194,6 +209,8 @@ def space_page(slug):
         _i = rows.find('<div class="row"><span>Price</span>')
         _i = rows.find('</div></div>', _i) + 12 if _i >= 0 else len(rows)
         rows = rows[:_i] + _r + rows[_i:]
+    if AM.get(slug):
+        rows += '<div class="row"><span>Has</span><div class="am">' + ''.join(f'<span>{E(a)}</span>' for a in AM[slug]) + '</div></div>'
     for lab in ('Booking', 'Payment', 'English'):
         if vx.get(lab):
             rows += f'<div class="row"><span>{"How" if lab == "Booking" else "Pay" if lab == "Payment" else lab}</span><div>{E(vx[lab])}</div></div>'
@@ -233,7 +250,7 @@ def space_page(slug):
 def prefs_count(slugs):
     c = collections.Counter(pref(EN[s]) for s in slugs)
     return sorted(c.items(), key=lambda kv: (kv[0] != 'Tokyo', -kv[1], kv[0]))
-TFILTERS = ['Day pass', 'Open weekends', 'Open late', '24-hour access', 'Station-linked', 'English website']
+TFILTERS = ['Day pass', 'Open weekends', 'Open late', '24-hour access', 'Station-linked', 'Phone booths', 'English website']
 def list_page():
     pc = prefs_count(ORDER)
     chips = f'<button type="button" data-p="" class="on">All<small>{len(ORDER)}</small></button>' + ''.join(f'<button type="button" data-p="{E(k)}">{E(k)}<small>{n}</small></button>' for k, n in pc)
