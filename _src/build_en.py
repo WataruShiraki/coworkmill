@@ -364,15 +364,59 @@ COL_SEO = {'marunouchi': 'Coworking near Tokyo Station: Marunouchi, Yurakucho, O
   'brand-business-airport': 'Business-Airport coworking locations in Tokyo', 'brand-workstyling': 'WORK STYLING coworking locations in Japan', 'brand-crosscoop': 'CROSSCOOP (fabbit) locations in Tokyo',
   'brand-newwork': 'NewWork coworking locations in Tokyo', 'brand-senq': 'SENQ coworking locations in Tokyo', 'brand-co-ba': 'co-ba coworking locations in Tokyo', 'reuse': 'Coworking in renovated old buildings in Tokyo'}
 def col_seo(c): return COL_SEO.get(c['slug'], c['title'])
+# 2026-10-11 わたるさん「特集をインバウンドの方向けにかなり深ぼって」→ 特集ごとに、訪日客が知りたいこと（使えるか・いくらか・どう払うか・英語・最寄り駅）を施設データから一覧にする
+_ST = re.compile(r"\b([A-Z][a-zōū]+(?:-[A-Z]?[a-zōū]+)?) Station")
+_STX = {'Line', 'Startup', 'Square', 'Metro', 'The'}
+def _stations(sl):
+    c = collections.Counter()
+    for s in sl:
+        e = EN[s]; txt = ' '.join([v for k, v in e['facts'] if k in ('Access', 'Location', 'Space')] + [e['lead']])
+        c.update({m for m in _ST.findall(txt) if m not in _STX})
+    return [k for k, _ in c.most_common(5)]
+def _price(s):
+    e = EN[s]; v = fact(e, 'Drop-in') or (VX.get(s, {}).get('Price') if 'Day pass' in TRAIT[s] else '')
+    return v or fact(e, 'Prices', 'Price', 'Monthly', 'Free desk')
+def _short(x, n=70): return x if len(x) <= n else x[:n].rsplit(' ', 1)[0].rstrip(',;/ ') + '…'
+def visitor_block(c, sl, label):
+    n = len(sl); dp = [s for s in sl if 'Day pass' in TRAIT[s]]; wk = [s for s in sl if 'Open weekends' in TRAIT[s]]
+    h24 = [s for s in sl if '24-hour access' in TRAIT[s]]; en = [s for s in sl if 'English website' in TRAIT[s]]; mo = [s for s in sl if 'Members only' in TRAIT[s]]
+    stats = ''.join(f'<span><b>{v}</b> {E(k)}</span>' for k, v in [('spaces', n), ('with a day pass', len(dp)), ('open at weekends', len(wk)), ('with 24-hour access', len(h24)), ('with an English website', len(en))] if v or k == 'spaces')
+    st = _stations(sl)
+    nm = lambda x: f'<a href="{U("spaces/" + x + ".html")}">{E(EN[x]["name"])}</a>'
+    rows = ''.join(f'<tr><th scope="row">{nm(x)}</th><td>{"Yes" if x in dp else ("Members only" if x in mo else "—")}</td><td>{E(_short(_price(x)) or "—")}</td>'
+                   f'<td>{E(_short(fact(EN[x], "Hours", "Access hours"), 50) or "—")}</td><td>{E(_short(VX.get(x, {}).get("Payment", ""), 50) or "—")}</td><td>{"Yes" if x in en else "—"}</td></tr>' for x in sl)
+    table = (f'<div class="tblw"><table class="cmp"><thead><tr><th scope="col">Space</th><th scope="col">Day pass</th><th scope="col">Price</th><th scope="col">Hours</th><th scope="col">Payment</th><th scope="col">English site</th></tr></thead><tbody>{rows}</tbody></table></div>'
+             '<p class="note">From each official website. “—” means the official information we checked does not say.</p>')
+    faq = []
+    if dp:
+        faq.append((f'Can I use a coworking space {label} without a membership?',
+                    (f'Yes — {len(dp)} of the {n} spaces in this collection offer' if len(dp) > 1 else f'Yes — one of the {n} spaces in this collection offers') + ' a day pass or hourly drop-in: ' + '; '.join(f'{EN[x]["name"]} ({_short(_price(x), 60)})' if _price(x) else EN[x]['name'] for x in dp[:5]) + '. Check each page for booking and payment.'))
+    else:
+        faq.append((f'Can I use a coworking space {label} without a membership?', f'None of the {n} spaces in this collection list a day pass on their official websites; they are run as memberships or offices. See our day-pass list for spaces you can use for a day.'))
+    if wk: faq.append((f'Which coworking spaces {label} are open at weekends?', ', '.join(EN[x]['name'] for x in wk[:8]) + (f' and {len(wk) - 8} more' if len(wk) > 8 else '') + ' list weekend hours on their official websites.'))
+    if en: faq.append((f'Which coworking spaces {label} have an English website?', ', '.join(EN[x]['name'] for x in en[:8]) + (f' and {len(en) - 8} more' if len(en) > 8 else '') + '. Booking forms elsewhere are often in Japanese only.'))
+    if st: faq.append((f'Which stations are the coworking spaces {label} near?', 'The stations mentioned most often are ' + ', '.join(f'{x} Station' for x in st) + '. Every space page has the Japanese address to show a taxi driver and a Google Maps link.'))
+    fq = ''.join(f'<details><summary>{E(q)}</summary><p>{E(a)}</p></details>' for q, a in faq)
+    html_ = (f'<section class="sec visitor"><div class="sh"><div><h2>Planning a visit</h2><p>What a visitor to Japan needs to know about these {n} spaces</p></div></div>'
+             f'<div class="vstats">{stats}</div>' + (f'<p class="vst">Nearest stations: {E(", ".join(st))}.</p>' if st else '') + table +
+             (f'<p class="more"><a href="{U("find/day-pass.html")}">All {sum(1 for x in ORDER if "Day pass" in TRAIT[x])} day-pass spaces in Japan →</a></p>' if not dp else '') +
+             f'<h3 class="fqh">Questions visitors ask</h3><div class="fq">{fq}</div></section>')
+    ld = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faq]}
+    return html_, ld
+def col_label(c):
+    t = col_seo(c)
+    m = re.match(r'Coworking (in|near) (.+)$', t)
+    return f'{m.group(1)} {m.group(2)}' if m else f'in this collection'
 def col_page(c):
     items = [(s, cap) for s, cap in c['items'] if s in EN]
     _i = COLS.index(c); _o = (COLS[_i + 1:] + COLS[:_i])[:3]
     others = ''.join(f'<a class="col" href="{U("collections/" + o["slug"] + ".html")}"><span class="n">{len(o["items"])}</span><b>{E(o["title"])}</b><p>{E(o["lead"])}</p></a>' for o in _o)
     ld = [{"@context": "https://schema.org", "@type": "ItemList", "name": c['title'], "itemListElement": [{"@type": "ListItem", "position": i + 1, "url": SITE + '/spaces/' + s + '.html', "name": EN[s]['name']} for i, (s, _) in enumerate(items)]}]
     img = photo(items[0][0], JA[items[0][0]]['hero'][0]) if items else None
+    vb, vld = visitor_block(c, [s for s, _ in items], col_label(c)); ld.append(vld)
     return (head(fit(f'{col_seo(c)} — {len(items)} spaces | {NAME}', f'{col_seo(c)} | {NAME}', col_seo(c)), c['lead'][:155], f'collections/{c["slug"]}.html', img, 'article', ld) + nav('collections/') +
             f'<main class="wrap"><div class="crumb"><a href="{U("collections/")}">Collections</a> › {E(c["title"])}</div><div class="head"><p class="tag">{len(items)} spaces</p><h1>{E(c["title"])}</h1><p class="lead">{E(c["lead"])}</p></div>'
-            '<div class="cards">' + ''.join(card(s, i + 1, cap) for i, (s, cap) in enumerate(items)) + '</div>'
+            '<div class="cards">' + ''.join(card(s, i + 1, cap) for i, (s, cap) in enumerate(items)) + '</div>' + vb +
             f'<section class="sec"><div class="sh"><div><h2>More collections</h2></div><a href="{U("collections/")}">All {len(COLS)} →</a></div><div class="cols">{others}</div></section></main>' + foot())
 
 # ---------- Q&A ----------

@@ -208,3 +208,19 @@ dialog button{background:none;border:1px solid #666;color:#fff;font:inherit;padd
 .findnav a[aria-current="page"]{background:var(--ink);color:#fff;border-color:var(--ink)}
 .more{margin:22px 0 0;font-size:14px}
 .more a{border-bottom:1px solid var(--accent)}
+/* collection: planning a visit (2026-10-11) */
+.vstats{display:flex;flex-wrap:wrap;gap:8px 18px;margin:0 0 10px;font-size:14px;color:var(--ink-2)}
+.vstats b{font-family:var(--serif);font-size:22px;font-weight:500;color:var(--ink);margin-right:2px;font-variant-numeric:tabular-nums}
+.vst{margin:0 0 14px;font-size:14px;color:var(--ink-2)}
+.tblw{overflow-x:auto;border:1px solid var(--line);border-radius:2px;background:var(--bg,#fff)}
+.cmp{border-collapse:collapse;width:100%;min-width:720px;font-size:13px}
+.cmp th,.cmp td{padding:9px 12px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;line-height:1.45}
+.cmp thead th{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);font-weight:500;background:var(--ground)}
+.cmp tbody th{font-weight:600;min-width:150px}
+.cmp tbody tr:last-child th,.cmp tbody tr:last-child td{border-bottom:0}
+.note{font-size:12px;color:var(--mute);margin:8px 0 0}
+.fqh{font-family:var(--serif);font-weight:500;font-size:22px;margin:28px 0 8px}
+.fq details{border-top:1px solid var(--line);padding:12px 0}
+.fq details:last-child{border-bottom:1px solid var(--line)}
+.fq summary{cursor:pointer;font-weight:600;font-size:15px}
+.fq p{margin:8px 0 0;color:var(--ink-2);font-size:14px;line-height:1.65}
