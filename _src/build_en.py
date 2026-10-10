@@ -142,6 +142,7 @@ def nav(cur=''):
 
 def foot():
     return (f'<footer class="wrap"><nav><a href="{U("about/")}">About {NAME}</a><a href="{U("spaces/")}">All spaces</a><a href="{U("collections/")}">Collections</a><a href="{U("questions/")}">Q&amp;A</a>'
+            f'<a href="{U("find/day-pass.html")}">Day passes</a><a href="{U("find/english.html")}">English website</a><a href="{U("find/tokyo.html")}">Tokyo</a><a href="{U("find/kanagawa.html")}">Yokohama</a><a href="{U("find/osaka.html")}">Osaka</a>'
             f'<a href="{U("about/privacy.html")}">Privacy</a><a href="{U("about/terms.html")}">Terms</a><a href="{U("contact/")}">Contact</a></nav>'
             f'<p>© 2026 {NAME} — a guide to {TAG}. Facts and photos come from each space\'s official website; photos remain the property of their owners.</p></footer>'
             '<dialog id="lb"><img id="lbimg" alt=""><div class="bar"><span id="lbcap"></span><span><button type="button" id="lbprev" aria-label="Previous">‹</button> <button type="button" id="lbnext" aria-label="Next">›</button> <button type="button" id="lbclose">Close</button></span></div></dialog>'
@@ -273,6 +274,45 @@ def list_page():
             f'<div class="fchips" id="fp" role="group" aria-label="Prefecture">{chips}</div><div class="fchips tf" id="ft" role="group" aria-label="For travellers">{tf}</div>'
             f'<p class="fcount" id="fc">{len(ORDER)} spaces</p></div><div class="cards" id="list">{cards}</div><p class="fnone" id="fn" hidden>No spaces match. Try another area or clear a filter.</p></main>' + foot())
 
+# ---------- 検索の入り口（用途・地域） ----------
+# 2026-10-11 訪日客が検索する「coworking day pass tokyo」「24 hour coworking japan」「coworking yokohama」などに、固定URLのページで応える（中身は施設データから自動で作る）
+def _popord(sl):
+    pop = [s for s in POPULAR if s in sl]; return pop + [s for s in ORDER if s in sl and s not in pop]
+FINDS = [
+ ('day-pass', 'Coworking day passes in Tokyo and Japan', 'Day passes', lambda s: 'Day pass' in TRAIT[s], 'you can use by the hour or the day without a monthly membership', 'Day pass'),
+ ('24-hour', '24-hour coworking in Tokyo and Japan', '24-hour access', lambda s: '24-hour access' in TRAIT[s], 'open around the clock — usually for members', '24-hour access'),
+ ('weekends', 'Coworking open at weekends in Japan', 'Open at weekends', lambda s: 'Open weekends' in TRAIT[s], 'open on Saturdays or Sundays', 'Open weekends'),
+ ('late', 'Coworking open late in Japan', 'Open late', lambda s: 'Open late' in TRAIT[s], 'open until 22:00 or later', 'Open late'),
+ ('phone-booths', 'Coworking with phone booths for calls in Japan', 'Phone booths', lambda s: 'Phone booths' in TRAIT[s], 'with phone booths for online meetings, as stated on their official websites', 'Phone booths'),
+ ('english', 'Coworking with an English website in Japan', 'English website', lambda s: 'English website' in TRAIT[s], 'whose operators publish an English website — or, in a few cases, state English-speaking staff', 'English website'),
+]
+PREF_FINDS = [('tokyo', 'Tokyo', 'Coworking spaces in Tokyo'), ('kanagawa', 'Kanagawa', 'Coworking in Yokohama and Kanagawa'), ('chiba', 'Chiba', 'Coworking in Chiba'),
+              ('saitama', 'Saitama', 'Coworking in Saitama'), ('osaka', 'Osaka', 'Coworking in Osaka')]
+def _find_links(cur):
+    a = [(f'find/{k}.html', lab) for k, _, lab, _, _, _ in FINDS] + [(f'find/{k}.html', p) for k, p, _ in PREF_FINDS]
+    return ''.join(f'<a href="{U(u)}"{" aria-current=\"page\"" if u == cur else ""}>{E(l)}</a>' for u, l in a)
+def find_page(path, h1, lead, sl, link):
+    sl = _popord(sl); n = len(sl)
+    tc = collections.Counter(town(EN[s]) for s in sl).most_common(6)
+    where = ', '.join(t for t, c in tc)
+    ld = [{"@context": "https://schema.org", "@type": "ItemList", "name": h1, "numberOfItems": n, "itemListElement": [{"@type": "ListItem", "position": i + 1, "url": SITE + '/spaces/' + s + '.html', "name": EN[s]['name']} for i, s in enumerate(sl[:50])]}]
+    desc = fit(f'{n} {lead[0].lower() + lead[1:]} Photos, prices, hours, how to get in and the Japanese address for your taxi.', f'{n} {lead[0].lower() + lead[1:]}', limit=158)
+    img = next((photo(s, JA[s]['hero'][0]) for s in sl if photo(s, JA[s]['hero'][0])), None)
+    return (head(fit(f'{h1} — {n} spaces | {NAME}', f'{h1} | {NAME}', h1), desc, path, img, 'website', ld) + nav('spaces/') +
+            f'<main class="wrap"><div class="crumb"><a href="{U("spaces/")}">Spaces</a> › {E(h1)}</div><div class="head"><p class="tag">{n} spaces</p><h1>{E(h1)}</h1>'
+            f'<p class="lead">{n} {E(lead)} Areas include {E(where)}. Each page has photos, prices, hours, how to get in and the Japanese address for your taxi.</p></div>'
+            f'<div class="fchips tf findnav">{_find_links(path)}</div><div class="cards">' + ''.join(card(s) for s in sl) + '</div>'
+            f'<p class="more"><a href="{U("spaces/")}{link}">Filter all {len(ORDER)} spaces →</a></p></main>' + foot())
+def find_pages():
+    out = []
+    for k, h1, _, f, crit, t in FINDS:
+        sl = [s for s in ORDER if f(s)]
+        out.append((f'find/{k}.html', find_page(f'find/{k}.html', h1, f'coworking spaces in Japan {crit}.', sl, f'?t={quote(t)}')))
+    for k, p, h1 in PREF_FINDS:
+        sl = [s for s in ORDER if pref(EN[s]) == p]
+        out.append((f'find/{k}.html', find_page(f'find/{k}.html', h1, f'coworking spaces in {p}, chosen for their design.', sl, f'?pref={quote(p)}')))
+    return out
+
 # ---------- TOP ----------
 def top_page():
     hero_slug = next(s for s in POPULAR if s in EN and photo(s, JA[s]['hero'][0]))
@@ -283,7 +323,8 @@ def top_page():
     areas += ''.join(f'<a href="{U("spaces/")}?pref={quote(k)}">{E(k)}<span>{n}</span></a>' for k, n in prefs_count(ORDER) if k != 'Tokyo' and n >= 3)
     pop = [s for s in POPULAR if s in EN][:8]
     trav = [s for s in POPULAR if s in EN and 'Day pass' in TRAIT[s] and photo(s, JA[s]['hero'][0])][:4]
-    tf = ''.join(f'<a href="{U("spaces/")}?t={quote(t)}">{E(t)}<small>{sum(1 for s in ORDER if t in TRAIT[s])}</small></a>' for t in TFILTERS)
+    _fk = {t: k for k, _, _, _, _, t in FINDS}
+    tf = ''.join(f'<a href="{U("find/" + _fk[t] + ".html") if t in _fk else U("spaces/") + "?t=" + quote(t)}">{E(t)}<small>{sum(1 for s in ORDER if t in TRAIT[s])}</small></a>' for t in TFILTERS)
     cols = ''.join(f'<a class="col" href="{U("collections/" + c["slug"] + ".html")}"><span class="n">{len(c["items"])}</span><b>{E(c["title"])}</b><p>{E(c["lead"])}</p></a>' for c in COLS[:6])
     title = f"Japan's best-designed coworking spaces, in English | {NAME}"
     desc = f'{len(ORDER)} coworking spaces in Tokyo and across Japan, chosen for their design — with prices, hours, day passes, payment and the Japanese address for your taxi.'
@@ -310,13 +351,26 @@ def col_index():
     cols = ''.join(f'<a class="col" href="{U("collections/" + c["slug"] + ".html")}"><span class="n">{len(c["items"])}</span><b>{E(c["title"])}</b><p>{E(c["lead"])}</p></a>' for c in COLS)
     return (head(f'Collections — coworking in Japan by area and theme | {NAME}', f'{len(COLS)} collections of Japan\'s best-designed coworking spaces, grouped by area (Shibuya, Marunouchi, Shinjuku…) and theme (24 hours, hotels, rooftops…).', 'collections/index.html') + nav('collections/') +
             f'<main class="wrap"><div class="head"><p class="tag">Collections</p><h1>{len(COLS)} collections</h1><p class="lead">Spaces grouped by neighbourhood and by theme, so you can compare places that share something.</p></div><div class="cols">{cols}</div></main>' + foot())
+# 2026-10-11 わたるさん「インバウンドの方が検索するのに対応してる？」→ 検索されるのは「coworking + 地名 / 用途」。特集のタイトルに必ず coworking を入れる
+COL_SEO = {'marunouchi': 'Coworking near Tokyo Station: Marunouchi, Yurakucho, Otemachi', 'toranomon-azabudai': 'Coworking in Toranomon and Azabudai, Tokyo',
+  'station-direct': 'Coworking linked directly to a Tokyo station', '24hours': '24-hour coworking spaces in Tokyo', 'large-floor': 'The largest coworking spaces in Tokyo',
+  'corporate-public': 'Coworking run by companies and the city in Tokyo', 'nihonbashi-yaesu': 'Coworking in Nihonbashi, Kyobashi and Yaesu, Tokyo',
+  'aoyama-omotesando': 'Coworking in Aoyama and Omotesando, Tokyo', 'high-floor': 'Coworking on high floors with a view over Tokyo', 'weekend': 'Coworking open at weekends in Tokyo',
+  'solo': 'Coworking with private rooms for solo work in Tokyo', 'hotel': 'Coworking inside Tokyo hotels', 'design-theme': 'Coworking with themed interiors in Tokyo',
+  'rooftop': 'Coworking with a rooftop or terrace in Tokyo', 'midori-so': 'MIDORI.so coworking locations in Tokyo', 'shibuya-high-floor': 'High-floor coworking in Shibuya',
+  'ebisu-meguro': 'Coworking in Ebisu, Meguro and Nakameguro', 'roppongi-azabu': 'Coworking in Roppongi and Azabu-Juban', 'ginza-shimbashi': 'Coworking in Ginza, Shimbashi and Shiodome',
+  'kanda-akihabara': 'Coworking in Kanda, Akihabara, Ochanomizu and Jimbocho', 'shinagawa-hamamatsucho': 'Coworking in Shinagawa, Tamachi and Hamamatsucho',
+  'tama-chuo-line': 'Coworking in Kichijoji, Tachikawa and West Tokyo', 'setagaya': 'Coworking in Setagaya, Tokyo', 'h1t': 'H¹T coworking locations in Tokyo',
+  'brand-business-airport': 'Business-Airport coworking locations in Tokyo', 'brand-workstyling': 'WORK STYLING coworking locations in Japan', 'brand-crosscoop': 'CROSSCOOP (fabbit) locations in Tokyo',
+  'brand-newwork': 'NewWork coworking locations in Tokyo', 'brand-senq': 'SENQ coworking locations in Tokyo', 'brand-co-ba': 'co-ba coworking locations in Tokyo', 'reuse': 'Coworking in renovated old buildings in Tokyo'}
+def col_seo(c): return COL_SEO.get(c['slug'], c['title'])
 def col_page(c):
     items = [(s, cap) for s, cap in c['items'] if s in EN]
     _i = COLS.index(c); _o = (COLS[_i + 1:] + COLS[:_i])[:3]
     others = ''.join(f'<a class="col" href="{U("collections/" + o["slug"] + ".html")}"><span class="n">{len(o["items"])}</span><b>{E(o["title"])}</b><p>{E(o["lead"])}</p></a>' for o in _o)
     ld = [{"@context": "https://schema.org", "@type": "ItemList", "name": c['title'], "itemListElement": [{"@type": "ListItem", "position": i + 1, "url": SITE + '/spaces/' + s + '.html', "name": EN[s]['name']} for i, (s, _) in enumerate(items)]}]
     img = photo(items[0][0], JA[items[0][0]]['hero'][0]) if items else None
-    return (head(fit(f'{c["title"]} — {len(items)} spaces | {NAME}', f'{c["title"]} | {NAME}', c['title']), c['lead'][:155], f'collections/{c["slug"]}.html', img, 'article', ld) + nav('collections/') +
+    return (head(fit(f'{col_seo(c)} — {len(items)} spaces | {NAME}', f'{col_seo(c)} | {NAME}', col_seo(c)), c['lead'][:155], f'collections/{c["slug"]}.html', img, 'article', ld) + nav('collections/') +
             f'<main class="wrap"><div class="crumb"><a href="{U("collections/")}">Collections</a> › {E(c["title"])}</div><div class="head"><p class="tag">{len(items)} spaces</p><h1>{E(c["title"])}</h1><p class="lead">{E(c["lead"])}</p></div>'
             '<div class="cards">' + ''.join(card(s, i + 1, cap) for i, (s, cap) in enumerate(items)) + '</div>'
             f'<section class="sec"><div class="sh"><div><h2>More collections</h2></div><a href="{U("collections/")}">All {len(COLS)} →</a></div><div class="cols">{others}</div></section></main>' + foot())
@@ -400,6 +454,8 @@ for s in ORDER: w(f'spaces/{s}.html', space_page(s))
 w('collections/index.html', col_index())
 for c in COLS: w(f'collections/{c["slug"]}.html', col_page(c))
 w('questions/index.html', q_index())
+FP = find_pages()
+for _p, _h in FP: w(_p, _h)
 for q in QS: w(f'questions/{q["slug"]}.html', q_page(q))
 w('about/index.html', simple('about/index.html', f'About {NAME}', f'About {NAME}, a guide to {TAG} in English, and who runs it.', f'About {NAME}', ABOUT))
 w('about/privacy.html', simple('about/privacy.html', 'Privacy policy', f'How {NAME} handles personal information.', 'Privacy policy', PRIVACY))
@@ -409,7 +465,7 @@ w('contact/thanks.html', simple('contact/thanks.html', 'Message sent', 'Your mes
 w('404.html', simple('404.html', 'Page not found', 'This page could not be found.', 'Page not found', f'<p class="lead">This page may have moved. Try the list of all spaces or search by area.</p><p><a href="{U("spaces/")}">See all {len(ORDER)} spaces →</a></p>', ''))
 if not PREVIEW:
     today = datetime.date.today().isoformat()
-    paths = [''] + ['spaces/'] + [f'spaces/{s}.html' for s in ORDER] + ['collections/'] + [f'collections/{c["slug"]}.html' for c in COLS] + ['questions/'] + [f'questions/{q["slug"]}.html' for q in QS] + ['about/', 'about/privacy.html', 'about/terms.html', 'contact/']
+    paths = [''] + ['spaces/'] + [f'spaces/{s}.html' for s in ORDER] + ['collections/'] + [f'collections/{c["slug"]}.html' for c in COLS] + ['questions/'] + [f'questions/{q["slug"]}.html' for q in QS] + [p for p, _ in FP] + ['about/', 'about/privacy.html', 'about/terms.html', 'contact/']
     imgs = {f'spaces/{s}.html': [p for p, c in [[photo(s, n), c] for n, c in photos(s)]][:10] for s in ORDER}
     sm = ''.join(f'<url><loc>{SITE}/{p}</loc><lastmod>{today}</lastmod>' + ''.join(f'<image:image><image:loc>{E(i)}</image:loc></image:image>' for i in imgs.get(p, [])) + '</url>\n' for p in paths)
     w('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n' + sm + '</urlset>\n')

@@ -202,3 +202,9 @@ dialog button{background:none;border:1px solid #666;color:#fff;font:inherit;padd
 /* OFFICEMILL banner (English) */
 .omb{display:block;max-width:728px;margin:40px auto 8px}
 .omb img{display:block;width:100%;height:auto;border-radius:3px}
+/* find pages (2026-10-11) */
+.findnav{margin:0 0 22px}
+.findnav a{border:1px solid var(--line);background:#fff;font:500 13px var(--sans);padding:6px 11px;border-radius:999px;color:var(--ink)}
+.findnav a[aria-current="page"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.more{margin:22px 0 0;font-size:14px}
+.more a{border-bottom:1px solid var(--accent)}
