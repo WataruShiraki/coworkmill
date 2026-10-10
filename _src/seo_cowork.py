@@ -1153,3 +1153,158 @@ SEO.update(SEO_ADD_1005F); PLACE.update(PLACE_ADD_1005F)
 
 for _s in ['the-hub-shibuya', 'the-hub-kanda-ogawamachi', 'the-hub-shinjuku', 'the-hub-shinjuku-gyoen', 'the-hub-yoyogi', 'the-hub-aoyama-west', 'the-hub-kanda-nishiguchi', 'the-hub-kojimachi', 'the-hub-shinjuku-nishiguchi', 'the-hub-kanda-east', 'the-hub-tachikawa', 'garage-machida-minamioya', 'over-coffee-hub-kichijoji']:
     SEO.pop(_s, None); PLACE.pop(_s, None)
+
+# ---- cowork_add_2026-10-09_a.py（2026-10-09 別チャットの追加）----
+SEO_ADD_1009A = {
+ 'chigalab-chigasaki': ('チガラボ｜内装・内観・雰囲気の写真｜茅ヶ崎駅3分のコミュニティ型コワーキング', '茅ヶ崎駅から徒歩3分のコワーキングスペース「チガラボ」。自由席のワークスペース、My本棚、ソファ席、集中ブース、キッチン、ミーティングルームを、公式サイトの写真と情報で紹介します。'),
+ 'rembrally-cafe-ebina': ('レンブラリーカフェ｜内装・内観・雰囲気の写真｜ホテル別館の時間制セルフカフェ', 'レンブラントホテル海老名の別館1階にある時間制セルフカフェ「レンブラリーカフェ」。窓際カウンター、ソファ席、キャンプベース、漫画約500冊を、公式サイトの写真と情報で紹介します。'),
+ 'jupiter-flexible-office-sagamihara': ('フレキシブルオフィスジュピター｜内装・内観・雰囲気の写真｜相模原の24時間コワーキング', '相模原市中央区横山の24時間コワーキング「フレキシブルオフィスジュピター」。オレンジの照明のカフェ席、カウンター席、個人ブース、鍵付き個室を、公式サイトの写真と情報で紹介します。'),
+ 'roomus-yokohama': ('RoomUs 横浜｜内装・内観・雰囲気の写真｜京急の横浜駅東口2分の仕事部屋', '横浜駅東口から徒歩2分、京急電鉄のコワーキングスペース「RoomUs 横浜」。個室席、半個室席、カフェエリア、防音ブースの4種類の席を、公式サイトの写真と情報で紹介します。'),
+ 'roomus-yokosuka-chuo': ('RoomUs 横須賀中央｜内装・内観・雰囲気の写真｜京急の横須賀中央駅5分の仕事部屋', '京急本線の横須賀中央駅から徒歩5分、京急電鉄のコワーキングスペース「RoomUs 横須賀中央」。個室席、カウンター席、防音ブース、カフェエリアを、公式サイトの写真と情報で紹介します。'),
+ 'tanemaki-yokohama': ('タネマキ｜内装・内観・雰囲気の写真｜横浜駅8分の長居のできるコワーキング', '横浜駅から徒歩8分、2011年から続くコワーキングスペース「タネマキ」。図書館とカフェを足して2で割ったような室内、18席とソファー、モニター13台を、公式サイトの写真と情報で紹介します。'),
+}
+PLACE_ADD_1009A = {
+ 'chigalab-chigasaki': {'streetAddress': '神奈川県茅ヶ崎市新栄町13-48 ワラシナビル5F', 'addressLocality': '茅ヶ崎市', 'addressRegion': '神奈川県'},
+ 'rembrally-cafe-ebina': {'streetAddress': '神奈川県海老名市中央2-9-50 レンブラントホテル海老名別館1F', 'addressLocality': '海老名市', 'addressRegion': '神奈川県', 'openingHours': 'Mo-Su 07:30-21:00'},
+ 'jupiter-flexible-office-sagamihara': {'streetAddress': '神奈川県相模原市中央区横山2-15-8', 'addressLocality': '相模原市', 'addressRegion': '神奈川県', 'openingHours': 'Mo-Su 00:00-24:00'},
+ 'roomus-yokohama': {'streetAddress': '神奈川県横浜市西区高島2丁目14-11 第二田浦ビル7階', 'addressLocality': '横浜市', 'addressRegion': '神奈川県', 'openingHours': 'Mo-Su 07:00-23:00'},
+ 'roomus-yokosuka-chuo': {'streetAddress': '神奈川県横須賀市大滝町2丁目12-1', 'addressLocality': '横須賀市', 'addressRegion': '神奈川県', 'openingHours': 'Mo-Su 07:00-23:00'},
+ 'tanemaki-yokohama': {'streetAddress': '神奈川県横浜市西区岡野1丁目3-10 サニーコート横濱 1F', 'addressLocality': '横浜市', 'addressRegion': '神奈川県', 'openingHours': 'Mo-Su 00:00-24:00'},
+}
+
+SEO.update(SEO_ADD_1009A); PLACE.update(PLACE_ADD_1009A)
+
+# ---- cowork_add_2026-10-09_c.py（2026-10-09 別チャットの追加）----
+SEO_ADD_1009C = {
+ 'mad-center-matsudo': ('M.A.D.center｜内装・内観・雰囲気の写真｜松戸駅西口2分の複合拠点', 'M.A.D.center は松戸駅西口から徒歩2分、2026年2月にリニューアルしたコワーキングと会議室の複合施設です。グリーンのベンチや壁画、地元焙煎所のコーヒーカウンターを、公式サイトの写真と情報で紹介します。'),
+ 'noblesse-oblige-kashiwa': ('Noblesse Oblige｜内装・内観・雰囲気の写真｜柏駅東口のコワーキング', 'Noblesse Oblige（NOB）は柏駅東口から徒歩8分のコワーキングです。集中デスクや小上がり席を備え、1時間400円から使えます。「顔の見える地域暮らし」の仕事場を、公式サイトの写真と情報で紹介します。'),
+ 'yu-work-shin-narashino': ('湯～Work｜内装・内観・雰囲気の写真｜温泉館内のワークスペース', '湯～Work は新習志野駅から徒歩2分、天然温泉 湯～ねるの館内にあるコワーキングです。館内着のまま働け、合間に温泉やサウナで休めます。固定席や貸切の個室を、公式サイトの写真と情報で紹介します。'),
+}
+PLACE_ADD_1009C = {
+ 'mad-center-matsudo': {'streetAddress': '千葉県松戸市本町20-10 ル・シーナビル7F', 'addressLocality': '松戸市', 'addressRegion': '千葉県', 'openingHours': 'Tu-Sa 09:00-22:00'},
+ 'noblesse-oblige-kashiwa': {'streetAddress': '千葉県柏市東上町2-28 第一水戸屋ビル3F', 'addressLocality': '柏市', 'addressRegion': '千葉県', 'openingHours': 'Mo-Fr 08:50-22:00, Sa-Su 10:00-18:00'},
+ 'yu-work-shin-narashino': {'streetAddress': '千葉県習志野市茜浜2丁目2-1 ミスターマックス新習志野ショッピングセンター2F', 'addressLocality': '習志野市', 'addressRegion': '千葉県', 'openingHours': 'Mo-Su 10:00-24:00'},
+}
+
+SEO.update(SEO_ADD_1009C); PLACE.update(PLACE_ADD_1009C)
+
+# ---- cowork_add_2026-10-09_e.py（2026-10-09 別チャットの追加）----
+SEO_ADD_1009E = {
+ 'totonoi-plus-omiya': ('ととのい＋｜内装・内観・雰囲気の写真｜大宮駅4分のサウナ併設コワーキング', '大宮駅から徒歩4分、個室サウナと一緒になった複合施設「ととのい＋」。1階のコワーキングスペースの30席、緑と木目の落ち着いた空間、会議室を、公式サイトの写真と情報で紹介します。'),
+ 'tokorozawa-node': ('所沢ノード｜内装・内観・雰囲気の写真｜所沢駅2分の会議室とワークスペース', '所沢駅西口から徒歩2分、所沢サンプラザ3階のシェアスペース「所沢ノード」。引き戸と小窓のある準個室のワークスペース、大中小の会議室、WEB会議ブースを、公式サイトの写真と情報で紹介します。'),
+}
+PLACE_ADD_1009E = {
+ 'totonoi-plus-omiya': {'streetAddress': '埼玉県さいたま市大宮区宮町5-3-1', 'addressLocality': 'さいたま市', 'addressRegion': '埼玉県', 'openingHours': 'Mo-Sa 08:00-24:00, Su 08:00-22:00'},
+ 'tokorozawa-node': {'streetAddress': '埼玉県所沢市日吉町4-2 所沢サンプラザ3F', 'addressLocality': '所沢市', 'addressRegion': '埼玉県', 'openingHours': 'Mo-Su 10:00-21:00'},
+}
+
+SEO.update(SEO_ADD_1009E); PLACE.update(PLACE_ADD_1009E)
+
+# ---- cowork_add_2026-10-09_f.py（2026-10-09 別チャットの追加）----
+SEO_ADD_1009F = {
+ 'ok-nishitokyo-tanashi': ('田無コワーキングスペースOK西東京｜内装・内観・雰囲気の写真｜田無駅南口3分の創業支援拠点', '田無駅南口から徒歩3分の「田無コワーキングスペースOK西東京」。女性創業の入口支援施設で、オープンスペース、シェアデスク、2つの会議室を、公式サイトの写真と情報で紹介します。'),
+ 'nankyoku-space-tateyama': ('南極スペース｜内装・内観・雰囲気の写真｜館山の築90年の古民家コワーキング', '千葉県館山市、館山駅から徒歩14分の「南極スペース」。マキの生垣に囲まれた築90年の古民家で、庭と畑、茶室のあるシェアオフィスを、公式サイトの写真と情報で紹介します。'),
+ 'po-to-higashikoganei': ('PO-TO（ポート）｜内装・内観・雰囲気の写真｜東小金井の道に面したシェアオフィス', '東小金井駅から徒歩5分のシェアオフィス「PO-TO（ポート）」。道路に面したドアが並ぶラワン材の個室と、12席のデスク席、共用ラウンジを、公式サイトの写真と情報で紹介します。'),
+ 'coworking-space-mono-aomi': ('コワーキング・スペースMONO｜内装・内観・雰囲気の写真｜お台場のものづくりコワーキング', 'テレコムセンター駅直結、テレコムセンタービル14階の「コワーキング・スペースMONO」。ワーキングスペースと、レーザー加工機や3Dプリンタのある工作室を、公式サイトの写真と情報で紹介します。'),
+}
+PLACE_ADD_1009F = {
+ 'ok-nishitokyo-tanashi': {'streetAddress': '東京都西東京市南町5-3-5 サウスタウン201', 'addressLocality': '西東京市', 'addressRegion': '東京都', 'openingHours': 'Mo-Su 09:00-22:00'},
+ 'nankyoku-space-tateyama': {'streetAddress': '千葉県館山市館山1244', 'addressLocality': '館山市', 'addressRegion': '千葉県', 'openingHours': 'Mo-Fr 10:00-18:00'},
+ 'po-to-higashikoganei': {'streetAddress': '東京都小金井市梶野町1-2-36', 'addressLocality': '小金井市', 'addressRegion': '東京都'},
+ 'coworking-space-mono-aomi': {'streetAddress': '東京都江東区青海2-5-10 テレコムセンタービル東棟14階', 'addressLocality': '江東区', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 10:00-18:00'},
+}
+
+SEO.update(SEO_ADD_1009F); PLACE.update(PLACE_ADD_1009F)
+
+# ---- cowork_add_2026-10-09_g.py（2026-10-09 別チャットの追加）----
+SEO_ADD_1009G = {
+ 'kanadebako-shimokitazawa': ('KanadeBako｜内装・内観・雰囲気の写真｜下北沢駅2分の相談できるコワーキング', '下北沢駅から徒歩2分、税理士・社労士法人が運営するコワーキングスペース「KanadeBako」。オープンスペース、会議室、個室・フォンブースを、公式サイトの写真と情報で紹介します。'),
+ 'sancha-work-sangenjaya': ('三茶WORK｜内装・内観・雰囲気の写真｜三軒茶屋駅前に4拠点のコワーキング', '三軒茶屋駅から徒歩1分のコワーキングスペース「三茶WORK」。本店3F・4F、はなれ、SAKAE、三茶オアシスの4拠点と料金、使い方を、公式サイトの写真と情報で紹介します。'),
+ '100work-shoin-jinja-mae': ('100work｜内装・内観・雰囲気の写真｜松陰神社前の本屋のあるコワーキング', '世田谷線の松陰神社前駅から歩いて50歩のコワーキングスペース「100work」。作業席、棚貸し書店「100人の本屋さん」、会議・イベントの場を、公式サイトの写真と情報で紹介します。'),
+ 'coworking-eifuku': ('コワーキングスペース永福｜内装・内観・雰囲気の写真｜生活クラブ生協のコワーキング', '永福町駅から徒歩3分、生活クラブ生協・東京が運営する「コワーキングスペース永福」。天然木のテーブル、シェアデスク、固定ブース、休憩スペースを、公式サイトの写真と情報で紹介します。'),
+ 'ota-fab-kamata': ('おおたfab｜内装・内観・雰囲気の写真｜蒲田駅2分の工房付きコワーキング', '蒲田駅西口から徒歩2分の「おおたfab」。コワーキング、商談のラウンジ、会議スペース、3Dプリンタ15台を備えたファブラボを、公式サイトの写真と情報で紹介します。'),
+ 'pointline-yutenji': ('Pointline YUTENJI｜内装・内観・雰囲気の写真｜祐天寺駅1分の本のあるワークラウンジ', '祐天寺駅から徒歩1分のクリエイティブオフィス「Pointline YUTENJI」。書店が選んだ本のワークラウンジ、エントランス、会議室、ルーフトップテラスを、公式サイトの写真と情報で紹介します。'),
+ 'nakano-hako': ('NAKANO HAKO｜内装・内観・雰囲気の写真｜中野駅2分の私設公民館のあるコワーキング', '中野駅南口から徒歩約2分の「NAKANO HAKO」。コワーキングのPRIVATE BOX、集中ラウンジ、地域の私設公民館COMMUNITY BOXを、公式サイトの写真と情報で紹介します。'),
+}
+PLACE_ADD_1009G = {
+ 'kanadebako-shimokitazawa': {'streetAddress': '東京都世田谷区北沢2丁目5-2 下北沢ビッグベンビル5階', 'addressLocality': '世田谷区', 'addressRegion': '東京都', 'openingHours': 'Mo-Su 08:30-22:00'},
+ 'sancha-work-sangenjaya': {'streetAddress': '東京都世田谷区太子堂2丁目17-5 佐藤ビル 3F・4F', 'addressLocality': '世田谷区', 'addressRegion': '東京都', 'openingHours': 'Mo-Su 10:00-18:00'},
+ '100work-shoin-jinja-mae': {'streetAddress': '東京都世田谷区若林4丁目25-14 コーナー松陰ビル 2F', 'addressLocality': '世田谷区', 'addressRegion': '東京都', 'openingHours': 'Mo-Su 00:00-24:00'},
+ 'coworking-eifuku': {'streetAddress': '東京都杉並区和泉3丁目7番1号 生活クラブ館杉並2階', 'addressLocality': '杉並区', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 09:00-21:00, Sa-Su 09:00-17:00'},
+ 'ota-fab-kamata': {'streetAddress': '東京都大田区西蒲田7-4-4 小山第二ビル 6F', 'addressLocality': '大田区', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 09:00-19:00, Sa-Su 10:00-17:00'},
+ 'pointline-yutenji': {'streetAddress': '東京都目黒区祐天寺2丁目13-4', 'addressLocality': '目黒区', 'addressRegion': '東京都'},
+ 'nakano-hako': {'streetAddress': '東京都中野区中野2丁目24番9号 ナカノサウステラ レジデンス棟2階', 'addressLocality': '中野区', 'addressRegion': '東京都', 'openingHours': 'Mo-Su 09:00-21:30'},
+}
+
+SEO.update(SEO_ADD_1009G); PLACE.update(PLACE_ADD_1009G)
+
+# ---- cowork_add_2026-10-09_i.py（2026-10-09 別チャットの追加）----
+SEO_ADD_1009I = {
+ 'xbridge-yaesu': ('xBridge-Yaesu｜内装・内観・雰囲気の写真｜東京建物の八重洲のスタートアップ支援拠点', '東京駅八重洲北口から徒歩3分、東京建物が運営する「xBridge-Yaesu」。計44席の執務スペース、無料で予約できる会議室と個室ブース、夜のイベント利用を、公式サイトの写真と情報で紹介します。'),
+ 'h1o-shibuya-jinnan': ('H¹O 渋谷神南｜内装・内観・雰囲気の写真｜parkERs監修のラウンジと屋上テラス', '渋谷駅から徒歩7分、野村不動産のサービスオフィス「H¹O 渋谷神南」。parkERsが監修した2階・8階のラウンジ、HUMAN FIRST SALON、屋上テラスを、公式サイトの写真と情報で紹介します。'),
+ 'h1o-toranomon': ('H¹O 虎ノ門｜内装・内観・雰囲気の写真｜虎ノ門駅直結のサービスオフィス', '虎ノ門駅直結徒歩1分、野村不動産のサービスオフィス「H¹O 虎ノ門」。コネクティブラウンジ、霞が関を見わたすパーソナルラウンジ、映像の流れる廊下を、公式サイトの写真と情報で紹介します。'),
+ 'h1o-shibakoen': ('H¹O 芝公園｜内装・内観・雰囲気の写真｜芝公園の前の木造ハイブリッドのオフィス', '御成門駅から徒歩3分、芝公園の前に建つ野村不動産のサービスオフィス「H¹O 芝公園」。木材とグリーンのラウンジ、屋上テラス、会議室、個室を、公式サイトの写真と情報で紹介します。'),
+}
+PLACE_ADD_1009I = {
+ 'xbridge-yaesu': {'streetAddress': '東京都中央区八重洲1-5-20', 'addressLocality': '中央区', 'addressRegion': '東京都'},
+ 'h1o-shibuya-jinnan': {'streetAddress': '東京都渋谷区神南一丁目5番6号', 'addressLocality': '渋谷区', 'addressRegion': '東京都', 'openingHours': 'Mo-Su 00:00-24:00'},
+ 'h1o-toranomon': {'streetAddress': '東京都港区虎ノ門一丁目3番1 東京虎ノ門グローバルスクエア', 'addressLocality': '港区', 'addressRegion': '東京都', 'openingHours': 'Mo-Su 00:00-24:00'},
+ 'h1o-shibakoen': {'streetAddress': '東京都港区芝公園1-8-20', 'addressLocality': '港区', 'addressRegion': '東京都', 'openingHours': 'Mo-Su 00:00-24:00'},
+}
+
+SEO.update(SEO_ADD_1009I); PLACE.update(PLACE_ADD_1009I)
+
+# ---- cowork_add_2026-10-09_j.py（2026-10-09 別チャットの追加）----
+SEO_ADD_1009J = {
+ 'tatami-works-chitose-funabashi': ('Tatami Works｜内装・内観・雰囲気の写真｜千歳船橋駅3分の畳のあるコワーキング', '千歳船橋駅から徒歩3分、畳を取り入れたコワーキングスペース「Tatami Works」。会話のできる1階、床座と椅子の席がある2階、料金と設備を、公式サイトの写真と情報で紹介します。'),
+ 'lounge-by-m-shakujii-koen': ('LOUNGE by m 石神井公園店｜内装・内観・雰囲気の写真｜窓際の広いテーブルのコワーキング', '練馬区石神井町のコワーキングスペース「LOUNGE by m 石神井公園店」。窓際の広いテーブル、個別の席、カーテンで仕切れる席と料金を、公式サイトの写真と情報で紹介します。'),
+ 'stayup-yokohama': ('STAYUP横浜｜内装・内観・雰囲気の写真｜横浜駅6分のベイブリッジを望むシェアオフィス', '横浜駅きた東口から徒歩約6分、14階のコワーキングスペース「STAYUP横浜」。オープンスペース、集中ルーム、個室、ソファ席と眺望を、公式サイトの写真と情報で紹介します。'),
+ 'stayup-shonan-fujisawa': ('STAYUP湘南藤沢｜内装・内観・雰囲気の写真｜藤沢駅5分の緑を取り入れたコワーキング', '藤沢駅南口から徒歩約5分のコワーキングスペース「STAYUP湘南藤沢」。緑を取り入れた広いフロア、防音ブース、カフェスペース、会議室を、公式サイトの写真と情報で紹介します。'),
+ 'stayup-saitama-omiya': ('STAYUPさいたま大宮｜内装・内観・雰囲気の写真｜大宮駅西口10分のシェアオフィス', '大宮駅西口から徒歩約10分のコワーキングスペース「STAYUPさいたま大宮」。オープンスペース、ソファ席、集中ブース、カフェスペースと料金を、公式サイトの写真と情報で紹介します。'),
+}
+PLACE_ADD_1009J = {
+ 'tatami-works-chitose-funabashi': {'streetAddress': '東京都世田谷区船橋1-28-13-101', 'addressLocality': '世田谷区', 'addressRegion': '東京都', 'openingHours': 'Mo-Su 00:00-24:00'},
+ 'lounge-by-m-shakujii-koen': {'streetAddress': '東京都練馬区石神井町2丁目7-5 ブルーストーン 2F', 'addressLocality': '練馬区', 'addressRegion': '東京都', 'openingHours': 'Mo-Su 08:30-20:00'},
+ 'stayup-yokohama': {'streetAddress': '神奈川県横浜市神奈川区栄町5-1 横浜クリエーションスクエア14階', 'addressLocality': '横浜市神奈川区', 'addressRegion': '神奈川県', 'openingHours': 'Mo-Fr 08:30-18:00, Sa-Su 09:00-18:00'},
+ 'stayup-shonan-fujisawa': {'streetAddress': '神奈川県藤沢市鵠沼石上1-5-9 メガサンエスビル6階', 'addressLocality': '藤沢市', 'addressRegion': '神奈川県', 'openingHours': 'Mo-Fr 09:00-18:00'},
+ 'stayup-saitama-omiya': {'streetAddress': '埼玉県さいたま市大宮区桜木町4丁目247 OSビル8F', 'addressLocality': 'さいたま市大宮区', 'addressRegion': '埼玉県', 'openingHours': 'Mo-Fr 09:00-18:00'},
+}
+
+SEO.update(SEO_ADD_1009J); PLACE.update(PLACE_ADD_1009J)
+
+# ---- cowork_add_2026-10-09_k.py（2026-10-09 別チャットの追加）----
+SEO_ADD_1009K = {
+ 'port2401-nishioi': ('PORT2401｜内装・内観・雰囲気の写真｜西大井駅1分の品川区立創業支援コワーキング', '西大井駅から徒歩1分、品川区立の西大井創業支援センター「PORT2401」。植物に囲まれたコワーキング、多目的スペース、会議室、キッチン、POP UPスペースを、公式サイトの写真と情報で紹介します。'),
+ 'tuat-kaikokan-fuchu': ('邂逅館｜内装・内観・雰囲気の写真｜東京農工大学府中キャンパスの共創拠点', '東京農工大学の府中キャンパスにある共創拠点「邂逅館」。どなたでも使えるカフェテリアと三大学共創スペース、会員制のコワーキングと会議室を、公式サイトの写真と情報で紹介します。'),
+ 'agora-kgu-kannai': ('AGORA KGU KANNAI｜内装・内観・雰囲気の写真｜関東学院大学関内キャンパスのコワーキング', '関内駅から徒歩2分、関東学院大学 横浜・関内キャンパス4階のコワーキング「AGORA KGU KANNAI」。フリースペース、1名・2名個室、会議室を、公式サイトの写真と情報で紹介します。'),
+ 'agora-hon-atsugi': ('AGORA Hon-atsugi｜内装・内観・雰囲気の写真｜本厚木駅直結の駅ビルのコワーキング', '本厚木駅直結の本厚木ミロード①6階にあるコワーキング「AGORA Hon-atsugi」。フリースペース、1名個室、1名ブースとドロップイン料金を、公式サイトの写真と情報で紹介します。'),
+}
+PLACE_ADD_1009K = {
+ 'port2401-nishioi': {'streetAddress': '東京都品川区西大井1-1-2 Jタワー西大井イーストタワー 2階', 'addressLocality': '品川区', 'addressRegion': '東京都', 'openingHours': 'Mo-Fr 09:00-21:00, Sa-Su 09:00-18:00'},
+ 'tuat-kaikokan-fuchu': {'streetAddress': '東京都府中市幸町3-5-8', 'addressLocality': '府中市', 'addressRegion': '東京都', 'openingHours': 'Mo-Su 08:00-21:00'},
+ 'agora-kgu-kannai': {'streetAddress': '神奈川県横浜市中区万代町1丁目1番地1 関東学院大学 横浜・関内キャンパス4階', 'addressLocality': '横浜市中区', 'addressRegion': '神奈川県', 'openingHours': 'Mo-Su 08:00-22:00'},
+ 'agora-hon-atsugi': {'streetAddress': '神奈川県厚木市泉町1-1 本厚木ミロード① 6F', 'addressLocality': '厚木市', 'addressRegion': '神奈川県', 'openingHours': 'Mo-Su 08:00-22:00'},
+}
+
+SEO.update(SEO_ADD_1009K); PLACE.update(PLACE_ADD_1009K)
+
+# ---- cowork_add_2026-10-09_l.py（2026-10-09 別チャットの追加）----
+SEO_ADD_1009L = {
+ 'skyspa-yokohama-koowork': ('スカイスパYOKOHAMA KOOWORK｜内装・内観・雰囲気の写真｜横浜駅直結のサウナ併設コワーキング', '横浜駅東口から地下街で直結する「スカイスパYOKOHAMA」のコワーキングサウナ・KOOWORK。会議室、ダイニング、半個室ブース、カウンター席を、公式サイトの写真と情報で紹介します。'),
+ 'spa-metsa-otaka-nagareyama': ('スパメッツァおおたか 竜泉寺の湯｜内装・内観・雰囲気の写真｜緑のラウンジのコワーキング', '流山おおたかの森駅から徒歩2分の温浴施設「スパメッツァおおたか 竜泉寺の湯」。岩盤浴ラウンジにある50席以上のコワーキング、ライブラリー、キャビンを、公式サイトの写真と情報で紹介します。'),
+ 'thermae-yu-shinjuku': ('新宿天然温泉 テルマー湯｜内装・内観・雰囲気の写真｜歌舞伎町の温泉のコワーキング', '新宿三丁目駅から徒歩約2分、24時間営業の「新宿天然温泉 テルマー湯」。仕切りのある1Fコワーキングスペースと、B1Fのリラックス＆コワーキング ラウンジを、公式サイトの写真と情報で紹介します。'),
+ 'karumaru-ikebukuro': ('かるまる池袋｜内装・内観・雰囲気の写真｜池袋駅西口30秒のサウナ併設コワーキング', '池袋駅西口C6出口から徒歩30秒の「サウナ&ホテル かるまる池袋」。休憩処のコワーキングスペース、リクライナー、くつろぎポッド、ライブラリーを、公式サイトの写真と情報で紹介します。'),
+ 'kasukabe-yumoto-onsen': ('かすかべ湯元温泉｜内装・内観・雰囲気の写真｜温泉の2階のワークスペース', '埼玉県春日部市の温浴施設「かすかべ湯元温泉」。読書やデスクワークに使える2階のワークスペースと、休憩ゾーン、リラックスコーナーを、公式サイトの写真と情報で紹介します。'),
+}
+PLACE_ADD_1009L = {
+ 'skyspa-yokohama-koowork': {'streetAddress': '神奈川県横浜市西区高島2-19-12 スカイビル14F', 'addressLocality': '横浜市西区', 'addressRegion': '神奈川県', 'openingHours': 'Mo-Su 00:00-24:00'},
+ 'spa-metsa-otaka-nagareyama': {'streetAddress': '千葉県流山市おおたかの森西一丁目15番1', 'addressLocality': '流山市', 'addressRegion': '千葉県', 'openingHours': 'Mo-Su 06:00-02:00'},
+ 'thermae-yu-shinjuku': {'streetAddress': '東京都新宿区歌舞伎町1丁目1-2', 'addressLocality': '新宿区', 'addressRegion': '東京都', 'openingHours': 'Mo-Su 00:00-24:00'},
+ 'karumaru-ikebukuro': {'streetAddress': '東京都豊島区池袋2丁目7-7', 'addressLocality': '豊島区', 'addressRegion': '東京都', 'openingHours': 'Mo-Su 11:00-10:00'},
+ 'kasukabe-yumoto-onsen': {'streetAddress': '埼玉県春日部市下大増新田66-1', 'addressLocality': '春日部市', 'addressRegion': '埼玉県', 'openingHours': 'Mo-Su 10:00-23:00'},
+}
+
+SEO.update(SEO_ADD_1009L); PLACE.update(PLACE_ADD_1009L)
+
+for _s in ['roomus-yokosuka-chuo']:
+    SEO.pop(_s, None); PLACE.pop(_s, None)
