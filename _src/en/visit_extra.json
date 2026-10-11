@@ -2,7 +2,8 @@
  "h1t-akihabara-chuo-kitaguchi": {
   "Booking": "Book a seat in the H¹T app or on the member site. Enter with your phone or a registered IC card (Suica etc.).",
   "src": "https://www.h1t-web.com/guide/",
-  "Who": "Corporate contracts only — individuals cannot sign up."
+  "Who": "Corporate contracts only — individuals cannot sign up.",
+  "Price": "Corporate contracts: no sign-up or monthly fee — pay per 15 minutes (one-person room from ¥220 per 15 min), billed to the company monthly"
  },
  "ws-ikebukuro-nishiguchi": {
   "Booking": "Corporate members only — no drop-in for visitors.",
@@ -75,17 +76,20 @@
  "h1t-tsukishima": {
   "Booking": "Book a seat in the H¹T app or on the member site. Enter with your phone or a registered IC card (Suica etc.).",
   "src": "https://www.h1t-web.com/guide/",
-  "Who": "Corporate contracts only — individuals cannot sign up."
+  "Who": "Corporate contracts only — individuals cannot sign up.",
+  "Price": "Corporate contracts: no sign-up or monthly fee — pay per 15 minutes (one-person room from ¥220 per 15 min), billed to the company monthly"
  },
  "h1t-kikuna": {
   "Booking": "Book a seat in the H¹T app or on the member site. Enter with your phone or a registered IC card (Suica etc.).",
   "src": "https://www.h1t-web.com/guide/",
-  "Who": "Corporate contracts only — individuals cannot sign up."
+  "Who": "Corporate contracts only — individuals cannot sign up.",
+  "Price": "Corporate contracts: no sign-up or monthly fee — pay per 15 minutes (one-person room from ¥220 per 15 min), billed to the company monthly"
  },
  "h1t-komagome": {
   "Booking": "Book a seat in the H¹T app or on the member site. Enter with your phone or a registered IC card (Suica etc.).",
   "src": "https://www.h1t-web.com/guide/",
-  "Who": "Corporate contracts only — individuals cannot sign up."
+  "Who": "Corporate contracts only — individuals cannot sign up.",
+  "Price": "Corporate contracts: no sign-up or monthly fee — pay per 15 minutes (one-person room from ¥220 per 15 min), billed to the company monthly"
  },
  "workstyling-solo-kashiwanoha": {
   "Booking": "Corporate members only — no drop-in for visitors.",
@@ -820,167 +824,200 @@
  "h1t-by-w-shinjuku-tonanguchi": {
   "Booking": "Book a seat in the H¹T app or on the member site. Enter with your phone or a registered IC card (Suica etc.).",
   "src": "https://www.h1t-web.com/guide/",
-  "Who": "Corporate contracts only — individuals cannot sign up."
+  "Who": "Corporate contracts only — individuals cannot sign up.",
+  "Price": "Corporate contracts: no sign-up or monthly fee — pay per 15 minutes (one-person room from ¥220 per 15 min), billed to the company monthly"
  },
  "h1t-yurakucho": {
   "Booking": "Book a seat in the H¹T app or on the member site. Enter with your phone or a registered IC card (Suica etc.).",
   "src": "https://www.h1t-web.com/guide/",
-  "Who": "Corporate contracts only — individuals cannot sign up."
+  "Who": "Corporate contracts only — individuals cannot sign up.",
+  "Price": "Corporate contracts: no sign-up or monthly fee — pay per 15 minutes (one-person room from ¥220 per 15 min), billed to the company monthly"
  },
  "h1t-ebisu": {
   "Booking": "Book a seat in the H¹T app or on the member site. Enter with your phone or a registered IC card (Suica etc.).",
   "src": "https://www.h1t-web.com/guide/",
-  "Who": "Corporate contracts only — individuals cannot sign up."
+  "Who": "Corporate contracts only — individuals cannot sign up.",
+  "Price": "Corporate contracts: no sign-up or monthly fee — pay per 15 minutes (one-person room from ¥220 per 15 min), billed to the company monthly"
  },
  "h1t-shinagawa": {
   "Booking": "Book a seat in the H¹T app or on the member site. Enter with your phone or a registered IC card (Suica etc.).",
   "src": "https://www.h1t-web.com/guide/",
-  "Who": "Corporate contracts only — individuals cannot sign up."
+  "Who": "Corporate contracts only — individuals cannot sign up.",
+  "Price": "Corporate contracts: no sign-up or monthly fee — pay per 15 minutes (one-person room from ¥220 per 15 min), billed to the company monthly"
  },
  "h1t-ikebukuro-nishiguchi": {
   "Booking": "Book a seat in the H¹T app or on the member site. Enter with your phone or a registered IC card (Suica etc.).",
   "src": "https://www.h1t-web.com/guide/",
-  "Who": "Corporate contracts only — individuals cannot sign up."
+  "Who": "Corporate contracts only — individuals cannot sign up.",
+  "Price": "Corporate contracts: no sign-up or monthly fee — pay per 15 minutes (one-person room from ¥220 per 15 min), billed to the company monthly"
  },
  "h1t-shibuya-dogenzaka": {
   "Booking": "Book a seat in the H¹T app or on the member site. Enter with your phone or a registered IC card (Suica etc.).",
   "src": "https://www.h1t-web.com/guide/",
-  "Who": "Corporate contracts only — individuals cannot sign up."
+  "Who": "Corporate contracts only — individuals cannot sign up.",
+  "Price": "Corporate contracts: no sign-up or monthly fee — pay per 15 minutes (one-person room from ¥220 per 15 min), billed to the company monthly"
  },
  "h1t-ochanomizu": {
   "Booking": "Book a seat in the H¹T app or on the member site. Enter with your phone or a registered IC card (Suica etc.).",
   "src": "https://www.h1t-web.com/guide/",
-  "Who": "Corporate contracts only — individuals cannot sign up."
+  "Who": "Corporate contracts only — individuals cannot sign up.",
+  "Price": "Corporate contracts: no sign-up or monthly fee — pay per 15 minutes (one-person room from ¥220 per 15 min), billed to the company monthly"
  },
  "h1t-akihabara-denkigai-kitaguchi": {
   "Booking": "Book a seat in the H¹T app or on the member site. Enter with your phone or a registered IC card (Suica etc.).",
   "src": "https://www.h1t-web.com/guide/",
-  "Who": "Corporate contracts only — individuals cannot sign up."
+  "Who": "Corporate contracts only — individuals cannot sign up.",
+  "Price": "Corporate contracts: no sign-up or monthly fee — pay per 15 minutes (one-person room from ¥220 per 15 min), billed to the company monthly"
  },
  "h1t-nakameguro": {
   "Booking": "Book a seat in the H¹T app or on the member site. Enter with your phone or a registered IC card (Suica etc.).",
   "src": "https://www.h1t-web.com/guide/",
-  "Who": "Corporate contracts only — individuals cannot sign up."
+  "Who": "Corporate contracts only — individuals cannot sign up.",
+  "Price": "Corporate contracts: no sign-up or monthly fee — pay per 15 minutes (one-person room from ¥220 per 15 min), billed to the company monthly"
  },
  "h1t-gotanda": {
   "Booking": "Book a seat in the H¹T app or on the member site. Enter with your phone or a registered IC card (Suica etc.).",
   "src": "https://www.h1t-web.com/guide/",
-  "Who": "Corporate contracts only — individuals cannot sign up."
+  "Who": "Corporate contracts only — individuals cannot sign up.",
+  "Price": "Corporate contracts: no sign-up or monthly fee — pay per 15 minutes (one-person room from ¥220 per 15 min), billed to the company monthly"
  },
  "h1t-shimbashi-ginzaguchi": {
   "Booking": "Book a seat in the H¹T app or on the member site. Enter with your phone or a registered IC card (Suica etc.).",
   "src": "https://www.h1t-web.com/guide/",
-  "Who": "Corporate contracts only — individuals cannot sign up."
+  "Who": "Corporate contracts only — individuals cannot sign up.",
+  "Price": "Corporate contracts: no sign-up or monthly fee — pay per 15 minutes (one-person room from ¥220 per 15 min), billed to the company monthly"
  },
  "h1t-ueno": {
   "Booking": "Book a seat in the H¹T app or on the member site. Enter with your phone or a registered IC card (Suica etc.).",
   "src": "https://www.h1t-web.com/guide/",
-  "Who": "Corporate contracts only — individuals cannot sign up."
+  "Who": "Corporate contracts only — individuals cannot sign up.",
+  "Price": "Corporate contracts: no sign-up or monthly fee — pay per 15 minutes (one-person room from ¥220 per 15 min), billed to the company monthly"
  },
  "h1t-shibuya-miyamasuzaka": {
   "Booking": "Book a seat in the H¹T app or on the member site. Enter with your phone or a registered IC card (Suica etc.).",
   "src": "https://www.h1t-web.com/guide/",
-  "Who": "Corporate contracts only — individuals cannot sign up."
+  "Who": "Corporate contracts only — individuals cannot sign up.",
+  "Price": "Corporate contracts: no sign-up or monthly fee — pay per 15 minutes (one-person room from ¥220 per 15 min), billed to the company monthly"
  },
  "h1t-akasaka-mitsuke": {
   "Booking": "Book a seat in the H¹T app or on the member site. Enter with your phone or a registered IC card (Suica etc.).",
   "src": "https://www.h1t-web.com/guide/",
-  "Who": "Corporate contracts only — individuals cannot sign up."
+  "Who": "Corporate contracts only — individuals cannot sign up.",
+  "Price": "Corporate contracts: no sign-up or monthly fee — pay per 15 minutes (one-person room from ¥220 per 15 min), billed to the company monthly"
  },
  "h1t-toranomon": {
   "Booking": "Book a seat in the H¹T app or on the member site. Enter with your phone or a registered IC card (Suica etc.).",
   "src": "https://www.h1t-web.com/guide/",
-  "Who": "Corporate contracts only — individuals cannot sign up."
+  "Who": "Corporate contracts only — individuals cannot sign up.",
+  "Price": "Corporate contracts: no sign-up or monthly fee — pay per 15 minutes (one-person room from ¥220 per 15 min), billed to the company monthly"
  },
  "h1t-otemachi": {
   "Booking": "Book a seat in the H¹T app or on the member site. Enter with your phone or a registered IC card (Suica etc.).",
   "src": "https://www.h1t-web.com/guide/",
-  "Who": "Corporate contracts only — individuals cannot sign up."
+  "Who": "Corporate contracts only — individuals cannot sign up.",
+  "Price": "Corporate contracts: no sign-up or monthly fee — pay per 15 minutes (one-person room from ¥220 per 15 min), billed to the company monthly"
  },
  "h1t-jimbocho": {
   "Booking": "Book a seat in the H¹T app or on the member site. Enter with your phone or a registered IC card (Suica etc.).",
   "src": "https://www.h1t-web.com/guide/",
-  "Who": "Corporate contracts only — individuals cannot sign up."
+  "Who": "Corporate contracts only — individuals cannot sign up.",
+  "Price": "Corporate contracts: no sign-up or monthly fee — pay per 15 minutes (one-person room from ¥220 per 15 min), billed to the company monthly"
  },
  "h1t-ginza": {
   "Booking": "Book a seat in the H¹T app or on the member site. Enter with your phone or a registered IC card (Suica etc.).",
   "src": "https://www.h1t-web.com/guide/",
-  "Who": "Corporate contracts only — individuals cannot sign up."
+  "Who": "Corporate contracts only — individuals cannot sign up.",
+  "Price": "Corporate contracts: no sign-up or monthly fee — pay per 15 minutes (one-person room from ¥220 per 15 min), billed to the company monthly"
  },
  "h1t-machida": {
   "Booking": "Book a seat in the H¹T app or on the member site. Enter with your phone or a registered IC card (Suica etc.).",
   "src": "https://www.h1t-web.com/guide/",
-  "Who": "Corporate contracts only — individuals cannot sign up."
+  "Who": "Corporate contracts only — individuals cannot sign up.",
+  "Price": "Corporate contracts: no sign-up or monthly fee — pay per 15 minutes (one-person room from ¥220 per 15 min), billed to the company monthly"
  },
  "h1t-ichigaya": {
   "Booking": "Book a seat in the H¹T app or on the member site. Enter with your phone or a registered IC card (Suica etc.).",
   "src": "https://www.h1t-web.com/guide/",
-  "Who": "Corporate contracts only — individuals cannot sign up."
+  "Who": "Corporate contracts only — individuals cannot sign up.",
+  "Price": "Corporate contracts: no sign-up or monthly fee — pay per 15 minutes (one-person room from ¥220 per 15 min), billed to the company monthly"
  },
  "h1t-tachikawa": {
   "Booking": "Book a seat in the H¹T app or on the member site. Enter with your phone or a registered IC card (Suica etc.).",
   "src": "https://www.h1t-web.com/guide/",
-  "Who": "Corporate contracts only — individuals cannot sign up."
+  "Who": "Corporate contracts only — individuals cannot sign up.",
+  "Price": "Corporate contracts: no sign-up or monthly fee — pay per 15 minutes (one-person room from ¥220 per 15 min), billed to the company monthly"
  },
  "h1t-iidabashi": {
   "Booking": "Book a seat in the H¹T app or on the member site. Enter with your phone or a registered IC card (Suica etc.).",
   "src": "https://www.h1t-web.com/guide/",
-  "Who": "Corporate contracts only — individuals cannot sign up."
+  "Who": "Corporate contracts only — individuals cannot sign up.",
+  "Price": "Corporate contracts: no sign-up or monthly fee — pay per 15 minutes (one-person room from ¥220 per 15 min), billed to the company monthly"
  },
  "h1t-kojimachi": {
   "Booking": "Book a seat in the H¹T app or on the member site. Enter with your phone or a registered IC card (Suica etc.).",
   "src": "https://www.h1t-web.com/guide/",
-  "Who": "Corporate contracts only — individuals cannot sign up."
+  "Who": "Corporate contracts only — individuals cannot sign up.",
+  "Price": "Corporate contracts: no sign-up or monthly fee — pay per 15 minutes (one-person room from ¥220 per 15 min), billed to the company monthly"
  },
  "h1t-kunitachi": {
   "Booking": "Book a seat in the H¹T app or on the member site. Enter with your phone or a registered IC card (Suica etc.).",
   "src": "https://www.h1t-web.com/guide/",
-  "Who": "Corporate contracts only — individuals cannot sign up."
+  "Who": "Corporate contracts only — individuals cannot sign up.",
+  "Price": "Corporate contracts: no sign-up or monthly fee — pay per 15 minutes (one-person room from ¥220 per 15 min), billed to the company monthly"
  },
  "h1t-kyodo": {
   "Booking": "Book a seat in the H¹T app or on the member site. Enter with your phone or a registered IC card (Suica etc.).",
   "src": "https://www.h1t-web.com/guide/",
-  "Who": "Corporate contracts only — individuals cannot sign up."
+  "Who": "Corporate contracts only — individuals cannot sign up.",
+  "Price": "Corporate contracts: no sign-up or monthly fee — pay per 15 minutes (one-person room from ¥220 per 15 min), billed to the company monthly"
  },
  "h1t-musashikoganei": {
   "Booking": "Book a seat in the H¹T app or on the member site. Enter with your phone or a registered IC card (Suica etc.).",
   "src": "https://www.h1t-web.com/guide/",
-  "Who": "Corporate contracts only — individuals cannot sign up."
+  "Who": "Corporate contracts only — individuals cannot sign up.",
+  "Price": "Corporate contracts: no sign-up or monthly fee — pay per 15 minutes (one-person room from ¥220 per 15 min), billed to the company monthly"
  },
  "h1t-chitosefunabashi": {
   "Booking": "Book a seat in the H¹T app or on the member site. Enter with your phone or a registered IC card (Suica etc.).",
   "src": "https://www.h1t-web.com/guide/",
-  "Who": "Corporate contracts only — individuals cannot sign up."
+  "Who": "Corporate contracts only — individuals cannot sign up.",
+  "Price": "Corporate contracts: no sign-up or monthly fee — pay per 15 minutes (one-person room from ¥220 per 15 min), billed to the company monthly"
  },
  "h1t-tsukiji": {
   "Booking": "Book a seat in the H¹T app or on the member site. Enter with your phone or a registered IC card (Suica etc.).",
   "src": "https://www.h1t-web.com/guide/",
-  "Who": "Corporate contracts only — individuals cannot sign up."
+  "Who": "Corporate contracts only — individuals cannot sign up.",
+  "Price": "Corporate contracts: no sign-up or monthly fee — pay per 15 minutes (one-person room from ¥220 per 15 min), billed to the company monthly"
  },
  "h1t-roppongi": {
   "Booking": "Book a seat in the H¹T app or on the member site. Enter with your phone or a registered IC card (Suica etc.).",
   "src": "https://www.h1t-web.com/guide/",
-  "Who": "Corporate contracts only — individuals cannot sign up."
+  "Who": "Corporate contracts only — individuals cannot sign up.",
+  "Price": "Corporate contracts: no sign-up or monthly fee — pay per 15 minutes (one-person room from ¥220 per 15 min), billed to the company monthly"
  },
  "h1t-ikebukuro-higashiguchi-the-garden": {
   "Booking": "Book a seat in the H¹T app or on the member site. Enter with your phone or a registered IC card (Suica etc.).",
   "src": "https://www.h1t-web.com/guide/",
-  "Who": "Corporate contracts only — individuals cannot sign up."
+  "Who": "Corporate contracts only — individuals cannot sign up.",
+  "Price": "Corporate contracts: no sign-up or monthly fee — pay per 15 minutes (one-person room from ¥220 per 15 min), billed to the company monthly"
  },
  "h1t-ochanomizu-the-garden": {
   "Booking": "Book a seat in the H¹T app or on the member site. Enter with your phone or a registered IC card (Suica etc.).",
   "src": "https://www.h1t-web.com/guide/",
-  "Who": "Corporate contracts only — individuals cannot sign up."
+  "Who": "Corporate contracts only — individuals cannot sign up.",
+  "Price": "Corporate contracts: no sign-up or monthly fee — pay per 15 minutes (one-person room from ¥220 per 15 min), billed to the company monthly"
  },
  "h1t-shinjuku-nishiguchi": {
   "Booking": "Book a seat in the H¹T app or on the member site. Enter with your phone or a registered IC card (Suica etc.).",
   "src": "https://www.h1t-web.com/guide/",
-  "Who": "Corporate contracts only — individuals cannot sign up."
+  "Who": "Corporate contracts only — individuals cannot sign up.",
+  "Price": "Corporate contracts: no sign-up or monthly fee — pay per 15 minutes (one-person room from ¥220 per 15 min), billed to the company monthly"
  },
  "h1t-omotesando": {
   "Booking": "Book a seat in the H¹T app or on the member site. Enter with your phone or a registered IC card (Suica etc.).",
   "src": "https://www.h1t-web.com/guide/",
-  "Who": "Corporate contracts only — individuals cannot sign up."
+  "Who": "Corporate contracts only — individuals cannot sign up.",
+  "Price": "Corporate contracts: no sign-up or monthly fee — pay per 15 minutes (one-person room from ¥220 per 15 min), billed to the company monthly"
  },
  "newwork-tokyu-shibuya-1chome-building": {
   "Booking": "Corporate membership only — no drop-in.",

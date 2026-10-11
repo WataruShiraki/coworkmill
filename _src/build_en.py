@@ -93,7 +93,7 @@ def traits(slug):
     txt = ' '.join(v for k, v in e['facts']).lower(); allf = json.dumps(e, ensure_ascii=False).lower()
     members_only = 'no drop-in' in txt or 'corporate membership only' in txt or 'members only' in txt or 'members only' in vx.get('Booking', '').lower() or 'membership only' in vx.get('Booking', '').lower()
     if not members_only and re.search(r'drop-in|per hour|/hour|an hour|per day|/day|a day', fact(e, 'Drop-in', 'Prices', 'Price').lower()): t.append('Day pass')
-    h = fact(e, 'Hours', 'Access hours').lower(); c = fact(e, 'Closed').lower()
+    h = (fact(e, 'Hours', 'Access hours') or vx.get('Hours', '')).lower(); c = fact(e, 'Closed').lower()
     if vx.get('day') and not members_only and 'Day pass' not in t: t.append('Day pass')
     if vx.get('English') and 'in Japanese' not in vx['English']: t.append('English website')
     if '24 hours' in h: t.append('24-hour access')
@@ -202,6 +202,8 @@ def space_page(slug):
     if 'Members only' in TRAIT[slug] and not any(k in ('Use',) for k, v in e['facts']):
         rows = f'<div class="row"><span>Who</span><div>Members only — not a drop-in space.</div></div>' + rows
     vx = VX.get(slug, {})
+    if vx.get('Hours') and 'Hours</span>' not in rows:
+        rows += f'<div class="row"><span>Hours</span><div>{E(vx["Hours"])}</div></div>'
     if vx.get('Who') and 'Who</span>' not in rows:
         rows = f'<div class="row"><span>Who</span><div>{E(vx["Who"])}</div></div>' + rows
     if not any(k in ('Prices', 'Price', 'Drop-in', 'Monthly', 'Free desk', 'Entry fee') for k, v in e['facts']):
@@ -313,6 +315,35 @@ def find_pages():
         out.append((f'find/{k}.html', find_page(f'find/{k}.html', h1, f'coworking spaces in {p}, chosen for their design.', sl, f'?pref={quote(p)}')))
     return out
 
+# 2026-10-11 わたるさん「テキストだらけで見る気にならない。改修前の見せ方を参考に」→ 改修前（日本語版）の写真カード（大1枚＋小3枚）とQ&Aの写真帯に戻す
+def _imgs(slugs, n=4):
+    out = []
+    for x in slugs:
+        if x in EN:
+            u = photo(x, JA[x]['hero'][0])
+            if u and u not in out: out.append(u)
+        if len(out) >= n: break
+    return out
+def col_card(c):
+    sl = [x for x, _ in c['items'] if x in EN]; im = _imgs(sl, 4)
+    big = f'<img src="{E(im[0])}" alt="" loading="lazy">' if im else ''
+    mini = ''.join(f'<img src="{E(u)}" alt="" loading="lazy">' for u in im[1:4])
+    return (f'<a class="cc" href="{U("collections/" + c["slug"] + ".html")}">{big}' + (f'<div class="ccm">{mini}</div>' if mini else '') +
+            f'<p class="ccn">{len(sl)} spaces</p><h3>{E(c["title"])}</h3><p class="ccs">{E(_short(c["lead"], 110))}</p></a>')
+def q_imgs(q, n=3):
+    out = []
+    for s_, _h, _p, phs in q['secs']:
+        for a, k in phs:
+            u = photo(a, k)
+            if u and u not in out: out.append(u)
+    for u in _imgs([x[0] for x in q['secs']], 6):
+        if u not in out: out.append(u)
+    return out[:n]
+def q_card(q, small=False):
+    im = ''.join(f'<img src="{E(u)}" alt="" loading="lazy">' for u in q_imgs(q))
+    sub = '' if small else f'<span>{E(_short(q["a"], 120))}</span>'
+    return f'<li><a href="{U("questions/" + q["slug"] + ".html")}">{im}<span class="qq">Q</span><span class="qc"><b>{E(q["q"])}</b>{sub}</span></a></li>'
+
 # ---------- TOP ----------
 def top_page():
     hero_slug = next(s for s in POPULAR if s in EN and photo(s, JA[s]['hero'][0]))
@@ -325,7 +356,7 @@ def top_page():
     trav = [s for s in POPULAR if s in EN and 'Day pass' in TRAIT[s] and photo(s, JA[s]['hero'][0])][:4]
     _fk = {t: k for k, _, _, _, _, t in FINDS}
     tf = ''.join(f'<a href="{U("find/" + _fk[t] + ".html") if t in _fk else U("spaces/") + "?t=" + quote(t)}">{E(t)}<small>{sum(1 for s in ORDER if t in TRAIT[s])}</small></a>' for t in TFILTERS)
-    cols = ''.join(f'<a class="col" href="{U("collections/" + c["slug"] + ".html")}"><span class="n">{len(c["items"])}</span><b>{E(c["title"])}</b><p>{E(c["lead"])}</p></a>' for c in COLS[:6])
+    cols = ''.join(col_card(c) for c in COLS[:6])
     title = f"Japan's best-designed coworking spaces, in English | {NAME}"
     desc = f'{len(ORDER)} coworking spaces in Tokyo and across Japan, chosen for their design — with prices, hours, day passes, payment and the Japanese address for your taxi.'
     ld = [{"@context": "https://schema.org", "@type": "WebSite", "name": NAME, "url": SITE + '/', "inLanguage": "en",
@@ -338,7 +369,7 @@ def top_page():
             f'<section class="sec"><div class="trav"><div><h3>In Japan for a few days?</h3><p>Find spaces you can use on the day. These labels come only from what each official website says.</p><div class="fl">{tf}</div></div>'
             f'<div class="tcards">' + ''.join(card(s) for s in trav[:2]) + '</div></div></section>'
             f'<section class="sec"><div class="sh"><div><h2>Popular spaces</h2><p>Most read this month</p></div><a href="{U("spaces/")}">All {len(ORDER)} spaces →</a></div><div class="cards">' + ''.join(card(s, i + 1) for i, s in enumerate(pop)) + '</div></section>'
-            f'<section class="sec"><div class="sh"><div><h2>Collections</h2><p>Spaces grouped by area and theme</p></div><a href="{U("collections/")}">All {len(COLS)} collections →</a></div><div class="cols">{cols}</div></section>'
+            f'<section class="sec"><div class="sh"><div><h2>Collections</h2><p>Spaces grouped by area and theme</p></div><a href="{U("collections/")}">All {len(COLS)} collections →</a></div><div class="ccg">{cols}</div></section>'
             f'<section class="sec"><div class="sh"><div><h2>New on {NAME}</h2><p>The latest spaces we have added</p></div><a href="{U("spaces/")}">See all →</a></div><div class="cards">' + ''.join(card(s) for s in ORDER[:8]) + '</div></section>'
             '<section class="sec"><div class="sh"><div><h2>How to read this site</h2><p>Three things we do on every page</p></div></div><div class="how">'
             '<div><b>Prices in yen, from the source</b><p>We list only the prices each space publishes. If a price is not public, we say so instead of guessing.</p></div>'
@@ -348,9 +379,9 @@ def top_page():
 
 # ---------- 特集 ----------
 def col_index():
-    cols = ''.join(f'<a class="col" href="{U("collections/" + c["slug"] + ".html")}"><span class="n">{len(c["items"])}</span><b>{E(c["title"])}</b><p>{E(c["lead"])}</p></a>' for c in COLS)
+    cols = ''.join(col_card(c) for c in COLS)
     return (head(f'Collections — coworking in Japan by area and theme | {NAME}', f'{len(COLS)} collections of Japan\'s best-designed coworking spaces, grouped by area (Shibuya, Marunouchi, Shinjuku…) and theme (24 hours, hotels, rooftops…).', 'collections/index.html') + nav('collections/') +
-            f'<main class="wrap"><div class="head"><p class="tag">Collections</p><h1>{len(COLS)} collections</h1><p class="lead">Spaces grouped by neighbourhood and by theme, so you can compare places that share something.</p></div><div class="cols">{cols}</div></main>' + foot())
+            f'<main class="wrap"><div class="head"><p class="tag">Collections</p><h1>{len(COLS)} collections</h1><p class="lead">Spaces grouped by neighbourhood and by theme, so you can compare places that share something.</p></div><div class="ccg">{cols}</div></main>' + foot())
 # 2026-10-11 わたるさん「インバウンドの方が検索するのに対応してる？」→ 検索されるのは「coworking + 地名 / 用途」。特集のタイトルに必ず coworking を入れる
 COL_SEO = {'marunouchi': 'Coworking near Tokyo Station: Marunouchi, Yurakucho, Otemachi', 'toranomon-azabudai': 'Coworking in Toranomon and Azabudai, Tokyo',
   'station-direct': 'Coworking linked directly to a Tokyo station', '24hours': '24-hour coworking spaces in Tokyo', 'large-floor': 'The largest coworking spaces in Tokyo',
@@ -384,7 +415,7 @@ def visitor_block(c, sl, label):
     st = _stations(sl)
     nm = lambda x: f'<a href="{U("spaces/" + x + ".html")}">{E(EN[x]["name"])}</a>'
     rows = ''.join(f'<tr><th scope="row">{nm(x)}</th><td>{"Yes" if x in dp else ("Members only" if x in mo else "—")}</td><td>{E(_short(_price(x)) or "—")}</td>'
-                   f'<td>{E(_short(fact(EN[x], "Hours", "Access hours"), 50) or "—")}</td><td>{E(_short(VX.get(x, {}).get("Payment", ""), 50) or "—")}</td><td>{"Yes" if x in en else "—"}</td></tr>' for x in sl)
+                   f'<td>{E(_short(fact(EN[x], "Hours", "Access hours") or VX.get(x, {}).get("Hours", ""), 50) or "—")}</td><td>{E(_short(VX.get(x, {}).get("Payment", ""), 50) or "—")}</td><td>{"Yes" if x in en else "—"}</td></tr>' for x in sl)
     table = (f'<div class="tblw"><table class="cmp"><thead><tr><th scope="col">Space</th><th scope="col">Day pass</th><th scope="col">Price</th><th scope="col">Hours</th><th scope="col">Payment</th><th scope="col">English site</th></tr></thead><tbody>{rows}</tbody></table></div>'
              '<p class="note">From each official website. “—” means the official information we checked does not say.</p>')
     # 1日だけ使える施設を、入り方・払い方つきで先に見せる
@@ -416,21 +447,21 @@ def col_label(c):
 def col_page(c):
     items = [(s, cap) for s, cap in c['items'] if s in EN]
     _i = COLS.index(c); _o = (COLS[_i + 1:] + COLS[:_i])[:3]
-    others = ''.join(f'<a class="col" href="{U("collections/" + o["slug"] + ".html")}"><span class="n">{len(o["items"])}</span><b>{E(o["title"])}</b><p>{E(o["lead"])}</p></a>' for o in _o)
+    others = ''.join(col_card(o) for o in _o)
     ld = [{"@context": "https://schema.org", "@type": "ItemList", "name": c['title'], "itemListElement": [{"@type": "ListItem", "position": i + 1, "url": SITE + '/spaces/' + s + '.html', "name": EN[s]['name']} for i, (s, _) in enumerate(items)]}]
     img = photo(items[0][0], JA[items[0][0]]['hero'][0]) if items else None
     vb, vld = visitor_block(c, [s for s, _ in items], col_label(c)); ld.append(vld)
     return (head(fit(f'{col_seo(c)} — {len(items)} spaces | {NAME}', f'{col_seo(c)} | {NAME}', col_seo(c)), c['lead'][:155], f'collections/{c["slug"]}.html', img, 'article', ld) + nav('collections/') +
             f'<main class="wrap"><div class="crumb"><a href="{U("collections/")}">Collections</a> › {E(c["title"])}</div><div class="head"><p class="tag">{len(items)} spaces</p><h1>{E(c["title"])}</h1><p class="lead">{E(c["lead"])}</p></div>'
             '<div class="cards">' + ''.join(card(s, i + 1, cap) for i, (s, cap) in enumerate(items)) + '</div>' + vb +
-            f'<section class="sec"><div class="sh"><div><h2>More collections</h2></div><a href="{U("collections/")}">All {len(COLS)} →</a></div><div class="cols">{others}</div></section></main>' + foot())
+            f'<section class="sec"><div class="sh"><div><h2>More collections</h2></div><a href="{U("collections/")}">All {len(COLS)} →</a></div><div class="ccg rel">{others}</div></section></main>' + foot())
 
 # ---------- Q&A ----------
 def q_index():
-    li = ''.join(f'<a class="qa" href="{U("questions/" + q["slug"] + ".html")}"><b>{E(q["q"])}</b><p>{E(q["a"])}</p></a>' for q in QS)
+    li = ''.join(q_card(q) for q in QS)
     ld = [{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q['q'], "acceptedAnswer": {"@type": "Answer", "text": q['a']}} for q in QS]}]
     return (head(f'Coworking in Japan: questions and answers | {NAME}', 'Short answers to common questions about coworking in Japan — drop-in, 24-hour access, prices, hotels, private rooms — from official information.', 'questions/index.html', None, 'website', ld) + nav('questions/') +
-            f'<main class="wrap"><div class="head"><p class="tag">Q&amp;A</p><h1>Coworking in Japan, answered</h1><p class="lead">Short answers to the questions people ask most. Every answer is written from the official information of the spaces we list.</p></div><div class="qas">{li}</div></main>' + foot())
+            f'<main class="wrap"><div class="head"><p class="tag">Q&amp;A</p><h1>Coworking in Japan, answered</h1><p class="lead">Short answers to the questions people ask most. Every answer is written from the official information of the spaces we list.</p></div><ul class="qidx">{li}</ul></main>' + foot())
 def q_page(q):
     body = ''
     for s, h, ps, phs in q['secs']:
@@ -439,12 +470,12 @@ def q_page(q):
                  + (f'<div class="pair{" one" if figs.count("<figure") == 1 else ""}">{figs}</div>' if figs else '') + '</section>')
     if q.get('ctx'):
         body += f'<div class="word"><p><b>{E(q["ctx"]["title"])}</b></p>' + ''.join(f'<p>{E(x)}</p>' for x in q['ctx']['body']) + '</div>'
-    others = ''.join(f'<a class="qa" href="{U("questions/" + o["slug"] + ".html")}"><b>{E(o["q"])}</b></a>' for o in QS if o is not q)[:]
+    _qi = QS.index(q); others = ''.join(q_card(o, True) for o in (QS[_qi + 1:] + QS[:_qi])[:6])
     ld = [{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q['q'], "acceptedAnswer": {"@type": "Answer", "text": q['a']}}]}]
     _qi = next((photo(a, n) for _s, _h, _p, phs in q['secs'] for a, n in phs if photo(a, n)), None)
     return (head(fit(f'{q["q"]} | {NAME}', q['q']), (q['desc'] if len(q['desc']) <= 158 else q['desc'][:155].rsplit(' ', 1)[0].rstrip(',') + '…'), f'questions/{q["slug"]}.html', _qi, 'article', ld) + nav('questions/') +
             f'<main class="wrap"><div class="crumb"><a href="{U("questions/")}">Q&amp;A</a></div><div class="head"><p class="tag">Q&amp;A</p><h1>{E(q["q"])}</h1><p class="lead answer">{E(q["a"])}</p></div>'
-            f'<div class="narrow">{body}</div><section class="sec"><div class="sh"><div><h2>Other questions</h2></div></div><div class="qas small">{others}</div></section></main>' + foot())
+            f'<div class="narrow">{body}</div><section class="sec"><div class="sh"><div><h2>Other questions</h2></div></div><ul class="qidx small">{others}</ul></section></main>' + foot())
 
 # ---------- About・規約・問い合わせ ----------
 UPD = '10 October 2026'
