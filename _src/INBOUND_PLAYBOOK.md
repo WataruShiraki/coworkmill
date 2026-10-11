@@ -201,3 +201,11 @@ python3 _src/audit_en.py . _src/en/visit_extra.json
 - neolive-curro-maison-yokohama と neolive-curro-maison-higashikanagawa は同じ店の二重掲載。英語の特集では片方だけにした
 - 旧ページはすべて同じURLで作り直したので、301 の追加はなし
 - 競合（bestsalonreport「English Speaking Hair Salons in Tokyo」、JW Web Magazine「Best Hair Salons in Tokyo」）は英語が通じる店の一覧で、内装で選ぶサイトではない。重なる店はなし。足りないのは「英語が通じるか」の情報と、銀座・代官山・麻布十番・六本木の店
+
+## 15. LABMILL へ移した記録（2026-10-11）
+- 31拠点を全部英訳（`_src/en/b001〜b004.json`）。特集19本・Q&A8本も英訳し、インバウンド向けの特集2本（一般の人が入れる施設がある研究所・よく知られたブランドの研究所）と Q&A「研究所は見学できる？」を足した（特集21本・Q&A9本）
+- ★研究所はほとんどが一般非公開の職場。旅行者に一番大事なのは「入れるかどうか」。公式の案内ページで確かめられた5か所だけを visit_extra に入れた：資生堂 Shiseido Beauty Park（入館無料・月曜休み）、ヤマハ イノベーションロード（予約制・無料・1日3回）、キユーピー マヨテラス（予約制・無料・土日祝休み）、清水建設 NOVARE Archives（木曜のみ・ネット予約・無料・音声ガイド日英）、森永製菓 鶴見の施設見学（予約制・前月1日受付）
+- ほかの施設は「公式ページに一般の見学の案内はない。写真と外から楽しんで、招待なしに入らない」と表示（推測で「非公開」と言い切らない書き方）
+- 地図：番地まである29件。kurita-innovation-hub は住所が市までしかなく、nissin-the-wave は町名止まりの当たりなのでピンなし
+- 旧ページはすべて同じURLで作り直したので、301 の追加はなし
+- WebFetch は推測したURLだと許可待ちで止まる。公式ページは Chrome で開いて読む
