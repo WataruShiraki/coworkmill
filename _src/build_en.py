@@ -159,6 +159,8 @@ def card(slug, i=None, sub=None):
 
 # ---------- 施設ページ ----------
 VISIT_KEYS = [('Who', ('Use', 'Format')), ('Price', ('Prices', 'Price', 'Drop-in', 'Monthly', 'Free desk', 'Entry fee')), ('Hours', ('Hours', 'Access hours')), ('Closed', ('Closed',)), ('Train', ('Access',))]
+# 本文（公式由来）から「〇分 from X Station」「directly connected to X Station」だけを拾う。駅名だけの言及は、最寄りとは限らないので使わない
+_WALK = re.compile(r"((?:directly (?:connected|linked) to|connected directly to|(?:a |an )?(?:one|two|three|four|five|six|seven|eight|nine|ten|\d+)[- ](?:minutes?|min)(?:'s)?(?: on foot| walk(?:ing)?)? (?:from|to)|next to|right by|in front of|beside) (?:the )?(?:(?:JR|Tokyo Metro|Toei|Tokyu|Keio|Odakyu|Seibu|Tobu|Keikyu|Keisei|Sotetsu|Yurikamome)[\w ]*? )?[A-Z][A-Za-zōū\-]+(?: [A-Z][A-Za-zōū\-]+){0,3} Station)")
 def space_page(slug):
     e = EN[slug]; ja = JA[slug]; off = official(slug); adr = jp_address(slug); ph = photos(slug)
     P = [[photo(slug, n), c] for n, c in ph]
@@ -189,14 +191,13 @@ def space_page(slug):
     cred = ''.join(f'<div><b>{E(k)}</b>{(f"""<a href="{E(off)}" target="_blank" rel="noopener">{E(v)}</a>""" if k == "Operator" and off else E(v))}</div>' for k, v in e['credits'])
     # Plan your visit
     rows = ''
-    used = set()
+    used = set(); trains = []
     for lab, keys in VISIT_KEYS:
         for k, v in e['facts']:
             if k in keys and (k, v) not in used:
                 used.add((k, v))
                 if lab == 'Train':
-                    li = ''.join(f'<li>{E(x.strip())}</li>' for x in v.split(' / '))
-                    rows += f'<div class="row"><span>{lab}</span><ul>{li}</ul></div>'
+                    trains += [x.strip() for x in v.split(' / ') if x.strip()]
                 else:
                     rows += f'<div class="row"><span>{lab}</span><div>{E(v)}</div></div>'
     if 'Members only' in TRAIT[slug] and not any(k in ('Use',) for k, v in e['facts']):
@@ -224,13 +225,25 @@ def space_page(slug):
             rows += f'<div class="row"><span>{"How" if lab == "Booking" else "Pay" if lab == "Payment" else lab}</span><div>{E(vx[lab])}</div></div>'
     if vx:
         rows += '<p class="chk">Checked on the official website, October 2026</p>'
-    taxi = ''
-    if adr:
-        taxi = (f'<div class="taxi"><p>Show this to your taxi driver</p><div class="ja" lang="ja">{E(adr)}<br>{E(ja["company"])}</div><div class="en">{E(en_address(e))}</div>'
-                f'<div class="tb"><button type="button" class="cp" data-t="{E(adr + " " + ja["company"])}">Copy address</button>'
-                f'<a href="https://www.google.com/maps/search/?api=1&amp;query={quote(adr + " " + ja["company"])}" target="_blank" rel="noopener">Open in Google Maps</a></div></div>')
+    # 2026-10-11 わたるさん「インバウンドってタクシー乗る前提なの？」「どっちでも大丈夫なように」→ 電車・徒歩の行き方を主役にし、タクシーや受付に見せる大きな表示も用意する
+    taxi = ''; drv = ''
+    if not trains:
+        _t = ' '.join([v for k, v in e['facts']] + [e['lead']] + [p_ for st in e['steps'] for p_ in st[2]])
+        _m = _WALK.search(_t)
+        trains = [_m.group(1)[0].upper() + _m.group(1)[1:]] if _m else []
+    if adr or trains:
+        q = quote(adr + ' ' + ja['company']) if adr else quote(e['name'] + ' ' + town(e))
+        st_h = '<ul class="trn">' + ''.join(f'<li>{E(x)}</li>' for x in trains) + '</ul>' if trains else ''
+        btn = (f'<div class="tb"><a class="dir" href="https://www.google.com/maps/dir/?api=1&amp;destination={q}&amp;travelmode=transit" target="_blank" rel="noopener">Directions</a>'
+               + (f'<button type="button" class="cp" data-t="{E(adr + " " + ja["company"])}">Copy address</button><button type="button" class="dv">Show to driver</button>' if adr else '') + '</div>')
+        addr = (f'<div class="ja" lang="ja">{E(adr)}<br>{E(ja["company"])}</div><div class="en">{E(en_address(e))}</div>'
+                '<p class="hint">Show the Japanese address to a taxi driver or the building reception.</p>') if adr else ''
+        taxi = f'<div class="taxi"><p>Getting here</p>{st_h}{btn}{addr}</div>'
+        if adr:
+            drv = (f'<dialog id="drv" class="drv"><p class="big" lang="ja">{E(adr)}<br>{E(ja["company"])}</p><p class="sub">{E(e["name"])} — {E(en_address(e))}</p>'
+                   '<button type="button" id="drvx">Close</button></dialog>')
     cta = f'<a class="cta" href="{E(off)}" target="_blank" rel="noopener">Visit the official website<small>Booking and contact are on the operator\'s site, often in Japanese</small></a>' if off else ''
-    visit = f'<aside class="visit"><h3>Plan your visit</h3>{rows}{taxi}{cta}</aside>'
+    visit = f'<aside class="visit"><h3>Plan your visit</h3>{rows}{taxi}{cta}</aside>{drv}'
     # 構造化データ
     ld = [{"@context": "https://schema.org", "@type": "Article", "headline": e['title'][:110], "inLanguage": "en", "image": P[0][0] if P else None,
            "author": {"@type": "Organization", "name": NAME}, "publisher": {"@type": "Organization", "name": NAME}, "mainEntityOfPage": SITE + '/spaces/' + slug + '.html'},
@@ -249,7 +262,7 @@ def space_page(slug):
     _nt = e['name'] if town(e).lower() in e['name'].lower() else f'{e["name"]}, {town(e)}'
     title = fit(f'{_nt} — photos & how to visit | {NAME}', f'{_nt} — coworking | {NAME}', f'{_nt} | {NAME}', f'{e["name"]} | {NAME}', e['name'])
     _c = e['card'].rstrip('.')
-    desc = fit(f'{_c}. {_nt}: photos, prices, hours, how to get in and the Japanese address for your taxi.',
+    desc = fit(f'{_c}. {_nt}: photos, prices, hours, how to get there, with the address in Japanese.',
                f'{_c}. {_nt}: photos, prices, hours and how to visit.', f'{_c}. Photos, prices, hours and how to visit.',
                (_c + '. ' + e['lead'])[:155].rsplit(' ', 1)[0] + '…', limit=158)
     return (head(title, desc, f'spaces/{slug}.html', P[0][0] if P else None, 'article', ld) + nav('spaces/') +
@@ -298,11 +311,11 @@ def find_page(path, h1, lead, sl, link):
     tc = collections.Counter(town(EN[s]) for s in sl).most_common(6)
     where = ', '.join(t for t, c in tc)
     ld = [{"@context": "https://schema.org", "@type": "ItemList", "name": h1, "numberOfItems": n, "itemListElement": [{"@type": "ListItem", "position": i + 1, "url": SITE + '/spaces/' + s + '.html', "name": EN[s]['name']} for i, s in enumerate(sl[:50])]}]
-    desc = fit(f'{n} {lead[0].lower() + lead[1:]} Photos, prices, hours, how to get in and the Japanese address for your taxi.', f'{n} {lead[0].lower() + lead[1:]}', limit=158)
+    desc = fit(f'{n} {lead[0].lower() + lead[1:]} Photos, prices, hours, how to get there, with the address in Japanese.', f'{n} {lead[0].lower() + lead[1:]}', limit=158)
     img = next((photo(s, JA[s]['hero'][0]) for s in sl if photo(s, JA[s]['hero'][0])), None)
     return (head(fit(f'{h1} — {n} spaces | {NAME}', f'{h1} | {NAME}', h1), desc, path, img, 'website', ld) + nav('spaces/') +
             f'<main class="wrap"><div class="crumb"><a href="{U("spaces/")}">Spaces</a> › {E(h1)}</div><div class="head"><p class="tag">{n} spaces</p><h1>{E(h1)}</h1>'
-            f'<p class="lead">{n} {E(lead)} Areas include {E(where)}. Each page has photos, prices, hours, how to get in and the Japanese address for your taxi.</p></div>'
+            f'<p class="lead">{n} {E(lead)} Areas include {E(where)}. Each page has photos, prices, hours, how to get there, with the address in Japanese.</p></div>'
             f'<div class="fchips tf findnav">{_find_links(path)}</div><div class="cards">' + ''.join(card(s) for s in sl) + '</div>'
             f'<p class="more"><a href="{U("spaces/")}{link}">Filter all {len(ORDER)} spaces →</a></p></main>' + foot())
 def find_pages():
@@ -358,7 +371,7 @@ def top_page():
     tf = ''.join(f'<a href="{U("find/" + _fk[t] + ".html") if t in _fk else U("spaces/") + "?t=" + quote(t)}">{E(t)}<small>{sum(1 for s in ORDER if t in TRAIT[s])}</small></a>' for t in TFILTERS)
     cols = ''.join(col_card(c) for c in COLS[:6])
     title = f"Japan's best-designed coworking spaces | {NAME}"
-    desc = f'{len(ORDER)} coworking spaces in Tokyo and across Japan, chosen for their design — with prices, hours, day passes, payment and the Japanese address for your taxi.'
+    desc = f'{len(ORDER)} coworking spaces in Tokyo and across Japan, chosen for their design — with prices, hours, day passes, payment and directions with the address in Japanese.'
     ld = [{"@context": "https://schema.org", "@type": "WebSite", "name": NAME, "url": SITE + '/', "inLanguage": "en",
            "potentialAction": {"@type": "SearchAction", "target": SITE + '/spaces/?q={q}', "query-input": "required name=q"}}]
     return (head(title, desc, 'index.html', None, 'website', ld) + nav() +
@@ -373,7 +386,7 @@ def top_page():
             f'<section class="sec"><div class="sh"><div><h2>New on {NAME}</h2><p>The latest spaces we have added</p></div><a href="{U("spaces/")}">See all →</a></div><div class="cards">' + ''.join(card(s) for s in ORDER[:8]) + '</div></section>'
             '<section class="sec"><div class="sh"><div><h2>How to read this site</h2><p>Three things we do on every page</p></div></div><div class="how">'
             '<div><b>Prices in yen, from the source</b><p>We list only the prices each space publishes. If a price is not public, we say so instead of guessing.</p></div>'
-            '<div><b>Address in Japanese, too</b><p>Each page shows the address in Japanese — e.g. <span class="ja" lang="ja">東京都渋谷区渋谷3-27-1</span> — with a copy button and a Google Maps link for taxis.</p></div>'
+            '<div><b>Address in Japanese, too</b><p>Each page shows the address in Japanese — e.g. <span class="ja" lang="ja">東京都渋谷区渋谷3-27-1</span> — with directions by train, a copy button and a large view to show a taxi driver.</p></div>'
             '<div><b>“Japanese only” when it matters</b><p>Booking forms and official websites are often only in Japanese. We tell you before you click.</p></div></div></section>'
             '</main>' + foot())
 
@@ -432,7 +445,7 @@ def visitor_block(c, sl, label):
         faq.append((f'Can I use a coworking space {label} without a membership?', f'None of the {n} spaces in this collection list a day pass on their official websites; they are run as memberships or offices. See our day-pass list for spaces you can use for a day.'))
     if wk: faq.append((f'Which coworking spaces {label} are open at weekends?', ', '.join(EN[x]['name'] for x in wk[:8]) + (f' and {len(wk) - 8} more' if len(wk) > 8 else '') + ' list weekend hours on their official websites.'))
     if en: faq.append((f'Which coworking spaces {label} have an English website?', ', '.join(EN[x]['name'] for x in en[:8]) + (f' and {len(en) - 8} more' if len(en) > 8 else '') + '. Booking forms elsewhere are often in Japanese only.'))
-    if st: faq.append((f'Which stations are the coworking spaces {label} near?', 'The stations mentioned most often are ' + ', '.join(f'{x} Station' for x in st) + '. Every space page has the Japanese address to show a taxi driver and a Google Maps link.'))
+    if st: faq.append((f'Which stations are the coworking spaces {label} near?', 'The stations mentioned most often are ' + ', '.join(f'{x} Station' for x in st) + '. Every space page has directions by train and the address in Japanese.'))
     fq = ''.join(f'<details><summary>{E(q)}</summary><p>{E(a)}</p></details>' for q, a in faq)
     html_ = (f'<section class="sec visitor"><div class="sh"><div><h2>Planning a visit</h2><p>What a visitor to Japan needs to know about these {n} spaces</p></div></div>'
              f'<div class="vstats">{stats}</div>' + (f'<p class="vst">Nearest stations: {E(", ".join(st))}.</p>' if st else '') + picks + table +
@@ -484,7 +497,7 @@ def simple(path, title, desc, h1, inner, cur='about/'):
 ABOUT = f'''<p class="lead">{NAME} is a guide to {TAG}, written in English for visitors, business travellers and companies coming to Japan.</p>
 <h2>What we do</h2><p>We choose coworking spaces for the quality of their interiors and walk you through each one in the order a first-time visitor would see it: the entrance, the open seats, the meeting rooms, the lounge. Today we list {len(ORDER)} spaces in Tokyo and across Japan.</p>
 <h2>Where the facts come from</h2><p>Every fact — prices, hours, seat counts, access — comes from the space's own official website or press materials, and each page names its sources. If something is not published, we say so rather than guess. Photos are the official images of each space, credited on every page.</p>
-<h2>Made for visitors</h2><p>Each page shows the address in Japanese with a copy button and a Google Maps link, so you can show it to a taxi driver. We point out when a booking form or website is only in Japanese, and we explain Japanese terms such as <i>dejima</i> or <i>koagari</i> in plain English.</p>
+<h2>Made for visitors</h2><p>Each page has directions by train and the address in Japanese, with a copy button and a large view to show a taxi driver or reception. We point out when a booking form or website is only in Japanese, and we explain Japanese terms such as <i>dejima</i> or <i>koagari</i> in plain English.</p>
 <h2 id="ops">Who runs this site</h2><table class="ops"><tr><th>Site</th><td>{NAME} (cowkml.com)</td></tr><tr><th>Operator</th><td>The {NAME} team</td></tr><tr><th>Contact</th><td><a href="{U("contact/")}">Contact form</a></td></tr></table>
 <h2 id="ads">Advertising</h2><p>This site may show advertising such as Google AdSense. Advertisers have no influence on which spaces we list or in what order.</p>
 <h2 id="fix">Corrections</h2><p>If you find a mistake, please tell us through the <a href="{U("contact/")}">contact form</a> and we will fix it promptly. Operators are welcome to send updated information.</p>'''

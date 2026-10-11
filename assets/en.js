@@ -21,6 +21,9 @@
     if(navigator.clipboard){navigator.clipboard.writeText(t).then(done,function(){sel()})}else sel();
     function sel(){var r=document.createRange();r.selectNodeContents(b.closest('.taxi').querySelector('.ja'));var s=getSelection();s.removeAllRanges();s.addRange(r)}
   })});
+  // show the Japanese address large for a taxi driver or reception
+  var dv=document.querySelector('.dv'),dg=document.getElementById('drv');
+  if(dv&&dg){dv.addEventListener('click',function(){if(dg.showModal)dg.showModal();});document.getElementById('drvx').addEventListener('click',function(){dg.close()});dg.addEventListener('click',function(e){if(e.target===dg)dg.close()});}
   // list filters
   var list=document.getElementById('list');if(!list)return;
   var cards=[].slice.call(list.children),q=document.getElementById('fq'),fp=document.getElementById('fp'),ft=document.getElementById('ft'),fc=document.getElementById('fc'),fn=document.getElementById('fn');

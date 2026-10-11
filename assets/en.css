@@ -265,3 +265,13 @@ img.broken{opacity:0}
 .plans ul{margin:0;padding-left:18px;font-size:13.5px;color:var(--ink-2)}
 @media (max-width:800px){.plans{grid-template-columns:1fr 1fr}}
 .btn{display:inline-block;background:var(--ink);color:#fff;padding:11px 18px;border-radius:2px;font-weight:600}
+/* 2026-10-11 Getting here (train first, taxi as an option) */
+.taxi .trn{list-style:none;margin:0 0 10px;padding:0;display:grid;gap:3px;font-size:14px;font-weight:600;color:var(--ink)}
+.taxi .tb{margin:0 0 12px}
+.taxi .tb .dir{background:var(--ink);color:#fff}
+.taxi .hint{margin:8px 0 0;font-size:12px;color:var(--mute);letter-spacing:0;text-transform:none}
+.drv{border:0;padding:0;max-width:none;max-height:none;width:100vw;height:100vh;margin:0;background:#fff;color:var(--ink)}
+.drv[open]{display:flex;flex-direction:column;justify-content:center;gap:18px;padding:24px}
+.drv .big{font-family:var(--jp);font-weight:700;font-size:clamp(28px,7vw,64px);line-height:1.4;margin:0}
+.drv .sub{margin:0;color:var(--ink-2);font-size:16px}
+.drv button{align-self:flex-start;border:1px solid var(--ink);background:#fff;font:600 14px var(--sans);padding:10px 16px;border-radius:2px;cursor:pointer}
