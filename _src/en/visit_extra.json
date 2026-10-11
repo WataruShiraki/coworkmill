@@ -1893,5 +1893,50 @@
   "src": "https://mf.workstyling.jp/share/office/olive-lounge-shimotakaido/",
   "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥340 per 10 minutes per person (excl. tax)",
   "Hours": "Weekdays 8:00–21:00, weekends and holidays 10:00–18:00"
+ },
+ "100banch": {
+  "Hours": "Weekdays 10:00–19:00",
+  "Booking": "A base for projects led by people under 35. Facility tours run on weekdays from 17:00 (about 40 minutes, ¥2,200 per person including a book).",
+  "src": "https://100banch.com/about/floor/"
+ },
+ "shibuya-qws": {
+  "Price": "QWS project membership ¥16,500/month (joining fee ¥11,000), incl. tax",
+  "Booking": "Membership by entry on the website; meeting rooms are for members and booked on the member site.",
+  "English": "English website.",
+  "src": "https://shibuya-qws.com/membership/"
+ },
+ "lifork-otemachi": {
+  "Booking": "Style rooms can be rented by the half-hour without membership, 9:00–21:00; shared offices by contract.",
+  "Price": "Style rooms from ¥1,650 per 30 min (4 people)",
+  "English": "English website.",
+  "src": "https://lifork.jp/otemachi/workroom.html"
+ },
+ "nagaya-aoyama": {
+  "Price": "Open-space plans ¥11,000–¥19,800/month; private rooms ¥55,000–¥154,000/month",
+  "Booking": "Reception staffed weekdays 10:00–17:00; meeting rooms booked online. Tours before contract.",
+  "Payment": "Coffee machine takes PayPay.",
+  "src": "https://nagayaoffice.com/aoyama/"
+ },
+ "diagonal-run-tokyo": {
+  "Booking": "Drop-in available; meeting rooms by reservation (from ¥2,200 per 30 min).",
+  "src": "https://diagonal-run.jp/tokyo/",
+  "day": true
+ },
+ "startup-hub-tokyo-marunouchi": {
+  "Who": "Free support facility for anyone thinking of starting a business: lounge, consultations, events, books and childcare.",
+  "src": "https://startup-station.jp/m1/"
+ },
+ "potluck-yaesu": {
+  "Hours": "Lounge weekdays 11:00–22:00; Chikaba Kitchen weekdays 11:00–20:00, weekends and holidays 11:00–18:00",
+  "src": "https://www.potluck-yaesu.com/about/"
+ },
+ "city-lab-tokyo": {
+  "Price": "Individual membership ¥7,500/month; corporate ¥22,000/month; network membership ¥2,200/month (incl. tax)",
+  "Booking": "Three membership types; see the membership page to apply.",
+  "src": "https://citylabtokyo.jp/about/"
+ },
+ "toranomon-hills-arch": {
+  "Who": "Membership for teams creating new businesses, with dedicated new-business support staff.",
+  "src": "https://arch-incubationcenter.com/"
  }
 }
