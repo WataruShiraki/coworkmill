@@ -21,9 +21,9 @@ if os.path.exists('vercel.json'):
             redirected.update(f for f in files if f == src or (src.endswith(':path*') and f.startswith(src.replace(':path*', ''))))
 for f in files:
     h = open(f, encoding='utf-8', errors='ignore').read()
-    lang = g(r'<html[^>]*lang="(\w+)"', h) or '?'
+    lang = g(r'<html[^>]*lang="([\w-]+)"', h) or '?'
     noindex = 'noindex' in h
-    if lang != 'en':
+    if lang != 'en' and not f.startswith(('zh/', 'ko/')):  # 2026-10-11 中国語・韓国語の入口は検索に載せる
         if not noindex and f not in redirected and not f.startswith('google'):
             P['日本語などで検索に載るページ（転送かnoindexを）'].append(f)
         continue

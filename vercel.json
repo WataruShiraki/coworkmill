@@ -1145,6 +1145,33 @@
      "value": "noindex"
     }
    ]
+  },
+  {
+   "source": "/coworkmill-journal-article.html",
+   "headers": [
+    {
+     "key": "X-Robots-Tag",
+     "value": "noindex"
+    }
+   ]
+  },
+  {
+   "source": "/coworkmill-journal.html",
+   "headers": [
+    {
+     "key": "X-Robots-Tag",
+     "value": "noindex"
+    }
+   ]
+  },
+  {
+   "source": "/register.html",
+   "headers": [
+    {
+     "key": "X-Robots-Tag",
+     "value": "noindex"
+    }
+   ]
   }
  ]
 }

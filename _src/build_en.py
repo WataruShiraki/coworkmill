@@ -88,6 +88,7 @@ def amenities(slug):
     return [lab for lab, pat in AMEN if any(re.search(pat, x, re.I) and not _NEG.search(x) for x in sents)]
 AM = {}
 VX = json.load(open(os.path.join(HERE, 'en', 'visit_extra.json'), encoding='utf-8'))
+CHK = json.load(open(os.path.join(HERE, 'en', 'checked.json'), encoding='utf-8'))
 def traits(slug):
     e = EN[slug]; t = []; vx = VX.get(slug, {})
     txt = ' '.join(v for k, v in e['facts']).lower(); allf = json.dumps(e, ensure_ascii=False).lower()
@@ -142,8 +143,8 @@ def nav(cur=''):
 
 def foot():
     return (f'<footer class="wrap"><nav><a href="{U("about/")}">About {NAME}</a><a href="{U("spaces/")}">All spaces</a><a href="{U("collections/")}">Collections</a><a href="{U("questions/")}">Q&amp;A</a>'
-            f'<a href="{U("find/day-pass.html")}">Day passes</a><a href="{U("find/english.html")}">English website</a><a href="{U("find/tokyo.html")}">Tokyo</a><a href="{U("find/kanagawa.html")}">Yokohama</a><a href="{U("find/osaka.html")}">Osaka</a><a href="{U("find/kyoto.html")}">Kyoto</a><a href="{U("find/fukuoka.html")}">Fukuoka</a><a href="{U("find/hokkaido.html")}">Sapporo</a><a href="{U("find/okinawa.html")}">Okinawa</a>'
-            f'<a href="{U("about/list-your-space.html")}">List your space</a><a href="{U("about/legal-notice.html")}">Legal notice</a><a href="{U("about/privacy.html")}">Privacy</a><a href="{U("about/terms.html")}">Terms</a><a href="{U("contact/")}">Contact</a></nav>'
+            f'<a href="{U("spaces/map.html")}">Map</a><a href="{U("find/day-pass.html")}">Day passes</a><a href="{U("find/english.html")}">English website</a><a href="{U("find/tokyo.html")}">Tokyo</a><a href="{U("find/kanagawa.html")}">Yokohama</a><a href="{U("find/osaka.html")}">Osaka</a><a href="{U("find/kyoto.html")}">Kyoto</a><a href="{U("find/fukuoka.html")}">Fukuoka</a><a href="{U("find/hokkaido.html")}">Sapporo</a><a href="{U("find/okinawa.html")}">Okinawa</a>'
+            f'<a href="{U("zh/")}" hreflang="zh-Hans" lang="zh-Hans">简体中文</a><a href="{U("ko/")}" hreflang="ko" lang="ko">한국어</a><a href="{U("about/list-your-space.html")}">List your space</a><a href="{U("about/legal-notice.html")}">Legal notice</a><a href="{U("about/privacy.html")}">Privacy</a><a href="{U("about/terms.html")}">Terms</a><a href="{U("contact/")}">Contact</a></nav>'
             f'<p>© 2026 {NAME} — a guide to {TAG}. Facts and photos come from each space\'s official website; photos remain the property of their owners.</p></footer>'
             '<dialog id="lb"><img id="lbimg" alt=""><div class="bar"><span id="lbcap"></span><span><button type="button" id="lbprev" aria-label="Previous">‹</button> <button type="button" id="lbnext" aria-label="Next">›</button> <button type="button" id="lbclose">Close</button></span></div></dialog>'
             f'<script src="{U("assets/en.js")}" defer></script></body></html>')
@@ -223,8 +224,10 @@ def space_page(slug):
     for lab in ('Booking', 'Payment', 'English'):
         if vx.get(lab):
             rows += f'<div class="row"><span>{"How" if lab == "Booking" else "Pay" if lab == "Payment" else lab}</span><div>{E(vx[lab])}</div></div>'
-    if vx:
-        rows += '<p class="chk">Checked on the official website, October 2026</p>'
+    # 2026-10-11 鮮度：公式サイトで最後に確かめた日を施設ごとに出す（en/checked.json・freshness.py で更新）
+    if CHK.get(slug):
+        _d = datetime.date.fromisoformat(CHK[slug])
+        rows += f'<p class="chk">Checked against the official website on <time datetime="{_d.isoformat()}">{_d.day} {_d.strftime("%B %Y")}</time></p>'
     # 2026-10-11 わたるさん「インバウンドってタクシー乗る前提なの？」「どっちでも大丈夫なように」→ 電車・徒歩の行き方を主役にし、タクシーや受付に見せる大きな表示も用意する
     taxi = ''; drv = ''
     if not trains:
@@ -287,7 +290,7 @@ def list_page():
             f'<main class="wrap"><div class="head"><p class="tag">Spaces</p><h1>All {len(ORDER)} spaces</h1><p class="lead">Every space here was chosen for its interior. Filter by area, or by what matters on a short trip: a day pass, weekend hours, late opening.</p></div>'
             f'<div class="fbar"><form class="search" id="fs" role="search"><input type="search" id="fq" placeholder="Area, station or name — e.g. Shibuya" aria-label="Search spaces"><button type="submit">Search</button></form>'
             f'<div class="fchips" id="fp" role="group" aria-label="Prefecture">{chips}</div><div class="fchips tf" id="ft" role="group" aria-label="For travellers">{tf}</div>'
-            f'<p class="fcount" id="fc">{len(ORDER)} spaces</p></div><div class="cards" id="list">{cards}</div><p class="fnone" id="fn" hidden>No spaces match. Try another area or clear a filter.</p></main>' + foot())
+            f'<p class="fcount"><span id="fc">{len(ORDER)} spaces</span> · <a href="{U("spaces/map.html")}">View on a map</a></p></div><div class="cards" id="list">{cards}</div><p class="fnone" id="fn" hidden>No spaces match. Try another area or clear a filter.</p></main>' + foot())
 
 # ---------- 検索の入り口（用途・地域） ----------
 # 2026-10-11 訪日客が検索する「coworking day pass tokyo」「24 hour coworking japan」「coworking yokohama」などに、固定URLのページで応える（中身は施設データから自動で作る）
@@ -573,7 +576,8 @@ def w(path, s):
     open(p, 'w', encoding='utf-8').write(s)
 shutil.rmtree(OUT, ignore_errors=True); os.makedirs(OUT)
 w('assets/en.css', CSS); w('assets/en.js', JS)
-w('index.html', top_page())
+# 2026-10-11 英語トップに中国語・韓国語版への hreflang
+w('index.html', top_page().replace('</head>', '<link rel="alternate" hreflang="en" href="https://cowkml.com/"><link rel="alternate" hreflang="x-default" href="https://cowkml.com/"><link rel="alternate" hreflang="zh-Hans" href="https://cowkml.com/zh/"><link rel="alternate" hreflang="ko" href="https://cowkml.com/ko/"></head>', 1))
 w('spaces/index.html', list_page())
 for s in ORDER: w(f'spaces/{s}.html', space_page(s))
 w('collections/index.html', col_index())
@@ -581,6 +585,12 @@ for c in COLS: w(f'collections/{c["slug"]}.html', col_page(c))
 w('questions/index.html', q_index())
 FP = find_pages()
 for _p, _h in FP: w(_p, _h)
+# 2026-10-11 中国語・韓国語の入口（lang_hubs.py）
+exec(open(os.path.join(HERE, 'lang_hubs.py'), encoding='utf-8').read())
+for _p, _h in LANG_PAGES: w(_p, _h)
+# 2026-10-11 地図ページ（map_en.py）
+exec(open(os.path.join(HERE, 'map_en.py'), encoding='utf-8').read())
+if GEO: w('spaces/map.html', map_page()); FP.append(('spaces/map.html', ''))
 for q in QS: w(f'questions/{q["slug"]}.html', q_page(q))
 w('about/index.html', simple('about/index.html', f'About {NAME}', f'About {NAME}, a guide to {TAG} in English, and who runs it.', f'About {NAME}', ABOUT))
 w('about/privacy.html', simple('about/privacy.html', 'Privacy policy', f'How {NAME} handles personal information.', 'Privacy policy', PRIVACY))
@@ -592,9 +602,11 @@ w('contact/thanks.html', simple('contact/thanks.html', 'Message sent', 'Your mes
 w('404.html', simple('404.html', 'Page not found', 'This page could not be found.', 'Page not found', f'<p class="lead">This page may have moved. Try the list of all spaces or search by area.</p><p><a href="{U("spaces/")}">See all {len(ORDER)} spaces →</a></p>', ''))
 if not PREVIEW:
     today = datetime.date.today().isoformat()
-    paths = [''] + ['spaces/'] + [f'spaces/{s}.html' for s in ORDER] + ['collections/'] + [f'collections/{c["slug"]}.html' for c in COLS] + ['questions/'] + [f'questions/{q["slug"]}.html' for q in QS] + [p for p, _ in FP] + ['about/', 'about/privacy.html', 'about/terms.html', 'about/legal-notice.html', 'about/list-your-space.html', 'contact/']
+    paths = [''] + ['spaces/'] + [f'spaces/{s}.html' for s in ORDER] + ['collections/'] + [f'collections/{c["slug"]}.html' for c in COLS] + ['questions/'] + [f'questions/{q["slug"]}.html' for q in QS] + [p for p, _ in FP] + [p.replace('index.html', '') for p, _ in LANG_PAGES] + ['about/', 'about/privacy.html', 'about/terms.html', 'about/legal-notice.html', 'about/list-your-space.html', 'contact/']
     imgs = {f'spaces/{s}.html': [p for p, c in [[photo(s, n), c] for n, c in photos(s)]][:10] for s in ORDER}
-    sm = ''.join(f'<url><loc>{SITE}/{p}</loc><lastmod>{today}</lastmod>' + ''.join(f'<image:image><image:loc>{E(i)}</image:loc></image:image>' for i in imgs.get(p, [])) + '</url>\n' for p in paths)
+    # 2026-10-11 施設ページの lastmod は「公式サイトで確かめた日」（毎回今日にしない）
+    _lm = lambda p: CHK.get(p[7:-5], today) if p.startswith('spaces/') and p.endswith('.html') else today
+    sm = ''.join(f'<url><loc>{SITE}/{p}</loc><lastmod>{_lm(p)}</lastmod>' + ''.join(f'<image:image><image:loc>{E(i)}</image:loc></image:image>' for i in imgs.get(p, [])) + '</url>\n' for p in paths)
     w('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n' + sm + '</urlset>\n')
     w('site.webmanifest', json.dumps({"name": f"{NAME} — {TAG}", "short_name": NAME, "description": f"{TAG}, in English", "start_url": "/", "display": "standalone", "background_color": "#ffffff", "theme_color": "#2F6A98", "lang": "en",
                                       "icons": [{"src": "/favicon-192x192.png", "sizes": "192x192", "type": "image/png"}, {"src": "/favicon-512x512.png", "sizes": "512x512", "type": "image/png"}]}))

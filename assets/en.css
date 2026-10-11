@@ -278,3 +278,9 @@ img.broken{opacity:0}
 .drv button{color:var(--ink)!important;font:600 15px var(--sans)!important;padding:10px 18px!important;border:1px solid var(--ink)!important}
 .drv .sub{font-size:18px!important}
 .drv .ask{margin:0;font-family:var(--jp);font-size:clamp(18px,4vw,28px);color:var(--accent);font-weight:700}
+/* 2026-10-11 中国語・韓国語の入口 */
+.lh{margin:36px 0 0}.lh h2{font-size:20px;margin:0 0 12px}
+.lhow{margin:0;padding:0;list-style:none;display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.lhow li{border:1px solid var(--line);border-radius:10px;padding:14px 16px;background:#fff}.lhow b{display:block;margin-bottom:6px}.lhow p{margin:0;font-size:14px;line-height:1.7}
+.lq{margin:0;padding-left:18px;line-height:2}
+html[lang="zh-Hans"] body,html[lang="ko"] body{line-height:1.75}

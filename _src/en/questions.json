@@ -1386,5 +1386,168 @@
 ]
 ],
 "ctx": null
+},
+{
+"slug": "outside-tokyo",
+"q": "Where can I cowork on a day pass outside Tokyo?",
+"a": "In Kyoto, Osaka, Fukuoka, Sapporo and Naha there are spaces you can walk into for a day without a membership — several of them inside hotels, from about ¥2,000 to ¥2,200 a day.",
+"desc": "Day-pass coworking in Kyoto, Osaka, Fukuoka, Sapporo and Naha — prices, hours and how to get there, from the official information of .andwork, Zero-Ten Park and xStation01.",
+"secs": [
+[
+"andwork-kyoto",
+"Kyoto: a hotel lounge near Kawaramachi",
+[
+".andwork Kyoto, inside The Millennials Kyoto, is a 5-minute walk from Kawaramachi Station. Drop-in is ¥700 an hour or ¥2,000 a day, from 8:00 to 22:00.",
+"Every desk in the coworking area has an Aeron chair, and there is a self-service kitchen."
+],
+[
+[
+"andwork-kyoto",
+2
+]
+]
+],
+[
+"andwork-osaka",
+"Osaka: 1 minute from Sakaisuji-Hommachi",
+[
+".andwork Osaka, inside THE LIVELY Osaka Honmachi, is a 1-minute walk from Sakaisuji-Hommachi Station. It costs ¥700 an hour or ¥2,000 a day, from 8:00 to 22:00."
+],
+[
+[
+"andwork-osaka",
+4
+]
+]
+],
+[
+"zero-ten-park-canal-city-hakata-mae",
+"Fukuoka: no booking, ¥2,200 a day",
+[
+"Zero-Ten Park Canal City Hakata-mae is right outside Kushida-jinja-mae Station. Drop-in needs no booking: ¥660 an hour, capped at ¥2,200 a day, and an All Day Pass runs until 9:00 the next morning.",
+"In Fukuoka, .andwork Fukuoka in Nakasu and Zero-Ten Park Fukuoka PARCO in Tenjin are other options."
+],
+[
+[
+"zero-ten-park-canal-city-hakata-mae",
+1
+]
+]
+],
+[
+"hokkaido-xstation01",
+"Sapporo: 2 minutes from the station",
+[
+"HOKKAIDO×Station01 is on the 6th floor of JR GOGO SAPPORO, 2 minutes from Sapporo Station. Drop-in is ¥605 an hour or ¥2,200 a day, on weekdays from 9:00 to 20:00."
+],
+[
+[
+"hokkaido-xstation01",
+1
+]
+]
+],
+[
+"andwork-okinawa",
+"Naha: 10 minutes from the airport",
+[
+".andwork Naha, inside ESTINATE HOTEL Naha, is 10 minutes by car from Naha Airport. It costs ¥500 an hour or ¥2,000 a day, from 7:00 to 22:00, and every seat has power."
+],
+[
+[
+"andwork-okinawa",
+5
+]
+]
+]
+],
+"ctx": null
+},
+{
+"slug": "id-registration",
+"q": "Do I need ID or registration to use a day pass?",
+"a": "Usually a little. Some spaces ask you to register at reception and show photo ID on your first visit; others ask you to sign up online first. It is worth checking before you go.",
+"desc": "What ID and registration day-pass coworking in Japan asks for — reception sign-up, photo ID and online registration — from the official information of Zero-Ten Park, xStation01 and .andwork.",
+"secs": [
+[
+"zero-ten-park-fukuoka-parco",
+"Photo ID and a form at reception",
+[
+"At Zero-Ten Park, first-time drop-in users show photo ID and fill in a form at reception, which takes about 5 minutes. The official FAQ names a driving licence or My Number card. From the second visit, the form alone takes about a minute.",
+"Payment is cashless only — credit card, transit IC card, e-money or QR payment."
+],
+[
+[
+"zero-ten-park-fukuoka-parco",
+1
+]
+]
+],
+[
+"hokkaido-xstation01",
+"Agree to the terms on your first visit",
+[
+"HOKKAIDO×Station01 needs no booking. First-time users complete a short registration to agree to the terms of use.",
+"Payment is cashless; cash is not accepted."
+],
+[
+[
+"hokkaido-xstation01",
+6
+]
+]
+],
+[
+"andwork-fukuoka",
+"Free online membership first",
+[
+".andwork asks drop-in users to register as a free member on its website. There is no sign-up fee for hourly, daily or ticket plans."
+],
+[
+[
+"andwork-fukuoka",
+3
+]
+]
+]
+],
+"ctx": null
+},
+{
+"slug": "weekly-pass",
+"q": "Is there a weekly pass for travellers?",
+"a": "Some spaces sell passes by the week. .andwork Kyoto has 1- to 4-week plans with 24-hour access, and Zero-Ten Park in Fukuoka has a Digital Nomad Plan with English-speaking staff.",
+"desc": "Weekly coworking passes in Japan for travellers and digital nomads — prices and what is included, from the official information of .andwork Kyoto and Zero-Ten Park.",
+"secs": [
+[
+"andwork-kyoto",
+"1 to 4 weeks, open 24 hours",
+[
+".andwork Kyoto sells weekly plans: ¥7,400 for 1 week, ¥14,300 for 2 weeks, ¥18,900 for 3 weeks and ¥23,500 for 4 weeks, with no sign-up fee.",
+"Weekly members can use the space 24 hours a day, and lockers and mail handling are available as add-ons."
+],
+[
+[
+"andwork-kyoto",
+8
+]
+]
+],
+[
+"zero-ten-park-canal-city-hakata-mae",
+"A Digital Nomad Plan in Fukuoka",
+[
+"Zero-Ten Park offers a Digital Nomad Plan, from short hourly use up to weekly plans for mid- and long-term stays.",
+"The operator says English-speaking staff are on site, and plan users get free onboarding: information on places to stay, local communities, sightseeing and activities in Kyushu."
+],
+[
+[
+"zero-ten-park-canal-city-hakata-mae",
+3
+]
+]
+]
+],
+"ctx": null
 }
 ]
