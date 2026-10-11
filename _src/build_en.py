@@ -142,7 +142,7 @@ def nav(cur=''):
 
 def foot():
     return (f'<footer class="wrap"><nav><a href="{U("about/")}">About {NAME}</a><a href="{U("spaces/")}">All spaces</a><a href="{U("collections/")}">Collections</a><a href="{U("questions/")}">Q&amp;A</a>'
-            f'<a href="{U("find/day-pass.html")}">Day passes</a><a href="{U("find/english.html")}">English website</a><a href="{U("find/tokyo.html")}">Tokyo</a><a href="{U("find/kanagawa.html")}">Yokohama</a><a href="{U("find/osaka.html")}">Osaka</a>'
+            f'<a href="{U("find/day-pass.html")}">Day passes</a><a href="{U("find/english.html")}">English website</a><a href="{U("find/tokyo.html")}">Tokyo</a><a href="{U("find/kanagawa.html")}">Yokohama</a><a href="{U("find/osaka.html")}">Osaka</a><a href="{U("find/kyoto.html")}">Kyoto</a><a href="{U("find/fukuoka.html")}">Fukuoka</a><a href="{U("find/hokkaido.html")}">Sapporo</a><a href="{U("find/okinawa.html")}">Okinawa</a>'
             f'<a href="{U("about/list-your-space.html")}">List your space</a><a href="{U("about/legal-notice.html")}">Legal notice</a><a href="{U("about/privacy.html")}">Privacy</a><a href="{U("about/terms.html")}">Terms</a><a href="{U("contact/")}">Contact</a></nav>'
             f'<p>© 2026 {NAME} — a guide to {TAG}. Facts and photos come from each space\'s official website; photos remain the property of their owners.</p></footer>'
             '<dialog id="lb"><img id="lbimg" alt=""><div class="bar"><span id="lbcap"></span><span><button type="button" id="lbprev" aria-label="Previous">‹</button> <button type="button" id="lbnext" aria-label="Next">›</button> <button type="button" id="lbclose">Close</button></span></div></dialog>'
@@ -302,7 +302,9 @@ FINDS = [
  ('english', 'Coworking with an English website in Japan', 'English website', lambda s: 'English website' in TRAIT[s], 'whose operators publish an English website — or, in a few cases, state English-speaking staff', 'English website'),
 ]
 PREF_FINDS = [('tokyo', 'Tokyo', 'Coworking spaces in Tokyo'), ('kanagawa', 'Kanagawa', 'Coworking in Yokohama and Kanagawa'), ('chiba', 'Chiba', 'Coworking in Chiba'),
-              ('saitama', 'Saitama', 'Coworking in Saitama'), ('osaka', 'Osaka', 'Coworking in Osaka')]
+              ('saitama', 'Saitama', 'Coworking in Saitama'), ('osaka', 'Osaka', 'Coworking in Osaka'),
+              # 2026-10-11 地方（京都・福岡・札幌・沖縄）を足した
+              ('kyoto', 'Kyoto', 'Coworking in Kyoto'), ('fukuoka', 'Fukuoka', 'Coworking in Fukuoka'), ('hokkaido', 'Hokkaido', 'Coworking in Sapporo and Hokkaido'), ('okinawa', 'Okinawa', 'Coworking in Okinawa')]
 def _find_links(cur):
     a = [(f'find/{k}.html', lab) for k, _, lab, _, _, _ in FINDS] + [(f'find/{k}.html', p) for k, p, _ in PREF_FINDS]
     return ''.join(f'<a href="{U(u)}"{" aria-current=\"page\"" if u == cur else ""}>{E(l)}</a>' for u, l in a)

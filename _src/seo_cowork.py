@@ -1311,3 +1311,14 @@ for _s in ['roomus-yokosuka-chuo']:
 
 for _s in ['totonoi-plus-omiya', 'nankyoku-space-tateyama', 'po-to-higashikoganei', 'kanadebako-shimokitazawa', 'sancha-work-sangenjaya', '100work-shoin-jinja-mae', 'coworking-eifuku', 'spa-metsa-otaka-nagareyama', 'skyspa-yokohama-koowork']:
     SEO.pop(_s, None); PLACE.pop(_s, None)
+
+# 2026-10-11 地方の旅行者向け7拠点（住所・営業時間は各公式サイトのとおり）
+PLACE.update({
+  'andwork-kyoto': {'streetAddress': '京都府京都市中京区山崎町235', 'addressLocality': '京都市', 'addressRegion': '京都府', 'openingHours': 'Mo-Su 08:00-22:00'},
+  'andwork-osaka': {'streetAddress': '大阪府大阪市中央区南本町1-5-11', 'addressLocality': '大阪市', 'addressRegion': '大阪府', 'openingHours': 'Mo-Su 08:00-22:00'},
+  'andwork-fukuoka': {'streetAddress': '福岡県福岡市博多区中洲5-2-18', 'addressLocality': '福岡市', 'addressRegion': '福岡県', 'openingHours': 'Mo-Su 08:00-22:00'},
+  'andwork-okinawa': {'streetAddress': '沖縄県那覇市松山2-3-11', 'addressLocality': '那覇市', 'addressRegion': '沖縄県', 'openingHours': 'Mo-Su 07:00-22:00'},
+  'zero-ten-park-canal-city-hakata-mae': {'streetAddress': '福岡県福岡市博多区祇園町8-13 第一プリンスビル1F・2F', 'addressLocality': '福岡市', 'addressRegion': '福岡県'},
+  'zero-ten-park-fukuoka-parco': {'streetAddress': '福岡県福岡市中央区天神2-11-1 福岡PARCO新館5F', 'addressLocality': '福岡市', 'addressRegion': '福岡県'},
+  'hokkaido-xstation01': {'streetAddress': '北海道札幌市中央区北5条西5丁目1番地5 JR GOGO SAPPORO 6階', 'addressLocality': '札幌市', 'addressRegion': '北海道', 'openingHours': 'Mo-Fr 09:00-20:00'},
+})

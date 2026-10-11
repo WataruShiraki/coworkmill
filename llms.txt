@@ -1,8 +1,15 @@
 # COWORKMILL
 
-> Japan's best-designed coworking spaces, in English: 347 coworking spaces in Tokyo and across Japan chosen for their interiors, with prices, hours and access from each official website.
+> Japan's best-designed coworking spaces, in English: 354 coworking spaces in Tokyo and across Japan chosen for their interiors, with prices, hours and access from each official website.
 
 ## Pages
+- [.andwork Kyoto](https://cowkml.com/spaces/andwork-kyoto.html): Work alongside digital nomads from around the world in a Kawaramachi hotel
+- [.andwork Osaka](https://cowkml.com/spaces/andwork-osaka.html): A hotel lounge with a pool table, in the middle of Osaka
+- [.andwork Fukuoka](https://cowkml.com/spaces/andwork-fukuoka.html): A Nakasu hotel with a double-height lobby bar
+- [.andwork Naha](https://cowkml.com/spaces/andwork-okinawa.html): Work while you travel, in a resort-style hotel lounge in Naha
+- [Zero-Ten Park Canal City Hakata-mae](https://cowkml.com/spaces/zero-ten-park-canal-city-hakata-mae.html): Fukuoka's largest coworking, right outside Kushida-jinja-mae Station
+- [Zero-Ten Park Fukuoka PARCO](https://cowkml.com/spaces/zero-ten-park-fukuoka-parco.html): Coworking inside a fashion building, directly linked to Tenjin Station
+- [HOKKAIDO×Station01](https://cowkml.com/spaces/hokkaido-xstation01.html): A community lounge 2 minutes from Sapporo Station, run by the JR East group
 - [Key Site (Wakayama)](https://cowkml.com/spaces/cowork-key-site-wakayama.html): An open space on the 5th floor of Key Site, eight minutes from JR Wakayama Station
 - [Hiromalab (Hiroshima)](https://cowkml.com/spaces/cowork-hiromalab-hiroshima.html): An open space on the 17th floor of Hiroshima High Building 21, one minute from Kanayamacho Station
 - [Lounge ASO (Aso Kumamoto Airport)](https://cowkml.com/spaces/cowork-lounge-aso-kumamoto-airport.html): A lounge in the domestic departure area of Aso Kumamoto Airport

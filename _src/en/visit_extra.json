@@ -1938,5 +1938,60 @@
  "toranomon-hills-arch": {
   "Who": "Membership for teams creating new businesses, with dedicated new-business support staff.",
   "src": "https://arch-incubationcenter.com/"
+ },
+ "andwork-kyoto": {
+  "Booking": "No booking needed for drop-in. Register for free as a member on the .andwork website first.",
+  "English": "English website.",
+  "day": true,
+  "Payment": "Cash, credit card, transit IC card, smartphone payment (as shown on the official page).",
+  "Who": "Anyone — hotel guests and non-guests.",
+  "src": "https://www.xandwork.com/location/kyoto/"
+ },
+ "andwork-osaka": {
+  "Booking": "No booking needed for drop-in. Register for free as a member on the .andwork website first.",
+  "English": "English website.",
+  "day": true,
+  "Payment": "Cash or credit card (as shown on the official page).",
+  "Who": "Anyone — hotel guests and non-guests.",
+  "src": "https://www.xandwork.com/location/osaka/"
+ },
+ "andwork-fukuoka": {
+  "Booking": "No booking needed for drop-in. Register for free as a member on the .andwork website first.",
+  "English": "English website.",
+  "day": true,
+  "Payment": "Cash or credit card (as shown on the official page).",
+  "Who": "Anyone — hotel guests and non-guests.",
+  "src": "https://www.xandwork.com/location/fukuoka/"
+ },
+ "andwork-okinawa": {
+  "Booking": "No booking needed for drop-in. Register for free as a member on the .andwork website first.",
+  "English": "English website.",
+  "day": true,
+  "Payment": "Cash or credit card (as shown on the official page).",
+  "Who": "Anyone — hotel guests and non-guests.",
+  "src": "https://www.xandwork.com/location/okinawa/"
+ },
+ "zero-ten-park-canal-city-hakata-mae": {
+  "Booking": "No booking needed. Register at reception on the day; first-time users show photo ID (the official FAQ names a driving licence or My Number card).",
+  "Payment": "Cashless only: credit card, transit IC card, e-money, QR payment (PayPay etc.). No cash.",
+  "English": "English-speaking staff for the Digital Nomad Plan (official plan page).",
+  "day": true,
+  "src": "https://thecompany.jp/faq/",
+  "Hours": "Reception weekdays 9:00–20:00. All Day Pass: until 9:00 next morning."
+ },
+ "zero-ten-park-fukuoka-parco": {
+  "Booking": "No booking needed. Register at reception on the day; first-time users show photo ID (the official FAQ names a driving licence or My Number card).",
+  "Payment": "Cashless only: credit card, transit IC card, e-money, QR payment (PayPay etc.). No cash.",
+  "English": "English-speaking staff for the Digital Nomad Plan (official plan page).",
+  "day": true,
+  "src": "https://thecompany.jp/faq/",
+  "Hours": "Reception weekdays 9:00–20:00. All Day Pass: until 9:00 next morning."
+ },
+ "hokkaido-xstation01": {
+  "Booking": "No booking — walk in. First-time users register and agree to the terms.",
+  "Payment": "Cashless only (no cash).",
+  "Who": "Anyone.",
+  "day": true,
+  "src": "https://xstation.jp/dropin/"
  }
 }
