@@ -357,7 +357,7 @@ def top_page():
     _fk = {t: k for k, _, _, _, _, t in FINDS}
     tf = ''.join(f'<a href="{U("find/" + _fk[t] + ".html") if t in _fk else U("spaces/") + "?t=" + quote(t)}">{E(t)}<small>{sum(1 for s in ORDER if t in TRAIT[s])}</small></a>' for t in TFILTERS)
     cols = ''.join(col_card(c) for c in COLS[:6])
-    title = f"Japan's best-designed coworking spaces, in English | {NAME}"
+    title = f"Japan's best-designed coworking spaces | {NAME}"
     desc = f'{len(ORDER)} coworking spaces in Tokyo and across Japan, chosen for their design — with prices, hours, day passes, payment and the Japanese address for your taxi.'
     ld = [{"@context": "https://schema.org", "@type": "WebSite", "name": NAME, "url": SITE + '/', "inLanguage": "en",
            "potentialAction": {"@type": "SearchAction", "target": SITE + '/spaces/?q={q}', "query-input": "required name=q"}}]
