@@ -414,13 +414,22 @@ COL_SEO = {'marunouchi': 'Coworking near Tokyo Station: Marunouchi and Otemachi'
   'brand-newwork': 'NewWork coworking locations in Tokyo', 'brand-senq': 'SENQ coworking locations in Tokyo', 'brand-co-ba': 'co-ba coworking locations in Tokyo', 'reuse': 'Coworking in renovated old buildings in Tokyo'}
 def col_seo(c): return COL_SEO.get(c['slug'], c['title'])
 # 2026-10-11 わたるさん「特集をインバウンドの方向けにかなり深ぼって」→ 特集ごとに、訪日客が知りたいこと（使えるか・いくらか・どう払うか・英語・最寄り駅）を施設データから一覧にする
-_ST = re.compile(r"\b([A-Z][a-zōū]+(?:-[A-Z]?[a-zōū]+)?) Station")
+# 2026-10-12 「Toranomon Hills Station」が「Hills Station」になっていたので、2語の駅名（◯◯ Hills／Garden など）は前の語も拾う
+_ST = re.compile(r"\b(?:([A-Z][a-zōū]+) )?([A-Z][a-zōū]+(?:-[A-Z]?[a-zōū]+)?) Station")
 _STX = {'Line', 'Startup', 'Square', 'Metro', 'The'}
+_ST2 = {'Hills', 'Garden', 'Bridge', 'Park', 'Gate', 'Teleport', 'Koen', 'Kaigan'}
+def _stnames(txt):
+    out = set()
+    for a, b in _ST.findall(txt):
+        if b in _ST2:
+            if a and a not in _STX: out.add(f'{a} {b}')
+        elif b not in _STX: out.add(b)
+    return out
 def _stations(sl):
     c = collections.Counter()
     for s in sl:
         e = EN[s]; txt = ' '.join([v for k, v in e['facts'] if k in ('Access', 'Location', 'Space')] + [e['lead']])
-        c.update({m for m in _ST.findall(txt) if m not in _STX})
+        c.update(_stnames(txt))
     return [k for k, _ in c.most_common(5)]
 def _price(s):
     e = EN[s]; v = fact(e, 'Drop-in') or (VX.get(s, {}).get('Price') if 'Day pass' in TRAIT[s] else '')
