@@ -81,7 +81,8 @@
 "An office where a building is divided into rooms rented by several companies or individuals, with reception, lounges and meeting rooms shared.",
 "Where the line with coworking falls differs by place. A space centred on shared seats is usually called coworking; one centred on lockable rooms, a shared office."
 ]
-}
+},
+"title": "Coworking space vs shared office: the difference"
 },
 {
 "slug": "drop-in",
@@ -640,7 +641,8 @@
 ]
 ]
 ],
-"ctx": null
+"ctx": null,
+"title": "Coworking with private rooms for solo work"
 },
 {
 "slug": "weekend",
@@ -1306,7 +1308,8 @@
 ]
 ]
 ],
-"ctx": null
+"ctx": null,
+"title": "Coworking in Japan with English staff or website"
 },
 {
 "slug": "first-visit",

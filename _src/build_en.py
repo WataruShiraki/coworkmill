@@ -263,7 +263,7 @@ def space_page(slug):
     rel += [s for s in POPULAR if s != slug and s not in rel and s in EN and pref(EN[s]) == pref(e)][:4 - len(rel)]
     relh = f'<section class="sec"><div class="sh"><div><h2>More spaces nearby</h2><p>{E(town(e))} and around</p></div><a href="{U("spaces/")}?q={quote(town(e).lower())}">See all in {E(town(e))} →</a></div><div class="cards">' + ''.join(card(s) for s in rel) + '</div></section>' if rel else ''
     _nt = e['name'] if town(e).lower() in e['name'].lower() else f'{e["name"]}, {town(e)}'
-    title = fit(f'{_nt} — photos & how to visit | {NAME}', f'{_nt} — coworking | {NAME}', f'{_nt} | {NAME}', f'{e["name"]} | {NAME}', e['name'])
+    title = fit(f'{_nt} — photos & how to visit | {NAME}', f'{_nt} — coworking | {NAME}', f'{_nt} | {NAME}', f'{e["name"]} | {NAME}', e['name'], e.get('short', e['name']))
     _c = e['card'].rstrip('.')
     desc = fit(f'{_c}. {_nt}: photos, prices, hours, how to get there, with the address in Japanese.',
                f'{_c}. {_nt}: photos, prices, hours and how to visit.', f'{_c}. Photos, prices, hours and how to visit.',
@@ -398,10 +398,10 @@ def top_page():
 # ---------- 特集 ----------
 def col_index():
     cols = ''.join(col_card(c) for c in COLS)
-    return (head(f'Collections — coworking in Japan by area and theme | {NAME}', f'{len(COLS)} collections of Japan\'s best-designed coworking spaces, grouped by area (Shibuya, Marunouchi, Shinjuku…) and theme (24 hours, hotels, rooftops…).', 'collections/index.html') + nav('collections/') +
+    return (head(f'Coworking collections by area and theme | {NAME}', f'{len(COLS)} collections of Japan\'s best-designed coworking spaces, grouped by area (Shibuya, Marunouchi, Shinjuku…) and theme (24 hours, hotels, rooftops…).', 'collections/index.html') + nav('collections/') +
             f'<main class="wrap"><div class="head"><p class="tag">Collections</p><h1>{len(COLS)} collections</h1><p class="lead">Spaces grouped by neighbourhood and by theme, so you can compare places that share something.</p></div><div class="ccg">{cols}</div></main>' + foot())
 # 2026-10-11 わたるさん「インバウンドの方が検索するのに対応してる？」→ 検索されるのは「coworking + 地名 / 用途」。特集のタイトルに必ず coworking を入れる
-COL_SEO = {'marunouchi': 'Coworking near Tokyo Station: Marunouchi, Yurakucho, Otemachi', 'toranomon-azabudai': 'Coworking in Toranomon and Azabudai, Tokyo',
+COL_SEO = {'marunouchi': 'Coworking near Tokyo Station: Marunouchi and Otemachi', 'toranomon-azabudai': 'Coworking in Toranomon and Azabudai, Tokyo',
   'station-direct': 'Coworking linked directly to a Tokyo station', '24hours': '24-hour coworking spaces in Tokyo', 'large-floor': 'The largest coworking spaces in Tokyo',
   'corporate-public': 'Coworking run by companies and the city in Tokyo', 'nihonbashi-yaesu': 'Coworking in Nihonbashi, Kyobashi and Yaesu, Tokyo',
   'aoyama-omotesando': 'Coworking in Aoyama and Omotesando, Tokyo', 'high-floor': 'Coworking on high floors with a view over Tokyo', 'weekend': 'Coworking open at weekends in Tokyo',
@@ -491,7 +491,7 @@ def q_page(q):
     _qi = QS.index(q); others = ''.join(q_card(o, True) for o in (QS[_qi + 1:] + QS[:_qi])[:6])
     ld = [{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q['q'], "acceptedAnswer": {"@type": "Answer", "text": q['a']}}]}]
     _qi = next((photo(a, n) for _s, _h, _p, phs in q['secs'] for a, n in phs if photo(a, n)), None)
-    return (head(fit(f'{q["q"]} | {NAME}', q['q']), (q['desc'] if len(q['desc']) <= 158 else q['desc'][:155].rsplit(' ', 1)[0].rstrip(',') + '…'), f'questions/{q["slug"]}.html', _qi, 'article', ld) + nav('questions/') +
+    return (head(fit(f'{q["q"]} | {NAME}', q['q'], q.get('title', q['q'])), (q['desc'] if len(q['desc']) <= 158 else q['desc'][:155].rsplit(' ', 1)[0].rstrip(',') + '…'), f'questions/{q["slug"]}.html', _qi, 'article', ld) + nav('questions/') +
             f'<main class="wrap"><div class="crumb"><a href="{U("questions/")}">Q&amp;A</a></div><div class="head"><p class="tag">Q&amp;A</p><h1>{E(q["q"])}</h1><p class="lead answer">{E(q["a"])}</p></div>'
             f'<div class="narrow">{body}</div><section class="sec"><div class="sh"><div><h2>Other questions</h2></div></div><ul class="qidx small">{others}</ul></section></main>' + foot())
 
@@ -557,6 +557,9 @@ LIST = f"""<p class="lead">{NAME} introduces coworking spaces in Japan to visito
 </div>
 <h2>How it works</h2><ol><li>Apply with the space name, website and a contact email — about a minute.</li><li>We review the space and reply by email, usually within one business day.</li><li>Add photos, prices and hours in the dashboard, then publish.</li></ol>
 <h2>What we list</h2><p>Coworking spaces designed by architects or design firms, or spaces that clearly care about design. Plans are billed monthly and can be changed or cancelled at any time, with no minimum term.</p>
+<h2 id="link">Already listed? Link to your page</h2><p>Every space we list has an English page with photos, prices, hours, directions and the address in Japanese. Many visitors look for an English page before they come; you are welcome to link to yours from your website or booking page. Replace <code>your-space</code> with the address of your page:</p>
+<pre class="snip"><code>&lt;a href="https://cowkml.com/spaces/your-space.html"&gt;Read about us in English on COWORKMILL&lt;/a&gt;</code></pre>
+<p>Each page shows the date we last checked it against your official website. If your prices, hours or day-pass rules change, tell us through the <a href="{U("contact/")}?topic=update">contact form</a> and we will update the page.</p>
 <p><a class="btn" href="{U("contact/")}?topic=listing">Apply to list your space →</a></p>
 <p class="note">Japanese-speaking operators can also apply on the <a href="/register.html" lang="ja">Japanese page</a>. Prices include consumption tax.</p>"""
 

@@ -1363,7 +1363,8 @@
   "English": "English website.",
   "src": "https://midori.so/locations/nagatacho",
   "Price": "¥3,300/day pop-in, or ¥33,000 for 11 days; free desk ¥42,350/month",
-  "day": true
+  "day": true,
+  "Hours": "Members: 24 hours, 365 days"
  },
  "midori-so-bakuroyokoyama": {
   "Booking": "Pop-in day pass: pay per visit at any free desk. Monthly membership is by application, tour and interview.",
@@ -1377,7 +1378,8 @@
   "English": "English website.",
   "src": "https://midori.so/locations/shibuya",
   "Price": "¥3,300/day pop-in; free desk ¥44,000/month (+ ¥11,000 admission)",
-  "day": true
+  "day": true,
+  "Hours": "Members 24 hours, 365 days / pop-in 10:00–18:00"
  },
  "midori-so-kichijoji": {
   "Booking": "Pop-in day pass: pay per visit at any free desk. Monthly membership is by application, tour and interview.",
@@ -1391,14 +1393,16 @@
   "English": "English website.",
   "src": "https://midori.so/locations/nihonbashi",
   "Price": "¥2,200/day pop-in (lounge 10:00–18:00), no membership or admission fee",
-  "day": true
+  "day": true,
+  "Hours": "Day pop-in 10:00–18:00 / night pop-in 18:00–9:30 next morning"
  },
  "midori-so-nakameguro": {
   "Booking": "Pop-in day pass: pay per visit at any free desk. Monthly membership is by application, tour and interview.",
   "English": "English website.",
   "src": "https://midori.so/locations/nakameguro",
   "Price": "¥3,300/day pop-in, or ¥33,000 for 11 days",
-  "day": true
+  "day": true,
+  "Hours": "24 hours, 365 days (members)"
  },
  "business-airport-kudanshita": {
   "Booking": "Membership with photo ID (driving licence, passport or My Number card); you can start the same day you sign up. Minimum two months.",
@@ -1662,7 +1666,8 @@
   "Booking": "Drop-in: book on the STATION WORK website (account needed). Weekdays 10:00–19:00.",
   "Price": "Drop-in ¥2,000/day + tax",
   "src": "https://co-ba.net/ebisu/",
-  "day": true
+  "day": true,
+  "Hours": "Ground-floor coworking: 24 hours (members)"
  },
  "co-ba-chofu": {
   "Booking": "Drop-in on weekdays 10:00–16:00 — check the calendar on the website; may stop when busy.",
@@ -1761,11 +1766,13 @@
  },
  "ryozan-park-sugamo-grand": {
   "English": "English website.",
-  "src": "https://www.ryozanpark.com/en/"
+  "src": "https://www.ryozanpark.com/en/",
+  "Hours": "Coworking members: 6:00–24:00 every day"
  },
  "ryozan-park-otsuka-green": {
   "English": "English website.",
-  "src": "https://www.ryozanpark.com/en/"
+  "src": "https://www.ryozanpark.com/en/",
+  "Hours": "Fixed-desk members: 24 hours, 365 days"
  },
  "andwork-shibuya": {
   "Booking": "Register as a member on the website.",
@@ -1867,7 +1874,8 @@
  "x-nihonbashi-tower": {
   "Who": "For CROSS U members (space business community).",
   "English": "English website.",
-  "src": "https://www.x-nihonbashi.com/"
+  "src": "https://www.x-nihonbashi.com/",
+  "Hours": "Coworking: weekdays 8:00–19:00"
  },
  "global-business-hub-tokyo": {
   "English": "English website.",
@@ -1909,7 +1917,8 @@
   "Booking": "Style rooms can be rented by the half-hour without membership, 9:00–21:00; shared offices by contract.",
   "Price": "Style rooms from ¥1,650 per 30 min (4 people)",
   "English": "English website.",
-  "src": "https://lifork.jp/otemachi/workroom.html"
+  "src": "https://lifork.jp/otemachi/workroom.html",
+  "Hours": "Shared offices: 24 hours, 365 days"
  },
  "nagaya-aoyama": {
   "Price": "Open-space plans ¥11,000–¥19,800/month; private rooms ¥55,000–¥154,000/month",
