@@ -224,3 +224,7 @@ dialog button{background:none;border:1px solid #666;color:#fff;font:inherit;padd
 .fq details:last-child{border-bottom:1px solid var(--line)}
 .fq summary{cursor:pointer;font-weight:600;font-size:15px}
 .fq p{margin:8px 0 0;color:var(--ink-2);font-size:14px;line-height:1.65}
+.picks{list-style:none;margin:0 0 22px;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.picks li{border:1px solid var(--line);border-radius:2px;padding:14px 16px;display:grid;gap:6px;font-size:13.5px;line-height:1.55;color:var(--ink-2);background:var(--bg,#fff)}
+.picks li b{font-size:15px;color:var(--ink)}
+.picks .pp{color:var(--ink);font-weight:600}

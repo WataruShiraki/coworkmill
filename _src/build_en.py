@@ -387,6 +387,12 @@ def visitor_block(c, sl, label):
                    f'<td>{E(_short(fact(EN[x], "Hours", "Access hours"), 50) or "—")}</td><td>{E(_short(VX.get(x, {}).get("Payment", ""), 50) or "—")}</td><td>{"Yes" if x in en else "—"}</td></tr>' for x in sl)
     table = (f'<div class="tblw"><table class="cmp"><thead><tr><th scope="col">Space</th><th scope="col">Day pass</th><th scope="col">Price</th><th scope="col">Hours</th><th scope="col">Payment</th><th scope="col">English site</th></tr></thead><tbody>{rows}</tbody></table></div>'
              '<p class="note">From each official website. “—” means the official information we checked does not say.</p>')
+    # 1日だけ使える施設を、入り方・払い方つきで先に見せる
+    def _pick(x):
+        v = VX.get(x, {}); bits = [f'<b>{nm(x)}</b>', f'<span class="pp">{E(_short(_price(x), 90))}</span>' if _price(x) else '']
+        bits += [f'<span>{E(v[k])}</span>' for k in ('Booking', 'Payment') if v.get(k)]
+        return '<li>' + ''.join(b for b in bits if b) + '</li>'
+    picks = (f'<h3 class="fqh">Drop in for a day</h3><ul class="picks">{"".join(_pick(x) for x in dp)}</ul>') if dp else ''
     faq = []
     if dp:
         faq.append((f'Can I use a coworking space {label} without a membership?',
@@ -398,7 +404,7 @@ def visitor_block(c, sl, label):
     if st: faq.append((f'Which stations are the coworking spaces {label} near?', 'The stations mentioned most often are ' + ', '.join(f'{x} Station' for x in st) + '. Every space page has the Japanese address to show a taxi driver and a Google Maps link.'))
     fq = ''.join(f'<details><summary>{E(q)}</summary><p>{E(a)}</p></details>' for q, a in faq)
     html_ = (f'<section class="sec visitor"><div class="sh"><div><h2>Planning a visit</h2><p>What a visitor to Japan needs to know about these {n} spaces</p></div></div>'
-             f'<div class="vstats">{stats}</div>' + (f'<p class="vst">Nearest stations: {E(", ".join(st))}.</p>' if st else '') + table +
+             f'<div class="vstats">{stats}</div>' + (f'<p class="vst">Nearest stations: {E(", ".join(st))}.</p>' if st else '') + picks + table +
              (f'<p class="more"><a href="{U("find/day-pass.html")}">All {sum(1 for x in ORDER if "Day pass" in TRAIT[x])} day-pass spaces in Japan →</a></p>' if not dp else '') +
              f'<h3 class="fqh">Questions visitors ask</h3><div class="fq">{fq}</div></section>')
     ld = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in faq]}
