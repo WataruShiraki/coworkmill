@@ -1,5 +1,9 @@
 /* COWORKMILL English site: lightbox, copy address, list filters (2026-10-10) */
 (function(){
+  // 2026-10-11 施設サイトの写真が読めなくなったときに、壊れた画像アイコンを出さず地の色で受ける
+  function brk(i){i.classList.add('broken')}
+  document.addEventListener('error',function(e){if(e.target&&e.target.tagName==='IMG')brk(e.target)},true);
+  [].forEach.call(document.images,function(i){if(i.complete&&!i.naturalWidth&&i.src)brk(i)});
   // photo lightbox
   var data=document.getElementById('photos'),P=[];
   try{P=data?JSON.parse(data.textContent):[]}catch(e){}

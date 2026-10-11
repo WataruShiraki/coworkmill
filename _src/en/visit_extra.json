@@ -152,22 +152,26 @@
  "h1o-shibuya-jinnan": {
   "Booking": "Private serviced offices for companies; tours by appointment. Staffed reception.",
   "English": "The operator's website has an English version.",
-  "src": "https://www.h1o-web.com/officelist/shibuyajinnan/"
+  "src": "https://www.h1o-web.com/officelist/shibuyajinnan/",
+  "Hours": "24 hours (no closing days except statutory inspections)"
  },
  "h1o-toranomon": {
   "Booking": "Private serviced offices for companies; tours by appointment. Staffed reception.",
   "English": "The operator's website has an English version.",
-  "src": "https://www.h1o-web.com/officelist/toranomon/"
+  "src": "https://www.h1o-web.com/officelist/toranomon/",
+  "Hours": "24 hours (no closing days except statutory inspections)"
  },
  "h1o-shibakoen": {
   "Booking": "Private serviced offices for companies; tours by appointment. Staffed reception.",
   "English": "The operator's website has an English version.",
-  "src": "https://www.h1o-web.com/officelist/shibaparks/"
+  "src": "https://www.h1o-web.com/officelist/shibaparks/",
+  "Hours": "24 hours (no closing days except statutory inspections)"
  },
  "cic-tokyo": {
   "Booking": "Membership (coworking desks and private offices); members book meeting rooms in the booking system.",
   "English": "Bilingual staff and an English website.",
-  "src": "https://jp.cic.com/en/cic-tokyo/"
+  "src": "https://jp.cic.com/en/cic-tokyo/",
+  "Hours": "24 hours a day, 365 days (members)"
  },
  "wework-kamiyacho-trust-tower": {
   "Booking": "All Access Plus: apply online and start from two business days later. Meeting rooms can be booked without membership. Members enter with a key card and the WeWork app.",
@@ -187,7 +191,9 @@
  },
  "fabbit-aoyama-itchome": {
   "Booking": "Private offices for 2–20 people after a tour and screening; paid by invoice.",
-  "src": "https://crosscoop.com/office/aoyama-itchome"
+  "src": "https://crosscoop.com/office/aoyama-itchome",
+  "Hours": "Tenants 24 hours, 365 days (meeting rooms, booths and lounges at all sites)",
+  "Price": "Private offices — prices on request after a tour"
  },
  "chigalab-chigasaki": {
   "Booking": "Drop-in with no registration — sign in at the desk on arrival.",
@@ -669,7 +675,8 @@
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
   "src": "https://mf.workstyling.jp/faq/",
-  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person",
+  "Hours": "Shared space weekdays 8:00–21:00 (closed weekends, holidays and New Year); private FLEX space 24 hours"
  },
  "workstyling-tokyo-midtown-yaesu": {
   "Booking": "Corporate members only — no drop-in for visitors.",
@@ -777,7 +784,8 @@
   "Booking": "Corporate members only — no drop-in for visitors.",
   "English": "The operator's website has an English version.",
   "src": "https://mf.workstyling.jp/faq/",
-  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥290 per 10 minutes per person"
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥300 per 10 minutes per person (excl. tax)",
+  "Hours": "Weekdays 8:00–21:00 (closed weekends, holidays and New Year)"
  },
  "workstyling-tamachi-mitaguchi": {
   "Booking": "Corporate members only — no drop-in for visitors.",
@@ -1227,51 +1235,74 @@
   "Booking": "All Access Plus: apply online and start from two business days later. Meeting rooms can be booked without membership. Members enter with a key card and the WeWork app.",
   "src": "https://wework.co.jp/plan/allaccess",
   "Price": "All Access Plus ¥42,900/month incl. tax (about 40 sites); meeting rooms without membership from ¥6,600/hour",
-  "Payment": "Credit card (billed monthly)."
+  "Payment": "Credit card (billed monthly).",
+  "Hours": "Weekdays 8:30–20:00"
  },
  "fabbit-shibuya-ekimae": {
   "Booking": "Contracts after a tour and screening; paid by invoice.",
-  "src": "https://crosscoop.com/office/aoyama-itchome"
+  "src": "https://crosscoop.com/office/shibuya-ekimae",
+  "Hours": "Tenants 24 hours, 365 days (meeting rooms, booths and lounges at all sites)",
+  "Price": "Private offices — prices on request after a tour"
  },
  "crosscoop-shibuya-nextsite": {
   "Booking": "Contracts after a tour and screening; paid by invoice.",
-  "src": "https://crosscoop.com/office/aoyama-itchome"
+  "src": "https://crosscoop.com/office/shibuya-nextsite",
+  "Hours": "Tenants 24 hours, 365 days (meeting rooms, booths and lounges at all sites)",
+  "Price": "Private offices listed from ¥356,000/month (4-person room, excl. tax); coworking plan from ¥40,000/month"
  },
  "crosscoop-shinjuku-avenue": {
   "Booking": "Contracts after a tour and screening; paid by invoice.",
-  "src": "https://crosscoop.com/office/aoyama-itchome"
+  "src": "https://crosscoop.com/office/shinjuku-avenue",
+  "Hours": "Tenants 24 hours, 365 days (meeting rooms, booths and lounges at all sites)",
+  "Price": "Private offices listed from ¥700,000/month (10-person room, excl. tax); coworking plan from ¥40,000/month"
  },
  "fabbit-ginza": {
   "Booking": "Contracts after a tour and screening; paid by invoice.",
-  "src": "https://crosscoop.com/office/aoyama-itchome"
+  "src": "https://crosscoop.com/office/ginza",
+  "Hours": "Tenants 24 hours, 365 days (meeting rooms, booths and lounges at all sites)",
+  "Price": "Private offices — prices on request after a tour"
  },
  "fabbit-kyobashi": {
   "Booking": "Contracts after a tour and screening; paid by invoice.",
-  "src": "https://crosscoop.com/office/aoyama-itchome"
+  "src": "https://crosscoop.com/office/kyobashi-tokyo",
+  "Hours": "Tenants 24 hours, 365 days (meeting rooms, booths and lounges at all sites)",
+  "Price": "Private offices — prices on request after a tour"
  },
  "crosscoop-roppongi-next": {
   "Booking": "Contracts after a tour and screening; paid by invoice.",
-  "src": "https://crosscoop.com/office/aoyama-itchome"
+  "src": "https://crosscoop.com/office/roppongi-next",
+  "Hours": "Tenants 24 hours, 365 days (meeting rooms, booths and lounges at all sites)",
+  "Price": "Private offices listed from ¥140,000/month (1-person room, excl. tax); coworking plan from ¥40,000/month"
  },
  "crosscoop-nihonbashi": {
   "Booking": "Contracts after a tour and screening; paid by invoice.",
-  "src": "https://crosscoop.com/office/aoyama-itchome"
+  "src": "https://crosscoop.com/office/nihonbashi",
+  "Hours": "Tenants 24 hours, 365 days (meeting rooms, booths and lounges at all sites)",
+  "Price": "Private offices listed from ¥220,000/month (2-person room, excl. tax); coworking plan from ¥40,000/month"
  },
  "crosscoop-aoyama": {
   "Booking": "Contracts after a tour and screening; paid by invoice.",
-  "src": "https://crosscoop.com/office/aoyama-itchome"
+  "src": "https://crosscoop.com/office/aoyama",
+  "Hours": "Tenants 24 hours, 365 days (meeting rooms, booths and lounges at all sites)",
+  "Price": "Private offices listed from ¥283,000/month (3-person room, excl. tax); coworking plan from ¥40,000/month"
  },
  "crosscoop-shibuya": {
   "Booking": "Contracts after a tour and screening; paid by invoice.",
-  "src": "https://crosscoop.com/office/aoyama-itchome"
+  "src": "https://crosscoop.com/office/shibuya",
+  "Hours": "Tenants 24 hours, 365 days (meeting rooms, booths and lounges at all sites)",
+  "Price": "Private offices listed from ¥608,000/month (8-person room, excl. tax); coworking plan from ¥40,000/month"
  },
  "crosscoop-shinjuku": {
   "Booking": "Contracts after a tour and screening; paid by invoice.",
-  "src": "https://crosscoop.com/office/aoyama-itchome"
+  "src": "https://crosscoop.com/office/shinjuku",
+  "Hours": "Tenants 24 hours, 365 days (meeting rooms, booths and lounges at all sites)",
+  "Price": "Private offices — prices on request after a tour"
  },
  "crosscoop-shimbashi": {
   "Booking": "Contracts after a tour and screening; paid by invoice.",
-  "src": "https://crosscoop.com/office/aoyama-itchome"
+  "src": "https://crosscoop.com/office/shimbashi",
+  "Hours": "Tenants 24 hours, 365 days (meeting rooms, booths and lounges at all sites)",
+  "Price": "Private offices — prices on request after a tour"
  },
  "the-executive-centre-jp-tower": {
   "Booking": "Day Pass open to first-time visitors: book online, in the MyTEC app or at reception, then check in at reception.",
@@ -1475,7 +1506,8 @@
   "Booking": "Membership with photo ID (driving licence, passport or My Number card); you can start the same day you sign up. Minimum two months.",
   "Payment": "Sign-up fees by credit card; monthly fees by credit card (invoice or bank debit possible).",
   "src": "https://business-airport.net/faq/",
-  "Price": "Master membership ¥38,500/month for all sites (sign-up fee ¥38,500); Private membership ¥14,300/month for weekday mornings, evenings and weekends"
+  "Price": "Master membership ¥38,500/month for all sites (sign-up fee ¥38,500); Private membership ¥14,300/month for weekday mornings, evenings and weekends",
+  "Hours": "Coworking weekdays 7:00–22:00 (reception 9:00–18:00), Sundays and holidays 10:00–18:00; closed Saturdays, New Year and building closing days. Private rooms 24 hours"
  },
  "senq-kyobashi": {
   "Booking": "Drop-in: sign up at reception, no booking needed. Weekdays 9:00–19:00.",
@@ -1500,7 +1532,9 @@
  },
  "senq-aoyama": {
   "Booking": "Offices and memberships; tours booked online. Drop-in is offered at other SENQ locations.",
-  "src": "https://www.senq-web.jp/dropin"
+  "src": "https://www.senq-web.jp/dropin",
+  "Hours": "Room members 24 hours, 365 days (except inspections)",
+  "Price": "Private rooms from ¥183,920/month incl. tax (room members only at this site)"
  },
  "senq-meguro": {
   "Booking": "Drop-in: sign up at reception, no booking needed. Weekdays 9:00–19:00.",
@@ -1588,11 +1622,13 @@
  },
  "portal-point-harajuku": {
   "Booking": "Free desks and offices on one-year contracts; tours by form.",
-  "src": "https://portalpoint.jp/shibuya/property/"
+  "src": "https://portalpoint.jp/shibuya/property/",
+  "Hours": "24 hours, no time limits (members)"
  },
  "portal-point-shibuya": {
   "Booking": "Free desks and offices on one-year contracts; tours by form.",
-  "src": "https://portalpoint.jp/shibuya/property/"
+  "src": "https://portalpoint.jp/shibuya/property/",
+  "Hours": "24 hours, no time limits (members)"
  },
  "portal-point-yoyogi-koen": {
   "Booking": "Free desks and offices on one-year contracts; tours by form.",
@@ -1631,7 +1667,9 @@
  "co-ba-chofu": {
   "Booking": "Drop-in on weekdays 10:00–16:00 — check the calendar on the website; may stop when busy.",
   "src": "https://co-ba.net/chofu/",
-  "day": true
+  "day": true,
+  "Price": "Drop-in ¥110 per 15 min, ¥2,200/day incl. tax; monthly from ¥14,300",
+  "Hours": "Members 7:00–23:59 every day; drop-in weekdays 10:00–16:00"
  },
  "co-ba-akasaka": {
   "Booking": "Drop-in: book on the STATION WORK website — no walk-ins without a booking. Weekdays 10:00–19:00.",
@@ -1669,37 +1707,47 @@
  },
  "birth-work-azabujuban": {
   "Booking": "Monthly membership; apply through the contact form.",
-  "src": "https://birth-village.com/work/kanda/"
+  "src": "https://birth-village.com/work/kanda/",
+  "Hours": "24 hours, every day (except building inspections)"
  },
  "birth-work-kanda": {
   "Booking": "Monthly membership; apply through the contact form.",
-  "src": "https://birth-village.com/work/kanda/"
+  "src": "https://birth-village.com/work/kanda/",
+  "Price": "Free working ¥27,500/month; BIRTHERs plan (with BIRTH LAB) ¥38,500/month; joining fee ¥16,500",
+  "Hours": "24 hours, every day (except building inspections)"
  },
  "birth-work-toranomon": {
   "Booking": "Monthly membership; apply through the contact form.",
-  "src": "https://birth-village.com/work/kanda/"
+  "src": "https://birth-village.com/work/kanda/",
+  "Price": "Free working not taking new members at present; virtual plan ¥5,500/month",
+  "Hours": "24 hours, every day (except building inspections)"
  },
  "co-lab-daikanyama": {
   "Booking": "Membership for creators; vacancies are listed on the website. Apply through the contact form.",
-  "src": "https://www.co-lab.jp/"
+  "src": "https://www.co-lab.jp/",
+  "Price": "Flex seat from ¥15,000/month; desk from ¥35,000; booth from ¥60,000"
  },
  "co-lab-gotanda": {
   "Booking": "Membership for creators; vacancies are listed on the website. Apply through the contact form.",
-  "src": "https://www.co-lab.jp/"
+  "src": "https://www.co-lab.jp/",
+  "Price": "Flex seat from ¥22,000/month; booth (1–4 people) from ¥64,000"
  },
  "co-lab-shibuya-cast": {
   "Booking": "Membership for creators; vacancies are listed on the website. Apply through the contact form.",
-  "src": "https://www.co-lab.jp/"
+  "src": "https://www.co-lab.jp/",
+  "Price": "Flex seat from ¥15,000/month; desk from ¥42,000; booth from ¥60,000"
  },
  "libport-shinagawa": {
   "Booking": "Drop-in without registration: arrive at reception by 17:30 on weekdays, then stay until 23:00. Private rooms need a booking. Staffed weekdays 9:00–17:30.",
   "src": "https://www.libport.jp/shinagawa.html",
-  "day": true
+  "day": true,
+  "Price": "Drop-in from ¥550/hour, no registration; coworking membership from ¥22,000/month (Shinagawa)"
  },
  "libport-hamamatsucho": {
   "Booking": "Drop-in without registration: arrive at reception by 17:30 on weekdays, then stay until 23:00. Private rooms need a booking. Staffed weekdays 9:00–17:30.",
   "src": "https://www.libport.jp/shinagawa.html",
-  "day": true
+  "day": true,
+  "Price": "Drop-in from ¥550/hour, no registration"
  },
  "tefu-lounge-shimokitazawa": {
   "Booking": "Use through the LINE app: register with a credit card, choose a plan and check in. You can book before you arrive.",
@@ -1800,17 +1848,21 @@
   "Booking": "Drop-in started in September 2026; office tours by application.",
   "Price": "Drop-in half day from ¥2,200 with a drink",
   "src": "https://mov-kuramae.kokuyo.com/",
-  "day": true
+  "day": true,
+  "Hours": "24 hours (members)"
  },
  "point-0-marunouchi": {
   "Booking": "Pay-per-use free seats, 24/7.",
   "src": "https://www.point0.work/",
-  "day": true
+  "day": true,
+  "Price": "Pay-per-use free seat ¥275 per 15 min incl. tax; monthly free seat from ¥82,500",
+  "Hours": "24 hours, 365 days"
  },
  "merise-tachikawa": {
   "Booking": "Free space open to anyone; a first-visit survey gives a 3-hour free coupon.",
   "src": "https://www.merise-tamashin.net/",
-  "day": true
+  "day": true,
+  "Price": "Drop-in from ¥500/hour; free-space membership from ¥7,800/month"
  },
  "x-nihonbashi-tower": {
   "Who": "For CROSS U members (space business community).",
@@ -1820,5 +1872,26 @@
  "global-business-hub-tokyo": {
   "English": "English website.",
   "src": "https://www.gbh-tokyo.or.jp/en/"
+ },
+ "workstyling-shinchitose-airport": {
+  "Booking": "Corporate members only — no drop-in for visitors.",
+  "English": "The operator's website has an English version.",
+  "src": "https://mf.workstyling.jp/share/office/shinchitose-airport/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥340 per 10 minutes per person (excl. tax)",
+  "Hours": "8:00–21:00 every day"
+ },
+ "olive-lounge-narimasu": {
+  "Booking": "Corporate members only — no drop-in for visitors.",
+  "English": "The operator's website has an English version.",
+  "src": "https://mf.workstyling.jp/share/office/olive-lounge-narimasu/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥340 per 10 minutes per person (excl. tax)",
+  "Hours": "Weekdays 8:00–21:00, weekends and holidays 10:00–18:00"
+ },
+ "olive-lounge-shimotakaido": {
+  "Booking": "Corporate members only — no drop-in for visitors.",
+  "English": "The operator's website has an English version.",
+  "src": "https://mf.workstyling.jp/share/office/olive-lounge-shimotakaido/",
+  "Price": "Corporate plans — pay-as-you-go SHARE plan from ¥340 per 10 minutes per person (excl. tax)",
+  "Hours": "Weekdays 8:00–21:00, weekends and holidays 10:00–18:00"
  }
 }

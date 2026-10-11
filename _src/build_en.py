@@ -138,12 +138,12 @@ def nav(cur=''):
     items = [('spaces/', 'Spaces'), ('collections/', 'Collections'), ('questions/', 'Q&amp;A'), ('about/', 'About')]
     li = ''.join(f'<li><a href="{U(k)}"{" aria-current=\"page\"" if k.startswith(cur) and cur else ""}>{v}</a></li>' for k, v in items)
     return (f'<header class="wrap"><div class="nav"><a class="wm" href="{U("")}"><img src="/assets/logo.svg" alt="{NAME}" width="120" height="30"><small>{TAG.upper()}</small></a>'
-            f'<ul>{li}</ul><div class="r"><a href="{U("contact/")}?topic=listing">List your space</a></div></div></header>')
+            f'<ul>{li}</ul><div class="r"><a href="{U("about/list-your-space.html")}">List your space</a></div></div></header>')
 
 def foot():
     return (f'<footer class="wrap"><nav><a href="{U("about/")}">About {NAME}</a><a href="{U("spaces/")}">All spaces</a><a href="{U("collections/")}">Collections</a><a href="{U("questions/")}">Q&amp;A</a>'
             f'<a href="{U("find/day-pass.html")}">Day passes</a><a href="{U("find/english.html")}">English website</a><a href="{U("find/tokyo.html")}">Tokyo</a><a href="{U("find/kanagawa.html")}">Yokohama</a><a href="{U("find/osaka.html")}">Osaka</a>'
-            f'<a href="{U("about/privacy.html")}">Privacy</a><a href="{U("about/terms.html")}">Terms</a><a href="{U("contact/")}">Contact</a></nav>'
+            f'<a href="{U("about/list-your-space.html")}">List your space</a><a href="{U("about/legal-notice.html")}">Legal notice</a><a href="{U("about/privacy.html")}">Privacy</a><a href="{U("about/terms.html")}">Terms</a><a href="{U("contact/")}">Contact</a></nav>'
             f'<p>© 2026 {NAME} — a guide to {TAG}. Facts and photos come from each space\'s official website; photos remain the property of their owners.</p></footer>'
             '<dialog id="lb"><img id="lbimg" alt=""><div class="bar"><span id="lbcap"></span><span><button type="button" id="lbprev" aria-label="Previous">‹</button> <button type="button" id="lbnext" aria-label="Next">›</button> <button type="button" id="lbclose">Close</button></span></div></dialog>'
             f'<script src="{U("assets/en.js")}" defer></script></body></html>')
@@ -513,6 +513,35 @@ CONTACT = f'''<p class="lead">Questions about a listing, corrections, partnershi
 <p class="note">By sending, you agree to our <a href="{U("about/privacy.html")}">privacy policy</a>.</p><button type="submit">Send →</button></form>
 <script>(function(){{var s=document.getElementById('topic'),n=document.getElementById('listing-note');function u(){{n.hidden=s.value!=='listing'}}try{{var t=new URLSearchParams(location.search).get('topic');if(t)s.value=t}}catch(e){{}}s.addEventListener('change',u);u()}})();</script>'''
 
+
+# 2026-10-11 わたるさん「日本語のまま残っているページ」→ 掲載のご案内（register.html）と特商法表記（tokushoho.html）の英語版。日本語版は日本の運営者向けにそのまま残す
+LEGAL = f"""<p class="lead">Notice under Japan's Act on Specified Commercial Transactions. Last updated 3 May 2026 (Japanese original: <a href="/tokushoho.html" lang="ja">特定商取引法に基づく表記</a>).</p>
+<table class="kv"><tbody>
+<tr><th>Seller</th><td>Lily Partners LLC (リリィパートナーズ合同会社)</td></tr>
+<tr><th>Person responsible</th><td>Disclosed without delay on request.</td></tr>
+<tr><th>Address</th><td>Disclosed without delay on request.</td></tr>
+<tr><th>Contact</th><td>info@offml.com (telephone number disclosed without delay on request)</td></tr>
+<tr><th>Prices</th><td>Plan prices are shown on the plan page and the application screen, including consumption tax.</td></tr>
+<tr><th>Other charges</th><td>Consumption tax, payment fees and your own internet connection costs.</td></tr>
+<tr><th>Payment</th><td>Credit card (Visa, Mastercard, JCB, American Express, Diners Club).</td></tr>
+<tr><th>When you pay</th><td>Monthly plans are charged when you apply, then automatically on the billing day each month during the contract.</td></tr>
+<tr><th>When the service starts</th><td>Immediately after payment. Plans that need a listing review start once the review is complete.</td></tr>
+<tr><th>Returns and cancellation</th><td>As a digital service, purchases cannot in principle be returned or cancelled. If something does not work, please tell us through the contact form.</td></tr>
+<tr><th>Recommended browsers</th><td>Latest Google Chrome, Safari, Microsoft Edge or Firefox.</td></tr>
+</tbody></table>
+<p>Questions about this notice: <a href="{U("contact/")}">contact form</a>.</p>"""
+LIST = f"""<p class="lead">{NAME} introduces coworking spaces in Japan to visitors from abroad, chosen for their design. Listing starts free, with no commission or referral fees.</p>
+<div class="plans">
+<div><b>Free</b><p class="pr">¥0 / month</p><ul><li>1 space</li><li>Up to 3 photos</li><li>Edit anytime in the dashboard</li></ul></div>
+<div><b>Standard</b><p class="pr">¥3,000 / month</p><ul><li>Up to 5 spaces</li><li>Up to 20 photos per space</li><li>Architect credits shown</li></ul></div>
+<div><b>Pro</b><p class="pr">¥9,800 / month</p><ul><li>Up to 20 spaces</li><li>Up to 50 photos per space</li><li>PICK badge and editorial features</li></ul></div>
+<div><b>Enterprise</b><p class="pr">On request</p><ul><li>More than 20 spaces</li><li>API, priority support, annual or invoice billing</li></ul></div>
+</div>
+<h2>How it works</h2><ol><li>Apply with the space name, website and a contact email — about a minute.</li><li>We review the space and reply by email, usually within one business day.</li><li>Add photos, prices and hours in the dashboard, then publish.</li></ol>
+<h2>What we list</h2><p>Coworking spaces designed by architects or design firms, or spaces that clearly care about design. Plans are billed monthly and can be changed or cancelled at any time, with no minimum term.</p>
+<p><a class="btn" href="{U("contact/")}?topic=listing">Apply to list your space →</a></p>
+<p class="note">Japanese-speaking operators can also apply on the <a href="/register.html" lang="ja">Japanese page</a>. Prices include consumption tax.</p>"""
+
 # ---------- CSS / JS ----------
 CSS = open(os.path.join(HERE, 'en', 'en.css'), encoding='utf-8').read()
 JS = open(os.path.join(HERE, 'en', 'en.js'), encoding='utf-8').read()
@@ -541,12 +570,14 @@ for q in QS: w(f'questions/{q["slug"]}.html', q_page(q))
 w('about/index.html', simple('about/index.html', f'About {NAME}', f'About {NAME}, a guide to {TAG} in English, and who runs it.', f'About {NAME}', ABOUT))
 w('about/privacy.html', simple('about/privacy.html', 'Privacy policy', f'How {NAME} handles personal information.', 'Privacy policy', PRIVACY))
 w('about/terms.html', simple('about/terms.html', 'Terms of use', f'Terms of use for {NAME}.', 'Terms of use', TERMS))
+w('about/legal-notice.html', simple('about/legal-notice.html', 'Legal notice', f'Notice under the Act on Specified Commercial Transactions for {NAME}.', 'Legal notice', LEGAL))
+w('about/list-your-space.html', simple('about/list-your-space.html', 'List your space', f'List your coworking space on {NAME}, free to start. Plans, review and how it works.', 'List your space', LIST))
 w('contact/index.html', simple('contact/index.html', 'Contact', f'Contact the {NAME} team about listings, corrections or partnerships.', 'Contact us', CONTACT, 'contact/'))
 w('contact/thanks.html', simple('contact/thanks.html', 'Message sent', 'Your message has been sent.', 'Thank you', f'<p class="lead">We have received your message and will reply within a week.</p><p><a href="{U("")}">Back to the home page →</a></p>', 'contact/'))
 w('404.html', simple('404.html', 'Page not found', 'This page could not be found.', 'Page not found', f'<p class="lead">This page may have moved. Try the list of all spaces or search by area.</p><p><a href="{U("spaces/")}">See all {len(ORDER)} spaces →</a></p>', ''))
 if not PREVIEW:
     today = datetime.date.today().isoformat()
-    paths = [''] + ['spaces/'] + [f'spaces/{s}.html' for s in ORDER] + ['collections/'] + [f'collections/{c["slug"]}.html' for c in COLS] + ['questions/'] + [f'questions/{q["slug"]}.html' for q in QS] + [p for p, _ in FP] + ['about/', 'about/privacy.html', 'about/terms.html', 'contact/']
+    paths = [''] + ['spaces/'] + [f'spaces/{s}.html' for s in ORDER] + ['collections/'] + [f'collections/{c["slug"]}.html' for c in COLS] + ['questions/'] + [f'questions/{q["slug"]}.html' for q in QS] + [p for p, _ in FP] + ['about/', 'about/privacy.html', 'about/terms.html', 'about/legal-notice.html', 'about/list-your-space.html', 'contact/']
     imgs = {f'spaces/{s}.html': [p for p, c in [[photo(s, n), c] for n, c in photos(s)]][:10] for s in ORDER}
     sm = ''.join(f'<url><loc>{SITE}/{p}</loc><lastmod>{today}</lastmod>' + ''.join(f'<image:image><image:loc>{E(i)}</image:loc></image:image>' for i in imgs.get(p, [])) + '</url>\n' for p in paths)
     w('sitemap.xml', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n' + sm + '</urlset>\n')
