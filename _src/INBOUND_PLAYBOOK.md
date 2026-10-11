@@ -159,4 +159,4 @@ python3 _src/audit_en.py . _src/en/visit_extra.json
 - 施設ページの構造化データを 226→294店に（住所データが無い店も日本語住所で出す）。緯度経度・paymentAccepted・amenityFeature・knowsLanguage を追加。住所が全く無い3店は出ていない
 - 特集の FAQ に「現金なしで払えるか」「英語メニューがあるか」を追加。最寄り駅の抜き出しで「Marunouchi Station Building」を駅と誤認していたのを修正
 - llms.txt に特集70本・探し方・Q&A を追加。中国語/韓国語の入口に旅行者向け特集8本へのリンク
-- 競合に載っていてCAFEMILLに無い有名店（次に足す候補）：Koffee Mameya Kakeru・Socha・Uni Gyre・Chiya-ba・茶洒 金田中・Wakuni・Fortune Garden Kyoto・六盛（Rokujuan）
+- 競合に載っていてCAFEMILLに無い有名店（次に足す候補）：Koffee Mameya Kakeru・Socha・Uni Gyre・Chiya-ba・茶洒 金田中・Wakuni・Fortune Garden Kyoto・Rokujuan（京都）
