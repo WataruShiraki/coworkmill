@@ -240,7 +240,7 @@ def space_page(slug):
                 '<p class="hint">Show the Japanese address to a taxi driver or the building reception.</p>') if adr else ''
         taxi = f'<div class="taxi"><p>Getting here</p>{st_h}{btn}{addr}</div>'
         if adr:
-            drv = (f'<dialog id="drv" class="drv"><p class="big" lang="ja">{E(adr)}<br>{E(ja["company"])}</p><p class="sub">{E(e["name"])} — {E(en_address(e))}</p>'
+            drv = (f'<dialog id="drv" class="drv"><p class="ask" lang="ja">この住所までお願いします。</p><p class="big" lang="ja">{E(adr)}<br>{E(ja["company"])}</p><p class="sub">{E(e["name"])} — {E(en_address(e))}</p>'
                    '<button type="button" id="drvx">Close</button></dialog>')
     cta = f'<a class="cta" href="{E(off)}" target="_blank" rel="noopener">Visit the official website<small>Booking and contact are on the operator\'s site, often in Japanese</small></a>' if off else ''
     visit = f'<aside class="visit"><h3>Plan your visit</h3>{rows}{taxi}{cta}</aside>{drv}'

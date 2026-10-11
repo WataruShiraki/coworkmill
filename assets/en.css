@@ -275,3 +275,6 @@ img.broken{opacity:0}
 .drv .big{font-family:var(--jp);font-weight:700;font-size:clamp(28px,7vw,64px);line-height:1.4;margin:0}
 .drv .sub{margin:0;color:var(--ink-2);font-size:16px}
 .drv button{align-self:flex-start;border:1px solid var(--ink);background:#fff;font:600 14px var(--sans);padding:10px 16px;border-radius:2px;cursor:pointer}
+.drv button{color:var(--ink)!important;font:600 15px var(--sans)!important;padding:10px 18px!important;border:1px solid var(--ink)!important}
+.drv .sub{font-size:18px!important}
+.drv .ask{margin:0;font-family:var(--jp);font-size:clamp(18px,4vw,28px);color:var(--accent);font-weight:700}
