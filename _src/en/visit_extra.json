@@ -2002,5 +2002,14 @@
   "Who": "Anyone.",
   "day": true,
   "src": "https://xstation.jp/dropin/"
+ },
+ "bizcomfort-asakusa": {
+  "Booking": "No booking for drop-in — walk in on weekdays 9:00–18:00 (last entry 17:00). Seats cannot be reserved.",
+  "src": "https://bizcomfort.jp/tokyo/asakusa.html",
+  "Price": "Drop-in ¥440/hour, ¥1,650/day"
+ },
+ "bizcomfort-sanjo-kiyamachi": {
+  "Booking": "No hourly drop-in. Register for the 1-minute plan (¥5,500 fee) or a monthly plan online.",
+  "src": "https://bizcomfort.jp/kyotofu/sanjo-kiyamachi.html"
  }
 }

@@ -1,8 +1,10 @@
 # COWORKMILL
 
-> Japan's best-designed coworking spaces, in English: 354 coworking spaces in Tokyo and across Japan chosen for their interiors, with prices, hours and access from each official website.
+> Japan's best-designed coworking spaces, in English: 356 coworking spaces in Tokyo and across Japan chosen for their interiors, with prices, hours and access from each official website.
 
 ## Pages
+- [BIZcomfort Asakusa](https://cowkml.com/spaces/bizcomfort-asakusa.html): A 24-hour coworking building two minutes from Asakusa Station, steps from Kaminarimon-dori
+- [BIZcomfort Sanjo Kiyamachi](https://cowkml.com/spaces/bizcomfort-sanjo-kiyamachi.html): Top-floor coworking with views over Kyoto, 3 minutes from Sanjo Station by the Kamo River
 - [.andwork Kyoto](https://cowkml.com/spaces/andwork-kyoto.html): Work alongside digital nomads from around the world in a Kawaramachi hotel
 - [.andwork Osaka](https://cowkml.com/spaces/andwork-osaka.html): A hotel lounge with a pool table, in the middle of Osaka
 - [.andwork Fukuoka](https://cowkml.com/spaces/andwork-fukuoka.html): A Nakasu hotel with a double-height lobby bar
