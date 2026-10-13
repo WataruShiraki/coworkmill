@@ -2011,5 +2011,13 @@
  "bizcomfort-sanjo-kiyamachi": {
   "Booking": "No hourly drop-in. Register for the 1-minute plan (¥5,500 fee) or a monthly plan online.",
   "src": "https://bizcomfort.jp/kyotofu/sanjo-kiyamachi.html"
+ },
+ "bizcomfort-enoshima-terrace": {
+  "Booking": "Register online for the 1-minute plan (¥5,500 registration fee) or a monthly plan. The official page lists no drop-in rate.",
+  "src": "https://bizcomfort.jp/kanagawaken/enoshima-terrace.html"
+ },
+ "bizcomfort-sakuragicho": {
+  "Booking": "Register online for the 1-minute plan (¥5,500 registration fee) or a monthly plan. The official page lists no drop-in rate.",
+  "src": "https://bizcomfort.jp/kanagawaken/sakuragicho.html"
  }
 }
