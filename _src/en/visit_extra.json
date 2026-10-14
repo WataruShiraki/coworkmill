@@ -2019,5 +2019,13 @@
  "bizcomfort-sakuragicho": {
   "Booking": "Register online for the 1-minute plan (¥5,500 registration fee) or a monthly plan. The official page lists no drop-in rate.",
   "src": "https://bizcomfort.jp/kanagawaken/sakuragicho.html"
+ },
+ "bizcomfort-kyoto-shijokarasuma": {
+  "Booking": "Drop in on weekdays 9:00–18:00 (¥550 per hour, ¥1,650 per day; no reservations), or register online for the 1-minute plan (¥5,500 registration fee) or a monthly plan.",
+  "src": "https://bizcomfort.jp/kyotofu/kyoto-shijokarasuma.html"
+ },
+ "bizcomfort-sapporo-susukino": {
+  "Booking": "Drop in on weekdays 9:00–18:00 (from ¥550 per hour), or register online for the 1-minute plan (¥5,500 registration fee) or a monthly plan.",
+  "src": "https://bizcomfort.jp/hokkaido/sapporo-susukino.html"
  }
 }
