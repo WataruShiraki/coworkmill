@@ -2027,5 +2027,17 @@
  "bizcomfort-sapporo-susukino": {
   "Booking": "Drop in on weekdays 9:00–18:00 (from ¥550 per hour), or register online for the 1-minute plan (¥5,500 registration fee) or a monthly plan.",
   "src": "https://bizcomfort.jp/hokkaido/sapporo-susukino.html"
+ },
+ "bizcomfort-nagoya-meieki-minami": {
+  "Booking": "Drop in on weekdays 9:00–18:00 (¥440 per hour, ¥1,650 per day; no reservations), or register online for the 1-minute plan (¥5,500 registration fee) or a monthly plan.",
+  "src": "https://bizcomfort.jp/aichi/nagoyameiekiminami.html"
+ },
+ "bizcomfort-kobe": {
+  "Booking": "Drop in on weekdays 9:00–18:00 (¥550 per hour, ¥1,650 per day; no reservations), or register online for the 1-minute plan (¥5,500 registration fee) or a monthly plan.",
+  "src": "https://bizcomfort.jp/hyogoken/kobe.html"
+ },
+ "bizcomfort-kumamoto-jomae": {
+  "Booking": "Drop in on weekdays 9:00–18:00 (¥440 per hour, ¥1,650 per day; no reservations), or register online for the 1-minute plan (¥5,500 registration fee) or a monthly plan.",
+  "src": "https://bizcomfort.jp/kumamotoken/kumamotojomae.html"
  }
 }

@@ -1,8 +1,11 @@
 # COWORKMILL
 
-> Japan's best-designed coworking spaces, in English: 360 coworking spaces in Tokyo and across Japan chosen for their interiors, with prices, hours and access from each official website.
+> Japan's best-designed coworking spaces, in English: 363 coworking spaces in Tokyo and across Japan chosen for their interiors, with prices, hours and access from each official website.
 
 ## Pages
+- [BIZcomfort Nagoya Meieki Minami](https://cowkml.com/spaces/bizcomfort-nagoya-meieki-minami.html): A 24-hour coworking space with a green wall, within walking distance of Nagoya Station
+- [BIZcomfort Kobe Sannomiya](https://cowkml.com/spaces/bizcomfort-kobe.html): A 24-hour coworking space with stone walls and wooden screens on the 8th and 9th floors, 5 minutes from Sannomiya Station
+- [BIZcomfort Kumamoto Jomae](https://cowkml.com/spaces/bizcomfort-kumamoto-jomae.html): A 24-hour coworking space with plants and exposed ceilings, 1 minute from Hanabatacho tram stop near Kumamoto Castle
 - [BIZcomfort Kyoto Shijo Karasuma](https://cowkml.com/spaces/bizcomfort-kyoto-shijokarasuma.html): A 24-hour coworking space with Japanese-style interiors on Nishikikoji Street, 4 minutes from Shijo and Karasuma stations
 - [BIZcomfort Sapporo Susukino](https://cowkml.com/spaces/bizcomfort-sapporo-susukino.html): A 24-hour coworking space with a plant-filled lounge, 1 minute from Hosui-Susukino Station
 - [BIZcomfort Enoshima TERRACE](https://cowkml.com/spaces/bizcomfort-enoshima-terrace.html): A 24-hour coworking space with a covered terrace, opposite the Enoshima Aquarium
