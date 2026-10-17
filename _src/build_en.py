@@ -16,6 +16,7 @@ TAG = "Japan's best-designed coworking spaces"
 GA_ID = 'G-P6CZCM6K18'
 ADS = 'ca-pub-1379037925480740'
 E = lambda s: html.escape(str(s), quote=True)
+ET = lambda s: html.escape(str(s), quote=False).replace('"', '&quot;')  # 2026-10-17 title/description は ' をそのまま（&#x27; にしない）
 
 # ---------- データ ----------
 g = {'__file__': os.path.join(HERE, 'x')}
@@ -116,6 +117,8 @@ GA = (f'<script async src="https://www.googletagmanager.com/gtag/js?id={GA_ID}">
 def U(path): return BASE + '/' + path  # サイト内リンク
 
 # 2026-10-11 わたるさん「メタタイトルとかディスクリプション、OGPは大丈夫そう？」→ 検索結果で切れないよう、タイトルは60字以内に収める
+def _inj(t):
+    return '' if re.search(r'Japan|Tokyo|Kyoto|Osaka|Hokkaido|Okinawa|Nagoya|Fukuoka|Kanagawa|Yokohama|Hakone|Shibuya|Shinjuku|Ginza|Aoyama|Omotesando', t) else ' in Japan'
 def fit(*cands, limit=60):
     for c in cands:
         if len(c) <= limit: return c
@@ -126,11 +129,11 @@ def head(title, desc, path, og=None, otype='website', ld=None):
     robots = 'noindex,nofollow' if PREVIEW else 'index,follow,max-image-preview:large'
     lds = ''.join(f'<script type="application/ld+json">{json.dumps(x, ensure_ascii=False)}</script>' for x in (ld or []))
     return (f'<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">'
-            f'<meta name="robots" content="{robots}"><title>{E(title)}</title><meta name="description" content="{E(desc)}">'
+            f'<meta name="robots" content="{robots}"><title>{ET(title)}</title><meta name="description" content="{ET(desc)}">'
             f'<link rel="canonical" href="{E(u)}"><meta property="og:url" content="{E(u)}"><meta property="og:site_name" content="{NAME}">'
-            f'<meta property="og:title" content="{E(title)}"><meta property="og:description" content="{E(desc)}"><meta property="og:type" content="{otype}">'
+            f'<meta property="og:title" content="{ET(title)}"><meta property="og:description" content="{ET(desc)}"><meta property="og:type" content="{otype}">'
             f'<meta property="og:image" content="{E(og)}"><meta property="og:locale" content="en_US"><meta name="twitter:card" content="summary_large_image">'
-            f'<meta name="twitter:title" content="{E(title)}"><meta name="twitter:description" content="{E(desc)}"><meta name="twitter:image" content="{E(og)}">'
+            f'<meta name="twitter:title" content="{ET(title)}"><meta name="twitter:description" content="{ET(desc)}"><meta name="twitter:image" content="{E(og)}">'
             '<link rel="icon" href="/favicon.ico" sizes="48x48"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">'
             '<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest"><meta name="theme-color" content="#2F6A98">'
             f'<meta name="google-adsense-account" content="{ADS}">{FONTS}<link rel="stylesheet" href="{U("assets/en.css")}">{GA}{lds}</head><body>')
@@ -263,7 +266,8 @@ def space_page(slug):
     rel += [s for s in POPULAR if s != slug and s not in rel and s in EN and pref(EN[s]) == pref(e)][:4 - len(rel)]
     relh = f'<section class="sec"><div class="sh"><div><h2>More spaces nearby</h2><p>{E(town(e))} and around</p></div><a href="{U("spaces/")}?q={quote(town(e).lower())}">See all in {E(town(e))} →</a></div><div class="cards">' + ''.join(card(s) for s in rel) + '</div></section>' if rel else ''
     _nt = e['name'] if town(e).lower() in e['name'].lower() else f'{e["name"]}, {town(e)}'
-    title = fit(f'{_nt} — photos & how to visit | {NAME}', f'{_nt} — coworking | {NAME}', f'{_nt} | {NAME}', f'{e["name"]} | {NAME}', e['name'], e.get('short', e['name']))
+    _it = 'Coworking Prices, Hours & Photos'
+    title = fit(f'{_nt} – {_it} | {NAME}', f'{_nt} – {_it}', f'{_nt} – Coworking Prices', f'{_nt} – Coworking | {NAME}', f'{_nt} – Coworking', f'{_nt} | {NAME}', _nt, e['name'], e.get('short', e['name']), limit=60)
     _c = e['card'].rstrip('.')
     desc = fit(f'{_c}. {_nt}: photos, prices, hours, how to get there, with the address in Japanese.',
                f'{_c}. {_nt}: photos, prices, hours and how to visit.', f'{_c}. Photos, prices, hours and how to visit.',
@@ -284,8 +288,8 @@ def list_page():
     chips = f'<button type="button" data-p="" class="on">All<small>{len(ORDER)}</small></button>' + ''.join(f'<button type="button" data-p="{E(k)}">{E(k)}<small>{n}</small></button>' for k, n in pc)
     tf = ''.join(f'<button type="button" data-t="{E(t)}" aria-pressed="false">{E(t)}<small>{sum(1 for s in ORDER if t in TRAIT[s])}</small></button>' for t in TFILTERS)
     cards = ''.join(card(s) for s in ORDER)
-    title = f'All {len(ORDER)} coworking spaces in Japan — by area | {NAME}'
-    desc = f'Browse {len(ORDER)} of Japan\'s best-designed coworking spaces by prefecture and area, with day-pass, weekend and late-opening filters. Facts from each official website.'
+    title = f'All {len(ORDER)} Coworking Spaces in Japan by Area | {NAME}'
+    desc = f'Browse all {len(ORDER)} coworking spaces by prefecture and area, with day-pass, weekend and late-opening filters. Facts from each official website.'
     return (head(title, desc, 'spaces/index.html') + nav('spaces/') +
             f'<main class="wrap"><div class="head"><p class="tag">Spaces</p><h1>All {len(ORDER)} spaces</h1><p class="lead">Every space here was chosen for its interior. Filter by area, or by what matters on a short trip: a day pass, weekend hours, late opening.</p></div>'
             f'<div class="fbar"><form class="search" id="fs" role="search"><input type="search" id="fq" placeholder="Area, station or name — e.g. Shibuya" aria-label="Search spaces"><button type="submit">Search</button></form>'
@@ -318,7 +322,7 @@ def find_page(path, h1, lead, sl, link):
     ld = [{"@context": "https://schema.org", "@type": "ItemList", "name": h1, "numberOfItems": n, "itemListElement": [{"@type": "ListItem", "position": i + 1, "url": SITE + '/spaces/' + s + '.html', "name": EN[s]['name']} for i, s in enumerate(sl[:50])]}]
     desc = fit(f'{n} {lead[0].lower() + lead[1:]} Photos, prices, hours, how to get there, with the address in Japanese.', f'{n} {lead[0].lower() + lead[1:]}', limit=158)
     img = next((photo(s, JA[s]['hero'][0]) for s in sl if photo(s, JA[s]['hero'][0])), None)
-    return (head(fit(f'{h1} — {n} spaces | {NAME}', f'{h1} | {NAME}', h1), desc, path, img, 'website', ld) + nav('spaces/') +
+    return (head(fit(f'{n} {h1}{_inj(h1)} | {NAME}', f'{n} {h1}{_inj(h1)}', f'{h1} | {NAME}', h1, limit=60), desc, path, img, 'website', ld) + nav('spaces/') +
             f'<main class="wrap"><div class="crumb"><a href="{U("spaces/")}">Spaces</a> › {E(h1)}</div><div class="head"><p class="tag">{n} spaces</p><h1>{E(h1)}</h1>'
             f'<p class="lead">{n} {E(lead)} Areas include {E(where)}. Each page has photos, prices, hours, how to get there, with the address in Japanese.</p></div>'
             f'<div class="fchips tf findnav">{_find_links(path)}</div><div class="cards">' + ''.join(card(s) for s in sl) + '</div>'
@@ -375,8 +379,8 @@ def top_page():
     _fk = {t: k for k, _, _, _, _, t in FINDS}
     tf = ''.join(f'<a href="{U("find/" + _fk[t] + ".html") if t in _fk else U("spaces/") + "?t=" + quote(t)}">{E(t)}<small>{sum(1 for s in ORDER if t in TRAIT[s])}</small></a>' for t in TFILTERS)
     cols = ''.join(col_card(c) for c in COLS[:6])
-    title = f"Japan's best-designed coworking spaces | {NAME}"
-    desc = f'{len(ORDER)} coworking spaces in Tokyo and across Japan, chosen for their design — with prices, hours, day passes, payment and directions with the address in Japanese.'
+    title = fit(f'Coworking in Tokyo: {len(ORDER)} Spaces with Day Pass Prices | {NAME}', f'Coworking in Tokyo: {len(ORDER)} Spaces with Day Pass Prices', limit=60)  # 2026-10-17 検索される言葉で
+    desc = f'Coworking in Tokyo and Japan: {len(ORDER)} spaces with day pass prices, hours, Wi-Fi and payment, plus directions with the address in Japanese.'
     ld = [{"@context": "https://schema.org", "@type": "WebSite", "name": NAME, "url": SITE + '/', "inLanguage": "en",
            "potentialAction": {"@type": "SearchAction", "target": SITE + '/spaces/?q={q}', "query-input": "required name=q"}}]
     return (head(title, desc, 'index.html', None, 'website', ld) + nav() +
@@ -478,7 +482,7 @@ def col_page(c):
     ld = [{"@context": "https://schema.org", "@type": "ItemList", "name": c['title'], "itemListElement": [{"@type": "ListItem", "position": i + 1, "url": SITE + '/spaces/' + s + '.html', "name": EN[s]['name']} for i, (s, _) in enumerate(items)]}]
     img = photo(items[0][0], JA[items[0][0]]['hero'][0]) if items else None
     vb, vld = visitor_block(c, [s for s, _ in items], col_label(c)); ld.append(vld)
-    return (head(fit(f'{col_seo(c)} — {len(items)} spaces | {NAME}', f'{col_seo(c)} | {NAME}', col_seo(c)), c['lead'][:155], f'collections/{c["slug"]}.html', img, 'article', ld) + nav('collections/') +
+    return (head(fit(f'{col_seo(c)}{_inj(col_seo(c))} — {len(items)} picks | {NAME}', f'{col_seo(c)}{_inj(col_seo(c))} | {NAME}', f'{col_seo(c)} | {NAME}', col_seo(c), limit=60), c['lead'][:155], f'collections/{c["slug"]}.html', img, 'article', ld) + nav('collections/') +
             f'<main class="wrap"><div class="crumb"><a href="{U("collections/")}">Collections</a> › {E(c["title"])}</div><div class="head"><p class="tag">{len(items)} spaces</p><h1>{E(c["title"])}</h1><p class="lead">{E(c["lead"])}</p></div>'
             '<div class="cards">' + ''.join(card(s, i + 1, cap) for i, (s, cap) in enumerate(items)) + '</div>' + vb +
             f'<section class="sec"><div class="sh"><div><h2>More collections</h2></div><a href="{U("collections/")}">All {len(COLS)} →</a></div><div class="ccg rel">{others}</div></section></main>' + foot())
