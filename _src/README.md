@@ -1,3 +1,11 @@
+# ★2026-10-17 タイトル・説明文を「検索される言葉」に見直し（Claude）
+- わたるさん指摘「Japan's best-designed …で日本一のインバウンドメディアになれるのか」。best-designed は検索されない言葉だったため、MILL英語版8サイト（ONSEN・HOTEL・SAUNA・CAFE・COWORK・SALON・CLINIC・LAB）を一括で直した
+- トップ：「Best Onsen Ryokan in Japan: 115 with Private Baths」のように検索語＋件数（件数は len(ORDER) で自動）。説明文は160字以内
+- 施設ページ：「施設名, 地名 – ◯◯ Photos & Hours | サイト名」（build_en.py の _it と fit の候補。60字を超えると短い候補へ）。ONSENMILL は全室風呂（EVERY）の宿だけ「Private Bath in Every Room」
+- 一覧・条件・特集：件数を先頭に、地名が無ければ「in Japan」を足す（_inj）
+- title と description は ET() で書き出す（アポストロフィを &#x27; にしない）
+- 公開後に audit_en.py で「60字超・160字超」が0件を確認。効果は 10/31 ごろ Search Console で確認（TASKMILL のタスク）
+
 # ★2026-10-10 COWORKMILL は英語版に切り替えた（最初に読む）
 - わたるさん「MILLS をインバウンド・外国企業向けに全部切り替える」「全部英語」「基本は英語で表示、海外サイトっぽく」。形は承認済みの見本（TOP と施設ページ）どおり。
 - 公開ページ（index.html・spaces/・collections/・questions/・about/・contact/・404.html・sitemap.xml・llms.txt・site.webmanifest）は **_src/build_en.py** で作る：
